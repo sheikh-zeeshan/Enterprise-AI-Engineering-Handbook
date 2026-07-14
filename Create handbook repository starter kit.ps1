@@ -7,5 +7,5 @@
 
 git status
 git add .
-git commit -m "chapter 1 plan draft created"
+git commit -m "chapter 1 planning added"
 git push origin main
