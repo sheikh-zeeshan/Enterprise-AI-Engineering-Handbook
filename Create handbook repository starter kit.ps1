@@ -7,5 +7,5 @@
 
 git status
 git add .
-git commit -m "Editorial Style Guide updates"
+git commit -m "chapter 1 plan draft created"
 git push origin main
