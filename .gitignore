@@ -1,0 +1,28 @@
+# Build outputs
+build/*
+!build/.gitkeep
+
+# .NET
+**/bin/
+**/obj/
+*.user
+*.suo
+.vs/
+
+# IDE and OS
+.idea/
+.vscode/*.log
+.DS_Store
+Thumbs.db
+
+# Secrets and local settings
+.env
+.env.*
+!.env.example
+appsettings.Local.json
+secrets.json
+
+# Temporary publication files
+*.tmp
+*.bak
+~$*.docx
