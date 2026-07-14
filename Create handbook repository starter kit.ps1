@@ -7,5 +7,5 @@
 
 git status
 git add .
-git commit -m "Create handbook repository starter kit"
+git commit -m "Editorial Style Guide updates"
 git push origin main
