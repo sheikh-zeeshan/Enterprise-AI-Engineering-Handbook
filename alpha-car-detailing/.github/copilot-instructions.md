@@ -1,0 +1,1 @@
+Follow `/AGENTS.md` and the authoritative documents under `/instructions`. The current sample deliberately uses an application service rather than CQRS. Preserve project boundaries and validate every change.

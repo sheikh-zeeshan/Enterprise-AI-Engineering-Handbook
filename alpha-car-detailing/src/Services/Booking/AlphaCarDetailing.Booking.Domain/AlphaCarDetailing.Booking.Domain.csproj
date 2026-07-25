@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="../../../BuildingBlocks/AlphaCarDetailing.BuildingBlocks.Domain/AlphaCarDetailing.BuildingBlocks.Domain.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="SQLitePCLRaw.lib.e_sqlite3" />
+  </ItemGroup>
+</Project>
