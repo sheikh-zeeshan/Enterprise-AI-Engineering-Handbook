@@ -7,5 +7,5 @@
 
 git status
 git add .
-git commit -m "chapter 6 completed"
+git commit -m "sample code based is created"
 git push origin main
