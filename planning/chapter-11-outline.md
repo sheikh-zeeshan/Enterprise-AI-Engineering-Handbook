@@ -2790,3 +2790,4 @@ After completing Chapter 11, the reader should understand that an enterprise AI 
 The reader should also be prepared for Part III, where the harness will automate source retrieval, agent execution, validation, evaluation, evidence recording, and human approval workflows.
 
 Chapter 11 outline is complete.
+----------------
