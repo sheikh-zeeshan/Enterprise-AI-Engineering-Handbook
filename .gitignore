@@ -26,3 +26,4 @@ secrets.json
 *.tmp
 *.bak
 ~$*.docx
+*.ini
