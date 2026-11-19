@@ -1,6 +1,6 @@
 # Chapter 46 — Business Domain
 
-## Part VII — Alpha Car Detailing
+*Part VII — Alpha Car Detailing*
 
 Software architecture does not begin with services, databases, APIs, events, cloud resources, or AI-generated code.
 
@@ -15,6 +15,8 @@ A well-structured solution built around the wrong business model is still the wr
 The Alpha Car Detailing case study begins, therefore, not with Clean Architecture, microservices, event streams, database schemas, Kubernetes, or APIs. Those subjects belong to the chapters that follow. This chapter begins with the company itself: its customers, services, stations, fleets, bookings, capacity, commercial relationships, operational constraints, terminology, and expectations.
 
 The business domain described here becomes the authoritative business context for the implementation chapters in Part VII. The handbook establishes Alpha Car Detailing as a nationwide vehicle washing and detailing company serving walk-in customers, corporate fleets, government departments, insurance companies, and rental companies.
+
+**Case-study evidence convention.** Alpha Car Detailing and Northstar Distribution are fictional teaching scenarios. The workflows and rules explicitly designated as the approved *case-study baseline* are authoritative for the exercises in this handbook, not claims about a real company. Details introduced as possible contract terms, operational circumstances, alternative policies, or questions are illustrative until a business owner approves them. This distinction must be preserved when the examples are reused by AI Agents.
 
 ---
 
@@ -40,7 +42,7 @@ But the business reality is considerably richer.
 
 The selected station has six service bays, but only four are available for fleet bookings during the requested period. Two bays are reserved for retail customers. One technician is scheduled for training. Several existing bookings already consume part of the station's capacity.
 
-Northstar's corporate agreement also establishes conditions that do not apply to walk-in customers. The company receives negotiated pricing. Individual drivers are not permitted to purchase premium services without authorization. The fleet administrator may book only vehicles registered under the corporate account. Some vehicles require a different service package because of their size. The customer's monthly credit limit must not be exceeded. The corporate agreement allows consolidated invoicing rather than immediate payment.
+For the workshop scenario, Northstar receives negotiated pricing and consolidated invoicing. Additional proposed conditions include restrictions on premium-service purchases, eligibility tied to authorized fleets, vehicle-size requirements, and a possible monthly credit limit. These conditions illustrate the questions the domain team must investigate; their precise scope and thresholds are not yet approved policies.
 
 The station manager also has operational concerns.
 
@@ -48,7 +50,7 @@ Twenty-four vehicles cannot arrive simultaneously.
 
 Vehicles must be distributed across available time windows.
 
-Capacity must be reserved only after the booking satisfies the appropriate business validations.
+Under the baseline workflow illustrated here, reservation follows required authorization and validation. Whether an earlier temporary hold is ever permitted remains an open business decision.
 
 If the customer submits the booking while another customer is reserving the same capacity, the business must avoid overbooking.
 
@@ -425,13 +427,13 @@ These goals will later influence architecture, but they are first business goals
 
 ---
 
-# 4.3 Customer Types
+## 4.3 Customer Types
 
 Customer type affects business behavior.
 
 The domain should therefore avoid assuming that every customer follows the same booking, payment, authorization, and billing process.
 
-## Walk-in Customers
+### Walk-in Customers
 
 A walk-in customer typically seeks service for an individual vehicle.
 
@@ -452,7 +454,7 @@ Those decisions require explicit business confirmation.
 
 ---
 
-## Corporate Fleets
+### Corporate Fleets
 
 Corporate fleets are the primary scenario for this chapter because they expose the richer business rules required by enterprise customers.
 
@@ -477,7 +479,7 @@ That grouping can affect authorization, reporting, booking, pricing, and billing
 
 ---
 
-## Government Departments
+### Government Departments
 
 Government departments may resemble corporate fleets operationally but can differ commercially and procedurally.
 
@@ -500,7 +502,7 @@ Differences must remain visible.
 
 ---
 
-## Insurance Companies
+### Insurance Companies
 
 Insurance-related servicing may require additional business context.
 
@@ -519,7 +521,7 @@ The important business-design principle is to represent confirmed behavior and a
 
 ---
 
-## Rental Companies
+### Rental Companies
 
 Rental companies typically operate vehicle fleets with high utilization and frequent turnaround requirements.
 
@@ -543,7 +545,7 @@ The software should support business capabilities without erasing meaningful dis
 
 ---
 
-# 4.4 Corporate Accounts
+## 4.4 Corporate Accounts
 
 A corporate customer requires a relationship broader than a simple customer record.
 
@@ -574,7 +576,7 @@ The architecture should not force a one-to-one relationship simply because that 
 
 ---
 
-# 4.5 Stations and Service Locations
+## 4.5 Stations and Service Locations
 
 Alpha Car Detailing operates physical locations where services are performed.
 
@@ -630,7 +632,7 @@ These distinctions belong to the business domain before they belong to implement
 
 ---
 
-# 4.6 Vehicle Management
+## 4.6 Vehicle Management
 
 Vehicles are central business objects in Alpha Car Detailing.
 
@@ -665,7 +667,7 @@ It establishes the business question.
 
 ---
 
-# 4.7 Fleet Management
+## 4.7 Fleet Management
 
 A fleet groups vehicles for business administration.
 
@@ -677,7 +679,7 @@ A fleet may represent:
 - a business unit;
 - an operational vehicle group.
 
-A corporate account may have one fleet or several.
+A corporate account may have one fleet or several; the precise relationship is part of business policy.
 
 A fleet may contain a small number of vehicles or thousands.
 
@@ -695,7 +697,7 @@ These questions must be answered before access control and booking rules can be 
 
 ---
 
-# 4.8 Services and Packages
+## 4.8 Services and Packages
 
 Alpha Car Detailing sells services that customers understand in business terms.
 
@@ -730,9 +732,9 @@ The system must not invent those properties merely because they are technically 
 
 ---
 
-# 4.9 Booking
+## 4.9 Booking
 
-A booking represents an arrangement for Alpha Car Detailing to perform one or more services for one or more eligible vehicles under defined conditions.
+A booking is a business record of a requested or accepted service arrangement. Whether a multi-vehicle customer request constitutes one booking, a group of appointments, or several coordinated bookings remains an explicit business decision.
 
 That definition intentionally avoids implementation detail.
 
@@ -759,7 +761,7 @@ For this case study, the primary scenario treats corporate fleet booking as a co
 
 ---
 
-# 4.10 Scheduling
+## 4.10 Scheduling
 
 Scheduling concerns *when* service is expected to occur.
 
@@ -783,7 +785,7 @@ Capacity determines whether the business can accept work within that time.
 
 ---
 
-# 4.11 Capacity Management
+## 4.11 Capacity Management
 
 Capacity management is one of the most important concepts in the case study.
 
@@ -819,11 +821,11 @@ The precise capacity model is a business decision that later architecture must i
 
 The essential rule is:
 
-> **A booking may only consume capacity that the business considers available for that booking.**
+> **A confirmed booking must have its required operational capacity committed, and confirmed commitments must not exceed accepted operational capacity.**
 
 ---
 
-# 4.12 Availability Versus Reservation
+## 4.12 Availability Versus Reservation
 
 Availability describes capacity that appears usable.
 
@@ -843,7 +845,7 @@ If availability checking is treated as reservation, capacity may be unnecessaril
 
 If reservation happens too late, both bookings may be confirmed even though only one can be fulfilled.
 
-The correct behavior depends on business policy and later technical consistency decisions.
+The exact reservation timing and customer-facing alternatives depend on business policy and later technical consistency decisions. The approved case-study invariant remains that confirmation requires successfully committed capacity.
 
 The domain must at minimum distinguish:
 
@@ -854,7 +856,7 @@ The domain must at minimum distinguish:
 
 ---
 
-# 4.13 Pricing
+## 4.13 Pricing
 
 Pricing determines the commercial amount associated with services.
 
@@ -890,7 +892,7 @@ A domain-aware system must know where the applicable commercial terms come from.
 
 ---
 
-# 4.14 Billing
+## 4.14 Billing
 
 Billing determines what amount the customer owes and how that obligation is presented.
 
@@ -912,7 +914,7 @@ The later architecture must ensure those facts are reliable, but the business mu
 
 ---
 
-# 4.15 Payments
+## 4.15 Payments
 
 Payment represents settlement of an amount owed.
 
@@ -939,7 +941,7 @@ A corporate account may pay according to contractual terms rather than at bookin
 
 ---
 
-# 4.16 Notifications
+## 4.16 Notifications
 
 Notifications communicate relevant business information to people or systems.
 
@@ -971,7 +973,7 @@ Those decisions later influence implementation.
 
 ---
 
-# 4.17 Authorization
+## 4.17 Authorization
 
 Authorization in this domain has a business meaning in addition to any security meaning.
 
@@ -995,7 +997,7 @@ These concerns may overlap technically, but they should not be confused conceptu
 
 ---
 
-# 4.18 Validation
+## 4.18 Validation
 
 Validation determines whether a requested business action satisfies relevant requirements.
 
@@ -1017,7 +1019,7 @@ The business sequence matters.
 
 ---
 
-# 4.19 Completion
+## 4.19 Completion
 
 A booking is not the same as completed service.
 
@@ -1035,7 +1037,7 @@ Completion is therefore an important business transition.
 
 ---
 
-# 4.20 Business Rules
+## 4.20 Business Rules
 
 Business rules express policies and constraints governing business behavior.
 
@@ -1045,24 +1047,40 @@ Representative rules for Alpha Car Detailing may include:
 | --- | --- |
 | Fleet | Only eligible vehicles belonging to the selected corporate context may be booked |
 | Booking | A booking must identify a station and service |
-| Capacity | A confirmed booking must not exceed available station capacity |
+| Capacity | Confirmed commitments must not exceed accepted operational capacity |
 | Corporate account | Corporate privileges require an active account |
 | Service | A selected station must support the requested service |
 | Vehicle | A vehicle must satisfy service eligibility requirements |
 | Authorization | Corporate booking must satisfy required customer authorization |
 | Pricing | Applicable contractual pricing must be used when an agreement exists |
-| Completion | Billing may be triggered only from qualifying completed service |
+| Completion | Qualifying completed services support billing; any additional charges require an approved policy |
 | Notification | Relevant stakeholders should be informed of defined booking transitions |
 
-These examples establish the type of rule the domain contains. Specific values, limits, timing rules, and contractual exceptions must come from confirmed requirements.
+These examples establish the type of rule the domain contains, not a list of approved policies. For the exercises, the approved baseline includes authorized fleet access, eligible vehicles, service/station suitability, the availability-versus-reservation distinction, confirmation only after committed capacity, and qualifying completed work supporting billing. Other rules and all specific values, limits, timing conditions, and contractual exceptions require explicit confirmation.
+
+### Approved case-study baseline (for handbook exercises)
+
+The following identifiers refer to the **defined exercise baseline and invariants** for the fictional case study. They do not imply independently verified policies of an existing company.
+
+| Rule ID | Case-study baseline | Business concern |
+| --- | --- | --- |
+| BR-FLT-001 | A corporate administrator may act only within authorized fleet scope. | Fleet Management / Corporate Accounts |
+| BR-FLT-002 | Selected vehicles must be eligible under the chosen fleet context. | Fleet Management |
+| BR-SVC-001 | The selected station must support the requested service. | Service Catalog / Station Operations |
+| BR-CAP-001 | Viewing availability does not reserve capacity. | Capacity Management |
+| BR-CAP-002 | Confirmation requires successful commitment of required capacity. | Booking / Capacity Management |
+| BR-AUT-001 | Any required business authorization must be satisfied before confirmation. | Corporate Accounts / Booking |
+| BR-BIL-001 | Qualifying completed work supports corporate billing; other possible charges remain subject to approval. | Billing |
+
+Rules about booking limits, reservation expiry, partial acceptance, cancellation penalties, credit thresholds, and pricing formulas remain open unless specifically approved later.
 
 ---
 
-# 4.21 Confirmed Rules, Assumptions, and Open Questions
+## 4.21 Confirmed Rules, Proposals, Assumptions, and Open Questions
 
-An enterprise domain model should explicitly distinguish three categories.
+An enterprise domain model should explicitly distinguish four categories.
 
-## Confirmed Rule
+### Confirmed Rule
 
 A stakeholder or authoritative business source has established the behavior.
 
@@ -1070,7 +1088,15 @@ Example:
 
 > Corporate fleet bookings may include only vehicles associated with the customer's eligible fleet.
 
-## Assumption
+### Proposed Rule
+
+A stakeholder or AI Agent has suggested a policy, but the responsible business owner has not approved it.
+
+Example:
+
+> Customers could be offered partial acceptance when capacity is insufficient.
+
+### Assumption
 
 The team currently believes something may be true but has not confirmed it.
 
@@ -1078,7 +1104,7 @@ Example:
 
 > We assume fleet bookings may contain up to 50 vehicles.
 
-## Open Question
+### Open Question
 
 The team knows a decision or clarification is required.
 
@@ -1092,16 +1118,16 @@ A useful requirements record is:
 
 | Statement | Classification | Owner | Status |
 | --- | --- | --- | --- |
-| Corporate booking requires fleet selection | Confirmed | Product Owner | Approved |
+| Corporate fleet booking requires selection of the applicable fleet | Confirmed case-study baseline | Product Owner (illustrative) | Defined for exercises |
 | Maximum 50 vehicles per request | Assumption | Product Owner | Needs confirmation |
 | Multi-station booking allowed? | Open question | Operations | Pending |
-| Government invoice requires purchase-order reference | Confirmed for government contracts | Finance | Approved |
+| Government invoice requires purchase-order reference | Proposed / contract-specific | Finance | Requires source and approval |
 
 This discipline becomes particularly important when AI Agents consume business documentation.
 
 ---
 
-# 4.22 Domain Terminology
+## 4.22 Domain Terminology
 
 The following terminology provides a shared starting vocabulary.
 
@@ -1115,7 +1141,7 @@ The following terminology provides a shared starting vocabulary.
 | Station | A physical Alpha Car Detailing service location |
 | Service | A defined unit of detailing or vehicle-care work |
 | Package | A commercial offering composed of one or more services or service conditions |
-| Booking | A request or arrangement for service under defined conditions |
+| Booking | A requested or accepted service arrangement whose lifecycle is explicitly defined |
 | Schedule | The planned date and time for service |
 | Capacity | The amount of service work a station can accept within defined constraints |
 | Availability | Capacity currently available for potential booking |
@@ -1134,7 +1160,7 @@ Technical teams should resist replacing these terms with implementation-specific
 
 ---
 
-# 4.23 Business Capabilities
+## 4.23 Business Capabilities
 
 A business capability describes something the organization must be able to do.
 
@@ -1188,9 +1214,9 @@ That mapping, if appropriate, belongs to later architectural analysis.
 
 ---
 
-# 4.24 Capability Responsibilities
+## 4.24 Capability Responsibilities
 
-## Customer Management
+### Customer Management
 
 Supports business relationships with customers.
 
@@ -1202,7 +1228,7 @@ Responsibilities may include:
 - customer status;
 - customer preferences.
 
-## Corporate Accounts
+### Corporate Accounts
 
 Supports enterprise commercial relationships.
 
@@ -1215,7 +1241,7 @@ Responsibilities may include:
 - commercial conditions;
 - billing terms.
 
-## Fleet Management
+### Fleet Management
 
 Supports organized collections of vehicles.
 
@@ -1227,7 +1253,7 @@ Responsibilities may include:
 - vehicle eligibility;
 - fleet status.
 
-## Booking
+### Booking
 
 Supports requesting and managing planned service.
 
@@ -1240,7 +1266,7 @@ Responsibilities may include:
 - booking lifecycle;
 - cancellation or modification policies.
 
-## Station Operations
+### Station Operations
 
 Represents operational service locations.
 
@@ -1251,7 +1277,7 @@ Responsibilities may include:
 - supported services;
 - operational restrictions.
 
-## Capacity Management
+### Capacity Management
 
 Determines and manages how much work can be accepted.
 
@@ -1262,7 +1288,7 @@ Responsibilities may include:
 - capacity release;
 - operational constraints.
 
-## Service Catalog
+### Service Catalog
 
 Defines what Alpha Car Detailing sells and performs.
 
@@ -1274,7 +1300,7 @@ Responsibilities may include:
 - service descriptions;
 - commercial offerings.
 
-## Billing
+### Billing
 
 Determines and records amounts owed.
 
@@ -1285,7 +1311,7 @@ Responsibilities may include:
 - account billing;
 - billing references.
 
-## Payments
+### Payments
 
 Supports settlement of financial obligations.
 
@@ -1295,7 +1321,7 @@ Responsibilities may include:
 - payment status;
 - settlement references.
 
-## Notifications
+### Notifications
 
 Communicates meaningful business changes.
 
@@ -1309,7 +1335,7 @@ Responsibilities may include:
 
 ---
 
-# 4.25 Business Capabilities Are Not Organizational Departments
+## 4.25 Business Capabilities Are Not Organizational Departments
 
 A capability describes what the business can do.
 
@@ -1333,7 +1359,7 @@ Capabilities provide stable business structure even when organizational responsi
 
 ---
 
-# 4.26 Domain Boundaries
+## 4.26 Domain Boundaries
 
 Domain boundaries identify areas where business concepts, rules, ownership, or responsibilities differ sufficiently to warrant separation in the business model.
 
@@ -1418,7 +1444,7 @@ Chapter 47 will determine how architecture responds to these boundaries.
 
 ---
 
-# 4.27 Key Workflows
+## 4.27 Key Workflows
 
 Several workflows define the business.
 
@@ -1440,7 +1466,7 @@ The primary workflow for the remainder of this chapter is corporate fleet bookin
 
 ---
 
-# 4.28 Corporate Fleet Booking
+## 4.28 Corporate Fleet Booking
 
 The corporate fleet booking scenario proceeds through ten major business steps:
 
@@ -1461,7 +1487,7 @@ They are not yet API calls, commands, events, services, database transactions, o
 
 ---
 
-# 4.29 Step 1 — Select a Fleet
+## 4.29 Step 1 — Select a Fleet
 
 The corporate user begins within an organizational context.
 
@@ -1480,7 +1506,7 @@ The relevant question is business eligibility.
 
 ---
 
-# 4.30 Step 2 — Select Vehicles
+## 4.30 Step 2 — Select Vehicles
 
 The customer selects vehicles requiring service.
 
@@ -1497,7 +1523,7 @@ For the case study, vehicle selection is explicit because fleet customers common
 
 ---
 
-# 4.31 Step 3 — Choose a Station and Service
+## 4.31 Step 3 — Choose a Station and Service
 
 The customer chooses where the service should occur and what service is required.
 
@@ -1514,7 +1540,7 @@ These questions belong to business discovery.
 
 ---
 
-# 4.32 Step 4 — Check Available Capacity
+## 4.32 Step 4 — Check Available Capacity
 
 The requested work is evaluated against station capacity.
 
@@ -1537,7 +1563,7 @@ It is not necessarily a commitment.
 
 ---
 
-# 4.33 Step 5 — Submit a Booking
+## 4.33 Step 5 — Submit a Booking
 
 Submission indicates that the customer wishes to proceed.
 
@@ -1558,7 +1584,7 @@ Submission does not automatically imply confirmation.
 
 ---
 
-# 4.34 Step 6 — Authorization and Validation
+## 4.34 Step 6 — Authorization and Validation
 
 The business evaluates whether the requested booking may proceed.
 
@@ -1585,7 +1611,7 @@ Depending on confirmed requirements, some checks may happen earlier for usabilit
 
 ---
 
-# 4.35 Step 7 — Reserve Capacity
+## 4.35 Step 7 — Reserve Capacity
 
 Once the booking is acceptable, the required capacity must be committed.
 
@@ -1601,7 +1627,7 @@ The business must prevent confirmed bookings from exceeding operational capacity
 
 ---
 
-# 4.36 Step 8 — Receive Confirmation
+## 4.36 Step 8 — Receive Confirmation
 
 After successful acceptance and capacity reservation, the customer receives confirmation.
 
@@ -1622,7 +1648,7 @@ The exact content is a business decision.
 
 ---
 
-# 4.37 Step 9 — Complete Service
+## 4.37 Step 9 — Complete Service
 
 At the scheduled time, vehicles are processed operationally.
 
@@ -1642,7 +1668,7 @@ The critical transition is that booked work eventually becomes completed service
 
 ---
 
-# 4.38 Step 10 — Trigger Billing and Notifications
+## 4.38 Step 10 — Trigger Billing and Notifications
 
 Once qualifying service is completed, financial and communication activities may begin.
 
@@ -1668,7 +1694,7 @@ The business requirement comes first:
 
 ---
 
-# 4.39 Business Events
+## 4.39 Business Events
 
 A business event records something meaningful that has happened in the domain.
 
@@ -1708,7 +1734,7 @@ Those are different design levels.
 
 ---
 
-# 4.40 Business Event Versus Technical Event
+## 4.40 Business Event Versus Technical Event
 
 Consider the following statement:
 
@@ -1735,7 +1761,7 @@ The event contract itself must not become the source of truth for an invented ru
 
 ---
 
-# 4.41 Business Expectations
+## 4.41 Business Expectations
 
 Customers and operators do not describe successful systems in terms of message brokers or databases.
 
@@ -1783,11 +1809,11 @@ But their origin is business need.
 
 ---
 
-# 4.42 Risks and Constraints
+## 4.42 Risks and Constraints
 
 The business domain contains risks before technical architecture is considered.
 
-## Overbooking
+### Overbooking
 
 The organization may promise more service than a station can deliver.
 
@@ -1798,7 +1824,7 @@ Impact:
 - manual recovery;
 - reputational damage.
 
-## Incorrect Authorization
+### Incorrect Authorization
 
 A user may book vehicles or services outside permitted corporate authority.
 
@@ -1808,7 +1834,7 @@ Impact:
 - contractual disputes;
 - security and compliance concerns.
 
-## Incorrect Pricing
+### Incorrect Pricing
 
 The wrong commercial terms may be applied.
 
@@ -1818,7 +1844,7 @@ Impact:
 - customer disputes;
 - reconciliation work.
 
-## Invalid Fleet Membership
+### Invalid Fleet Membership
 
 A vehicle may be booked under the wrong account or fleet.
 
@@ -1828,7 +1854,7 @@ Impact:
 - authorization failures;
 - poor reporting.
 
-## Capacity Staleness
+### Capacity Staleness
 
 Availability may change between viewing and booking.
 
@@ -1838,7 +1864,7 @@ Impact:
 - failed bookings;
 - inconsistent customer experience.
 
-## Service Mismatch
+### Service Mismatch
 
 A selected station may not support the requested service or vehicle.
 
@@ -1848,7 +1874,7 @@ Impact:
 - rescheduling;
 - customer dissatisfaction.
 
-## Ambiguous Requirements
+### Ambiguous Requirements
 
 Different stakeholders may interpret rules differently.
 
@@ -1858,7 +1884,7 @@ Impact:
 - repeated defects;
 - architectural rework.
 
-## AI-generated Assumptions
+### AI-generated Assumptions
 
 An AI Agent may fill domain gaps with plausible behavior.
 
@@ -1870,7 +1896,7 @@ Impact:
 
 ---
 
-# 4.43 Constraints Versus Requirements
+## 4.43 Constraints Versus Requirements
 
 A requirement describes what the business needs.
 
@@ -1898,7 +1924,7 @@ Understanding the distinction helps later architecture identify where flexibilit
 
 ---
 
-# 4.44 Business Invariants
+## 4.44 Business Invariants
 
 A business invariant is a condition that must remain true.
 
@@ -1995,7 +2021,7 @@ Business responsibility is more important.
 
 ---
 
-# 5.2 Capability Model Before Service Model
+## 5.2 Capability Model Before Service Model
 
 The business capability model should remain independent of technology.
 
@@ -2037,7 +2063,7 @@ The model survives those technical choices.
 
 ---
 
-# 5.3 Domain Boundaries Before Deployment Boundaries
+## 5.3 Domain Boundaries Before Deployment Boundaries
 
 A domain boundary expresses separation in business meaning.
 
@@ -2063,7 +2089,7 @@ Chapter 47 will revisit this distinction.
 
 ---
 
-# 5.4 Business Ownership
+## 5.4 Business Ownership
 
 Every important business rule should have an identifiable business owner.
 
@@ -2087,7 +2113,7 @@ A developer or AI Agent should not become the accidental owner of a business pol
 
 ---
 
-# 5.5 Business Decisions Must Remain Visible
+## 5.5 Business Decisions Must Remain Visible
 
 Architecture often hides unresolved business questions behind abstractions.
 
@@ -2116,7 +2142,7 @@ Business rules should be traceable to their rationale and ownership.
 
 ---
 
-# 5.6 Do Not Let the Database Define the Domain
+## 5.6 Do Not Let the Database Define the Domain
 
 A relational schema might eventually contain tables such as:
 
@@ -2164,7 +2190,7 @@ Those are domain questions.
 
 ---
 
-# 5.7 Do Not Let APIs Define the Domain
+## 5.7 Do Not Let APIs Define the Domain
 
 The same warning applies to APIs.
 
@@ -2198,7 +2224,7 @@ The domain must.
 
 ---
 
-# 5.8 Do Not Let Events Define the Domain
+## 5.8 Do Not Let Events Define the Domain
 
 Event-driven architecture can encourage another form of premature modeling.
 
@@ -2228,7 +2254,7 @@ Good event design starts with meaningful business events, not infrastructure ent
 
 ---
 
-# 5.9 Do Not Let AI-generated Code Define the Domain
+## 5.9 Do Not Let AI-generated Code Define the Domain
 
 AI Agents can generate classes, controllers, validators, handlers, schemas, tests, and events at extraordinary speed.
 
@@ -2260,7 +2286,7 @@ The engineering process allowed an assumption to harden into architecture.
 
 ---
 
-# 5.10 Business Context Before Skills and Prompts
+## 5.10 Business Context Before AI-generated Implementation
 
 The same principle applies to AI Engineering artifacts.
 
@@ -2282,35 +2308,34 @@ A repository Instruction that says:
 
 is useful only if "confirmed" and "reserve capacity" are established domain terms.
 
-Therefore the sequence should be:
+A more accurate relationship separates **discovery assistance** from **implementation authority**:
 
 ```text
-Business Understanding
-        ↓
-Domain Vocabulary
-        ↓
-Confirmed Rules
-        ↓
-Architecture Decisions
-        ↓
-Instructions
-        ↓
-Skills
-        ↓
-Prompts
-        ↓
-AI-generated Implementation
-        ↓
-Harness Validation
+Business Sources and Stakeholders
+             │
+             ├──> Instructions / Skills / Prompts
+             │        for domain discovery
+             │                    │
+             └──────────────┬─────┘
+                            ▼
+               Governed Domain Knowledge
+               (rules, decisions, glossary)
+                            │
+                            ▼
+                 Architecture Decisions
+                            │
+                            ▼
+              AI-assisted Implementation
+                            │
+                            ▼
+                 Harness Validation
 ```
 
-The AI Engineering machinery strengthens an understood domain.
-
-It cannot substitute for one.
+Instructions, Skills, and Prompts can support early discovery; they do not require a finalized architecture. When used for implementation, they must constrain the Agent to approved domain knowledge and relevant architecture decisions. The AI Engineering machinery strengthens an understood domain. It cannot substitute for one.
 
 ---
 
-# 5.11 Business Context Before Harness Automation
+## 5.11 Business Context Before Harness Automation
 
 A harness can deterministically verify:
 
@@ -2347,7 +2372,7 @@ The lesson is that automation must be anchored in valid business intent.
 
 ---
 
-# 5.12 Traceability from Business Goal to Implementation
+## 5.12 Traceability from Business Goal to Implementation
 
 A mature engineering process should eventually support traceability such as:
 
@@ -2417,7 +2442,7 @@ The AI Agent works inside a traceable engineering system rather than generating 
 
 ---
 
-# 5.13 Domain Questions That Must Precede Architecture
+## 5.13 Domain Questions That Must Precede Architecture
 
 Before the team commits to technical design, it should be able to answer questions such as:
 
@@ -2575,7 +2600,7 @@ flowchart TD
     D[Check Available Capacity]
     E[Submit Booking]
     F[Authorization and Validation]
-    G{Accepted?}
+    G{Authorized and Valid?}
     H[Reserve Capacity]
     I[Confirm Booking]
     J[Complete Service]
@@ -2593,7 +2618,9 @@ flowchart TD
     G -->|No| R
     G -->|Yes| H
 
-    H --> I
+    H --> RC{Reservation Successful?}
+    RC -->|No| U[Requested Schedule Unavailable]
+    RC -->|Yes| I
     I --> J
     J --> K
     J --> L
@@ -2631,16 +2658,21 @@ sequenceDiagram
 
     Booking->>Fleet: Validate fleet and vehicles
     Fleet-->>Booking: Eligibility result
-
-    Booking->>Capacity: Request capacity reservation
-    Capacity-->>Booking: Reservation result
-
-    Booking-->>Admin: Booking confirmation
-
-    Station->>Booking: Record service completion
-
-    Booking->>Billing: Provide qualifying completed activity
-    Booking->>Notify: Communicate completion
+    Note over Booking: Apply required business authorization and validation
+    alt Authorization and validation pass
+        Booking->>Capacity: Request capacity reservation
+        Capacity-->>Booking: Reservation result
+        alt Reservation successful
+            Booking-->>Admin: Confirm accepted booking
+            Station->>Booking: Record service completion
+            Booking->>Billing: Provide qualifying completed activity
+            Booking->>Notify: Communicate completion
+        else Reservation unsuccessful
+            Booking-->>Admin: Requested schedule cannot be confirmed
+        end
+    else Request is not authorized or valid
+        Booking-->>Admin: Reject or request correction
+    end
 ```
 
 The participants represent business responsibilities.
@@ -2665,14 +2697,14 @@ flowchart TD
     VE -->|No| X3[Correct Vehicle Selection]
     VE -->|Yes| CA{Operational Capacity Available?}
 
-    CA -->|No| X4[Offer Alternative Capacity]
+    CA -->|No| X4[Cannot Accept Requested Schedule]
     CA -->|Yes| AU{Business Authorization Valid?}
 
     AU -->|No| X5[Authorization Required]
     AU -->|Yes| AC[Booking May Proceed]
 ```
 
-The model shows that capacity is only one business condition within booking acceptance.
+The model shows that capacity is only one business condition within booking acceptance. Whether alternatives are offered is an unresolved customer-experience policy.
 
 ---
 
@@ -2685,9 +2717,10 @@ stateDiagram-v2
     Draft --> Submitted: Customer submits request
 
     Submitted --> Rejected: Validation or authorization fails
-    Submitted --> Accepted: Business conditions satisfied
-
-    Accepted --> Confirmed: Capacity committed
+    Submitted --> Authorized: Required checks satisfied
+    Authorized --> CapacityUnavailable: Reservation fails
+    Authorized --> CapacityReserved: Reservation succeeds
+    CapacityReserved --> Confirmed: Customer commitment accepted
 
     Confirmed --> InService: Vehicle service begins
     Confirmed --> Cancelled: Valid cancellation
@@ -2697,6 +2730,7 @@ stateDiagram-v2
     Completed --> Billable: Commercial criteria satisfied
 
     Rejected --> [*]
+    CapacityUnavailable --> [*]
     Cancelled --> [*]
     Billable --> [*]
 ```
@@ -2871,8 +2905,10 @@ flowchart TD
     SA --> API
     SA --> ED
     SA --> AI
-    SA --> SP
+    BU --> SP
+    SP --> AI
     SA --> HA
+    HA --> AI
 ```
 
 The direction of dependency is intentional.
@@ -2881,10 +2917,1208 @@ Business understanding informs architecture.
 
 Architecture informs implementation.
 
-AI Engineering accelerates and governs implementation.
+Instructions, Skills, and Prompts can also support *earlier* domain discovery; approved business knowledge and architecture then constrain AI-generated implementation. Harness automation validates approved intent rather than creating it.
 
 Reversing that sequence creates technical certainty around business uncertainty.
 
 The remainder of Part VII will progressively transform the business understanding established here into architecture and working software. The discipline throughout those chapters is to preserve traceability back to the business domain rather than allowing technical artifacts to become detached from their purpose.
 
-Chapter 46 status: In progress — next section: Hands-on Example
+---
+
+# 7. Hands-on Example
+
+Business-domain modeling becomes useful when a team must make a concrete customer request precise enough to support architecture without silently inventing business policy. This exercise develops a reviewable baseline for Alpha Car Detailing's corporate fleet booking capability.
+
+## 7.1 The Northstar Distribution Request
+
+Northstar Distribution operates 186 delivery vehicles. Its fleet administrator requests exterior washing and interior cleaning for 24 vehicles over two days, with 12 planned for Tuesday and 12 for Wednesday. The requested station has limited capacity and existing commitments. Northstar uses an enterprise commercial relationship rather than the immediate retail payment model.
+
+The assignment is to determine what the business means by this request. It is **not** to build a booking endpoint or choose a data model. The team needs enough information to describe the accepted customer commitment, its prerequisites, and the possible exceptions.
+
+An initial requirement might read: "The corporate administrator can select vehicles and book a station." That is useful as an intent statement but inadequate as an implementation specification. It says nothing about who is authorized, whether vehicles are eligible, whether a station supports the service, when capacity is reserved, whether partial acceptance is possible, or when the request becomes billable.
+
+The first engineering deliverable is therefore a business-analysis record, not code.
+
+## 7.2 Conduct a Domain Discovery Workshop
+
+A focused workshop should include a corporate operations representative, a station operations representative, a product owner, and a finance representative. The architect facilitates the discussion and records findings, but does not act as the owner of commercial or operational policy.
+
+Begin with the objective: "What should Northstar and Alpha Car Detailing be able to rely on after a booking is confirmed?" This question exposes the difference between a submitted request and an accepted commitment. Follow it with questions about account scope, fleet and vehicle eligibility, station/service suitability, operational capacity, pricing, completion, and financial obligations.
+
+Use three evidence types distinctly: an approved rule or decision; an illustrative example used to test a rule; and an unanswered question. In the fictional handbook scenario, the case-study baseline rules provide the approved starting evidence. Additional policy details remain proposals until explicitly confirmed.
+
+| Finding | Classification | Evidence or decision needed |
+| --- | --- | --- |
+| Administrators operate only within authorized fleet scope | Approved case-study baseline | BR-FLT-001 |
+| Selected vehicles must be eligible for the chosen fleet | Approved case-study baseline | BR-FLT-002 |
+| Station must support the selected service | Approved case-study baseline | BR-SVC-001 |
+| Viewing availability does not reserve capacity | Approved case-study baseline | BR-CAP-001 |
+| Confirmation requires a successful capacity commitment | Approved case-study baseline | BR-CAP-002 |
+| Maximum 25 vehicles per booking | Unsupported assumption | Business owner decision required |
+| Partial acceptance when only some vehicles fit | Open question | Product / Station Operations decision |
+| Reservation expires after 15 minutes | Unsupported assumption | Reservation policy required |
+
+An effective workshop concludes with a set of confirmed statements, an explicit list of unresolved choices, and named owners for the unanswered questions. It does not require every issue to be resolved immediately.
+
+## 7.3 Describe the Successful Business Scenario
+
+Use a stable scenario identifier such as **ACD-BUS-001 — Corporate Fleet Booking**. The following scenario represents the baseline workflow at business level; its grouping and partial-acceptance semantics remain open.
+
+**Actors.** Corporate Fleet Administrator; Corporate Approver when required; Station Operations; Finance. **Preconditions.** A valid corporate relationship, an authorized fleet context, eligible vehicles, and a station capable of delivering the selected service. **Trigger.** The administrator requests service for 24 vehicles across two dates.
+
+The administrator selects the fleet and vehicles, chooses the station and service package, and reviews available capacity. The administrator submits the request. Alpha Car Detailing checks the applicable business authorization, vehicle and service eligibility, and capacity conditions. It attempts to reserve the required operational capacity. Only after successful reservation does the business confirm the accepted arrangement. Station Operations later records qualifying completed work. Billing and customer communication follow the relevant approved policies.
+
+The important design signal is the commitment boundary. An availability result is informative; a reservation commits operational capacity; confirmation communicates an accepted customer commitment. These meanings must remain distinct through the later architecture.
+
+## 7.4 Analyze Alternative Business Outcomes
+
+A scenario is not sufficiently analyzed until the team considers meaningful failure and exception paths. For Northstar, at least the following cases matter:
+
+| Alternative | Expected principle | Unresolved policy |
+| --- | --- | --- |
+| Administrator lacks fleet access | Unauthorized request is not accepted | Exact disclosure and correction experience |
+| Selected vehicle is ineligible | Ineligible work is not confirmed | Reject whole request or allow correction |
+| Station does not support service | Unsupported service cannot be confirmed | Alternative station or service presentation |
+| Capacity disappears after availability check | No confirmation without reservation | Whether alternatives or waitlists are offered |
+| Authorization remains pending | Confirmation must await required approval | Whether temporary holds are permitted |
+| Only some vehicles can be accommodated | Do not invent partial-acceptance behavior | All-or-nothing, automatic partial, or customer-approved partial |
+| Vehicle fails to arrive | Record outcome accurately | Rescheduling and any contractual charge |
+| Service is only partly completed | Record qualifying work | Group lifecycle and billing exceptions |
+
+The distinction between *expected principle* and *unresolved policy* allows architecture work to proceed around established invariants while leaving dependent decisions conditional.
+
+## 7.5 Express Confirmed Rules as Examples
+
+Specification by Example converts approved statements into observable outcomes without deciding the technical mechanism.
+
+```gherkin
+# Source: BR-CAP-001
+Scenario: Viewing availability does not reserve capacity
+  Given a station has capacity for a requested service
+  When an authorized customer views that availability
+  Then the available capacity is not reserved merely by that view
+
+# Source: BR-CAP-002
+Scenario: Reservation failure prevents confirmation
+  Given a valid corporate fleet booking request
+  And the station supports the requested service
+  When the required capacity cannot be reserved
+  Then the booking is not confirmed
+  And the customer is informed that the requested schedule is unavailable
+
+# Source: BR-FLT-001
+Scenario: Fleet administrator cannot book an unauthorized fleet
+  Given an administrator is not authorized for the selected fleet
+  When the administrator attempts to submit a booking
+  Then the booking is not accepted
+```
+
+These scenarios do not specify APIs, SQL transactions, locking, queues, or distributed orchestration. Their business meaning should remain stable while technical implementation choices change.
+
+## 7.6 Document Decisions and Provenance
+
+Record decisions that affect multiple capabilities. The following is a fictional, approved case-study decision record rather than a real-company policy statement:
+
+```yaml
+id: BDR-001
+name: Availability is not reservation
+status: Approved for handbook case study
+business_capability: Capacity Management
+rule_ids: [BR-CAP-001, BR-CAP-002]
+decision: >
+  Viewing available capacity does not commit it.
+  Booking confirmation requires a successful reservation.
+rationale: >
+  Avoid unnecessary holds and conflicting confirmed commitments.
+open_questions:
+  - Are temporary holds supported at any point?
+  - How is the required capacity calculated?
+  - What alternatives are offered when reservation fails?
+```
+
+Open questions should be owned and prioritized, not hidden in prose. A compact register may record the question identifier, affected capability, decision owner, potential impact, and status. The first high-impact questions for Northstar concern multi-day booking identity, partial acceptance, reservation timing, authorization thresholds, pricing finalization, and billable completion.
+
+## 7.7 Prepare the Domain Package
+
+A practical artifact layout is:
+
+```text
+alpha-car-detailing/docs/business-domain/
+  business-overview.md
+  domain-glossary.md
+  capability-model.md
+  business-rules.md
+  workflows/corporate-fleet-booking.md
+  acceptance-scenarios/corporate-fleet-booking.feature
+  decisions/BDR-001-availability-vs-reservation.md
+  decisions/business-decision-register.md
+  open-questions.md
+  traceability/business-traceability-matrix.md
+```
+
+This is a **proposed documentation layout** for exercises. File existence must be checked before an AI Agent claims to have read any of these artifacts. Rule identifiers connect narrative requirements to acceptance scenarios; later chapters will extend the links to architecture decisions, implementation, and validation evidence.
+
+## 7.8 Assess Readiness Rather Than Completeness
+
+The result of the hands-on exercise is not a declaration that every booking policy has been resolved. It is a controlled understanding of what can safely guide architecture.
+
+A readiness review should confirm that stakeholders recognize the terminology; confirmed rules have credible authority; significant successful and failure paths are described; critical invariants are stated; and the decisions that could materially alter the architecture are visible and owned. The architect can then explore solution options around established business commitments, while withholding final choices dependent on unresolved policies.
+
+**Hands-on outcome:** a reviewable business-domain baseline, not a generated system. That baseline is the artifact against which subsequent AI-assisted engineering must be judged.
+
+---
+
+# 8. Claude Example
+
+Claude Code is the handbook's primary AI coding agent for demonstrating repository-oriented engineering workflows. During business discovery, its most useful responsibility is to analyze accessible documents, highlight uncertainty, and prepare reviewable artifacts—not to decide policies.
+
+## 8.1 Establish Repository Instructions
+
+An illustrative `CLAUDE.md` should separate behavior guidance from domain authority:
+
+```markdown
+# Alpha Car Detailing — Repository Guidance
+
+Read approved business-domain documentation before
+analyzing or implementing related functionality.
+
+Distinguish confirmed rules, proposed rules,
+assumptions, and open questions.
+
+Preserve source references and existing rule IDs.
+
+Do not invent booking limits, reservation timeouts,
+pricing formulas, contractual conditions, or approvals.
+
+Do not treat existing implementation as proof that a
+business policy was approved.
+
+For Chapter 46 tasks, do not design services,
+databases, APIs, event payloads, or application code.
+
+Propose changes for stakeholder review rather than
+silently rewriting authoritative business documents.
+```
+
+These Instructions establish expectations for Claude's behavior. They do not duplicate the rule register or replace a business decision process.
+
+## 8.2 Use a Bounded Discovery Prompt
+
+```text
+Analyze the Alpha Car Detailing corporate fleet booking domain.
+
+Read the available approved documents and identify
+which expected sources are missing. Do not assume
+files exist merely because they are mentioned here.
+
+Use Northstar Distribution's request for 24 vehicles
+across two days as the primary scenario.
+
+Produce:
+1. Business objective and participating actors
+2. Business capabilities and responsibility boundaries
+3. Domain glossary findings
+4. Confirmed business rules, with source IDs
+5. Main workflow and alternative outcomes
+6. Business events, without technical schemas
+7. Contradictions and unsupported assumptions
+8. Open questions, owner suggestions, and impact
+9. Domain readiness assessment
+
+Classify every important claim by approval status.
+Do not invent business policy or generate code.
+Do not change repository files without authorization.
+```
+
+A strong answer identifies the confirmation/reservation invariant, but records partial acceptance and reservation expiry as unresolved. A weak answer fills both gaps with plausible defaults and proposes an immediate implementation.
+
+## 8.3 Use Claude to Challenge the Model
+
+A second review task should ask: "List every place where the proposed corporate booking workflow assumes business behavior absent from an approved source. For each, identify the stakeholder who must decide and the architecture choice that depends on it." This question uses Claude as a reviewer of domain certainty rather than a manufacturer of domain rules.
+
+Claude can also compare terminology across files, produce an open-question register, and draft Gherkin scenarios. The human reviewer must still confirm that scenarios reflect approved policy.
+
+## 8.4 Respect the Harness Boundary
+
+The Lead Agent can ensure domain requirements are identified; the Developer Agent can implement assigned, approved behavior; the Reviewer Agent can check implementation traceability; the Validator Agent can verify acceptance scenarios; and the Evaluator Agent can assess the delivered business result. None of these roles acquires the authority to invent a commercial or operational policy because it can generate valid code or tests.
+
+Claude's contribution is greatest when it maintains the difference between **what is known**, **what is proposed**, and **what must still be decided**. Its output should be treated as a draft until reviewed by the appropriate owner.
+
+---
+
+# 9. GitHub Copilot Comparison
+
+GitHub Copilot offers an alternative way to conduct repository-based domain analysis. It is commonly integrated into development workflows and can help engineers examine requirements, compare documents, and draft reviewable changes. Its user interface and supported agent features may differ from Claude Code, but the business authority boundary must remain identical.
+
+## 9.1 Repository Context and Instructions
+
+Copilot can use repository-wide custom instructions from `.github/copilot-instructions.md` in supported experiences. Specific prompt files can be used for repeatable tasks where supported; teams should consult the current platform documentation for their chosen environment.
+
+```markdown
+# Alpha Car Detailing — Copilot Instructions
+
+Use the business-domain documentation as the source
+for approved business meaning.
+
+Do not infer requirements from existing SQL tables,
+application classes, or generated tests.
+
+Report missing authoritative sources. Preserve rule IDs.
+Separate confirmed requirements from proposals,
+assumptions, and unresolved questions.
+
+For domain-discovery tasks, avoid premature technical
+architecture and implementation.
+```
+
+The goal is not to maintain a Copilot-specific version of the business domain. The shared glossary, rules, workflows, and decisions should be the same records consumed by every AI Agent.
+
+## 9.2 Reusable Domain Review Prompt
+
+A reusable task file such as `.github/prompts/discover-business-domain.prompt.md` may contain:
+
+```markdown
+Review the corporate fleet booking domain.
+
+Read available approved domain sources and report
+missing expected documents.
+
+Identify actors, capabilities, terminology, rules,
+workflow stages, exceptions, business events,
+contradictions, and open questions.
+
+Every confirmed rule must cite its source or rule ID.
+Do not introduce new commercial or operational policy.
+Do not design APIs, databases, services, or code.
+
+Return a proposed domain review report requiring
+human business approval.
+```
+
+Copilot may be particularly convenient when developers are examining a localized documentation change alongside nearby code. The reviewer must nevertheless distinguish code that implements a rule from documents that authorize it.
+
+## 9.3 Compare the Same Business Question
+
+Give both Claude Code and Copilot the statement: "Northstar Distribution requests ten vehicles when capacity remains for only six." The expected output is not a confident choice of partial acceptance. It is a structured set of potential policies—reject the whole request, accept a subset, or ask the customer to approve an alternative—together with the responsible business owner and the implications for confirmation, capacity, billing, and notification.
+
+The platform that writes the most detailed implementation is not necessarily the platform that performs the best business analysis. Evaluate traceability, terminology, visibility of uncertainty, and reviewability.
+
+## 9.4 Platform-independent Governance
+
+| Concern | Claude Code | GitHub Copilot |
+| --- | --- | --- |
+| Repository guidance | `CLAUDE.md` | `.github/copilot-instructions.md` |
+| Task request | Prompt | Chat/task prompt or supported prompt file |
+| Shared business authority | Approved domain documents | Same approved domain documents |
+| Proposed documentation changes | Review required | Review required |
+| Approval of business policy | Business owner | Business owner |
+
+The primary lesson is portability of business meaning. Moving between tools should not change the interpretation of booking confirmation, fleet authorization, or capacity reservation.
+
+---
+
+# 10. Codex Comparison
+
+OpenAI Codex provides another repository-oriented agent workflow through supported interfaces. For business discovery, it can inspect accessible documents, generate analyses, compare terminology, and prepare proposed changes. The Agent's technical ability to edit files does not grant authority to establish business policy.
+
+## 10.1 Use AGENTS.md as Execution Guidance
+
+Codex recognizes repository guidance through `AGENTS.md`. A concise example is:
+
+```markdown
+# Alpha Car Detailing — Codex Instructions
+
+The domain glossary, approved business rules,
+workflows, and decisions govern business meaning.
+
+For business-domain analysis:
+- Verify that cited source files exist.
+- Extract supported facts with source references.
+- Separate confirmed, proposed, assumed, and open items.
+- Identify contradictions instead of resolving them by guess.
+- Do not invent limits, timeouts, pricing, or approvals.
+- Do not create API, database, service, or event contracts.
+- Do not modify approved policy without explicit authority.
+
+Present proposed changes for human review.
+```
+
+`AGENTS.md` describes how the Agent should work. The authoritative domain records establish what the business means. A task Prompt specifies the immediate question; a reusable Skill can package a repeated analytical method.
+
+## 10.2 Run a Read-only Analysis Task
+
+An engineer using an installed Codex CLI may start from the repository root:
+
+```powershell
+cd C:\ZeeWork\Enterprise-AI-Engineering-Handbook
+codex
+```
+
+For initial discovery, use a suitable read-only or appropriately permission-restricted workflow. Prompt instructions not to edit files are useful, but they are not a technical security boundary by themselves.
+
+```text
+Analyze Alpha Car Detailing corporate fleet booking.
+Read applicable AGENTS.md guidance and actual
+approved domain source files.
+
+For Northstar's 24-vehicle, two-day request:
+- Identify business goals and actors.
+- Map capabilities and workflow stages.
+- Extract rules with traceable source IDs.
+- Distinguish availability, reservation, confirmation.
+- Identify exceptions and unresolved questions.
+- Report contradictory statements.
+- Draft acceptance scenarios using approved rules only.
+
+Do not modify files, invent policies, or design software.
+Return a reviewable business-domain analysis report.
+```
+
+An appropriate result references **BR-CAP-001** and **BR-CAP-002**, explains that availability checks do not commit capacity, and shows that confirmation requires a successful reservation. It should also mark partial fleet booking, multi-day booking identity, and pricing finalization as unresolved.
+
+## 10.3 Use Reusable Skills Only for Repeatable Work
+
+Where a team frequently reviews business-domain documentation, a Codex Skill can package a repeatable procedure. An illustrative `SKILL.md` might specify the following steps: locate authoritative sources; extract actors, rules, and business events; examine contradictions; build traceability; record open questions; and prepare a readiness assessment. The Skill must not contain its own unapproved booking policies.
+
+```markdown
+---
+name: business-domain-review
+description: Review business-domain evidence and identify gaps.
+---
+
+# Business Domain Review
+
+1. Identify actual available approved sources.
+2. Extract business actors, capabilities, and terminology.
+3. Record supported rules with evidence.
+4. Identify alternative workflow outcomes.
+5. Classify assumptions and unresolved decisions.
+6. Produce traceability and readiness findings.
+
+Do not invent or approve business policy.
+Do not design or implement software.
+```
+
+Use a Skill when repetition justifies the additional governed artifact. A one-off analysis can remain a carefully scoped Prompt.
+
+## 10.4 Coordinate Parallel Review Without Multiplying Assumptions
+
+Different analytical tasks may examine Corporate Accounts, Fleet Management, Booking, Capacity Management, and Billing. Their findings must be reconciled against one authoritative rule register. Parallel analyses may disagree about whether authorization precedes reservation or whether the booking group is all-or-nothing. Those disagreements are business questions for accountable owners, not reasons to let the Agent choose whichever explanation is more convenient.
+
+An AI-generated recommendation may be useful, but it cannot substitute for stakeholder approval. Business review and repository execution approval should be treated as distinct controls: permission to edit a file is not permission to change a business policy.
+
+## 10.5 Comparative Evaluation
+
+| Concern | Claude Code | GitHub Copilot | Codex |
+| --- | --- | --- | --- |
+| Common repository guidance | `CLAUDE.md` | `.github/copilot-instructions.md` | `AGENTS.md` |
+| Reusable method | Skill | Prompt file / supported Skill | Skill |
+| Primary evidence | Governed business documents | Same documents | Same documents |
+| Required output | Traceable analysis | Traceable analysis | Traceable analysis |
+| Business authority | Human business owner | Human business owner | Human business owner |
+
+Feature availability and workflow details can change by product version or environment, so platform comparisons should be verified against current product documentation. The method must not change: establish source authority, expose uncertainty, provide reviewable findings, and preserve the business-to-architecture boundary.
+
+---
+
+# 11. Best Practices
+
+Business-domain discovery becomes reliable when it is treated as a repeatable engineering discipline rather than an informal stage preceding coding. Alpha Car Detailing's fleet booking scenario exposes how customer commitments depend on authorization, service eligibility, capacity, fulfillment, and financial policy. The following practices make those dependencies explicit and governable.
+
+## 11.1 Begin with Outcomes and Actors
+
+Start with the outcome Alpha Car Detailing and its customer need: the corporate fleet administrator should be able to arrange eligible services without creating commitments the station cannot meet. Identify the participating roles—fleet administrator, corporate approver when required, station manager, station staff, account management, and finance—before proposing application components. The actor who submits a request is not necessarily the person authorized to approve its commercial implications.
+
+## 11.2 Maintain One Business Vocabulary
+
+A controlled domain glossary should distinguish *customer*, *corporate account*, *fleet*, *vehicle*, *service*, *booking request*, *availability*, *reservation*, *confirmation*, *service completion*, *billing*, and *payment*. A change in language can be a change in business meaning. When one department uses "booking" for a request and another uses it for a confirmed appointment, clarify the lifecycle rather than allowing software labels to settle the dispute.
+
+## 11.3 Model Capabilities Before Services
+
+Business capabilities describe work the company must be able to perform. They are not deployment instructions. Customer Management, Corporate Accounts, Fleet Management, Booking, Station Operations, Capacity Management, Service Catalog, Billing, Payments, and Notifications should have clear responsibilities and interactions before the architect considers technical decomposition. A single application can preserve conceptual separation; a distributed architecture can violate it.
+
+## 11.4 Preserve Rule Provenance and Approval
+
+Maintain stable rule identifiers, supporting evidence, business ownership, approval status, and applicability. The fictional case-study baseline defines **BR-CAP-001** (availability is not reservation) and **BR-CAP-002** (confirmation requires reserved capacity). It does not define a booking maximum, reservation expiry, credit threshold, or partial-acceptance policy. Those details must be classified as proposals or open questions.
+
+A compact rule record should state not only *what* the rule says but *why* it exists and which workflows and scenarios depend on it. This turns a static rule list into maintainable organizational knowledge.
+
+## 11.5 Distinguish Commitments from Observations
+
+An availability result is an observation. A reservation is a capacity commitment. A confirmed booking is an accepted customer-facing arrangement. A completed service records delivered work. Billable activity establishes an applicable financial consequence. Treating these as interchangeable creates overbooking, incorrect notifications, and premature billing. Establish the business transition first; select consistency mechanisms later.
+
+## 11.6 Analyze Alternative Flows Deliberately
+
+A happy-path workshop rarely exposes the most important architecture drivers. Consider unauthorized fleet selection, one ineligible vehicle in a group, a station that lacks the required equipment, changing capacity, pending corporate approval, a vehicle that does not arrive, interrupted service, and a failed customer notification. For each case, identify the responsible actor, acceptable business outcomes, customer communication, and unresolved decisions.
+
+For a fleet request of ten vehicles when only six can be accommodated, do not infer partial acceptance. Record the alternatives—whole-request rejection, automatic partial acceptance, or customer-approved partial acceptance—and seek a business decision.
+
+## 11.7 Treat Capacity as an Operational Concept
+
+Capacity may depend on service bays, technicians, operating hours, vehicle category, equipment, service duration, and existing commitments. A six-bay station does not necessarily have six interchangeable appointment slots. Define what work the business is able to accept before modeling how that capacity is stored or locked.
+
+Similarly, a station can be open but unable to perform a particular service, or it can support a service without having capacity at the requested time. These are separate business checks.
+
+## 11.8 Distinguish Pricing, Billing, and Payment
+
+Pricing determines the applicable commercial amount. Billing establishes and communicates an obligation. Payment settles an amount owed. A corporate booking may use negotiated prices and consolidated invoicing, unlike a walk-in retail transaction. Whether a price becomes binding on submission or confirmation, and whether cancellation creates a charge, are explicit business decisions. Do not infer them from a standard checkout workflow.
+
+## 11.9 Identify Business Events Without Designing Integration
+
+Use past-tense business events—*Booking Submitted*, *Booking Authorized*, *Capacity Reserved*, *Booking Confirmed*, *Service Completed*, *Invoice Issued*—to understand transitions and affected stakeholders. Not every business occurrence requires a published message. Technical event contracts, brokers, schema versions, and delivery guarantees belong to later architecture.
+
+## 11.10 Make Traceability a Normal Practice
+
+A useful chain runs from business objective to capability, rule, workflow, acceptance scenario, architecture decision, implementation, validation, and operational evidence. For overbooking prevention, that chain begins with Capacity Management and BR-CAP-002. Later chapters will choose the technical mechanism; they must not modify the confirmed business commitment simply because another mechanism would be easier.
+
+| Traceability element | Alpha Car Detailing example |
+| --- | --- |
+| Business goal | Prevent overbooking |
+| Capability | Capacity Management |
+| Rule | BR-CAP-002 |
+| Workflow | Corporate Fleet Booking |
+| Acceptance example | Reservation failure prevents confirmation |
+| Architecture dependency | Consistency of capacity commitment |
+| Operational outcome | No confirmed work beyond accepted capacity |
+
+## 11.11 Use AI Agents as Analysts, Not Policy Owners
+
+Claude Code, Copilot, and Codex can collect evidence, compare terminology, identify contradictions, and draft scenarios. Require them to cite sources and mark uncertainty. Review generated changes before promoting them into the domain repository. Agreement among several AI Agents is not independent business approval, and passing tests do not validate invented policy.
+
+## 11.12 Establish Readiness by Risk
+
+The domain does not need to answer every hypothetical future question before architecture exploration begins. It must answer the questions that materially affect the next design decisions. Identify critical rules and invariants; assign owners to high-impact open questions; and document conditional architectural options when policy is unresolved. Readiness is a scoped decision, not a claim that the business is permanently understood.
+
+### Best-practice review checklist
+
+- [ ] Business objectives and actors are explicit.
+- [ ] Domain terminology is consistent.
+- [ ] Capabilities are distinct from deployable software services.
+- [ ] Confirmed rules have evidence, identifiers, and owners.
+- [ ] Proposed policies and assumptions are not presented as approved.
+- [ ] Availability, reservation, confirmation, and completion are distinct.
+- [ ] Significant exception paths are documented.
+- [ ] Customer-specific commercial variations are evidence-based.
+- [ ] Acceptance scenarios reference approved rules.
+- [ ] AI-produced documents require accountable review.
+- [ ] Architecture-significant questions are owned and visible.
+
+The objective is not maximum documentation volume. It is sufficient, trustworthy business knowledge to guide engineering decisions and reveal where the organization must still decide.
+
+---
+
+# 12. Anti-patterns
+
+AI-assisted implementation can make a flawed domain model appear mature. Once an invented policy appears in source code, unit tests, documentation, and dashboards, it may be mistaken for an approved business requirement. Recognizing the following anti-patterns early prevents such errors from hardening into architecture.
+
+## 12.1 Service-first Decomposition
+
+**Symptom:** The team creates `FleetService`, `BookingService`, `CapacityService`, and `BillingService` before agreeing what those business capabilities mean. **Failure:** Deployable boundaries are chosen before business responsibilities and consistency needs are understood. **Correction:** Model capabilities, ownership, terminology, and workflows first. Whether the solution is modular or distributed is a subsequent decision.
+
+## 12.2 Database Tables as Domain Truth
+
+**Symptom:** Requirements discussions start with `Customers`, `Fleets`, `Vehicles`, and `Bookings` tables. **Failure:** Columns cannot establish when a request becomes confirmed, whether a vehicle can change fleets, or who may authorize a booking. **Correction:** Define relationships, invariants, and lifecycle behavior in business language before designing storage.
+
+## 12.3 AI-invented Policies
+
+**Symptom:** An AI Agent introduces constants such as `MaximumFleetBookingSize = 25` or `ReservationExpiryMinutes = 15`. **Failure:** Plausible defaults become enforced policy without business evidence. **Correction:** Require classification, provenance, and explicit approval before business constraints reach implementation.
+
+## 12.4 Technical Language Replacing Business Language
+
+**Symptom:** Stakeholders are asked to approve "aggregate events" or "reservation projections" without a plain-language explanation. **Failure:** Technical abstractions conceal unresolved customer commitments. **Correction:** Establish the meaning of submission, reservation, confirmation, and completion first; translate it into technical patterns later.
+
+## 12.5 Capability Responsibilities Mixed Together
+
+**Symptom:** Booking is described as responsible for corporate pricing, fleet authorization, station resources, and invoice settlement. **Failure:** The model provides no clear business responsibility boundaries. **Correction:** Identify each capability's decision rights and interactions. This separation does not itself mandate microservices.
+
+## 12.6 Architecture Hiding Business Disagreement
+
+**Symptom:** A sophisticated coordination mechanism is designed while Product and Station Operations disagree about partial fleet acceptance. **Failure:** Technical detail gives the appearance that the business decision is settled. **Correction:** Record alternatives, impact, owner, and status before dependent architecture is finalized.
+
+## 12.7 Availability Mistaken for Reservation
+
+**Symptom:** Viewing a time slot holds it, or viewing capacity is treated as sufficient for later confirmation. **Failure:** The system may block useful capacity or overbook. **Correction:** Preserve BR-CAP-001 and BR-CAP-002 through the entire booking lifecycle.
+
+## 12.8 Bulk Booking Treated as Repeated Retail Booking
+
+**Symptom:** The team implements fleet booking as a simple loop that creates independent retail bookings. **Failure:** Corporate authorization, grouped confirmation, customer references, partial acceptance, and consolidated billing may be lost. **Correction:** Determine whether fleet booking is a group-level business arrangement, individual appointments, or a combination before implementation.
+
+## 12.9 Customer Classification Used as Authorization
+
+**Symptom:** A user with `CustomerType = Corporate` can manage every fleet in the organization. **Failure:** Customer type does not establish authorized fleet scope. **Correction:** Model organizational relationship, business role, fleet access, and permitted action separately.
+
+## 12.10 Confirmation Mistaken for Completion
+
+**Symptom:** The company invoices all confirmed bookings as if services were performed. **Failure:** Work not delivered may be charged incorrectly. **Correction:** Distinguish accepted commitments from qualifying completed work; define any cancellation or nonattendance fees explicitly through commercial policy.
+
+## 12.11 Billing Mistaken for Payment
+
+**Symptom:** Every corporate service requires immediate card payment. **Failure:** Negotiated account billing and contractual payment terms are ignored. **Correction:** Separate pricing, billing, and payment capabilities, then identify real customer-specific variation.
+
+## 12.12 Technical Events Dictating Business Events
+
+**Symptom:** The team starts with `BookingRowInserted` and `StatusUpdated` messages. **Failure:** Infrastructure vocabulary substitutes for business transitions. **Correction:** Identify meaningful occurrences such as *Booking Confirmed* before defining message contracts.
+
+## 12.13 Tests Generated from Unapproved Rules
+
+**Symptom:** A test proves that 26 vehicles are rejected, even though no 25-vehicle limit was approved. **Failure:** Technical correctness is confused with business correctness. **Correction:** Acceptance scenarios must trace to confirmed requirements, and the harness must not treat a green result as business approval.
+
+## 12.14 Generated Documents Automatically Promoted to Authority
+
+**Symptom:** A complete-looking AI-written domain specification becomes "approved" by being committed. **Failure:** Professional formatting masks unsupported assumptions. **Correction:** Drafts must be reviewed for sources, approval status, policy ownership, and contradictions before promotion.
+
+## 12.15 Hypothetical Future Requirements Overengineered
+
+**Symptom:** The solution models unlimited approval chains, arbitrary insurance workflows, and multinational fleet hierarchies without supporting evidence. **Failure:** Speculative domain complexity increases cost without a demonstrated need. **Correction:** Distinguish current needs, credible future change, and mere possibilities.
+
+## 12.16 Exceptions and Ownership Ignored
+
+**Symptom:** Only the successful booking path is documented; cancellation, vehicle absence, station closure, incomplete service, and disputed invoices are missing. **Failure:** High-impact operational and commercial behavior is discovered too late. **Correction:** Identify significant alternatives and assign each unresolved business policy to an accountable stakeholder.
+
+### Anti-pattern recognition matrix
+
+| Failure mode | Primary consequence | Control |
+| --- | --- | --- |
+| Service-first architecture | Incorrect deployment boundaries | Capability-led discovery |
+| Table-first modeling | Incomplete behavior | Business workflow and invariant analysis |
+| AI-invented rules | Unsupported commitments | Provenance and human approval |
+| Availability/commitment confusion | Overbooking | Explicit reservation invariant |
+| Unresolved partial acceptance | Incorrect booking lifecycle | Business Decision Record |
+| Tests as policy evidence | False confidence | Source-linked acceptance scenarios |
+| Uncontrolled domain changes | Knowledge contamination | Governed promotion |
+
+**Architectural lesson:** the deepest anti-pattern is allowing implementation detail—whether written by humans or AI Agents—to establish business meaning that the organization has not approved.
+
+---
+
+# 13. Architect’s Notes
+
+The architect's responsibility is to preserve business meaning through change. The architect does not own every business policy, but must prevent software design, automation, or repository artifacts from silently redefining the policy. The Northstar scenario illustrates several implications.
+
+## 13.1 Domain Meaning Is Independent of Technology
+
+A fleet is a business grouping whether the application is a monolith or distributed. Confirmation is an accepted customer commitment whether it is implemented through one process or a multi-component workflow. Capacity reservation remains distinct from viewing availability regardless of the storage mechanism.
+
+The domain model is therefore an **input to architecture**, not a retrospective explanation of an architecture already chosen. Chapter 47 will evaluate technical boundaries, interactions, and quality attributes using these business meanings.
+
+## 13.2 Business Simplicity Can Hide Technical Difficulty
+
+"Do not overbook" is a concise business rule; satisfying it when customers compete for the same capacity may be technically demanding. Conversely, corporate pricing might involve simple arithmetic but difficult commercial rules. Architects should distinguish business-policy complexity from implementation complexity instead of treating technical complexity as the entire problem.
+
+## 13.3 Identify the Commitment Boundary
+
+Ask exactly when Alpha Car Detailing becomes obliged to deliver. A submitted booking is not the same as an authorized booking. An authorized request can still fail to reserve capacity. Confirmation must communicate a successfully accepted arrangement. Service completion may create a different financial obligation. Each distinction informs later consistency, error-handling, integration, and reporting decisions.
+
+## 13.4 Time Has Business Meaning
+
+Requested appointment time, station-local operating hours, reservation time, authorization validity, service completion time, pricing effective date, and invoice period are different business concepts. Do not assume a single timestamp answers all of them. Where national operations cross locations, local operating calendars may become material. The business decides which time governs which policy.
+
+## 13.5 Ownership of Decisions Precedes Ownership of Data
+
+A team may implement capacity logic but does not necessarily own station capacity policy. Similarly, Finance may own billing policy while another team writes the supporting software. Establish the relevant business owner and decision source before discussing database ownership or technical permissions.
+
+## 13.6 Business Authorization Is Not Merely Authentication
+
+An administrator who can sign into the corporate portal is not automatically entitled to manage every fleet or purchase every service. The domain must establish authorized scope, service eligibility, and any required approvals. Technical identity and access controls must later enforce these rules, but cannot determine them independently.
+
+## 13.7 Treat Partial Success as an Explicit Design Dependency
+
+If Northstar asks for ten vehicles and the station can accept six, the business may prefer group rejection, automatic partial acceptance, or a customer-approved alternative. Each choice changes confirmation, reservation, lifecycle, and billing implications. Explore architectures conditionally if necessary, but do not finalize dependent design before a business decision.
+
+## 13.8 Business Events Are Not Integration Contracts
+
+A *Service Completed* business event indicates that qualifying work occurred. It does not require Kafka, an event bus, or a particular payload. The architect first determines who needs to recognize that occurrence and what business consequences follow. Chapter 50 can then assess whether technical event publication is appropriate.
+
+## 13.9 AI Agent Roles Need a Stable Authority Boundary
+
+The Lead Agent should plan against approved requirements. The Developer Agent implements them. The Reviewer Agent checks business and technical alignment. The Validator Agent verifies acceptance criteria; the Evaluator Agent evaluates the achieved outcome. None of these roles approves an invented cancellation fee or booking maximum. A self-learning harness can identify a candidate improvement but should submit business-policy changes to accountable owners.
+
+## 13.10 Know When to Stop Designing
+
+Technical exploration sometimes clarifies the consequences of a missing policy, but it cannot settle the policy. If stakeholders disagree about whether reservation may precede authorization, the architect should record the alternatives and their implications, obtain a decision, and then revisit affected architecture choices. Continuing to draw designs without addressing the source of uncertainty creates expensive false certainty.
+
+> **Architect's Note**  
+> The most expensive architecture mistake is often not selecting the wrong technology. It is building an internally consistent system around the wrong understanding of the business. Reliable domain knowledge lets technology change without silently changing the commitments the organization makes.
+
+---
+
+# 14. Enterprise Tips
+
+A domain model must remain trustworthy beyond the first delivery. Alpha Car Detailing is intended to operate across stations, customer types, contractual relationships, and changing operational conditions. The enterprise practices below help sustain accurate business knowledge as multiple teams and AI Agents work on the same system.
+
+## 14.1 Establish a Governed Business Knowledge Base
+
+Maintain one authoritative set of definitions, rules, workflows, decisions, and scenarios, with version history and ownership. Backlog descriptions, meeting notes, existing code, and AI scratchpads may be useful evidence, but they do not all have equal authority. Platform-specific Instructions should link to the same governed domain records rather than maintain competing copies.
+
+## 14.2 Assign Business Owners
+
+Corporate Operations should be involved in fleet eligibility; Station Operations in capacity policy; Commercial Management in negotiated pricing; and Finance in billing and payment rules. These assignments are illustrative; actual accountability must be confirmed. A repository owner or developer does not automatically become the business policy owner.
+
+## 14.3 Classify and Review Domain Changes
+
+An editorial correction, terminology clarification, new booking rule, pricing modification, and operational-capacity change carry different risks. Use proportionate reviews, but require explicit business approval when policy meaning changes. A proposed record should describe context, alternatives, affected capabilities, decision owner, status, and rationale.
+
+## 14.4 Preserve Contract and Time Variability
+
+Different corporate agreements may affect pricing, eligible services, approval, and billing. Policy effective dates may matter to bookings created before an agreement change. Do not implement universal rules based on customer category alone. Record which variation is actually established and which remains hypothetical.
+
+## 14.5 Protect Against Cross-agent Assumption Propagation
+
+A Lead Agent may propose a reasonable limit; a Developer Agent may implement it; a Validator Agent may test it; an Evaluator Agent may report success. If the initial limit had no business evidence, the entire workflow remains wrong. Carry approved rule identifiers and source references through the handoffs. Never treat another Agent's output as independent evidence of policy approval.
+
+## 14.6 Keep Scratchpad and Domain Authority Separate
+
+A task-scoped scratchpad may record possible interpretations, unresolved questions, source files examined, and temporary analysis. Those observations are useful but not authoritative. Promotion into the governed domain knowledge base requires review. This separation is essential when autonomous workflows operate repeatedly or in parallel.
+
+## 14.7 Apply Deterministic Documentation Gates
+
+A harness can check whether every confirmed rule has an ID and owner, whether acceptance scenarios reference existing rules, whether links resolve, and whether diagrams are syntactically valid. It cannot determine whether a new cancellation penalty is commercially appropriate. Technical/documentation validation and business approval remain complementary controls.
+
+## 14.8 Evaluate Applicable Contractual Obligations
+
+Government, insurance, and rental-company relationships may create additional approval, audit, retention, or financial obligations. Do not infer a specific legal or contractual requirement from the customer category alone. Capture the actual source, scope, owner, effective period, and evidence requirement before making a rule authoritative.
+
+## 14.9 Connect Business Outcomes to Metrics
+
+Possible measures include station utilization, confirmed booking conflicts, service completion rate, rescheduling frequency, customer complaints, invoice corrections, and the share of requests confirmed. Definitions and targets must be approved by the business. A utilization metric is misleading until "usable capacity" has an agreed definition.
+
+## 14.10 Establish Scoped Domain Readiness
+
+A useful maturity judgment distinguishes *initial*, *developing*, *architecture-ready*, and *implementation-ready for the selected scope*. An unresolved pricing change may not block exploration of station capability boundaries, but it should block final behavior that assumes a particular price commitment. Readiness is evaluated relative to the next decision, not through document count.
+
+### Enterprise operating model
+
+```mermaid
+flowchart TD
+    BO[Accountable Business Owners] --> DK[Governed Domain Knowledge]
+    DK --> AI[Claude Code, Copilot, Codex]
+    AI --> PR[Reviewable Proposals]
+    PR --> HR[Human Domain Review]
+    HR -->|Approved| DK
+    DK --> SA[Solution Architecture]
+    SA --> IM[Implementation and Validation]
+    IM --> FB[Operational Feedback]
+    FB -->|Change requests| BO
+```
+
+The operating model does not eliminate feedback. It prevents feedback, AI-generated analysis, or technical execution permission from bypassing the people accountable for business commitments.
+
+> **Enterprise Tip**  
+> A domain repository is valuable not because it contains the most text, but because an important business decision can be understood, traced, challenged, approved, and safely changed.
+
+---
+
+# 15. Decision Points
+
+Business-domain decisions establish the policies and commitments that the architecture must eventually support. Architecture decisions establish how the solution will support them. The two are related but must not be confused. The Northstar case study contains both established principles and choices still awaiting accountable business approval.
+
+## 15.1 What Does a Corporate Fleet Booking Represent?
+
+A customer may request service for multiple vehicles over multiple dates. Three plausible business models are: a single indivisible fleet booking; independent appointments submitted together; or a group request coordinating individual appointments. The first provides an uncomplicated group commitment but makes partial outcomes difficult. The second makes vehicle-level changes explicit but can lose the customer's collective reference. The third supports both levels at the cost of additional business concepts. Northstar's 24 vehicles over two days make this a high-impact decision.
+
+**Status:** Open. Product and Corporate Operations must define identity, grouping, confirmation, cancellation, and completion semantics before dependent architecture is fixed.
+
+## 15.2 Is Partial Acceptance Permitted?
+
+If ten vehicles are requested and capacity remains for six, the organization might reject the group, accept six automatically, or ask the customer to approve a revised arrangement. These alternatives affect authorization, reservation, customer communication, and billing. Automatic partial acceptance is not an innocent usability convenience; it may change the customer's commercial intent.
+
+**Status:** Open. Product and Station Operations should decide and document whether any approved policy differs by account or contract.
+
+## 15.3 How Is Station Capacity Calculated?
+
+Capacity might be measured by vehicle count, service duration, resource availability, or a combination of bays, employees, equipment, vehicle category, and existing commitments. Physical bays and usable capacity are not synonymous. The selected measurement policy must be understandable to station managers before it is implemented technically.
+
+**Status:** The invariant preventing overbooking is established; the calculation policy remains open under Station Operations.
+
+## 15.4 When Does Capacity Become Reserved?
+
+The baseline workflow checks authorization and eligibility before attempting a reservation. A different approved policy might temporarily hold capacity during a longer authorization process. Such a change raises questions about hold duration, release, priority, and the consequences of approval failure. Viewing availability by itself remains non-committing under BR-CAP-001.
+
+**Status:** The availability/reservation distinction is established; any early hold policy is open.
+
+## 15.5 What Happens When Capacity Changes?
+
+If capacity disappears after a customer sees it, the business may reject the requested schedule, offer an alternative, or permit authorized operational escalation. None of those optional remedies should be invented merely to complete the workflow. The fixed requirement is that reservation failure cannot produce a confirmed booking.
+
+**Status:** Invariant established; customer alternatives are open.
+
+## 15.6 Who Is Authorized to Act for a Corporate Fleet?
+
+Account-wide administrators, fleet-specific administrators, and delegated approvers may have different rights. Being authenticated to the corporate portal does not entitle a user to manage every fleet. The business should clarify corporate account scope, fleet assignment, authorized actions, approval thresholds, and the effect of a revoked permission.
+
+**Status:** Authorized fleet scope is established; details of delegation and thresholds are open.
+
+## 15.7 What Is the Fleet–Vehicle Relationship?
+
+A vehicle could belong to one current fleet, participate in multiple groupings, or change fleets over time. The team must determine who may alter membership, whether historical assignments matter, and how changes affect existing service commitments. A foreign-key shape must not settle these business questions.
+
+**Status:** Open under Corporate Operations.
+
+## 15.8 What Is a Service Package?
+
+A package may be a fixed group of services or a configurable commercial offering. Service availability may depend on the station and vehicle type. The team must establish permitted composition, duration, eligibility, and changes to accepted bookings.
+
+**Status:** Service and package concepts established; detailed composition and customization open.
+
+## 15.9 When Is Pricing Finalized?
+
+Potential policies include a price captured at submission, a price finalized at confirmation, or a price derived from qualifying completed work. Contract renewals and additional authorized services may complicate the answer. The architect must identify applicable commercial authority and effective dates before designing persistence or billing behavior.
+
+**Status:** Open under Commercial Management and Finance.
+
+## 15.10 What Makes Work Billable?
+
+Qualifying completed services support corporate billing under the case-study baseline. The business must still determine whether nonattendance, late cancellation, partly completed services, or authorized extras create additional charges. Confirmation and completion are not equivalent financial states.
+
+**Status:** Principle established; contractual exceptions open.
+
+## 15.11 How Is Corporate Billing Organized?
+
+Invoices might be produced per service, per booking, periodically by corporate account, or according to an account-specific agreement. Invoice grouping should not be inferred from the internal booking data structure. Payment terms are a distinct decision from invoicing.
+
+**Status:** Corporate consolidated billing is a scenario characteristic; cycles, grouping, and adjustments remain open.
+
+## 15.12 Which Business Events Matter?
+
+The organization should recognize major changes such as Booking Submitted, Capacity Reserved, Booking Confirmed, Service Completed, and Invoice Issued. Their exact meanings and interested business capabilities should be agreed before technical message contracts are designed.
+
+**Status:** Initial event inventory defined; detailed semantics and notification policies require review.
+
+## 15.13 What Happens During Operational Exceptions?
+
+A station closure, equipment failure, vehicle nonarrival, cancellation, or incomplete service changes the customer's expected outcome. The business should define the responsible decision owner, effects on existing commitments, alternatives offered, communications, and financial consequences.
+
+**Status:** Significant exception types identified; policy outcomes open.
+
+## 15.14 Which Customer-specific Variations Are Real?
+
+Walk-in, corporate, government, insurance, and rental customers share some capabilities but may have different approvals, contractual references, rates, and payment terms. Variation must be based on approved evidence; the customer-category label alone is not proof of a particular rule.
+
+**Status:** Categories established; detailed contract-specific variation open.
+
+## 15.15 What Is the AI Agent's Authority?
+
+AI Agents may analyze sources, identify contradictions, draft acceptance criteria, and propose changes. They must not approve policy. Technical permission to edit a Markdown file is separate from business authority to change pricing, capacity, or authorization rules.
+
+**Recommended governance decision:** Human-approved promotion of authoritative business knowledge, with all proposed changes reviewable.
+
+## 15.16 How Much Must Be Decided Before Architecture?
+
+Requiring every imaginable future policy to be resolved blocks useful progress. Ignoring high-impact uncertainty creates structural risk. A risk-based readiness decision allows architecture exploration around established invariants while deferring dependent commitments. For Northstar, booking grouping, partial acceptance, and reservation policy are more architecture-significant than the wording of an ordinary reminder notification.
+
+**Recommended engineering decision:** Scope readiness to the next design or implementation task; keep unresolved dependencies explicit.
+
+### Consolidated decision register
+
+| ID | Question | Status | Primary accountable function |
+| --- | --- | --- | --- |
+| BD-001 | Meaning of a multi-vehicle booking | Open | Product / Corporate Operations |
+| BD-002 | Partial fleet acceptance | Open | Product / Station Operations |
+| BD-003 | Capacity calculation | Partially defined | Station Operations |
+| BD-004 | Reservation timing and temporary holds | Partially defined | Station Operations / Product |
+| BD-005 | Alternatives when capacity changes | Partially defined | Station Operations |
+| BD-006 | Corporate authorization model | Partially defined | Corporate Account Management |
+| BD-007 | Fleet membership semantics | Open | Corporate Operations |
+| BD-008 | Service-package structure | Partially defined | Service Operations |
+| BD-009 | Pricing finalization | Open | Commercial Management |
+| BD-010 | Billable activity and exceptions | Partially defined | Finance |
+| BD-011 | Invoice grouping and cycle | Partially defined | Finance |
+| BD-012 | Business event and notification semantics | Initial inventory | Product / Customer Operations |
+| BD-013 | Operational exception policies | Open | Station Operations |
+| BD-014 | Customer category and contract variations | Partially defined | Account Management |
+| BD-015 | AI Agent authority and policy promotion | Proposed governance control | Enterprise Governance |
+
+For a consequential decision, record the alternatives, rationale, source, responsible owner, effective scope, status, and affected capability/workflow references. A simple record for BD-002 might remain explicitly pending:
+
+```yaml
+id: BD-002
+title: Partial acceptance of corporate fleet bookings
+status: Open
+business_owners:
+  - Product Owner
+  - Station Operations
+alternatives:
+  - Reject entire request
+  - Automatically accept available vehicles
+  - Request customer approval for partial acceptance
+impacts:
+  - Booking identity and lifecycle
+  - Capacity reservation
+  - Authorization
+  - Confirmation and notification
+  - Billing and reporting
+implementation_allowed: false  # for dependent policy until approved
+```
+
+The decision register is the bridge between Chapter 46 and Chapter 47. It tells the architect which requirements may drive firm design choices and which require conditional treatment. Architecture implements business decisions; it must not accidentally become the process through which those decisions are made.
+
+---
+
+# 16. Exercises
+
+These exercises develop practical competence in enterprise domain discovery and governance. They are business-oriented and deliberately stop short of generating the solution architecture. Each output should separate approved case-study evidence from proposed policies.
+
+## 16.1 Develop the Business Context
+
+Describe Alpha Car Detailing's objectives, customer groups, station operating model, and commercial relationships. Produce a two-page context note with five candidate business outcomes and a register of facts still requiring confirmation. **Acceptance:** no database tables, APIs, or deployment proposals; stakeholders should understand the document without technical vocabulary.
+
+## 16.2 Build the Business Capability Map
+
+Model Customer Management, Corporate Accounts, Fleet Management, Booking, Station Operations, Capacity Management, Service Catalog, Billing, Payments, and Notifications. Create a responsibility matrix and Mermaid diagram. Identify possible overlap without creating a service topology. **Acceptance:** each capability has a business purpose, decision area, and relevant collaborators.
+
+## 16.3 Establish a Domain Glossary
+
+Define at least 18 terms, including booking request, booking, availability, reservation, confirmation, service completion, billing, and payment. Ask a hypothetical station manager and finance representative to challenge ambiguous words. **Acceptance:** each term has a definition, context, owner, and approval status.
+
+## 16.4 Map Northstar's End-to-end Booking Journey
+
+Use the 24-vehicle, two-day request. Describe the ten business stages, actors, preconditions, inputs, and outcomes. Include authorization failure, unsupported service, and capacity loss. **Acceptance:** checking availability is not described as reserving capacity; submission is not confirmation.
+
+## 16.5 Analyze Fleet Authorization
+
+A Northstar administrator tries to book vehicles from another regional fleet. Separate login identity, corporate membership, assigned fleet, and permitted business action. Draft a decision table and Gherkin acceptance scenarios. **Acceptance:** do not prescribe identity provider configuration or claim a universal corporate approval threshold.
+
+## 16.6 Define Station Capacity
+
+A station has six bays but variable technicians, service durations, and equipment. Produce a capacity-factor matrix and a list of questions for Station Operations. **Acceptance:** do not equate physical bays to interchangeable booking slots or select a persistence/concurrency mechanism.
+
+## 16.7 Evaluate Competing Reservations
+
+Two customers see the same final available service time and both submit requests. Identify the invariant, an acceptable confirmation outcome, and customer communication when reservation fails. **Acceptance:** use BR-CAP-001 and BR-CAP-002 as sources; no assumed race-condition solution is required.
+
+## 16.8 Analyze Partial Acceptance
+
+Northstar requests ten vehicles with capacity for six. Compare all-or-nothing, automatic partial acceptance, and customer-approved partial acceptance. Record effects on booking identity, capacity, billing, and notifications. **Acceptance:** leave the business choice open and identify the accountable owner.
+
+## 16.9 Analyze Pricing, Billing, and Payment
+
+Northstar uses negotiated pricing and consolidated invoicing. Produce separate definitions and an outline of financial triggers. Ask when pricing is finalized and whether cancelled work may be charged. **Acceptance:** do not invent rates, thresholds, fees, or invoice cycles.
+
+## 16.10 Discover Business Events
+
+Create an inventory of meaningful occurrences between submission and invoice issuance. For each, record business meaning, trigger, interested stakeholders, and evidence. **Acceptance:** do not include event-broker names, message schemas, or version numbers.
+
+## 16.11 Compare Customer Categories
+
+Analyze walk-in, corporate, government, insurance, and rental customers across booking, authorization, capacity, pricing, billing, and notifications. **Acceptance:** distinguish shared behavior from customer-specific variations that still require contract evidence.
+
+## 16.12 Run AI-assisted Discovery with Claude
+
+Give Claude Code a bounded Prompt to read available domain documents, extract evidence, identify contradictions, and create a readiness report. **Acceptance:** the output lists missing source files rather than pretending they exist and labels unsupported policy as proposed.
+
+## 16.13 Compare Claude, Copilot, and Codex
+
+Give the three tools an equivalent Northstar scenario and shared rules. Compare source traceability, terminology fidelity, contradiction detection, and respect for approval boundaries. **Acceptance:** platform agreement is not treated as independent business approval.
+
+## 16.14 Build a Rule Traceability Matrix
+
+Link the goal of avoiding overbooking to Capacity Management, BR-CAP-002, the corporate booking workflow, and a reservation-failure acceptance scenario. Repeat for fleet access and station/service eligibility. **Acceptance:** report missing links instead of generating new rules to fill them.
+
+## 16.15 Perform an Anti-pattern Review
+
+Review a proposed design containing six microservices, independent databases, a 25-vehicle limit, and a 15-minute reservation expiry without stakeholder evidence. Identify premature technical choices and invented policies. **Acceptance:** provide a corrected domain-first plan.
+
+## 16.16 Assess Domain Readiness
+
+Classify Customer, Fleet, Booking, Capacity, Authorization, Pricing, Billing, and Notifications as defined, partially defined, or requiring clarification. Identify architecture-significant gaps. **Acceptance:** distinguish readiness for exploration from readiness to implement a specific policy.
+
+## 16.17 Investigate Multi-station Booking
+
+Northstar requests services for 60 vehicles across Lahore, Karachi, and Islamabad. Identify group-identity, multi-station authorization, capacity, confirmation, and financial questions. **Acceptance:** capture business semantics before discussing distributed coordination.
+
+## 16.18 Assess an Early Reservation Policy Change
+
+Suppose Product proposes temporary holds before final authorization. Produce an impact analysis of blocked capacity, expiry, release, approval failure, and customer expectations. **Acceptance:** classify the proposal as unapproved and identify the decision authority.
+
+## 16.19 Trace an AI-generated Rule Failure
+
+A Lead Agent invents a vehicle limit; a Developer implements it; a Validator tests it; and an Evaluator reports success. Identify where governance failed and how source-linked rule identifiers would prevent recurrence. **Acceptance:** demonstrate why green tests alone do not prove business correctness.
+
+## 16.20 Capstone: Build the Domain Package
+
+Assemble a business overview, customer categories, capability model, glossary, actor model, workflow, business rule register, event inventory, decision register, acceptance scenarios, traceability matrix, risks, and readiness assessment. Use an orderly location such as `alpha-car-detailing/docs/business-domain/`. **Acceptance:** every confirmed rule has evidence; assumptions remain visible; the package is reviewable by business owners and does not impose an unapproved architecture.
+
+### Assessment rubric
+
+| Criterion | Weight |
+| --- | ---: |
+| Business objectives, actors, and capabilities | 20% |
+| Domain language and conceptual consistency | 10% |
+| Rule evidence and approval classification | 15% |
+| Workflows and important alternative outcomes | 15% |
+| Responsibility boundaries | 10% |
+| Traceability and acceptance scenarios | 10% |
+| AI Agent and business governance | 10% |
+| Scoped architecture readiness | 10% |
+
+The exercise set should be evaluated by the strength of business reasoning and provenance rather than the number of pages or generated artifacts. Recognizing that an important rule remains unknown can be more valuable than producing a confident but unsupported specification.
+
+---
+
+# 17. Interview Questions
+
+The following questions assess domain discovery and architectural judgment rather than rote knowledge of implementation patterns. Strong answers make uncertainty visible, distinguish authority from suggestion, and explain the implications for Alpha Car Detailing.
+
+## 17.1 Business Domain Foundations
+
+**1. What is a business domain?**  
+It is the business activity, terminology, relationships, behavior, decisions, and outcomes the software exists to support. It remains meaningful independent of the selected architecture.
+
+**2. Why should domain understanding precede architecture?**  
+Technical components must implement real responsibilities and commitments. Designing first risks converting guesses into expensive software boundaries.
+
+**3. How does a domain model differ from a database schema?**  
+A domain model captures business meaning and behavior; a schema captures storage. A `Bookings` table cannot determine confirmation or partial acceptance policy.
+
+**4. What distinguishes a capability from a service?**  
+A capability describes what the organization must do; a service is one possible technical means of supporting it. The mapping is not automatically one-to-one.
+
+**5. Why is ubiquitous language important?**  
+It prevents different stakeholders and systems from assigning contradictory meanings to terms such as booking, reservation, and completion.
+
+**6. What is the difference between gathering requirements and discovering the domain?**  
+Gathering requests captures stated needs. Domain discovery also examines underlying responsibilities, business rules, exceptions, terminology, and unresolved decisions.
+
+**7. How would you identify Alpha Car Detailing's capabilities?**  
+Start from customer journeys and operational/commercial responsibilities; validate a capability map with stakeholders; do not derive it from code modules.
+
+**8. When do business capabilities deserve separate conceptual boundaries?**  
+When responsibilities, vocabulary, rules, decision ownership, or change drivers differ meaningfully, even if the implementation remains one application.
+
+**9. Should each capability become a microservice?**  
+No. Distribution adds operational and consistency cost. Deployment boundaries require additional design evidence considered in Chapter 47.
+
+**10. How do business and organizational boundaries differ?**  
+A business boundary represents a responsibility or meaning; organizational boundaries represent teams and reporting structures that may change.
+
+## 17.2 Corporate Fleet Booking
+
+**11. Explain the baseline fleet booking workflow.**  
+Select fleet and vehicles, choose station/service, check capacity, submit, authorize/validate, reserve, confirm, fulfill, and process applicable billing/notifications.
+
+**12. Why is fleet booking not necessarily repeated retail booking?**  
+A fleet request may include group-level authorization, confirmation, contractual pricing, coordinated schedules, and consolidated billing.
+
+**13. Can the system simply create one retail booking per vehicle?**  
+Only if that representation preserves the approved group and vehicle-level business semantics. Those semantics remain under investigation.
+
+**14. What questions precede multi-vehicle booking design?**  
+Ask about multi-day scheduling, station variation, partial acceptance, cancellation, group identity, individual service status, and billing.
+
+**15. What if capacity exists for only six of ten vehicles?**  
+Do not invent partial acceptance. Present the policy alternatives and obtain an accountable business decision.
+
+**16. Availability versus reservation?**  
+Availability is an observation; reservation is a commitment. Viewing a slot does not hold it under BR-CAP-001.
+
+**17. Why are bay counts insufficient as a capacity model?**  
+Usable capacity may also depend on staff, duration, equipment, vehicle categories, and existing commitments.
+
+**18. What if capacity disappears between lookup and submission?**  
+Do not confirm without successfully committing capacity. Alternatives offered to the customer remain a separate business decision.
+
+**19. State the capacity invariant.**  
+Confirmed work must have the required operational capacity reserved, and total confirmed commitments must not exceed accepted capacity.
+
+**20. Does this invariant require distributed transactions?**  
+No. It establishes an outcome; the technical enforcement mechanism depends on the eventual architecture.
+
+## 17.3 Rules, Ownership, and Financial Meaning
+
+**21. What is a business invariant?**  
+A condition that must remain true within the stated business scope, often across multiple operations and failure paths.
+
+**22. Business authorization versus technical access control?**  
+A user may log in but still lack entitlement to book a specific fleet or purchase a service under a corporate agreement.
+
+**23. Who should approve business rules?**  
+Accountable business owners, such as Station Operations for capacity and Finance for billing—not whoever writes the implementation.
+
+**24. How should contradictory source documents be handled?**  
+Record the contradiction, provenance, effective scope, and impact; obtain a business decision rather than silently favoring one document.
+
+**25. How should assumptions be handled?**  
+Label them, record their origin and consequence, assign a decision owner, and avoid using them as enforceable policy until approved.
+
+**26. Explain pricing versus billing versus payment.**  
+Pricing determines commercial amount; billing establishes and communicates an obligation; payment settles it.
+
+**27. When does corporate work become billable?**  
+Qualifying completed work supports billing under the baseline. Cancellation fees or other exceptions require approved commercial policy.
+
+**28. What determines whether a station supports a service?**  
+Relevant business eligibility may depend on service offering, equipment, vehicle category, personnel, and station rules; availability is a separate concern.
+
+**29. What if a station closes after confirmation?**  
+The business must define how to manage the existing commitment, communication, rescheduling or cancellation, and any financial consequences.
+
+**30. How should domain KPIs be selected?**  
+Trace them to business goals and agree their calculation. Capacity utilization is meaningless without a governed definition of usable capacity.
+
+## 17.4 Events and Domain Evolution
+
+**31. Business event versus integration event?**  
+A business event names a meaningful occurrence. An integration event is one technical means of communicating it to another component.
+
+**32. Why discover events before defining schemas?**  
+The business must first agree on what happened; message shape and transport should not dictate the meaning.
+
+**33. How does a glossary affect API design?**  
+It helps ensure endpoint operations and events use the terms confirmed by the business, not ambiguous developer synonyms.
+
+**34. Can a domain model survive a system rewrite?**  
+Yes. Business commitments and terminology should persist unless the business itself changes.
+
+**35. How do you verify a vehicle–fleet relationship?**  
+Ask about membership rules, transfers, historical relationships, and authorization instead of deriving cardinality from a preferred database design.
+
+## 17.5 AI Engineering and Governance
+
+**36. Why does AI increase the importance of domain precision?**  
+AI can scale implementation of unsupported assumptions across code, tests, and documents before anyone recognizes the original gap.
+
+**37. What should an Agent do when a rule is missing?**  
+Identify the question and alternatives, cite available evidence, and seek accountable approval rather than inventing an answer.
+
+**38. Do Claude, Copilot, and Codex have different business authority?**  
+No. Their tooling differs, but all must defer to the same approved business-domain records and human decision owners.
+
+**39. Instruction versus Skill versus Prompt?**  
+Instructions give persistent behavior constraints, Skills package reusable methods, and Prompts specify immediate tasks. None replaces business evidence.
+
+**40. May a harness silently change a booking policy?**  
+No. It can identify defects and propose changes; commercial and operational rules require business approval.
+
+**41. How do you prevent assumption contamination?**  
+Use classified rules, source IDs, explicit approval, reviewable changes, and acceptance tests traceable to approved business requirements.
+
+**42. Can passing tests prove business correctness?**  
+Not alone. A green test can faithfully verify an invented business limit; business validation and technical validation are different checks.
+
+**43. What is Repository Intelligence's role in domain work?**  
+It helps find relevant sources but must distinguish approved documents, legacy code, drafts, and temporary scratchpad observations.
+
+**44. What may a self-learning harness do with recurring capacity failures?**  
+Collect evidence and propose investigation or a policy review, but not independently relax the capacity invariant.
+
+**45. Is agreement among several AI Agents proof of an approved rule?**  
+No. Shared plausible assumptions are not equivalent to authoritative business evidence.
+
+## 17.6 Senior Architect Scenarios
+
+**46. Partial booking is unresolved; can architecture begin?**  
+Yes, conditional exploration can proceed around established rules. Decisions dependent on partial acceptance must remain provisional until business approval.
+
+**47. Teams disagree about confirmation versus reservation; what now?**  
+Use the established baseline: confirmation requires successful reservation. If other approved sources conflict, escalate for authoritative reconciliation.
+
+**48. Government and corporate customers differ in authorization; how model them?**  
+Identify shared permission concepts and confirmed contract-specific variations; do not infer universal government rules from the category label.
+
+**49. How do you declare the domain architecture-ready?**  
+Confirm that critical goals, rules, invariants, and workflows are sufficiently known for the proposed design scope, and that consequential unknowns are owned.
+
+**50. How would you justify domain discovery to an executive demanding immediate code?**  
+Explain that rapid implementation of a wrong capacity or billing policy increases operational risk and rework. Focused discovery protects the intended business outcome.
+
+### Interview case study
+
+Ask a candidate to analyze Northstar's 24-vehicle request across two days under limited station capacity and consolidated billing. A strong answer names the relevant capabilities, distinguishes submission from confirmation, identifies the reservation invariant, asks about partial acceptance and pricing, and proposes a reviewable domain package. A weak answer begins by selecting a message broker or database without resolving the business questions.
+
+The decisive signal is not how many patterns the candidate remembers. It is whether the candidate understands the source and limits of each important decision.
+
+---
+
+# 18. Chapter Summary
+
+Chapter 46 introduced Alpha Car Detailing as a nationwide vehicle-care business with walk-in customers, corporate fleets, government departments, insurance companies, and rental companies. The case study connects customer relationships, fleets and vehicles, station operations, services and packages, booking, capacity, commercial pricing, billing, payments, and notifications. Its central demonstration is Northstar Distribution's request to schedule 24 vehicles over two days.
+
+## 18.1 The Core Business Model
+
+The chapter established ten high-level business capabilities: Customer Management, Corporate Accounts, Fleet Management, Booking, Station Operations, Capacity Management, Service Catalog, Billing, Payments, and Notifications. These are durable descriptions of business responsibility rather than automatic microservice boundaries.
+
+A corporate fleet booking crosses several of those capabilities. The administrator selects authorized fleet context and eligible vehicles, chooses a suitable station and service, observes availability, submits a request, satisfies required authorization and validation, and attempts to reserve capacity. Only a successfully reserved arrangement may be confirmed. Qualifying completed work later supports appropriate billing and customer communication.
+
+## 18.2 The Most Important Distinctions
+
+Availability is not reservation. Submission is not confirmation. Confirmation is not service completion. Pricing is not billing, and billing is not payment. Authentication alone does not establish business authority over a corporate fleet. Business capabilities are not necessarily software services; business events are not necessarily messages distributed through technical infrastructure.
+
+Maintaining these distinctions prevents premature design and preserves the business commitments that later software must enforce.
+
+## 18.3 What Is Confirmed and What Remains Open?
+
+The case-study baseline includes authorized fleet scope, vehicle eligibility, station/service suitability, non-committing availability lookup, and confirmation only after successful capacity reservation. Qualifying completed work supports billing. Rules have identifiers and should remain traceable to business scenarios.
+
+Other issues remain deliberately open: multi-vehicle booking structure, partial acceptance, precise capacity calculation, temporary holds, approval thresholds, detailed pricing, contractual exceptions, invoice grouping, and cancellation policy. These are not defects in the chapter. Their visibility is a necessary condition for responsible architecture.
+
+## 18.4 AI Supports Domain Analysis, Not Business Policy Ownership
+
+Claude Code, GitHub Copilot, and Codex can organize business sources, compare definitions, identify contradictions, draft workflow diagrams, and produce reviewable acceptance scenarios. Their Instructions, Skills, and Prompts must reference the same governed business knowledge. An Agent's generated output, a passing test, or a successful harness gate does not independently authorize a new business rule.
+
+This is why business validation and technical validation are complementary. Business owners determine what should be true; architecture and engineering ensure the system reliably supports it.
+
+## 18.5 Transition to Solution Architecture
+
+Chapter 47 begins with the capabilities, rules, workflows, business events, risks, and open decisions established here. It will determine technical responsibilities and coordination mechanisms without allowing those choices to redefine Alpha Car Detailing's business. The domain can be ready for certain architectural investigations while remaining unready for implementation decisions dependent on unresolved policy.
+
+> **Architect's Note**  
+> AI makes generating software easier; it does not make business authority optional. The faster a team can implement, the more carefully it must establish what the implementation is supposed to mean.
+
+**The chapter's enduring principle is that verified business understanding defines the intended outcome; architecture chooses how to support it; AI-assisted engineering accelerates delivery while preserving that relationship.**
+
+---
+
+# 19. Further Reading
+
+The following references deepen the reader's understanding of business analysis, capability modeling, collaborative discovery, Domain-Driven Design, and the distinction between approved requirements and technical implementation. They are recommended sources, not substitutes for Alpha Car Detailing's own governed decisions.
+
+## 19.1 Domain-Driven Design
+
+**Eric Evans, *Domain-Driven Design: Tackling Complexity in the Heart of Software*. Addison-Wesley Professional, 2003.**  
+[Publisher reference](https://www.informit.com/store/domain-driven-design-tackling-complexity-in-the-heart-9780321125217). Evans establishes the importance of collaboration with domain experts, ubiquitous language, and models grounded in business behavior. Use these ideas to refine the meanings of Account, Fleet, Booking, Capacity Reservation, and Service Completion before implementation.
+
+**Vaughn Vernon, *Domain-Driven Design Distilled*. Addison-Wesley Professional, 2016.**  
+[Publisher reference](https://www.informit.com/store/domain-driven-design-distilled-9780134434964). The strategic modeling material helps readers understand boundaries without equating each boundary with a deployable microservice. This prepares the transition to Chapter 47.
+
+**Vaughn Vernon, *Implementing Domain-Driven Design*. Addison-Wesley Professional, 2013.**  
+[Publisher reference](https://www.informit.com/store/implementing-domain-driven-design-9780321834577). Read after the business model is clear to examine how complex domain behavior can inform software architecture and design.
+
+## 19.2 Business Architecture and Requirements
+
+**Business Architecture Guild, *A Guide to the Business Architecture Body of Knowledge (BIZBOK Guide)*.**  
+[Business Architecture Guild](https://www.businessarchitectureguild.org/). Use business capability and value-stream thinking to identify Alpha Car Detailing's enduring organizational responsibilities. The full professional guide may have access restrictions.
+
+**International Institute of Business Analysis, *A Guide to the Business Analysis Body of Knowledge (BABOK Guide)*.**  
+[IIBA BABOK Guide](https://www.iiba.org/career-resources/a-business-analysis-professionals-foundation-for-success/babok/). Relevant practices include elicitation, collaboration, requirements lifecycle management, requirements analysis, and solution evaluation.
+
+**IIBA, *The Business Analysis Standard*.**  
+[The Business Analysis Standard](https://www.iiba.org/knowledgehub/the-business-analysis-standard/). Use it to connect stakeholder needs, value, requirements, and solution evaluation without conflating business policy with architecture preference.
+
+## 19.3 Collaborative Discovery
+
+**Alberto Brandolini, *Introducing EventStorming*.**  
+[Official book site](https://www.eventstorming.com/book/). EventStorming facilitates discovery of meaningful business occurrences, decisions, process boundaries, and exceptions with domain experts. Use it to map fleet booking events without immediately designing a message broker.
+
+**Jeff Patton, *User Story Mapping: Discover the Whole Story, Build the Right Product*. O'Reilly Media, 2014.**  
+[O'Reilly reference](https://www.oreilly.com/library/view/user-story-mapping/9781491904893/). Story mapping helps reveal the full customer journey and important alternative paths beyond the initial happy-path requirement.
+
+## 19.4 Conceptual Models and Acceptance Evidence
+
+**Martin Fowler, *Analysis Patterns: Reusable Object Models*. Addison-Wesley Professional, 1996.**  
+[Author's reference](https://martinfowler.com/books/ap.html). This work strengthens conceptual modeling and helps readers avoid allowing convenient data structures to decide business relationships.
+
+**Martin Fowler, *Bounded Context*.**  
+[Author's article](https://martinfowler.com/bliki/BoundedContext.html). Read for a concise explanation of why a term such as "account" may mean something different in corporate relationships, identity, and finance.
+
+**Gojko Adzic, *Specification by Example: How Successful Teams Deliver the Right Software*. Manning Publications, 2011.**  
+[Publisher reference](https://www.manning.com/books/specification-by-example). Concrete examples help business and engineering teams agree on observable outcomes. Derive scenarios from approved rules rather than allowing AI-generated tests to establish policy.
+
+## 19.5 AI Agent Documentation
+
+For current platform behavior, consult the official documentation for [Claude Code](https://code.claude.com/docs/en/overview), [GitHub Copilot custom instructions](https://docs.github.com/en/copilot/concepts/prompting-and-context/custom-instructions), and [OpenAI Codex workflow guidance](https://developers.openai.com/cookbook/examples/codex/iterating-development-workflows-with-codex). Platform mechanisms change faster than business-domain principles. Verify current support for repository Instructions, reusable Skills, Prompts, permissions, and review workflows before applying the examples verbatim.
+
+## 19.6 Recommended Learning Progression
+
+Begin with BABOK and business capability mapping to understand business goals, actors, policy authority, and responsibilities. Use user story mapping and EventStorming to discover customer journeys, decisions, and exceptions. Study Evans and Vernon to refine vocabulary and boundaries. Use Specification by Example to convert approved policies into observable acceptance outcomes. Finally, examine technical DDD and architecture choices only after the essential business commitments and unresolved dependencies are explicit.
+
+For Alpha Car Detailing, the reading sequence should lead back to a simple test: can a station manager, a fleet administrator, and a finance stakeholder explain the same corporate booking without contradicting one another? If not, the next task is domain clarification—not generation of more code.
