@@ -7,5 +7,5 @@
 
 git status
 git add .
-git commit -m "chapter revision completed"
+git commit -m "chapter 46 completed"
 git push origin main
