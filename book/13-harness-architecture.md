@@ -134,7 +134,7 @@ This chapter explains **how an enterprise Harness is architected**.
 
 ---
 
-# Learning Objectives
+## Learning Objectives
 
 By the end of this chapter, you should be able to:
 
@@ -157,9 +157,9 @@ By the end of this chapter, you should be able to:
 
 ---
 
-# Background
+## Background
 
-## From AI Agent to Controlled Engineering System
+### From AI Agent to Controlled Engineering System
 
 AI coding platforms dramatically reduce the effort required to generate software changes.
 
@@ -212,7 +212,7 @@ The Harness provides the coordination layer across those capabilities.
 
 ---
 
-## Repository Intelligence and Harness Architecture
+### Repository Intelligence and Harness Architecture
 
 Part II of this handbook established **Repository Intelligence** as the structured engineering context that allows AI Agents to work accurately within a repository.
 
@@ -279,7 +279,7 @@ The Harness provides execution control.
 
 ---
 
-## The Harness Is Not the Agent
+### The Harness Is Not the Agent
 
 A common architectural mistake is to use **Harness** and **AI Agent** as interchangeable terms.
 
@@ -350,7 +350,7 @@ The Harness trusts evidence produced by controlled mechanisms, not an agent's de
 
 ---
 
-## Determinism as an Architectural Boundary
+### Determinism as an Architectural Boundary
 
 One of the defining characteristics of a mature Harness is its use of **deterministic validation gates**.
 
@@ -392,9 +392,9 @@ They must not be confused.
 
 ---
 
-# Concepts
+## Concepts
 
-## The Core Harness Architecture Principle
+### The Core Harness Architecture Principle
 
 The architecture of an enterprise AI Engineering Harness can be summarized by five responsibilities:
 
@@ -445,7 +445,7 @@ That concentration of responsibility would undermine the controls the Harness is
 
 ---
 
-## Harness Components
+### Harness Components
 
 A production Harness usually contains several logical components.
 
@@ -479,7 +479,7 @@ It is whether responsibilities remain explicit.
 
 ---
 
-## Component Boundaries
+### Component Boundaries
 
 A Harness becomes difficult to govern when architectural responsibilities blur together.
 
@@ -537,11 +537,11 @@ Each component should have a clearly defined contract.
 
 ---
 
-## Control Plane and Execution Plane
+### Control Plane and Execution Plane
 
 A useful architectural distinction is to separate the Harness into a **control plane** and an **execution plane**.
 
-### Control Plane
+#### Control Plane
 
 The control plane decides what may happen.
 
@@ -562,7 +562,7 @@ The control plane should not contain the business implementation being generated
 
 Its responsibility is orchestration.
 
-### Execution Plane
+#### Execution Plane
 
 The execution plane performs the requested work.
 
@@ -617,7 +617,7 @@ It does not define the environment's governing policy.
 
 ---
 
-## Inputs to the Harness
+### Inputs to the Harness
 
 A Harness workflow typically begins with more than a user prompt.
 
@@ -686,13 +686,11 @@ The architectural requirement is that important workflow inputs should be explic
 
 ---
 
-## Outputs from the Harness
+### Outputs from the Harness
 
 The output of a Harness should not be reduced to:
 
-```text
-Code generated successfully.
-```
+> Code generated successfully.
 
 Enterprise workflows produce both **engineering artifacts** and **evidence artifacts**.
 
@@ -733,13 +731,13 @@ This distinction becomes essential when investigating failures or satisfying aud
 
 ---
 
-## Role Orchestration
+### Role Orchestration
 
 The Harness should treat roles as bounded responsibilities rather than alternate names for the same autonomous agent.
 
 For example:
 
-### Lead Agent
+#### Lead Agent
 
 Responsible for:
 
@@ -752,7 +750,7 @@ Responsible for:
 
 The Lead Agent should generally not be the final validator of its own plan.
 
-### Developer Agent
+#### Developer Agent
 
 Responsible for:
 
@@ -764,7 +762,7 @@ Responsible for:
 
 The Developer Agent does not decide whether deterministic gates passed.
 
-### Reviewer Agent
+#### Reviewer Agent
 
 Responsible for examining characteristics such as:
 
@@ -775,13 +773,13 @@ Responsible for examining characteristics such as:
 * missing edge cases;
 * problematic implementation decisions.
 
-### Validator Agent
+#### Validator Agent
 
 Responsible for checking whether the implementation satisfies the requested functional outcome and acceptance criteria.
 
 This role is especially useful where passing tests alone does not prove that the requested change has been fully implemented.
 
-### Evaluator Agent
+#### Evaluator Agent
 
 Responsible for broader quality assessment against a defined rubric.
 
@@ -799,7 +797,7 @@ The separation is architectural, not necessarily physical.
 
 ---
 
-## Role Handoffs
+### Role Handoffs
 
 A handoff occurs when responsibility moves from one agent role to another.
 
@@ -824,7 +822,7 @@ handoff:
   from: Developer
   to: Reviewer
 
-workflowId: HB-2026-00491
+workflowId: ACD-2026-0137
 
 goal:
   Implement corporate fleet booking.
@@ -859,7 +857,7 @@ A structured handoff provides several benefits:
 
 ---
 
-## Prompt Execution
+### Prompt Execution
 
 Prompts remain task-specific inputs.
 
@@ -867,9 +865,7 @@ The Harness should not treat a prompt as the entire workflow definition.
 
 For example:
 
-```text
-Implement corporate fleet booking.
-```
+> Implement corporate fleet booking.
 
 is a task request.
 
@@ -928,7 +924,7 @@ The prompt expresses the current task.
 
 ---
 
-## Skill Execution
+### Skill Execution
 
 Skills define reusable engineering procedures.
 
@@ -964,7 +960,7 @@ This principle mirrors the broader rule established for adaptive Harnesses:
 
 ---
 
-## Tool Execution
+### Tool Execution
 
 AI Agents frequently require tools.
 
@@ -1031,7 +1027,7 @@ terraform destroy
 az group delete
 ```
 
-The exact policy depends on environment and risk.
+The exact policy depends on environment and risk. Do not implement this conceptual command list as a `StartsWith` string check: commands containing shell separators, substitutions, wrappers, or indirect execution can bypass simple prefix matching. Prefer validated executable/argument arrays, an enforced sandbox, and OS-level permissions. Allowlisting textual commands alone is not a security boundary.
 
 The architectural principle is stable:
 
@@ -1039,7 +1035,7 @@ The architectural principle is stable:
 
 ---
 
-## Workflow State
+### Workflow State
 
 An enterprise Harness should treat execution as a stateful workflow.
 
@@ -1096,27 +1092,23 @@ Implementing
 
 The workflow should not jump directly from:
 
-```text
-BuildFailed
-```
+`BuildFailed`
 
 to:
 
-```text
-PullRequestCreated
-```
+`PullRequestCreated`
 
 unless the configured policy explicitly allows a non-blocking build failure—which would be unusual for a production engineering workflow.
 
 ---
 
-## Workflow State Record
+### Workflow State Record
 
 A workflow record might conceptually resemble:
 
 ```json
 {
-  "workflowId": "HB-2026-00491",
+  "workflowId": "ACD-2026-0137",
   "goal": "Implement corporate fleet booking",
   "repository": "alpha-car-detailing",
   "status": "Validating",
@@ -1148,9 +1140,9 @@ Persistent state allows the Harness to answer:
 
 ---
 
-# Architecture Discussion
+## Architecture Discussion
 
-## The Enterprise Harness as a Controlled Pipeline
+### The Enterprise Harness as a Controlled Pipeline
 
 At its highest level, the Harness can be viewed as a controlled engineering pipeline.
 
@@ -1205,7 +1197,7 @@ The Harness compensates by surrounding probabilistic reasoning with deterministi
 
 ---
 
-## The Control Plane
+### The Control Plane
 
 The Harness control plane owns workflow authority.
 
@@ -1253,7 +1245,7 @@ The Developer Agent should not make these decisions simply because it generated 
 
 ---
 
-## The Execution Plane
+### The Execution Plane
 
 The execution plane performs controlled work.
 
@@ -1287,7 +1279,7 @@ The Harness therefore enforces boundaries around execution.
 
 ---
 
-## Repository Intelligence Integration
+### Repository Intelligence Integration
 
 Repository Intelligence should enter the workflow deliberately.
 
@@ -1326,7 +1318,7 @@ Repository Intelligence should therefore be assembled according to explicit prec
 
 ---
 
-## Role-specific Context
+### Role-specific Context
 
 Not every role needs identical context.
 
@@ -1371,7 +1363,7 @@ Context should follow the same principle as permissions:
 
 ---
 
-## Deterministic Validation Gates
+### Deterministic Validation Gates
 
 The deterministic gate pipeline is one of the central architectural boundaries in the Harness.
 
@@ -1414,15 +1406,13 @@ Conceptually:
 
 The important result is not the agent statement:
 
-```text
-I ran the build and it looks good.
-```
+> I ran the build and it looks good.
 
 It is the evidence produced by the controlled gate execution.
 
 ---
 
-## Gate Independence
+### Gate Independence
 
 The implementation agent must not control the authority that validates its implementation.
 
@@ -1462,7 +1452,17 @@ This distinction prevents the agent from selectively running only convenient tes
 
 ---
 
-## Gate Definitions as Governed Assets
+### Bind Validation Evidence to an Exact Source Revision
+
+Independent gates are only authoritative for the files they actually evaluated. A workflow must therefore identify the repository commit or content digest that entered validation and ensure the published artifact corresponds to the same change set. If the Developer, a Hook, or another process modifies code after gates complete, the prior results no longer prove that the new content passed.
+
+A robust Harness should record the source revision, gate profile and version, and relevant toolchain versions in the evidence bundle. Before the Output Manager publishes or marks a pull request ready, it should compare the current candidate to the validated revision. If the source changed, the Harness must rerun the applicable checks rather than reuse stale evidence. The Developer-supplied changed-file manifest should likewise be verified against a Harness-computed Git diff.
+
+This closes a subtle but important time-of-check/time-of-use gap: **a passing result belongs to a particular artifact, not to the Agent's verbal claim that work is finished.**
+
+---
+
+### Gate Definitions as Governed Assets
 
 Gate definitions themselves are part of the Harness control surface.
 
@@ -1517,7 +1517,7 @@ Changes to gate definitions should be treated as Harness or platform changes, re
 
 ---
 
-## Gate Pipeline Architecture
+### Gate Pipeline Architecture
 
 Gates can be executed in sequence or, where dependencies permit, in parallel.
 
@@ -1574,7 +1574,7 @@ The appropriate model depends on:
 
 ---
 
-## Build Gate
+### Build Gate
 
 The Build Gate verifies that the implementation can be compiled using the repository's approved build process.
 
@@ -1600,7 +1600,7 @@ The agent should not reinterpret a compilation error as acceptable because it be
 
 ---
 
-## Test Gate
+### Test Gate
 
 The Test Gate validates required automated tests.
 
@@ -1632,7 +1632,7 @@ The Harness—not the Developer Agent—selects the applicable policy.
 
 ---
 
-## Static Analysis Gate
+### Static Analysis Gate
 
 Static analysis identifies objective code-quality or correctness violations according to configured tooling.
 
@@ -1654,7 +1654,7 @@ It should not silently weaken the analyzer configuration to make the findings di
 
 ---
 
-## Architecture Gate
+### Architecture Gate
 
 Architecture rules are particularly valuable in AI-assisted development because an AI Agent can produce code that works functionally while violating intended structural boundaries.
 
@@ -1698,7 +1698,7 @@ The architecture may still be wrong.
 
 ---
 
-## Security Gate
+### Security Gate
 
 A Security Gate evaluates machine-checkable security conditions.
 
@@ -1716,9 +1716,7 @@ Security evaluation can also contain qualitative reasoning, but machine-verifiab
 
 For example:
 
-```text
-Secret detected in modified file
-```
+`Secret detected in modified file`
 
 is not a subjective review comment.
 
@@ -1726,7 +1724,7 @@ It should be a blocking condition.
 
 ---
 
-## API and Event Contract Gate
+### API and Event Contract Gate
 
 Enterprise applications frequently expose contracts consumed by systems outside the repository.
 
@@ -1745,9 +1743,7 @@ For Alpha Car Detailing, the Contract Gate may validate:
 
 For the corporate fleet booking scenario:
 
-```text
-FleetBookingCreated
-```
+`FleetBookingCreated`
 
 might be consumed by:
 
@@ -1762,11 +1758,11 @@ Contract validation provides an independent boundary against that risk.
 
 ---
 
-## Validation Versus Evaluation
+### Validation Versus Evaluation
 
 Validation and evaluation should be deliberately separated.
 
-### Validation asks
+#### Validation asks
 
 > Did objective required conditions pass?
 
@@ -1778,7 +1774,7 @@ Examples:
 * Did the security scan pass?
 * Is the event schema valid?
 
-### Evaluation asks
+#### Evaluation asks
 
 > How good is the resulting implementation?
 
@@ -1820,7 +1816,7 @@ A successful build does not prove that the architecture is maintainable.
 
 ---
 
-## Ordering Validation and Evaluation
+### Ordering Validation and Evaluation
 
 The preferred default sequence is usually:
 
@@ -1846,7 +1842,7 @@ The critical principle is that pass/fail semantics remain explicit.
 
 ---
 
-## Hooks and Automated Guardrails
+### Hooks and Automated Guardrails
 
 Hooks allow the Harness to execute controlled behavior around important workflow events.
 
@@ -1892,13 +1888,13 @@ Hooks can implement or trigger guardrails such as:
 
 ---
 
-## Pre-execution Hooks
+### Pre-execution Hooks
 
 A pre-execution hook runs before an action.
 
 Examples include:
 
-### Before Agent Start
+#### Before Agent Start
 
 Validate that:
 
@@ -1909,7 +1905,7 @@ Validate that:
 * the workspace is isolated;
 * the workflow has not been cancelled.
 
-### Before Tool Execution
+#### Before Tool Execution
 
 Validate that:
 
@@ -1918,7 +1914,7 @@ Validate that:
 * required approval exists;
 * environment access is authorized.
 
-### Before File Modification
+#### Before File Modification
 
 Validate that:
 
@@ -1946,7 +1942,7 @@ The hook protects the control system from the implementation agent.
 
 ---
 
-## Post-execution Hooks
+### Post-execution Hooks
 
 Post-execution hooks run after an action.
 
@@ -1980,7 +1976,7 @@ This allows the Harness to dynamically determine downstream validation requireme
 
 ---
 
-## Hooks Are Not the Workflow
+### Hooks Are Not the Workflow
 
 Hooks are useful precisely because they are small enforcement points.
 
@@ -2010,7 +2006,7 @@ The preferred rule is:
 
 ---
 
-## Automated Guardrails
+### Automated Guardrails
 
 A guardrail is a control that constrains what the AI-assisted workflow may do.
 
@@ -2049,7 +2045,7 @@ AI simply increases the importance of making the controls explicit.
 
 ---
 
-## Retry Architecture
+### Retry Architecture
 
 AI Agents are particularly useful for responding to validation failures.
 
@@ -2074,9 +2070,7 @@ The repair prompt should contain evidence rather than a vague statement.
 
 Weak:
 
-```text
-The tests failed. Try again.
-```
+> The tests failed. Try again.
 
 Stronger:
 
@@ -2106,7 +2100,7 @@ Evidence-based retry improves the probability that the next attempt addresses th
 
 ---
 
-## Unlimited Retries Are Not Resilience
+### Unlimited Retries Are Not Resilience
 
 An autonomous loop such as:
 
@@ -2158,7 +2152,7 @@ Others indicate that execution should stop.
 
 ---
 
-## Failure Classification
+### Failure Classification
 
 A mature Harness distinguishes failure categories.
 
@@ -2179,7 +2173,7 @@ Failure classification prevents every problem from becoming another implementati
 
 ---
 
-## Human Approval Gates
+### Human Approval Gates
 
 Human approval is a first-class Harness component.
 
@@ -2187,9 +2181,7 @@ It should not be implemented as an informal message after everything else.
 
 The workflow should explicitly enter a state such as:
 
-```text
-AwaitingHumanApproval
-```
+`AwaitingHumanApproval`
 
 The approval record should include the evidence necessary to make the decision.
 
@@ -2241,13 +2233,11 @@ Request Changes
 
 This is substantially stronger than asking:
 
-```text
-Does this look okay?
-```
+> Does this look okay?
 
 ---
 
-## Risk-based Approval
+### Risk-based Approval
 
 Not every Harness workflow needs identical human approval.
 
@@ -2272,7 +2262,7 @@ The objective is appropriate authority at meaningful risk boundaries.
 
 ---
 
-## Logging and Audit Trails
+### Logging and Audit Trails
 
 Logging explains system behavior.
 
@@ -2322,7 +2312,7 @@ Without that history, enterprise AI automation becomes difficult to diagnose and
 
 ---
 
-## Metrics and Telemetry
+### Metrics and Telemetry
 
 Audit evidence answers:
 
@@ -2366,7 +2356,7 @@ Harness metrics should therefore be connected to downstream engineering outcomes
 
 ---
 
-## Security and Permissions
+### Security and Permissions
 
 Harness security should follow least privilege.
 
@@ -2390,7 +2380,7 @@ The important feature is separation of authority.
 
 ---
 
-## Credential Isolation
+### Credential Isolation
 
 Agents should not automatically inherit every credential available to the host machine.
 
@@ -2418,7 +2408,7 @@ over broad persistent secrets.
 
 ---
 
-## Workspace Isolation
+### Workspace Isolation
 
 A Harness should consider the repository workspace an execution boundary.
 
@@ -2457,19 +2447,15 @@ Isolation also improves reproducibility.
 
 ---
 
-## Protecting the Harness from the Agent
+### Protecting the Harness from the Agent
 
 One of the most important enterprise security boundaries is the distinction between:
 
-```text
-Target Repository Assets
-```
+`Target Repository Assets`
 
 and:
 
-```text
-Harness Control Assets
-```
+`Harness Control Assets`
 
 An implementation agent may have permission to modify:
 
@@ -2494,7 +2480,7 @@ Otherwise an agent facing a failed gate may be technically capable of weakening 
 
 ---
 
-## Local Deployment Model
+### Local Deployment Model
 
 A local Harness can be useful for:
 
@@ -2542,7 +2528,7 @@ instead of one large script containing every responsibility.
 
 ---
 
-## Enterprise Deployment Model
+### Enterprise Deployment Model
 
 At enterprise scale, the Harness may become a distributed platform.
 
@@ -2591,7 +2577,7 @@ The enterprise architecture simply makes those responsibilities explicit at grea
 
 ---
 
-## A Layered Harness Model
+### A Layered Harness Model
 
 A useful way to reason about the complete architecture is through layers.
 
@@ -2623,15 +2609,11 @@ A failure in one layer should not be silently hidden by another.
 
 For example:
 
-```text
-Security Gate Failed
-```
+`Security Gate Failed`
 
 must not become:
 
-```text
-Evaluator says implementation quality is excellent
-```
+`Evaluator says implementation quality is excellent`
 
 and then continue to publishing.
 
@@ -2645,65 +2627,87 @@ The control layer must understand that the security gate is blocking.
 
 ---
 
-## Architectural Invariants
+### Architectural Invariants
 
 Before implementing the Hands-on Example, it is useful to summarize the invariants that should remain true regardless of Harness technology.
 
-### Invariant 1: The Harness Controls Execution
+#### Invariant 1: The Harness Controls Execution
 
 Agents may propose and perform work.
 
 They do not own workflow authority.
 
-### Invariant 2: Repository Intelligence Is Explicitly Resolved
+#### Invariant 2: Repository Intelligence Is Explicitly Resolved
 
 Agents should receive governed context rather than relying entirely on rediscovery or conversational memory.
 
-### Invariant 3: Role Responsibilities Are Bounded
+#### Invariant 3: Role Responsibilities Are Bounded
 
 Planning, implementation, review, validation, evaluation, and approval should remain distinguishable responsibilities.
 
-### Invariant 4: Objective Conditions Use Deterministic Gates
+#### Invariant 4: Objective Conditions Use Deterministic Gates
 
 Where a requirement can be tested deterministically, the Harness should prefer deterministic evidence.
 
-### Invariant 5: Implementation Agents Do Not Certify Their Own Work
+#### Invariant 5: Implementation Agents Do Not Certify Their Own Work
 
 Developer feedback may guide iteration, but authoritative validation is independently executed.
 
-### Invariant 6: Validation and Evaluation Remain Separate
+#### Invariant 6: Validation and Evaluation Remain Separate
 
 Aesthetic or qualitative judgment cannot override objective gate failure.
 
-### Invariant 7: Retries Are Bounded
+#### Invariant 7: Retries Are Bounded
 
 The Harness must know when to stop autonomous repair and escalate.
 
-### Invariant 8: Hooks Remain Guardrails
+#### Invariant 8: Hooks Remain Guardrails
 
 Hooks should not become a hidden replacement for visible workflow orchestration.
 
-### Invariant 9: Permissions Follow Least Privilege
+#### Invariant 9: Permissions Follow Least Privilege
 
 An agent receives only the authority required for its current role.
 
-### Invariant 10: Harness Controls Are Protected
+#### Invariant 10: Harness Controls Are Protected
 
 Implementation agents must not silently weaken gates, policies, approval rules, or security controls.
 
-### Invariant 11: State and Evidence Are Persistent
+#### Invariant 11: State and Evidence Are Persistent
 
 The organization must be able to determine what happened and why.
 
-### Invariant 12: Humans Retain Authority Over Defined High-risk Actions
+#### Invariant 12: Humans Retain Authority Over Defined High-risk Actions
 
 Enterprise adoption should increase automation without eliminating accountable ownership.
 
 These invariants form the foundation for the practical Alpha Car Detailing Harness implementation developed in the next section.
 
-**Chapter 13 status: In progress — next section: Hands-on Example**
+## Professional Diagrams
 
-# Hands-on Example
+The architecture diagrams in the preceding discussion describe the control plane, execution plane, gate pipeline, and workflow progression. The following trust-boundary view emphasizes the security relationships that must survive changes in model provider or deployment environment.
+
+```mermaid
+flowchart LR
+    U[Engineer / Work Item] --> CP[Harness Control Plane]
+    CP -->|Scoped request| AG[Isolated Agent Runner]
+    AG -->|Allowed tool calls| TG[Tool / Network Policy]
+    TG --> WS[Restricted Workspace]
+    WS -->|Candidate change| GT[Independent Gate Runner]
+    GT -->|Source-bound gate evidence| CP
+    CP -->|Review package| AP[Authenticated Approver]
+    AP -->|Authorized decision| CP
+    CP -->|Approved output| PUB[Output Manager]
+    PUB --> PR[Pull Request]
+    CP --> ST[(State + Audit)]
+
+```
+
+The agent runner has no direct write path to control-plane policy, and the Gate Runner should evaluate the candidate without modifying it. The diagram is conceptual: in a production deployment, enforce the isolation with filesystem, credential, runner, and source-control protections rather than relying only on the model's instructions. The gate evidence must be bound to the exact source revision that the Output Manager publishes.
+
+---
+
+## Hands-on Example
 
 The Alpha Car Detailing team now needs to turn the architectural principles from the previous sections into an executable Harness workflow.
 
@@ -2738,11 +2742,11 @@ Human Approval
 Output Manager
 ```
 
-The example is intentionally small enough to understand, but the structure is suitable for a larger enterprise implementation.
+The example is intentionally small enough to understand, but the structure is suitable for a larger enterprise implementation. Paths, solution names, gate scripts, output records, and timestamps below are illustrative; they are not evidence that a working Harness or the fleet booking feature has been executed. Production code requires repository-specific implementation, testing, and security review.
 
 ---
 
-## Scenario
+### Scenario
 
 A corporate customer wants to create a fleet booking.
 
@@ -2759,8 +2763,8 @@ The feature must enforce the following conditions:
 * the station must support the requested service;
 * station capacity must be available;
 * all requested vehicles must belong to the corporate account;
-* the booking must be persisted;
-* a `FleetBookingCreated` event must be generated;
+* the booking must be persisted atomically with the durable outbox record for `FleetBookingCreated`, using the repository's established transactional-outbox pattern;
+* the event must be published asynchronously from the outbox with idempotent consumption;
 * the API contract must remain compatible;
 * existing architectural boundaries must remain intact.
 
@@ -2768,7 +2772,7 @@ The Harness receives this as an engineering goal rather than as an unrestricted 
 
 ---
 
-## Suggested Harness Repository Structure
+### Suggested Harness Repository Structure
 
 A practical repository structure might look like this:
 
@@ -2830,7 +2834,7 @@ The important point is that workflow, roles, gates, hooks, and evidence are visi
 
 ---
 
-## Step 1 — Define the Workflow
+### Step 1 — Define the Workflow
 
 The workflow definition should describe control flow without hiding the entire implementation inside one script.
 
@@ -2878,7 +2882,7 @@ That distinction matters.
 
 ---
 
-## Step 2 — Define the Goal
+### Step 2 — Define the Goal
 
 The Harness should capture the engineering goal explicitly.
 
@@ -2898,7 +2902,8 @@ goal:
     - station capacity must be available
     - all vehicles must belong to the corporate account
     - booking must be persisted
-    - FleetBookingCreated event must be generated
+    - FleetBookingCreated outbox record must be persisted atomically with the booking
+    - event delivery must use the existing idempotent dispatch/consumer conventions
     - required tests must pass
     - architectural rules must remain satisfied
 ```
@@ -2909,7 +2914,7 @@ The Lead Agent can refine implementation tasks, but should not silently redefine
 
 ---
 
-## Step 3 — Resolve Repository Intelligence
+### Step 3 — Resolve Repository Intelligence
 
 Before implementation begins, the Harness assembles the relevant Repository Intelligence.
 
@@ -2963,7 +2968,7 @@ For example:
       "skills/add-integration-event.md"
     ],
     "steeringNotes": [
-      "Search/steering-note.md"
+      "steering/corporate-fleet-booking.md"
     ],
     "knowledgeSources": [
       "docs/api/booking-api.md",
@@ -2977,7 +2982,7 @@ This becomes part of the workflow evidence.
 
 ---
 
-## Step 4 — Invoke the Lead Agent
+### Step 4 — Invoke the Lead Agent
 
 The Harness now invokes the Lead Agent.
 
@@ -3056,7 +3061,7 @@ Implementing
 
 ---
 
-## Step 5 — Prepare the Developer Agent Context
+### Step 5 — Prepare the Developer Agent Context
 
 The Developer Agent receives only the context required for implementation.
 
@@ -3082,8 +3087,8 @@ KNOWLEDGE SOURCES
 [relevant contracts and ADRs]
 
 ALLOWED WRITE PATHS
-src/Booking.*
-tests/Booking.*
+src/Booking.*/**
+tests/Booking.*/**
 
 PROTECTED PATHS
 harness/
@@ -3114,7 +3119,7 @@ It cannot redefine the controls that will validate the feature.
 
 ---
 
-## Step 6 — Run a Pre-agent Hook
+### Step 6 — Run a Pre-agent Hook
 
 Before the Developer Agent begins, the Harness can execute a pre-agent hook.
 
@@ -3151,13 +3156,11 @@ It does not perform the corporate fleet booking workflow itself.
 
 ---
 
-## Step 7 — Control Tool Execution
+### Step 7 — Control Tool Execution
 
 Assume the Developer Agent requests:
 
-```text
-dotnet test tests/Booking.Application.Tests
-```
+`dotnet test tests/Booking.Application.Tests`
 
 The Tool Gateway checks the command against policy.
 
@@ -3187,9 +3190,7 @@ Execution proceeds.
 
 Later, suppose the agent requests:
 
-```text
-git push --force origin feature/corporate-fleet-booking
-```
+`git push --force origin feature/corporate-fleet-booking`
 
 The Harness blocks it.
 
@@ -3209,13 +3210,11 @@ The agent does not receive greater authority merely because it can formulate the
 
 ---
 
-## Step 8 — Protect Harness Files
+### Step 8 — Protect Harness Files
 
 Suppose the Test Gate eventually fails and the Developer Agent attempts to modify:
 
-```text
-harness/gates/tests.ps1
-```
+`harness/gates/tests.ps1`
 
 A pre-write hook should stop the action.
 
@@ -3223,30 +3222,47 @@ Conceptually:
 
 ```powershell
 param(
-    [string]$FilePath
+    [Parameter(Mandatory)] [string]$RepositoryRoot,
+    [Parameter(Mandatory)] [string]$FilePath
 )
 
-$protectedPaths = @(
-    "harness/gates/",
-    "harness/policies/",
-    "harness/config/"
-)
+$root = [IO.Path]::GetFullPath($RepositoryRoot)
+$target = [IO.Path]::GetFullPath(
+    [IO.Path]::Combine($root, $FilePath))
+$comparison = if ($IsWindows) {
+    [StringComparison]::OrdinalIgnoreCase
+} else {
+    [StringComparison]::Ordinal
+}
 
-foreach ($protected in $protectedPaths) {
+$rootWithSeparator = $root.TrimEnd(
+    [IO.Path]::DirectorySeparatorChar,
+    [IO.Path]::AltDirectorySeparatorChar
+) + [IO.Path]::DirectorySeparatorChar
 
-    if ($FilePath.Replace("\", "/").StartsWith($protected)) {
-        throw "Modification blocked. Protected Harness path: $FilePath"
+if (-not $target.StartsWith($rootWithSeparator, $comparison)) {
+    throw "Write denied outside repository: $FilePath"
+}
+
+foreach ($protected in @("harness/gates", "harness/policies", "harness/config")) {
+    $protectedRoot = [IO.Path]::GetFullPath(
+        [IO.Path]::Combine($root, $protected.Replace('/',
+            [IO.Path]::DirectorySeparatorChar)))
+    $protectedPrefix = $protectedRoot + [IO.Path]::DirectorySeparatorChar
+    if ($target.Equals($protectedRoot, $comparison) -or
+        $target.StartsWith($protectedPrefix, $comparison)) {
+        throw "Write denied to protected Harness path: $FilePath"
     }
 }
 ```
 
-The principle is more important than the specific PowerShell.
+This illustrative example requires PowerShell 7 or later; it normalizes paths and rejects traversal outside the repository. It remains illustrative: production enforcement must also defend against symbolic links, path races, indirect writes through other tools, and child processes. Use filesystem permissions or sandbox isolation as the primary boundary; a pre-write hook is defense in depth, not a substitute for operating-system enforcement.
 
 The feature implementation agent cannot silently redefine validation.
 
 ---
 
-## Step 9 — Developer Agent Completes the Change
+### Step 9 — Developer Agent Completes the Change
 
 Assume the Developer Agent modifies:
 
@@ -3261,7 +3277,7 @@ src/Booking.Infrastructure/Repositories/FleetBookingRepository.cs
 tests/Booking.Application.Tests/FleetBookingServiceTests.cs
 ```
 
-The Developer Agent returns:
+The Developer Agent returns an implementation summary (which is not evidence that the outbox dispatcher has delivered the event):
 
 ```yaml
 implementationSummary:
@@ -3285,7 +3301,7 @@ changedFiles:
 knownIssues: []
 ```
 
-This output is useful.
+This output is useful, but the Harness should independently calculate the changed-file list from the pinned repository base revision, reject unexpected or protected modifications, and bind subsequent gate evidence to a candidate commit or content digest.
 
 It is not validation evidence.
 
@@ -3301,7 +3317,7 @@ Validating
 
 ---
 
-## Step 10 — Run the Deterministic Gate Pipeline
+### Step 10 — Run the Deterministic Gate Pipeline
 
 The Harness invokes the authoritative validation pipeline.
 
@@ -3349,15 +3365,14 @@ In an enterprise implementation, the gate runner would normally also capture:
 
 ---
 
-## Step 11 — Build Gate
+### Step 11 — Build Gate
 
 The build gate might contain:
 
 ```powershell
 dotnet build `
     AlphaCarDetailing.sln `
-    --configuration Release `
-    --no-restore
+    --configuration Release
 
 if ($LASTEXITCODE -ne 0) {
     exit 1
@@ -3391,7 +3406,7 @@ The gate runner does.
 
 ---
 
-## Step 12 — Test Gate
+### Step 12 — Test Gate
 
 The test gate might execute:
 
@@ -3439,7 +3454,7 @@ The required Test Gate failed.
 
 ---
 
-## Step 13 — Feed Failure Evidence Back to the Developer Agent
+### Step 13 — Feed Failure Evidence Back to the Developer Agent
 
 The Harness checks retry policy.
 
@@ -3484,23 +3499,19 @@ Repair the implementation and return a changed-file summary.
 
 This is a significantly stronger retry mechanism than:
 
-```text
-Something failed. Fix it.
-```
+> Something failed. Fix it.
 
 The failure evidence constrains the next reasoning cycle.
 
 ---
 
-## Step 14 — Developer Repair Attempt
+### Step 14 — Developer Repair Attempt
 
 The Developer Agent discovers that the application service verifies that the account exists but does not enforce the `Active` status.
 
 It modifies:
 
-```text
-FleetBookingService.cs
-```
+`FleetBookingService.cs`
 
 to include the required validation.
 
@@ -3520,7 +3531,7 @@ The Developer Agent does not get to mark only the failed test as passed.
 
 ---
 
-## Step 15 — Architecture Gate
+### Step 15 — Architecture Gate
 
 Assume the build and tests now pass.
 
@@ -3563,7 +3574,7 @@ This demonstrates why build and test gates alone are insufficient.
 
 ---
 
-## Step 16 — Static Analysis Gate
+### Step 16 — Static Analysis Gate
 
 The static-analysis gate may execute the repository's approved tooling.
 
@@ -3586,7 +3597,7 @@ The objective is to make required code-quality rules executable and independent.
 
 ---
 
-## Step 17 — Security Gate
+### Step 17 — Security Gate
 
 For this feature, the Security Gate might check:
 
@@ -3599,9 +3610,7 @@ static security findings
 
 Suppose a generated test accidentally contains:
 
-```text
-ApiKey = "actual-production-key"
-```
+`ApiKey = "actual-production-key"`
 
 Secret scanning should fail deterministically.
 
@@ -3611,13 +3620,11 @@ An evaluator's statement that the code is otherwise high quality must not overri
 
 ---
 
-## Step 18 — Contract Gate
+### Step 18 — Contract Gate
 
 The corporate fleet booking feature introduces:
 
-```text
-FleetBookingCreated
-```
+`FleetBookingCreated`
 
 The Harness should validate the event against the approved schema.
 
@@ -3651,7 +3658,7 @@ The Contract Gate should provide objective compatibility evidence where tooling 
 
 ---
 
-## Step 19 — Build the Gate Evidence Bundle
+### Step 19 — Build the Gate Evidence Bundle
 
 After successful validation, the Harness creates an evidence bundle.
 
@@ -3694,7 +3701,7 @@ It should not be recreated from memory.
 
 ---
 
-## Step 20 — Reviewer Agent
+### Step 20 — Reviewer Agent
 
 The Reviewer Agent now receives:
 
@@ -3737,7 +3744,7 @@ The Harness can decide whether these findings require another Developer iteratio
 
 ---
 
-## Step 21 — Validator Agent
+### Step 21 — Validator Agent
 
 The Validator Agent focuses on whether the implemented result satisfies the requested outcome.
 
@@ -3790,7 +3797,7 @@ The Validator ensures the overall requested capability has not been incompletely
 
 ---
 
-## Step 22 — Evaluator Agent
+### Step 22 — Evaluator Agent
 
 The Evaluator applies a quality rubric.
 
@@ -3845,7 +3852,7 @@ It does not replace deterministic validation.
 
 ---
 
-## Step 23 — Human Approval
+### Step 23 — Human Approval
 
 The Harness now creates an approval package.
 
@@ -3891,9 +3898,7 @@ Request Changes
 
 Suppose the engineering approver chooses:
 
-```text
-Approve
-```
+`Approve`
 
 The Harness records:
 
@@ -3911,7 +3916,7 @@ The identity should be captured by the enterprise authentication mechanism rathe
 
 ---
 
-## Step 24 — Create the Pull Request
+### Step 24 — Create the Pull Request
 
 Only after the required approval does the Output Manager receive publishing authority.
 
@@ -3967,7 +3972,7 @@ It can strengthen them.
 
 ---
 
-# End-to-End Workflow
+### End-to-End Workflow
 
 The complete Hands-on Example can now be summarized as:
 
@@ -4011,43 +4016,31 @@ The architecture provides clear answers to critical questions.
 
 Who implements?
 
-```text
-Developer Agent
-```
+`Developer Agent`
 
 Who decides whether the build passed?
 
-```text
-Build Gate
-```
+`Build Gate`
 
 Who decides whether tests passed?
 
-```text
-Test Gate
-```
+`Test Gate`
 
 Who evaluates maintainability?
 
-```text
-Reviewer and Evaluator
-```
+`Reviewer and Evaluator`
 
 Who approves higher-risk publishing?
 
-```text
-Human Approver
-```
+`Human Approver`
 
 Who coordinates all of them?
 
-```text
-Harness
-```
+`Harness`
 
 ---
 
-## Example Workflow State History
+### Example Workflow State History
 
 A mature Harness should be able to reconstruct the execution as a state history.
 
@@ -4096,7 +4089,7 @@ If retries become excessive, the team can identify underlying Repository Intelli
 
 ---
 
-## Suggested Evidence Directory
+### Suggested Evidence Directory
 
 One implementation might store local evidence as:
 
@@ -4129,7 +4122,7 @@ The architectural requirement is traceability, not a particular directory.
 
 ---
 
-## Protecting Tests from Opportunistic Modification
+### Protecting Tests from Opportunistic Modification
 
 One subtle Harness decision concerns test modification.
 
@@ -4137,9 +4130,7 @@ Developers—including AI Developers—sometimes legitimately need to change tes
 
 Therefore, a blanket rule such as:
 
-```text
-AI may never modify tests
-```
+`AI may never modify tests`
 
 is usually too restrictive.
 
@@ -4164,21 +4155,17 @@ This is a stronger model than relying on the agent to decide whether weakening a
 
 ---
 
-## Protecting Contract Definitions
+### Protecting Contract Definitions
 
 The same principle applies to API and event contracts.
 
 Suppose the generated implementation fails contract validation because the Developer Agent renamed:
 
-```text
-corporateAccountId
-```
+`corporateAccountId`
 
 to:
 
-```text
-accountId
-```
+`accountId`
 
 The agent might attempt to modify the schema to match its implementation.
 
@@ -4207,15 +4194,13 @@ Changing the contract is a separate engineering decision.
 
 ---
 
-## Goal-oriented Execution
+### Goal-oriented Execution
 
 The Hands-on Example also demonstrates why a Harness benefits from an explicit goal.
 
 Instead of telling the agent only:
 
-```text
-Create the booking endpoint.
-```
+> Create the booking endpoint.
 
 the workflow defines success as a set of observable outcomes.
 
@@ -4250,7 +4235,7 @@ This remains true even if the Developer Agent needs several implementation attem
 
 ---
 
-## What the Developer Agent Is Allowed to Claim
+### What the Developer Agent Is Allowed to Claim
 
 The Developer Agent may report:
 
@@ -4288,7 +4273,7 @@ This is one of the most important practical distinctions in Harness Engineering.
 
 ---
 
-## A Minimal Local Version
+### A Minimal Local Version
 
 Teams do not need a distributed platform to begin applying these principles.
 
@@ -4330,6 +4315,13 @@ if ($LASTEXITCODE -ne 0) {
     exit 1
 }
 
+# This must query an authenticated approval mechanism, not model text.
+& ./request-approval.ps1
+if ($LASTEXITCODE -ne 0) {
+    Write-Error "Required human approval was not granted."
+    exit 1
+}
+
 & ./publish.ps1
 ```
 
@@ -4339,17 +4331,15 @@ In production, the scripts should exchange structured state rather than relying 
 
 Nevertheless, even this model creates a better architectural foundation than a single script that asks an AI Agent to:
 
-```text
-implement, test, review, validate, approve, and push the feature
-```
+`implement, test, review, validate, approve, and push the feature`
 
 ---
 
-## Evolving Toward an Enterprise Harness
+### Evolving Toward an Enterprise Harness
 
 The local Alpha Car Detailing Harness can evolve incrementally.
 
-### Stage 1 — Scripted Harness
+#### Stage 1 — Scripted Harness
 
 ```text
 PowerShell
@@ -4359,7 +4349,7 @@ Local deterministic gates
 Manual approval
 ```
 
-### Stage 2 — Structured Harness
+#### Stage 2 — Structured Harness
 
 Add:
 
@@ -4372,7 +4362,7 @@ retry control
 protected paths
 ```
 
-### Stage 3 — Team Harness
+#### Stage 3 — Team Harness
 
 Add:
 
@@ -4385,7 +4375,7 @@ approval workflows
 central audit
 ```
 
-### Stage 4 — Enterprise Harness
+#### Stage 4 — Enterprise Harness
 
 Add:
 
@@ -4405,7 +4395,25 @@ The architecture grows in sophistication, but the core principles remain stable.
 
 ---
 
-## Hands-on Example Takeaway
+### Transactional Integrity and Idempotency in Fleet Booking
+
+The booking operation introduces a business invariant that should shape both the Developer plan and the Harness acceptance tests: capacity must not be over-reserved when several fleet requests arrive concurrently. A read-then-write check by itself is insufficient. The implementation should use the repository's approved concurrency-control mechanism (for example, an atomic reservation, appropriate transaction isolation, or optimistic concurrency with retry) and include a concurrent-booking test.
+
+The `FleetBookingCreated` event also requires a reliability boundary. The service should persist the booking and its **transactional outbox record** in the same committed transaction. An independent dispatcher publishes the event afterward, and consumers should use an idempotency mechanism to handle duplicate delivery. An application-level event object created in memory is not evidence that delivery is durable.
+
+For this workflow, the Harness can require tests or contract checks proving that:
+
+- an invalid or unauthorized booking produces neither a reservation nor an outbox event;
+- a successful transaction persists both the booking and the outbox record;
+- a failed transaction leaves neither committed;
+- concurrent requests cannot allocate more capacity than is available;
+- repeated delivery or repeated commands do not create duplicate business effects under the approved idempotency contract.
+
+These checks are examples of **business acceptance evidence**. The Harness coordinates the validation; it does not implement the booking transaction or event dispatcher itself.
+
+---
+
+### Hands-on Example Takeaway
 
 The corporate fleet booking workflow illustrates the central idea of Harness Architecture:
 
@@ -4437,9 +4445,7 @@ But the Harness determines:
 
 That separation transforms AI-assisted coding from a conversational development technique into a controlled engineering workflow.
 
-**Chapter 13 status: In progress — next section: Claude Example**
-
-# Claude Example
+## Claude Example
 
 Alpha Car Detailing uses Claude Code as its primary AI coding platform, but the Harness architecture must not become dependent on Claude-specific behavior.
 
@@ -4471,7 +4477,7 @@ However, deterministic validation, workflow authority, approval policy, retry li
 
 ---
 
-## Claude Code Inside the Harness
+### Claude Code Inside the Harness
 
 A weak integration might look like this:
 
@@ -4521,7 +4527,7 @@ The Harness retains control where authority and objective evidence matter.
 
 ---
 
-## Repository Instructions with `CLAUDE.md`
+### Repository Instructions with `CLAUDE.md`
 
 For a Claude-first repository, `CLAUDE.md` is a natural location for persistent Claude-facing engineering Instructions.
 
@@ -4581,7 +4587,7 @@ Controls execution
 
 ---
 
-## Claude Lead Agent
+### Claude Lead Agent
 
 The Harness begins by invoking Claude in the Lead role.
 
@@ -4668,7 +4674,7 @@ The Harness controls the transition.
 
 ---
 
-## Claude Developer Agent
+### Claude Developer Agent
 
 The Developer invocation contains stronger execution authority but also stronger restrictions.
 
@@ -4730,7 +4736,7 @@ The Harness still defines the authority.
 
 ---
 
-## Claude May Run Development-time Tests
+### Claude May Run Development-time Tests
 
 Allowing Claude to execute tests while developing is useful.
 
@@ -4762,7 +4768,7 @@ They do not replace the Harness-controlled Test Gate.
 
 ---
 
-## Independent Validation After Claude Completes
+### Independent Validation After Claude Completes
 
 Suppose Claude reports:
 
@@ -4814,7 +4820,7 @@ The Harness—not Claude—determines whether the gate pipeline passed.
 
 ---
 
-## Example: Claude Says the Build Is Correct but the Build Gate Fails
+### Example: Claude Says the Build Is Correct but the Build Gate Fails
 
 Assume Claude introduces a constructor change:
 
@@ -4826,7 +4832,7 @@ public FleetBookingService(
     ILogger<FleetBookingService> logger)
 ```
 
-but fails to update the application's dependency registration correctly.
+but fails to update an existing call site after adding the new `stationCapacity` constructor parameter.
 
 Claude may reason that the implementation is complete.
 
@@ -4839,31 +4845,23 @@ dotnet build AlphaCarDetailing.sln --configuration Release
 and receives:
 
 ```text
-error:
-
-Unable to resolve service for type
-IStationCapacityService
-while attempting to activate
-FleetBookingService.
+error CS7036: There is no argument given that corresponds to the
+required parameter 'stationCapacity' of 'FleetBookingService'.
 ```
 
 The authoritative state is:
 
-```text
-Build Gate: FAILED
-```
+`Build Gate: FAILED`
 
 not:
 
-```text
-Claude believes the implementation is complete.
-```
+> Claude believes the implementation is complete.
 
-The Harness now creates a bounded repair attempt.
+The Harness now creates a bounded repair attempt. A missing dependency-injection registration is a different failure: it is ordinarily detected by service-provider validation, an application startup check, or an integration test—not by compilation alone. The Harness should classify the failure based on the gate that actually observed it.
 
 ---
 
-## Evidence-based Claude Repair
+### Evidence-based Claude Repair
 
 The repair invocation should contain the actual deterministic evidence.
 
@@ -4876,13 +4874,12 @@ The authoritative Build Gate failed.
 
 Failure:
 
-Unable to resolve service for type
-IStationCapacityService while attempting to activate
-FleetBookingService.
+CS7036: Existing call site does not supply the required
+`stationCapacity` constructor argument.
 
 Your task:
 
-- inspect the existing dependency-registration pattern;
+- inspect existing constructor call sites and the approved dependency-injection pattern;
 - repair the implementation;
 - preserve architectural boundaries;
 - do not change the Build Gate;
@@ -4900,7 +4897,7 @@ Declaring the gate successful is not.
 
 ---
 
-## Claude and Hooks
+### Claude and Hooks
 
 Claude Code can participate in a Harness that uses hooks around tool execution and other controlled events. The detailed hook surface is platform-specific and can evolve, so enterprise architecture should treat hooks as integration mechanisms rather than make core Harness semantics dependent on one vendor's current configuration syntax. Anthropic documents Claude's broader tool-use capabilities and MCP integration as mechanisms for controlled access to external resources.
 
@@ -4948,7 +4945,7 @@ The policy belongs to the Harness.
 
 ---
 
-## Pre-tool Guardrail Example
+### Pre-tool Guardrail Example
 
 Conceptually, the Harness might maintain:
 
@@ -4984,13 +4981,11 @@ Execution authority
 
 ---
 
-## Pre-write Guardrail Example
+### Pre-write Guardrail Example
 
 Suppose Claude attempts to modify:
 
-```text
-harness/gates/architecture.ps1
-```
+`harness/gates/architecture.ps1`
 
 while fixing an architecture failure.
 
@@ -5029,7 +5024,7 @@ The guardrail exists because the architecture must remain safe even when the age
 
 ---
 
-## Claude Skills
+### Claude Skills
 
 Alpha Car Detailing can expose approved Skills to Claude for recurring engineering workflows.
 
@@ -5073,7 +5068,7 @@ Whether a required condition objectively passed
 
 ---
 
-## Claude Subagents and Harness Roles
+### Claude Subagents and Harness Roles
 
 Claude-based workflows may use separate agent contexts or subagent-style execution for specialized responsibilities.
 
@@ -5124,7 +5119,7 @@ The Harness governs the workflow.
 
 ---
 
-## Claude Reviewer Agent
+### Claude Reviewer Agent
 
 After deterministic gates pass, Claude can be invoked in a Reviewer role.
 
@@ -5186,7 +5181,7 @@ It receives test evidence.
 
 ---
 
-## Reviewer Independence
+### Reviewer Independence
 
 If practical, the Reviewer should operate in a fresh context rather than inherit the Developer Agent's full conversation.
 
@@ -5224,7 +5219,7 @@ This reduces the risk of turning review into continuation of the Developer's rea
 
 ---
 
-## Claude Validator Agent
+### Claude Validator Agent
 
 The Validator has a different concern.
 
@@ -5288,7 +5283,7 @@ The automated tests may simply have missed a scenario.
 
 ---
 
-## Claude Evaluator Agent
+### Claude Evaluator Agent
 
 The Evaluator applies a defined quality rubric.
 
@@ -5332,7 +5327,7 @@ This produces a qualitative signal while preserving the authority hierarchy.
 
 ---
 
-## The Authority Hierarchy
+### The Authority Hierarchy
 
 A Claude-first Harness should make authority explicit.
 
@@ -5390,7 +5385,7 @@ This hierarchy prevents reasoning output from silently overriding governance.
 
 ---
 
-## Claude and MCP
+### Claude and MCP
 
 Claude-based engineering environments can use Model Context Protocol integrations to reach approved tools and information sources. MCP standardizes a way for AI applications to connect with external data and tools, making it useful for controlled Repository Intelligence and enterprise tool access.
 
@@ -5432,7 +5427,7 @@ It is that the Harness determines:
 
 ---
 
-## Read Access Versus Write Access
+### Read Access Versus Write Access
 
 Repository Intelligence often needs broad read access.
 
@@ -5474,7 +5469,7 @@ This maps well to a Claude-first workflow because each Claude invocation can be 
 
 ---
 
-## Claude and Human Approval
+### Claude and Human Approval
 
 Claude should be able to prepare approval evidence.
 
@@ -5519,9 +5514,7 @@ Ready for engineering approval
 
 But the workflow state remains:
 
-```text
-AwaitingHumanApproval
-```
+`AwaitingHumanApproval`
 
 until a recognized approver makes the decision.
 
@@ -5529,7 +5522,7 @@ This distinction protects accountability.
 
 ---
 
-## A Claude-first Local Harness
+### A Claude-first Local Harness
 
 A small team could implement the workflow using PowerShell around Claude Code.
 
@@ -5576,7 +5569,7 @@ The orchestration remains outside Claude.
 
 ---
 
-## Avoiding One Giant Claude Session
+### Avoiding One Giant Claude Session
 
 It can be tempting to keep one Claude session alive for the entire workflow:
 
@@ -5624,27 +5617,21 @@ The contexts and responsibilities remain separate.
 
 ---
 
-## Claude Failure Handling
+### Claude Failure Handling
 
 Claude should receive failure information appropriate to its role.
 
 For a Build Gate failure:
 
-```text
-Return to Developer.
-```
+> Return to Developer.
 
 For an unclear requirement:
 
-```text
-Return to Lead or human.
-```
+> Return to Lead or human.
 
 For a permission violation:
 
-```text
-Stop execution.
-```
+> Stop execution.
 
 For a failed Security Gate:
 
@@ -5664,7 +5651,7 @@ The Harness classifies the failure before choosing which Claude role to invoke n
 
 ---
 
-## Example Claude Workflow
+### Example Claude Workflow
 
 The complete Claude-first corporate fleet booking execution may therefore look like this:
 
@@ -5716,7 +5703,7 @@ Claude still does not control the workflow.
 
 ---
 
-## Claude as Primary Platform, Not Architectural Dependency
+### Claude as Primary Platform, Not Architectural Dependency
 
 Using Claude-first examples does not require Alpha Car Detailing to design its Harness around assumptions that only Claude can satisfy.
 
@@ -5733,9 +5720,7 @@ IApprovalService
 
 rather than:
 
-```text
-CorporateFleetBookingClaudeScriptThatDoesEverything
-```
+`CorporateFleetBookingClaudeScriptThatDoesEverything`
 
 Conceptually:
 
@@ -5783,7 +5768,7 @@ This is the practical meaning of **Claude-first but vendor-neutral**.
 
 ---
 
-## What Claude Should Control
+### What Claude Should Control
 
 Claude should control reasoning-intensive work within its assigned scope.
 
@@ -5804,7 +5789,7 @@ explaining risks
 
 ---
 
-## What the Harness Should Control
+### What the Harness Should Control
 
 The Harness should control:
 
@@ -5825,7 +5810,7 @@ publishing authority
 
 ---
 
-## What Humans Should Control
+### What Humans Should Control
 
 Humans retain authority for defined high-risk decisions such as:
 
@@ -5846,7 +5831,7 @@ The separation of responsibilities should not.
 
 ---
 
-## Claude Example Takeaway
+### Claude Example Takeaway
 
 Claude Code can provide a highly capable reasoning and implementation engine for an enterprise AI Engineering Harness.
 
@@ -5901,9 +5886,7 @@ Claude provides powerful engineering reasoning.
 
 The Harness turns that capability into a controlled enterprise engineering process.
 
-**Chapter 13 status: In progress — next section: GitHub Copilot Comparison**
-
-# GitHub Copilot Comparison
+## GitHub Copilot Comparison
 
 GitHub Copilot can participate in the same Harness Architecture described for Claude, but the integration surface is different.
 
@@ -5927,7 +5910,7 @@ They do not eliminate the need for the Harness.
 
 ---
 
-## Mapping Handbook Concepts to GitHub Copilot
+### Mapping Handbook Concepts to GitHub Copilot
 
 For Alpha Car Detailing, the mapping can look like this:
 
@@ -5950,13 +5933,11 @@ That aligns closely with the terminology established earlier in this handbook.
 
 ---
 
-## Repository Instructions
+### Repository Instructions
 
 For Alpha Car Detailing, persistent repository Instructions might be stored in:
 
-```text
-.github/copilot-instructions.md
-```
+`.github/copilot-instructions.md`
 
 For example:
 
@@ -5993,7 +5974,7 @@ GitHub states that repository custom instructions can provide Copilot with proje
 
 ---
 
-## Path-specific Instructions
+### Path-specific Instructions
 
 Copilot also supports path-specific instructions.
 
@@ -6001,15 +5982,11 @@ For Alpha Car Detailing, this can improve precision.
 
 For example:
 
-```text
-.github/instructions/domain.instructions.md
-```
+`.github/instructions/domain.instructions.md`
 
 could apply to:
 
-```text
-src/**/Domain/**
-```
+`src/**/Domain/**`
 
 and contain:
 
@@ -6028,9 +6005,7 @@ applyTo: "src/**/Domain/**"
 
 Another file could target API projects:
 
-```text
-.github/instructions/api.instructions.md
-```
+`.github/instructions/api.instructions.md`
 
 with rules such as:
 
@@ -6053,23 +6028,19 @@ The Harness can still determine which repository areas a role is allowed to modi
 
 ---
 
-## Reusable Prompt Files
+### Reusable Prompt Files
 
 Copilot prompt files provide a natural implementation for task-specific reusable prompts.
 
 GitHub currently documents prompt files under:
 
-```text
-.github/prompts/*.prompt.md
-```
+`.github/prompts/*.prompt.md`
 
 and describes them as reusable prompt templates for specific tasks. They remain a product feature rather than an architectural replacement for Skills or Harness orchestration.
 
 For example:
 
-```text
-.github/prompts/implement-fleet-booking.prompt.md
-```
+`.github/prompts/implement-fleet-booking.prompt.md`
 
 might contain:
 
@@ -6117,7 +6088,7 @@ what happens afterward.
 
 ---
 
-## Custom Agents as Roles
+### Custom Agents as Roles
 
 GitHub Copilot supports custom agents defined through agent profiles. GitHub describes these as specialized versions of Copilot whose profiles can specify prompts, tools, and MCP servers.
 
@@ -6157,7 +6128,7 @@ The Harness still owns control.
 
 ---
 
-## Copilot Lead Role
+### Copilot Lead Role
 
 A Lead role might receive:
 
@@ -6198,7 +6169,7 @@ The Harness captures the result and decides whether execution moves to the Devel
 
 ---
 
-## Copilot Developer Role
+### Copilot Developer Role
 
 The Developer role receives implementation authority within defined boundaries.
 
@@ -6207,8 +6178,8 @@ For example:
 ```text
 Allowed write scope:
 
-src/Booking/**
-tests/Booking/**
+src/Booking.*/**
+tests/Booking.*/**
 
 Protected:
 
@@ -6242,7 +6213,7 @@ The Harness must still inspect the resulting change set before moving forward.
 
 ---
 
-## Development-time Testing
+### Development-time Testing
 
 Copilot may run:
 
@@ -6271,15 +6242,13 @@ Authoritative validation
 
 A Developer role should never be able to produce the final workflow result merely by stating:
 
-```text
-All tests pass.
-```
+> All tests pass.
 
 The Harness verifies that statement independently.
 
 ---
 
-## GitHub Actions as a Deterministic Gate Environment
+### GitHub Actions as a Deterministic Gate Environment
 
 GitHub-hosted repositories provide a natural place to execute authoritative validation through CI.
 
@@ -6291,36 +6260,39 @@ name: Harness Validation
 on:
   pull_request:
 
-jobs:
+permissions:
+  contents: read
 
+jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
-
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
       - name: Build
         run: dotnet build AlphaCarDetailing.sln --configuration Release
 
   tests:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
-
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
       - name: Tests
         run: dotnet test AlphaCarDetailing.sln --configuration Release
 
   architecture:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
-
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
       - name: Architecture Tests
-        run: >
-          dotnet test
-          tests/Booking.Architecture.Tests
+        run: dotnet test tests/Booking.Architecture.Tests --configuration Release
 ```
 
 Additional jobs can represent:
@@ -6349,19 +6321,15 @@ Azure DevOps, Jenkins, TeamCity, local runners, or a dedicated Harness service c
 
 ---
 
-## Why CI Is Not the Entire Harness
+### Why CI Is Not the Entire Harness
 
 It is also important not to confuse:
 
-```text
-CI/CD pipeline
-```
+`CI/CD pipeline`
 
 with:
 
-```text
-AI Engineering Harness
-```
+`AI Engineering Harness`
 
 CI can execute deterministic checks extremely well.
 
@@ -6383,7 +6351,7 @@ A CI system may participate in the Harness without being the Harness itself.
 
 ---
 
-## Copilot Code Review
+### Copilot Code Review
 
 GitHub Copilot can also participate in code review.
 
@@ -6419,7 +6387,7 @@ It should consume that evidence.
 
 ---
 
-## Copilot Agent and Pull Requests
+### Copilot Agent and Pull Requests
 
 GitHub's cloud agent model can operate naturally around repository tasks and pull requests.
 
@@ -6457,7 +6425,7 @@ The Harness should still determine when creation or progression of the pull requ
 
 ---
 
-## MCP Integration
+### MCP Integration
 
 GitHub Copilot supports MCP integration for agent workflows, giving the agent access to external tools and data sources. GitHub recommends explicitly limiting enabled MCP tools and granting only the permissions needed for the task.
 
@@ -6491,7 +6459,7 @@ The Harness policy determines whether a role may use it.
 
 ---
 
-## Least-privilege MCP Access
+### Least-privilege MCP Access
 
 GitHub's own guidance for MCP emphasizes limiting permissions and monitoring activity.
 
@@ -6527,7 +6495,7 @@ Not every agent should receive every tool.
 
 ---
 
-## Protected Repository Assets
+### Protected Repository Assets
 
 GitHub repository protections can complement Harness-level protections.
 
@@ -6550,7 +6518,7 @@ The Harness should assume defense in depth.
 
 ---
 
-## Example Failure Sequence
+### Example Failure Sequence
 
 Suppose Copilot implements fleet booking and reports success.
 
@@ -6565,15 +6533,11 @@ Architecture       FAIL
 
 The Architecture Gate reports:
 
-```text
-Booking.Domain references Booking.Infrastructure.
-```
+> Booking.Domain references Booking.Infrastructure.
 
 The workflow state becomes:
 
-```text
-ValidationFailed
-```
+`ValidationFailed`
 
 The Harness should not allow:
 
@@ -6601,7 +6565,7 @@ The repair prompt contains the deterministic evidence.
 
 ---
 
-## Copilot Repair Prompt
+### Copilot Repair Prompt
 
 A repair request might be:
 
@@ -6642,7 +6606,7 @@ The Harness validates.
 
 ---
 
-## Copilot Reviewer Role
+### Copilot Reviewer Role
 
 After the deterministic pipeline succeeds, Copilot can receive a Reviewer prompt:
 
@@ -6678,7 +6642,7 @@ This provides a clean responsibility boundary.
 
 ---
 
-## Copilot Validator Role
+### Copilot Validator Role
 
 The Validator role can check acceptance criteria independently.
 
@@ -6714,7 +6678,7 @@ Passing CI alone does not prove the feature is complete.
 
 ---
 
-## Copilot Evaluator Role
+### Copilot Evaluator Role
 
 An Evaluator can score:
 
@@ -6730,21 +6694,17 @@ The output may be useful for quality thresholds or human review.
 
 However:
 
-```text
-Evaluator score = 95/100
-```
+`Evaluator score = 95/100`
 
 cannot override:
 
-```text
-Security Gate = FAILED
-```
+`Security Gate = FAILED`
 
 The same authority hierarchy applies regardless of AI platform.
 
 ---
 
-## Copilot Customizations and Harness Responsibilities
+### Copilot Customizations and Harness Responsibilities
 
 The following distinction is useful:
 
@@ -6787,7 +6747,7 @@ They solve different problems.
 
 ---
 
-## Claude and Copilot Architectural Comparison
+### Claude and Copilot Architectural Comparison
 
 The implementation mechanisms differ, but the architectural concepts are closely aligned.
 
@@ -6809,7 +6769,7 @@ The important similarity is this:
 
 ---
 
-## Where Copilot Fits Particularly Well
+### Where Copilot Fits Particularly Well
 
 A GitHub Copilot-based Harness can be especially effective where the engineering workflow is already deeply integrated with:
 
@@ -6845,7 +6805,7 @@ The Harness coordinates those capabilities as one governed workflow.
 
 ---
 
-## Where the Harness Still Adds Value
+### Where the Harness Still Adds Value
 
 Even in a GitHub-centric environment, native platform capabilities do not automatically answer:
 
@@ -6881,7 +6841,7 @@ These remain Harness concerns.
 
 ---
 
-## Enterprise Deployment Pattern
+### Enterprise Deployment Pattern
 
 For Alpha Car Detailing, a Copilot-centered enterprise workflow could look like:
 
@@ -6928,7 +6888,7 @@ This uses GitHub capabilities without surrendering Harness control.
 
 ---
 
-## GitHub Copilot Comparison Takeaway
+### GitHub Copilot Comparison Takeaway
 
 GitHub Copilot can provide a strong implementation platform for the same enterprise Harness Architecture described in this chapter.
 
@@ -7000,9 +6960,7 @@ The platform may change.
 
 The control architecture should remain stable.
 
-**Chapter 13 status: In progress — next section: Codex Comparison**
-
-# Codex Comparison
+## Codex Comparison
 
 OpenAI Codex can participate in the same enterprise Harness Architecture described for Claude and GitHub Copilot.
 
@@ -7048,7 +7006,7 @@ publishing authority
 
 ---
 
-## Codex Within the Harness
+### Codex Within the Harness
 
 A weak implementation would delegate the complete workflow to a single agent session:
 
@@ -7110,11 +7068,11 @@ The Harness controls progression.
 
 ---
 
-## Repository Instructions
+### Repository Instructions
 
-A Codex-centered repository should provide persistent engineering context in the mechanism supported by the chosen Codex environment while keeping the underlying concept vendor-neutral.
+Codex supports an optional `AGENTS.md` file for persistent repository guidance. For repeatable procedures, Codex also supports Agent Skills, conventionally packaged with `SKILL.md` and supporting files in a skill directory. These are implementation mechanisms for this handbook's **Instructions** and **Skills** concepts; they are not substitutes for Harness enforcement.
 
-In this handbook, those repository-level rules remain **Instructions**.
+In Alpha Car Detailing, the following example could live in `AGENTS.md`, while Claude-facing guidance can remain in `CLAUDE.md`. The enterprise should govern their common rules and avoid contradictory copies.
 
 For Alpha Car Detailing, the content should communicate rules such as:
 
@@ -7149,9 +7107,7 @@ For Alpha Car Detailing, the content should communicate rules such as:
 - Do not modify protected control files unless explicitly authorized.
 ```
 
-The filename or product-specific delivery mechanism may differ.
-
-The architectural purpose does not.
+File locations and platform capabilities may change; verify the current Codex documentation before implementing provider-specific configuration. The architectural purpose remains stable.
 
 ```text
 Instructions
@@ -7165,7 +7121,7 @@ Controls whether and how that work progresses.
 
 ---
 
-## Codex Lead Role
+### Codex Lead Role
 
 The Harness may first invoke Codex as a Lead Agent.
 
@@ -7242,7 +7198,7 @@ The workflow controller does.
 
 ---
 
-## Codex Developer Role
+### Codex Developer Role
 
 The Developer role receives greater repository authority.
 
@@ -7263,8 +7219,8 @@ INPUTS
 - approved Knowledge Sources
 
 ALLOWED WRITE SCOPE
-src/Booking/**
-tests/Booking/**
+src/Booking.*/**
+tests/Booking.*/**
 
 PROTECTED SCOPE
 harness/**
@@ -7306,7 +7262,7 @@ What authority does Codex have while doing so?
 
 ---
 
-## Development-time Tool Execution
+### Development-time Tool Execution
 
 Codex may need to execute commands during implementation.
 
@@ -7348,7 +7304,7 @@ This is identical to the principle applied to Claude and Copilot.
 
 ---
 
-## Tool Permissions
+### Tool Permissions
 
 A Harness should control which tools and commands a Codex role may use.
 
@@ -7388,7 +7344,7 @@ That does not imply that the Harness should execute it.
 
 ---
 
-## Protected Files
+### Protected Files
 
 Suppose the Developer Agent encounters a failing Architecture Gate.
 
@@ -7445,7 +7401,7 @@ It should not silently change the control.
 
 ---
 
-## Independent Build Gate
+### Independent Build Gate
 
 After Codex completes implementation, the Harness runs the authoritative Build Gate.
 
@@ -7474,9 +7430,7 @@ The type or namespace name 'FleetBookingCreated' could not be found.
 
 The authoritative workflow state becomes:
 
-```text
-BuildGateFailed
-```
+`BuildGateFailed`
 
 Codex's statement is not discarded.
 
@@ -7484,7 +7438,7 @@ It is simply not authoritative.
 
 ---
 
-## Evidence-based Repair
+### Evidence-based Repair
 
 The Harness can now invoke Codex again in the Developer role.
 
@@ -7537,7 +7491,7 @@ The Harness decides whether another attempt is allowed.
 
 ---
 
-## Test Gate
+### Test Gate
 
 The Harness next runs the Test Gate:
 
@@ -7554,17 +7508,13 @@ Failed: 1
 
 The failed test is:
 
-```text
-CreateFleetBooking_WhenVehicleBelongsToAnotherCorporateAccount_ShouldFail
-```
+`CreateFleetBooking_WhenVehicleBelongsToAnotherCorporateAccount_ShouldFail`
 
 The Harness records the exact evidence.
 
 It should not simply ask Codex:
 
-```text
-Some test failed. Fix it.
-```
+> Some test failed. Fix it.
 
 A stronger repair package contains:
 
@@ -7588,29 +7538,29 @@ This allows Codex to reason against objective evidence.
 
 ---
 
-## Static Analysis, Architecture, Security, and Contracts
+### Static Analysis, Architecture, Security, and Contracts
 
 The same pattern applies to all deterministic gates.
 
-### Static Analysis
+#### Static Analysis
 
 Codex may believe the implementation follows repository conventions.
 
 The static-analysis tool decides whether configured rules pass.
 
-### Architecture
+#### Architecture
 
 Codex may believe a dependency is acceptable.
 
 The Architecture Gate decides whether the repository's machine-enforced architecture rules are satisfied.
 
-### Security
+#### Security
 
 Codex may conclude that the implementation is secure.
 
 The Security Gate independently runs configured scanners and policy checks.
 
-### Contracts
+#### Contracts
 
 Codex may believe an API or event change is backward compatible.
 
@@ -7630,7 +7580,7 @@ Authoritative objective evidence
 
 ---
 
-## Codex Reviewer Role
+### Codex Reviewer Role
 
 After required gates pass, the Harness can invoke Codex in a fresh Reviewer role.
 
@@ -7701,7 +7651,7 @@ They complement the gate evidence.
 
 ---
 
-## Fresh Context for Review
+### Fresh Context for Review
 
 The same model used for Claude and Copilot applies to Codex:
 
@@ -7731,7 +7681,7 @@ The reviewer examines the result rather than continuing the implementation conve
 
 ---
 
-## Codex Validator Role
+### Codex Validator Role
 
 The Validator asks whether the implementation satisfies the requested feature.
 
@@ -7801,7 +7751,7 @@ The Harness decides whether to return to implementation or request human clarifi
 
 ---
 
-## Codex Evaluator Role
+### Codex Evaluator Role
 
 Codex can also serve as the Evaluator.
 
@@ -7854,7 +7804,7 @@ It does not become workflow authority.
 
 ---
 
-## Codex and Human Approval
+### Codex and Human Approval
 
 Suppose:
 
@@ -7873,9 +7823,7 @@ Evaluator            88/100
 
 The workflow may still remain:
 
-```text
-AwaitingHumanApproval
-```
+`AwaitingHumanApproval`
 
 if Alpha Car Detailing's policy requires human approval for a new externally consumed integration event.
 
@@ -7913,11 +7861,16 @@ Codex should not produce the human approval itself.
 
 ---
 
-## Codex as Part of a Local Harness
+### Codex as Part of a Local Harness
 
-A local Harness could invoke Codex through a role-oriented execution wrapper.
+A local Harness could invoke Codex through a role-oriented execution wrapper. Codex CLI supports non-interactive `codex exec` calls as well as configurable sandbox permissions. For example, a read-only Lead and a workspace-scoped Developer could be invoked separately:
 
-Conceptually:
+```bash
+codex exec --sandbox read-only "Inspect the Booking projects and propose a plan; do not edit files."
+codex exec --sandbox workspace-write "Implement the approved fleet booking plan within allowed paths."
+```
+
+These CLI examples are illustrative: the Harness must still enforce tool, path, network, and publishing policies independently, and should capture structured outputs and exit status. A conceptual orchestration wrapper follows:
 
 ```powershell
 $workflow = Start-Workflow `
@@ -7964,7 +7917,7 @@ It is that the Harness remains the caller.
 
 ---
 
-## Codex as Part of an Enterprise Harness
+### Codex as Part of an Enterprise Harness
 
 At enterprise scale, the interaction can be abstracted behind an agent runner:
 
@@ -8011,7 +7964,7 @@ This protects the enterprise architecture from model and platform churn.
 
 ---
 
-## Vendor-neutral Execution Contract
+### Vendor-neutral Execution Contract
 
 An execution request could conceptually contain:
 
@@ -8047,7 +8000,7 @@ The business workflow remains stable.
 
 ---
 
-## Do Not Encode Core Architecture in Codex-specific Prompts
+### Do Not Encode Core Architecture in Codex-specific Prompts
 
 A common mistake is to place the entire Harness inside one highly detailed product-specific prompt.
 
@@ -8101,7 +8054,7 @@ The Harness implements workflow behavior.
 
 ---
 
-## Codex and Hooks
+### Codex and Hooks
 
 The Harness may place hooks around Codex activity regardless of the specific agent integration mechanism.
 
@@ -8144,7 +8097,7 @@ It should be enforced outside the agent where possible.
 
 ---
 
-## Codex and External Tools
+### Codex and External Tools
 
 Codex may need access to external engineering tools or context sources depending on the chosen environment and organizational integration.
 
@@ -8189,7 +8142,7 @@ The architecture should not grant every Codex role every available capability.
 
 ---
 
-## Network Access
+### Network Access
 
 Network access deserves special consideration for autonomous engineering agents.
 
@@ -8222,7 +8175,7 @@ The same principle applies regardless of whether the selected execution engine i
 
 ---
 
-## Isolation
+### Isolation
 
 Codex executions should preferably occur in an isolated repository workspace where feasible.
 
@@ -8264,7 +8217,7 @@ Isolation helps prevent:
 
 ---
 
-## Authoritative Evidence
+### Authoritative Evidence
 
 A Codex-centered workflow should make evidence origin explicit.
 
@@ -8287,7 +8240,7 @@ No single output is allowed to silently replace the others.
 
 ---
 
-## Claude, Copilot, and Codex Compared
+### Claude, Copilot, and Codex Compared
 
 The exact product integrations differ, but the Harness architecture should remain stable.
 
@@ -8309,7 +8262,7 @@ The common architecture is more important than the product-specific syntax.
 
 ---
 
-## Portability as an Architectural Test
+### Portability as an Architectural Test
 
 One useful way to evaluate Harness design is to ask:
 
@@ -8351,7 +8304,7 @@ Changing the model provider should not redefine what it means for Alpha Car Deta
 
 ---
 
-## Selecting Different Agents for Different Roles
+### Selecting Different Agents for Different Roles
 
 A vendor-neutral Harness can even use different providers for different responsibilities.
 
@@ -8392,7 +8345,7 @@ Both remain probabilistic reasoning systems.
 
 ---
 
-## Codex Comparison Takeaway
+### Codex Comparison Takeaway
 
 Codex fits naturally into the Harness architecture established in this chapter.
 
@@ -8461,9 +8414,7 @@ The enterprise Harness should be designed so that these changes improve executio
 
 That is the purpose of vendor-neutral Harness Architecture.
 
-**Chapter 13 status: In progress — next section: Best Practices**
-
-# Best Practices
+## Best Practices
 
 A well-designed AI Engineering Harness does not depend on one model behaving perfectly.
 
@@ -8473,7 +8424,7 @@ The following practices should guide enterprise Harness Architecture.
 
 ---
 
-## Keep Workflow Authority Outside the Agent
+### Keep Workflow Authority Outside the Agent
 
 The most important design rule is simple:
 
@@ -8495,15 +8446,11 @@ Those are control-plane responsibilities.
 
 For Alpha Car Detailing, the Developer Agent may finish the corporate fleet booking implementation and report:
 
-```text
-Implementation complete.
-```
+> Implementation complete.
 
 The Harness then transitions the workflow to:
 
-```text
-Validating
-```
+`Validating`
 
 rather than allowing the agent to continue directly to publication.
 
@@ -8511,7 +8458,7 @@ This keeps reasoning and authority separate.
 
 ---
 
-## Make Role Boundaries Explicit
+### Make Role Boundaries Explicit
 
 Roles should be defined around responsibilities, not around names.
 
@@ -8542,9 +8489,7 @@ Human Approver
 
 Avoid defining multiple roles that all effectively mean:
 
-```text
-Read everything, change anything, decide whether it is correct.
-```
+> Read everything, change anything, decide whether it is correct.
 
 A good role definition should state:
 
@@ -8559,15 +8504,13 @@ This makes orchestration easier to understand and audit.
 
 ---
 
-## Prefer Structured Handoffs
+### Prefer Structured Handoffs
 
 Agent-to-agent handoffs should use explicit artifacts wherever practical.
 
 Instead of:
 
-```text
-Reviewer, please review what the Developer did.
-```
+> Reviewer, please review what the Developer did.
 
 provide:
 
@@ -8608,7 +8551,7 @@ Structured handoffs reduce dependence on conversational memory and improve repla
 
 ---
 
-## Keep Repository Intelligence Governed
+### Keep Repository Intelligence Governed
 
 Repository Intelligence should not be assembled casually.
 
@@ -8635,7 +8578,7 @@ The Harness should either apply a defined precedence or escalate ambiguity.
 
 ---
 
-## Scope Context by Role
+### Scope Context by Role
 
 More context is not always better.
 
@@ -8677,35 +8620,27 @@ Role-specific context improves:
 
 ---
 
-## Use Deterministic Checks Wherever Objective Verification Exists
+### Use Deterministic Checks Wherever Objective Verification Exists
 
 If a question can be answered deterministically, prefer a deterministic gate.
 
 For example:
 
-```text
-Does the solution compile?
-```
+> Does the solution compile?
 
 should be answered by the build process.
 
 Not by:
 
-```text
-The agent inspected the code and believes it will compile.
-```
+> The agent inspected the code and believes it will compile.
 
 Likewise:
 
-```text
-Do architecture tests pass?
-```
+> Do architecture tests pass?
 
 should be answered by architecture tests.
 
-```text
-Does the event schema validate?
-```
+> Does the event schema validate?
 
 should be answered by contract-validation tooling.
 
@@ -8713,7 +8648,7 @@ AI reasoning remains valuable for questions that are not fully reducible to obje
 
 ---
 
-## Run Authoritative Gates Outside Developer Control
+### Run Authoritative Gates Outside Developer Control
 
 The Developer Agent may run development-time checks.
 
@@ -8745,7 +8680,7 @@ This prevents selective execution or weakened validation.
 
 ---
 
-## Treat Gate Configuration as Protected Infrastructure
+### Treat Gate Configuration as Protected Infrastructure
 
 Gate definitions are part of the control plane.
 
@@ -8791,7 +8726,7 @@ Success
 
 ---
 
-## Fail Closed for Required Gates
+### Fail Closed for Required Gates
 
 A required gate should normally behave as:
 
@@ -8827,33 +8762,25 @@ A missing result is not the same as a passing result.
 
 ---
 
-## Distinguish Failure from Infrastructure Error
+### Distinguish Failure from Infrastructure Error
 
 Not every non-successful gate execution means the implementation is wrong.
 
 For example:
 
-```text
-Test assertion failed
-```
+`Test assertion failed`
 
 is different from:
 
-```text
-Test runner unavailable
-```
+`Test runner unavailable`
 
 Similarly:
 
-```text
-Security vulnerability found
-```
+`Security vulnerability found`
 
 is different from:
 
-```text
-Security scanner service timed out
-```
+`Security scanner service timed out`
 
 A mature Harness should classify:
 
@@ -8870,7 +8797,7 @@ The retry and escalation behavior should depend on the category.
 
 ---
 
-## Use Bounded Retries
+### Use Bounded Retries
 
 Retries are valuable when AI Agents can use evidence to repair an implementation.
 
@@ -8901,15 +8828,13 @@ The principle is that the Harness—not the Developer Agent—owns the retry bud
 
 ---
 
-## Feed Exact Failure Evidence Into Retries
+### Feed Exact Failure Evidence Into Retries
 
 Repair prompts should contain objective failure evidence.
 
 Weak:
 
-```text
-Build failed. Try again.
-```
+> Build failed. Try again.
 
 Better:
 
@@ -8936,7 +8861,7 @@ Evidence-focused retries improve both precision and auditability.
 
 ---
 
-## Rerun the Required Gate Set After Repair
+### Rerun the Required Gate Set After Repair
 
 A common shortcut is:
 
@@ -8966,7 +8891,7 @@ The Harness can optimize the profile intelligently, but the decision belongs to 
 
 ---
 
-## Separate Validation from Evaluation
+### Separate Validation from Evaluation
 
 Use deterministic gates for objective conditions.
 
@@ -8995,15 +8920,13 @@ Security Gate: Failed
 
 must remain:
 
-```text
-Workflow status: FAILED
-```
+`Workflow status: FAILED`
 
 if security is required.
 
 ---
 
-## Use Evaluation Rubrics
+### Use Evaluation Rubrics
 
 Evaluator output becomes more useful when guided by an explicit rubric.
 
@@ -9027,7 +8950,7 @@ A rubric provides repeatable focus, even though the result remains qualitative.
 
 ---
 
-## Keep Hooks Small and Predictable
+### Keep Hooks Small and Predictable
 
 Hooks should perform bounded control functions.
 
@@ -9060,7 +8983,7 @@ The visible workflow should remain the primary orchestration source.
 
 ---
 
-## Use Hooks to Enforce, Not Merely Suggest
+### Use Hooks to Enforce, Not Merely Suggest
 
 Where possible, a security-sensitive hook should enforce policy rather than add another textual warning.
 
@@ -9088,7 +9011,7 @@ They should not be confused.
 
 ---
 
-## Apply Least Privilege to Every Role
+### Apply Least Privilege to Every Role
 
 Permissions should be role-based.
 
@@ -9130,7 +9053,7 @@ This minimizes the damage possible from:
 
 ---
 
-## Separate Credentials by Responsibility
+### Separate Credentials by Responsibility
 
 Do not run every Harness component under one highly privileged identity.
 
@@ -9156,7 +9079,7 @@ A Reviewer does not need write credentials at all.
 
 ---
 
-## Prefer Short-lived Credentials
+### Prefer Short-lived Credentials
 
 Where supported, prefer:
 
@@ -9179,7 +9102,7 @@ AI execution environments should be treated as automation workloads, not as trus
 
 ---
 
-## Isolate Execution Workspaces
+### Isolate Execution Workspaces
 
 Each workflow should ideally receive its own mutable workspace.
 
@@ -9219,7 +9142,7 @@ Isolation improves:
 
 ---
 
-## Pin Important Execution Dependencies
+### Pin Important Execution Dependencies
 
 A deterministic gate is only useful if its environment is sufficiently controlled.
 
@@ -9248,7 +9171,7 @@ may undermine repeatability.
 
 ---
 
-## Capture Structured Evidence
+### Capture Structured Evidence
 
 Prefer structured evidence such as:
 
@@ -9264,9 +9187,7 @@ Prefer structured evidence such as:
 
 over:
 
-```text
-Tests looked okay.
-```
+> Tests looked okay.
 
 Structured evidence supports:
 
@@ -9279,15 +9200,13 @@ Structured evidence supports:
 
 ---
 
-## Give Every Workflow a Correlation Identifier
+### Give Every Workflow a Correlation Identifier
 
 All agent calls, tool operations, gates, approvals, and outputs should share a workflow identifier.
 
 For example:
 
-```text
-ACD-2026-0137
-```
+`ACD-2026-0137`
 
 This identifier should appear in:
 
@@ -9305,7 +9224,7 @@ Without correlation, distributed Harness activity becomes difficult to reconstru
 
 ---
 
-## Preserve Attempt History
+### Preserve Attempt History
 
 Do not overwrite previous attempts.
 
@@ -9336,15 +9255,13 @@ Successful final output should not erase the path used to reach it.
 
 ---
 
-## Make Human Approval Evidence-rich
+### Make Human Approval Evidence-rich
 
 Do not ask humans to approve with insufficient context.
 
 Weak:
 
-```text
-Approve this AI change?
-```
+> Approve this AI change?
 
 Better:
 
@@ -9389,7 +9306,7 @@ It is to provide better evidence for the decisions that remain human-owned.
 
 ---
 
-## Use Risk-based Approval
+### Use Risk-based Approval
 
 Approval policy should consider the nature of the change.
 
@@ -9430,25 +9347,19 @@ specialized owner approval
 
 This avoids both extremes:
 
-```text
-everything autonomous
-```
+`everything autonomous`
 
 and:
 
-```text
-every tiny change requires executive approval
-```
+`every tiny change requires executive approval`
 
 ---
 
-## Protect Human Approval from Automation Leakage
+### Protect Human Approval from Automation Leakage
 
 An agent should never be able to simulate approval by writing:
 
-```text
-Approved by Architect.
-```
+> Approved by Architect.
 
 Approval must come from an authenticated, recognized governance mechanism.
 
@@ -9465,7 +9376,7 @@ The identity and decision should be recorded independently of agent-generated te
 
 ---
 
-## Keep Publishing Separate from Implementation
+### Keep Publishing Separate from Implementation
 
 The Developer role should usually not own direct publication.
 
@@ -9495,7 +9406,7 @@ Even if implementation execution is compromised, publication requires another co
 
 ---
 
-## Make Pull Requests Evidence Carriers
+### Make Pull Requests Evidence Carriers
 
 A Harness-generated pull request should include relevant evidence.
 
@@ -9525,7 +9436,7 @@ The Harness enhances the pull-request process rather than replacing it.
 
 ---
 
-## Track Engineering Outcomes, Not Only Harness Activity
+### Track Engineering Outcomes, Not Only Harness Activity
 
 Metrics such as:
 
@@ -9556,13 +9467,11 @@ A Harness that generates more code faster but increases downstream defects is no
 
 ---
 
-## Interpret High Success Rates Carefully
+### Interpret High Success Rates Carefully
 
 A gate pass rate of:
 
-```text
-99.9%
-```
+`99.9%`
 
 may look excellent.
 
@@ -9578,9 +9487,7 @@ Are the gates too weak?
 
 Similarly:
 
-```text
-Evaluator average = 98/100
-```
+`Evaluator average = 98/100`
 
 may indicate:
 
@@ -9593,7 +9500,7 @@ Metrics require architectural interpretation.
 
 ---
 
-## Monitor Retry Patterns
+### Monitor Retry Patterns
 
 Retry metrics are particularly useful.
 
@@ -9622,7 +9529,7 @@ Harness telemetry should help improve the engineering system, not only rank agen
 
 ---
 
-## Use Idempotent Workflow Operations
+### Use Idempotent Workflow Operations
 
 Harness operations should be safe to retry where practical.
 
@@ -9650,7 +9557,7 @@ to detect prior completion.
 
 ---
 
-## Make Cancellation a First-class State
+### Make Cancellation a First-class State
 
 Long-running agent workflows should support cancellation.
 
@@ -9679,7 +9586,7 @@ A cancelled workflow should not disappear.
 
 ---
 
-## Design for Resume
+### Design for Resume
 
 A stateful Harness should be able to resume safely from meaningful checkpoints.
 
@@ -9695,15 +9602,13 @@ If the Harness process restarts, it should not necessarily invoke the Developer 
 
 Persistent state allows it to resume at:
 
-```text
-Reviewing
-```
+`Reviewing`
 
 This becomes increasingly important in enterprise deployment.
 
 ---
 
-## Version Harness Policy
+### Version Harness Policy
 
 Policies should be versioned.
 
@@ -9726,7 +9631,7 @@ Knowing only the current rules is insufficient.
 
 ---
 
-## Version Instructions and Skills Where Governance Requires It
+### Version Instructions and Skills Where Governance Requires It
 
 For important workflows, evidence should identify which Instructions and Skills influenced execution.
 
@@ -9748,19 +9653,15 @@ This becomes especially important when the Harness later evolves toward learning
 
 ---
 
-## Separate Suggestions from Automatic Standards Changes
+### Separate Suggestions from Automatic Standards Changes
 
 If an agent repeatedly identifies a weakness in a Skill or Instruction, allow it to create:
 
-```text
-proposed-skill-update.md
-```
+`proposed-skill-update.md`
 
 or:
 
-```text
-proposed-instruction-update.md
-```
+`proposed-instruction-update.md`
 
 rather than silently editing the governed asset.
 
@@ -9779,7 +9680,7 @@ Governance decides whether those improvements become standards.
 
 ---
 
-## Keep Agent Outputs Machine-readable Where Appropriate
+### Keep Agent Outputs Machine-readable Where Appropriate
 
 Natural-language explanation remains useful.
 
@@ -9813,7 +9714,7 @@ Structured outputs reduce brittle parsing and enable policy decisions.
 
 ---
 
-## Validate Agent Output Before Using It as Control Input
+### Validate Agent Output Before Using It as Control Input
 
 If an agent is expected to return JSON or YAML, validate the schema before the Harness acts on it.
 
@@ -9839,7 +9740,7 @@ This is another deterministic boundary around probabilistic output.
 
 ---
 
-## Prefer Policy Configuration Over Hard-coded Branching
+### Prefer Policy Configuration Over Hard-coded Branching
 
 Avoid scattering rules throughout scripts:
 
@@ -9882,7 +9783,7 @@ This improves visibility and governance.
 
 ---
 
-## Keep the Harness Observable
+### Keep the Harness Observable
 
 Harness execution should expose enough telemetry to answer:
 
@@ -9919,7 +9820,7 @@ A Harness should not become a black box around another black box.
 
 ---
 
-## Do Not Log Secrets or Sensitive Context
+### Do Not Log Secrets or Sensitive Context
 
 Auditability does not mean logging everything.
 
@@ -9948,7 +9849,7 @@ rather than raw sensitive content.
 
 ---
 
-## Prefer Progressive Autonomy
+### Prefer Progressive Autonomy
 
 Enterprise teams should not begin by granting maximum autonomy.
 
@@ -9980,7 +9881,7 @@ Not enthusiasm.
 
 ---
 
-## Start Small but Preserve the Architecture
+### Start Small but Preserve the Architecture
 
 A first Harness may use:
 
@@ -10011,7 +9912,7 @@ Enterprise readiness begins with architecture, not infrastructure scale.
 
 ---
 
-## Keep Vendor-specific Integration at the Edge
+### Keep Vendor-specific Integration at the Edge
 
 The core workflow should talk in terms such as:
 
@@ -10038,7 +9939,7 @@ This allows the enterprise to change providers without redefining its engineerin
 
 ---
 
-## Use the Same Governance Regardless of Model Reputation
+### Use the Same Governance Regardless of Model Reputation
 
 Do not create weaker controls because one model is believed to be more capable.
 
@@ -10063,7 +9964,7 @@ The validation requirement should derive from engineering risk, not perceived mo
 
 ---
 
-## Make the Safe Path the Easy Path
+### Make the Safe Path the Easy Path
 
 The Harness should not force agents or engineers to fight governance.
 
@@ -10084,7 +9985,7 @@ Guardrails should prevent unsafe behavior without making ordinary engineering un
 
 ---
 
-## Test the Harness Itself
+### Test the Harness Itself
 
 Harness logic is production software.
 
@@ -10112,7 +10013,7 @@ The enterprise should not rely solely on manual confidence that its governance a
 
 ---
 
-## Test Failure Paths, Not Only Happy Paths
+### Test Failure Paths, Not Only Happy Paths
 
 A Harness demo often shows:
 
@@ -10146,13 +10047,11 @@ Failure behavior is part of the architecture.
 
 ---
 
-## Maintain a Clear Authority Model
+### Maintain a Clear Authority Model
 
 For every workflow decision, the team should be able to answer:
 
-```text
-Who or what has authority here?
-```
+> Who or what has authority here?
 
 For example:
 
@@ -10187,7 +10086,7 @@ If two components both believe they are authoritative for the same decision, the
 
 ---
 
-## Best Practices Checklist
+### Best Practices Checklist
 
 Before considering a Harness architecture production-ready, verify that:
 
@@ -10220,9 +10119,7 @@ Before considering a Harness architecture production-ready, verify that:
 
 These practices create a Harness that can evolve as AI coding platforms improve without weakening the engineering controls surrounding them.
 
-**Chapter 13 status: In progress — next section: Anti-patterns**
-
-# Anti-patterns
+## Anti-patterns
 
 A Harness can appear sophisticated while still providing weak engineering control.
 
@@ -10232,13 +10129,13 @@ The following anti-patterns should be treated as warning signs when designing or
 
 ---
 
-## Agent Self-validation
+### Agent Self-validation
 
 One of the most common anti-patterns is allowing the same agent that generated the implementation to declare that the implementation is correct.
 
 For example:
 
-```text id="acsv01"
+```text
 Developer Agent
    ↓
 Generates code
@@ -10257,7 +10154,7 @@ The agent may genuinely believe the implementation is correct, but its conclusio
 
 A stronger architecture is:
 
-```text id="acsv02"
+```text
 Developer Agent
    ↓
 Implementation
@@ -10273,11 +10170,11 @@ The Harness must independently execute the authoritative gate pipeline.
 
 ---
 
-## Treating AI Confidence as Evidence
+### Treating AI Confidence as Evidence
 
 A related anti-pattern is accepting statements such as:
 
-```text id="conf01"
+```text
 The code should compile.
 
 The architecture looks correct.
@@ -10295,7 +10192,7 @@ They may be useful.
 
 They are not equivalent to:
 
-```text id="conf02"
+```text
 Build exit code: 0
 
 Architecture tests: passed
@@ -10309,13 +10206,13 @@ Whenever objective verification exists, the Harness should use it.
 
 ---
 
-## No Deterministic Gates
+### No Deterministic Gates
 
 A Harness without deterministic validation is often just automated prompting.
 
 For example:
 
-```text id="ndg01"
+```text
 Goal
   ↓
 Developer Agent
@@ -10341,11 +10238,11 @@ A second AI opinion is not a substitute for a deterministic gate.
 
 ---
 
-## Replacing Gates with an Evaluator Score
+### Replacing Gates with an Evaluator Score
 
 Another weak pattern is:
 
-```text id="eval01"
+```text
 Evaluator score >= 80
         ↓
 Approve workflow
@@ -10355,7 +10252,7 @@ without considering required deterministic results.
 
 Suppose:
 
-```text id="eval02"
+```text
 Evaluator: 93/100
 
 Build: Passed
@@ -10370,11 +10267,11 @@ An evaluator cannot reason away a deterministic failure.
 
 ---
 
-## Mixing Validation and Evaluation
+### Mixing Validation and Evaluation
 
 A single role may be instructed:
 
-```text id="mix01"
+```text
 Review the implementation and determine whether all tests,
 architecture, security, maintainability, and acceptance criteria pass.
 ```
@@ -10387,13 +10284,11 @@ It may treat architectural quality and architecture-rule compliance as the same 
 
 It may produce one vague result:
 
-```text id="mix02"
-Overall result: Good
-```
+`Overall result: Good`
 
 A stronger design separates:
 
-```text id="mix03"
+```text
 Deterministic Validation
    ↓
 PASS / FAIL evidence
@@ -10407,17 +10302,15 @@ The outputs can later be combined by policy without confusing their authority.
 
 ---
 
-## One Large Orchestration Script
+### One Large Orchestration Script
 
 A common early Harness begins as:
 
-```text id="big01"
-run-harness.ps1
-```
+`run-harness.ps1`
 
 and gradually accumulates every responsibility:
 
-```text id="big02"
+```text
 read requirements
 load context
 invoke Lead
@@ -10455,7 +10348,7 @@ The anti-pattern is uncontrolled concentration of responsibilities.
 
 ---
 
-## Hidden Workflow Logic in Hooks
+### Hidden Workflow Logic in Hooks
 
 Hooks should be bounded guardrails.
 
@@ -10463,7 +10356,7 @@ They become dangerous when they secretly implement the workflow.
 
 For example:
 
-```text id="hook01"
+```text
 post-developer-hook.ps1
 
 - invoke Reviewer
@@ -10475,7 +10368,7 @@ post-developer-hook.ps1
 
 The visible workflow may appear simple:
 
-```text id="hook02"
+```text
 Developer
   ↓
 Validation
@@ -10489,13 +10382,13 @@ Core orchestration should remain explicit.
 
 ---
 
-## Hooks Containing Business Workflow Logic
+### Hooks Containing Business Workflow Logic
 
 An even worse variation is using Harness hooks to implement application business behavior.
 
 For example:
 
-```text id="hook03"
+```text
 post-write hook:
 
 if FleetBookingCreated file detected:
@@ -10514,13 +10407,13 @@ Engineering workflow belongs in the Harness.
 
 ---
 
-## Unlimited Retries
+### Unlimited Retries
 
 Unlimited repair loops create the appearance of resilience.
 
 For example:
 
-```text id="ret01"
+```text
 while tests fail:
     ask agent to fix
 ```
@@ -10536,7 +10429,7 @@ This can produce:
 
 A retry strategy must have:
 
-```text id="ret02"
+```text
 maximum attempts
 failure classification
 cost limits
@@ -10550,13 +10443,13 @@ It is uncontrolled.
 
 ---
 
-## Retrying Non-retryable Failures
+### Retrying Non-retryable Failures
 
 Not every failure should return to the Developer Agent.
 
 For example:
 
-```text id="ret03"
+```text
 Protected Harness file modification blocked
         ↓
 Developer retry
@@ -10570,7 +10463,7 @@ is poor failure handling.
 
 Likewise:
 
-```text id="ret04"
+```text
 Human approval rejected
         ↓
 automatic retry
@@ -10590,18 +10483,18 @@ often require escalation rather than another coding attempt.
 
 ---
 
-## Hiding Failed Attempts
+### Hiding Failed Attempts
 
 A weak Harness may preserve only the final successful result:
 
-```text id="hide01"
+```text
 Final status:
 Passed
 ```
 
 while discarding:
 
-```text id="hide02"
+```text
 Attempt 1:
 Tests failed
 
@@ -10626,11 +10519,11 @@ The Harness should preserve attempt history.
 
 ---
 
-## Treating Missing Gate Results as Passes
+### Treating Missing Gate Results as Passes
 
 A dangerous pattern is:
 
-```text id="miss01"
+```text
 Security scanner unavailable.
 
 No security result returned.
@@ -10640,13 +10533,11 @@ Workflow continues.
 
 This is effectively:
 
-```text id="miss02"
-Unknown = Pass
-```
+`Unknown = Pass`
 
 For required validation, a safer model is:
 
-```text id="miss03"
+```text
 Unknown
   ↓
 InfrastructureError
@@ -10658,13 +10549,13 @@ Absence of evidence is not evidence of success.
 
 ---
 
-## Bypassing Failed Gates
+### Bypassing Failed Gates
 
 One of the clearest Harness failures is allowing execution to continue after a required gate fails.
 
 For example:
 
-```text id="bypass01"
+```text
 Tests: Failed
    ↓
 Reviewer: Approved
@@ -10680,7 +10571,7 @@ Exceptions, if permitted at all, should be explicit and governed.
 
 For example:
 
-```text id="bypass02"
+```text
 Gate failure
    ↓
 Formal exception request
@@ -10694,13 +10585,13 @@ A hidden bypass flag defeats the purpose of the gate.
 
 ---
 
-## Allowing Agents to Weaken Tests
+### Allowing Agents to Weaken Tests
 
 Suppose a test fails because corporate account validation is missing.
 
 A Developer Agent could make the workflow green by modifying the test:
 
-```text id="weak01"
+```text
 Expected exception:
 CorporateAccountInactiveException
 
@@ -10711,15 +10602,11 @@ No exception expected
 
 Technically:
 
-```text id="weak02"
-Tests now pass.
-```
+> Tests now pass.
 
 Functionally:
 
-```text id="weak03"
-The required behavior was removed from validation.
-```
+> The required behavior was removed from validation.
 
 Tests can legitimately change.
 
@@ -10729,13 +10616,13 @@ Existing protected tests and compliance tests should receive stronger controls.
 
 ---
 
-## Allowing Agents to Modify Gate Definitions Silently
+### Allowing Agents to Modify Gate Definitions Silently
 
 This is one of the highest-risk Harness anti-patterns.
 
 Consider:
 
-```text id="gatechg01"
+```text
 Architecture Gate fails.
 
 Developer Agent changes:
@@ -10752,11 +10639,11 @@ A requested change to a gate should become a separate workflow with stronger rev
 
 ---
 
-## Allowing AI Agents to Modify Harness Policy During Feature Work
+### Allowing AI Agents to Modify Harness Policy During Feature Work
 
 The same rule applies to:
 
-```text id="policy01"
+```text
 retry limits
 approval requirements
 protected paths
@@ -10768,27 +10655,23 @@ A feature implementation should not be allowed to silently change its own contro
 
 For example:
 
-```text id="policy02"
-Human approval required: true
-```
+`Human approval required: true`
 
 must not become:
 
-```text id="policy03"
-Human approval required: false
-```
+`Human approval required: false`
 
 because the Developer Agent wants to complete the workflow automatically.
 
 ---
 
-## Excessive Agent Permissions
+### Excessive Agent Permissions
 
 Another anti-pattern is running all agents with the same broad identity.
 
 For example:
 
-```text id="perm01"
+```text
 Lead
 Developer
 Reviewer
@@ -10814,13 +10697,13 @@ Permissions should reflect responsibility.
 
 ---
 
-## Giving Developer Agents Production Access
+### Giving Developer Agents Production Access
 
 Feature implementation agents usually do not need direct production authority.
 
 Avoid:
 
-```text id="prod01"
+```text
 Developer Agent
    ↓
 Production Kubernetes administrator
@@ -10828,7 +10711,7 @@ Production Kubernetes administrator
 
 or:
 
-```text id="prod02"
+```text
 Developer Agent
    ↓
 Production SQL administrator credentials
@@ -10836,7 +10719,7 @@ Production SQL administrator credentials
 
 A safer model separates:
 
-```text id="prod03"
+```text
 Implementation
 Validation
 Deployment preparation
@@ -10848,13 +10731,13 @@ The exact deployment model may vary, but production authority should not be an i
 
 ---
 
-## Shared Mutable Workspaces
+### Shared Mutable Workspaces
 
 Running several autonomous workflows inside the same developer directory can produce difficult-to-diagnose failures.
 
 For example:
 
-```text id="shared01"
+```text
 Agent A modifies BookingService.cs.
 
 Agent B modifies BookingService.cs.
@@ -10875,11 +10758,11 @@ Prefer isolated worktrees, containers, or runners.
 
 ---
 
-## Shared Credentials Across All Components
+### Shared Credentials Across All Components
 
 Another concentration risk is:
 
-```text id="cred01"
+```text
 One service account
     ↓
 Agent execution
@@ -10895,11 +10778,11 @@ Separate identities according to responsibility where practical.
 
 ---
 
-## Using Instructions as Security Enforcement
+### Using Instructions as Security Enforcement
 
 Instructions such as:
 
-```text id="inst01"
+```text
 Never access production.
 
 Never force-push.
@@ -10915,7 +10798,7 @@ An AI Agent can misunderstand, ignore, or conflict with textual Instructions.
 
 High-risk restrictions should be enforced through:
 
-```text id="inst02"
+```text
 permissions
 tool policy
 filesystem controls
@@ -10926,7 +10809,7 @@ credential isolation
 
 The correct model is:
 
-```text id="inst03"
+```text
 Instructions
    +
 Enforcement
@@ -10934,7 +10817,7 @@ Enforcement
 
 not:
 
-```text id="inst04"
+```text
 Instructions
    =
 Enforcement
@@ -10942,7 +10825,7 @@ Enforcement
 
 ---
 
-## Giving Every Agent All Repository Context
+### Giving Every Agent All Repository Context
 
 A Harness may attempt to improve quality by supplying every available file and Knowledge Source to every role.
 
@@ -10962,11 +10845,11 @@ Context should be role-specific.
 
 ---
 
-## Treating Repository Discovery as Optional
+### Treating Repository Discovery as Optional
 
 Another anti-pattern is:
 
-```text id="disc01"
+```text
 User prompt
    ↓
 Developer immediately modifies files
@@ -10986,11 +10869,11 @@ A Harness should not automate ignorance faster.
 
 ---
 
-## Hard-coding Knowledge Into Orchestration Scripts
+### Hard-coding Knowledge Into Orchestration Scripts
 
 For example:
 
-```powershell id="hard01"
+```powershell
 if feature is FleetBooking:
     use BookingService.cs
     use EventHub
@@ -11003,7 +10886,7 @@ Over time, the script becomes stale and tightly coupled to one feature.
 
 Repository knowledge should live in appropriate:
 
-```text id="hard02"
+```text
 Instructions
 Skills
 Knowledge Sources
@@ -11015,11 +10898,11 @@ The Harness should orchestrate their use.
 
 ---
 
-## Using One Prompt as the Whole Harness
+### Using One Prompt as the Whole Harness
 
 A giant prompt may contain:
 
-```text id="prompt01"
+```text
 Plan the work.
 
 Implement it.
@@ -11054,11 +10937,11 @@ They should not replace the Harness.
 
 ---
 
-## Assuming Multi-agent Means Independent
+### Assuming Multi-agent Means Independent
 
 Consider:
 
-```text id="multi01"
+```text
 Agent A generates code.
 
 Agent B says it looks correct.
@@ -11070,7 +10953,7 @@ This may improve reasoning diversity.
 
 It still does not prove:
 
-```text id="multi02"
+```text
 build passes
 tests pass
 contracts are valid
@@ -11083,13 +10966,11 @@ Independent deterministic evidence remains necessary.
 
 ---
 
-## Using Reviewer Agents as Gate Runners
+### Using Reviewer Agents as Gate Runners
 
 A Reviewer may be asked:
 
-```text id="rv01"
-Inspect the diff and tell me whether the tests probably pass.
-```
+> Inspect the diff and tell me whether the tests probably pass.
 
 This is not useful when the Harness can simply run the tests.
 
@@ -11099,21 +10980,17 @@ Do not spend AI evaluation capability approximating facts that can be measured d
 
 ---
 
-## Treating Architecture Review as Architecture Validation
+### Treating Architecture Review as Architecture Validation
 
 These are related but different.
 
 An AI Reviewer may say:
 
-```text id="arch01"
-The design generally follows Clean Architecture.
-```
+> The design generally follows Clean Architecture.
 
 An Architecture Gate may detect:
 
-```text id="arch02"
-Booking.Domain references Booking.Infrastructure.
-```
+> Booking.Domain references Booking.Infrastructure.
 
 The first is qualitative.
 
@@ -11125,17 +11002,15 @@ Do not substitute one for the other.
 
 ---
 
-## Treating Security Review as Security Scanning
+### Treating Security Review as Security Scanning
 
 Likewise:
 
-```text id="sec01"
-The code appears secure.
-```
+> The code appears secure.
 
 does not replace:
 
-```text id="sec02"
+```text
 secret scanning
 dependency scanning
 static security analysis
@@ -11151,11 +11026,11 @@ A mature Harness uses both where appropriate.
 
 ---
 
-## Silent Human Approval
+### Silent Human Approval
 
 An enterprise workflow should not infer:
 
-```text id="approve01"
+```text
 No one objected for 10 minutes,
 therefore approved.
 ```
@@ -11164,7 +11039,7 @@ unless such behavior is explicitly defined by governance—which would be unusua
 
 Approval should be:
 
-```text id="approve02"
+```text
 explicit
 authenticated
 recorded
@@ -11173,13 +11048,11 @@ traceable
 
 ---
 
-## Agent-generated Approval Evidence as Approval
+### Agent-generated Approval Evidence as Approval
 
 An agent may write:
 
-```text id="approve03"
-Architect approved this change.
-```
+> Architect approved this change.
 
 That statement must not become authoritative.
 
@@ -11187,7 +11060,7 @@ The Harness should obtain approval from the actual approval mechanism.
 
 The same rule applies to:
 
-```text id="approve04"
+```text
 security exceptions
 compliance sign-off
 production authorization
@@ -11195,13 +11068,13 @@ production authorization
 
 ---
 
-## Automatically Publishing Every Passing Change
+### Automatically Publishing Every Passing Change
 
 Passing gates does not necessarily imply that publishing is authorized.
 
 For example:
 
-```text id="pub01"
+```text
 Build: Pass
 Tests: Pass
 Security: Pass
@@ -11209,9 +11082,7 @@ Security: Pass
 
 may still require human review because the change:
 
-```text id="pub02"
-introduces a new public FleetBookingCreated event
-```
+`introduces a new public FleetBookingCreated event`
 
 Validation determines correctness against configured checks.
 
@@ -11219,11 +11090,11 @@ Governance determines authority.
 
 ---
 
-## Letting the Developer Agent Publish Directly
+### Letting the Developer Agent Publish Directly
 
 A Developer Agent that can:
 
-```text id="pub03"
+```text
 modify code
 commit
 push
@@ -11234,7 +11105,7 @@ has too much authority for many enterprise workflows.
 
 A stronger design separates:
 
-```text id="pub04"
+```text
 Developer
     ↓
 changes
@@ -11256,11 +11127,11 @@ This limits the blast radius of implementation mistakes.
 
 ---
 
-## No Workflow State
+### No Workflow State
 
 A stateless collection of scripts may produce situations such as:
 
-```text id="state01"
+```text
 Was the Reviewer already run?
 
 Which Developer attempt is this?
@@ -11274,7 +11145,7 @@ Without persistent workflow state, recovery becomes guesswork.
 
 At minimum, state should track:
 
-```text id="state02"
+```text
 workflow ID
 current phase
 attempt number
@@ -11285,7 +11156,7 @@ output status
 
 ---
 
-## State Existing Only in Conversation History
+### State Existing Only in Conversation History
 
 Agent conversation history is not a reliable enterprise workflow database.
 
@@ -11301,11 +11172,11 @@ Important workflow state should exist outside the model context.
 
 ---
 
-## Missing Audit History
+### Missing Audit History
 
 A Harness that creates a pull request but cannot answer:
 
-```text id="audit01"
+```text
 Who initiated this?
 
 Which agent changed the code?
@@ -11325,13 +11196,13 @@ Auditability should be designed from the beginning rather than retrofitted after
 
 ---
 
-## Logging Everything
+### Logging Everything
 
 The opposite anti-pattern also exists.
 
 A team may log:
 
-```text id="loga01"
+```text
 every prompt
 every secret
 every token
@@ -11347,11 +11218,11 @@ Audit trails should capture necessary evidence without indiscriminately storing 
 
 ---
 
-## Metrics Without Engineering Outcomes
+### Metrics Without Engineering Outcomes
 
 A Harness dashboard may celebrate:
 
-```text id="metric01"
+```text
 10,000 agent requests
 
 3 million generated lines
@@ -11361,7 +11232,7 @@ A Harness dashboard may celebrate:
 
 while ignoring:
 
-```text id="metric02"
+```text
 post-merge defects
 rework
 rollbacks
@@ -11375,19 +11246,17 @@ Metrics should connect automation to actual software outcomes.
 
 ---
 
-## Optimizing for Agent Success Rate
+### Optimizing for Agent Success Rate
 
 Teams may begin weakening validation because:
 
-```text id="metric03"
-Agents fail the Architecture Gate too frequently.
-```
+> Agents fail the Architecture Gate too frequently.
 
 That is backwards.
 
 Frequent failures should trigger investigation:
 
-```text id="metric04"
+```text
 Are Instructions unclear?
 
 Is the Skill wrong?
@@ -11403,13 +11272,13 @@ The goal is to improve engineering quality and throughput.
 
 ---
 
-## No Timeouts
+### No Timeouts
 
 An agent or tool invocation without a timeout can leave a workflow indefinitely stuck.
 
 For example:
 
-```text id="timeout01"
+```text
 Security scan started
    ↓
 no response
@@ -11421,13 +11290,13 @@ Every external operation should have an appropriate timeout and failure classifi
 
 ---
 
-## No Cancellation Model
+### No Cancellation Model
 
 If an engineer discovers that the requirement is wrong, they should be able to cancel the workflow.
 
 A Harness without cancellation may continue:
 
-```text id="cancel01"
+```text
 implementing
 retrying
 evaluating
@@ -11440,11 +11309,11 @@ Cancellation should be a first-class state.
 
 ---
 
-## Restarting the Whole Workflow After Infrastructure Failure
+### Restarting the Whole Workflow After Infrastructure Failure
 
 Suppose:
 
-```text id="resume01"
+```text
 Developer finished.
 All gates passed.
 Harness process crashes before Reviewer.
@@ -11452,9 +11321,7 @@ Harness process crashes before Reviewer.
 
 A weak Harness restarts from:
 
-```text id="resume02"
-Lead Agent
-```
+`Lead Agent`
 
 and performs everything again.
 
@@ -11462,21 +11329,19 @@ This wastes cost and may produce different implementation output.
 
 Persistent state should allow safe resume from:
 
-```text id="resume03"
-Reviewing
-```
+`Reviewing`
 
 where appropriate.
 
 ---
 
-## No Versioning of Policies or Prompts
+### No Versioning of Policies or Prompts
 
 If a workflow ran six months ago, the team should not assume today's configuration was used.
 
 Without version evidence, it becomes difficult to answer:
 
-```text id="ver01"
+```text
 Which Architecture Gate applied?
 
 Which Skill version was used?
@@ -11490,21 +11355,17 @@ Important governed assets should be versionable and traceable.
 
 ---
 
-## Automatically Learning Into Production Standards
+### Automatically Learning Into Production Standards
 
 Future self-learning Harnesses create an additional risk.
 
 Suppose the Harness observes repeated test failures and automatically modifies:
 
-```text id="learn01"
-skills/add-domain-behavior.md
-```
+`skills/add-domain-behavior.md`
 
 or:
 
-```text id="learn02"
-CLAUDE.md
-```
+`CLAUDE.md`
 
 without review.
 
@@ -11512,7 +11373,7 @@ This can cause standards to drift based on noisy local evidence.
 
 The preferred pattern is:
 
-```text id="learn03"
+```text
 Observe
    ↓
 Recommend
@@ -11530,11 +11391,11 @@ It should not silently redefine enterprise engineering standards.
 
 ---
 
-## Treating the AI Provider as the Architecture
+### Treating the AI Provider as the Architecture
 
 A repository may become tightly coupled to one platform:
 
-```text id="vendor01"
+```text
 every workflow assumes one CLI
 every policy exists in one provider-specific prompt
 every role depends on one session model
@@ -11547,7 +11408,7 @@ Vendor-specific capabilities should be used where valuable.
 
 Core Harness concepts should remain:
 
-```text id="vendor02"
+```text
 AgentRunner
 GateRunner
 PolicyEngine
@@ -11562,11 +11423,11 @@ Harness Architecture is the engineering system.
 
 ---
 
-## Maximum Autonomy on Day One
+### Maximum Autonomy on Day One
 
 A team may attempt to begin with:
 
-```text id="auto01"
+```text
 work item
   ↓
 fully autonomous implementation
@@ -11584,7 +11445,7 @@ Begin with constrained workflows.
 
 Measure:
 
-```text id="auto02"
+```text
 gate success
 review findings
 rework
@@ -11596,13 +11457,13 @@ Then expand authority deliberately.
 
 ---
 
-## No Escape Hatch for Ambiguity
+### No Escape Hatch for Ambiguity
 
 Some problems cannot safely be resolved by additional retries.
 
 For example:
 
-```text id="amb01"
+```text
 Knowledge Source says booking limit is 100 vehicles.
 
 Current API document says 50.
@@ -11612,13 +11473,11 @@ Source code enforces 75.
 
 The anti-pattern is:
 
-```text id="amb02"
-Agent chooses one and continues.
-```
+> Agent chooses one and continues.
 
 A mature Harness needs:
 
-```text id="amb03"
+```text
 AmbiguityDetected
    ↓
 Lead or human escalation
@@ -11628,23 +11487,19 @@ Autonomous systems require an explicit way to admit insufficient authority or ev
 
 ---
 
-## Hiding Uncertainty
+### Hiding Uncertainty
 
 A Validator that lacks evidence should be able to say:
 
-```text id="unc01"
-Insufficient Evidence
-```
+`Insufficient Evidence`
 
 rather than being forced to choose:
 
-```text id="unc02"
-PASS
-```
+`PASS`
 
 Similarly, a Lead should be able to identify:
 
-```text id="unc03"
+```text
 Unresolved question:
 Does station capacity represent vehicles or service bays?
 ```
@@ -11655,13 +11510,13 @@ Hiding it creates false confidence.
 
 ---
 
-## Overengineering the First Harness
+### Overengineering the First Harness
 
 There is also an architectural anti-pattern at the opposite extreme.
 
 A team may design:
 
-```text id="over01"
+```text
 distributed event-driven orchestration
 Kubernetes worker pools
 multi-model routing
@@ -11673,7 +11528,7 @@ self-learning Skills
 
 before it has successfully implemented:
 
-```text id="over02"
+```text
 Lead
 Developer
 Build Gate
@@ -11688,11 +11543,11 @@ A small Harness with strong boundaries is preferable to a large Harness whose fu
 
 ---
 
-## Anti-pattern Summary
+### Anti-pattern Summary
 
 Most Harness failures can be traced to a small number of architectural mistakes:
 
-```text id="sum01"
+```text
 Too much authority inside the agent.
 
 Too little independent evidence.
@@ -11710,7 +11565,7 @@ Too much autonomy before trust is earned.
 
 For Alpha Car Detailing, the target should remain:
 
-```text id="sum02"
+```text
 Goal
   ↓
 Harness-controlled workflow
@@ -11734,9 +11589,7 @@ Traceable engineering output
 >
 > When reviewing a Harness design, ask what happens when the agent is wrong, the test runner is unavailable, a security gate fails, approval is rejected, or the Harness itself crashes. The quality of those answers reveals more about the architecture than the happy-path demonstration.
 
-**Chapter 13 status: In progress — next section: Architect’s Notes**
-
-# Architect’s Notes
+## Architect’s Notes
 
 Harness Architecture should be treated as an enterprise control architecture, not merely as automation around a coding agent.
 
@@ -11746,19 +11599,15 @@ The following notes capture the architectural considerations that deserve partic
 
 ---
 
-## Architect’s Note: The Harness Is a Control System
+### Architect’s Note: The Harness Is a Control System
 
 The easiest mistake to make is to think of the Harness as:
 
-```text
-a script that launches AI
-```
+`a script that launches AI`
 
 A better mental model is:
 
-```text
-a control system for probabilistic engineering execution
-```
+`a control system for probabilistic engineering execution`
 
 The distinction changes how the architecture is designed.
 
@@ -11794,7 +11643,7 @@ The second set of questions leads to enterprise architecture.
 
 ---
 
-## Architect’s Note: Do Not Try to Make the Agent Deterministic
+### Architect’s Note: Do Not Try to Make the Agent Deterministic
 
 AI Agents are probabilistic reasoning systems.
 
@@ -11832,7 +11681,7 @@ It makes the **engineering process controlled**.
 
 ---
 
-## Architect’s Note: Every Important Decision Needs an Authority
+### Architect’s Note: Every Important Decision Needs an Authority
 
 For every significant workflow decision, identify its authoritative component.
 
@@ -11871,19 +11720,15 @@ Authority should be explicit.
 
 ---
 
-## Architect’s Note: Separate Evidence from Opinion
+### Architect’s Note: Separate Evidence from Opinion
 
 A mature Harness distinguishes between:
 
-```text
-Evidence
-```
+`Evidence`
 
 and:
 
-```text
-Judgment
-```
+`Judgment`
 
 Examples of evidence:
 
@@ -11931,7 +11776,7 @@ This becomes increasingly important when workflow policy consumes the results au
 
 ---
 
-## Architect’s Note: Separate Control Plane from Execution Plane Early
+### Architect’s Note: Separate Control Plane from Execution Plane Early
 
 Even if both planes initially run on the same developer machine, keeping the conceptual separation makes later evolution much easier.
 
@@ -11959,7 +11804,7 @@ If control and execution are deeply entangled in one agent session, scaling the 
 
 ---
 
-## Architect’s Note: The Harness Should Survive Agent Replacement
+### Architect’s Note: The Harness Should Survive Agent Replacement
 
 One useful architecture test is:
 
@@ -12001,7 +11846,7 @@ Vendor-neutral architecture
 
 ---
 
-## Architect’s Note: Roles Are Security Boundaries as Well as Prompt Personas
+### Architect’s Note: Roles Are Security Boundaries as Well as Prompt Personas
 
 It is easy to define roles as:
 
@@ -12045,7 +11890,7 @@ Where risk warrants it, role boundaries should be reflected in actual tool permi
 
 ---
 
-## Architect’s Note: The Gate Runner Is a Privileged Component
+### Architect’s Note: The Gate Runner Is a Privileged Component
 
 The Gate Runner is often assumed to be harmless because it mainly runs:
 
@@ -12072,7 +11917,7 @@ If the Gate Runner can be manipulated by the code-generation agent, independent 
 
 ---
 
-## Architect’s Note: Protect the Definition of “Pass”
+### Architect’s Note: Protect the Definition of “Pass”
 
 The most important asset in deterministic validation is not the test result.
 
@@ -12080,15 +11925,11 @@ It is the definition of what constitutes a successful test.
 
 Consider:
 
-```text
-Tests failed
-```
+`Tests failed`
 
 The obvious repair is:
 
-```text
-fix the implementation
-```
+`fix the implementation`
 
 But an unrestricted agent may instead:
 
@@ -12120,7 +11961,7 @@ The control should not silently adapt to the implementation.
 
 ---
 
-## Architect’s Note: Not Every Test Needs the Same Protection
+### Architect’s Note: Not Every Test Needs the Same Protection
 
 Do not respond to the previous note by making all tests immutable.
 
@@ -12151,7 +11992,7 @@ This produces governance proportional to importance.
 
 ---
 
-## Architect’s Note: Gate Pipelines Should Be Risk-aware
+### Architect’s Note: Gate Pipelines Should Be Risk-aware
 
 A single validation profile for every change is easy to implement but inefficient.
 
@@ -12165,9 +12006,7 @@ event contract validation
 
 A change to:
 
-```text
-authentication
-```
+`authentication`
 
 may require considerably stronger validation.
 
@@ -12201,7 +12040,7 @@ Risk-based validation reduces execution cost without weakening high-risk control
 
 ---
 
-## Architect’s Note: Dynamic Gate Selection Must Itself Be Governed
+### Architect’s Note: Dynamic Gate Selection Must Itself Be Governed
 
 Dynamic validation is valuable.
 
@@ -12234,7 +12073,7 @@ Policy should remain authoritative.
 
 ---
 
-## Architect’s Note: Consider a Two-stage Change Classifier
+### Architect’s Note: Consider a Two-stage Change Classifier
 
 A practical enterprise pattern is:
 
@@ -12248,15 +12087,11 @@ Policy resolution
 
 For example, the Lead Agent may classify the fleet booking change as:
 
-```text
-business logic + new event
-```
+`business logic + new event`
 
 The Harness independently observes:
 
-```text
-schemas/events/FleetBookingCreated.json changed
-```
+`schemas/events/FleetBookingCreated.json changed`
 
 Policy then requires:
 
@@ -12269,7 +12104,7 @@ This prevents incorrect AI classification from silently reducing controls.
 
 ---
 
-## Architect’s Note: State Is Part of Correctness
+### Architect’s Note: State Is Part of Correctness
 
 State storage is not merely an operational convenience.
 
@@ -12299,7 +12134,7 @@ A mature state model should therefore receive the same architectural attention a
 
 ---
 
-## Architect’s Note: Prefer Explicit State Machines
+### Architect’s Note: Prefer Explicit State Machines
 
 A Harness can be implemented with procedural code while still modeling state explicitly.
 
@@ -12342,7 +12177,7 @@ Explicit state becomes especially important once workflows span multiple process
 
 ---
 
-## Architect’s Note: Idempotency Matters Earlier Than Expected
+### Architect’s Note: Idempotency Matters Earlier Than Expected
 
 Enterprise Harness operations often involve external systems:
 
@@ -12359,9 +12194,7 @@ Infrastructure retries can cause duplicate actions.
 
 For example:
 
-```text
-CreatePullRequest()
-```
+`CreatePullRequest()`
 
 times out.
 
@@ -12387,13 +12220,11 @@ Before creating an artifact, check whether it already exists for the workflow.
 
 ---
 
-## Architect’s Note: Retries Need Semantic Boundaries
+### Architect’s Note: Retries Need Semantic Boundaries
 
 Do not think of retry merely as:
 
-```text
-run the same prompt again
-```
+`run the same prompt again`
 
 A repair cycle should know:
 
@@ -12412,7 +12243,7 @@ It should not be an unstructured continuation of frustration inside a long agent
 
 ---
 
-## Architect’s Note: Retry Budget Is a Governance Control
+### Architect’s Note: Retry Budget Is a Governance Control
 
 Retry limits are often justified as a cost-control mechanism.
 
@@ -12432,7 +12263,7 @@ The retry threshold is therefore both economic and architectural.
 
 ---
 
-## Architect’s Note: Fresh Review Context Is Valuable
+### Architect’s Note: Fresh Review Context Is Valuable
 
 A Reviewer that shares all Developer context can inherit the Developer's assumptions.
 
@@ -12464,7 +12295,7 @@ The Reviewer should examine the implementation, not merely continue the implemen
 
 ---
 
-## Architect’s Note: Separate Reviewer and Validator Semantics
+### Architect’s Note: Separate Reviewer and Validator Semantics
 
 The Reviewer and Validator are easily confused.
 
@@ -12488,9 +12319,7 @@ well-tested
 
 yet forget:
 
-```text
-government fleet customers
-```
+`government fleet customers`
 
 if that was part of the acceptance criteria.
 
@@ -12500,13 +12329,11 @@ The Validator should identify the missing requirement.
 
 ---
 
-## Architect’s Note: Evaluators Need Calibration
+### Architect’s Note: Evaluators Need Calibration
 
 Evaluator scores such as:
 
-```text
-88/100
-```
+`88/100`
 
 appear precise.
 
@@ -12532,13 +12359,11 @@ Do not introduce automatic decision thresholds based on evaluator scores without
 
 ---
 
-## Architect’s Note: A Score Should Never Hide Findings
+### Architect’s Note: A Score Should Never Hide Findings
 
 An evaluator result such as:
 
-```text
-92/100
-```
+`92/100`
 
 is less useful than:
 
@@ -12564,7 +12389,7 @@ Policy should consider both aggregate scores and severity-based findings.
 
 ---
 
-## Architect’s Note: Human Approval Is Not a Failure of Automation
+### Architect’s Note: Human Approval Is Not a Failure of Automation
 
 Teams sometimes view human approval as evidence that the Harness is not sufficiently autonomous.
 
@@ -12572,9 +12397,7 @@ That is the wrong objective.
 
 The purpose of Harness Architecture is not:
 
-```text
-remove humans
-```
+`remove humans`
 
 It is:
 
@@ -12588,7 +12411,7 @@ A highly automated workflow that presents a human with excellent evidence for on
 
 ---
 
-## Architect’s Note: Approval Should Happen at Meaningful Boundaries
+### Architect’s Note: Approval Should Happen at Meaningful Boundaries
 
 Too many approval points create friction.
 
@@ -12617,7 +12440,7 @@ Automation should remove low-value human ceremony.
 
 ---
 
-## Architect’s Note: Separate Approval from Acknowledgment
+### Architect’s Note: Separate Approval from Acknowledgment
 
 An engineer viewing a Harness result is not necessarily approving it.
 
@@ -12637,7 +12460,7 @@ Only explicit authorized approval should satisfy an approval gate.
 
 ---
 
-## Architect’s Note: The Output Manager Deserves Its Own Boundary
+### Architect’s Note: The Output Manager Deserves Its Own Boundary
 
 Publishing may initially appear trivial:
 
@@ -12664,7 +12487,7 @@ This is a clean least-privilege boundary.
 
 ---
 
-## Architect’s Note: Pull Requests Remain Valuable
+### Architect’s Note: Pull Requests Remain Valuable
 
 AI-assisted development does not make pull requests obsolete.
 
@@ -12699,7 +12522,7 @@ This integrates Harness Engineering with established development governance.
 
 ---
 
-## Architect’s Note: Hooks Should Be Observable
+### Architect’s Note: Hooks Should Be Observable
 
 Hooks often fail silently because they are treated as implementation details.
 
@@ -12724,7 +12547,7 @@ the answer should not require reading five scripts.
 
 ---
 
-## Architect’s Note: Avoid Hook Proliferation
+### Architect’s Note: Avoid Hook Proliferation
 
 A large number of tiny hooks can become another form of distributed spaghetti architecture.
 
@@ -12752,7 +12575,7 @@ Do not create a hook merely because an execution event exists.
 
 ---
 
-## Architect’s Note: Protect Against Prompt Injection Through Repository Content
+### Architect’s Note: Protect Against Prompt Injection Through Repository Content
 
 Repository Intelligence may include:
 
@@ -12789,7 +12612,7 @@ Tool permissions and policy enforcement remain essential even when instruction h
 
 ---
 
-## Architect’s Note: Read-only Does Not Mean Risk-free
+### Architect’s Note: Read-only Does Not Mean Risk-free
 
 A read-only tool can still expose:
 
@@ -12803,21 +12626,17 @@ commercial data
 
 Therefore, permission design must consider:
 
-```text
-what may be read
-```
+`what may be read`
 
 not only:
 
-```text
-what may be changed
-```
+`what may be changed`
 
 Repository Intelligence should follow information-access policy.
 
 ---
 
-## Architect’s Note: Context Minimization Is a Security Feature
+### Architect’s Note: Context Minimization Is a Security Feature
 
 Giving every agent every Knowledge Source increases both cognitive noise and exposure.
 
@@ -12841,7 +12660,7 @@ Context minimization improves:
 
 ---
 
-## Architect’s Note: Isolation Should Be Proportional to Authority
+### Architect’s Note: Isolation Should Be Proportional to Authority
 
 A local read-only Reviewer may be safe in a developer worktree.
 
@@ -12872,7 +12691,7 @@ It should reflect capability and risk.
 
 ---
 
-## Architect’s Note: Treat Generated Code as Untrusted Until Validated
+### Architect’s Note: Treat Generated Code as Untrusted Until Validated
 
 AI-generated code should pass through the same engineering controls expected of human-generated code.
 
@@ -12898,7 +12717,7 @@ normal engineering validation
 
 ---
 
-## Architect’s Note: Harness Security Includes Supply-chain Security
+### Architect’s Note: Harness Security Includes Supply-chain Security
 
 The Harness itself depends on:
 
@@ -12928,7 +12747,7 @@ A secure application pipeline running on a compromised Harness dependency is not
 
 ---
 
-## Architect’s Note: Do Not Build a Second CI/CD System Accidentally
+### Architect’s Note: Do Not Build a Second CI/CD System Accidentally
 
 The Harness and CI/CD pipeline overlap around validation, but they have different responsibilities.
 
@@ -12964,7 +12783,7 @@ CI/CD remains authoritative for established delivery concerns where appropriate.
 
 ---
 
-## Architect’s Note: Do Not Make CI the Workflow Brain Either
+### Architect’s Note: Do Not Make CI the Workflow Brain Either
 
 The opposite extreme also causes problems.
 
@@ -12994,7 +12813,7 @@ The Harness should coordinate the broader AI engineering lifecycle.
 
 ---
 
-## Architect’s Note: Local and Enterprise Harnesses Should Share Semantics
+### Architect’s Note: Local and Enterprise Harnesses Should Share Semantics
 
 A local developer Harness may use:
 
@@ -13030,7 +12849,7 @@ If the enterprise implementation requires completely redefining the workflow, th
 
 ---
 
-## Architect’s Note: Metrics Need Context
+### Architect’s Note: Metrics Need Context
 
 Suppose metrics show:
 
@@ -13054,9 +12873,7 @@ post-merge quality
 
 Likewise:
 
-```text
-First-pass success: 60%
-```
+`First-pass success: 60%`
 
 may be excellent for complex architectural changes and poor for simple endpoint additions.
 
@@ -13064,19 +12881,15 @@ Metrics should support decisions, not become vanity measures.
 
 ---
 
-## Architect’s Note: Measure Harness-caused Failures Separately
+### Architect’s Note: Measure Harness-caused Failures Separately
 
 An implementation may fail because of:
 
-```text
-agent error
-```
+`agent error`
 
 or:
 
-```text
-Harness infrastructure error
-```
+`Harness infrastructure error`
 
 Examples of Harness-caused failures:
 
@@ -13095,7 +12908,7 @@ Operational metrics should separate system reliability from implementation quali
 
 ---
 
-## Architect’s Note: Auditability Is Easier When Designed Early
+### Architect’s Note: Auditability Is Easier When Designed Early
 
 If workflow evidence is not captured from the beginning, reconstructing it later can become impossible.
 
@@ -13123,7 +12936,7 @@ It does need enough evidence to explain consequential actions.
 
 ---
 
-## Architect’s Note: Self-learning Changes the Trust Model
+### Architect’s Note: Self-learning Changes the Trust Model
 
 Later parts of this handbook introduce Harness Memory and self-learning systems.
 
@@ -13131,15 +12944,11 @@ The architecture defined in this chapter is what makes those capabilities govern
 
 A self-learning Harness might discover:
 
-```text
-The add-integration-event Skill repeatedly causes contract failures.
-```
+> The add-integration-event Skill repeatedly causes contract failures.
 
 A dangerous system responds:
 
-```text
-automatically rewrite the Skill
-```
+`automatically rewrite the Skill`
 
 A governed system responds:
 
@@ -13159,15 +12968,13 @@ Without clear control-plane ownership, self-learning can become silent policy dr
 
 ---
 
-## Architect’s Note: Learning Must Not Corrupt Historical Reproducibility
+### Architect’s Note: Learning Must Not Corrupt Historical Reproducibility
 
 If Skills, Instructions, and evaluator rubrics evolve, historical workflow evidence should still identify which versions were used.
 
 Otherwise:
 
-```text
-Why did workflow ACD-2026-0137 make this decision?
-```
+> Why did workflow ACD-2026-0137 make this decision?
 
 may become impossible to answer because the underlying assets have changed.
 
@@ -13175,7 +12982,7 @@ Adaptive systems increase the importance of versioned evidence.
 
 ---
 
-## Architect’s Note: Start With the Invariants
+### Architect’s Note: Start With the Invariants
 
 Technology selection should come after defining architectural invariants.
 
@@ -13209,7 +13016,7 @@ without losing the architectural intent.
 
 ---
 
-## Architect’s Note: Architecture Tests Should Include the Harness
+### Architect’s Note: Architecture Tests Should Include the Harness
 
 If the Harness becomes a significant enterprise platform, architecture tests should apply to it as well.
 
@@ -13231,7 +13038,7 @@ The Harness should follow the same engineering discipline it imposes on generate
 
 ---
 
-## Architect’s Note: Simulate Adversarial and Incorrect Agent Behavior
+### Architect’s Note: Simulate Adversarial and Incorrect Agent Behavior
 
 Do not test the Harness only with cooperative agents.
 
@@ -13259,7 +13066,7 @@ The expected outcome should come from architecture, not from hope that the model
 
 ---
 
-## Architect’s Note: Failures Should Be Explainable
+### Architect’s Note: Failures Should Be Explainable
 
 When a Harness blocks execution, the engineer should see something like:
 
@@ -13284,15 +13091,13 @@ Attempts remaining:
 
 not:
 
-```text
-Harness failed.
-```
+> Harness failed.
 
 Explainable failure is essential for developer trust and operational support.
 
 ---
 
-## Architect’s Note: Guardrail Noise Reduces Guardrail Value
+### Architect’s Note: Guardrail Noise Reduces Guardrail Value
 
 If the Harness generates hundreds of low-value warnings, users will learn to ignore them.
 
@@ -13311,7 +13116,7 @@ A policy that is routinely bypassed becomes weaker than a carefully scoped polic
 
 ---
 
-## Architect’s Note: Design the Exception Process Together With the Gate
+### Architect’s Note: Design the Exception Process Together With the Gate
 
 A gate without an exception model can force teams to bypass the Harness when legitimate exceptional circumstances occur.
 
@@ -13349,7 +13154,7 @@ Exceptions should be explicit rather than hidden bypasses.
 
 ---
 
-## Architect’s Note: Not Every Rule Should Become a Gate
+### Architect’s Note: Not Every Rule Should Become a Gate
 
 There is a temptation to convert every engineering preference into deterministic enforcement.
 
@@ -13385,7 +13190,7 @@ The strongest controls should be reserved for rules that genuinely justify enfor
 
 ---
 
-## Architect’s Note: Enterprise Harness Architecture Is Socio-technical
+### Architect’s Note: Enterprise Harness Architecture Is Socio-technical
 
 The Harness interacts with:
 
@@ -13423,19 +13228,15 @@ Without ownership, controls eventually decay.
 
 ---
 
-## Architect’s Note: Define Ownership Before Scaling Autonomy
+### Architect’s Note: Define Ownership Before Scaling Autonomy
 
 Before moving from:
 
-```text
-AI prepares changes
-```
+`AI prepares changes`
 
 to:
 
-```text
-AI automatically publishes low-risk changes
-```
+`AI automatically publishes low-risk changes`
 
 the organization should know who owns:
 
@@ -13455,7 +13256,7 @@ Autonomy without ownership creates operational ambiguity.
 
 ---
 
-## Architect’s Note: Optimize for Controlled Throughput
+### Architect’s Note: Optimize for Controlled Throughput
 
 The goal of enterprise Harness Architecture is not the maximum number of agent actions per minute.
 
@@ -13479,7 +13280,7 @@ A Harness that is marginally slower but dramatically reduces rework or security 
 
 ---
 
-## Architect’s Note: The Best Harness May Be Boring
+### Architect’s Note: The Best Harness May Be Boring
 
 A production Harness may eventually contain sophisticated capabilities:
 
@@ -13512,7 +13313,7 @@ Control flow should remain explainable.
 
 ---
 
-## Architectural Review Questions
+### Architectural Review Questions
 
 When reviewing a proposed Harness Architecture, ask:
 
@@ -13549,9 +13350,7 @@ If the architecture cannot answer these questions clearly, it is not yet ready f
 
 The architecture should make those answers available by design.
 
-**Chapter 13 status: In progress — next section: Enterprise Tips**
-
-# Enterprise Tips
+## Enterprise Tips
 
 Enterprise Harness Architecture succeeds when technical controls align with organizational ownership, delivery processes, security policy, and engineering culture.
 
@@ -13559,7 +13358,7 @@ The following tips focus on the practical decisions that matter when moving from
 
 ---
 
-## Enterprise Tip: Establish Clear Ownership
+### Enterprise Tip: Establish Clear Ownership
 
 Every governed asset should have an owner.
 
@@ -13599,7 +13398,7 @@ A Harness with unclear ownership will eventually accumulate contradictory contro
 
 ---
 
-## Enterprise Tip: Treat Harness Changes as Production Changes
+### Enterprise Tip: Treat Harness Changes as Production Changes
 
 Changes to the Harness can affect many repositories and teams.
 
@@ -13628,21 +13427,17 @@ The Harness itself should not be maintained as a collection of unreviewed script
 
 ---
 
-## Enterprise Tip: Separate Application Repositories from Central Harness Policy Where Appropriate
+### Enterprise Tip: Separate Application Repositories from Central Harness Policy Where Appropriate
 
 Small teams may keep Harness configuration inside the application repository.
 
 At enterprise scale, consider distinguishing:
 
-```text
-Repository-owned configuration
-```
+`Repository-owned configuration`
 
 from:
 
-```text
-Enterprise-controlled policy
-```
+`Enterprise-controlled policy`
 
 For example:
 
@@ -13674,7 +13469,7 @@ The enterprise retains non-negotiable governance.
 
 ---
 
-## Enterprise Tip: Support Inheritance of Policy
+### Enterprise Tip: Support Inheritance of Policy
 
 A scalable enterprise Harness should avoid copying the same rules into every repository.
 
@@ -13712,7 +13507,7 @@ They should not silently weaken mandatory higher-level controls unless an explic
 
 ---
 
-## Enterprise Tip: Keep Mandatory and Advisory Controls Distinct
+### Enterprise Tip: Keep Mandatory and Advisory Controls Distinct
 
 Enterprise teams often fail when every recommendation becomes a blocker.
 
@@ -13741,19 +13536,15 @@ This prevents governance fatigue.
 
 Engineers should know when a finding means:
 
-```text
-You must fix this.
-```
+> You must fix this.
 
 versus:
 
-```text
-You should consider this.
-```
+> You should consider this.
 
 ---
 
-## Enterprise Tip: Integrate With Existing Identity
+### Enterprise Tip: Integrate With Existing Identity
 
 Do not invent an isolated Harness identity system if the enterprise already has trusted identity infrastructure.
 
@@ -13784,7 +13575,7 @@ Agent-generated identity strings should never replace authenticated enterprise i
 
 ---
 
-## Enterprise Tip: Use Service Identities for Machine Components
+### Enterprise Tip: Use Service Identities for Machine Components
 
 Human identity and machine identity should remain distinct.
 
@@ -13810,7 +13601,7 @@ It also supports revocation without affecting unrelated components.
 
 ---
 
-## Enterprise Tip: Keep Production Credentials Outside the Coding Agent
+### Enterprise Tip: Keep Production Credentials Outside the Coding Agent
 
 A Developer Agent should normally not receive production credentials.
 
@@ -13834,7 +13625,7 @@ The Harness can coordinate deployment preparation without making the coding agen
 
 ---
 
-## Enterprise Tip: Centralize Secret Brokering
+### Enterprise Tip: Centralize Secret Brokering
 
 Do not distribute long-lived tokens through:
 
@@ -13865,7 +13656,7 @@ This limits credential exposure and simplifies revocation.
 
 ---
 
-## Enterprise Tip: Define Standard Execution Profiles
+### Enterprise Tip: Define Standard Execution Profiles
 
 Enterprise teams benefit from reusable execution profiles.
 
@@ -13900,7 +13691,7 @@ This is easier to govern than configuring every workflow independently.
 
 ---
 
-## Enterprise Tip: Define Risk Classes
+### Enterprise Tip: Define Risk Classes
 
 A practical risk model might include:
 
@@ -13926,7 +13717,7 @@ It should not exist only as reporting metadata.
 
 ---
 
-## Enterprise Tip: Use Deterministic Evidence for Risk Classification Where Possible
+### Enterprise Tip: Use Deterministic Evidence for Risk Classification Where Possible
 
 AI may assist in determining risk.
 
@@ -13964,7 +13755,7 @@ This reduces dependence on model interpretation.
 
 ---
 
-## Enterprise Tip: Make Gate Profiles Standard Products
+### Enterprise Tip: Make Gate Profiles Standard Products
 
 Instead of every team inventing:
 
@@ -13994,7 +13785,7 @@ This improves consistency and maintainability.
 
 ---
 
-## Enterprise Tip: Allow Repository-specific Gates
+### Enterprise Tip: Allow Repository-specific Gates
 
 Centralization should not remove domain-specific controls.
 
@@ -14020,7 +13811,7 @@ The Harness composes both.
 
 ---
 
-## Enterprise Tip: Build a Gate Catalog
+### Enterprise Tip: Build a Gate Catalog
 
 A large organization should know which gates exist.
 
@@ -14059,7 +13850,7 @@ A gate catalog supports reuse and governance.
 
 ---
 
-## Enterprise Tip: Standardize Gate Result Contracts
+### Enterprise Tip: Standardize Gate Result Contracts
 
 If every gate returns a different output format, orchestration becomes fragile.
 
@@ -14084,7 +13875,7 @@ This allows the Harness to process gates consistently.
 
 ---
 
-## Enterprise Tip: Separate Blocking and Non-blocking Findings
+### Enterprise Tip: Separate Blocking and Non-blocking Findings
 
 A security scanner may report:
 
@@ -14117,7 +13908,7 @@ The policy should be visible and versioned.
 
 ---
 
-## Enterprise Tip: Measure Gate Reliability
+### Enterprise Tip: Measure Gate Reliability
 
 A gate that frequently fails because of infrastructure problems weakens trust.
 
@@ -14144,7 +13935,7 @@ The second number may indicate a platform problem rather than poor code quality.
 
 ---
 
-## Enterprise Tip: Use Central Observability
+### Enterprise Tip: Use Central Observability
 
 At enterprise scale, Harness telemetry should integrate with standard observability tooling.
 
@@ -14179,7 +13970,7 @@ Avoid creating an isolated monitoring ecosystem unless necessary.
 
 ---
 
-## Enterprise Tip: Instrument the Workflow End-to-end
+### Enterprise Tip: Instrument the Workflow End-to-end
 
 A single workflow may involve:
 
@@ -14215,7 +14006,7 @@ Without correlation, diagnosing slow or failed workflows becomes difficult.
 
 ---
 
-## Enterprise Tip: Treat Agent Cost as a First-class Metric
+### Enterprise Tip: Treat Agent Cost as a First-class Metric
 
 Enterprise deployment can generate significant AI usage.
 
@@ -14246,7 +14037,7 @@ Cost data can reveal where Skills or Repository Intelligence need improvement.
 
 ---
 
-## Enterprise Tip: Optimize Retries Before Optimizing Models
+### Enterprise Tip: Optimize Retries Before Optimizing Models
 
 When workflows require repeated retries, teams may immediately change models.
 
@@ -14268,7 +14059,7 @@ Harness quality often matters as much as model capability.
 
 ---
 
-## Enterprise Tip: Create Enterprise Retry Policies
+### Enterprise Tip: Create Enterprise Retry Policies
 
 Different workflows may justify different retry limits.
 
@@ -14301,7 +14092,7 @@ not one universal number.
 
 ---
 
-## Enterprise Tip: Define Maximum Execution Budgets
+### Enterprise Tip: Define Maximum Execution Budgets
 
 In addition to retry count, define budgets such as:
 
@@ -14333,7 +14124,7 @@ This prevents uncontrolled execution.
 
 ---
 
-## Enterprise Tip: Introduce Human Escalation Queues
+### Enterprise Tip: Introduce Human Escalation Queues
 
 Not every failed Harness workflow should generate an ad hoc message.
 
@@ -14355,7 +14146,7 @@ This allows the correct enterprise owner to respond.
 
 ---
 
-## Enterprise Tip: Avoid Sending Every Failure to Architects
+### Enterprise Tip: Avoid Sending Every Failure to Architects
 
 Escalation should be classified.
 
@@ -14379,7 +14170,7 @@ Without classification, senior reviewers become bottlenecks.
 
 ---
 
-## Enterprise Tip: Reuse Existing Approval Systems
+### Enterprise Tip: Reuse Existing Approval Systems
 
 If the organization already uses:
 
@@ -14398,7 +14189,7 @@ This preserves existing governance and audit processes.
 
 ---
 
-## Enterprise Tip: Keep Approval Context Concise
+### Enterprise Tip: Keep Approval Context Concise
 
 Evidence-rich approval does not mean overwhelming approvers with raw logs.
 
@@ -14421,7 +14212,7 @@ Approvers need decision-quality information, not every console line.
 
 ---
 
-## Enterprise Tip: Use CODEOWNERS-style Ownership for Sensitive Areas
+### Enterprise Tip: Use CODEOWNERS-style Ownership for Sensitive Areas
 
 Sensitive paths can map automatically to required reviewers.
 
@@ -14445,19 +14236,15 @@ This allows repository changes to trigger appropriate governance without relying
 
 ---
 
-## Enterprise Tip: Separate Harness Administration From Application Development
+### Enterprise Tip: Separate Harness Administration From Application Development
 
 A Developer who can modify:
 
-```text
-application code
-```
+`application code`
 
 should not automatically be able to modify:
 
-```text
-enterprise Harness policy
-```
+`enterprise Harness policy`
 
 Administrative access should be more restricted.
 
@@ -14465,7 +14252,7 @@ This follows the same separation used in other enterprise platforms.
 
 ---
 
-## Enterprise Tip: Introduce Environment Tiers
+### Enterprise Tip: Introduce Environment Tiers
 
 Harness execution can be divided into tiers.
 
@@ -14478,7 +14265,7 @@ Enterprise
 Restricted
 ```
 
-### Local
+#### Local
 
 ```text
 developer machine
@@ -14486,7 +14273,7 @@ manual approval
 local tools
 ```
 
-### Team
+#### Team
 
 ```text
 shared runners
@@ -14494,7 +14281,7 @@ repository policy
 central logs
 ```
 
-### Enterprise
+#### Enterprise
 
 ```text
 isolated runners
@@ -14504,7 +14291,7 @@ audit
 metrics
 ```
 
-### Restricted
+#### Restricted
 
 ```text
 high-sensitivity repositories
@@ -14517,7 +14304,7 @@ Not every repository requires identical infrastructure.
 
 ---
 
-## Enterprise Tip: Classify Repositories
+### Enterprise Tip: Classify Repositories
 
 Repositories themselves may have different risk profiles.
 
@@ -14537,7 +14324,7 @@ This avoids repeatedly rediscovering organizational risk.
 
 ---
 
-## Enterprise Tip: Define Network Profiles
+### Enterprise Tip: Define Network Profiles
 
 An enterprise Harness should explicitly define network access.
 
@@ -14563,7 +14350,7 @@ Network policy should be role and workflow specific.
 
 ---
 
-## Enterprise Tip: Control Package Installation
+### Enterprise Tip: Control Package Installation
 
 AI Agents can solve problems by installing new dependencies.
 
@@ -14588,7 +14375,7 @@ This reduces supply-chain risk.
 
 ---
 
-## Enterprise Tip: Record Dependency Changes Explicitly
+### Enterprise Tip: Record Dependency Changes Explicitly
 
 A Harness should detect and surface changes to:
 
@@ -14607,7 +14394,7 @@ Dependency changes often deserve stronger review than ordinary source edits.
 
 ---
 
-## Enterprise Tip: Treat MCP Servers as Enterprise Integrations
+### Enterprise Tip: Treat MCP Servers as Enterprise Integrations
 
 MCP servers should not be added casually merely because an agent can use them.
 
@@ -14639,7 +14426,7 @@ It also extends the enterprise attack and governance surface.
 
 ---
 
-## Enterprise Tip: Maintain an Approved Tool Catalog
+### Enterprise Tip: Maintain an Approved Tool Catalog
 
 Similar to the gate catalog, keep a list of approved tools.
 
@@ -14659,15 +14446,13 @@ This becomes especially important when agents can dynamically discover tools.
 
 ---
 
-## Enterprise Tip: Use Default-deny for High-risk Capabilities
+### Enterprise Tip: Use Default-deny for High-risk Capabilities
 
 For ordinary developer tools, allowlists may be flexible.
 
 For dangerous capabilities, prefer:
 
-```text
-deny unless explicitly granted
-```
+`deny unless explicitly granted`
 
 Examples:
 
@@ -14684,7 +14469,7 @@ This reduces accidental authority expansion.
 
 ---
 
-## Enterprise Tip: Treat Protected Files as Policy Boundaries
+### Enterprise Tip: Treat Protected Files as Policy Boundaries
 
 Sensitive files should be identified explicitly.
 
@@ -14710,7 +14495,7 @@ Avoid relying solely on naming conventions.
 
 ---
 
-## Enterprise Tip: Make Exceptions Expire
+### Enterprise Tip: Make Exceptions Expire
 
 If an enterprise permits temporary exceptions, attach:
 
@@ -14744,7 +14529,7 @@ Avoid permanent exceptions created to resolve temporary delivery pressure.
 
 ---
 
-## Enterprise Tip: Review Exception Metrics
+### Enterprise Tip: Review Exception Metrics
 
 Repeated exceptions are architectural evidence.
 
@@ -14768,7 +14553,7 @@ Do not treat every exception as an isolated event.
 
 ---
 
-## Enterprise Tip: Keep a Central Audit Index
+### Enterprise Tip: Keep a Central Audit Index
 
 Evidence may remain distributed:
 
@@ -14798,7 +14583,7 @@ This reduces the need to centralize all raw data while preserving traceability.
 
 ---
 
-## Enterprise Tip: Define Evidence Retention Policies
+### Enterprise Tip: Define Evidence Retention Policies
 
 Not all Harness evidence should be kept forever.
 
@@ -14827,7 +14612,7 @@ Retention should be intentional.
 
 ---
 
-## Enterprise Tip: Protect Sensitive Agent Transcripts
+### Enterprise Tip: Protect Sensitive Agent Transcripts
 
 Agent transcripts may contain:
 
@@ -14844,11 +14629,11 @@ Control access to transcripts and minimize retention where appropriate.
 
 ---
 
-## Enterprise Tip: Build Dashboards for Different Audiences
+### Enterprise Tip: Build Dashboards for Different Audiences
 
 One dashboard will not serve everyone.
 
-### Developers need
+#### Developers need
 
 ```text
 current workflow
@@ -14857,7 +14642,7 @@ remaining retries
 repair evidence
 ```
 
-### Architects need
+#### Architects need
 
 ```text
 architecture failure trends
@@ -14865,7 +14650,7 @@ exceptions
 cross-repository patterns
 ```
 
-### Platform Teams need
+#### Platform Teams need
 
 ```text
 runner health
@@ -14874,7 +14659,7 @@ gate reliability
 agent latency
 ```
 
-### Management needs
+#### Management needs
 
 ```text
 throughput
@@ -14888,7 +14673,7 @@ Present information according to responsibility.
 
 ---
 
-## Enterprise Tip: Do Not Rank Engineers by Raw Agent Metrics
+### Enterprise Tip: Do Not Rank Engineers by Raw Agent Metrics
 
 Metrics such as:
 
@@ -14915,13 +14700,11 @@ rather than create simplistic productivity rankings.
 
 ---
 
-## Enterprise Tip: Measure Human Rework
+### Enterprise Tip: Measure Human Rework
 
 One of the strongest Harness quality indicators is:
 
-```text
-How much work do humans have to redo after the Harness says the change is ready?
-```
+> How much work do humans have to redo after the Harness says the change is ready?
 
 Track:
 
@@ -14936,13 +14719,11 @@ A low-cost Harness with high human rework may not be efficient.
 
 ---
 
-## Enterprise Tip: Measure Gate Escape Rate
+### Enterprise Tip: Measure Gate Escape Rate
 
 A useful quality measure is:
 
-```text
-How often does a defect escape despite all required gates passing?
-```
+> How often does a defect escape despite all required gates passing?
 
 For example:
 
@@ -14967,13 +14748,11 @@ Harness improvement should be evidence-driven.
 
 ---
 
-## Enterprise Tip: Build Feedback Without Silent Mutation
+### Enterprise Tip: Build Feedback Without Silent Mutation
 
 When repeated patterns are detected:
 
-```text
-Architecture Gate fails repeatedly
-```
+`Architecture Gate fails repeatedly`
 
 the Harness may recommend:
 
@@ -14993,7 +14772,7 @@ Do not let production standards mutate invisibly.
 
 ---
 
-## Enterprise Tip: Introduce a Change Proposal Mechanism
+### Enterprise Tip: Introduce a Change Proposal Mechanism
 
 For governed assets, support outputs such as:
 
@@ -15018,7 +14797,7 @@ This creates the foundation for later self-learning Harness capabilities.
 
 ---
 
-## Enterprise Tip: Keep Steering Notes Human-owned by Default
+### Enterprise Tip: Keep Steering Notes Human-owned by Default
 
 Steering Notes represent temporary business or engineering direction.
 
@@ -15038,15 +14817,13 @@ They should not silently rewrite them.
 
 If an agent believes the steering is outdated, it can propose:
 
-```text
-proposed-steering-update.md
-```
+`proposed-steering-update.md`
 
 Human ownership preserves mission authority.
 
 ---
 
-## Enterprise Tip: Introduce Standard Workflow Templates
+### Enterprise Tip: Introduce Standard Workflow Templates
 
 Common enterprise workflows can be templated.
 
@@ -15080,7 +14857,7 @@ This accelerates adoption while maintaining consistency.
 
 ---
 
-## Enterprise Tip: Avoid Custom Harnesses Per Team
+### Enterprise Tip: Avoid Custom Harnesses Per Team
 
 If every team builds:
 
@@ -15105,13 +14882,11 @@ team configuration
 
 over:
 
-```text
-dozens of unrelated Harness implementations
-```
+`dozens of unrelated Harness implementations`
 
 ---
 
-## Enterprise Tip: Support Provider Abstraction but Do Not Hide Useful Differences
+### Enterprise Tip: Support Provider Abstraction but Do Not Hide Useful Differences
 
 A vendor-neutral architecture should support:
 
@@ -15149,13 +14924,11 @@ The control semantics remain stable even when execution features differ.
 
 ---
 
-## Enterprise Tip: Maintain a Provider Exit Strategy
+### Enterprise Tip: Maintain a Provider Exit Strategy
 
 Enterprises should know:
 
-```text
-What happens if our primary agent provider changes?
-```
+> What happens if our primary agent provider changes?
 
 Ensure that critical organizational assets such as:
 
@@ -15176,7 +14949,7 @@ Core engineering knowledge should be portable.
 
 ---
 
-## Enterprise Tip: Evaluate Providers With Harness Evidence
+### Enterprise Tip: Evaluate Providers With Harness Evidence
 
 Do not compare coding agents solely through isolated benchmark prompts.
 
@@ -15195,7 +14968,7 @@ This evaluates agents in the engineering environment where they will actually op
 
 ---
 
-## Enterprise Tip: Pilot With Representative Repositories
+### Enterprise Tip: Pilot With Representative Repositories
 
 Do not validate the Harness only against a toy repository.
 
@@ -15216,7 +14989,7 @@ Enterprise adoption should use similarly representative internal pilots.
 
 ---
 
-## Enterprise Tip: Roll Out by Risk, Not by Organizational Enthusiasm
+### Enterprise Tip: Roll Out by Risk, Not by Organizational Enthusiasm
 
 A sensible rollout may be:
 
@@ -15238,7 +15011,7 @@ Teams can increase autonomy as evidence demonstrates reliability.
 
 ---
 
-## Enterprise Tip: Define a Kill Switch
+### Enterprise Tip: Define a Kill Switch
 
 The organization should be able to disable:
 
@@ -15265,39 +15038,31 @@ Operational containment is an enterprise requirement.
 
 ---
 
-## Enterprise Tip: Support Degraded Modes
+### Enterprise Tip: Support Degraded Modes
 
 If one component is unavailable, consider whether the Harness can operate safely in a reduced mode.
 
 For example:
 
-```text
-Evaluator unavailable
-```
+`Evaluator unavailable`
 
 might permit:
 
-```text
-manual evaluation
-```
+`manual evaluation`
 
 while:
 
-```text
-Security Gate unavailable
-```
+`Security Gate unavailable`
 
 may require:
 
-```text
-workflow blocked
-```
+`workflow blocked`
 
 The policy should define which capabilities are optional and which are mandatory.
 
 ---
 
-## Enterprise Tip: Run Disaster and Failure Exercises
+### Enterprise Tip: Run Disaster and Failure Exercises
 
 Test scenarios such as:
 
@@ -15331,7 +15096,7 @@ Harness reliability should be tested like other enterprise platforms.
 
 ---
 
-## Enterprise Tip: Introduce Service-level Objectives
+### Enterprise Tip: Introduce Service-level Objectives
 
 For a shared Harness platform, consider SLOs such as:
 
@@ -15351,7 +15116,7 @@ This makes platform expectations explicit.
 
 ---
 
-## Enterprise Tip: Establish Support Boundaries
+### Enterprise Tip: Establish Support Boundaries
 
 When a workflow fails, teams should know who owns the problem.
 
@@ -15378,7 +15143,7 @@ Clear ownership reduces operational friction.
 
 ---
 
-## Enterprise Tip: Document the Trust Model
+### Enterprise Tip: Document the Trust Model
 
 The Harness architecture should explicitly document what the enterprise trusts.
 
@@ -15404,7 +15169,7 @@ A clear trust model helps security and architecture reviews.
 
 ---
 
-## Enterprise Tip: Document Non-goals
+### Enterprise Tip: Document Non-goals
 
 A Harness platform should also state what it does not do.
 
@@ -15426,7 +15191,7 @@ Clear non-goals reduce unrealistic expectations.
 
 ---
 
-## Enterprise Tip: Keep Architecture Understandable to Humans
+### Enterprise Tip: Keep Architecture Understandable to Humans
 
 Enterprise platforms often become overabstracted.
 
@@ -15452,13 +15217,11 @@ If explaining the system requires understanding dozens of hidden automation laye
 
 ---
 
-## Enterprise Tip: Use Controlled Automation as the Success Metric
+### Enterprise Tip: Use Controlled Automation as the Success Metric
 
 The success of enterprise AI Engineering should not be measured by:
 
-```text
-How little human involvement remains?
-```
+> How little human involvement remains?
 
 A better question is:
 
@@ -15483,7 +15246,7 @@ This is the enterprise objective of Harness Architecture.
 
 ---
 
-## Enterprise Readiness Checklist
+### Enterprise Readiness Checklist
 
 Before expanding a Harness beyond a pilot, verify that the organization has answers for:
 
@@ -15520,9 +15283,7 @@ An enterprise Harness does not become enterprise-grade simply by running central
 
 It becomes enterprise-grade when its ownership, authority, evidence, security, operational model, and governance are explicit.
 
-**Chapter 13 status: In progress — next section: Decision Points**
-
-# Decision Points
+## Decision Points
 
 Harness Architecture contains several decisions that should be made explicitly rather than allowed to emerge accidentally from scripts, prompts, or agent behavior.
 
@@ -15540,9 +15301,9 @@ The purpose of these decision points is not to prescribe one universal architect
 
 ---
 
-## Decision Point: Where Should Workflow Authority Live?
+### Decision Point: Where Should Workflow Authority Live?
 
-### Option A — Inside the Agent
+#### Option A — Inside the Agent
 
 ```text
 Agent
@@ -15565,7 +15326,7 @@ Disadvantages:
 * approval logic can become ambiguous;
 * vendor lock-in increases.
 
-### Option B — Outside the Agent in the Harness
+#### Option B — Outside the Agent in the Harness
 
 ```text
 Harness
@@ -15591,13 +15352,11 @@ Disadvantages:
 * state must be managed;
 * workflow contracts must be defined.
 
-### Recommended Enterprise Direction
+#### Recommended Enterprise Direction
 
 Prefer:
 
-```text
-Harness-owned workflow authority
-```
+`Harness-owned workflow authority`
 
 The agent should reason about engineering work.
 
@@ -15605,9 +15364,9 @@ The Harness should reason about workflow progression according to policy.
 
 ---
 
-## Decision Point: One Agent Session or Multiple Role Contexts?
+### Decision Point: One Agent Session or Multiple Role Contexts?
 
-### Option A — One Long-running Session
+#### Option A — One Long-running Session
 
 ```text
 Plan
@@ -15632,7 +15391,7 @@ Disadvantages:
 * implementation assumptions leak into review;
 * difficult audit separation.
 
-### Option B — Separate Role Contexts
+#### Option B — Separate Role Contexts
 
 ```text
 Lead context
@@ -15657,7 +15416,7 @@ Disadvantages:
 * potentially higher cost;
 * structured handoffs are required.
 
-### Recommended Enterprise Direction
+#### Recommended Enterprise Direction
 
 Use separate contexts for materially different authorities, especially:
 
@@ -15672,9 +15431,9 @@ The same provider can still execute all of them.
 
 ---
 
-## Decision Point: How Much Repository Context Should Each Role Receive?
+### Decision Point: How Much Repository Context Should Each Role Receive?
 
-### Option A — Full Repository Context
+#### Option A — Full Repository Context
 
 Advantages:
 
@@ -15688,7 +15447,7 @@ Disadvantages:
 * unnecessary data exposure;
 * weaker role focus.
 
-### Option B — Role-specific Context
+#### Option B — Role-specific Context
 
 Advantages:
 
@@ -15702,13 +15461,11 @@ Disadvantages:
 * requires a Repository Intelligence resolver;
 * poor selection can omit important context.
 
-### Recommended Enterprise Direction
+#### Recommended Enterprise Direction
 
 Prefer:
 
-```text
-minimum sufficient context
-```
+`minimum sufficient context`
 
 rather than maximum context.
 
@@ -15716,9 +15473,9 @@ The Harness should expand context when evidence shows it is needed.
 
 ---
 
-## Decision Point: Should the Developer Agent Run Tests?
+### Decision Point: Should the Developer Agent Run Tests?
 
-### Option A — No Development-time Test Access
+#### Option A — No Development-time Test Access
 
 Advantages:
 
@@ -15731,7 +15488,7 @@ Disadvantages:
 * poor repair quality;
 * more failed authoritative gates.
 
-### Option B — Allow Development-time Tests
+#### Option B — Allow Development-time Tests
 
 Advantages:
 
@@ -15743,23 +15500,21 @@ Disadvantages:
 
 * risk of confusing development checks with authoritative evidence.
 
-### Recommended Enterprise Direction
+#### Recommended Enterprise Direction
 
 Allow the Developer Agent to run permitted development-time checks.
 
 Then separately execute:
 
-```text
-Harness-controlled authoritative gates
-```
+`Harness-controlled authoritative gates`
 
 Do not confuse convenience with authority.
 
 ---
 
-## Decision Point: Sequential or Parallel Gate Pipeline?
+### Decision Point: Sequential or Parallel Gate Pipeline?
 
-### Sequential
+#### Sequential
 
 ```text
 Build
@@ -15785,7 +15540,7 @@ Disadvantages:
 
 * slower total execution.
 
-### Parallel After Build
+#### Parallel After Build
 
 ```text
 Build
@@ -15810,21 +15565,19 @@ Disadvantages:
 * several failures may occur simultaneously;
 * orchestration is more complex.
 
-### Recommended Enterprise Direction
+#### Recommended Enterprise Direction
 
 Start sequentially.
 
 Parallelize independent expensive gates when:
 
-```text
-throughput justifies the complexity
-```
+`throughput justifies the complexity`
 
 ---
 
-## Decision Point: Should Every Workflow Run Every Gate?
+### Decision Point: Should Every Workflow Run Every Gate?
 
-### Option A — Universal Gate Pipeline
+#### Option A — Universal Gate Pipeline
 
 Advantages:
 
@@ -15838,7 +15591,7 @@ Disadvantages:
 * slow;
 * unnecessary for low-risk changes.
 
-### Option B — Risk-based Validation Profiles
+#### Option B — Risk-based Validation Profiles
 
 Advantages:
 
@@ -15851,7 +15604,7 @@ Disadvantages:
 * classification becomes important;
 * policy complexity increases.
 
-### Recommended Enterprise Direction
+#### Recommended Enterprise Direction
 
 Use risk-based profiles after the basic Harness is stable.
 
@@ -15869,9 +15622,9 @@ Mandatory enterprise controls should remain non-negotiable.
 
 ---
 
-## Decision Point: Who Selects the Validation Profile?
+### Decision Point: Who Selects the Validation Profile?
 
-### Option A — Developer Agent
+#### Option A — Developer Agent
 
 Risk:
 
@@ -15880,7 +15633,7 @@ Agent classifies change as low risk
 and removes difficult gates.
 ```
 
-### Option B — Harness Policy Only
+#### Option B — Harness Policy Only
 
 Advantages:
 
@@ -15891,7 +15644,7 @@ Disadvantages:
 
 * may be overly conservative.
 
-### Option C — Combined Classification
+#### Option C — Combined Classification
 
 Use:
 
@@ -15905,15 +15658,15 @@ repository metadata
 policy
 ```
 
-### Recommended Enterprise Direction
+#### Recommended Enterprise Direction
 
 Use the combined model, with policy remaining authoritative.
 
 ---
 
-## Decision Point: Should Failed Gates Automatically Trigger Repair?
+### Decision Point: Should Failed Gates Automatically Trigger Repair?
 
-### Option A — Every Failure Retries
+#### Option A — Every Failure Retries
 
 Advantages:
 
@@ -15925,7 +15678,7 @@ Disadvantages:
 * may waste cost;
 * can hide governance issues.
 
-### Option B — No Automatic Repair
+#### Option B — No Automatic Repair
 
 Advantages:
 
@@ -15935,7 +15688,7 @@ Disadvantages:
 
 * wastes AI's ability to diagnose and fix failures.
 
-### Option C — Failure-classified Repair
+#### Option C — Failure-classified Repair
 
 For example:
 
@@ -15956,7 +15709,7 @@ ApprovalRejected
     → stop
 ```
 
-### Recommended Enterprise Direction
+#### Recommended Enterprise Direction
 
 Use failure classification.
 
@@ -15964,7 +15717,7 @@ Retry only where repair is both meaningful and authorized.
 
 ---
 
-## Decision Point: How Many Retries Should Be Allowed?
+### Decision Point: How Many Retries Should Be Allowed?
 
 There is no universal number.
 
@@ -15978,9 +15731,7 @@ Consider:
 
 A reasonable starting point might be:
 
-```text
-2–3 Developer attempts
-```
+`2–3 Developer attempts`
 
 for standard application changes.
 
@@ -15990,17 +15741,15 @@ The critical decision is not the exact number.
 
 It is that:
 
-```text
-the number must be bounded
-```
+`the number must be bounded`
 
 and owned by policy.
 
 ---
 
-## Decision Point: Should the Harness Rerun All Gates After Repair?
+### Decision Point: Should the Harness Rerun All Gates After Repair?
 
-### Option A — Only the Failed Gate
+#### Option A — Only the Failed Gate
 
 Advantages:
 
@@ -16011,7 +15760,7 @@ Disadvantages:
 
 * repair may introduce new failures elsewhere.
 
-### Option B — Full Validation Profile
+#### Option B — Full Validation Profile
 
 Advantages:
 
@@ -16022,7 +15771,7 @@ Disadvantages:
 
 * greater execution time.
 
-### Option C — Dependency-aware Rerun
+#### Option C — Dependency-aware Rerun
 
 Example:
 
@@ -16039,7 +15788,7 @@ Contract file unchanged
 Contract Gate may remain valid
 ```
 
-### Recommended Enterprise Direction
+#### Recommended Enterprise Direction
 
 Begin with full reruns.
 
@@ -16049,9 +15798,9 @@ Correctness is more important than early optimization.
 
 ---
 
-## Decision Point: Should Agents Be Allowed to Modify Tests?
+### Decision Point: Should Agents Be Allowed to Modify Tests?
 
-### Option A — Never
+#### Option A — Never
 
 Advantages:
 
@@ -16061,7 +15810,7 @@ Disadvantages:
 
 * unrealistic for feature development.
 
-### Option B — Always
+#### Option B — Always
 
 Advantages:
 
@@ -16071,7 +15820,7 @@ Disadvantages:
 
 * allows opportunistic weakening.
 
-### Option C — Test Classification
+#### Option C — Test Classification
 
 For example:
 
@@ -16089,7 +15838,7 @@ security/compliance tests
     → protected
 ```
 
-### Recommended Enterprise Direction
+#### Recommended Enterprise Direction
 
 Use classification.
 
@@ -16097,7 +15846,7 @@ Do not treat all tests as having the same governance role.
 
 ---
 
-## Decision Point: Should Agents Modify Public Contracts?
+### Decision Point: Should Agents Modify Public Contracts?
 
 Public contracts may include:
 
@@ -16107,19 +15856,19 @@ event schemas
 integration contracts
 ```
 
-### Option A — Developer Agent May Change Freely
+#### Option A — Developer Agent May Change Freely
 
 Risk:
 
 * accidental breaking changes.
 
-### Option B — Contracts Are Fully Immutable
+#### Option B — Contracts Are Fully Immutable
 
 Risk:
 
 * legitimate evolution becomes difficult.
 
-### Option C — Contract Changes Require Elevated Workflow
+#### Option C — Contract Changes Require Elevated Workflow
 
 For example:
 
@@ -16133,19 +15882,17 @@ specialized Reviewer
 human approval
 ```
 
-### Recommended Enterprise Direction
+#### Recommended Enterprise Direction
 
 Treat public contract modification as an elevated change, not a prohibited one.
 
 ---
 
-## Decision Point: Should Agents Modify Gate Definitions?
+### Decision Point: Should Agents Modify Gate Definitions?
 
 For ordinary feature workflows, the recommended answer is:
 
-```text
-No
-```
+`No`
 
 If a gate appears incorrect:
 
@@ -16163,9 +15910,9 @@ A feature Agent should not redefine its own acceptance mechanism.
 
 ---
 
-## Decision Point: Where Should Gate Definitions Live?
+### Decision Point: Where Should Gate Definitions Live?
 
-### Repository-local
+#### Repository-local
 
 Advantages:
 
@@ -16178,7 +15925,7 @@ Disadvantages:
 * feature agents may have easier access;
 * duplication across repositories.
 
-### Centralized
+#### Centralized
 
 Advantages:
 
@@ -16191,7 +15938,7 @@ Disadvantages:
 * weaker repository customization;
 * central dependency.
 
-### Hybrid
+#### Hybrid
 
 ```text
 Enterprise gate catalog
@@ -16199,13 +15946,13 @@ Enterprise gate catalog
 Repository-specific gates
 ```
 
-### Recommended Enterprise Direction
+#### Recommended Enterprise Direction
 
 Use hybrid architecture for large organizations.
 
 ---
 
-## Decision Point: Hooks or Explicit Workflow Steps?
+### Decision Point: Hooks or Explicit Workflow Steps?
 
 Use a hook when the action is:
 
@@ -16242,9 +15989,9 @@ If yes, it probably should not be hidden inside a hook.
 
 ---
 
-## Decision Point: Local Harness or Central Enterprise Service?
+### Decision Point: Local Harness or Central Enterprise Service?
 
-### Local Harness
+#### Local Harness
 
 Best suited to:
 
@@ -16259,7 +16006,7 @@ Advantages:
 * rapid iteration;
 * low infrastructure overhead.
 
-### Central Service
+#### Central Service
 
 Best suited to:
 
@@ -16280,22 +16027,22 @@ Disadvantages:
 * higher platform cost;
 * operational ownership required.
 
-### Recommended Enterprise Direction
+#### Recommended Enterprise Direction
 
 Begin locally or at team level, but preserve architecture that can later centralize execution.
 
 ---
 
-## Decision Point: Worktrees, Containers, or Remote Workers?
+### Decision Point: Worktrees, Containers, or Remote Workers?
 
-### Git Worktrees
+#### Git Worktrees
 
 Suitable for:
 
 * local development;
 * lightweight isolation.
 
-### Containers
+#### Containers
 
 Suitable for:
 
@@ -16303,7 +16050,7 @@ Suitable for:
 * filesystem isolation;
 * controlled dependencies.
 
-### Remote Ephemeral Workers
+#### Remote Ephemeral Workers
 
 Suitable for:
 
@@ -16312,7 +16059,7 @@ Suitable for:
 * centralized credentials;
 * workload scaling.
 
-### Recommended Enterprise Direction
+#### Recommended Enterprise Direction
 
 Choose isolation proportional to authority.
 
@@ -16320,7 +16067,7 @@ A read-only Reviewer does not require the same isolation as a high-authority Dev
 
 ---
 
-## Decision Point: How Much Network Access Should Agents Receive?
+### Decision Point: How Much Network Access Should Agents Receive?
 
 Possible profiles:
 
@@ -16346,9 +16093,9 @@ For most enterprise coding workflows, an allowlisted model is preferable.
 
 ---
 
-## Decision Point: Should New Dependencies Be Automatically Allowed?
+### Decision Point: Should New Dependencies Be Automatically Allowed?
 
-### Automatically Allow
+#### Automatically Allow
 
 Advantages:
 
@@ -16358,7 +16105,7 @@ Risk:
 
 * supply-chain expansion.
 
-### Require Approval for All
+#### Require Approval for All
 
 Advantages:
 
@@ -16368,7 +16115,7 @@ Risk:
 
 * high friction.
 
-### Policy-based
+#### Policy-based
 
 For example:
 
@@ -16383,13 +16130,13 @@ new external package
     → approval required
 ```
 
-### Recommended Enterprise Direction
+#### Recommended Enterprise Direction
 
 Use policy-based dependency controls.
 
 ---
 
-## Decision Point: Where Should Human Approval Occur?
+### Decision Point: Where Should Human Approval Occur?
 
 Possible points include:
 
@@ -16406,9 +16153,7 @@ Approval should occur where human authority adds value.
 
 For standard feature work:
 
-```text
-after evidence is assembled
-```
+`after evidence is assembled`
 
 is usually more useful than asking humans to approve before the agent has produced anything.
 
@@ -16416,9 +16161,9 @@ For high-risk operations, earlier approval may also be appropriate.
 
 ---
 
-## Decision Point: Should Human Approval Be Required for Every Workflow?
+### Decision Point: Should Human Approval Be Required for Every Workflow?
 
-### Always
+#### Always
 
 Advantages:
 
@@ -16429,7 +16174,7 @@ Disadvantages:
 
 * limits automation benefits.
 
-### Never
+#### Never
 
 Advantages:
 
@@ -16439,7 +16184,7 @@ Disadvantages:
 
 * inappropriate for many enterprise risks.
 
-### Risk-based
+#### Risk-based
 
 Examples:
 
@@ -16457,7 +16202,7 @@ security change
     → specialized approval
 ```
 
-### Recommended Enterprise Direction
+#### Recommended Enterprise Direction
 
 Use risk-based human approval.
 
@@ -16465,13 +16210,11 @@ Autonomy should grow with evidence.
 
 ---
 
-## Decision Point: Can an Evaluator Score Automatically Approve a Workflow?
+### Decision Point: Can an Evaluator Score Automatically Approve a Workflow?
 
 Generally:
 
-```text
-not by itself
-```
+`not by itself`
 
 A high evaluator score may become one policy input.
 
@@ -16493,16 +16236,16 @@ The evaluator should not become sole authority.
 
 ---
 
-## Decision Point: Should the Reviewer Be Allowed to Modify Code?
+### Decision Point: Should the Reviewer Be Allowed to Modify Code?
 
-### Reviewer Read-only
+#### Reviewer Read-only
 
 Advantages:
 
 * strong role separation;
 * clean evidence.
 
-### Reviewer Can Fix Small Issues
+#### Reviewer Can Fix Small Issues
 
 Advantages:
 
@@ -16512,7 +16255,7 @@ Disadvantages:
 
 * review and implementation become mixed.
 
-### Recommended Enterprise Direction
+#### Recommended Enterprise Direction
 
 Prefer read-only Reviewer roles in mature Harnesses.
 
@@ -16530,7 +16273,7 @@ This preserves accountability.
 
 ---
 
-## Decision Point: Should the Validator Be an AI Agent?
+### Decision Point: Should the Validator Be an AI Agent?
 
 Not every validation concern requires AI.
 
@@ -16557,9 +16300,9 @@ rather than acting as another Test Gate.
 
 ---
 
-## Decision Point: How Should Agent Output Be Passed Between Steps?
+### Decision Point: How Should Agent Output Be Passed Between Steps?
 
-### Natural-language only
+#### Natural-language only
 
 Advantages:
 
@@ -16570,7 +16313,7 @@ Disadvantages:
 * difficult parsing;
 * inconsistent.
 
-### Fully structured
+#### Fully structured
 
 Advantages:
 
@@ -16580,7 +16323,7 @@ Disadvantages:
 
 * may lose useful explanation.
 
-### Hybrid
+#### Hybrid
 
 For example:
 
@@ -16592,7 +16335,7 @@ risks: [...]
 
 plus a Markdown explanation.
 
-### Recommended Enterprise Direction
+#### Recommended Enterprise Direction
 
 Use hybrid output.
 
@@ -16602,7 +16345,7 @@ Natural language for engineering reasoning.
 
 ---
 
-## Decision Point: What Happens if Structured Agent Output Is Invalid?
+### Decision Point: What Happens if Structured Agent Output Is Invalid?
 
 Do not silently infer the missing structure.
 
@@ -16619,9 +16362,9 @@ The Harness should validate agent-produced control data before acting on it.
 
 ---
 
-## Decision Point: File-based or Database Workflow State?
+### Decision Point: File-based or Database Workflow State?
 
-### File-based
+#### File-based
 
 Suitable for:
 
@@ -16635,7 +16378,7 @@ Advantages:
 * inspectable;
 * versionable if needed.
 
-### Database-backed
+#### Database-backed
 
 Suitable for:
 
@@ -16650,7 +16393,7 @@ Advantages:
 * durability;
 * recovery.
 
-### Recommended Enterprise Direction
+#### Recommended Enterprise Direction
 
 Use the simplest durable store that meets the workflow's scale.
 
@@ -16658,9 +16401,9 @@ State semantics matter more than storage technology.
 
 ---
 
-## Decision Point: Store Full Agent Transcripts or References?
+### Decision Point: Store Full Agent Transcripts or References?
 
-### Full Transcript
+#### Full Transcript
 
 Advantages:
 
@@ -16673,7 +16416,7 @@ Disadvantages:
 * storage;
 * retention complexity.
 
-### Metadata and Selected Evidence
+#### Metadata and Selected Evidence
 
 Advantages:
 
@@ -16684,7 +16427,7 @@ Disadvantages:
 
 * less forensic detail.
 
-### Recommended Enterprise Direction
+#### Recommended Enterprise Direction
 
 Define retention by data classification and audit need.
 
@@ -16692,7 +16435,7 @@ Do not assume all transcripts should be retained forever.
 
 ---
 
-## Decision Point: Centralized or Distributed Evidence Storage?
+### Decision Point: Centralized or Distributed Evidence Storage?
 
 Evidence may live in:
 
@@ -16710,9 +16453,9 @@ The key requirement is that the Harness can reconstruct the evidence chain by wo
 
 ---
 
-## Decision Point: Should CI/CD Execute Harness Gates?
+### Decision Point: Should CI/CD Execute Harness Gates?
 
-### Yes, reuse CI
+#### Yes, reuse CI
 
 Advantages:
 
@@ -16720,7 +16463,7 @@ Advantages:
 * existing infrastructure;
 * required checks already integrated.
 
-### No, dedicated Gate Runner
+#### No, dedicated Gate Runner
 
 Advantages:
 
@@ -16728,7 +16471,7 @@ Advantages:
 * more direct orchestration;
 * isolation from deployment pipelines.
 
-### Hybrid
+#### Hybrid
 
 For example:
 
@@ -16742,7 +16485,7 @@ PR CI gates
 authoritative repository validation
 ```
 
-### Recommended Enterprise Direction
+#### Recommended Enterprise Direction
 
 Reuse established CI capabilities wherever they already represent organizational authority.
 
@@ -16750,9 +16493,9 @@ Avoid needless duplication.
 
 ---
 
-## Decision Point: Is the Pull Request Created Before or After Full Validation?
+### Decision Point: Is the Pull Request Created Before or After Full Validation?
 
-### PR Created Early
+#### PR Created Early
 
 ```text
 Developer
@@ -16768,7 +16511,7 @@ Advantages:
 * review visibility;
 * existing CI integration.
 
-### PR Created After Validation
+#### PR Created After Validation
 
 ```text
 Developer
@@ -16785,7 +16528,7 @@ Advantages:
 * avoids noisy failed PRs;
 * controlled publication.
 
-### Hybrid
+#### Hybrid
 
 Create a working branch or draft PR early, but require:
 
@@ -16796,7 +16539,7 @@ approval
 
 before marking it ready.
 
-### Recommended Enterprise Direction
+#### Recommended Enterprise Direction
 
 Choose based on existing source-control practices.
 
@@ -16804,7 +16547,7 @@ Preserve the authority model regardless of timing.
 
 ---
 
-## Decision Point: Should the Harness Commit Agent Changes Automatically?
+### Decision Point: Should the Harness Commit Agent Changes Automatically?
 
 Possible models:
 
@@ -16831,7 +16574,7 @@ This keeps publishing credentials outside the Developer role.
 
 ---
 
-## Decision Point: How Should Approval Exceptions Work?
+### Decision Point: How Should Approval Exceptions Work?
 
 If exceptions are allowed, define:
 
@@ -16845,9 +16588,7 @@ evidence
 
 Avoid:
 
-```text
-skipSecurity=true
-```
+`skipSecurity=true`
 
 without accountability.
 
@@ -16855,15 +16596,13 @@ A proper exception should be treated as a governed artifact.
 
 ---
 
-## Decision Point: Should a Failed Security Gate Ever Be Bypassable?
+### Decision Point: Should a Failed Security Gate Ever Be Bypassable?
 
 This is an organizational risk decision.
 
 If bypasses are permitted:
 
-```text
-they should require elevated authority
-```
+`they should require elevated authority`
 
 and should be:
 
@@ -16878,31 +16617,29 @@ The Developer Agent should never have this authority.
 
 ---
 
-## Decision Point: How Should Ambiguous Requirements Be Handled?
+### Decision Point: How Should Ambiguous Requirements Be Handled?
 
-### Agent Chooses Best Interpretation
+#### Agent Chooses Best Interpretation
 
 Suitable only for low-risk ambiguity.
 
-### Lead Agent Escalates
+#### Lead Agent Escalates
 
 Useful when multiple valid interpretations exist.
 
-### Human Clarification Required
+#### Human Clarification Required
 
 Appropriate for business-critical ambiguity.
 
 The Harness should provide a state such as:
 
-```text
-ClarificationRequired
-```
+`ClarificationRequired`
 
 rather than forcing every workflow into automatic continuation.
 
 ---
 
-## Decision Point: What Happens When Knowledge Sources Conflict?
+### Decision Point: What Happens When Knowledge Sources Conflict?
 
 Define precedence.
 
@@ -16934,16 +16671,16 @@ Do not let the Agent silently choose whichever source makes implementation easie
 
 ---
 
-## Decision Point: Should Agent Providers Be Mixed in One Workflow?
+### Decision Point: Should Agent Providers Be Mixed in One Workflow?
 
-### Single Provider
+#### Single Provider
 
 Advantages:
 
 * simple operations;
 * consistent integration.
 
-### Multiple Providers
+#### Multiple Providers
 
 Advantages:
 
@@ -16957,7 +16694,7 @@ Disadvantages:
 * more integrations;
 * more policy complexity.
 
-### Recommended Enterprise Direction
+#### Recommended Enterprise Direction
 
 Design for multi-provider capability.
 
@@ -16965,7 +16702,7 @@ Use it only where it provides measurable value.
 
 ---
 
-## Decision Point: Should Different Providers Review Each Other?
+### Decision Point: Should Different Providers Review Each Other?
 
 This can provide useful reasoning diversity.
 
@@ -16999,9 +16736,9 @@ Keep deterministic gates.
 
 ---
 
-## Decision Point: How Much Vendor-specific Capability Should Be Used?
+### Decision Point: How Much Vendor-specific Capability Should Be Used?
 
-### Lowest Common Denominator
+#### Lowest Common Denominator
 
 Advantages:
 
@@ -17011,7 +16748,7 @@ Disadvantages:
 
 * wastes platform-specific capabilities.
 
-### Deep Vendor Coupling
+#### Deep Vendor Coupling
 
 Advantages:
 
@@ -17021,7 +16758,7 @@ Disadvantages:
 
 * high migration cost.
 
-### Adapter-based Approach
+#### Adapter-based Approach
 
 Recommended:
 
@@ -17037,7 +16774,7 @@ This balances portability and power.
 
 ---
 
-## Decision Point: When Should the Harness Become a Service?
+### Decision Point: When Should the Harness Become a Service?
 
 Signs that local scripts are no longer sufficient include:
 
@@ -17057,7 +16794,7 @@ Do not wait until dozens of teams have created incompatible Harnesses either.
 
 ---
 
-## Decision Point: When Should Autonomy Increase?
+### Decision Point: When Should Autonomy Increase?
 
 Autonomy should be evidence-based.
 
@@ -17074,21 +16811,17 @@ clear auditability
 
 Then the organization may move from:
 
-```text
-human approves every PR
-```
+`human approves every PR`
 
 toward:
 
-```text
-low-risk automatic progression
-```
+`low-risk automatic progression`
 
 High-risk workflows can remain human-controlled.
 
 ---
 
-## Decision Point: When Should Self-learning Be Introduced?
+### Decision Point: When Should Self-learning Be Introduced?
 
 Not before the static Harness is trustworthy.
 
@@ -17110,13 +16843,11 @@ Learning without governance creates drift.
 
 ---
 
-## Decision Point: Should Learning Recommendations Be Automatically Applied?
+### Decision Point: Should Learning Recommendations Be Automatically Applied?
 
 For enterprise standards, the default should be:
 
-```text
-No
-```
+`No`
 
 Prefer:
 
@@ -17134,7 +16865,7 @@ This preserves accountability and reproducibility.
 
 ---
 
-## Decision Matrix
+### Decision Matrix
 
 The following matrix summarizes several common choices.
 
@@ -17163,11 +16894,11 @@ It represents the direction in which enterprise maturity should evolve.
 
 ---
 
-## A Decision Example for Alpha Car Detailing
+### A Decision Example for Alpha Car Detailing
 
 For corporate fleet booking, Alpha Car Detailing could make the following choices:
 
-```yaml id="h7ejqa"
+```yaml
 workflowAuthority:
   owner: harness
 
@@ -17197,8 +16928,8 @@ contracts:
 
 permissions:
   developerWrite:
-    - src/Booking/**
-    - tests/Booking/**
+    - src/Booking.*/**
+    - tests/Booking.*/**
 
   protected:
     - harness/**
@@ -17238,9 +16969,7 @@ The enterprise goal is not to maximize control everywhere.
 
 It is to place the right kind of control at the right boundary.
 
-**Chapter 13 status: In progress — next section: Exercises**
-
-# Exercises
+## Exercises
 
 The exercises in this chapter are intended to move Harness Architecture from theory into explicit engineering decisions.
 
@@ -17250,7 +16979,7 @@ The goal is not merely to produce scripts. The goal is to demonstrate that execu
 
 ---
 
-## Exercise 1 — Identify Harness Components
+### Exercise 1 — Identify Harness Components
 
 Consider the corporate fleet booking workflow:
 
@@ -17303,7 +17032,7 @@ Failure modes
 
 Do not assign multiple unrelated responsibilities to one component merely to reduce the component count.
 
-### Expected Outcome
+#### Expected Outcome
 
 A clear responsibility map showing which parts belong to:
 
@@ -17321,7 +17050,7 @@ Evidence
 
 ---
 
-## Exercise 2 — Define Role Boundaries
+### Exercise 2 — Define Role Boundaries
 
 Create role definitions for:
 
@@ -17357,13 +17086,13 @@ silently bypass validation
 publish without authorization
 ```
 
-### Expected Outcome
+#### Expected Outcome
 
 A role matrix demonstrating that Roles are both reasoning boundaries and authority boundaries.
 
 ---
 
-## Exercise 3 — Separate the Control Plane and Execution Plane
+### Exercise 3 — Separate the Control Plane and Execution Plane
 
 Draw a Mermaid diagram showing the Alpha Car Detailing Harness divided into:
 
@@ -17396,13 +17125,13 @@ Then answer:
 4. Can an execution-plane agent directly change control-plane policy?
 5. What communication must cross the boundary?
 
-### Expected Outcome
+#### Expected Outcome
 
 An architecture in which the execution plane performs work while the control plane retains authority.
 
 ---
 
-## Exercise 4 — Define the Corporate Fleet Booking Goal
+### Exercise 4 — Define the Corporate Fleet Booking Goal
 
 Create a structured goal for the fleet booking capability.
 
@@ -17439,13 +17168,13 @@ goal:
 
 Expand this structure until it could be used as stable input to a Harness workflow.
 
-### Expected Outcome
+#### Expected Outcome
 
 A goal that remains stable across planning, implementation, validation, evaluation, and repair attempts.
 
 ---
 
-## Exercise 5 — Design the Repository Intelligence Package
+### Exercise 5 — Design the Repository Intelligence Package
 
 Determine which Repository Intelligence should be provided to the Lead Agent and Developer Agent.
 
@@ -17481,13 +17210,13 @@ freshness expectation
 role receiving it
 ```
 
-### Expected Outcome
+#### Expected Outcome
 
 A role-scoped Repository Intelligence design rather than a strategy of loading the entire repository into every Agent.
 
 ---
 
-## Exercise 6 — Create a Workflow Definition
+### Exercise 6 — Create a Workflow Definition
 
 Create a YAML workflow for corporate fleet booking.
 
@@ -17513,7 +17242,7 @@ The workflow should express orchestration policy, not application business logic
 
 Do not place the implementation of corporate fleet booking inside the workflow file.
 
-### Expected Outcome
+#### Expected Outcome
 
 A declarative representation of:
 
@@ -17527,13 +17256,11 @@ what output can be produced
 
 ---
 
-## Exercise 7 — Design a Validation Profile
+### Exercise 7 — Design a Validation Profile
 
 Create a validation profile named:
 
-```text
-public-contract-change
-```
+`public-contract-change`
 
 Include:
 
@@ -17559,13 +17286,13 @@ For each gate, specify:
 | Evidence artifact | JSON/log path             |
 | Owner             | Architecture Team         |
 
-### Expected Outcome
+#### Expected Outcome
 
 A gate profile that can be executed independently of the Developer Agent.
 
 ---
 
-## Exercise 8 — Build an Independent Test Gate
+### Exercise 8 — Build an Independent Test Gate
 
 Write a simplified Test Gate for Alpha Car Detailing.
 
@@ -17595,13 +17322,13 @@ Developer Agent:
 All tests pass.
 ```
 
-### Expected Outcome
+#### Expected Outcome
 
 An explicit understanding of the difference between agent-reported execution and authoritative gate evidence.
 
 ---
 
-## Exercise 9 — Build an Architecture Gate
+### Exercise 9 — Build an Architecture Gate
 
 Define at least three architecture rules for Alpha Car Detailing.
 
@@ -17625,13 +17352,13 @@ static analysis
 
 Then define what the Architecture Gate returns when a rule fails.
 
-### Expected Outcome
+#### Expected Outcome
 
 A concrete mechanism for detecting implementations that work functionally but violate architecture.
 
 ---
 
-## Exercise 10 — Protect Gate Definitions
+### Exercise 10 — Protect Gate Definitions
 
 Assume the following paths exist:
 
@@ -17660,9 +17387,7 @@ developer:
 
 Now define what should happen if the Developer Agent attempts to modify:
 
-```text
-harness/gates/tests.ps1
-```
+`harness/gates/tests.ps1`
 
 Include:
 
@@ -17673,17 +17398,17 @@ audit event
 retry behavior
 ```
 
-### Expected Outcome
+#### Expected Outcome
 
 A design where a failed gate cannot be bypassed by redefining the gate.
 
 ---
 
-## Exercise 11 — Design Pre-execution Hooks
+### Exercise 11 — Design Pre-execution Hooks
 
 Define three pre-execution hooks:
 
-### Pre-agent Hook
+#### Pre-agent Hook
 
 Possible checks:
 
@@ -17693,7 +17418,7 @@ workflow is not cancelled
 repository state is valid
 ```
 
-### Pre-command Hook
+#### Pre-command Hook
 
 Possible checks:
 
@@ -17703,7 +17428,7 @@ working directory is valid
 role has permission
 ```
 
-### Pre-write Hook
+#### Pre-write Hook
 
 Possible checks:
 
@@ -17723,13 +17448,13 @@ possible output
 failure behavior
 ```
 
-### Expected Outcome
+#### Expected Outcome
 
 Hooks that perform bounded guardrail behavior rather than hidden workflow orchestration.
 
 ---
 
-## Exercise 12 — Identify Bad Hook Design
+### Exercise 12 — Identify Bad Hook Design
 
 Review the following hypothetical hook:
 
@@ -17750,13 +17475,13 @@ Identify which responsibilities should be moved into explicit workflow steps.
 
 Explain why this hook has become a hidden orchestration engine.
 
-### Expected Outcome
+#### Expected Outcome
 
 A revised architecture in which hooks remain small and the primary workflow remains visible.
 
 ---
 
-## Exercise 13 — Design a Tool Gateway Policy
+### Exercise 13 — Design a Tool Gateway Policy
 
 Create a tool policy for the Developer Agent.
 
@@ -17787,13 +17512,13 @@ Denied
 
 Then explain why textual Instructions alone are not sufficient for destructive commands.
 
-### Expected Outcome
+#### Expected Outcome
 
 An enforceable tool policy aligned with least privilege.
 
 ---
 
-## Exercise 14 — Design a Retry Policy
+### Exercise 14 — Design a Retry Policy
 
 Create a retry policy for these failures:
 
@@ -17827,13 +17552,13 @@ evidence supplied to retry
 owner after exhaustion
 ```
 
-### Expected Outcome
+#### Expected Outcome
 
 A retry strategy based on failure semantics rather than one universal loop.
 
 ---
 
-## Exercise 15 — Create an Evidence-based Repair Prompt
+### Exercise 15 — Create an Evidence-based Repair Prompt
 
 Assume the Test Gate returns:
 
@@ -17863,17 +17588,15 @@ remaining attempts
 
 Do not ask the Agent simply to:
 
-```text
-fix the tests
-```
+`fix the tests`
 
-### Expected Outcome
+#### Expected Outcome
 
 A bounded repair request based on evidence.
 
 ---
 
-## Exercise 16 — Model Workflow State
+### Exercise 16 — Model Workflow State
 
 Create a state machine for the Harness.
 
@@ -17926,13 +17649,13 @@ Publishing
 
 should not be valid.
 
-### Expected Outcome
+#### Expected Outcome
 
 An explicit workflow state model rather than a set of informal script conditions.
 
 ---
 
-## Exercise 17 — Design a Workflow Record
+### Exercise 17 — Design a Workflow Record
 
 Create a JSON model for workflow state.
 
@@ -17956,7 +17679,7 @@ updatedAt
 
 Then extend it with enough information to resume execution after a Harness restart.
 
-### Expected Outcome
+#### Expected Outcome
 
 A durable workflow record that allows the Harness to answer:
 
@@ -17970,7 +17693,7 @@ What happens next?
 
 ---
 
-## Exercise 18 — Design a Structured Handoff
+### Exercise 18 — Design a Structured Handoff
 
 Create a Developer-to-Reviewer handoff for corporate fleet booking.
 
@@ -17988,13 +17711,13 @@ known issues
 
 Do not pass the entire Developer conversation as the only review context.
 
-### Expected Outcome
+#### Expected Outcome
 
 A review package that is stable, auditable, and independent of conversational history.
 
 ---
 
-## Exercise 19 — Separate Reviewer and Validator Responsibilities
+### Exercise 19 — Separate Reviewer and Validator Responsibilities
 
 Consider the following finding:
 
@@ -18008,23 +17731,19 @@ Answer:
 4. Could the Test Gate detect it if no relevant test exists?
 5. What should the Harness do next?
 
-### Expected Outcome
+#### Expected Outcome
 
 A clear distinction between:
 
-```text
-engineering-quality review
-```
+`engineering-quality review`
 
 and:
 
-```text
-acceptance-criteria validation
-```
+`acceptance-criteria validation`
 
 ---
 
-## Exercise 20 — Create an Evaluator Rubric
+### Exercise 20 — Create an Evaluator Rubric
 
 Create a 100-point evaluation rubric using:
 
@@ -18049,27 +17768,23 @@ means for each category.
 
 Then decide whether:
 
-```text
-85/100
-```
+`85/100`
 
 should automatically allow publication.
 
 Explain your answer.
 
-### Expected Outcome
+#### Expected Outcome
 
 An evaluator rubric that supports judgment without replacing deterministic or governance authority.
 
 ---
 
-## Exercise 21 — Design a Human Approval Package
+### Exercise 21 — Design a Human Approval Package
 
 Create an approval summary for:
 
-```text
-ACD-2026-0137
-```
+`ACD-2026-0137`
 
 Include:
 
@@ -18088,17 +17803,15 @@ Requested decision
 
 Keep the summary concise enough for a human to make a decision without reading raw logs.
 
-### Expected Outcome
+#### Expected Outcome
 
 An evidence-rich approval package rather than a generic:
 
-```text
-Approve AI changes?
-```
+> Approve AI changes?
 
 ---
 
-## Exercise 22 — Define a Risk-based Approval Model
+### Exercise 22 — Define a Risk-based Approval Model
 
 Classify the following changes:
 
@@ -18139,13 +17852,13 @@ required approval
 
 for each category.
 
-### Expected Outcome
+#### Expected Outcome
 
 A governance model in which approval is proportional to risk.
 
 ---
 
-## Exercise 23 — Design Workspace Isolation
+### Exercise 23 — Design Workspace Isolation
 
 Compare three execution approaches:
 
@@ -18171,23 +17884,19 @@ credential isolation
 
 Choose an approach for:
 
-```text
-local Alpha Car Detailing development
-```
+`local Alpha Car Detailing development`
 
 and another for:
 
-```text
-enterprise shared Harness execution
-```
+`enterprise shared Harness execution`
 
-### Expected Outcome
+#### Expected Outcome
 
 An isolation strategy proportional to execution authority.
 
 ---
 
-## Exercise 24 — Define Credential Boundaries
+### Exercise 24 — Define Credential Boundaries
 
 Design credentials for:
 
@@ -18213,13 +17922,13 @@ cloud access
 production access
 ```
 
-### Expected Outcome
+#### Expected Outcome
 
 A least-privilege identity architecture.
 
 ---
 
-## Exercise 25 — Design an Audit Record
+### Exercise 25 — Design an Audit Record
 
 Create an audit schema capable of recording:
 
@@ -18245,19 +17954,19 @@ git push --force
 
 and the Harness blocked the command.
 
-### Expected Outcome
+#### Expected Outcome
 
 A machine-readable record explaining what was requested, what policy decided, and what actually happened.
 
 ---
 
-## Exercise 26 — Design a Metrics Model
+### Exercise 26 — Design a Metrics Model
 
 Define at least ten Harness metrics.
 
 Include measures from:
 
-### Execution
+#### Execution
 
 ```text
 workflow duration
@@ -18265,42 +17974,40 @@ agent duration
 gate duration
 ```
 
-### Quality
+#### Quality
 
 ```text
 first-pass gate rate
 review rejection rate
 ```
 
-### Retry
+#### Retry
 
 ```text
 average Developer attempts
 retry exhaustion rate
 ```
 
-### Engineering Outcomes
+#### Engineering Outcomes
 
 ```text
 human rework
 post-merge defects
 ```
 
-### Cost
+#### Cost
 
-```text
-cost per accepted workflow
-```
+`cost per accepted workflow`
 
 Then identify at least three misleading metrics that should not be interpreted without additional context.
 
-### Expected Outcome
+#### Expected Outcome
 
 A metrics model focused on engineering value rather than only AI activity.
 
 ---
 
-## Exercise 27 — Detect Weak Success Metrics
+### Exercise 27 — Detect Weak Success Metrics
 
 Consider this dashboard:
 
@@ -18328,13 +18035,13 @@ review rejection
 
 Explain why apparently excellent Harness metrics may still describe a weak engineering process.
 
-### Expected Outcome
+#### Expected Outcome
 
 An understanding that Harness metrics require downstream quality context.
 
 ---
 
-## Exercise 28 — Design for Resume
+### Exercise 28 — Design for Resume
 
 Assume this workflow history:
 
@@ -18362,13 +18069,13 @@ continue with Reviewer?
 
 State what evidence must exist to resume safely.
 
-### Expected Outcome
+#### Expected Outcome
 
 A checkpoint-based recovery strategy using persistent workflow state.
 
 ---
 
-## Exercise 29 — Design Idempotent Pull Request Creation
+### Exercise 29 — Design Idempotent Pull Request Creation
 
 Assume the Output Manager calls the Git provider to create a pull request.
 
@@ -18385,13 +18092,13 @@ PR metadata
 lookup before retry
 ```
 
-### Expected Outcome
+#### Expected Outcome
 
 A publication process that does not create duplicate pull requests after infrastructure retries.
 
 ---
 
-## Exercise 30 — Handle Conflicting Repository Intelligence
+### Exercise 30 — Handle Conflicting Repository Intelligence
 
 Suppose the sources say:
 
@@ -18414,9 +18121,7 @@ Should the Lead Agent decide?
 
 Should the workflow enter:
 
-```text
-ClarificationRequired
-```
+`ClarificationRequired`
 
 Define:
 
@@ -18426,13 +18131,13 @@ escalation path
 evidence record
 ```
 
-### Expected Outcome
+#### Expected Outcome
 
 A workflow that treats ambiguity as explicit engineering information rather than allowing arbitrary Agent interpretation.
 
 ---
 
-## Exercise 31 — Handle a Failed Security Gate
+### Exercise 31 — Handle a Failed Security Gate
 
 Assume:
 
@@ -18452,49 +18157,41 @@ Answer:
 4. When could repair be permitted?
 5. Who could authorize a security exception?
 
-### Expected Outcome
+#### Expected Outcome
 
 A clear authority hierarchy between deterministic validation, evaluation, and governance.
 
 ---
 
-## Exercise 32 — Handle a Gate Infrastructure Failure
+### Exercise 32 — Handle a Gate Infrastructure Failure
 
 Assume:
 
-```text
-Security scanner timed out.
-```
+> Security scanner timed out.
 
 Compare this with:
 
-```text
-Security scanner detected a critical vulnerability.
-```
+> Security scanner detected a critical vulnerability.
 
 Define separate Harness outcomes.
 
 For example:
 
-```text
-InfrastructureFailure
-```
+`InfrastructureFailure`
 
 versus:
 
-```text
-ValidationFailure
-```
+`ValidationFailure`
 
 Design retry behavior for each.
 
-### Expected Outcome
+#### Expected Outcome
 
 A Harness that does not misclassify infrastructure instability as implementation failure.
 
 ---
 
-## Exercise 33 — Design Protected Asset Categories
+### Exercise 33 — Design Protected Asset Categories
 
 Create protection categories such as:
 
@@ -18519,17 +18216,15 @@ approval configuration
 
 Then define the required authority to modify each category.
 
-### Expected Outcome
+#### Expected Outcome
 
 A more nuanced model than simply:
 
-```text
-Agent can write / Agent cannot write
-```
+`Agent can write / Agent cannot write`
 
 ---
 
-## Exercise 34 — Design a Gate Exception Process
+### Exercise 34 — Design a Gate Exception Process
 
 Assume an Architecture Gate is believed to be incorrect for one legitimate change.
 
@@ -18550,13 +18245,13 @@ follow-up
 
 Do not allow the Developer Agent to modify the Architecture Gate directly.
 
-### Expected Outcome
+#### Expected Outcome
 
 A governed escape mechanism that does not undermine gate integrity.
 
 ---
 
-## Exercise 35 — Design a Multi-provider Harness
+### Exercise 35 — Design a Multi-provider Harness
 
 Assume Alpha Car Detailing uses:
 
@@ -18589,13 +18284,13 @@ AgentExecutionRequest
 AgentExecutionResult
 ```
 
-### Expected Outcome
+#### Expected Outcome
 
 A Harness whose control architecture does not depend on one provider.
 
 ---
 
-## Exercise 36 — Evaluate Cross-provider Review
+### Exercise 36 — Evaluate Cross-provider Review
 
 Suppose Claude implements the feature and Codex reviews it.
 
@@ -18610,17 +18305,17 @@ Security Gate
 
 Explain why or why not.
 
-### Expected Outcome
+#### Expected Outcome
 
 Recognition that independent AI reasoning is still probabilistic evaluation rather than deterministic verification.
 
 ---
 
-## Exercise 37 — Design Local and Enterprise Deployment Models
+### Exercise 37 — Design Local and Enterprise Deployment Models
 
 Design two diagrams.
 
-### Local
+#### Local
 
 Include:
 
@@ -18633,7 +18328,7 @@ local gates
 manual approval
 ```
 
-### Enterprise
+#### Enterprise
 
 Include:
 
@@ -18652,13 +18347,13 @@ Output Manager
 
 Identify which architectural responsibilities remain identical in both models.
 
-### Expected Outcome
+#### Expected Outcome
 
 An understanding that enterprise deployment changes scale and infrastructure but should not redefine core Harness semantics.
 
 ---
 
-## Exercise 38 — Identify the Trust Boundaries
+### Exercise 38 — Identify the Trust Boundaries
 
 Create a trust-boundary diagram for the Harness.
 
@@ -18682,13 +18377,13 @@ gate results
 approval records
 ```
 
-### Expected Outcome
+#### Expected Outcome
 
 An explicit trust model.
 
 ---
 
-## Exercise 39 — Design Prompt-injection Protection
+### Exercise 39 — Design Prompt-injection Protection
 
 Assume a repository Markdown file contains:
 
@@ -18712,17 +18407,15 @@ least privilege
 
 Do not rely exclusively on telling the Agent:
 
-```text
-ignore malicious instructions
-```
+`ignore malicious instructions`
 
-### Expected Outcome
+#### Expected Outcome
 
 Defense in depth against untrusted repository content.
 
 ---
 
-## Exercise 40 — Test the Harness Itself
+### Exercise 40 — Test the Harness Itself
 
 Create automated Harness test cases for:
 
@@ -18753,13 +18446,13 @@ expected state
 expected evidence
 ```
 
-### Expected Outcome
+#### Expected Outcome
 
 A test suite that treats the Harness as production software.
 
 ---
 
-## Exercise 41 — Conduct a Failure-mode Review
+### Exercise 41 — Conduct a Failure-mode Review
 
 For each component, identify what happens if it fails:
 
@@ -18783,13 +18476,13 @@ escalate
 degrade
 ```
 
-### Expected Outcome
+#### Expected Outcome
 
 A Harness Architecture that is designed around failure behavior, not only the happy path.
 
 ---
 
-## Exercise 42 — Define Enterprise Ownership
+### Exercise 42 — Define Enterprise Ownership
 
 Create an ownership matrix for:
 
@@ -18818,13 +18511,13 @@ Tech Lead
 Engineering Governance
 ```
 
-### Expected Outcome
+#### Expected Outcome
 
 A socio-technical ownership model that supports the architecture after deployment.
 
 ---
 
-## Exercise 43 — Design an Enterprise Policy Hierarchy
+### Exercise 43 — Design an Enterprise Policy Hierarchy
 
 Create a policy model:
 
@@ -18858,13 +18551,13 @@ FleetBookingCreated requires contract approval.
 
 Define what happens when a lower-level policy conflicts with a mandatory higher-level policy.
 
-### Expected Outcome
+#### Expected Outcome
 
 A scalable governance model that avoids copying all enterprise rules into every repository.
 
 ---
 
-## Exercise 44 — Design Progressive Autonomy
+### Exercise 44 — Design Progressive Autonomy
 
 Create four maturity stages for Alpha Car Detailing.
 
@@ -18898,19 +18591,17 @@ security outcomes
 audit completeness
 ```
 
-### Expected Outcome
+#### Expected Outcome
 
 An evidence-based autonomy roadmap.
 
 ---
 
-## Exercise 45 — Design a Self-learning Proposal Flow
+### Exercise 45 — Design a Self-learning Proposal Flow
 
 Assume Harness metrics show that the Skill:
 
-```text
-add-integration-event
-```
+`add-integration-event`
 
 is associated with repeated Contract Gate failures.
 
@@ -18930,13 +18621,13 @@ New Skill version
 
 State explicitly why the Harness should not silently rewrite the Skill.
 
-### Expected Outcome
+#### Expected Outcome
 
 A governed bridge from static Harness Architecture toward the self-learning systems discussed later in the handbook.
 
 ---
 
-## Exercise 46 — Architecture Review Workshop
+### Exercise 46 — Architecture Review Workshop
 
 Conduct a review of your proposed Harness using the following questions:
 
@@ -18966,21 +18657,19 @@ It depends on the agent
 
 create an architecture action item.
 
-### Expected Outcome
+#### Expected Outcome
 
 A concrete improvement backlog for the Harness design.
 
 ---
 
-## Exercise 47 — Full Corporate Fleet Booking Walkthrough
+### Exercise 47 — Full Corporate Fleet Booking Walkthrough
 
 Run the complete scenario on paper or in a prototype.
 
 Start with:
 
-```text
-Implement corporate fleet booking.
-```
+> Implement corporate fleet booking.
 
 Walk through:
 
@@ -19027,13 +18716,13 @@ evidence
 next-state decision
 ```
 
-### Expected Outcome
+#### Expected Outcome
 
 An end-to-end trace demonstrating that no critical workflow decision depends only on conversational Agent behavior.
 
 ---
 
-## Exercise 48 — Minimal Harness Implementation
+### Exercise 48 — Minimal Harness Implementation
 
 Implement the smallest Harness you can that still preserves the chapter's core invariants.
 
@@ -19062,13 +18751,13 @@ manual approval
 
 Do not add distributed infrastructure unless it solves an immediate requirement.
 
-### Expected Outcome
+#### Expected Outcome
 
 A small but architecturally sound Harness.
 
 ---
 
-## Exercise 49 — Enterprise Evolution Plan
+### Exercise 49 — Enterprise Evolution Plan
 
 Starting from the minimal Harness in Exercise 48, create an evolution roadmap.
 
@@ -19104,13 +18793,13 @@ new risk
 new operational responsibility
 ```
 
-### Expected Outcome
+#### Expected Outcome
 
 A deliberate path from local experimentation to enterprise Harness Engineering.
 
 ---
 
-## Exercise 50 — Define the Harness Invariants
+### Exercise 50 — Define the Harness Invariants
 
 Write the ten to fifteen statements that must always remain true in your Harness.
 
@@ -19136,13 +18825,13 @@ Treat these invariants as architectural requirements.
 
 Future implementation decisions should be evaluated against them.
 
-### Expected Outcome
+#### Expected Outcome
 
 A concise set of principles against which future Harness changes can be reviewed.
 
 ---
 
-## Exercise Completion Criteria
+### Exercise Completion Criteria
 
 You should be able to complete these exercises without depending on a particular AI provider.
 
@@ -19171,9 +18860,7 @@ where appropriate.
 
 That transformation—from assumed Agent behavior to explicit engineering control—is one of the central skills of Harness Architecture.
 
-**Chapter 13 status: In progress — next section: Interview Questions**
-
-# Interview Questions
+## Interview Questions
 
 The following questions are intended for senior developers, architects, technical leads, engineering managers, AI platform engineers, and practitioners designing enterprise AI-assisted development systems.
 
@@ -19181,7 +18868,7 @@ They focus on architectural reasoning rather than product trivia.
 
 ---
 
-## 1. What is an AI Engineering Harness?
+### 1. What is an AI Engineering Harness?
 
 An AI Engineering Harness is the controlled automation layer that coordinates AI Agents, Repository Intelligence, tools, deterministic validation, evaluation, approvals, workflow state, metrics, and engineering outputs.
 
@@ -19201,7 +18888,7 @@ published
 
 ---
 
-## 2. How is a Harness different from an AI Agent?
+### 2. How is a Harness different from an AI Agent?
 
 An AI Agent performs reasoning and action within an assigned responsibility.
 
@@ -19234,7 +18921,7 @@ The Harness governs the execution of that work.
 
 ---
 
-## 3. Why should the Developer Agent not validate its own implementation?
+### 3. Why should the Developer Agent not validate its own implementation?
 
 Because the same reasoning process that generated the implementation should not be the sole authority that declares it correct.
 
@@ -19265,7 +18952,7 @@ This creates separation between generation and verification.
 
 ---
 
-## 4. What is a deterministic validation gate?
+### 4. What is a deterministic validation gate?
 
 A deterministic validation gate evaluates an objective condition using a repeatable mechanism.
 
@@ -19294,7 +18981,7 @@ It should not depend solely on an AI Agent's interpretation.
 
 ---
 
-## 5. Why are deterministic gates important in AI-assisted development?
+### 5. Why are deterministic gates important in AI-assisted development?
 
 AI reasoning is probabilistic.
 
@@ -19302,15 +18989,11 @@ Deterministic gates provide objective boundaries around parts of the engineering
 
 For example:
 
-```text
-"Does the solution compile?"
-```
+`"Does the solution compile?"`
 
 should be answered by the compiler.
 
-```text
-"Do architecture tests pass?"
-```
+`"Do architecture tests pass?"`
 
 should be answered by the architecture-test runner.
 
@@ -19318,7 +19001,7 @@ This reduces reliance on Agent confidence and makes the workflow more auditable.
 
 ---
 
-## 6. What is the difference between validation and evaluation?
+### 6. What is the difference between validation and evaluation?
 
 Validation asks:
 
@@ -19358,7 +19041,7 @@ Evaluation is generally qualitative.
 
 ---
 
-## 7. Can an evaluator override a failed deterministic gate?
+### 7. Can an evaluator override a failed deterministic gate?
 
 No, not if the gate is required.
 
@@ -19372,9 +19055,7 @@ Evaluator: 96/100
 
 should still produce:
 
-```text
-Workflow: Failed
-```
+`Workflow: Failed`
 
 unless an explicit governed exception process exists.
 
@@ -19382,15 +19063,13 @@ Evaluator quality judgments should not redefine objective gate results.
 
 ---
 
-## 8. What is meant by gate independence?
+### 8. What is meant by gate independence?
 
 Gate independence means the implementation Agent does not control the authoritative mechanism used to determine whether the implementation passed validation.
 
 The Developer Agent may run:
 
-```text
-dotnet test
-```
+`dotnet test`
 
 during development.
 
@@ -19410,7 +19089,7 @@ simply to create a passing result.
 
 ---
 
-## 9. Why should gate definitions be protected?
+### 9. Why should gate definitions be protected?
 
 Because gate definitions determine what the organization considers acceptable.
 
@@ -19432,7 +19111,7 @@ Gate changes should normally occur through a separate governed workflow.
 
 ---
 
-## 10. What is the difference between the Harness control plane and execution plane?
+### 10. What is the difference between the Harness control plane and execution plane?
 
 The **control plane** decides what is allowed to happen.
 
@@ -19466,27 +19145,23 @@ The control plane governs.
 
 ---
 
-## 11. Why is control-plane separation useful even in a local Harness?
+### 11. Why is control-plane separation useful even in a local Harness?
 
 Because it creates architectural boundaries before infrastructure scale is introduced.
 
 A local Harness may run everything on one machine, but still conceptually separate:
 
-```text
-workflow logic
-```
+`workflow logic`
 
 from:
 
-```text
-Agent and tool execution
-```
+`Agent and tool execution`
 
 This makes later evolution toward containers, remote workers, central policy, or enterprise orchestration much easier.
 
 ---
 
-## 12. What is Repository Intelligence?
+### 12. What is Repository Intelligence?
 
 Repository Intelligence is the governed context that helps AI Agents understand how to work correctly within a repository.
 
@@ -19511,7 +19186,7 @@ The Harness controls how that context is used during execution.
 
 ---
 
-## 13. What is the difference between Repository Intelligence and Harness Architecture?
+### 13. What is the difference between Repository Intelligence and Harness Architecture?
 
 Repository Intelligence answers:
 
@@ -19541,7 +19216,7 @@ Both work together.
 
 ---
 
-## 14. What is role orchestration?
+### 14. What is role orchestration?
 
 Role orchestration is the controlled execution of specialized responsibilities such as:
 
@@ -19567,7 +19242,7 @@ They should also define responsibility and authority.
 
 ---
 
-## 15. Why should Reviewer and Developer contexts be separated?
+### 15. Why should Reviewer and Developer contexts be separated?
 
 A Reviewer that inherits the Developer's entire reasoning history may also inherit the Developer's assumptions and justifications.
 
@@ -19585,7 +19260,7 @@ This encourages review of the implementation itself rather than continuation of 
 
 ---
 
-## 16. What is the difference between a Reviewer and a Validator?
+### 16. What is the difference between a Reviewer and a Validator?
 
 A useful distinction is:
 
@@ -19605,7 +19280,7 @@ The Validator may still identify an unmet acceptance criterion.
 
 ---
 
-## 17. What is the role of an Evaluator Agent?
+### 17. What is the role of an Evaluator Agent?
 
 The Evaluator assesses broader qualitative quality using a rubric.
 
@@ -19634,7 +19309,7 @@ It should not replace deterministic gates or human authority.
 
 ---
 
-## 18. Why should evaluator rubrics be explicit?
+### 18. Why should evaluator rubrics be explicit?
 
 Without a rubric, evaluations may vary considerably between executions.
 
@@ -19659,7 +19334,7 @@ The result remains qualitative, but the criteria are visible.
 
 ---
 
-## 19. What is a structured handoff?
+### 19. What is a structured handoff?
 
 A structured handoff is an explicit artifact passed from one role to another.
 
@@ -19678,7 +19353,7 @@ This is stronger than relying on conversational memory.
 
 ---
 
-## 20. Why are structured handoffs important?
+### 20. Why are structured handoffs important?
 
 They improve:
 
@@ -19692,7 +19367,7 @@ They also allow downstream roles to consume stable evidence rather than a long A
 
 ---
 
-## 21. What is workflow state?
+### 21. What is workflow state?
 
 Workflow state represents the current lifecycle position of a Harness execution.
 
@@ -19725,7 +19400,7 @@ State is essential for reliable orchestration and recovery.
 
 ---
 
-## 22. Why should workflow state not exist only in Agent conversation history?
+### 22. Why should workflow state not exist only in Agent conversation history?
 
 Conversation history is not a reliable enterprise workflow database.
 
@@ -19741,7 +19416,7 @@ Important workflow state should be persisted independently of the model context.
 
 ---
 
-## 23. Why are explicit state machines preferable to informal flags?
+### 23. Why are explicit state machines preferable to informal flags?
 
 A state machine makes valid and invalid transitions visible.
 
@@ -19776,7 +19451,7 @@ isApproved
 
 ---
 
-## 24. What is a Hook in Harness Architecture?
+### 24. What is a Hook in Harness Architecture?
 
 A Hook is a bounded mechanism that runs around an important execution event.
 
@@ -19797,7 +19472,7 @@ Hooks are useful for enforcing local guardrails.
 
 ---
 
-## 25. What should Hooks be used for?
+### 25. What should Hooks be used for?
 
 Good Hook responsibilities include:
 
@@ -19813,7 +19488,7 @@ Hooks should remain small and predictable.
 
 ---
 
-## 26. What should Hooks not be used for?
+### 26. What should Hooks not be used for?
 
 Hooks should not become hidden workflow engines.
 
@@ -19831,7 +19506,7 @@ Those are first-class orchestration responsibilities.
 
 ---
 
-## 27. What is an automated guardrail?
+### 27. What is an automated guardrail?
 
 A guardrail is an enforced constraint on Agent activity.
 
@@ -19851,15 +19526,13 @@ Instructions merely tell the Agent what it should do.
 
 ---
 
-## 28. Why are Instructions not sufficient for security enforcement?
+### 28. Why are Instructions not sufficient for security enforcement?
 
 Because textual Instructions influence Agent behavior but do not guarantee it.
 
 For example:
 
-```text
-Do not run terraform destroy.
-```
+> Do not run terraform destroy.
 
 is weaker than:
 
@@ -19872,7 +19545,7 @@ High-risk controls should be enforceable outside the Agent where practical.
 
 ---
 
-## 29. What is a Tool Gateway?
+### 29. What is a Tool Gateway?
 
 A Tool Gateway controls access to commands, files, APIs, external services, and other capabilities used by Agents.
 
@@ -19892,7 +19565,7 @@ This creates a boundary between Agent intent and execution authority.
 
 ---
 
-## 30. What does least privilege mean in a Harness?
+### 30. What does least privilege mean in a Harness?
 
 Each role receives only the permissions required for its responsibility.
 
@@ -19922,7 +19595,7 @@ Not every role should receive the same broad identity.
 
 ---
 
-## 31. Why should implementation and publishing authority be separated?
+### 31. Why should implementation and publishing authority be separated?
 
 Because a Developer Agent that can:
 
@@ -19959,7 +19632,7 @@ This reduces blast radius.
 
 ---
 
-## 32. Why should agents not receive production credentials by default?
+### 32. Why should agents not receive production credentials by default?
 
 Because coding work usually does not require production authority.
 
@@ -19974,7 +19647,7 @@ Deployment and production access should normally remain behind separate controll
 
 ---
 
-## 33. What is workspace isolation?
+### 33. What is workspace isolation?
 
 Workspace isolation gives each Harness workflow its own mutable repository environment.
 
@@ -19991,7 +19664,7 @@ This prevents concurrent workflows from modifying the same directory and corrupt
 
 ---
 
-## 34. Why does workspace isolation matter for validation evidence?
+### 34. Why does workspace isolation matter for validation evidence?
 
 If multiple Agents modify the same workspace, the Harness may not know which workflow produced the code that was validated.
 
@@ -20007,15 +19680,13 @@ concurrency
 
 ---
 
-## 35. What is a bounded retry?
+### 35. What is a bounded retry?
 
 A bounded retry allows the Agent to repair a failure only a defined number of times.
 
 For example:
 
-```text
-maxDeveloperAttempts: 3
-```
+`maxDeveloperAttempts: 3`
 
 After the limit is reached:
 
@@ -20029,7 +19700,7 @@ This prevents infinite repair loops.
 
 ---
 
-## 36. Why are unlimited retries an anti-pattern?
+### 36. Why are unlimited retries an anti-pattern?
 
 Because repeated autonomous repair can lead to:
 
@@ -20043,7 +19714,7 @@ Autonomy requires the ability to stop.
 
 ---
 
-## 37. Why should failure types be classified?
+### 37. Why should failure types be classified?
 
 Different failures require different responses.
 
@@ -20067,7 +19738,7 @@ A single universal retry strategy is usually incorrect.
 
 ---
 
-## 38. What should be included in an evidence-based repair prompt?
+### 38. What should be included in an evidence-based repair prompt?
 
 A good repair request includes:
 
@@ -20098,25 +19769,19 @@ The Agent should repair against evidence rather than vague failure language.
 
 ---
 
-## 39. Why should required gates normally fail closed?
+### 39. Why should required gates normally fail closed?
 
 Because:
 
-```text
-No result
-```
+`No result`
 
 should not silently become:
 
-```text
-Pass
-```
+`Pass`
 
 For example, if the Security scanner is unavailable, the correct result may be:
 
-```text
-InfrastructureError
-```
+`InfrastructureError`
 
 followed by retry or workflow suspension.
 
@@ -20124,29 +19789,25 @@ Unknown does not equal success.
 
 ---
 
-## 40. What is the difference between a validation failure and infrastructure failure?
+### 40. What is the difference between a validation failure and infrastructure failure?
 
 A validation failure means the implementation failed the check.
 
 For example:
 
-```text
-Test assertion failed.
-```
+> Test assertion failed.
 
 An infrastructure failure means the check could not be executed reliably.
 
 For example:
 
-```text
-Test runner unavailable.
-```
+> Test runner unavailable.
 
 These should produce different Harness behavior.
 
 ---
 
-## 41. Why should all gates sometimes be rerun after repair?
+### 41. Why should all gates sometimes be rerun after repair?
 
 Because a repair for one failure may introduce another.
 
@@ -20160,9 +19821,7 @@ Developer changes Domain code
 
 may accidentally create:
 
-```text
-Architecture violation
-```
+`Architecture violation`
 
 A full validation rerun provides stronger confidence.
 
@@ -20170,7 +19829,7 @@ Later, impact-aware optimization can reduce unnecessary gate execution.
 
 ---
 
-## 42. Should AI Agents be allowed to modify tests?
+### 42. Should AI Agents be allowed to modify tests?
 
 Yes, where legitimate.
 
@@ -20196,7 +19855,7 @@ The goal is to prevent opportunistic weakening without making feature developmen
 
 ---
 
-## 43. Why are public contract changes often higher risk?
+### 43. Why are public contract changes often higher risk?
 
 Because APIs and events may have consumers outside the repository.
 
@@ -20220,7 +19879,7 @@ human approval
 
 ---
 
-## 44. What is risk-based validation?
+### 44. What is risk-based validation?
 
 Risk-based validation selects the required gate profile according to the type of change.
 
@@ -20244,7 +19903,7 @@ This balances control and cost.
 
 ---
 
-## 45. Who should determine the risk profile?
+### 45. Who should determine the risk profile?
 
 AI can assist, but policy should remain authoritative.
 
@@ -20264,7 +19923,7 @@ The Developer Agent should not be able to reduce required validation simply by d
 
 ---
 
-## 46. What is risk-based human approval?
+### 46. What is risk-based human approval?
 
 Human approval requirements vary according to change risk.
 
@@ -20291,7 +19950,7 @@ This avoids both unnecessary manual friction and uncontrolled autonomy.
 
 ---
 
-## 47. Why is human approval not a failure of automation?
+### 47. Why is human approval not a failure of automation?
 
 Because the goal is not to remove humans.
 
@@ -20301,7 +19960,7 @@ A mature Harness may perform most work automatically and still intentionally sto
 
 ---
 
-## 48. What should a good human approval package contain?
+### 48. What should a good human approval package contain?
 
 It should provide concise decision-quality evidence:
 
@@ -20320,13 +19979,11 @@ The approver should not need to search through raw logs merely to understand wha
 
 ---
 
-## 49. Why should approval be authenticated?
+### 49. Why should approval be authenticated?
 
 Because Agent-generated text such as:
 
-```text
-Approved by Architect.
-```
+> Approved by Architect.
 
 does not establish actual human authority.
 
@@ -20342,7 +19999,7 @@ with a trusted identity.
 
 ---
 
-## 50. Why is auditability important in Harness Architecture?
+### 50. Why is auditability important in Harness Architecture?
 
 The organization should be able to answer:
 
@@ -20368,7 +20025,7 @@ Without this evidence, enterprise AI automation becomes difficult to govern and 
 
 ---
 
-## 51. What is the difference between logs and audit records?
+### 51. What is the difference between logs and audit records?
 
 Logs primarily help explain system operation.
 
@@ -20376,9 +20033,7 @@ Audit records explain governed actions.
 
 For example:
 
-```text
-Gate process started at 10:00
-```
+`Gate process started at 10:00`
 
 is operational logging.
 
@@ -20393,7 +20048,7 @@ The same system may produce both.
 
 ---
 
-## 52. Why should every workflow have a correlation identifier?
+### 52. Why should every workflow have a correlation identifier?
 
 Because a single execution may span:
 
@@ -20411,7 +20066,7 @@ A common workflow ID allows those events to be reconstructed as one transaction-
 
 ---
 
-## 53. What metrics should an enterprise Harness track?
+### 53. What metrics should an enterprise Harness track?
 
 Useful metrics include:
 
@@ -20432,19 +20087,15 @@ Metrics should connect Agent activity to engineering outcomes.
 
 ---
 
-## 54. Why can a 99% gate pass rate be misleading?
+### 54. Why can a 99% gate pass rate be misleading?
 
 Because it may mean either:
 
-```text
-Agents are excellent.
-```
+> Agents are excellent.
 
 or:
 
-```text
-Gates are weak.
-```
+> Gates are weak.
 
 Metrics need context such as:
 
@@ -20459,7 +20110,7 @@ High pass rates alone do not prove quality.
 
 ---
 
-## 55. Why should retry patterns be monitored?
+### 55. Why should retry patterns be monitored?
 
 Repeated retries may identify systemic problems such as:
 
@@ -20475,7 +20126,7 @@ Retries provide feedback about the Harness itself, not only the Agent.
 
 ---
 
-## 56. What is idempotency in Harness Architecture?
+### 56. What is idempotency in Harness Architecture?
 
 Idempotency means an operation can be safely retried without producing duplicate side effects.
 
@@ -20493,7 +20144,7 @@ help detect whether the operation already succeeded.
 
 ---
 
-## 57. Why should cancellation be a first-class workflow state?
+### 57. Why should cancellation be a first-class workflow state?
 
 Because requirements can change while the Agent is executing.
 
@@ -20511,7 +20162,7 @@ Cancellation should not simply mean killing a process and losing state.
 
 ---
 
-## 58. Why should a Harness support resume?
+### 58. Why should a Harness support resume?
 
 Because long-running workflows may experience:
 
@@ -20526,7 +20177,7 @@ Persistent state allows the Harness to continue from a valid checkpoint instead 
 
 ---
 
-## 59. Why should policies and gates be versioned?
+### 59. Why should policies and gates be versioned?
 
 Because future investigations may ask:
 
@@ -20538,7 +20189,7 @@ Versioned policy improves reproducibility and auditability.
 
 ---
 
-## 60. Why should Instructions and Skills also be traceable?
+### 60. Why should Instructions and Skills also be traceable?
 
 Because they influence Agent behavior.
 
@@ -20548,7 +20199,7 @@ This becomes particularly important in self-learning Harnesses.
 
 ---
 
-## 61. What is the danger of silently self-modifying Skills or Instructions?
+### 61. What is the danger of silently self-modifying Skills or Instructions?
 
 The Harness can create policy drift.
 
@@ -20578,7 +20229,7 @@ Approved new version
 
 ---
 
-## 62. What is the relationship between Harness Architecture and self-learning systems?
+### 62. What is the relationship between Harness Architecture and self-learning systems?
 
 Harness Architecture establishes the controls required before adaptive behavior can be trusted.
 
@@ -20597,7 +20248,7 @@ Without those foundations, learning becomes uncontrolled mutation.
 
 ---
 
-## 63. Why is vendor-neutral architecture important?
+### 63. Why is vendor-neutral architecture important?
 
 AI platforms evolve rapidly.
 
@@ -20615,9 +20266,7 @@ to one agent provider.
 
 A useful abstraction might be:
 
-```text
-IAgentRunner
-```
+`IAgentRunner`
 
 with implementations for:
 
@@ -20632,21 +20281,17 @@ Core governance remains stable.
 
 ---
 
-## 64. What does Claude-first but vendor-neutral mean?
+### 64. What does Claude-first but vendor-neutral mean?
 
 It means Claude can be the primary implementation platform while the architecture remains independent of Claude-specific behavior.
 
 For example:
 
-```text
-ClaudeAgentRunner
-```
+`ClaudeAgentRunner`
 
 may implement a generic:
 
-```text
-IAgentRunner
-```
+`IAgentRunner`
 
 contract.
 
@@ -20654,7 +20299,7 @@ Replacing Claude should not require redefining what constitutes a passing Build 
 
 ---
 
-## 65. Is multi-agent execution the same as Harness Architecture?
+### 65. Is multi-agent execution the same as Harness Architecture?
 
 No.
 
@@ -20686,7 +20331,7 @@ Multi-agent capability is one Harness component, not the whole architecture.
 
 ---
 
-## 66. Does using different AI providers make validation deterministic?
+### 66. Does using different AI providers make validation deterministic?
 
 No.
 
@@ -20714,7 +20359,7 @@ contracts
 
 ---
 
-## 67. Why is a single giant prompt not an enterprise Harness?
+### 67. Why is a single giant prompt not an enterprise Harness?
 
 Because workflow semantics remain embedded in Agent interpretation.
 
@@ -20744,7 +20389,7 @@ Enterprise controls should be explicit in the Harness.
 
 ---
 
-## 68. Why is one large orchestration script an anti-pattern?
+### 68. Why is one large orchestration script an anti-pattern?
 
 Because it can combine too many responsibilities:
 
@@ -20766,7 +20411,7 @@ Unbounded responsibility concentration is the problem.
 
 ---
 
-## 69. How should Hooks and orchestration differ?
+### 69. How should Hooks and orchestration differ?
 
 A useful rule is:
 
@@ -20780,21 +20425,17 @@ Workflow step
 
 For example:
 
-```text
-Block prohibited file modification
-```
+`Block prohibited file modification`
 
 belongs in a Hook.
 
-```text
-Invoke Reviewer Agent
-```
+`Invoke Reviewer Agent`
 
 belongs in orchestration.
 
 ---
 
-## 70. Should CI/CD be replaced by the Harness?
+### 70. Should CI/CD be replaced by the Harness?
 
 No.
 
@@ -20813,7 +20454,7 @@ The Harness coordinates the wider AI Engineering process.
 
 ---
 
-## 71. Can CI/CD itself become the entire Harness?
+### 71. Can CI/CD itself become the entire Harness?
 
 It can host parts of the workflow, but it should not automatically become the architecture's control center.
 
@@ -20832,7 +20473,7 @@ The right boundary depends on the organization, but responsibilities should rema
 
 ---
 
-## 72. What is progressive autonomy?
+### 72. What is progressive autonomy?
 
 Progressive autonomy means increasing Agent authority as evidence demonstrates reliability.
 
@@ -20858,7 +20499,7 @@ High-risk workflows can retain stronger human controls.
 
 ---
 
-## 73. What evidence should be used before increasing autonomy?
+### 73. What evidence should be used before increasing autonomy?
 
 Useful signals include:
 
@@ -20875,7 +20516,7 @@ Autonomy should expand based on engineering evidence rather than enthusiasm.
 
 ---
 
-## 74. What is the most important Harness Architecture invariant?
+### 74. What is the most important Harness Architecture invariant?
 
 A strong answer is:
 
@@ -20893,7 +20534,7 @@ auditability
 
 ---
 
-## 75. What are common Harness Architecture anti-patterns?
+### 75. What are common Harness Architecture anti-patterns?
 
 Examples include:
 
@@ -20913,7 +20554,7 @@ Examples include:
 
 ---
 
-## 76. What is the best first Harness for an enterprise team?
+### 76. What is the best first Harness for an enterprise team?
 
 Not necessarily the most sophisticated one.
 
@@ -20943,7 +20584,7 @@ Then add complexity only where evidence shows it is necessary.
 
 ---
 
-## 77. When should a local Harness evolve into a central service?
+### 77. When should a local Harness evolve into a central service?
 
 Signals include:
 
@@ -20962,7 +20603,7 @@ The architecture should ideally preserve the same workflow semantics during the 
 
 ---
 
-## 78. What is the most important security principle for Harness design?
+### 78. What is the most important security principle for Harness design?
 
 Use least privilege and assume generated output is untrusted until validated.
 
@@ -20982,7 +20623,7 @@ Execution
 
 ---
 
-## 79. How should prompt injection through repository content be handled?
+### 79. How should prompt injection through repository content be handled?
 
 Do not rely solely on Agent instructions.
 
@@ -21001,7 +20642,7 @@ Repository content should not automatically have the same authority as governed 
 
 ---
 
-## 80. What makes a Harness enterprise-grade?
+### 80. What makes a Harness enterprise-grade?
 
 Not its model count.
 
@@ -21031,9 +20672,9 @@ That is the defining characteristic of enterprise Harness Architecture.
 
 ---
 
-## Scenario-based Interview Question
+### Scenario-based Interview Question
 
-### Question
+#### Question
 
 The Alpha Car Detailing Developer Agent implements corporate fleet booking.
 
@@ -21063,7 +20704,7 @@ The Developer Agent says the architecture violation is harmless and recommends c
 
 What should happen?
 
-### Expected Answer
+#### Expected Answer
 
 If the Architecture Gate is required, the workflow remains failed.
 
@@ -21085,27 +20726,23 @@ The Developer Agent should not modify the Architecture Gate itself.
 
 ---
 
-## Scenario-based Interview Question
+### Scenario-based Interview Question
 
-### Question
+#### Question
 
 A Security Gate is unavailable because the scanner service timed out. Should the Harness mark security as passed because no vulnerability was detected?
 
-### Expected Answer
+#### Expected Answer
 
 No.
 
 The correct classification is something such as:
 
-```text
-InfrastructureFailure
-```
+`InfrastructureFailure`
 
 or:
 
-```text
-GateUnavailable
-```
+`GateUnavailable`
 
 The result is not equivalent to a pass.
 
@@ -21115,27 +20752,23 @@ A missing security result should not silently become successful validation.
 
 ---
 
-## Scenario-based Interview Question
+### Scenario-based Interview Question
 
-### Question
+#### Question
 
 The Developer Agent fails the same test three times. On the fourth attempt it proposes modifying the test because it believes the requirement is wrong. What should the Harness do?
 
-### Expected Answer
+#### Expected Answer
 
 The Harness should enforce its retry limit.
 
 The workflow should typically enter:
 
-```text
-RetryExhausted
-```
+`RetryExhausted`
 
 or:
 
-```text
-ClarificationRequired
-```
+`ClarificationRequired`
 
 depending on evidence.
 
@@ -21145,13 +20778,13 @@ The Agent should not gain authority to weaken the test simply because it exhaust
 
 ---
 
-## Scenario-based Interview Question
+### Scenario-based Interview Question
 
-### Question
+#### Question
 
 The organization uses Claude for implementation and Codex for review. Does this remove the need for deterministic validation?
 
-### Expected Answer
+#### Expected Answer
 
 No.
 
@@ -21171,13 +20804,13 @@ where those checks apply.
 
 ---
 
-## Scenario-based Interview Question
+### Scenario-based Interview Question
 
-### Question
+#### Question
 
 A team has implemented all Harness behavior in one `run.ps1` file. Is that automatically a bad architecture?
 
-### Expected Answer
+#### Expected Answer
 
 No.
 
@@ -21202,13 +20835,13 @@ It becomes an anti-pattern when responsibilities are tightly coupled and control
 
 ---
 
-## Scenario-based Interview Question
+### Scenario-based Interview Question
 
-### Question
+#### Question
 
 A Developer Agent needs to add a new event contract. The contract path is protected. Should the Harness simply block the feature?
 
-### Expected Answer
+#### Expected Answer
 
 Not necessarily.
 
@@ -21230,19 +20863,17 @@ The goal is governed change, not preventing legitimate architecture evolution.
 
 ---
 
-## Scenario-based Interview Question
+### Scenario-based Interview Question
 
-### Question
+#### Question
 
 A workflow crashes after all deterministic gates pass but before the Reviewer executes. What should happen after restart?
 
-### Expected Answer
+#### Expected Answer
 
 If durable state and valid evidence exist, the Harness should resume from the next appropriate state, such as:
 
-```text
-Reviewing
-```
+`Reviewing`
 
 rather than rerunning the entire workflow.
 
@@ -21250,13 +20881,13 @@ This is why state and evidence are part of Harness correctness.
 
 ---
 
-## Scenario-based Interview Question
+### Scenario-based Interview Question
 
-### Question
+#### Question
 
 A company wants agents to automatically modify Skills whenever repeated gate failures are detected. What architectural concern should be raised?
 
-### Expected Answer
+#### Expected Answer
 
 This introduces silent policy drift.
 
@@ -21276,13 +20907,13 @@ Historical workflows should also retain the Skill version used during execution.
 
 ---
 
-## Scenario-based Interview Question
+### Scenario-based Interview Question
 
-### Question
+#### Question
 
 What is more important in a Harness: having multiple Agents or having independent gates?
 
-### Expected Answer
+#### Expected Answer
 
 Independent gates.
 
@@ -21304,7 +20935,7 @@ can provide stronger engineering assurance than a multi-agent system without det
 
 ---
 
-## Interview Takeaway
+### Interview Takeaway
 
 The strongest answers to Harness Architecture questions usually begin by separating five concerns:
 
@@ -21329,9 +20960,7 @@ When these responsibilities are blurred together, the architecture becomes diffi
 
 When they are explicit, AI Agents can become substantially more autonomous without requiring the enterprise to surrender engineering control.
 
-**Chapter 13 status: In progress — next section: Chapter Summary**
-
-# Chapter Summary
+## Chapter Summary
 
 Harness Architecture transforms AI-assisted coding from an ad hoc interaction with a model into a controlled engineering system.
 
@@ -21353,7 +20982,7 @@ This separation is the foundation of enterprise AI Engineering.
 
 ---
 
-## The Harness Is the Control System
+### The Harness Is the Control System
 
 An AI Agent is not the Harness.
 
@@ -21387,7 +21016,7 @@ The Harness therefore acts as the control plane surrounding probabilistic engine
 
 ---
 
-## Repository Intelligence Provides Context
+### Repository Intelligence Provides Context
 
 Repository Intelligence provides the information required for accurate engineering work.
 
@@ -21423,7 +21052,7 @@ A mature Harness resolves the appropriate Repository Intelligence for each role 
 
 ---
 
-## Roles Divide Responsibility
+### Roles Divide Responsibility
 
 The Harness coordinates specialized roles such as:
 
@@ -21458,7 +21087,7 @@ Role boundaries should define not only prompt behavior, but also permissions and
 
 ---
 
-## Structured Handoffs Preserve Evidence
+### Structured Handoffs Preserve Evidence
 
 Agents should not depend solely on conversational memory when responsibility moves from one role to another.
 
@@ -21484,7 +21113,7 @@ Structured handoffs improve:
 
 ---
 
-## The Developer Agent Does Not Certify Its Own Work
+### The Developer Agent Does Not Certify Its Own Work
 
 The Developer Agent may:
 
@@ -21514,7 +21143,7 @@ Those statements must be supported by independently controlled evidence.
 
 ---
 
-## Deterministic Gates Provide Objective Verification
+### Deterministic Gates Provide Objective Verification
 
 The chapter introduced a gate pipeline containing:
 
@@ -21557,7 +21186,7 @@ The gate result—not the Agent's confidence—is authoritative.
 
 ---
 
-## Gate Independence Is Essential
+### Gate Independence Is Essential
 
 The Developer Agent can run tests while implementing.
 
@@ -21579,7 +21208,7 @@ The same principle applies to build, architecture, security, and contract valida
 
 ---
 
-## Protect the Definition of Success
+### Protect the Definition of Success
 
 Gate definitions are governed Harness assets.
 
@@ -21618,7 +21247,7 @@ If a gate is genuinely incorrect, it should be changed through a separate govern
 
 ---
 
-## Validation and Evaluation Are Different
+### Validation and Evaluation Are Different
 
 Validation answers objective questions.
 
@@ -21626,15 +21255,11 @@ Evaluation answers qualitative questions.
 
 For example:
 
-```text
-Build passed
-```
+`Build passed`
 
 is deterministic evidence.
 
-```text
-The implementation is maintainable
-```
+`The implementation is maintainable`
 
 is qualitative judgment.
 
@@ -21653,7 +21278,7 @@ Qualitative evaluation cannot override objective validation.
 
 ---
 
-## Hooks Provide Local Guardrails
+### Hooks Provide Local Guardrails
 
 Hooks can execute around important workflow events such as:
 
@@ -21691,7 +21316,7 @@ They should not become hidden orchestration engines containing the main workflow
 
 ---
 
-## Guardrails Must Be Enforceable
+### Guardrails Must Be Enforceable
 
 Instructions such as:
 
@@ -21729,7 +21354,7 @@ Guardrails constrain behavior.
 
 ---
 
-## Tool Access Should Follow Least Privilege
+### Tool Access Should Follow Least Privilege
 
 Agent capability does not imply unrestricted authority.
 
@@ -21757,7 +21382,7 @@ A Tool Gateway can enforce these boundaries.
 
 ---
 
-## Workflow State Is Part of Correctness
+### Workflow State Is Part of Correctness
 
 A Harness should model execution as a stateful workflow.
 
@@ -21799,7 +21424,7 @@ Conversation history alone is not sufficient workflow state.
 
 ---
 
-## Retry Must Be Controlled
+### Retry Must Be Controlled
 
 A mature Harness does not use:
 
@@ -21841,7 +21466,7 @@ Different failures require different responses.
 
 ---
 
-## Failure Evidence Should Drive Repair
+### Failure Evidence Should Drive Repair
 
 The Harness should return exact failure evidence to the Developer Agent.
 
@@ -21865,21 +21490,17 @@ Attempt:
 
 This is more precise than:
 
-```text
-Something failed. Fix it.
-```
+> Something failed. Fix it.
 
 Evidence-based repair makes retries more effective and more auditable.
 
 ---
 
-## Human Approval Remains a First-class Component
+### Human Approval Remains a First-class Component
 
 Human approval should exist as an explicit workflow state:
 
-```text
-AwaitingHumanApproval
-```
+`AwaitingHumanApproval`
 
 not as an informal comment.
 
@@ -21901,13 +21522,11 @@ Approval should come through authenticated enterprise identity.
 
 An Agent cannot create valid approval simply by writing:
 
-```text
-Approved by Architect.
-```
+> Approved by Architect.
 
 ---
 
-## Approval Should Be Risk-based
+### Approval Should Be Risk-based
 
 Not every workflow requires identical governance.
 
@@ -21940,7 +21559,7 @@ The goal is appropriate control, not maximum manual involvement.
 
 ---
 
-## Publishing Should Be a Separate Authority
+### Publishing Should Be a Separate Authority
 
 The Developer Agent should not normally own:
 
@@ -21978,7 +21597,7 @@ This separation supports least privilege and improves accountability.
 
 ---
 
-## Pull Requests Remain Valuable
+### Pull Requests Remain Valuable
 
 A Harness does not need to replace established engineering governance.
 
@@ -22009,7 +21628,7 @@ This strengthens rather than bypasses normal engineering practices.
 
 ---
 
-## Isolation Reduces Risk
+### Isolation Reduces Risk
 
 Execution environments should be isolated according to authority and risk.
 
@@ -22034,7 +21653,7 @@ A shared mutable developer directory becomes increasingly risky as autonomous wo
 
 ---
 
-## Credentials Should Be Scoped by Responsibility
+### Credentials Should Be Scoped by Responsibility
 
 A mature Harness should avoid one broad identity for every component.
 
@@ -22061,7 +21680,7 @@ Short-lived and workload-based credentials are preferable where supported.
 
 ---
 
-## Audit and Evidence Are Core Architecture
+### Audit and Evidence Are Core Architecture
 
 A Harness should be able to reconstruct:
 
@@ -22089,7 +21708,7 @@ Auditability should be designed into the architecture rather than added after th
 
 ---
 
-## Metrics Must Reflect Engineering Outcomes
+### Metrics Must Reflect Engineering Outcomes
 
 Operational metrics such as:
 
@@ -22120,7 +21739,7 @@ It is to improve controlled engineering throughput.
 
 ---
 
-## Local and Enterprise Harnesses Share the Same Principles
+### Local and Enterprise Harnesses Share the Same Principles
 
 A local Harness may use:
 
@@ -22152,7 +21771,7 @@ The architectural responsibilities should remain stable.
 
 ---
 
-## Claude, GitHub Copilot, and Codex Fit the Same Architecture
+### Claude, GitHub Copilot, and Codex Fit the Same Architecture
 
 The chapter compared three implementation platforms.
 
@@ -22193,7 +21812,7 @@ rather than building governance around assumptions specific to one model.
 
 ---
 
-## Multi-agent Does Not Mean Governed
+### Multi-agent Does Not Mean Governed
 
 A workflow such as:
 
@@ -22224,7 +21843,7 @@ Multiple AI opinions do not replace objective verification.
 
 ---
 
-## The Hands-on Example
+### The Hands-on Example
 
 The corporate fleet booking workflow demonstrated the complete pattern:
 
@@ -22270,61 +21889,61 @@ This is the core operating model for the Harness Engineering chapters that follo
 
 ---
 
-## Architectural Invariants
+### Architectural Invariants
 
 The most important principles from this chapter can be summarized as the following invariants.
 
-### The Harness controls workflow progression
+#### The Harness controls workflow progression
 
 Agents do not decide their own authority.
 
-### The Developer does not certify its own implementation
+#### The Developer does not certify its own implementation
 
 Authoritative objective evidence comes from independent validation.
 
-### Gate definitions are governed assets
+#### Gate definitions are governed assets
 
 An implementation Agent cannot silently redefine success.
 
-### Validation and evaluation remain separate
+#### Validation and evaluation remain separate
 
 Objective failure cannot be overridden by qualitative confidence.
 
-### Retries are bounded and evidence-based
+#### Retries are bounded and evidence-based
 
 Repeated Agent execution is governed.
 
-### Hooks are guardrails, not hidden workflow engines
+#### Hooks are guardrails, not hidden workflow engines
 
 Major state transitions remain visible.
 
-### Permissions follow least privilege
+#### Permissions follow least privilege
 
 Each role receives only the authority it requires.
 
-### State exists outside the Agent conversation
+#### State exists outside the Agent conversation
 
 The workflow can recover and be audited.
 
-### Human approval is explicit where risk requires it
+#### Human approval is explicit where risk requires it
 
 Automation does not eliminate accountable authority.
 
-### Publishing is controlled
+#### Publishing is controlled
 
 Generating an implementation does not automatically grant authority to publish it.
 
-### Harness evidence is traceable
+#### Harness evidence is traceable
 
 The system can explain how an output reached its final state.
 
-### Vendor-specific tools remain at the edge
+#### Vendor-specific tools remain at the edge
 
 The enterprise control model survives changes in AI providers.
 
 ---
 
-## Final Perspective
+### Final Perspective
 
 The essential challenge of AI-assisted engineering is not merely generating better code.
 
@@ -22350,653 +21969,40 @@ traceable engineering outcomes
 
 With this architecture established, the following chapters can examine each major Harness role in greater depth, beginning with the Lead Agent.
 
-**Chapter 13 status: In progress — next section: Further Reading**
+## Further Reading
 
-# Further Reading
+Harness Architecture combines software-engineering assurance, AI-agent execution, workflow governance, and operational security. There is no single standard that defines the entire architecture in this chapter. The references below help teams implement its individual boundaries using maintained, primary documentation.
 
-Harness Architecture spans several established disciplines:
+### Agent Execution and Repository Intelligence
 
-* AI Agent engineering;
-* secure software development;
-* workflow orchestration;
-* software supply-chain security;
-* identity and access management;
-* automated validation;
-* AI risk management;
-* observability and audit.
+**Anthropic — Claude Code documentation.** The [Claude Code documentation](https://code.claude.com/docs/en/overview) covers agent execution, repository instructions, tooling, permissions, and integration. Particularly useful references are [Hooks](https://code.claude.com/docs/en/hooks-guide), [Skills](https://code.claude.com/docs/en/skills), [MCP](https://code.claude.com/docs/en/mcp), and [Security](https://code.claude.com/docs/en/security). Read these as *execution integrations*: the enterprise Harness still owns workflow state, approval policy, and independent gate results.
 
-No single external standard defines the complete enterprise AI Engineering Harness described in this handbook. The architecture developed in this chapter combines these disciplines into a controlled approach for AI-assisted software development.
+**Model Context Protocol.** The [official MCP introduction](https://modelcontextprotocol.io/introduction) describes standardized connections between AI applications and external tools or data. For Harness design, focus on the distinction between making a capability available and authorizing a specific Agent role to use it. Tool permissions, trusted data classification, and audit requirements remain outside the protocol itself.
 
-The following resources provide useful primary references for architects and engineering teams who want to explore the underlying technologies and governance principles in greater depth.
+**GitHub — Copilot customization.** The [Copilot customization cheat sheet](https://docs.github.com/en/copilot/reference/customization-cheat-sheet) distinguishes repository instructions, path-specific instructions, prompt files, custom agents, Skills, Hooks, and MCP integrations. The [Copilot agent skills documentation](https://docs.github.com/en/copilot/how-tos/copilot-on-github/customize-copilot/customize-cloud-agent/add-skills) is useful for understanding how reusable procedures differ from persistent instructions. Match these product features to the handbook's conceptual vocabulary without treating them as interchangeable controls.
 
----
+**OpenAI — Codex.** The [Codex CLI reference](https://learn.chatgpt.com/docs/cli/reference) documents non-interactive execution, sandbox and approval controls, and scriptable output. [Running Codex safely at OpenAI](https://openai.com/index/running-codex-safely/) discusses managed execution boundaries, network controls, human approvals, and telemetry. The [Codex workflow cookbook](https://developers.openai.com/cookbook/examples/codex/iterating-development-workflows-with-codex) illustrates the use of `AGENTS.md` and supporting task artifacts while distinguishing conventions from required Codex files.
 
-## Anthropic — Claude Code Documentation
+### Security, Validation, and Governance
 
-Anthropic's Claude Code documentation should be treated as the primary product reference for teams implementing the Claude-first examples in this handbook.
+**NIST SP 800-218 — Secure Software Development Framework (SSDF).** [NIST SP 800-218](https://csrc.nist.gov/pubs/sp/800/218/final) provides a foundational reference for secure development roles, environment protection, software integrity, and vulnerability reduction. Use it to align Harness gates and evidence with controls the organization already applies to human-authored code.
 
-The Claude Code CLI supports interactive and non-interactive execution, continuation and resumption of sessions, and configuration of Model Context Protocol integrations. These capabilities are particularly relevant when implementing Harness-controlled Claude invocations rather than relying exclusively on interactive developer sessions.
+**NIST — AI Risk Management Framework.** The [AI RMF 1.0](https://www.nist.gov/itl/ai-risk-management-framework) offers the broader **Govern, Map, Measure, Manage** structure for AI risk. The [Generative AI Profile](https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf) adds generative-AI-specific considerations. Neither publication prescribes a coding-agent Harness; they inform governance and risk treatment.
 
-Relevant areas to study include:
+**OWASP — GenAI security.** The [OWASP GenAI LLM Top 10 (2026)](https://genai.owasp.org/resource/owasp-genai-llm-top-10-2026/) discusses risks relevant to autonomous agent environments, including prompt injection, unsafe tool use, information exposure, and supply-chain compromise. Use the current edition's terminology rather than assuming risk categories remain unchanged between releases.
 
-```text id="5wkz3s"
-Claude Code CLI
+**Microsoft — .NET dependency-injection validation.** [.NET `ServiceProviderOptions.ValidateOnBuild`](https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.serviceprovideroptions.validateonbuild?view=net-10.0) clarifies the distinction between compiler errors and errors discovered when constructing application services. This is important when assigning failures to the correct Harness gate.
 
-repository instructions
+### Suggested Reading Sequence
 
-permissions
+Start with the agent platform used by your organization, then connect its tool and permission model to Repository Intelligence. Study the SSDF and your existing CI policies before designing independent gates. Use NIST AI RMF and OWASP materials to evaluate risks that cannot be addressed by test execution alone. Finally, compare the Claude, Copilot, and Codex implementation surfaces to ensure that swapping agent adapters does not redefine evidence, approval, or security policy.
 
-tool execution
+Vendor interfaces and file locations evolve quickly. Verify platform-specific syntax against current documentation. The architectural invariants—independent verification, protected controls, least privilege, bounded retries, authenticated approval, and traceable outputs—should remain stable.
 
-session management
+### Closing Perspective
 
-MCP integration
-
-automation
-```
-
-The architectural distinction from this chapter should remain clear:
-
-```text id="c4aaxn"
-Claude Code
-    ↓
-Agent execution platform
-
-Enterprise Harness
-    ↓
-Execution control architecture
-```
-
-Product capabilities should be integrated into the Harness rather than being mistaken for the Harness itself.
-
----
-
-## Anthropic — Model Context Protocol
-
-The Model Context Protocol provides a standardized mechanism for connecting AI applications to external data sources and tools. Anthropic describes MCP as an open protocol for providing context to language models and documents integrations with Claude Code and other Claude environments.
-
-MCP is particularly relevant to the Harness concepts of:
-
-```text id="lp3qxv"
-Repository Intelligence
-
-Knowledge Sources
-
-Tool Gateway
-
-external engineering systems
-
-controlled Agent capabilities
-```
-
-Architects should study MCP with the security model from this chapter in mind.
-
-The important question is not only:
-
-```text id="an970e"
-Can the Agent access this MCP server?
-```
-
-but also:
-
-```text id="qhbjxa"
-Should this role access it?
-
-Which operations should be available?
-
-Which identity should be used?
-
-Is access read-only or read-write?
-
-How is the action audited?
-
-What happens if the server returns untrusted content?
-```
-
-MCP expands Agent capability.
-
-Harness policy must determine Agent authority.
-
----
-
-## GitHub — Copilot Customization Documentation
-
-GitHub's Copilot documentation provides useful reference material for implementing Repository Intelligence and role concepts using Copilot.
-
-GitHub currently documents several customization mechanisms, including:
-
-```text id="j8lx37"
-repository-wide custom instructions
-
-path-specific instructions
-
-prompt files
-
-custom agents
-
-Agent Skills
-
-Hooks
-
-MCP servers
-```
-
-GitHub's customization reference distinguishes these mechanisms and documents their repository locations and intended uses.
-
-This maps closely to several handbook concepts:
-
-```text id="ufkjsv"
-Instructions
-Skills
-Prompts
-Roles
-Hooks
-Tools
-```
-
-Architects should avoid assuming that product customization automatically creates governance.
-
-A useful interpretation is:
-
-```text id="32f50q"
-Copilot customization
-    ↓
-Shapes Agent behavior
-
-Harness Architecture
-    ↓
-Controls workflow authority
-```
-
----
-
-## GitHub — Repository Custom Instructions
-
-GitHub documents repository-wide instructions using:
-
-```text id="nad011"
-.github/copilot-instructions.md
-```
-
-and path-specific instructions under:
-
-```text id="zvsxv0"
-.github/instructions/
-```
-
-The documentation explains how these files provide repository-specific guidance about project structure, development conventions, building, testing, and validation.
-
-These references are useful when implementing the **Instruction** concept introduced earlier in the handbook.
-
-They should be read together with the Harness principle:
-
-> An Instruction tells the Agent what it should do. A deterministic gate or enforced policy independently determines whether required conditions were actually satisfied.
-
----
-
-## GitHub — Custom Agents
-
-GitHub documents custom agents as specialized Copilot agents with configurable instructions, tools, and MCP servers.
-
-This capability is relevant to the role architecture introduced in this chapter:
-
-```text id="9z3hf7"
-Lead Agent
-Developer Agent
-Reviewer Agent
-Validator Agent
-Evaluator Agent
-```
-
-When studying custom agents, pay particular attention to tool scoping.
-
-Role specialization becomes considerably stronger when:
-
-```text id="nyjfxw"
-different prompt
-+
-different context
-+
-different tool authority
-```
-
-are combined.
-
-A Reviewer that merely receives a different persona but retains unrestricted repository write access has weaker architectural separation than a Reviewer whose tools are actually constrained.
-
----
-
-## OpenAI — Codex
-
-OpenAI describes Codex as a coding agent capable of working on engineering tasks such as feature development, refactoring, migrations, testing, and code review. Current Codex environments also support multi-agent workflows, Skills, worktrees, and cloud execution.
-
-These capabilities are relevant to the vendor-neutral Agent Runner model introduced in this chapter.
-
-For example:
-
-```text id="azst0a"
-IAgentRunner
-   ├─ ClaudeAgentRunner
-   ├─ CopilotAgentRunner
-   └─ CodexAgentRunner
-```
-
-Architects should use provider-specific capabilities where they improve engineering outcomes while keeping:
-
-```text id="b1dyg5"
-state
-
-validation
-
-approval
-
-governance
-
-security policy
-```
-
-outside provider-specific reasoning wherever practical.
-
----
-
-## OpenAI — Running Codex Safely
-
-OpenAI's discussion of running Codex safely is particularly relevant to Harness Architecture because it addresses controls, boundaries, human approval, system access, and telemetry for coding-agent execution.
-
-The concepts align directly with several principles in this chapter:
-
-```text id="aos66h"
-least privilege
-
-technical boundaries
-
-risk-based actions
-
-human approval
-
-telemetry
-
-auditability
-```
-
-This material is useful when designing the Harness trust model.
-
-The question for an architect should not merely be:
-
-```text id="nlwivf"
-How capable is the coding Agent?
-```
-
-It should also be:
-
-```text id="x7za47"
-What prevents the Agent from exceeding its intended authority?
-```
-
----
-
-## OpenAI — Codex CLI
-
-The Codex CLI documentation is useful for teams implementing local or script-driven Harness execution.
-
-Codex CLI can read, modify, and execute code from a terminal environment and includes approval-oriented execution controls.
-
-This makes it relevant to the local Harness model:
-
-```text id="k47pfx"
-Harness script
-    ↓
-Agent CLI
-    ↓
-isolated repository workspace
-    ↓
-deterministic validation
-```
-
-The CLI should remain an execution adapter rather than the owner of enterprise workflow policy.
-
----
-
-## NIST — Secure Software Development Framework
-
-**NIST SP 800-218 — Secure Software Development Framework (SSDF) Version 1.1** provides a broad framework for integrating secure development practices throughout the software development life cycle.
-
-The SSDF emphasizes defined roles and responsibilities, secure development environments, protection of software, vulnerability reduction, and integration of security practices into development processes.
-
-This publication is especially relevant to Harness concerns such as:
-
-```text id="qzdkkw"
-role ownership
-
-development-environment protection
-
-software integrity
-
-security validation
-
-supply-chain controls
-
-governed exceptions
-```
-
-The Harness does not replace secure software development practices.
-
-It should automate and strengthen them.
-
-A useful architectural relationship is:
-
-```text id="2phr6c"
-Secure SDLC Practices
-        ↓
-Harness Policies and Gates
-        ↓
-AI-assisted Engineering Execution
-```
-
----
-
-## NIST — Artificial Intelligence Risk Management Framework
-
-The **NIST AI Risk Management Framework 1.0** provides a voluntary framework for organizations designing, developing, deploying, and using AI systems.
-
-NIST organizes the framework around the functions:
-
-```text id="kr59wo"
-Govern
-Map
-Measure
-Manage
-```
-
-and emphasizes trustworthiness characteristics including reliability, security, resilience, accountability, transparency, privacy, and risk management.
-
-The AI RMF is broader than software-development Harness Architecture, but it is useful for enterprise teams establishing:
-
-```text id="ytsv61"
-ownership
-
-AI governance
-
-risk classification
-
-measurement
-
-monitoring
-
-human accountability
-```
-
-The architecture developed in this chapter provides implementation-level controls that can support a broader organizational AI risk-management program.
-
----
-
-## NIST — Generative AI Profile
-
-NIST also publishes a Generative AI Profile associated with the AI Risk Management Framework. NIST identifies this material as guidance for organizations managing risks that are distinctive to generative AI systems.
-
-This becomes increasingly important as Harnesses evolve from:
-
-```text id="0wsu63"
-single coding Agent
-```
-
-toward:
-
-```text id="tb52wh"
-multi-agent execution
-
-autonomous tool use
-
-adaptive workflows
-
-Harness Memory
-
-self-learning systems
-```
-
-The more autonomy an enterprise introduces, the more important explicit risk-management mechanisms become.
-
----
-
-## OWASP — GenAI Security Project
-
-The OWASP GenAI Security Project provides security guidance focused specifically on generative AI and agentic systems.
-
-The current OWASP material identifies risks including prompt injection, insecure handling of model output, sensitive information disclosure, excessive agency, supply-chain concerns, and overreliance on model output.
-
-These risks directly reinforce several architectural controls introduced in this chapter:
-
-```text id="ozomg0"
-Tool Gateway
-
-least privilege
-
-protected files
-
-network restrictions
-
-output validation
-
-Repository Intelligence authority
-
-human approval
-
-independent deterministic gates
-```
-
-Prompt injection is particularly relevant to Repository Intelligence.
-
-A Harness may provide an Agent with repository files, documentation, issues, or external data containing malicious or misleading instructions.
-
-The security boundary must therefore be stronger than:
-
-```text id="dpuprq"
-Tell the Agent not to follow malicious instructions.
-```
-
-It should also include enforceable controls around what the Agent can actually do.
-
----
-
-## OWASP — Prompt Injection
-
-OWASP identifies prompt injection as a risk in which crafted inputs can manipulate an LLM into unintended behavior. Indirect prompt injection is especially relevant when an Agent consumes external or repository-based content.
-
-For Harness architects, the important lesson is:
-
-```text id="x527yv"
-Untrusted content
-    ↓
-may influence Agent reasoning
-```
-
-but it should not automatically gain:
-
-```text id="5zv71e"
-tool authority
-
-credential authority
-
-policy authority
-
-approval authority
-```
-
-This is another reason that security boundaries must exist outside the prompt.
-
----
-
-# Recommended Reading Path
-
-Architects do not need to study every external source before building an initial Harness.
-
-A practical sequence is:
-
-### First — Understand the Agent Platform
-
-For a Claude-first implementation:
-
-```text id="kj66np"
-Claude Code CLI
-MCP
-permissions and execution capabilities
-```
-
-Then study equivalent Copilot and Codex capabilities where interoperability matters.
-
-### Second — Establish Secure Development Controls
-
-Study:
-
-```text id="s9ssny"
-NIST SSDF
-```
-
-and map existing organizational build, test, security, and review controls into Harness gates.
-
-### Third — Establish AI-specific Risk Controls
-
-Study:
-
-```text id="fmsrbc"
-NIST AI RMF
-
-OWASP GenAI Security guidance
-```
-
-with particular attention to:
-
-```text id="70ohbm"
-governance
-prompt injection
-excessive agency
-tool permissions
-human authority
-auditability
-```
-
-### Fourth — Map Product Features to Harness Responsibilities
-
-For each coding platform, identify:
-
-```text id="u9ec0f"
-Instructions
-
-Skills
-
-Roles
-
-Prompts
-
-Tools
-
-Hooks
-
-execution isolation
-```
-
-Then decide which capabilities belong inside provider adapters and which controls must remain enterprise-owned.
-
----
-
-# Further Reading Principle
-
-External documentation changes rapidly, particularly for AI coding platforms.
-
-Therefore, enterprise architecture should distinguish:
-
-```text id="h17j9s"
-Stable architectural principles
-```
-
-from:
-
-```text id="88x6bt"
-Product-specific implementation mechanisms
-```
-
-Examples of stable principles include:
-
-```text id="uo6eio"
-least privilege
-
-independent verification
-
-separation of authority
-
-explicit workflow state
-
-bounded retries
-
-authenticated approval
-
-auditability
-
-protected controls
-```
-
-Examples of changing mechanisms include:
-
-```text id="k6gyel"
-CLI flags
-
-agent configuration formats
-
-Hook syntax
-
-Skill locations
-
-MCP configuration
-
-specific model capabilities
-```
-
-This distinction allows the Enterprise AI Engineering Handbook—and the Harness built from it—to remain useful even as individual AI platforms evolve.
-
----
-
-# Closing Perspective
-
-Chapter 12 established what an AI Engineering Harness is.
-
-This chapter established how that Harness should be architected.
-
-The resulting system can now be summarized as:
-
-```text id="oz8iui"
-                    User Goal
-                        ↓
-                 Harness Control
-                        ↓
-             Repository Intelligence
-                        ↓
-                   Lead Agent
-                        ↓
-                Developer Agent
-                        ↓
-             Deterministic Gates
-            ┌───────────┼───────────┐
-          Build       Tests      Security
-          Static    Architecture  Contracts
-            └───────────┼───────────┘
-                        ↓
-                  Reviewer Agent
-                        ↓
-                  Validator Agent
-                        ↓
-                  Evaluator Agent
-                        ↓
-                 Human Authority
-                        ↓
-                Engineering Output
-```
-
-The defining architectural boundary remains:
+Chapter 12 established *what* an AI Engineering Harness is. Chapter 13 established *how to architect it*: control-plane authority around bounded agent execution; independent and risk-appropriate deterministic gates; qualitative review and evaluation; persistent state; evidence-based recovery; and accountable human approval.
 
 > **AI Agents may reason about whether their work is correct. The Harness must independently establish the evidence required to accept that work.**
 
-That principle provides the foundation for the remaining chapters in Part III.
-
-The next chapter moves inside the first major reasoning role in this architecture and examines how the **Lead Agent** converts an engineering goal, Repository Intelligence, constraints, and organizational policy into a controlled implementation plan.
-
-**Chapter 13 status: Complete**
+The next chapter examines the **Lead Agent**, which turns a governed engineering goal and Repository Intelligence into an actionable plan without taking over validation or approval authority.

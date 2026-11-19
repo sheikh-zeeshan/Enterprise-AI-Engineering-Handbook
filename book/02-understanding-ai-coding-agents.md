@@ -1,2115 +1,476 @@
-<!-- ````markdown -->
-# Chapter 2 – Understanding AI Coding Agents
+# Chapter 2 — Understanding AI Coding Agents
 
-> *"The most significant change in modern software engineering is not that AI can write code. It is that software engineers are beginning to collaborate with systems capable of understanding objectives, reasoning about architectures, navigating repositories, using development tools, and executing complex engineering workflows. AI coding agents represent a fundamental shift from code completion to software engineering collaboration."*
+On Monday morning, the engineering team at Alpha Car Detailing receives a request from a government fleet customer. The customer wants every vehicle assigned to its account to undergo a documented condition and environmental-compliance inspection before a detailing appointment can begin. Inspectors must capture an odometer reading, a result, photographs, and an explanation when a vehicle fails. Fleet administrators must be able to retrieve the history during an audit.
 
----
+The product owner describes the request in a few paragraphs. The architectural consequences are less compact. A booking must not proceed when a required inspection is missing or rejected. Inspection records must be associated with the correct vehicle and organization. Photographs require storage and authorization decisions. Historical records must remain intelligible after inspection criteria change. Existing customers who do not require inspections must continue to book appointments without disruption.
 
-# Story-Driven Opening
+The team could hand a developer a ticket to add an inspection form. That would solve only the most visible part of the problem. A more experienced engineer would begin by locating the booking workflow, inspecting the domain model, determining who owns an inspection decision, and identifying the tests that express the current business rules. Those steps—not the typing of a controller—are where much of the engineering work lies.
 
-On a Monday morning, the engineering team responsible for **Alpha Car Detailing** receives an urgent request from a government fleet customer.
+The technical lead opens an AI coding agent and provides the business objective. Rather than requesting a new class, the lead asks for an impact assessment: identify the relevant repository components, distinguish observed implementation from assumptions, propose the smallest architecture-consistent change, list the risks, and produce a testable plan. The agent examines permitted files and tools, returns findings, and asks for a decision where the requirement leaves a meaningful ambiguity.
 
-A newly enacted transportation regulation requires every vehicle inspection to record additional environmental compliance information before detailing can begin. The regulation becomes effective in three weeks.
+The outcome is not an autonomous architect. It is an engineering team with a new way to investigate and execute work. The agent can perform substantial portions of the search, editing, and verification cycle; the team still owns business interpretation, architectural trade-offs, access, and acceptance of risk.
 
-The change affects far more than a single database table.
+This chapter examines how that collaboration works. It explains what makes a coding agent different from code completion, how a model is connected to tools and repository evidence, why context and permissions matter, and how the resulting workflow should be supervised in enterprise development. The principles apply to Claude Code, GitHub Copilot, OpenAI Codex, and future platforms. The particular commands and interfaces will change; the engineering responsibilities will not.
 
-The architect quickly identifies the impact:
+## Learning Objectives
 
-- Customer Management
-- Vehicle Management
-- Inspection Service
-- Booking Service
-- Mobile Inspection Application
-- Reporting
-- API Gateway
-- Event Contracts
-- Integration Tests
-- User Documentation
+After completing this chapter, readers should be able to:
 
-In previous years, the development lead would schedule multiple planning sessions to determine where changes were required. Architects would inspect diagrams, developers would search through repositories, and senior engineers would manually trace dependencies across dozens of projects before implementation could begin.
+- Distinguish code completion, conversational assistance, and agent-driven engineering work.
+- Explain the relationship among the model, task objective, context, tools, execution environment, and feedback loop.
+- Describe how an agent discovers repository structure without treating its interpretation as authoritative.
+- Differentiate context, persistent knowledge, a task scratchpad, and Harness Memory.
+- Recognize the boundaries of single-agent and multi-agent execution.
+- Define observable outcomes, deterministic validation, and human approval points for an agent task.
+- Assess whether an enterprise repository and its controls are ready for agent-assisted changes.
 
-Today, the process begins differently.
+## Background: From Code Completion to Engineering Workflows
 
-Instead of asking where to start, the architect asks an AI coding agent:
+Development tools have progressively removed mechanical work from programming. Editors introduced syntax support and navigation; IDEs connected the editor to compilers, debuggers, and refactoring tools; version control and CI/CD made changes traceable and testable. Code-completion systems extended that progression by predicting source text in the context of an editor.
 
-> *"Analyze the repository and identify every component affected by the new environmental compliance requirement. Explain the architectural impact, propose an implementation strategy, identify potential risks, and estimate the effort required."*
+Code completion is valuable because much implementation work is repetitive. A developer who already knows the required design can accept a suggested mapping, test fixture, or method body and continue working. The tool's immediate objective is local: offer text that fits at the insertion point. Even when the underlying model is capable of sophisticated analysis, a completion interaction does not itself own a multi-step engineering task.
 
-Rather than returning isolated code snippets, the agent begins reasoning.
+Conversational coding assistance raises the level of abstraction. An engineer can ask why a method is slow, request an explanation of a dependency, or ask for an alternative design. The system produces an answer grounded in whatever information is available to that conversation. Yet a convincing answer is not evidence that repository files were read, commands were executed, or behavior was verified.
 
-- It discovers bounded contexts.
+An **AI Coding Agent** takes another step. It can pursue a goal through a sequence of authorized actions: select files to inspect, invoke tools, propose or apply edits, observe tool results, and adapt the next action. The distinguishing feature is not how much code it generates. It is the ability to connect *decisions* to *actions* and use the results of those actions to continue the task.
 
-- It analyzes solution structure.
+These categories are not mutually exclusive products. The same development platform may offer inline completion, conversational discussion, planning, and agent execution. The distinction concerns the operating mode and the responsibility delegated in a particular interaction.
 
-- It traces API contracts.
+| Mode | Typical engineer request | What establishes completion |
+| --- | --- | --- |
+| Code completion | “Complete this mapping.” | Developer accepts or rejects the suggestion. |
+| Conversational assistance | “Explain why this booking test fails.” | Developer evaluates the explanation. |
+| Agent-driven task | “Investigate and fix the booking failure within these constraints.” | Files changed, checks run, results recorded, and a reviewable diff produced. |
+| Governed Harness run | “Execute the approved change workflow and report its gates.” | The Harness records agent output, deterministic evidence, review findings, and the run outcome. |
 
-- It examines event schemas.
+The final row introduces a distinction developed throughout the handbook. An agent may participate in a Harness, but **an AI Coding Agent is not the Harness**. An agent reasons and performs permitted actions. A Harness coordinates roles, permissions, artifacts, validation gates, retries, evaluation, and reporting according to an organizational workflow. One agent may be useful without a Harness; an enterprise Harness can coordinate one or several agents.
 
-- It identifies affected database entities.
+## Concepts: What an AI Coding Agent Does
 
-- It reviews integration tests.
+### Objectives, instructions, and permitted actions
 
-- It inspects documentation.
+An agent begins with an objective supplied by a human or an authorized workflow. “Support inspections for government fleet bookings” is an objective, not yet an implementation specification. It leaves unresolved questions about approval rules, the age of an acceptable inspection, who may override a failure, and whether the condition applies to all government accounts or only those enrolled in the program.
 
-- It proposes an implementation sequence.
+A capable agent should expose those gaps before committing to a consequential design. It may identify a default from existing code, propose options, and request human direction. It should not silently convert an assumption into a business policy.
 
-- It even warns that a downstream reporting service consumes an event that will require versioning to avoid breaking existing clients.
+Instructions and boundaries shape the work. An organization may require that controllers contain no business decisions, that customer data never appear in logs, and that all migrations receive human review. An engineering task may also permit reading the entire repository while restricting edits to a small work area. The agent should use the narrowest permissions that satisfy the objective.
 
-The conversation has shifted dramatically.
+A useful request therefore specifies both the desired outcome and the conditions under which the outcome is acceptable:
 
-The engineer is no longer asking an assistant to generate a method.
+> Implement inspection eligibility checks for government fleet bookings. First inspect the existing booking flow and report relevant files. Preserve behavior for other customers. Do not add a new service or database table without an approved design. Propose the change and tests before editing. Do not modify deployment configuration or execute destructive commands.
 
-The engineer is collaborating with an intelligent development partner capable of understanding an entire software system.
+This is not a substitute for repository-wide Instructions. It is the task-specific Prompt. Later chapters distinguish Prompts, Instructions, Skills, Roles, Steering Notes, and Repository Intelligence in greater detail.
 
-This evolution—from code completion to engineering collaboration—defines the emergence of AI coding agents.
+### The model, the tools, and the execution environment
 
-Understanding how these agents think, reason, and operate is becoming as important for software architects as understanding object-oriented design or distributed systems.
+At the center of an agent is a model capable of interpreting language and code and selecting a next step. The model alone does not provide file-system access or the ability to compile a project. Those capabilities come from tools made available by the host application and from the environment in which the tools execute.
 
----
+A repository-search tool can return candidate files. A file-reading tool can retrieve their contents. A terminal tool may run `git diff`, `dotnet build`, or a targeted test command. An integration may expose a pull request, issue, or documentation source. The agent receives outputs and can revise its approach.
 
-# Learning Objectives
+The separation matters operationally. A model may propose running a command that the environment cannot execute, lacks permission to execute, or should not execute under enterprise policy. A host or Harness must enforce such restrictions independently of the model's willingness to comply.
 
-After completing this chapter, you will be able to:
+Tools also differ in trustworthiness. Compiler errors are objective observations about a particular build. A repository comment is a claim made by an author. Search results are incomplete views of a larger corpus. A generated explanation is a hypothesis. Successful agent work depends on keeping those categories separate.
 
-- Distinguish AI coding agents from traditional code-completion assistants.
-- Understand the core capabilities that define modern coding agents.
-- Explain how AI agents analyze repositories and maintain engineering context.
-- Recognize the architectural components involved in agent-driven software development.
-- Understand how planning, reasoning, and tool usage enable autonomous engineering workflows.
-- Evaluate where AI coding agents provide value within enterprise software development.
-- Recognize the limitations that still require human engineering judgment.
-- Prepare your engineering teams to work effectively with AI coding agents.
+### Context and repository intelligence
 
----
+An agent cannot reason about a system it has never examined. In enterprise repositories, useful context may include solution boundaries, domain vocabulary, architecture decisions, source code, tests, build configuration, issue descriptions, and prior implementation patterns.
 
-# From Coding Assistance to Engineering Collaboration
+The active **context** is the information available to the model for its current task. Its size is finite. A large repository cannot be treated as though every file were simultaneously and accurately understood. Effective agents retrieve relevant material, follow dependencies, summarize observations, and return to source files when precision is required.
 
-Software development has experienced several major productivity revolutions.
+**Repository Intelligence** is the organized body of repository-derived information that supports that discovery: where capabilities live, what architectural boundaries are documented, how code is tested, and which conventions have been established. It is not a synonym for chat history or unverified model recollection. The original source remains the authority for the current state of an implementation.
 
-The first involved high-level programming languages, which replaced assembly language with abstractions that allowed developers to focus on business logic rather than processor instructions.
+Persistent engineering knowledge serves a different purpose. A versioned instruction file may communicate agreed conventions between sessions. A knowledge source may contain an approved architecture decision. A **scratchpad** records temporary, task-scoped observations, files under investigation, hypotheses, and intermediate progress. It is working state, not authoritative policy. **Harness Memory**, when introduced in a governed adaptive system, retains selected evidence or learning across runs and must not silently rewrite standards.
 
-The second came with integrated development environments (IDEs), which unified editing, debugging, compiling, and refactoring into a single workspace.
+| Information | Appropriate role | Trust boundary |
+| --- | --- | --- |
+| Current source file or test output | Evidence about the inspected revision or run | Valid only for that revision and environment. |
+| Repository Instructions | Persistent engineering constraints | Subject to ownership and change control. |
+| Task Prompt | Current objective and task-specific limits | Cannot override higher-priority policy. |
+| Steering Note | Human-maintained mission priorities and constraints | Changes require the designated authority. |
+| Scratchpad | Temporary observations and hypotheses | Not authoritative; clear or archive by policy. |
+| Harness Memory | Governed knowledge from earlier executions | Must be attributable, reviewable, and controlled. |
 
-The third introduced distributed version control systems, enabling teams across the world to collaborate efficiently.
+A large context window reduces some retrieval friction; it does not eliminate stale files, missing dependencies, contradictory information, or the need to verify what a tool actually returned.
 
-The fourth embraced automation through continuous integration and continuous deployment (CI/CD), reducing manual effort and improving software quality.
+### Planning and the feedback loop
 
-The fifth wave emerged with AI-assisted development.
+A coding agent typically alternates between gathering evidence, deciding what to attempt, acting through a tool, and inspecting the result. This can be described as **Observe → Decide → Act → Verify**. It is a useful engineering abstraction rather than a claim about a vendor's private model internals.
 
-Initially, these systems were viewed primarily as sophisticated autocomplete engines. They predicted the next few lines of code, generated boilerplate implementations, and suggested documentation.
+The cycle may begin with a search that reveals the booking eligibility policy. The next action is to inspect the policy's callers and tests. That inspection may expose an existing rule for corporate fleet accounts, making a new policy class unnecessary. A test run may then fail because the new behavior breaks a previously undocumented scenario. The agent should diagnose the failure and revise the change—or stop and request a decision when competing business rules cannot be resolved from evidence.
 
-Although valuable, these capabilities remained fundamentally reactive.
+A failed action is not automatically a reason to repeat the same prompt. Effective recovery involves classifying the failure: incorrect implementation, missing environment dependency, insufficient permission, flaky infrastructure, contradictory requirement, or tool malfunction. Only some failures can be repaired through another code edit. Repeated attempts without a limit can waste resources and obscure the original issue.
 
-The engineer determined every step.
+Nor does a passing build establish business correctness. Compilation verifies a defined set of language and dependency conditions. Tests check the scenarios that were written. Security analysis checks the rules and signatures configured for it. The Evaluator must still consider whether the result serves the intended goal, and a human may still need to accept the design or deployment risk.
 
-The AI simply accelerated typing.
+### What autonomy does—and does not—mean
 
-Modern AI coding agents represent a different category of technology.
+Agent autonomy is bounded by assigned authority and the execution environment. Reading files, editing a branch, creating a pull request, changing production credentials, and deploying an application are not equivalent actions. Enterprises should assign different permissions and approvals to each.
 
-Rather than predicting individual lines of code, they attempt to understand engineering intent.
+An agent can help formulate architecture choices; it is not the owner of architectural standards. It can generate code; it cannot guarantee correctness. It can report a test as passing when the tool produced a success result; it must not imply that an unexecuted or skipped test passed. It can propose an improvement to Instructions or a Skill; a governed system should not silently adopt that improvement.
 
-Instead of answering isolated questions, they solve engineering problems.
+These limitations do not diminish the value of coding agents. They describe the conditions under which agent assistance becomes reliable engineering practice.
 
-Instead of completing statements, they execute workflows.
+## Architecture Discussion
 
-The distinction may appear subtle, but its implications are profound.
+### The boundaries of an agent-driven change
 
----
+An enterprise coding task crosses several boundaries. The **business boundary** defines what is correct for customers and operations. The **repository boundary** defines where functionality belongs and what other components may depend on it. The **execution boundary** determines which files, commands, networks, and secrets the agent can access. The **approval boundary** determines which decisions require an accountable person. The **evidence boundary** separates a proposed or reported result from independently verified observations.
 
-# What Is an AI Coding Agent?
+These boundaries should be explicit before an agent edits an enterprise codebase. Consider Alpha Car Detailing's proposed inspection policy. A developer could implement the rule in a controller because that is where the HTTP request arrives. A different developer might place it in a shared utility because several endpoints need it. Neither location is necessarily appropriate merely because it is convenient to the agent.
 
-An AI coding agent is an intelligent software system capable of reasoning about software development tasks, understanding engineering objectives, interacting with development tools, and executing multi-step workflows while maintaining awareness of the broader software system.
+If the repository follows Clean Architecture, inspection eligibility belongs in the domain or application logic appropriate to its business ownership. HTTP endpoints coordinate requests and map results. Persistence details remain behind interfaces used by the application. The agent should discover and respect this existing organization rather than inventing new layers.
 
-Unlike traditional code assistants, coding agents are not limited to generating source code.
+The running example is intentionally introduced as a **modular application**. The design does not require an independent Inspection Service, CQRS infrastructure, a message broker, or an event-driven architecture in order to demonstrate an AI coding agent. Such patterns may be justified by later requirements and introduced in later chapters. A coding agent's ability to generate sophisticated infrastructure is not a reason to deploy it prematurely.
 
-They may also:
+### Single-agent execution
 
-- Analyze software architecture.
-- Understand repository organization.
-- Navigate large codebases.
-- Execute development tools.
-- Review code quality.
-- Generate tests.
-- Refactor implementations.
-- Update documentation.
-- Investigate production issues.
-- Plan implementation strategies.
-- Validate engineering constraints.
-- Recommend architectural improvements.
+A single agent can inspect the booking module, propose a plan, make a bounded edit, run tests, and prepare a diff. This is often the appropriate first deployment model because the authority chain is short and the work is easy to reproduce.
 
-In enterprise environments, these activities often consume significantly more engineering time than writing code itself.
+The primary challenge is role contamination: the same agent proposes an implementation and then judges its quality. Its self-review can catch obvious mistakes, but it is not independent evidence that the change is safe. Deterministic checks and human review remain necessary.
 
-Consequently, coding agents are increasingly viewed not as coding assistants but as engineering collaborators.
+### Multi-agent execution
 
----
+Multiple specialized agents may be valuable when tasks are separable, workloads can run in isolation, and there is a clear mechanism for reconciling their outputs. A Lead Agent may decompose approved work, a Developer Agent may implement it, a Reviewer Agent may examine maintainability and architectural fit, a Validator Agent may gather objective validation evidence, and an Evaluator Agent may assess the completed outcome against the goal and acceptance criteria.
 
-# Characteristics of Modern AI Coding Agents
+Those responsibilities must not collapse into one generic “quality agent”:
 
-Although implementations differ across vendors, most enterprise coding agents share several defining characteristics.
+- The **Reviewer Agent** examines implementation quality, maintainability, architecture, and risk; its findings may require judgment.
+- The **Validator Agent** executes or verifies deterministic, repeatable conditions and reports evidence such as build, test, analysis, and policy gate results. It does not certify overall business satisfaction.
+- The **Evaluator Agent** assesses goal satisfaction and outcome quality using acceptance criteria and available evidence. It does not replace deterministic validation, independent review, or human approval.
 
-## Goal-Oriented Execution
+Specialization introduces costs: coordination, context duplication, conflicting edits, access management, and reconciliation. A multi-agent arrangement is not inherently more accurate or efficient than one well-configured agent. It should be adopted when measurable results justify its overhead. The Harness, not a collection of informal chat instructions, is the appropriate place to coordinate governed role transitions and gates at scale.
 
-Traditional development tools operate on explicit commands.
+### Permission and security architecture
 
-For example:
+Tool access makes agents useful and creates a new security boundary. Repository files, logs, issue descriptions, and retrieved web pages can contain instructions that are not authorized directions to the agent. Their content should be treated as task data. The authority to issue commands comes from the governing workflow and approved user instructions, not from text found in a source file or external document.
 
-- Rename this variable.
-- Generate a constructor.
-- Create a property.
+Least-privilege access is the starting point. Give the agent a scoped worktree or branch rather than unrestricted access to a shared checkout. Use sandboxing where available; segregate production credentials; restrict network access; and require approval for destructive commands, dependency changes, migrations, and publication operations. Record the command, exit status, relevant output, and resulting diff for consequential actions. Redact sensitive data before evidence is retained or shared.
 
-AI coding agents instead work toward higher-level objectives.
+The controls should be implemented outside the model wherever possible. A sentence saying “do not deploy” is useful guidance but is weaker than an execution identity that has no production-deployment permission.
 
-For example:
+## Professional Diagrams
 
-> "Implement vehicle inspection history."
+The first diagram separates the model's decision-making from the tools and evidence that make an agent operational.
 
-The agent determines which tasks must be completed to achieve the objective.
-
-Those tasks may include:
-
-- Creating database entities.
-- Updating repositories.
-- Modifying APIs.
-- Generating DTOs.
-- Updating validation logic.
-- Writing integration tests.
-- Revising documentation.
-
-The user specifies the destination.
-
-The agent plans the journey.
-
----
-
-## Multi-Step Reasoning
-
-Enterprise software rarely changes in isolation.
-
-Implementing even a relatively small feature often requires coordinating changes across numerous components.
-
-A coding agent therefore performs iterative reasoning rather than single-step generation.
-
-For example, implementing a new booking approval workflow may require:
-
-1. Understanding the business requirement.
-2. Identifying affected bounded contexts.
-3. Locating relevant source files.
-4. Inspecting existing implementation patterns.
-5. Planning architectural changes.
-6. Generating code.
-7. Executing tests.
-8. Reviewing failures.
-9. Correcting implementation defects.
-10. Updating documentation.
-
-Each step depends upon knowledge gathered during previous steps.
-
-This continuous reasoning process differentiates agents from simple code generators.
-
----
-
-## Context Awareness
-
-Enterprise repositories frequently contain millions of lines of code.
-
-No single AI model can permanently retain the entire repository within its working memory.
-
-Instead, coding agents dynamically construct context.
-
-They identify relevant files, retrieve architectural information, analyze dependencies, and progressively build an understanding of the current task.
-
-Context may include:
-
-- Repository structure
-- Architecture documentation
-- Coding standards
-- Existing implementation patterns
-- Build configuration
-- Test results
-- Pull requests
-- Issue descriptions
-- Previous conversations
-- Engineering instructions
-
-The richer the context, the better the quality of engineering decisions.
-
-This principle explains why later chapters devote considerable attention to repository intelligence, instructions, skills, steering notes, and harness design.
-
----
-
-# The Evolution of AI Development Tools
-
-The progression from autocomplete to autonomous engineering can be understood as a sequence of expanding capabilities.
-
-```text
-Autocomplete
-      │
-      ▼
-Code Suggestions
-      │
-      ▼
-Conversational AI
-      │
-      ▼
-Repository Understanding
-      │
-      ▼
-Tool Usage
-      │
-      ▼
-Planning
-      │
-      ▼
-Workflow Execution
-      │
-      ▼
-AI Coding Agents
-      │
-      ▼
-Enterprise AI Engineering
+```mermaid
+flowchart TD
+    H[Engineer: objective, constraints, approvals] --> A[AI Coding Agent]
+    I[Repository Instructions and approved knowledge] --> A
+    A --> P[Plan and select next authorized action]
+    P --> T[Tool and permission boundary]
+    T --> R[Repository search and file operations]
+    T --> C[Build, test and analysis commands]
+    T --> E[Approved external integrations]
+    R --> O[Observed results]
+    C --> O
+    E --> O
+    O --> A
+    A --> D[Reviewable change and evidence report]
+    D --> G[Deterministic gates and human decision]
 ```
 
-Each stage increases the level of abstraction.
+**Figure 2-1.** An AI Coding Agent selects actions and consumes evidence; permissions and validation remain separate controls.
 
-Early tools focused on syntax.
+The second diagram shows how an enterprise Harness can coordinate specialized responsibilities without confusing their authority.
 
-Modern agents focus on engineering objectives.
-
-Future enterprise systems will increasingly coordinate multiple specialized agents working together under human supervision.
-
----
-
-# Anatomy of an AI Coding Agent
-
-Although implementations differ among vendors, most coding agents follow a broadly similar internal architecture.
-
-```text
-                 User Objective
-                       │
-                       ▼
-              Intent Interpretation
-                       │
-                       ▼
-             Planning & Reasoning Engine
-                       │
-         ┌─────────────┼──────────────┐
-         ▼             ▼              ▼
- Repository      Tool Invocation   Knowledge
- Understanding      Layer           Sources
-         │             │              │
-         └─────────────┼──────────────┘
-                       ▼
-              Execution & Validation
-                       │
-                       ▼
-                 Human Review
+```mermaid
+flowchart TD
+    B[Approved business objective] --> L[Lead Agent: scope and coordination]
+    L --> D[Developer Agent: implementation]
+    D --> V[Validator Agent: deterministic evidence]
+    V -->|Gate failure| D
+    V -->|Evidence available| R[Reviewer Agent: design and implementation findings]
+    R -->|Changes requested| D
+    R -->|Review findings recorded| E[Evaluator Agent: goal and acceptance assessment]
+    E --> H[Human approval or rejection]
+    H -->|Approved| P[Controlled integration or deployment workflow]
+    H -->|Rejected or deferred| L
 ```
 
-Each component contributes a distinct responsibility.
+**Figure 2-2.** Illustrative Harness orchestration. The order and retry conditions are policy decisions; evaluation does not replace validation or human authority.
 
-Rather than acting as a single monolithic model, the agent continuously alternates between reasoning, information gathering, execution, and validation.
+The diagrams are conceptual. They do not claim that the handbook's sample application or its future Harness already implements every component shown.
 
-Understanding these internal stages allows architects to better predict agent behavior and design repositories that support effective AI collaboration.
+## Hands-on Example: Inspect Before Implementing
 
----
+The following exercise uses a bounded change in Alpha Car Detailing rather than a fabricated microservice landscape. It assumes a .NET solution with a booking module, an existing test suite, and some repository documentation. Actual filenames and commands must be adapted to the checked-out repository; no execution results are implied by this manuscript.
 
-# Intent Interpretation
+### Establish the requirement
 
-Every interaction begins with an engineering objective.
+The business owner confirms the following acceptance criteria for the example:
 
-Humans naturally communicate using business language.
+1. A booking for a government fleet account configured to require an inspection cannot proceed to the detailing stage without an eligible, approved inspection for that vehicle.
+2. A rejected inspection blocks that transition and returns an actionable reason.
+3. A government fleet account not configured for mandatory inspections retains its current behavior.
+4. The inspection record is associated with the correct tenant and vehicle; unauthorized users cannot retrieve another customer's records.
+5. The outcome is covered by unit tests and by integration tests at the relevant application boundary.
 
-For example:
+These criteria deliberately separate the business rule from a particular technical solution. They do not require a new service, new broker, or new event contract.
 
-> "Support electric vehicle inspection scheduling."
+### Begin with an evidence-gathering task
 
-This statement contains no implementation details.
-
-The agent must first transform the request into engineering intent.
-
-Typical questions include:
-
-- Which bounded context owns this feature?
-- Does similar functionality already exist?
-- Is this a new workflow or an extension?
-- Which services are responsible?
-- What business rules may be affected?
-- Are existing APIs reusable?
-
-Intent interpretation is therefore less about generating code and more about understanding the engineering problem.
-
-Just as experienced architects clarify requirements before writing software, AI coding agents must first establish an accurate understanding of the requested outcome.
-
----
-
-# Planning Before Coding
-
-One of the defining characteristics of modern coding agents is that they increasingly separate planning from implementation.
-
-Experienced software engineers rarely begin coding immediately after receiving a feature request.
-
-Instead, they think.
-
-They inspect existing architecture.
-
-They identify dependencies.
-
-They evaluate design alternatives.
-
-They estimate implementation effort.
-
-High-quality coding agents increasingly follow the same discipline.
-
-A simplified planning process might resemble:
+An engineer can give the agent a bounded investigation request:
 
 ```text
-Requirement
-      │
-      ▼
-Architecture Analysis
-      │
-      ▼
-Dependency Discovery
-      │
-      ▼
-Implementation Plan
-      │
-      ▼
-Risk Identification
-      │
-      ▼
-Code Generation
-      │
-      ▼
-Validation
+Objective: Assess how to add mandatory pre-detailing inspections
+for selected government fleet accounts in Alpha Car Detailing.
+
+Read only during this first phase. Inspect the booking lifecycle,
+existing customer/account classification, authorization boundaries,
+validation patterns, and relevant tests.
+
+Return:
+- files inspected and what each establishes;
+- existing behavior versus assumptions;
+- the smallest plausible implementation change;
+- unresolved business or architectural decisions;
+- tests and validation commands to execute later.
+
+Do not edit files, add infrastructure, or assert that unrun tests pass.
 ```
 
-Planning significantly reduces the likelihood of introducing inconsistent designs, duplicated functionality, or architectural violations.
+A useful report might identify an existing booking eligibility component, the relevant account configuration, the API boundary that advances booking status, and tests that already distinguish corporate fleet bookings from individual bookings. If any of these elements are absent, the report should say so instead of inventing a repository structure.
 
-For enterprise systems, planning is often more valuable than code generation itself.
+The technical lead reviews the investigation. If the agent proposes putting a policy in a controller, the lead can reject that placement and direct it to the existing domain or application boundary. If the data model does not contain an inspection-to-vehicle relationship, the team decides whether a new record is necessary before the agent generates a migration.
 
----
+### Approve a constrained implementation plan
 
-# Repository Understanding
-
-Professional software systems derive much of their complexity from relationships rather than individual source files.
-
-A booking service depends upon customer management.
-
-Vehicle inspection publishes events consumed by reporting.
-
-Authentication influences every API.
-
-Configuration affects deployment.
-
-Documentation explains architectural intent.
-
-Coding agents therefore invest considerable effort understanding repositories before modifying them.
-
-Repository understanding typically includes:
-
-- Solution structure
-- Project relationships
-- Folder organization
-- Dependency graphs
-- Shared libraries
-- Configuration files
-- Documentation
-- Build pipelines
-- Testing frameworks
-- Deployment manifests
-- Coding standards
-
-Rather than asking, "How do I write this method?", the agent asks, "How does this software system work?"
-
-That shift in perspective marks one of the defining characteristics of enterprise AI engineering.
-<!-- ```` -->
-
-# Tool Usage: Extending Beyond the Language Model
-
-One of the most common misconceptions surrounding AI coding agents is that they operate solely by generating text.
-
-This assumption is understandable. Large Language Models (LLMs) fundamentally produce tokens—words, symbols, and source code. By themselves, they cannot inspect repositories, execute tests, open files, query databases, or interact with operating systems.
-
-A modern coding agent becomes significantly more capable by combining a reasoning model with an execution environment.
-
-Rather than answering every question from internal knowledge alone, the agent actively gathers information from the surrounding engineering ecosystem.
-
-In practical terms, an enterprise coding agent behaves less like an encyclopedia and more like a software engineer sitting at a workstation.
-
-It can examine source code, invoke development tools, execute commands, read documentation, inspect logs, and verify assumptions before proposing a solution.
-
-This ability fundamentally changes the quality of engineering decisions.
-
----
-
-# The Tool Invocation Layer
-
-The reasoning model determines **what** information is required.
-
-The execution layer determines **how** that information is obtained.
-
-A simplified workflow appears as follows.
+The second request grants edit permission for an agreed scope:
 
 ```text
-User Request
-      │
-      ▼
-Reasoning Engine
-      │
-      ▼
-Determine Required Information
-      │
-      ▼
-Invoke Development Tools
-      │
-      ▼
-Collect Results
-      │
-      ▼
-Continue Reasoning
-      │
-      ▼
-Generate Response
+Implement the approved inspection-eligibility rule in the existing
+booking workflow. Reuse the repository's established layering and
+validation patterns. Preserve the current flow for accounts that do
+not require inspections.
+
+Add tests for approved, missing, rejected, and cross-tenant inspection
+cases. Keep changes within the agreed booking and test areas.
+
+Before making a schema change or introducing a new external dependency,
+stop and request approval. After editing, report the changed files,
+executed commands, test results, and remaining uncertainties.
 ```
 
-Notice that code generation is only one step within a much larger reasoning process.
+For this phase the agent may inspect additional dependencies, modify a policy or application service, update tests, and run the existing quality checks. Its output should be a reviewable diff rather than an unqualified assertion that the feature is complete.
 
-The majority of an agent's work often consists of gathering evidence before producing recommendations.
+A developer might use commands such as the following from the repository's solution directory, after confirming the actual filenames and environment:
 
----
+```powershell
+# Illustrative checks; these were not executed for this chapter.
+git status --short
+dotnet build
+dotnet test
+git diff --check
+```
 
-# Common Development Tools Used by AI Coding Agents
+Build success demonstrates that the code compiles in the tested environment. Test success demonstrates that the executed tests passed. Neither proves that the new inspection rule satisfies every policy, security obligation, or production scenario. The run report should also record skipped tests, failures, and checks that could not execute.
 
-Although each vendor exposes different capabilities, enterprise coding agents typically interact with a similar set of engineering tools.
+### Review evidence, not eloquence
 
-Examples include:
+Suppose the agent's final message says that it implemented the change and that all tests pass. The reviewer should compare that statement with the actual diff and tool output. Did the tests include an account without mandatory inspection? Did the authorization check prevent a different tenant from retrieving the inspection? Was a schema migration created without approval? Did the run use the intended branch and configuration?
 
-- File system navigation
-- Source code search
-- Repository indexing
-- Git history
-- Pull requests
-- Build systems
-- Test frameworks
-- Package managers
-- Linters
-- Static analyzers
-- Documentation repositories
-- Terminal commands
-- Container tooling
-- Kubernetes clusters
-- Cloud CLIs
-- Database clients
-- REST APIs
+A useful completion record contains the objective, scope, inspected files, changed files, decision log, checks executed, results, unresolved questions, and human approval status. That record can later become an input to a Harness run or pull-request review, but it is not automatically approved repository knowledge.
 
-The specific mechanism is less important than the architectural principle.
+### Consider an architectural extension without implementing it prematurely
 
-Rather than assuming facts, the agent retrieves evidence.
+A later release may need an audit feed or reporting integration when inspections are approved. At that point the architect must decide whether the application should publish an integration event, how to protect publication from transaction loss, and whether existing consumers need a compatible schema change. A transactional outbox and idempotent consumption may become appropriate design choices. They should be introduced because the integration requirements justify them—not because the agent can generate an event handler quickly.
 
-Enterprise engineering depends upon facts rather than assumptions.
+This distinction illustrates the central discipline of agent-assisted engineering: discover the existing system, satisfy the current requirement, and preserve the freedom to evolve its architecture deliberately.
 
----
+## Claude Code Example
 
-# Example: Investigating a Build Failure
+Claude Code is the primary platform used for examples in this handbook, but its operational details are not the conceptual definition of an AI Coding Agent. Claude Code can work with repository files and development tools through terminal, IDE, and other supported interfaces. The exact permission prompts and available integrations depend on the environment and organizational settings.
 
-Consider the Alpha Car Detailing platform.
+An engineer working in the checked-out Alpha Car Detailing repository can begin an interactive session from the intended project directory:
 
-A developer reports that the Booking Service fails during continuous integration.
+```powershell
+# Run from the checked-out repository after installing Claude Code.
+claude
+```
 
-Instead of immediately proposing a code change, an AI coding agent may execute a sequence similar to the following.
+The initial request should be investigative rather than an invitation to edit the entire solution:
 
 ```text
-Read Build Log
-        │
-        ▼
-Locate Compilation Error
-        │
-        ▼
-Inspect Referenced Files
-        │
-        ▼
-Review Recent Git Changes
-        │
-        ▼
-Compare with Existing Patterns
-        │
-        ▼
-Identify Root Cause
-        │
-        ▼
-Recommend Fix
+Read the repository's authoritative Instructions and architecture
+notes. Investigate the current booking lifecycle and determine where a
+fleet inspection eligibility rule would belong. Do not edit files.
+
+Identify the files you actually inspected, relevant tests, assumptions,
+and decisions that require approval. Prefer existing application
+patterns; do not introduce CQRS, a new microservice, or an event bus
+unless existing architecture or approved requirements demand it.
 ```
 
-At no point does the agent rely exclusively upon memory.
+After reviewing the evidence and agreeing on the design, the engineer can issue the bounded implementation request from the hands-on example. The agent should be permitted to execute only appropriate commands, and the engineer should inspect the diff and test output before approving the change. Project Instructions can make architectural and testing conventions reusable, but they do not replace a precise task Prompt or an explicit approval gate.
 
-It continuously validates its understanding against the current state of the repository.
+The advantage of a Claude-first example is continuity: the same repository conventions and problem-solving approach can be carried forward into later chapters about Instructions, Skills, Roles, and Harness architecture. It is not a claim that other platforms are incapable of repository reasoning or multi-step execution.
 
-This behaviour mirrors the investigative process of experienced engineers.
+## GitHub Copilot Comparison
 
----
+GitHub Copilot entered many teams through inline suggestions and editor chat. It also provides agent-capable experiences, including agent mode in supported IDEs and other interfaces for delegated work. In agent mode, Copilot can select files, propose or apply edits, run permitted commands, and iterate after observing results. Describing Copilot only as “autocomplete” would therefore misrepresent the current platform.
 
-# Why Tool Usage Matters
+For the Alpha Car Detailing task, the engineer can use an IDE-centered workflow: inspect the booking module beside the running agent, review proposed changes as they appear, approve or reject commands under the configured policy, and run tests in the development environment. The business objective, architecture constraints, and acceptance criteria do not change because the interface is different.
 
-Software engineering is fundamentally an evidence-driven discipline.
+Organizations should evaluate the Copilot experience they actually intend to deploy. IDE agent mode, terminal work, and delegated or cloud execution can have different access boundaries, review surfaces, and administrative controls. Those differences matter more than a static ranking of model quality.
 
-Architects rarely make decisions without examining:
+## OpenAI Codex Comparison
 
-- Existing implementations
-- Build outputs
-- Performance metrics
-- Dependency graphs
-- Production logs
-- Test results
-- Infrastructure configuration
+OpenAI Codex supports coding-agent work through multiple interfaces, including local and integrated development experiences and programmable workflows. It can inspect code, modify files, use tools, and assist with implementation, debugging, and review. The exact execution and approval mechanisms depend on the chosen Codex surface and its configuration.
 
-Coding agents operate most effectively when they follow the same principle.
+The same Alpha Car Detailing investigation can be expressed as a read-only task followed by an approved implementation task. In terminal-oriented or automated settings, the engineering team should pay particular attention to workspace isolation, command permissions, output artifacts, and how test evidence is returned to reviewers. An automated agent run is not the same as an automatically approved code change.
 
-The more evidence available, the lower the probability of incorrect recommendations.
+A useful platform comparison is therefore operational rather than promotional:
 
-Consequently, enterprise AI engineering focuses as much on information retrieval as on language generation.
+| Evaluation question | Claude Code | GitHub Copilot | OpenAI Codex |
+| --- | --- | --- | --- |
+| Where will engineers interact with the agent? | Supported terminal, IDE, desktop, and other interfaces. | IDE, CLI, and delegated agent experiences, according to configuration. | IDE, CLI, app, and programmable agent workflows, according to configuration. |
+| How are repository conventions supplied? | Project Instructions and supported integrations. | Repository instructions and configured agent context. | Repository instructions and configured agent context. |
+| How are sensitive actions controlled? | Review the permissions and tool-access policy of the selected surface. | Review IDE, organization, and delegated-agent permissions. | Review sandbox, approval, and execution permissions for the selected surface. |
+| How is completion verified? | Independently review diffs and tool evidence. | Independently review diffs and tool evidence. | Independently review diffs and tool evidence. |
+| Which platform is preferable? | Determine by a repository-based pilot. | Determine by a repository-based pilot. | Determine by a repository-based pilot. |
 
----
+This table deliberately avoids “Excellent” and “Strong” scores. Feature availability, supported environments, licensing, administrative policy, and product behavior change too rapidly for unsourced rankings to remain meaningful. Chapter 3 develops the platform-selection framework in greater depth.
 
-# Understanding Context
+## Best Practices
 
-Context is the information available to an AI coding agent while solving a problem.
+### Make the objective testable
 
-Without context, even the most capable language model produces generic recommendations.
+A request such as “improve booking quality” offers no stable completion condition. Replace it with an outcome that can be inspected: “Reject progression to detailing when an inspection is required and no approved record exists, without changing behavior for other accounts.” State acceptance criteria and known exclusions in the task Prompt, and preserve ambiguities as decisions rather than allowing the agent to infer undocumented policy.
 
-With rich engineering context, the same model can make decisions that closely resemble those of experienced developers.
+### Require evidence before design changes
 
-For enterprise software systems, context includes considerably more than source code.
+Repository search, dependency inspection, test discovery, and reading existing Instructions should precede architecture-affecting edits. Ask the agent to name the files and observations supporting its recommendation. An agent that cannot identify the relevant implementation should not be authorized to refactor it broadly.
 
-Typical context sources include:
+### Prefer the smallest coherent change
 
-- Business requirements
-- Architecture documentation
-- Repository structure
-- Coding standards
-- Engineering instructions
-- Previous implementation patterns
-- Existing APIs
-- Database schemas
-- Test suites
-- Infrastructure definitions
-- Issue trackers
-- Pull request discussions
+Limit file scope, avoid speculative abstractions, and respect architectural boundaries. Do not ask an agent to introduce services, commands and handlers, messaging infrastructure, or deployment complexity solely to make the solution appear enterprise-grade. The best change is the least complex change that satisfies the requirement within the approved architecture.
 
-The broader and more accurate the context, the better the resulting engineering decisions.
+### Keep validation independent of narrative
 
----
+Use the repository's build, tests, analyzers, and architecture checks as deterministic evidence. Preserve command results and distinguish passed, failed, skipped, and not-run checks. A Reviewer may still find design or security problems after all tests pass, and an Evaluator may still find that the acceptance criteria are not satisfied.
 
-# Context Is Not Memory
+### Isolate the execution environment
 
-Many engineers use the terms *context* and *memory* interchangeably.
+Use an appropriate branch or worktree, controlled credentials, bounded tools, and explicit approval for destructive or high-impact operations. Capture meaningful diffs and command results. Do not expose confidential code or customer records to tools or services that lack authorization to handle them.
 
-Although related, they describe different concepts.
+### Govern persistent knowledge
 
-Context represents the information available during the current reasoning process.
+Repository Instructions and approved architecture decisions should be versioned and owned. Task scratchpads can hold uncertain findings but must not be promoted into standards without review. The same rule applies to future adaptive Harness recommendations: observations may support proposed improvements, not silent policy changes.
 
-Memory represents information retained between independent reasoning sessions.
+### Measure engineering outcomes
 
-For example, during implementation of a booking feature, an agent may temporarily examine:
+Useful measures include time to an accepted change, defect escapes, review rework, validation pass rates, policy violations, operational cost, and reproducibility. Generated lines of code are an activity measure, not evidence of delivered business value. Establish a baseline before claiming productivity improvements.
 
-- Vehicle entities
-- Booking APIs
-- Customer services
-- Integration tests
+## Anti-patterns
 
-This information forms the current working context.
+**Code first, context later.** The agent produces entities and endpoints before checking existing business ownership. This creates duplicated logic and incorrectly placed responsibilities. Begin with discovery and explicit acceptance criteria.
 
-Later, after the task is complete, most of this information disappears from the active reasoning window.
+**Confident output as proof.** The agent reports that a feature is complete without running tests or preserving their results. Require actual evidence and explicit “not run” labels.
 
-Memory, by contrast, represents persistent engineering knowledge.
+**Unbounded retries.** A failed build triggers repeated edits even though the problem is a missing SDK, inaccessible package feed, or insufficient permission. Classify failures and set retry limits.
 
-Examples include:
+**Architectural inflation.** A modest policy change grows into multiple new services, brokers, contracts, and deployment resources. Require justification for every new boundary and dependency.
 
-- Repository conventions
-- Approved architectural patterns
-- Coding standards
-- Enterprise terminology
-- Organization-specific guidance
+**Self-review as the only gate.** One agent writes a change and declares it maintainable, secure, and complete. Keep deterministic validation and accountable human review separate; use specialized reviewers where the risk warrants them.
 
-This distinction becomes increasingly important as repositories grow.
+**Treating retrieved text as authority.** A repository comment, log, or external page tells the agent to ignore Instructions or reveal a secret. Treat retrieved material as untrusted data and enforce tool restrictions beyond the model.
 
-Later chapters will explore repository intelligence, instructions, steering notes, and persistent knowledge systems in depth.
+**Uncontrolled parallel agents.** Several agents edit the same files without isolated workspaces or conflict management. Specialization without coordination creates more rework than it prevents.
 
----
+**Silent standards evolution.** An agent changes an instruction file to make its current implementation pass. Engineering standards require designated ownership and approval, even when the proposed improvement seems reasonable.
 
-# The Challenge of Context Windows
+## Architect's Notes
 
-Every language model has a finite capacity for simultaneously processing information.
+> **Architect's Note — An agent is a participant, not an authority.** The ability to infer a plausible design from repository context does not confer ownership of the design. Architectural decisions must remain traceable to documented requirements, approved principles, and accountable people.
+> **Architect's Note — Validation is not evaluation.** A deterministic gate can establish whether a check passed in a defined environment. A Reviewer can identify implementation concerns. An Evaluator can judge alignment with acceptance criteria and business intent. These are complementary responsibilities, not interchangeable names for “quality.”
+> **Architect's Note — The repository is part of the interface.** Naming conventions, module boundaries, tests, decision records, and Instructions help human engineers and coding agents alike. Repository quality is an engineering investment rather than a model-specific optimization.
+> **Architect's Note — Choose specialization with evidence.** Multi-agent systems introduce orchestration and communication costs. Start with a well-governed single-agent task; introduce additional roles when their independent checks or parallel work measurably improve outcomes.
 
-This capacity is commonly referred to as the **context window**.
+## Enterprise Tips
 
-Although modern models support dramatically larger context windows than earlier generations, enterprise repositories frequently exceed those limits.
+> **Enterprise Tip — Define a pilot boundary.** Choose a representative repository and a bounded class of changes. Give agents access only to the files, credentials, and commands required for that pilot; compare accepted outcomes with the established manual workflow.
+> **Enterprise Tip — Retain a run record.** Keep the task objective, repository revision, instructions version, changed files, checks performed, significant findings, approval decisions, and unresolved risks. This supports auditability and later learning without treating a chat transcript as the system of record.
+> **Enterprise Tip — Record uncertainty.** Encourage the agent to distinguish “observed,” “inferred,” and “requires confirmation.” The cost of an explicit question is often lower than the cost of correcting a confidently implemented but incorrect business rule.
+> **Enterprise Tip — Keep platform choice reversible.** Place enduring standards in repository-controlled knowledge and independent validation pipelines. Avoid encoding architectural policy solely in one vendor's conversational history or private interface settings.
 
-A typical enterprise repository may contain:
+## Decision Points
 
-- Thousands of source files
-- Hundreds of projects
-- Multiple microservices
-- Infrastructure definitions
-- Deployment pipelines
-- Documentation
-- Test suites
-- Historical discussions
+**When should an engineer use an agent rather than code completion?** Use completion for local, well-understood edits. Use an agent when the task involves discovering relationships, coordinating changes across files, or iterating against tool results. The additional autonomy should correspond to a real need for multi-step work.
 
-No practical model can permanently load an entire engineering organization into active reasoning.
+**When should the agent stop and ask?** Stop when a material business rule is ambiguous, a new architecture boundary is proposed, tool access must expand, a destructive action is required, or evidence contradicts an approved requirement. Do not hide these decisions in a generated plan.
 
-Consequently, coding agents dynamically construct context rather than attempting to remember everything.
+**When does a task need a Harness?** A personally supervised agent session may be enough for one bounded implementation. A Harness becomes useful when the organization needs repeatable role handoffs, deterministic gates, metrics, controlled retries, recorded evidence, and a standard approval path across many runs.
 
----
+**When should a team adopt multiple agents?** Introduce them when tasks can be isolated, independent review brings meaningful value, and the coordination cost is understood. More agents do not automatically mean greater correctness or lower delivery time.
 
-# Dynamic Context Construction
+**What should determine platform selection?** Evaluate an actual repository and task set against access controls, developer workflow, integrations, repeatability, observability, cost, evidence retention, and organizational governance. Avoid conclusions based only on feature marketing or subjective scores.
 
-Rather than reading an entire repository before every task, agents selectively retrieve relevant information.
+## Exercises
 
-This process resembles the behaviour of experienced engineers.
+### Exercise 2.1 — Repository-readiness assessment
 
-When implementing a feature, developers rarely read every project.
+Select a production or realistic enterprise repository. Identify the authoritative Instructions, architecture boundaries, primary test entry points, build prerequisites, and sensitive operational interfaces. Document at least three gaps that would make an agent's investigation less reliable. For each gap, propose a repository improvement that benefits human developers as well as agents.
 
-Instead, they identify the affected components and progressively expand their understanding.
+### Exercise 2.2 — Read-only inspection
 
-AI coding agents follow a remarkably similar strategy.
+Using Alpha Car Detailing or a comparable modular .NET application, ask an agent to locate the booking eligibility policy without editing files. Require evidence for every proposed insertion point. Compare the agent's report with the files actually inspected and identify which statements are observed, inferred, or unsupported.
 
-```text
-Engineering Request
-        │
-        ▼
-Identify Relevant Components
-        │
-        ▼
-Retrieve Required Files
-        │
-        ▼
-Analyze Dependencies
-        │
-        ▼
-Expand Context
-        │
-        ▼
-Continue Reasoning
-```
+### Exercise 2.3 — Governed implementation plan
 
-This iterative expansion enables agents to work effectively within repositories that far exceed the size of their immediate reasoning capacity.
+Write a task Prompt for the government fleet inspection requirement. Include acceptance criteria, permitted files, forbidden operations, approval boundaries, and required validation. Explain why the task does not yet justify CQRS infrastructure, a separate microservice, or integration-event publication.
 
----
+### Exercise 2.4 — Failure classification
 
-# Repository Discovery
+Give a team four hypothetical outcomes: a compiler type error, a missing .NET SDK, a cross-tenant authorization test failure, and an ambiguous inspection-expiry rule. Decide which the agent may fix autonomously, which require environment repair, and which require human clarification. Specify the evidence that would support each decision.
 
-One of the first responsibilities of an enterprise coding agent is understanding what exists before deciding what should change.
+### Exercise 2.5 — Single-agent versus multi-agent evaluation
 
-Repository discovery typically answers questions such as:
+Run or design two comparable workflows: a supervised single-agent change and a workflow with distinct implementation and independent review stages. Compare review findings, accepted-change time, redundant work, tool cost, and failures. Recommend specialization only if the results justify it.
 
-- Where is this functionality implemented?
-- Which microservice owns this capability?
-- Which bounded context contains the domain model?
-- Which APIs expose the feature?
-- Which events are published?
-- Which consumers depend upon those events?
-- Which tests verify current behaviour?
+## Interview Questions
 
-Without accurate repository discovery, engineering recommendations quickly become unreliable.
+1. What operational characteristic distinguishes an AI Coding Agent from a code-completion feature?
+2. Why is a plausible natural-language explanation insufficient evidence that a repository change is correct?
+3. How do the reasoning model, tools, and execution environment work together?
+4. What is the purpose of an Observe → Decide → Act → Verify cycle?
+5. What information should an agent collect before modifying an unfamiliar .NET repository?
+6. How do active context, Repository Intelligence, scratchpad state, and Harness Memory differ?
+7. Why should a task Prompt not become the authoritative source of repository engineering standards?
+8. How would you separate deterministic validation, implementation review, and outcome evaluation?
+9. What advantages and coordination risks do multiple specialized agents introduce?
+10. How should an organization protect secrets and prevent untrusted repository text from becoming agent instructions?
+11. Why can a passing build and test suite still leave an implementation unfit for production?
+12. Which conditions should cause an agent to request human approval rather than continue editing?
+13. How can an enterprise compare Claude Code, GitHub Copilot, and Codex without relying on subjective capability rankings?
+14. What evidence would demonstrate that an agent workflow improves delivery quality rather than merely generating more code?
 
-For this reason, repository intelligence occupies an entire section of this handbook.
+## Chapter Summary
 
----
+AI coding agents extend software development assistance from suggestions and explanations to bounded, tool-mediated execution. They can inspect repository files, plan a sequence of actions, modify code, run checks, observe failures, and revise their work. These abilities make them useful beyond code generation, particularly in the investigative and iterative activities that occupy experienced engineers.
 
-# Pattern Recognition
+An agent's usefulness depends on the quality of its context and the boundaries under which it operates. Repository Intelligence, approved Instructions, task-specific Prompts, and temporary working state serve different purposes. The agent must distinguish actual observations from assumptions and preserve evidence of actions taken. An execution environment should enforce permissions independently of the model's generated intentions.
 
-Experienced software engineers instinctively recognize recurring implementation patterns.
+Agent output also passes through different kinds of judgment. Deterministic validation establishes the result of repeatable checks. Review examines implementation quality and risk. Evaluation considers whether the change satisfies the intended goal. Human approval retains responsibility for architecture, business policy, and production consequences. A Harness can coordinate these activities at scale, but it should not be confused with the agent that performs an individual task.
 
-For example:
+The Alpha Car Detailing inspection scenario demonstrates why these distinctions matter. A narrowly scoped business policy deserves an investigation, a coherent plan, an implementation consistent with existing architecture, and a reviewable set of test results. It does not automatically warrant new services, messaging infrastructure, or an elaborate multi-agent design.
 
-Every API endpoint uses the same validation pipeline.
+Claude Code, GitHub Copilot, and OpenAI Codex offer different interfaces and operational arrangements for similar classes of agent-driven work. The durable enterprise skill is not allegiance to a tool; it is the ability to define objectives, govern action, interpret evidence, and retain accountability. Chapter 3 builds on that foundation by examining platform selection in depth.
 
-Every domain event follows the same schema.
+## Further Reading
 
-Every repository follows identical naming conventions.
+### Within this handbook
 
-Every integration test uses a common fixture.
+- **Chapter 3 — Comparing AI Coding Platforms:** product surfaces, workflows, operational trade-offs, and selection criteria.
+- **Chapter 4 — Enterprise AI Engineering:** the operating model for organization-wide adoption.
+- **Chapters 5–11 — Repository Intelligence:** discovery, Instructions, Skills, Prompts, Roles, Steering Notes, and knowledge sources.
+- **Chapters 12–18 — Harness Engineering:** the Harness, orchestration, and the Lead, Developer, Reviewer, Validator, and Evaluator roles.
+- **Part V — Enterprise AI Governance:** access, security, approval, auditability, and policy.
+- **Part VI — Self-Learning AI Systems:** governed memory and improvements derived from engineering evidence.
 
-AI coding agents increasingly identify these recurring patterns automatically.
+### Vendor documentation and reference material
 
-Rather than inventing entirely new approaches, they attempt to follow established engineering conventions.
+- Anthropic, [Claude Code overview](https://code.claude.com/docs/en/overview) and [settings and permission configuration](https://code.claude.com/docs/en/settings). Consult the documentation for the capabilities and controls available in the deployed version.
+- GitHub, [About GitHub Copilot agents](https://docs.github.com/en/copilot/concepts/agent-capabilities/about-agents/about-github-copilot-agents) and [agent mode in an IDE](https://docs.github.com/en/copilot/how-tos/copilot-in-your-ide/use-copilot-agents/use-agent-mode). Distinguish IDE sessions from other agent execution surfaces.
+- OpenAI, [Code generation and Codex](https://developers.openai.com/api/docs/guides/code-generation) and [Codex as a platform](https://developers.openai.com/blog/codex-as-a-platform). Review interface-specific execution and permission controls before adopting automated workflows.
 
-This behaviour significantly improves consistency across large codebases.
-
----
-
-# Example: Learning Repository Patterns
-
-Within Alpha Car Detailing, every new domain event follows a standardized implementation.
-
-Each event includes:
-
-- EventId
-- CorrelationId
-- EventTime
-- EventType
-- SourceSystem
-- Schema metadata
-- Payload
-
-After examining several existing events, the agent recognizes this pattern.
-
-When generating a new **VehicleInspectionCompleted** event, it naturally follows the same structure without requiring explicit instructions for every field.
-
-Pattern recognition enables consistent engineering while reducing repetitive guidance.
-
----
-
-# Planning and Reasoning Loops
-
-Contrary to popular belief, modern coding agents rarely perform a single reasoning step before producing an answer.
-
-Instead, they repeatedly alternate between thinking, gathering information, validating assumptions, and revising their plans.
-
-This iterative process is commonly referred to as a reasoning loop.
-
-A simplified loop appears below.
-
-```text
-Understand Objective
-        │
-        ▼
-Plan
-        │
-        ▼
-Collect Evidence
-        │
-        ▼
-Evaluate
-        │
-        ▼
-Revise Plan
-        │
-        ▼
-Execute
-        │
-        ▼
-Validate
-        │
-        ▼
-Complete
-```
-
-The loop may execute several times before implementation begins.
-
-Complex enterprise tasks often require dozens of intermediate reasoning steps.
-
----
-
-# Why Iterative Reasoning Produces Better Engineering
-
-Consider the request:
-
-> "Support government fleet vehicle inspections."
-
-A simplistic system might immediately generate database code.
-
-An experienced architect would first ask:
-
-- Are government customers already represented?
-- Does customer type already exist?
-- Which authorization rules apply?
-- Which reports require modification?
-- Are integrations affected?
-- Do APIs require versioning?
-- Which downstream events change?
-
-Modern coding agents increasingly emulate this behaviour.
-
-The quality of software often depends more upon asking the correct questions than writing the correct syntax.
-
-Reasoning therefore becomes an engineering activity rather than a text-generation activity.
-
----
-
-# Human-in-the-Loop Engineering
-
-Despite their growing capabilities, AI coding agents remain engineering assistants rather than autonomous software owners.
-
-Enterprise software carries business, financial, operational, and regulatory consequences.
-
-Architectural decisions therefore require human accountability.
-
-Successful organizations deliberately design workflows in which humans supervise critical decisions while delegating repetitive implementation tasks to AI agents.
-
-Typical responsibilities remain divided as follows.
-
-| Human Engineer | AI Coding Agent |
-|---------------|-----------------|
-| Define business goals | Analyze repositories |
-| Approve architecture | Generate implementation options |
-| Evaluate trade-offs | Update repetitive code |
-| Review security implications | Produce tests |
-| Approve pull requests | Review consistency |
-| Accept production risk | Automate routine engineering |
-
-The objective is augmentation rather than replacement.
-
-AI expands engineering capacity.
-
-It does not replace engineering responsibility.
-
----
-
-# Architect's Note
-
-The most effective enterprise teams do not measure AI by the number of lines of code it produces.
-
-They measure how much engineering effort it removes while preserving architectural quality.
-
-A coding agent that prevents a costly architectural mistake is often more valuable than one that generates thousands of lines of source code.
-
----
-
-# Enterprise Tip
-
-Treat AI coding agents as junior engineers with exceptional productivity but limited organizational understanding.
-
-Provide architecture, standards, repository guidance, and business context first.
-
-The quality of engineering outcomes is strongly correlated with the quality of the information available to the agent.
-
-# The Agent Execution Model
-
-Writing software is only one activity within the broader software engineering process.
-
-Before a developer writes a single line of code, they usually perform a sequence of mental and technical activities:
-
-- Understand the business requirement.
-- Review existing architecture.
-- Locate relevant modules.
-- Examine similar implementations.
-- Identify dependencies.
-- Evaluate risks.
-- Decide on an implementation strategy.
-- Implement the change.
-- Execute tests.
-- Review the results.
-
-Modern AI coding agents increasingly follow a remarkably similar workflow.
-
-Although different vendors implement this process differently, most enterprise coding agents execute variations of the same engineering cycle.
-
-```text
-Receive Objective
-        │
-        ▼
-Understand Intent
-        │
-        ▼
-Plan
-        │
-        ▼
-Discover Repository
-        │
-        ▼
-Gather Context
-        │
-        ▼
-Execute Tools
-        │
-        ▼
-Generate Solution
-        │
-        ▼
-Validate
-        │
-        ▼
-Present Results
-```
-
-This sequence transforms the agent from a code generator into an engineering workflow participant.
-
----
-
-# The Observe → Think → Act Cycle
-
-Many AI coding agents internally operate using an iterative reasoning pattern commonly described as **Observe → Think → Act**.
-
-The terminology differs among implementations, but the underlying engineering principle remains remarkably consistent.
-
-## Observe
-
-The agent begins by collecting information.
-
-Typical observations include:
-
-- Repository structure
-- Existing source code
-- Build configuration
-- Documentation
-- Error logs
-- Test failures
-- Git history
-- Pull requests
-- Architecture documentation
-
-The objective is to replace assumptions with evidence.
-
----
-
-## Think
-
-Using the gathered information, the agent reasons about the engineering problem.
-
-Typical reasoning activities include:
-
-- Identifying dependencies.
-- Comparing implementation alternatives.
-- Estimating architectural impact.
-- Recognizing repository conventions.
-- Predicting downstream consequences.
-- Planning implementation order.
-
-The thinking stage often repeats multiple times as new information becomes available.
-
----
-
-## Act
-
-Once sufficient confidence has been established, the agent begins performing engineering tasks.
-
-Examples include:
-
-- Creating source files.
-- Updating APIs.
-- Refactoring implementations.
-- Generating tests.
-- Updating documentation.
-- Executing builds.
-- Running validation tools.
-
-The results are then evaluated before determining the next action.
-
----
-
-# Iterative Engineering
-
-Software engineering is inherently iterative.
-
-Very few enterprise features are implemented correctly during the first attempt.
-
-Developers continuously adjust their approach as they discover new information.
-
-Coding agents increasingly mirror this behaviour.
-
-```text
-Observe
-    │
-    ▼
-Think
-    │
-    ▼
-Act
-    │
-    ▼
-Validate
-    │
-    ▼
-Need More Information?
-       │
-   Yes ▼ No
-       │
-       ▼
-Observe Again
-```
-
-This repeated cycle enables agents to solve significantly more complex engineering problems than traditional autocomplete systems.
-
----
-
-# Recovering from Failure
-
-One characteristic that distinguishes advanced coding agents from earlier AI assistants is their ability to recover from unsuccessful attempts.
-
-For example, imagine the following scenario within Alpha Car Detailing.
-
-The agent generates a new Vehicle Inspection API.
-
-The build fails.
-
-Rather than immediately stopping, the agent may perform another reasoning cycle.
-
-```text
-Compilation Failed
-        │
-        ▼
-Read Compiler Output
-        │
-        ▼
-Identify Incorrect Type
-        │
-        ▼
-Locate Similar Implementation
-        │
-        ▼
-Update Code
-        │
-        ▼
-Rebuild
-```
-
-Similarly, a failing unit test may trigger another investigation.
-
-```text
-Test Failure
-      │
-      ▼
-Read Test Output
-      │
-      ▼
-Inspect Assertions
-      │
-      ▼
-Review Business Logic
-      │
-      ▼
-Modify Implementation
-      │
-      ▼
-Execute Tests Again
-```
-
-This feedback-driven workflow increasingly resembles the behaviour of experienced software engineers rather than simple code generators.
-
----
-
-# Engineering Decision Making
-
-Not every software engineering problem has a single correct solution.
-
-Enterprise development frequently requires balancing competing concerns.
-
-For example:
-
-Should the Booking Service call the Inspection Service synchronously?
-
-Or should it publish an event?
-
-Should a new microservice be introduced?
-
-Or should an existing bounded context be extended?
-
-Should a database schema evolve?
-
-Or should versioned entities be introduced?
-
-These questions involve trade-offs rather than absolute correctness.
-
-Modern coding agents can evaluate alternatives, but they should not become the final decision makers.
-
-Architectural decisions remain the responsibility of experienced engineers.
-
-The role of the agent is to improve decision quality by presenting evidence, identifying consequences, and reducing routine analysis.
-
----
-
-# AI Coding Agents as Engineering Partners
-
-An effective way to understand coding agents is to compare them with human engineering roles.
-
-A junior developer may require detailed guidance but can rapidly implement well-defined tasks.
-
-A senior engineer requires less supervision and contributes architectural insight.
-
-An architect focuses on system-wide decisions rather than individual classes.
-
-AI coding agents increasingly occupy a unique position within this spectrum.
-
-They are capable of completing work traditionally performed by junior and intermediate engineers while assisting senior engineers with repository analysis, documentation, testing, and investigation.
-
-However, they do not possess organizational accountability.
-
-They cannot negotiate business priorities.
-
-They cannot approve production deployments.
-
-They cannot accept operational risk.
-
-These responsibilities remain firmly within the human engineering organization.
-
----
-
-# Single-Agent Architectures
-
-Many organizations begin their AI engineering journey with a single coding agent.
-
-In this model, one agent receives the engineering objective and performs every activity.
-
-```text
-Developer
-     │
-     ▼
-AI Coding Agent
-     │
- ┌───┼───────────────────────┐
- ▼   ▼        ▼       ▼      ▼
-Plan Analyze Code Test Review
-```
-
-This architecture is simple to adopt and suitable for many engineering teams.
-
-Its primary advantages include:
-
-- Simplicity
-- Low operational overhead
-- Easy onboarding
-- Straightforward governance
-
-For small repositories and individual developers, a single-agent workflow is often sufficient.
-
-As engineering organizations grow, however, specialization becomes increasingly valuable.
-
----
-
-# Multi-Agent Architectures
-
-Enterprise software development consists of numerous specialized activities.
-
-Architects make architectural decisions.
-
-Developers implement functionality.
-
-Reviewers enforce standards.
-
-Quality engineers validate behaviour.
-
-Security specialists evaluate risk.
-
-Rather than assigning every responsibility to one AI system, enterprise platforms increasingly divide responsibilities across multiple specialized agents.
-
-```text
-                 Engineering Request
-                         │
-                         ▼
-                  Lead Agent
-                         │
-      ┌──────────┬──────────┬──────────┐
-      ▼          ▼          ▼          ▼
- Architect   Developer   Reviewer   Validator
-      │          │          │          │
-      └──────────┴──────────┴──────────┘
-                     │
-                     ▼
-                 Final Output
-```
-
-Each agent performs a narrowly defined responsibility.
-
-This specialization generally produces higher-quality engineering outcomes than a single general-purpose agent.
-
----
-
-# Why Specialization Matters
-
-Human software engineering has evolved toward specialization because expertise improves quality.
-
-Organizations rarely expect one individual to simultaneously act as:
-
-- Enterprise Architect
-- Database Administrator
-- Security Engineer
-- Quality Engineer
-- DevOps Engineer
-- Product Owner
-
-AI engineering increasingly follows the same pattern.
-
-Specialized agents maintain focused responsibilities.
-
-Examples include:
-
-**Architect Agent**
-
-- Reviews architecture
-- Detects design violations
-- Evaluates scalability
-
-**Developer Agent**
-
-- Implements functionality
-- Updates source code
-- Creates tests
-
-**Reviewer Agent**
-
-- Reviews maintainability
-- Identifies duplicated logic
-- Detects coding standard violations
-
-**Validator Agent**
-
-- Executes tests
-- Confirms acceptance criteria
-- Validates implementation quality
-
-Each agent contributes expertise without replacing human ownership.
-
----
-
-# The Emergence of AI Engineering Teams
-
-One of the most significant developments in enterprise AI is the emergence of collaborative agent systems.
-
-Instead of interacting with a single intelligent assistant, engineers increasingly coordinate teams of specialized AI agents.
-
-A simplified workflow may resemble the following.
-
-```text
-Feature Request
-       │
-       ▼
-Lead Agent
-       │
-       ▼
-Architecture Analysis
-       │
-       ▼
-Implementation Agent
-       │
-       ▼
-Testing Agent
-       │
-       ▼
-Documentation Agent
-       │
-       ▼
-Reviewer Agent
-       │
-       ▼
-Human Approval
-```
-
-Although this workflow resembles a traditional software engineering team, every participant operates under human governance and organizational standards.
-
-Later chapters will examine enterprise harnesses that coordinate these collaborative agent systems in considerably greater depth.
-
----
-
-# Enterprise Scenario: Alpha Car Detailing
-
-Suppose the business introduces a premium **Fleet Maintenance Subscription** for corporate customers.
-
-The new capability affects multiple services:
-
-- Customer Management
-- Pricing
-- Booking
-- Billing
-- Vehicle History
-- Reporting
-- Notification Service
-
-A mature AI coding agent does not immediately begin generating code.
-
-Instead, it first investigates the repository.
-
-Typical questions include:
-
-- Does a subscription model already exist?
-- Which bounded context owns pricing?
-- Which APIs expose customer contracts?
-- Which events currently represent completed services?
-- Which downstream consumers depend upon those events?
-- Does billing already support recurring payments?
-- Which integration tests require updates?
-
-Only after gathering this information does implementation planning begin.
-
-The engineering workflow therefore resembles that of an experienced architect performing an impact assessment before approving development work.
-
-This behaviour illustrates one of the defining characteristics of enterprise AI engineering:
-
-**Analysis precedes implementation.**
-
----
-
-# Architect's Note
-
-Organizations that achieve the greatest productivity gains with AI are rarely those using the most sophisticated language model.
-
-They are the organizations that provide agents with well-structured repositories, consistent architectural patterns, comprehensive documentation, and clearly defined engineering standards.
-
-AI quality is strongly influenced by engineering quality.
-
----
-
-# Enterprise Tip
-
-When evaluating AI coding platforms, avoid asking only:
-
-> "How well does it generate code?"
-
-Instead, ask:
-
-- How effectively does it understand repositories?
-- How well does it reason about architecture?
-- Can it recover from failed implementations?
-- How safely does it interact with development tools?
-- How transparent is its reasoning process?
-- How easily can it operate within existing engineering workflows?
-
-For enterprise organizations, these capabilities often determine long-term value more than code generation quality alone.
-
-# End-to-End Engineering Example
-
-Theory alone is insufficient to understand how AI coding agents operate within enterprise software development.
-
-The real value of an agent becomes apparent when observing how it approaches a realistic engineering task from initial request to completed implementation.
-
-Throughout this handbook, the **Alpha Car Detailing** platform serves as the reference application.
-
-The following example illustrates how an AI coding agent collaborates with an engineering team to implement a new business capability.
-
----
-
-# Business Requirement
-
-Alpha Car Detailing has recently signed a nationwide contract with a government transportation department.
-
-Unlike walk-in customers, government vehicles require a mandatory inspection before every detailing appointment.
-
-The inspection must record:
-
-- Government Department
-- Fleet Identifier
-- Vehicle Condition
-- Odometer Reading
-- Inspector
-- Inspection Result
-- Environmental Compliance Status
-- Inspection Photographs
-
-The inspection record must be available throughout the lifetime of the vehicle and become part of its permanent maintenance history.
-
-The requirement appears straightforward.
-
-However, the architect immediately recognizes that the change spans multiple bounded contexts.
-
----
-
-# Step 1 — Understanding the Objective
-
-Rather than immediately generating source code, the AI coding agent begins by interpreting the business objective.
-
-Its internal reasoning may resemble the following:
-
-- What is being introduced?
-- Which business capability owns inspections?
-- Is inspection already partially implemented?
-- Which customers require this workflow?
-- Does the requirement affect bookings?
-- Are reports impacted?
-- Does billing change?
-- Which external systems consume inspection information?
-
-The objective at this stage is understanding rather than implementation.
-
----
-
-# Step 2 — Repository Discovery
-
-The agent now begins exploring the repository.
-
-Typical investigation includes:
-
-```text
-Solution
-│
-├── Customer Service
-├── Vehicle Service
-├── Booking Service
-├── Inspection Service
-├── Billing Service
-├── Notification Service
-├── Reporting Service
-└── Shared Contracts
-```
-
-The agent discovers:
-
-- Existing Vehicle aggregate
-- Booking workflow
-- Inspection placeholder APIs
-- Domain events
-- Shared DTOs
-- Integration tests
-- Architectural documentation
-
-Rather than modifying files immediately, the agent builds an understanding of the software landscape.
-
----
-
-# Step 3 — Dependency Analysis
-
-Enterprise software rarely changes in isolation.
-
-The coding agent therefore performs an impact assessment.
-
-```text
-Government Inspection
-          │
-          ▼
-Inspection Service
-          │
-          ▼
-Vehicle Aggregate
-          │
- ┌────────┼───────────┐
- ▼        ▼           ▼
-Booking  Reporting  Notification
-          │
-          ▼
-Analytics
-```
-
-Potential dependencies include:
-
-- Booking validation
-- Vehicle history
-- Mobile inspection application
-- Reporting dashboards
-- Government compliance reports
-- Analytics
-- Notification workflows
-
-This analysis enables architects to estimate project scope before implementation begins.
-
----
-
-# Step 4 — Planning
-
-Only after understanding the repository does implementation planning begin.
-
-Example implementation plan:
-
-1. Extend Vehicle domain model.
-2. Create Inspection aggregate.
-3. Add environmental compliance entity.
-4. Create REST endpoints.
-5. Publish inspection completed event.
-6. Update reporting consumer.
-7. Add integration tests.
-8. Update documentation.
-9. Execute validation.
-10. Submit implementation for review.
-
-Notice that implementation planning resembles the work performed during a sprint planning session.
-
-The coding agent is not merely generating code.
-
-It is organizing engineering work.
-
----
-
-# Step 5 — Implementation
-
-The implementation phase may involve dozens of coordinated changes.
-
-Examples include:
-
-### Domain Layer
-
-- Inspection Aggregate
-- Inspection Status
-- Environmental Compliance Entity
-- Business Rules
-
-### Application Layer
-
-- Commands
-- Queries
-- Validators
-- Handlers
-
-### Infrastructure Layer
-
-- Entity Framework mappings
-- Repository implementation
-- Database migration
-
-### API Layer
-
-- Controllers
-- DTOs
-- Swagger documentation
-
-### Integration
-
-- Event publishing
-- Event consumers
-- Notifications
-
-### Testing
-
-- Unit tests
-- Integration tests
-- Contract tests
-
-Modern coding agents coordinate these related changes while attempting to preserve architectural consistency.
-
----
-
-# Step 6 — Validation
-
-Implementation does not conclude when code compiles.
-
-Enterprise engineering requires evidence that software behaves correctly.
-
-Typical validation activities include:
-
-```text
-Compile
-   │
-   ▼
-Unit Tests
-   │
-   ▼
-Integration Tests
-   │
-   ▼
-Static Analysis
-   │
-   ▼
-Architecture Validation
-   │
-   ▼
-Documentation Review
-```
-
-If any stage fails, the coding agent may investigate the cause before proposing corrective actions.
-
----
-
-# Step 7 — Human Review
-
-The implementation is now technically complete.
-
-However, production-ready software requires human evaluation.
-
-Typical review questions include:
-
-- Does the design align with enterprise architecture?
-- Are security implications understood?
-- Does the implementation satisfy business requirements?
-- Are acceptance criteria met?
-- Are naming conventions consistent?
-- Is documentation sufficient?
-- Are tests comprehensive?
-
-Human approval remains the final quality gate.
-
-AI accelerates engineering.
-
-It does not replace engineering accountability.
-
----
-
-# What Makes This Workflow Different?
-
-Earlier AI tools primarily assisted during implementation.
-
-Modern coding agents contribute throughout the engineering lifecycle.
-
-| Traditional AI Assistance | AI Coding Agent |
-|---------------------------|-----------------|
-| Generate method | Analyze requirement |
-| Complete syntax | Explore repository |
-| Write function | Plan implementation |
-| Suggest documentation | Identify dependencies |
-| Generate tests | Validate architecture |
-| Explain code | Coordinate engineering workflow |
-
-This broader perspective explains why the industry increasingly refers to these systems as **coding agents** rather than **code assistants**.
-
----
-
-# Claude Code in Enterprise Engineering
-
-Throughout this handbook, Claude Code serves as the primary implementation platform because it is the organizational standard for the reference enterprise.
-
-This does **not** imply that the engineering principles discussed throughout the book are Claude-specific.
-
-The underlying concepts remain applicable across modern AI coding platforms.
-
-Claude Code's strengths generally become most apparent when working with large engineering tasks requiring reasoning rather than isolated code generation.
-
-Examples include:
-
-- Repository exploration
-- Architecture discussions
-- Large-scale refactoring
-- Multi-file implementation
-- Technical documentation
-- Code reviews
-- Design analysis
-- Engineering planning
-
-One of its distinguishing characteristics is its emphasis on understanding engineering intent before implementation.
-
-Rather than immediately generating source code, it often attempts to build sufficient context to produce architecturally consistent recommendations.
-
-This behaviour aligns closely with enterprise software development practices.
-
----
-
-# GitHub Copilot: An IDE-Centric Experience
-
-GitHub Copilot originated primarily as an in-editor development assistant.
-
-Its greatest strengths traditionally include:
-
-- Real-time code completion
-- Inline suggestions
-- Boilerplate generation
-- Framework familiarity
-- Fast implementation assistance
-
-For many developers, Copilot integrates naturally into existing development workflows because suggestions appear directly within the editor.
-
-For focused implementation tasks, this workflow can be extremely productive.
-
-As GitHub continues expanding Copilot's agent capabilities, the distinction between coding assistants and coding agents continues to narrow.
-
-However, organizations should evaluate platforms based on engineering workflows rather than marketing terminology.
-
----
-
-# OpenAI Codex: Automation-Oriented Engineering
-
-Modern Codex-based workflows increasingly emphasize autonomous task execution through command-line interfaces and programmable engineering workflows.
-
-These capabilities make Codex particularly attractive for:
-
-- Automated engineering tasks
-- Repository automation
-- Scripted development workflows
-- CI/CD integration
-- Repetitive engineering activities
-
-Organizations already investing heavily in automated software delivery pipelines may find these characteristics especially valuable.
-
-Again, the choice of platform should be guided by organizational requirements rather than individual feature comparisons.
-
----
-
-# Comparing Enterprise Engineering Characteristics
-
-The purpose of this comparison is not to declare a winner.
-
-Enterprise software engineering rarely benefits from universal answers.
-
-Instead, organizations should evaluate which platform aligns most closely with existing engineering practices.
-
-| Engineering Capability | Claude Code | GitHub Copilot | OpenAI Codex |
-|------------------------|-------------|----------------|--------------|
-| Large repository reasoning | Excellent | Strong | Strong |
-| Interactive IDE workflow | Strong | Excellent | Strong |
-| Multi-step planning | Excellent | Strong | Excellent |
-| Workflow automation | Strong | Strong | Excellent |
-| Architecture discussions | Excellent | Strong | Excellent |
-| Real-time code completion | Strong | Excellent | Strong |
-
-These characteristics continue evolving rapidly.
-
-Consequently, architects should evaluate engineering workflows rather than relying on feature lists that may become outdated.
-
----
-
-# Selecting the Right Tool
-
-No single platform represents the optimal choice for every organization.
-
-Instead, evaluate platforms against engineering objectives.
-
-Questions worth considering include:
-
-- Does the platform understand large repositories?
-- Can it follow enterprise coding standards?
-- Does it integrate with existing tooling?
-- Can it support secure development workflows?
-- Does it provide sufficient governance?
-- Can it participate in automated engineering pipelines?
-- Does it scale across development teams?
-
-The answers to these questions generally have greater long-term impact than isolated benchmark comparisons.
-
----
-
-# Decision Point
-
-Before introducing AI coding agents into an enterprise development organization, engineering leaders should determine whether success will be measured by:
-
-- Lines of code generated,
-- Individual developer productivity,
-- Engineering quality,
-- Delivery predictability,
-- Architectural consistency,
-- Knowledge sharing, or
-- Long-term maintainability.
-
-Organizations that define success only in terms of coding speed frequently overlook the broader engineering value that AI coding agents can provide.
-
-# Enterprise Best Practices
-
-Successful adoption of AI coding agents depends far less on selecting the "best" model than on establishing sound engineering practices.
-
-Organizations that consistently realize long-term value treat AI as another engineering capability governed by architecture, standards, and quality controls.
-
-The following practices have emerged as common characteristics of successful enterprise AI engineering teams.
-
----
-
-## 1. Provide Architectural Context First
-
-An AI coding agent performs best when it understands the architecture before attempting implementation.
-
-Every repository should clearly communicate:
-
-- Solution architecture
-- Bounded contexts
-- Project responsibilities
-- Dependency rules
-- Coding standards
-- Security requirements
-- Testing expectations
-
-When architectural intent is documented, agents spend less time making assumptions and more time producing consistent engineering outcomes.
-
----
-
-## 2. Standardize Engineering Instructions
-
-Individual developers should not repeatedly explain the same engineering standards.
-
-Instead, organizations should maintain centralized repository instructions describing:
-
-- Naming conventions
-- Logging requirements
-- Error handling
-- Security rules
-- Testing policies
-- Architectural constraints
-
-This approach improves consistency while reducing repetitive conversations with AI agents.
-
-Later chapters will explore repository instructions, skills, and steering notes in detail.
-
----
-
-## 3. Treat AI as Part of the Engineering Process
-
-AI should participate within existing engineering workflows rather than bypass them.
-
-Recommended workflow:
-
-```text
-Business Requirement
-        │
-        ▼
-Architecture Review
-        │
-        ▼
-AI-Assisted Implementation
-        │
-        ▼
-Automated Validation
-        │
-        ▼
-Human Code Review
-        │
-        ▼
-CI/CD
-        │
-        ▼
-Production
-```
-
-Every existing engineering quality gate should remain intact.
-
----
-
-## 4. Keep Humans Accountable
-
-Organizations should never delegate ownership of engineering decisions to AI systems.
-
-Humans remain responsible for:
-
-- Business correctness
-- Architectural decisions
-- Security
-- Compliance
-- Regulatory obligations
-- Production approvals
-- Operational risk
-
-AI accelerates engineering activities.
-
-Accountability remains exclusively human.
-
----
-
-## 5. Continuously Improve Repository Quality
-
-AI coding agents generally amplify the quality of the repositories in which they operate.
-
-Well-organized repositories typically produce:
-
-- Better recommendations
-- More consistent implementations
-- Faster onboarding
-- Higher automation success
-- Improved maintainability
-
-Conversely, poorly organized repositories often produce inconsistent AI behaviour.
-
-Improving repository quality therefore improves both human and AI productivity.
-
----
-
-# Common Anti-Patterns
-
-The excitement surrounding AI-assisted development occasionally leads organizations toward counterproductive practices.
-
-Recognizing these anti-patterns helps engineering teams avoid unnecessary technical debt.
-
----
-
-## Anti-Pattern 1: Measuring Success by Lines of Code
-
-One of the earliest mistakes organizations make is equating AI success with increased code generation.
-
-Software engineering success is not measured by the quantity of source code produced.
-
-Instead, organizations should evaluate:
-
-- Architectural consistency
-- Defect reduction
-- Delivery predictability
-- Maintainability
-- Knowledge sharing
-- Customer value
-
-More code rarely equates to better software.
-
----
-
-## Anti-Pattern 2: Skipping Architecture
-
-Some teams begin implementation immediately after receiving AI-generated code.
-
-This behaviour often introduces:
-
-- Duplicate business logic
-- Conflicting designs
-- Inconsistent abstractions
-- Unnecessary technical debt
-
-Architecture should precede implementation regardless of whether software is written by humans or AI.
-
----
-
-## Anti-Pattern 3: Blind Trust
-
-AI-generated code should never bypass engineering review.
-
-Coding agents occasionally:
-
-- Misinterpret requirements.
-- Miss edge cases.
-- Introduce unnecessary complexity.
-- Produce plausible but incorrect solutions.
-
-Professional software engineering always requires verification.
-
-Trust should be earned through evidence rather than assumed because a response appears confident.
-
----
-
-## Anti-Pattern 4: Ignoring Business Context
-
-Repositories contain source code.
-
-They rarely contain every business rule.
-
-Organizations that fail to provide sufficient business context frequently receive technically correct but functionally incomplete implementations.
-
-Business understanding remains essential.
-
----
-
-## Anti-Pattern 5: Tool-Centric Thinking
-
-Engineering teams sometimes become overly focused on comparing vendors.
-
-Questions such as:
-
-> Which model is fastest?
-
-or
-
-> Which platform generates the most code?
-
-are less important than questions such as:
-
-- Can it support our engineering process?
-- Can it operate within our governance model?
-- Does it understand our architecture?
-- Can it scale across multiple development teams?
-
-Long-term engineering success depends far more on process than product selection.
-
----
-
-# Architect's Note
-
-Organizations should resist the temptation to reorganize their engineering processes around AI tools.
-
-Instead, AI tools should adapt to established engineering principles.
-
-Architecture, governance, testing, security, and quality standards existed long before AI coding agents and remain equally important today.
-
-The most successful AI initiatives strengthen existing engineering discipline rather than replacing it.
-
----
-
-# Enterprise Tip
-
-Before expanding AI adoption across an organization, conduct a repository readiness assessment.
-
-Evaluate:
-
-- Documentation quality
-- Architectural consistency
-- Coding standards
-- Test coverage
-- Dependency management
-- Build reliability
-
-Improving these areas benefits both human developers and AI coding agents.
-
----
-
-# Decision Checklist
-
-Before introducing AI coding agents into production software development, engineering leaders should be able to answer "Yes" to the following questions.
-
-- Do we have documented architectural standards?
-- Are coding conventions clearly defined?
-- Do repositories contain sufficient documentation?
-- Are automated tests part of every change?
-- Is human review mandatory?
-- Are security and compliance requirements documented?
-- Do we understand which engineering activities AI may perform autonomously?
-- Have we established governance for AI-generated changes?
-
-If several answers remain "No," repository maturity should generally improve before large-scale AI adoption.
-
----
-
-# Exercises
-
-### Exercise 1
-
-Select one existing enterprise repository.
-
-Evaluate it from the perspective of an AI coding agent.
-
-Identify:
-
-- Missing documentation
-- Unclear architectural boundaries
-- Inconsistent naming conventions
-- Missing testing guidance
-- Areas where additional repository intelligence would improve engineering outcomes
-
----
-
-### Exercise 2
-
-Using the Alpha Car Detailing solution, identify a feature that spans multiple microservices.
-
-Without writing code, prepare an implementation plan describing:
-
-- Repository discovery steps
-- Components affected
-- Architectural risks
-- Validation activities
-- Human approval points
-
-Compare your approach with the workflow described earlier in this chapter.
-
----
-
-### Exercise 3
-
-Choose one feature recently implemented by your team.
-
-Determine which activities could reasonably be delegated to an AI coding agent and which should remain under direct human responsibility.
-
-Discuss the reasoning behind each decision.
-
----
-
-# Interview Questions
-
-1. What distinguishes an AI coding agent from a traditional code-completion assistant?
-
-2. Why is repository understanding essential for enterprise AI engineering?
-
-3. Explain the Observe → Think → Act execution cycle.
-
-4. Why is planning considered a defining capability of modern coding agents?
-
-5. What is the difference between context and memory?
-
-6. Why are multi-agent systems becoming increasingly important in enterprise software development?
-
-7. Describe how tool invocation improves the quality of AI-assisted engineering.
-
-8. Why should AI-generated code always undergo human review?
-
-9. How does repository quality influence AI effectiveness?
-
-10. What factors should organizations consider when selecting an enterprise AI coding platform?
-
----
-
-# Chapter Summary
-
-The emergence of AI coding agents represents one of the most significant transformations in the history of software engineering.
-
-Unlike earlier development assistants that focused primarily on code completion, modern coding agents participate throughout the engineering lifecycle. They analyze repositories, understand architectural context, reason about implementation strategies, invoke development tools, validate results, and collaborate with engineers to solve complex software problems.
-
-Throughout this chapter, we explored the internal execution model of AI coding agents, including planning, repository discovery, context construction, reasoning loops, tool invocation, validation, and human oversight. We also examined how these capabilities differ fundamentally from traditional code-generation tools.
-
-Using the Alpha Car Detailing platform, we demonstrated that enterprise software development is rarely about generating isolated methods. Instead, successful engineering requires understanding business objectives, architectural boundaries, dependencies, testing strategies, governance, and long-term maintainability.
-
-The comparison of Claude Code, GitHub Copilot, and OpenAI Codex reinforced an important principle that will guide the remainder of this handbook: although platforms differ in workflow and implementation details, the underlying engineering concepts remain vendor-neutral.
-
-As organizations continue adopting AI-assisted development, competitive advantage will come not from selecting a particular model, but from creating repositories, processes, and governance structures that enable both humans and AI agents to collaborate effectively.
-
-The remainder of this handbook builds upon these foundations by exploring how repositories communicate engineering intent through instructions, skills, prompts, roles, steering notes, and harnesses, ultimately enabling scalable enterprise AI engineering.
-
----
-
-# Further Reading
-
-To deepen your understanding of the concepts introduced in this chapter, continue with the following chapters in this handbook:
-
-- **Chapter 3 — Comparing AI Coding Platforms**
-- **Chapter 4 — Enterprise AI Engineering**
-- **Chapter 5 — Repository Discovery**
-- **Chapter 6 — Instructions**
-- **Chapter 7 — Skills**
-- **Chapter 8 — Prompts**
-- **Chapter 9 — Roles**
-- **Chapter 10 — Steering Notes**
-- **Chapter 12 — What Is a Harness?**
-
-These chapters transition from understanding individual coding agents to designing enterprise-scale AI engineering environments where multiple agents collaborate under consistent governance and architectural standards.
+Vendor capabilities and URLs may evolve. The architectural boundaries and evidence requirements described in this chapter are intended to remain applicable across implementations.

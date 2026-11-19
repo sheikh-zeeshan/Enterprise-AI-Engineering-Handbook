@@ -2,7 +2,7 @@
 
 ## Part II — Repository Intelligence
 
-# 1. Story-Driven Opening
+## 1. Story-Driven Opening
 
 On Monday morning, the Alpha Car Detailing engineering team receives a new enterprise requirement.
 
@@ -20,7 +20,7 @@ The request appears deceptively simple.
 
 The repository already contains comprehensive Instructions that define the organization's engineering standards.
 
-The AI agent already knows that every API must:
+The repository Instructions state that applicable changes must:
 
 * follow Clean Architecture
 * use CQRS
@@ -32,11 +32,11 @@ The AI agent already knows that every API must:
 * include unit and integration tests
 * satisfy repository validation rules
 
-These repository-wide standards are not part of today's task. They were established long before this feature request arrived and are automatically enforced through repository Instructions.
+These repository-wide standards are not part of today's task. They predate the feature request and can guide agent behavior. Where the organization needs assurance, it must implement corresponding validation gates; merely placing a requirement in an Instruction file does not enforce compliance.
 
 The prompt identifies *what* must be built.
 
-The Instructions define *how engineering standards must be followed.*
+The Instructions define *which engineering standards and constraints apply*.
 
 Neither explains *how to implement* recurring engineering work.
 
@@ -46,19 +46,7 @@ Instead, it invokes the organization's reusable engineering Skill:
 
 > **Create API Endpoint**
 
-That Skill performs the same sequence every time:
-
-1. Create the API endpoint.
-2. Create the application command.
-3. Register validation.
-4. Add dependency injection.
-5. Create response contracts.
-6. Implement authorization.
-7. Add OpenTelemetry instrumentation.
-8. Register structured logging.
-9. Create unit tests.
-10. Create integration tests.
-11. Validate architecture rules.
+That Skill defines an endpoint-focused procedure: discover the API conventions, verify the application operation exists, create the route and request/response contracts, connect authorization and instrumentation hooks, then run endpoint checks. It coordinates with separate Skills for domain behavior, persistence, and testing rather than silently implementing those concerns itself.
 
 When persistence is required, the agent invokes another Skill.
 
@@ -80,17 +68,17 @@ Each Skill represents proven engineering knowledge captured by the organization 
 
 The AI agent is no longer inventing implementation steps.
 
-It is executing standardized engineering workflows that have already been reviewed, approved, versioned, tested, and governed.
+It can follow standardized engineering workflows that have been reviewed, approved, versioned, tested, and governed. The workflow is guidance; verification and approval still establish whether an execution succeeded.
 
 This distinction transforms AI-assisted development from prompt-driven code generation into disciplined enterprise engineering.
 
 Skills are not shortcuts.
 
-They are executable engineering playbooks.
+They are actionable engineering playbooks, optionally supplemented by scripts, templates, and enforceable gates.
 
 ---
 
-# 2. Learning Objectives
+## 2. Learning Objectives
 
 After completing this chapter, you will be able to:
 
@@ -107,7 +95,7 @@ After completing this chapter, you will be able to:
 
 ---
 
-# 3. Background
+## 3. Background
 
 Chapter 5 introduced Repository Discovery as the process by which an AI agent develops an evidence-based understanding of an unfamiliar codebase before making changes.
 
@@ -162,9 +150,9 @@ This layered model is fundamental to scalable AI-assisted software development a
 
 ---
 
-# 4. Concepts
+## 4. Concepts
 
-## What Is a Skill?
+### What Is a Skill?
 
 A **Skill** is a reusable, governed engineering workflow that defines the procedure an AI coding agent follows to complete a recurring software development activity.
 
@@ -175,7 +163,7 @@ Unlike Instructions, which define mandatory engineering standards, a Skill defin
 A well-designed Skill is:
 
 * reusable
-* deterministic
+* designed for repeatable procedures, with deterministic checks where possible
 * validated
 * versioned
 * independently testable
@@ -188,7 +176,7 @@ The emphasis is on executing an engineering process.
 
 ---
 
-## Skills as Organizational Knowledge
+### Skills as Organizational Knowledge
 
 Consider two organizations implementing the same requirement:
 
@@ -214,15 +202,15 @@ The second organization invokes a single Skill:
 Create API Endpoint
 ```
 
-Regardless of which developer or AI platform executes the Skill, the engineering workflow remains consistent.
+When the host discovers and applies the Skill, developers and AI platforms can follow the same documented workflow; their generated code is not necessarily identical.
 
-The implementation details may differ slightly, but the process remains governed.
+Implementations may differ materially; governance, independent tests, and architecture checks constrain acceptable outcomes.
 
 Over time, this consistency becomes one of the organization's competitive advantages.
 
 ---
 
-## The Relationship Between Instructions, Skills, and Prompts
+### The Relationship Between Instructions, Skills, and Prompts
 
 One of the most common sources of confusion in enterprise AI engineering is the tendency to blur repository standards, reusable workflows, and task requests into a single artifact.
 
@@ -263,7 +251,7 @@ Combining them weakens all three.
 
 ---
 
-## Skills Versus Instructions
+### Skills Versus Instructions
 
 Instructions express policy.
 
@@ -292,7 +280,7 @@ The Instruction remains unchanged even if the implementation Skill evolves.
 
 ---
 
-## Skills Versus Prompts
+### Skills Versus Prompts
 
 Prompts communicate intent.
 
@@ -306,13 +294,13 @@ contains no implementation detail.
 
 The Skill determines how that request is fulfilled within the architectural constraints established by the repository.
 
-A stronger prompt should never replace a missing Skill.
+A longer prompt can be useful for exceptional work, but it should not substitute for a missing Skill when a procedure is repeated across tasks.
 
 If developers repeatedly extend prompts with implementation instructions, the organization has identified an engineering workflow that should instead be formalized as a reusable Skill.
 
 ---
 
-## Skills Versus Roles
+### Skills Versus Roles
 
 Roles define **who** performs an activity.
 
@@ -335,7 +323,7 @@ The separation keeps organizational responsibilities independent from engineerin
 
 ---
 
-## Skills Versus Steering Notes
+### Skills Versus Steering Notes
 
 Steering Notes communicate temporary priorities, project context, or sprint-specific guidance.
 
@@ -350,11 +338,11 @@ A Skill should not contain temporary project direction.
 
 Instead, it should remain reusable regardless of the current sprint or business priority.
 
-If a Skill depends on information that changes frequently, that information belongs in a Steering Note rather than in the Skill definition.
+If a Skill depends on temporary project direction, read it from the Steering Note or task context rather than copying it into the reusable definition.
 
 ---
 
-## Characteristics of High-Quality Skills
+### Characteristics of High-Quality Skills
 
 Effective Skills exhibit several defining characteristics:
 
@@ -370,7 +358,40 @@ Organizations that invest in these qualities build Skill libraries that remain v
 
 ---
 
-# 5. Architecture Discussion
+### Anatomy of a Governed Skill
+
+A Skill is more than its display name. At the point of execution, the AI agent needs enough information to determine *when* the procedure applies, *what* it is allowed to change, and *what evidence* proves completion. The Skill owner needs enough metadata to trace the procedure back to a reviewed version.
+
+| Element | Engineering contract |
+| --- | --- |
+| Identity | Stable name, description, owner, and version or source revision |
+| Applicability | Supported architectures, technologies, use cases, and exclusions |
+| Inputs | Task parameters, repository evidence, and required decisions |
+| Preconditions | Files, dependencies, permissions, and prior capabilities that must exist |
+| Procedure | Ordered engineering activities and permitted tools |
+| Outputs | Files changed, generated artifacts, and a summarized change record |
+| Validation | Automated checks and manual inspection criteria |
+| Failure handling | Stop conditions, clean-up, retry limits, and escalation |
+| Approval | Human decisions required before irreversible or sensitive actions |
+| Evidence | Executed version, gate results, artifacts, and review disposition |
+
+For portability, the Skill's core definition can use the [Agent Skills](https://agentskills.io/) convention: a directory containing a `SKILL.md` file with `name` and `description` in YAML frontmatter. Supporting `references/`, `scripts/`, and `assets/` directories may be present. Owners and compatible versions can be managed in a reviewed registry or in clearly labeled Skill documentation; they are *governance fields*, not universal requirements imposed by every agent platform.
+
+A useful description identifies both the operation and its trigger: *"Create a secured HTTP API endpoint in an existing .NET service. Use when adding a route that delegates to an existing application operation."* A description consisting only of *"API helper"* does not give an agent enough information to select it reliably.
+
+The Skill's body should then describe how the agent confirms architecture conventions, determines the correct project, discovers the relevant policy, records changes, and validates results. An agent should refuse or escalate an incompatible request instead of creating a plausible-looking implementation in the wrong repository.
+
+### Skill Selection, Invocation, and Applicability
+
+Selection is not the same as execution. The agent may select a Skill by matching the task against its description, but must still check that the repository, project structure, technologies, and dependency versions satisfy its entry conditions. An agent should expose its intended Skill choice in the execution plan when the task is high risk or cross-cutting.
+
+Invocation can be explicit (a developer selects a named Skill), agent-driven (the host discovers an applicable Skill), or harness-directed (an orchestrator resolves an approved Skill version). These approaches can coexist. For regulated changes, the harness may pin the exact source revision and require an approval before allowing the Skill to modify security-sensitive files.
+
+A reusable Skill is not an executable program simply because it contains steps. The AI interprets its prose; optional scripts implement deterministic operations. The organization should distinguish *the intended procedure* from *the observable execution*, and it should not assume the agent loaded, obeyed, or completed every step without execution evidence.
+
+---
+
+## 5. Architecture Discussion
 
 The introduction of Skills fundamentally changes the architecture of AI-assisted software development.
 
@@ -381,27 +402,17 @@ Enterprise organizations cannot scale this approach.
 Instead, they separate engineering knowledge into distinct architectural layers.
 
 ```mermaid
-flowchart TD
-
-A[Business Request]
-
-A --> B[Prompt]
-
-B --> C[Repository Instructions]
-
-B --> D[Skill Library]
-
-C --> E[AI Coding Agent]
-
-D --> E
-
-E --> F[Repository Changes]
-
-F --> G[Validation]
-
-G --> H[Human Review]
-
-H --> I[Merge]
+flowchart TB
+    Request[Business request] --> Prompt[Task prompt]
+    Discovery[Repository discovery] --> Selection[Select applicable skills]
+    Prompt --> Agent[AI coding agent]
+    Instructions[Repository Instructions] --> Agent
+    Selection --> Agent
+    Catalog[Governed Skill catalog] --> Selection
+    Agent --> Changes[Proposed repository changes]
+    Changes --> Gates[Deterministic validation gates]
+    Gates --> Review[Human review and approval]
+    Review --> Merge[Merge according to repository policy]
 ```
 
 This layered architecture has several important properties.
@@ -418,7 +429,7 @@ As a result, organizations can improve engineering quality without rewriting pro
 
 ---
 
-## Skills as Reusable Engineering Assets
+### Skills as Reusable Engineering Assets
 
 Enterprise software organizations already treat many artifacts as reusable assets.
 
@@ -461,7 +472,7 @@ Each Skill represents engineering knowledge accumulated over many successful imp
 
 ---
 
-## Skill Invocation During Feature Development
+### Skill Invocation During Feature Development
 
 Consider the fleet booking feature.
 
@@ -483,46 +494,27 @@ Repository discovery identifies that:
 Instead of implementing everything from scratch, the AI invokes multiple Skills.
 
 ```mermaid
-flowchart LR
-
-Prompt
-
---> API[Create API Endpoint]
-
-API
-
---> CMD[Create Application Command]
-
-CMD
-
---> DOMAIN[Add Domain Behavior]
-
-DOMAIN
-
---> EF[Add EF Core Persistence]
-
-EF
-
---> EVENT[Add Integration Event]
-
-EVENT
-
---> OUTBOX[Add Transactional Outbox]
-
-OUTBOX
-
---> TEST[Add Unit & Integration Tests]
-
-TEST
-
---> VALIDATE[Repository Validation]
+flowchart TD
+    Requirement[Corporate fleet booking] --> Domain[Add domain behavior]
+    Domain --> Command[Create application command]
+    Domain --> Persistence[Add EF Core persistence]
+    Persistence --> Outbox[Add transactional outbox]
+    Command --> Endpoint[Create API endpoint]
+    Endpoint --> Authorization[Add authorization]
+    Outbox --> Event[Add integration event]
+    Event --> Consumer[Add idempotent consumer, if needed]
+    Command --> Unit[Add unit tests]
+    Authorization --> Integration[Add integration tests]
+    Event --> Integration
+    Consumer --> Integration
+    Integration --> Gates[Build, tests and policy gates]
 ```
 
-The feature itself becomes an orchestration of reusable engineering workflows.
+The feature becomes a composition of reusable engineering workflows. The diagram illustrates dependencies, not an unconditional one-pass sequence: an existing outbox may be reused, some tasks can be parallelized, and no consumer is needed if the change does not include a downstream subscriber.
 
 ---
 
-## Skill Composition
+### Skill Composition
 
 Enterprise features rarely require only one Skill.
 
@@ -555,11 +547,11 @@ Each understands a recurring engineering activity.
 
 This distinction keeps Skills reusable across many unrelated features.
 
-A Skill should never become business-domain specific unless the organization intentionally maintains domain Skills.
+Domain-specific Skills are reasonable when the organization deliberately governs reusable processes within that domain; they should not be the default for a general engineering Skill catalog.
 
 ---
 
-## Skill Granularity
+### Skill Granularity
 
 One of the most difficult architectural decisions concerns Skill size.
 
@@ -569,7 +561,7 @@ Skills that are too small become difficult to compose.
 
 Consider these examples.
 
-### Poorly Scoped Skill
+#### Poorly Scoped Skill
 
 ```text
 Implement Complete Booking System
@@ -590,7 +582,7 @@ Changing one part risks destabilizing everything else.
 
 ---
 
-### Overly Fragmented Skills
+#### Overly Fragmented Skills
 
 ```text
 Create Controller Constructor
@@ -614,13 +606,13 @@ Feature implementation now requires invoking dozens of tiny Skills, increasing o
 
 ---
 
-### Appropriate Skill Scope
+#### Appropriate Skill Scope
 
 ```text
 Create API Endpoint
 ```
 
-This Skill can reasonably include:
+The Skill can reasonably check or coordinate:
 
 * Endpoint
 * DTO
@@ -632,13 +624,13 @@ This Skill can reasonably include:
 * Telemetry
 * Tests
 
-Everything belongs to a single recurring engineering workflow.
+These concerns may be checked as part of an endpoint workflow, but ownership should remain clear. For example, the endpoint Skill may verify that authorization is present while a separate authorization Skill implements the policy. Likewise, its smoke tests do not replace the full integration-test Skill.
 
 This balance maximizes reuse while keeping governance manageable.
 
 ---
 
-## Skill Dependencies
+### Skill Dependencies
 
 Many Skills depend on the successful completion of others.
 
@@ -646,45 +638,26 @@ For example:
 
 ```mermaid
 flowchart TD
-
-CreateAPI
-
---> CreateCommand
-
-CreateCommand
-
---> DomainBehavior
-
-DomainBehavior
-
---> Persistence
-
-Persistence
-
---> IntegrationEvent
-
-IntegrationEvent
-
---> TransactionalOutbox
-
-TransactionalOutbox
-
---> Consumer
-
-Consumer
-
---> IntegrationTests
+    Domain[Domain behavior] --> App[Application command]
+    Domain --> Mapping[EF Core mapping]
+    Mapping --> Outbox[Outbox schema and publisher]
+    App --> Endpoint[API endpoint]
+    Outbox --> Event[Integration event publication]
+    Event --> Consumer[Idempotent consumer]
+    Endpoint --> Tests[Integration tests]
+    Consumer --> Tests
+    Tests --> Gates[Repository validation gates]
 ```
 
 Dependency management prevents invalid execution sequences.
 
-An AI harness should understand these dependencies rather than relying on prompt wording.
+An AI harness should resolve declared prerequisites and detect missing dependencies or cycles rather than relying on prompt wording.
 
 For example, invoking **Add Transactional Outbox** before persistence exists should immediately fail the Skill's precondition checks instead of attempting partial implementation.
 
 ---
 
-## Skill Selection
+### Skill Selection
 
 A recurring question is:
 
@@ -692,7 +665,7 @@ A recurring question is:
 
 Several strategies exist.
 
-### Prompt-Driven Selection
+#### Prompt-Driven Selection
 
 The prompt explicitly names the required Skills.
 
@@ -704,7 +677,7 @@ This approach provides complete control but increases prompt complexity.
 
 ---
 
-### Agent-Driven Selection
+#### Agent-Driven Selection
 
 The AI agent analyzes the requested change and automatically selects applicable Skills based on repository structure, feature type, and engineering context.
 
@@ -720,11 +693,11 @@ Fleet Booking requires:
 
 The agent selects the appropriate Skill chain automatically.
 
-This is the preferred enterprise model because developers focus on business intent rather than implementation mechanics.
+This model reduces prompt maintenance, provided applicability checks and review make the selections visible and contestable.
 
 ---
 
-### Harness-Orchestrated Selection
+#### Harness-Orchestrated Selection
 
 The AI harness becomes responsible for Skill orchestration.
 
@@ -740,35 +713,31 @@ The harness determines:
 * validation sequence
 * approval checkpoints
 
-This model produces the highest consistency across teams and platforms.
+This model can produce stronger consistency across teams and platforms when the harness resolves known versions and enforces independent validation gates.
 
 ---
 
-## Skill Execution Lifecycle
+### Skill Execution Lifecycle
 
 Regardless of the AI platform, enterprise Skill execution should follow a consistent lifecycle.
 
 ```mermaid
-flowchart LR
-
-A[Skill Selected]
-
---> B[Check Preconditions]
-
---> C[Load Inputs]
-
---> D[Execute Workflow]
-
---> E[Run Validation]
-
---> F[Record Metrics]
-
---> G[Human Approval]
-
---> H[Complete]
+flowchart TD
+    Select[Select Skill and version] --> Check{Preconditions pass?}
+    Check -- No --> Block[Block, document reason and request repair]
+    Check -- Yes --> Inputs[Validate inputs and permissions]
+    Inputs --> Execute[Execute steps in isolated workspace]
+    Execute --> Verify{Validation gates pass?}
+    Verify -- No --> Recover[Record failure, repair or roll back]
+    Recover --> Verify
+    Verify -- Yes --> Evidence[Record outputs and evidence]
+    Evidence --> Approval{Approval required?}
+    Approval -- Yes --> Review[Human approval]
+    Approval -- No --> Complete[Skill execution complete]
+    Review --> Complete
 ```
 
-Every phase is independently observable.
+Every phase should emit observable evidence, although agent-native runtimes may expose different levels of detail.
 
 The harness can identify exactly where failures occur, which Skills require improvement, and whether the resulting implementation satisfied engineering expectations.
 
@@ -776,38 +745,50 @@ This lifecycle transforms Skills from static documentation into governed, measur
 
 ---
 
-# 6. Professional Diagrams
+### Failure Handling and Recovery
 
-## Enterprise Skill Architecture
+A Skill must say what to do when its preconditions fail, a tool call times out, a build is broken, or a generated migration conflicts with an existing one. The safe default is to stop on a failed prerequisite, identify the affected files, preserve diagnostic evidence, and request repair or escalation. Continuing to generate code after a prerequisite failure compounds uncertainty.
+
+For task-scoped changes, a harness may use a temporary worktree or isolated run workspace. It should retain the base revision, the Skill revision, the patch, validation output, and the decisions that affect recovery. A failed attempt can then be retried from a known state, without discarding unrelated human edits. Destructive commands, database migration application, production deployments, and modifications to governing Instructions require separately authorized operations. Retry policies must be bounded and should distinguish environmental failures from failures of the implementation.
+
+In Alpha Car Detailing, a failed migration validation must not be bypassed just because the fleet-booking endpoint compiles. The correct recovery may involve revising the mapping, removing only the migration created in the task, and rerunning the persistence tests. In a shared database, an already-applied migration needs a different, explicitly approved remediation plan.
+
+### Deterministic Validation Gates
+
+Skills tell the agent how to work; **deterministic gates** decide whether defined conditions have been satisfied. A Skill may request `dotnet build`, but an independently executed build gate—not the agent's statement that compilation succeeded—provides evidence. The same distinction applies to unit tests, security scanning, migration checks, architecture tests, and contract validation.
+
+A mature harness separates at least three outcomes: **execution complete**, **technical validation passed**, and **change accepted**. A Skill can finish its procedure while the PR is still awaiting review. Conversely, an implementation may pass a build gate but fail business acceptance, tenant isolation, or audit requirements. All three states belong in the run record.
+
+### Security and Trust Boundary
+
+A Skill is also a source of instructions and potentially executable scripts. Before installation, the organization should review it for destructive behavior, unnecessary network access, untrusted dependencies, prompt injection, secret access, and permission escalation. Restrict filesystem and tool access to the task's needs. Third-party Skill content must not override repository policy or request broad credentials merely to complete routine engineering work.
+
+---
+
+## 6. Professional Diagrams
+
+### Enterprise Skill Architecture
 
 The relationship between repository artifacts can be summarized as follows.
 
 ```mermaid
 flowchart TB
-
-BusinessRequest["Business Request"]
-
-BusinessRequest --> Prompt
-
-Prompt --> Agent
-
-Instructions --> Agent
-
-Skills --> Agent
-
-SteeringNotes --> Agent
-
-KnowledgeSources --> Agent
-
-Agent --> Repository
-
-Repository --> Validator
-
-Validator --> Reviewer
-
-Reviewer --> Merge
-
-Merge --> LearningHarness
+    Request[Business request] --> Prompt[Prompt]
+    Instructions[Instructions] --> Agent[AI coding agent]
+    Steering[Steering Notes] --> Agent
+    Sources[Knowledge Sources] --> Agent
+    Prompt --> Agent
+    SkillCatalog[Approved Skill library] --> Resolver[Skill selection and version resolution]
+    Resolver --> Agent
+    Agent --> Workspace[Task-scoped workspace]
+    Workspace --> Gates[Build, security, architecture and test gates]
+    Gates --> Reviewer[Reviewer and human approval]
+    Reviewer --> PR[Pull request / merge]
+    Gates --> Evidence[Run evidence and metrics]
+    PR --> Evidence
+    Evidence --> Proposal[Governed improvement proposal]
+    Proposal --> Owner[Skill owner approval]
+    Owner -. approved change .-> SkillCatalog
 ```
 
 Each artifact contributes a distinct responsibility.
@@ -823,7 +804,7 @@ Each artifact contributes a distinct responsibility.
 
 ---
 
-# 7. Hands-on Example
+## 7. Hands-on Example
 
 Throughout this handbook, Alpha Car Detailing has evolved from a simple vehicle detailing application into a nationwide enterprise platform serving walk-in customers, corporate fleets, government agencies, insurance companies, and rental organizations.
 
@@ -849,15 +830,15 @@ The repository Instructions already require:
 * Unit Tests
 * Integration Tests
 
-Those standards are automatically enforced.
+Those standards guide the work; the associated build, security, and architecture gates enforce the checks that can be expressed mechanically.
 
-The AI agent now needs reusable implementation procedures.
+The AI agent now needs reusable implementation procedures, an applicability check, and an execution plan tied to the acceptance criteria.
 
 This is where Skills become the primary engineering mechanism.
 
 ---
 
-## Feature Request
+### Feature Request
 
 The Product Owner creates the following work item.
 
@@ -877,50 +858,45 @@ Requirements
 • Include integration tests
 ```
 
-The developer intentionally submits a concise prompt.
+The developer links the work item and submits a concise prompt:
 
 ```text
-Implement Corporate Fleet Booking.
+Implement corporate fleet booking in the Booking Service.
+Use the linked work item's acceptance criteria and the approved repository Skills.
+Do not apply database migrations to shared environments or create a PR without review.
 ```
 
-The prompt focuses exclusively on business intent.
-
-No architectural instructions are embedded inside it.
-
-No implementation guidance is repeated.
-
-The repository already contains those engineering assets.
+The task provides business intent and a reference to the acceptance criteria. It does not restate implementation standards that already belong in Instructions. The agent must still examine the work item and resolve ambiguities: in this example, creating a fleet booking begins in `PendingApproval`, and `FleetBookingCreated` records creation rather than approval.
 
 ---
 
-## Skills Selected by the Agent
+### Skills Selected by the Agent
 
 After repository discovery, the AI determines which Skills apply.
 
-| Execution Order | Skill                      |
-| --------------- | -------------------------- |
-| 1               | Create API Endpoint        |
-| 2               | Create Application Command |
-| 3               | Add Domain Behavior        |
-| 4               | Add EF Core Persistence    |
-| 5               | Add Authorization          |
-| 6               | Add Integration Event      |
-| 7               | Add Transactional Outbox   |
-| 8               | Add OpenTelemetry          |
-| 9               | Add Unit Tests             |
-| 10              | Add Integration Tests      |
+| Skill | Applicability in the feature |
+| --- | --- |
+| Add Domain Behavior | Establish booking invariants and approval state |
+| Create Application Command | Coordinate the use case and transaction boundary |
+| Add EF Core Persistence | Persist fleet booking and related records |
+| Add Transactional Outbox | Persist event records atomically with the booking |
+| Add Integration Event | Define and emit `FleetBookingCreatedV1` |
+| Create API Endpoint | Expose the command through `POST /api/fleet-bookings` |
+| Add Authorization | Require a fleet-management policy and tenant scope |
+| Add Idempotent Consumer | Implement downstream handling if a subscriber is in scope |
+| Add OpenTelemetry | Trace command, outbox dispatch, and consumption |
+| Add Unit Tests | Validate booking and approval invariants |
+| Add Integration Tests | Verify persistence, delivery, security, and duplicate handling |
 
-Notice that none of these Skills mention Fleet Booking.
-
-Each Skill represents a reusable engineering workflow that could be used for hundreds of future features.
+The Skills are domain-independent. The Fleet Booking names, endpoint route, event schema, and authorization policy are *inputs determined from the work item and repository*, not hard-coded into the Skill library. The table is a set of applicable procedures, not a required serial execution order; existing infrastructure and Skill dependencies determine the plan.
 
 ---
 
-## Skill 1 — Create API Endpoint
+### Skill 1 — Create API Endpoint
 
-The Skill begins by validating its preconditions.
+The following descriptions are catalog entries, not a prescribed execution order. Dependencies may require the application command or persistence infrastructure to be created before an endpoint is implemented. The endpoint Skill begins by validating its preconditions.
 
-### Inputs
+#### Inputs
 
 | Input                 | Description               |
 | --------------------- | ------------------------- |
@@ -930,23 +906,21 @@ The Skill begins by validating its preconditions.
 | Authentication Policy | Fleet Manager             |
 | Command Name          | CreateFleetBookingCommand |
 
-### Preconditions
+#### Preconditions
 
 Before execution, the Skill verifies:
 
-* Booking Service exists.
-* CQRS pattern is used.
-* Authentication middleware is configured.
-* API project structure matches repository conventions.
-* Required application layer exists.
+* The target API project exists and repository discovery has identified its routing style.
+* The application command or equivalent operation exists, or a dependency is scheduled to create it.
+* Authentication middleware and the intended policy are registered or explicitly delegated to the authorization Skill.
+* The API project and application layer conventions are understood.
+* The requested route does not conflict with an existing endpoint.
 
-If any precondition fails, execution stops immediately.
-
-No partial implementation is performed.
+A failed precondition blocks this Skill. The agent records the reason and either executes an approved prerequisite Skill or requests a decision. Precondition checking must occur *before the Skill changes files*; a pre-existing partial implementation is not evidence that all prerequisites are satisfied.
 
 ---
 
-### Execution Steps
+#### Execution Steps
 
 The Skill performs the following workflow.
 
@@ -954,20 +928,18 @@ The Skill performs the following workflow.
 2. Create response DTO.
 3. Create endpoint.
 4. Register route.
-5. Add dependency injection.
-6. Configure authorization attribute.
-7. Register validation.
-8. Add OpenAPI documentation.
-9. Add telemetry instrumentation.
-10. Register structured logging.
+5. Bind the endpoint to the existing application operation.
+6. Apply the resolved authorization policy and tenant context.
+7. Attach request validation according to repository conventions.
+8. Document the request, responses, and error contracts in OpenAPI.
+9. Add the required tracing/logging integration points.
+10. Record the files changed and run endpoint-focused checks.
 
-The AI agent does not invent these steps.
-
-They already exist within the Skill definition.
+These steps come from the reviewed Skill definition; the AI agent must still resolve repository-specific decisions and record the results.
 
 ---
 
-### Validation
+#### Validation
 
 The Skill concludes by verifying:
 
@@ -978,15 +950,15 @@ The Skill concludes by verifying:
 * OpenAPI generation succeeds.
 * Repository architecture validation passes.
 
-Only after validation succeeds does the Skill report completion.
+Only after the expected endpoint checks succeed should the Skill report a *validated local execution*. Feature acceptance and PR approval remain separate outcomes.
 
 ---
 
-## Skill 2 — Create Application Command
+### Skill 2 — Create Application Command
 
 The next Skill extends the application layer.
 
-### Inputs
+#### Inputs
 
 ```text
 Command Name
@@ -994,7 +966,7 @@ Command Name
 CreateFleetBookingCommand
 ```
 
-### Outputs
+#### Outputs
 
 ```text
 CreateFleetBookingCommand
@@ -1010,37 +982,22 @@ Dependency Injection
 
 ---
 
-### Execution Workflow
+#### Execution Workflow
 
 ```mermaid
 flowchart LR
-
-Command
-
---> Validator
-
-Validator
-
---> Handler
-
-Handler
-
---> Mapping
-
-Mapping
-
---> Registration
-
-Registration
-
---> Validation
+    Command[Define command] --> Validate[Attach input validation]
+    Validate --> Handler[Implement handler]
+    Handler --> Register[Register dependencies]
+    Register --> Tests[Run handler tests]
+    Tests --> Gate[Validate architecture boundaries]
 ```
 
-The Skill guarantees that every command follows identical engineering conventions.
+The Skill standardizes the intended command structure; architecture tests and code review determine whether the generated command follows the conventions.
 
 ---
 
-## Skill 3 — Add Domain Behavior
+### Skill 3 — Add Domain Behavior
 
 The Domain layer is responsible for enforcing business rules.
 
@@ -1061,17 +1018,17 @@ Example responsibilities include:
 * booking status transitions
 * approval workflow initialization
 
-Because these checks are encoded in the Skill, every developer receives identical architectural behavior regardless of which AI platform executes the work.
+Because these checks are encoded in the Skill, agent executions share a reviewed procedure. The domain tests must still verify identical business behavior across implementations.
 
 ---
 
-## Skill 4 — Add EF Core Persistence
+### Skill 4 — Add EF Core Persistence
 
 The repository Instructions already specify EF Core as the persistence technology.
 
 The Skill defines how persistence is implemented.
 
-### Execution Steps
+#### Execution Steps
 
 ```text
 Create Entity Configuration
@@ -1101,17 +1058,17 @@ Execute Migration Validation
 Verify Repository Rules
 ```
 
-The Skill also validates repository naming conventions, migration ordering, and configuration standards before reporting success.
+The Skill should test model mappings and migration creation, inspect the generated schema changes, and record the migration artifacts. Applying migrations to shared or production databases is a separate, approval-controlled operation.
 
 ---
 
-## Skill 5 — Add Authorization
+### Skill 5 — Add Authorization
 
 Security implementation should never depend on prompt quality.
 
 Instead, the Authorization Skill standardizes every implementation.
 
-### Inputs
+#### Inputs
 
 | Property       | Value        |
 | -------------- | ------------ |
@@ -1121,7 +1078,7 @@ Instead, the Authorization Skill standardizes every implementation.
 
 ---
 
-### Execution
+#### Execution
 
 The Skill:
 
@@ -1131,19 +1088,15 @@ The Skill:
 * checks endpoint accessibility
 * confirms anonymous access is denied
 
-Only after these checks succeed does the Skill complete.
+Security tests must additionally verify the authenticated principal is authorized for the *correct corporate tenant*. A valid FleetManager claim must never grant access to another company's bookings.
 
 ---
 
-## Skill 6 — Add Integration Event
+### Skill 6 — Add Integration Event
 
 Fleet Booking must notify downstream services.
 
-The AI invokes:
-
-```text
-Add Integration Event
-```
+The implementation plan includes the **Add Integration Event** Skill after the transactional-outbox prerequisite has been confirmed.
 
 Outputs include:
 
@@ -1153,13 +1106,13 @@ Outputs include:
 * Registration
 * Serialization validation
 
-The Skill also validates event versioning and repository messaging standards before completion.
+The Skill also checks event schema versioning, required tenant identifiers, correlation IDs, and serialization compatibility. The event describes booking creation in `PendingApproval`; a future approval transition would require a distinct event.
 
 ---
 
-## Skill 7 — Add Transactional Outbox
+### Skill 7 — Add Transactional Outbox
 
-Publishing an event directly from application code risks message loss.
+The outbox infrastructure is established before publishing a new integration event. Publishing an event directly from application code risks message loss.
 
 The repository Instructions require reliable messaging.
 
@@ -1167,31 +1120,45 @@ The Skill implements the approved pattern.
 
 ```mermaid
 flowchart LR
-
-Command
-
---> Database
-
-Database
-
---> Outbox
-
-Outbox
-
---> Publisher
-
-Publisher
-
---> EventHub
+    Request[Create fleet booking] --> Tx[Database transaction]
+    Tx --> Booking[Insert booking in same transaction]
+    Tx --> Outbox[Insert outbox message in same transaction]
+    Booking --> Commit[Atomic commit]
+    Outbox --> Commit
+    Commit --> Dispatcher[Outbox dispatcher]
+    Dispatcher --> Broker[Message broker]
+    Broker --> Consumer[Idempotent consumer]
 ```
 
-The AI agent does not need to remember every implementation detail.
+Both the fleet-booking row and the pending outbox message must be inserted within the **same database transaction**. The dispatcher publishes *after* commit and marks delivery state separately. Because the broker and database do not share one atomic transaction, retries and duplicate delivery remain possible; downstream consumers must be idempotent.
 
-The Skill already contains the approved engineering workflow.
+An illustrative event contract is:
+
+```csharp
+public sealed record FleetBookingCreatedV1(
+    Guid EventId,
+    Guid TenantId,
+    Guid FleetBookingId,
+    DateTimeOffset OccurredAtUtc,
+    int VehicleCount,
+    string CorrelationId);
+```
+
+The contract is representative, not a claim that these classes already exist in the repository. The event should be built from committed aggregate state, not from untrusted request fields, and the outbox must preserve its identifier and schema version.
 
 ---
 
-## Skill 8 — Add OpenTelemetry
+### Skill 8 — Add Idempotent Consumer
+
+A fleet-notification service may subscribe to `FleetBookingCreatedV1` to notify the corporate customer's fleet management system. At-least-once delivery means the same message can reach the consumer more than once, including when the broker retries after a timeout.
+
+The **Add Idempotent Consumer** Skill verifies the consumer's event contract, identifies an immutable `EventId`, and checks for an existing inbox or processed-message store. It creates a unique constraint on `(ConsumerName, EventId)` and requires the *business side effect and message-processing marker* to commit atomically wherever the transactional boundary allows. Replayed events should be acknowledged without repeating a notification or mutation.
+
+The Skill must also define retry classification, dead-letter handling, and telemetry attributes for duplicate deliveries. An in-memory cache alone is insufficient protection across service restarts. Its validation suite should deliberately deliver the same event twice and assert that the externally visible effect occurs once. If the downstream service does not form part of this change, the Skill is deferred and the integration contract is handed to its owning team.
+
+---
+
+### Skill 9 — Add OpenTelemetry
 
 Observability is another recurring engineering activity.
 
@@ -1214,31 +1181,27 @@ The Skill performs:
 * Metrics registration
 * Export validation
 
-Every implementation becomes identical across the enterprise.
+The instrumentation procedure becomes consistent across services, while emitted span names and attributes are checked against the service's telemetry contract.
 
 ---
 
-## Skill 9 — Add Unit Tests
+### Skill 10 — Add Unit Tests
 
 Testing is treated as part of implementation rather than a follow-up task.
 
-The Skill automatically creates tests covering:
+The testing Skill guides the agent to implement and run tests covering:
 
 * successful booking creation
-* authorization failure
+* unauthorized or cross-tenant access where test boundaries permit
 * validation failure
 * duplicate fleet booking
 * business rule violations
 
-Validation confirms:
-
-* required coverage exists
-* tests compile
-* naming conventions match repository standards
+Validation confirms the tests compile and execute; the expected scenarios are asserted rather than inferred from test names. Domain behavior tests verify duplicate vehicle rejection and approval-state invariants. Authorization and tenant isolation require endpoint or integration tests, not merely aggregate unit tests.
 
 ---
 
-## Skill 10 — Add Integration Tests
+### Skill 11 — Add Integration Tests
 
 Finally, the AI executes the integration testing Skill.
 
@@ -1246,107 +1209,42 @@ Typical workflow:
 
 ```mermaid
 flowchart TD
-
-Deploy Test Host
-
--->
-
-Execute API
-
--->
-
-Persist Data
-
--->
-
-Publish Event
-
--->
-
-Verify Outbox
-
--->
-
-Verify Consumer
-
--->
-
-Verify Telemetry
-
--->
-
-Report Success
+    Host[Start isolated test host] --> API[POST fleet-bookings]
+    API --> DB[Assert booking persisted]
+    DB --> Outbox[Assert outbox record committed]
+    Outbox --> Publish[Run outbox dispatcher]
+    Publish --> Consume[Deliver event to test consumer]
+    Consume --> Dedup[Redeliver event and assert one side effect]
+    Dedup --> Auth[Assert unauthorized / cross-tenant requests fail]
+    Auth --> Trace[Assert expected trace evidence]
+    Trace --> Result[Record test and gate results]
 ```
 
-The Skill validates the entire feature rather than isolated components.
+The integration suite validates the interactions between components, not merely whether they compile. Tests should use an isolated database and controlled message transport; trace-export assertions require a test collector or in-memory exporter. A failure must identify whether the defect is in the Skill, repository-specific integration, or infrastructure.
 
 ---
 
-## Complete Feature Workflow
+### Complete Feature Workflow
 
 The complete implementation is now visible as a composition of reusable Skills.
 
 ```mermaid
-flowchart LR
-
-BusinessRequest
-
--->
-
-Prompt
-
--->
-
-CreateAPI
-
--->
-
-CreateCommand
-
--->
-
-Domain
-
--->
-
-Persistence
-
--->
-
-Authorization
-
--->
-
-IntegrationEvent
-
--->
-
-TransactionalOutbox
-
--->
-
-OpenTelemetry
-
--->
-
-UnitTests
-
--->
-
-IntegrationTests
-
--->
-
-Validation
-
--->
-
-HumanReview
+flowchart TB
+    Request[Corporate fleet booking requirement] --> Discover[Repository discovery and Skill selection]
+    Discover --> Domain[Domain behavior]
+    Domain --> Command[Application command]
+    Domain --> Storage[EF Core persistence and outbox]
+    Command --> API[API endpoint and authorization]
+    Storage --> Event[Integration event]
+    Event --> Consumer[Idempotent consumer if in scope]
+    API --> Obs[Observability]
+    Consumer --> Tests[Unit and integration tests]
+    Obs --> Tests
+    Tests --> Gates[Deterministic gates]
+    Gates --> Review[Human review]
 ```
 
-The AI agent never needed to invent the engineering process.
-
-It simply selected and executed the organization's approved Skill library.
+The agent uses the approved Skill library to structure its work, but the actual execution must be evidenced by the patch, the gate results, and the review record. Skill selection alone is not proof that all applicable procedures were followed.
 
 This demonstrates the central principle of Enterprise AI Engineering:
 
@@ -1354,363 +1252,196 @@ This demonstrates the central principle of Enterprise AI Engineering:
 
 ---
 
-# 8. Claude Code Example
+## 8. Claude Code Example
 
-Claude Code provides first-class support for structured repository workflows, making it particularly well suited to executing reusable Skills alongside repository Instructions.
+Claude Code is the primary implementation platform in Alpha Car Detailing, but the engineering contract remains independent of its runtime. Claude Code discovers project Skills from `.claude/skills/<skill-name>/SKILL.md` and personal Skills from `~/.claude/skills/`. A Skill can be selected when relevant or invoked explicitly by its slash-command name. A plain Markdown file placed under the handbook's top-level `skills/` catalog is **not automatically a discoverable Claude Code Skill** unless an installation or discovery mechanism exposes it through a supported location.
 
-Assume the repository already contains:
+### Package a Real Skill
 
-```text
-skills/
-
-├── create-api-endpoint.md
-├── create-command.md
-├── add-domain-behavior.md
-├── add-efcore-persistence.md
-├── add-integration-event.md
-├── add-transactional-outbox.md
-├── add-authorization.md
-├── add-opentelemetry.md
-├── add-unit-tests.md
-└── add-integration-tests.md
-```
-
-The developer's interaction remains intentionally simple.
+The engineering organization maintains an approved source of truth for its Skills, then publishes reviewed versions into the repositories that use them. For this example, the Booking Service consumes the following package:
 
 ```text
-Implement Corporate Fleet Booking.
+alpha-car-detailing/
+├── CLAUDE.md
+├── .claude/
+│   └── skills/
+│       ├── create-api-endpoint/
+│       │   ├── SKILL.md
+│       │   └── references/
+│       │       └── api-contract-checklist.md
+│       ├── add-transactional-outbox/
+│       │   └── SKILL.md
+│       └── add-idempotent-consumer/
+│           └── SKILL.md
+└── src/
+    └── ...
 ```
 
-Claude Code first performs repository discovery, loads the applicable Instructions, identifies the relevant Skills, plans the implementation sequence, and then executes each Skill while continuously validating repository compliance.
+The following is a practical, abbreviated `create-api-endpoint/SKILL.md` definition. Its metadata identifies when the Skill should be considered; the body defines its procedure. The conventions and package names must be confirmed against the actual repository before executing the commands.
 
-The developer does not need to enumerate every engineering step in the prompt because the reusable workflows already exist as governed Skills. This separation keeps prompts concise, promotes consistent implementations across teams, and allows engineering workflows to evolve independently of day-to-day feature requests.
-
+````markdown
+---
+name: create-api-endpoint
+description: Add a secured HTTP endpoint to an existing .NET service. Use when a task requires a new API route that delegates to an application operation.
 ---
 
-# 9. GitHub Copilot Comparison
+# Create API Endpoint
 
-GitHub Copilot has evolved from an inline code completion assistant into a broader AI-assisted development platform capable of chat-driven code generation, repository awareness, and workflow automation. Nevertheless, its engineering effectiveness still depends heavily on how organizations structure and expose reusable engineering knowledge.
+## Inputs
+- Target service and endpoint operation, from the task.
+- Route, request and response contract, and expected status codes.
+- Existing application command/query or equivalent operation.
+- Authorization policy and tenant-context rules resolved from repository Instructions.
 
-The architectural principles described in this chapter remain unchanged.
+## Preconditions
+1. Discover the API project, route conventions, solution, and test projects.
+2. Verify the application operation exists or stop with a declared dependency.
+3. Confirm authentication, authorization policy and tenant resolution.
+4. Stop if the route conflicts with an existing endpoint.
 
-Instructions define repository standards.
+## Procedure
+1. Inspect a representative endpoint; follow its established style.
+2. Add request and response contracts without exposing domain entities.
+3. Bind the route to the application operation; preserve cancellation.
+4. Attach validation and the resolved authorization policy.
+5. Confirm tenant scope is derived from a trusted identity/context.
+6. Add OpenAPI response/error contracts and telemetry integration points.
+7. Add focused endpoint tests; summarize the changed files.
 
-Skills define reusable engineering workflows.
+## Validate
+- From the discovered solution directory, run `dotnet build`.
+- Run the relevant endpoint test project with `dotnet test`.
+- Verify 201/400/401/403 responses as applicable.
+- Verify a fleet manager cannot address another tenant's booking.
+- Report results; do not claim success if tests were not executed.
 
-Prompts define the current engineering task.
+## Failure and approval
+- Stop on missing policy, unresolved tenant mapping, or failing gates.
+- Do not weaken authorization or bypass validation to obtain a pass.
+- Do not publish, deploy, or modify protected policy files without approval.
+- Return created files, test evidence, blockers and any requested decisions.
+````
 
-The primary difference lies in how these artifacts are surfaced to the AI agent.
+This definition is an executable *procedure in the sense of being actionable by an agent*, not a script that guarantees the model's behavior. The build and test commands must run, and the results must be captured. Exact tool permissions and the repository's CI policy still govern what the agent may execute.
 
----
+### Invoke and Verify
 
-## Skill Execution with GitHub Copilot
-
-Consider the same business request used throughout this chapter.
-
-> **Implement Corporate Fleet Booking.**
-
-The engineering organization has already established repository Instructions that define:
-
-* Clean Architecture
-* CQRS
-* Security
-* Testing
-* Event publishing
-* OpenTelemetry
-* Logging
-* Repository conventions
-
-These Instructions provide the engineering constraints.
-
-The implementation workflow is still provided by reusable Skills.
-
-A typical execution sequence appears as follows.
-
-```mermaid
-flowchart LR
-
-Prompt
-
--->
-
-Copilot
-
--->
-
-RepositoryInstructions
-
--->
-
-SkillLibrary
-
--->
-
-ImplementationPlan
-
--->
-
-RepositoryChanges
-
--->
-
-Validation
-```
-
-The engineering model remains identical to Claude Code.
-
-Only the mechanism for discovering and invoking Skills differs.
-
----
-
-## Repository-Centric Engineering
-
-GitHub Copilot performs best when engineering knowledge exists as discoverable repository assets rather than being embedded inside prompts.
-
-For example, an enterprise repository may contain:
+A developer can request the work through a business task:
 
 ```text
-.github/
-
-├── copilot-instructions.md
-
-skills/
-
-├── create-api-endpoint.md
-├── create-command.md
-├── add-domain-behavior.md
-├── add-efcore-persistence.md
-├── add-opentelemetry.md
-├── add-unit-tests.md
-└── add-integration-tests.md
+Implement corporate fleet booking using the repository's approved Skills.
+Read the linked acceptance criteria. Stop before applying a shared database migration.
 ```
 
-Rather than embedding implementation guidance into every request, developers simply ask:
-
-> Implement Corporate Fleet Booking.
-
-The reusable Skill library provides the implementation procedure.
-
----
-
-## Comparing the Development Experience
-
-With no reusable Skills, developers frequently submit prompts such as:
+Or the developer can invoke a specific Skill explicitly when the implementation has already reached the endpoint stage:
 
 ```text
-Implement Fleet Booking.
-
-Use Clean Architecture.
-
-Create CQRS command.
-
-Add EF Core.
-
-Implement authorization.
-
-Publish integration event.
-
-Use transactional outbox.
-
-Add OpenTelemetry.
-
-Write unit tests.
-
-Write integration tests.
+/create-api-endpoint
 ```
 
-Although technically correct, the prompt now duplicates repository knowledge.
+The command is an example of Claude Code's Skill invocation form; it is not a substitute for the Skill's required inputs. Claude must still inspect the repository, select other applicable Skills, and validate the results. A useful run report identifies the Skill name and revision, the files changed, the commands actually run, gate results, and unresolved decisions.
 
-Every future developer must remember the same implementation details.
+### What Belongs in `CLAUDE.md`?
 
-Every prompt becomes an engineering checklist.
+`CLAUDE.md` should retain stable project constraints: architectural boundaries, mandatory validation, security obligations, and where approved Skills are installed. It should not reproduce the entire endpoint procedure. Keeping the two artifacts separate prevents procedure changes from silently rewriting organizational policy.
 
-With reusable Skills, the prompt becomes significantly simpler.
+---
+
+## 9. GitHub Copilot Comparison
+
+GitHub Copilot supports agent Skills in selected agent surfaces. Its repository Skill folders can include `.github/skills/<skill-name>/SKILL.md`; GitHub also documents compatible `.claude/skills/` and `.agents/skills/` locations for project Skills. A Skill can contain supporting scripts and references, and Copilot uses its description to decide when the procedure is relevant. Support and invocation behavior depend on the Copilot surface in use, so teams should verify the expected host in CI and developer onboarding documentation.
+
+### Repository Layout
+
+The Alpha Car Detailing repository can provide the same endpoint workflow to Copilot without embedding it in task prompts:
 
 ```text
-Implement Corporate Fleet Booking.
+alpha-car-detailing/
+├── .github/
+│   ├── copilot-instructions.md
+│   └── skills/
+│       └── create-api-endpoint/
+│           ├── SKILL.md
+│           └── references/
+│               └── api-contract-checklist.md
+└── src/
+    └── ...
 ```
 
-The engineering process resides inside the Skill library rather than inside the prompt.
-
-This separation greatly improves maintainability.
-
----
-
-## Advantages
-
-GitHub Copilot benefits from reusable Skills in several ways.
-
-* Prompts remain concise and business-focused.
-* Engineering consistency improves across development teams.
-* Repository standards are applied uniformly.
-* Recurring implementation procedures are centralized.
-* Skill improvements automatically benefit future feature development.
-
-These benefits become increasingly valuable as repositories and engineering teams grow.
-
----
-
-## Considerations
-
-Organizations should avoid assuming that GitHub Copilot will automatically infer enterprise engineering workflows.
-
-Reusable Skills should remain:
-
-* explicit
-* version controlled
-* independently reviewed
-* tested
-* governed
-
-Treating engineering procedures as repository assets rather than conversational knowledge leads to far more predictable AI-assisted development.
-
----
-
-# 10. OpenAI Codex Comparison
-
-OpenAI Codex operates within the same architectural model described throughout this handbook.
-
-Regardless of the underlying AI platform, successful enterprise engineering depends on separating business intent from engineering standards and reusable implementation procedures.
-
-The repository should therefore expose:
-
-* Instructions
-* Skills
-* Prompts
-
-as independent engineering artifacts.
-
-Codex consumes these artifacts while planning and implementing repository changes.
-
----
-
-## Skill-Based Development with Codex
-
-For the Alpha Car Detailing repository, the workflow remains familiar.
+The `SKILL.md` can use the portable `name` and `description` frontmatter shown in the Claude example. The repository Instructions and the Skill are separate assets; the `.github/copilot-instructions.md` file should state the required security and architecture constraints, while `SKILL.md` describes the endpoint implementation procedure.
 
 ```mermaid
 flowchart TD
-
-BusinessRequest
-
--->
-
-Prompt
-
-Prompt
-
--->
-
-Codex
-
-Codex
-
--->
-
-Instructions
-
-Codex
-
--->
-
-Skills
-
-Instructions
-
--->
-
-Execution
-
-Skills
-
--->
-
-Execution
-
-Execution
-
--->
-
-RepositoryChanges
-
-RepositoryChanges
-
--->
-
-Validation
+    Issue[Feature issue and acceptance criteria] --> Agent[Copilot agent]
+    Policy[Repository Instructions] --> Agent
+    Skills[Approved SKILL.md packages] --> Agent
+    Agent --> Apply[Select applicable procedure and modify code]
+    Apply --> Gates[Build, tests and security gates]
+    Gates --> Review[Human review]
 ```
 
-The developer's request is intentionally minimal.
+**Operational distinction.** Merely storing a Markdown file in `skills/` does not prove the host discovered it, and discovery does not prove that each procedure step was followed. Inspect the agent's plan and resulting patch. If a Skill is required for a change, the task or harness should explicitly reference it and require corresponding validation evidence.
 
-> Implement Corporate Fleet Booking.
-
-The reusable Skills determine *how* recurring engineering activities should be performed.
+Copilot is useful when teams work primarily in GitHub-based development and review workflows. Its agent behavior can follow the same engineering contract as Claude Code, but platform-specific permission settings, tool availability, and agent execution modes remain distinct. Portability belongs to the Skill's *procedure and acceptance contract*, not to an assumption of identical runtime behavior.
 
 ---
 
-## Planning Before Implementation
+## 10. OpenAI Codex Comparison
 
-One characteristic of Codex-based workflows is the emphasis on explicit planning before making repository modifications.
+OpenAI Codex can also work with reusable agent Skills. A typical repository location is `.agents/skills/<skill-name>/SKILL.md`, with `~/.agents/skills/` available for personal Skills in supported environments. `AGENTS.md` carries durable repository guidance. Codex must still resolve which Skills are applicable, check repository prerequisites, and produce verifiable outputs.
 
-When reusable Skills are available, planning becomes substantially more reliable because the agent reasons about higher-level engineering activities rather than individual source files.
+### Skill-Aware Implementation
 
-Instead of deciding:
+```text
+alpha-car-detailing/
+├── AGENTS.md
+├── .agents/
+│   └── skills/
+│       ├── create-api-endpoint/
+│       │   └── SKILL.md
+│       ├── add-transactional-outbox/
+│       │   └── SKILL.md
+│       └── add-idempotent-consumer/
+│           └── SKILL.md
+└── src/
+    └── ...
+```
 
-* which files to edit
-* where validation belongs
-* how telemetry should be implemented
-* how authorization should be configured
+The Codex implementation uses the same contract as the Claude-first Skill. The developer asks for corporate fleet booking and points to acceptance criteria. The agent reads the repository guidance, discovers applicable Skill definitions, proposes the work plan, changes the repository, and executes appropriate checks. Whether Skill selection is automatic or explicit, the approved version and the executed commands should be recorded in the run evidence.
 
-the AI plans around reusable engineering workflows such as:
+```mermaid
+flowchart TD
+    Task[Issue or prompt] --> Codex[Codex]
+    Guidance[AGENTS.md] --> Codex
+    Catalog[.agents/skills/*/SKILL.md] --> Codex
+    Codex --> Plan[Skill-aware implementation plan]
+    Plan --> Changes[Proposed repository changes]
+    Changes --> Gates[Deterministic validation gates]
+    Gates --> Review[Human approval]
+```
 
-* Create API Endpoint
-* Add Domain Behavior
-* Add EF Core Persistence
-* Add Integration Event
-* Add Transactional Outbox
-* Add OpenTelemetry
+### Planning, Execution and Approval
 
-This produces implementation plans that are easier for architects and reviewers to evaluate before execution begins.
+Codex can be asked to plan before modifying a large codebase. The plan should identify any domain behavior, data migration, outbox modification, or downstream consumer affected by the change. It should not assume that the availability of a Skill makes an unsupported repository architecture valid. An EF Core Skill, for example, must not be applied to an unrelated persistence technology without first evaluating compatibility.
 
----
+The governing design is unchanged: the agent proposes and implements a change; deterministic checks independently verify technical requirements; an authorized reviewer accepts or rejects the change. The harness can make this workflow repeatable without granting the model authority to rewrite approved Skills.
 
-## Enterprise Benefits
+### Cross-Platform Engineering Contract
 
-Organizations using Codex gain the same advantages described for Claude Code and GitHub Copilot.
+| Concern | Claude Code | GitHub Copilot | OpenAI Codex |
+| --- | --- | --- | --- |
+| Project repository guidance | `CLAUDE.md` | `.github/copilot-instructions.md` | `AGENTS.md` |
+| Common project Skill location | `.claude/skills/<name>/SKILL.md` | `.github/skills/<name>/SKILL.md` | `.agents/skills/<name>/SKILL.md` |
+| Portable Skill core | `name`, `description`, Markdown procedure | Same portable core | Same portable core |
+| Invocation | Relevance-based or explicit `/skill-name` | Host-dependent agent selection | Host-dependent agent selection |
+| Enforcement | External gates, permissions, review | External gates, permissions, review | External gates, permissions, review |
+| Governance | Version-pinned approved source | Version-pinned approved source | Version-pinned approved source |
 
-Reusable Skills provide:
-
-* predictable implementation workflows
-* reduced prompt complexity
-* improved architectural consistency
-* repeatable engineering outcomes
-* easier governance and auditing
-
-Because Skills are repository assets rather than model-specific features, they remain portable as AI coding platforms evolve.
-
----
-
-## Cross-Platform Comparison
-
-The engineering philosophy presented in this handbook intentionally remains vendor-neutral.
-
-Although the interaction model differs between platforms, the role of Skills is consistent.
-
-| Capability              | Claude Code                             | GitHub Copilot                         | OpenAI Codex                           |
-| ----------------------- | --------------------------------------- | -------------------------------------- | -------------------------------------- |
-| Repository Instructions | Native repository guidance              | Repository guidance                    | Repository guidance                    |
-| Reusable Skills         | Strong support for structured workflows | Repository-based workflow organization | Repository-based workflow organization |
-| Prompt Style            | Business-focused, concise               | Business-focused, concise              | Business-focused, concise              |
-| Engineering Workflow    | Driven by reusable Skills               | Driven by reusable Skills              | Driven by reusable Skills              |
-| Governance Model        | Repository-controlled                   | Repository-controlled                  | Repository-controlled                  |
-
-The important observation is that **Skills are an enterprise engineering concept rather than a product feature**.
-
-Organizations should design their Skill libraries so that they remain reusable regardless of whether future development is performed using Claude Code, GitHub Copilot, OpenAI Codex, or the next generation of AI coding agents.
+The exact locations and capabilities should be rechecked when upgrading tooling. For a multi-platform enterprise, maintain one reviewed canonical definition wherever possible and publish it through a repeatable distribution process to the host-specific location. Audit the distributed revision; a copied Skill that silently diverges from the canonical version defeats centralized governance.
 
 ---
 
-# 11. Best Practices
+## 11. Best Practices
 
 Enterprise AI engineering succeeds when Skills are treated as long-lived engineering assets rather than collections of useful prompts. Organizations that invest in well-designed Skill libraries consistently achieve higher implementation quality, greater architectural consistency, and reduced onboarding effort for both developers and AI coding agents.
 
@@ -1718,7 +1449,7 @@ The following practices have proven effective across large software engineering 
 
 ---
 
-## Design Skills Around Recurring Engineering Activities
+### Design Skills Around Recurring Engineering Activities
 
 A Skill should represent a recurring engineering workflow rather than a specific business feature.
 
@@ -1746,28 +1477,23 @@ Organizations maximize reuse by centering Skills around engineering activities r
 
 ---
 
-## Keep Skills Focused
+### Keep Skills Focused
 
 Each Skill should have a clearly defined responsibility.
 
 For example, the **Add OpenTelemetry** Skill should concern itself only with observability.
 
-It should not also:
-
-* configure authorization
-* modify database schema
-* publish events
-* update documentation
+It should not also implement unrelated concerns such as authorization policy creation, database schema migrations, or event publication. It may document the instrumentation changes it makes.
 
 Keeping responsibilities focused produces Skills that are easier to understand, test, govern, and compose.
 
 ---
 
-## Define Explicit Inputs and Outputs
+### Define Explicit Inputs and Outputs
 
 Every Skill should clearly specify:
 
-### Required Inputs
+#### Required Inputs
 
 * repository location
 * service name
@@ -1776,7 +1502,7 @@ Every Skill should clearly specify:
 * technology selection
 * configuration options
 
-### Expected Outputs
+#### Expected Outputs
 
 * generated source files
 * modified files
@@ -1797,7 +1523,7 @@ Well-defined interfaces allow Skills to be composed predictably.
 
 ---
 
-## Always Validate Preconditions
+### Always Validate Preconditions
 
 A Skill should never assume the repository is ready.
 
@@ -1822,7 +1548,7 @@ If these conditions are not met, execution should stop immediately.
 
 ---
 
-## Include Validation as Part of the Skill
+### Include Validation as Part of the Skill
 
 Successful code generation does not mean successful Skill execution.
 
@@ -1841,7 +1567,7 @@ Validation should be considered an integral part of the Skill rather than a sepa
 
 ---
 
-## Design Skills for Composition
+### Design Skills for Composition
 
 Enterprise features usually require multiple Skills working together.
 
@@ -1877,7 +1603,7 @@ Each Skill performs one meaningful engineering workflow while remaining compatib
 
 ---
 
-## Avoid Repository-Specific Assumptions
+### Avoid Repository-Specific Assumptions
 
 Reusable Skills should minimize hard-coded assumptions about individual repositories.
 
@@ -1903,7 +1629,7 @@ This allows the same Skill to operate across multiple repositories with minimal 
 
 ---
 
-## Treat Skills as Versioned Assets
+### Treat Skills as Versioned Assets
 
 Skills evolve over time.
 
@@ -1913,7 +1639,7 @@ Frameworks change.
 
 Security standards improve.
 
-Organizations should therefore version Skills exactly as they version application code.
+Organizations should place Skills under version control and publish reviewed releases; semantic version identifiers are useful when compatibility is explicitly managed.
 
 Example:
 
@@ -1941,11 +1667,11 @@ Version 2.0
 • Added Native AOT support
 ```
 
-Version history provides transparency and enables controlled adoption across engineering teams.
+Version history provides transparency and enables controlled adoption across engineering teams. A change in the Skill version does not by itself update every consuming repository; a controlled distribution step must pin and record the new revision.
 
 ---
 
-## Review Skills Like Production Code
+### Review Skills Like Production Code
 
 Every Skill should undergo the same engineering governance as application source code.
 
@@ -1963,7 +1689,7 @@ Pull requests that modify Skills should receive careful architectural review bec
 
 ---
 
-## Measure Engineering Outcomes
+### Measure Engineering Outcomes
 
 Organizations often evaluate AI solely by code generation speed.
 
@@ -1980,11 +1706,25 @@ Useful metrics include:
 | Failure Categories     | Common causes of Skill failure           |
 | Average Execution Time | End-to-end workflow duration             |
 
+For comparability, define denominators. **Technical pass rate** is the number of applicable executions that pass all required gates divided by all applicable attempted executions. **Acceptance rate** is the number of reviewed changes accepted divided by reviewed changes, not all generated patches. Report blocked preconditions, environmental failures, and abandoned runs separately rather than burying them in one success percentage. Attribute post-merge defects cautiously: correlation with a Skill revision does not establish that the Skill caused the defect.
+
 These metrics provide actionable insight into engineering quality rather than AI productivity alone.
 
 ---
 
-# 12. Anti-patterns
+### Test the Skill, Not Just the Generated Code
+
+A Skill must be validated before it is promoted to the enterprise catalog. A useful evaluation set includes a representative repository, an atypical but supported repository, and deliberately incompatible repositories. For `create-api-endpoint`, regression scenarios should cover an already-existing route, missing policy, a mismatched project convention, an endpoint in a different .NET service, and a cross-tenant request. Test that the Skill correctly *refuses* invalid work—not only that it produces valid code on a happy path.
+
+Skill tests can combine metadata/schema checks, repository fixture runs, architecture tests, security tests, and reviewer assessment. Record the model/host version because apparent Skill regressions may reflect changes in agent behavior rather than changes in the Skill text. Where agent output varies, use behavioral assertions and quality rubrics rather than exact text matching. Separate Skill-level failures from failures caused by unavailable tools, rate limits, or an unhealthy CI environment.
+
+### Capture Execution Evidence and Reproducibility
+
+The run record should capture the task ID, repository commit, Skill name and revision, agent/host version, accepted inputs, changed files, commands executed, gate outcomes, durations, and reviewer disposition. Never store credentials, customer identifiers, or sensitive payloads in the evidence store. Redact logs and apply access control and retention rules. This record supports incident investigation, reproducible evaluations, and justified Skill improvements.
+
+---
+
+## 12. Anti-patterns
 
 As organizations adopt Skills, several recurring mistakes appear repeatedly.
 
@@ -1992,7 +1732,7 @@ Recognizing these anti-patterns early prevents significant maintenance and gover
 
 ---
 
-## Anti-pattern: Mixing Skills with Instructions
+### Anti-pattern: Mixing Skills with Instructions
 
 One of the most common mistakes is embedding repository policy inside implementation workflows.
 
@@ -2019,7 +1759,7 @@ Mixing the two makes both harder to maintain.
 
 ---
 
-## Anti-pattern: Writing Skills as Large Prompts
+### Anti-pattern: Writing Skills as Large Prompts
 
 Some organizations create Skills that resemble conversational requests.
 
@@ -2049,7 +1789,7 @@ Structured workflows are significantly more reliable than conversational descrip
 
 ---
 
-## Anti-pattern: Missing Preconditions
+### Anti-pattern: Missing Preconditions
 
 Skipping prerequisite validation frequently produces incomplete or inconsistent implementations.
 
@@ -2065,7 +1805,7 @@ Every Skill should fail early rather than proceed with invalid assumptions.
 
 ---
 
-## Anti-pattern: Missing Validation
+### Anti-pattern: Missing Validation
 
 Many organizations incorrectly assume that generated code is automatically correct.
 
@@ -2084,7 +1824,7 @@ Only validated execution should be considered successful.
 
 ---
 
-## Anti-pattern: Overly Large Skills
+### Anti-pattern: Overly Large Skills
 
 Skills that attempt to implement an entire business feature become difficult to understand, review, version, and reuse.
 
@@ -2100,7 +1840,7 @@ Smaller, well-scoped engineering workflows are far more maintainable.
 
 ---
 
-## Anti-pattern: Excessive Skill Fragmentation
+### Anti-pattern: Excessive Skill Fragmentation
 
 The opposite problem occurs when organizations divide workflows into dozens of trivial Skills.
 
@@ -2126,7 +1866,7 @@ Complex features then require orchestrating an unnecessarily large number of tin
 
 ---
 
-## Anti-pattern: Hard-Coded Repository Assumptions
+### Anti-pattern: Hard-Coded Repository Assumptions
 
 Embedding repository paths, project names, or folder structures directly into Skills limits portability.
 
@@ -2136,7 +1876,7 @@ This enables the same Skill library to support multiple repositories and future 
 
 ---
 
-## Anti-pattern: Uncontrolled Skill Changes
+### Anti-pattern: Uncontrolled Skill Changes
 
 Because Skills influence many future implementations, modifying them without governance introduces significant organizational risk.
 
@@ -2152,7 +1892,7 @@ A Skill library deserves the same change management discipline as production sou
 
 ---
 
-## Anti-pattern: Allowing the Harness to Silently Rewrite Skills
+### Anti-pattern: Allowing the Harness to Silently Rewrite Skills
 
 A self-learning AI harness may identify opportunities to improve engineering workflows.
 
@@ -2171,7 +1911,7 @@ Automatically register endpoint filters for all new APIs.
 
 Evidence:
 
-Observed in 94% of manually reviewed pull requests.
+For example: multiple reviewed PRs needed manual registration of endpoint filters. Include links to those PRs in the proposal.
 ```
 
 A human architect should evaluate the proposal before the Skill is updated.
@@ -2180,7 +1920,7 @@ Autonomous learning should support governance—not replace it.
 
 ---
 
-## Anti-pattern: Reusing Skills Without Verifying Applicability
+### Anti-pattern: Reusing Skills Without Verifying Applicability
 
 Not every Skill is appropriate for every repository.
 
@@ -2198,24 +1938,24 @@ Reuse should always be informed rather than automatic.
 
 ---
 
-## Anti-pattern: Equating Code Generation with Skill Success
+### Anti-pattern: Equating Code Generation with Skill Success
 
-The final and perhaps most important mistake is assuming that successful code generation equals successful Skill execution.
+The final and perhaps most important mistake is assuming that successful code generation equals validated Skill execution or feature acceptance.
 
-A Skill succeeds only when:
+A Skill's technical execution is validated when:
 
-* all preconditions were satisfied
-* the workflow completed
-* validation passed
-* repository standards were maintained
-* required tests succeeded
-* the implementation was accepted during review
+* applicable preconditions were satisfied;
+* its procedure was followed, or justified deviations were recorded;
+* the relevant independent build, architecture, security and test gates passed;
+* expected artifacts and evidence were produced.
+
+The associated feature is **accepted** only when the required reviewer or business approvals are also recorded.
 
 Engineering quality—not generated source code—is the true measure of Skill effectiveness.
 
 ---
 
-# 13. Architect's Notes
+## 13. Architect's Notes
 
 > **Architect's Note**
 >
@@ -2227,7 +1967,7 @@ Engineering quality—not generated source code—is the true measure of Skill e
 
 ---
 
-## Skills Capture Organizational Engineering Knowledge
+### Skills Capture Organizational Engineering Knowledge
 
 Experienced architects make thousands of engineering decisions over their careers.
 
@@ -2258,7 +1998,7 @@ Skills solve this problem by transforming implicit architectural knowledge into 
 
 ---
 
-## Skills Should Be Stable but Evolvable
+### Skills Should Be Stable but Evolvable
 
 A mature Skill library changes much less frequently than application code.
 
@@ -2280,7 +2020,7 @@ This separation allows application development to move quickly while preserving 
 
 ---
 
-## Think Beyond Individual Repositories
+### Think Beyond Individual Repositories
 
 Many organizations initially design Skills specifically for one repository.
 
@@ -2316,7 +2056,7 @@ The broader engineering abstraction significantly increases return on investment
 
 ---
 
-## Skill Libraries Become Enterprise Standards
+### Skill Libraries Become Enterprise Standards
 
 As organizations mature, Skill libraries begin to resemble internal engineering frameworks.
 
@@ -2338,7 +2078,7 @@ This consistency reduces architectural drift while improving onboarding for both
 
 ---
 
-## Skills Should Remain Technology-Aware, Not Technology-Locked
+### Reuse Contracts Without Hiding Technology Differences
 
 A Skill should understand the engineering technologies used by a repository.
 
@@ -2350,35 +2090,11 @@ For example:
 * Kafka
 * OpenTelemetry
 
-However, implementation details should remain configurable wherever practical.
-
-For example:
-
-```text
-Persistence Provider
-
-↓
-
-EF Core
-```
-
-should not require creating an entirely different engineering workflow from:
-
-```text
-Persistence Provider
-
-↓
-
-MongoDB
-```
-
-The overall workflow remains similar even though implementation details differ.
-
-Architects should maximize reuse without sacrificing engineering correctness.
+Shared Skill contracts can express common responsibilities such as checking prerequisites, capturing outputs, and running tests. Implementation Skills should nevertheless remain technology-specific when the guarantees differ. An EF Core migration workflow is not interchangeable with MongoDB schema/index management. Architects should reuse the *engineering contract* while retaining dedicated, verified provider-specific procedures and applicability checks.
 
 ---
 
-## Enterprise Architecture Emerges from Reusable Skills
+### Enterprise Architecture Emerges from Reusable Skills
 
 One of the most powerful observations in Enterprise AI Engineering is that architecture becomes increasingly consistent as organizations expand their Skill libraries.
 
@@ -2390,7 +2106,13 @@ Over thousands of executions, this produces measurable improvements in engineeri
 
 ---
 
-# 14. Enterprise Tips
+### Separate Skill Guidance from Non-Negotiable Gates
+
+Architecture review should establish which requirements may rely on agent judgment and which must be enforced by automation. A Skill can describe how to add policy-based authorization; integration tests and access-control scans must verify that authorization is actually applied. A Skill can request an outbox; a transactional integration test must prove that creating a booking and recording its event are atomic. The distinction is particularly important for security, financial, and multi-tenant boundaries.
+
+---
+
+## 14. Enterprise Tips
 
 > **Enterprise Tip**
 >
@@ -2400,7 +2122,7 @@ Over thousands of executions, this produces measurable improvements in engineeri
 
 ---
 
-## Build an Enterprise Skill Catalog
+### Build an Enterprise Skill Catalog
 
 Treat Skills as discoverable engineering assets.
 
@@ -2455,7 +2177,7 @@ This organization makes Skill discovery significantly easier for both humans and
 
 ---
 
-## Assign Clear Ownership
+### Assign Clear Ownership
 
 Every Skill should have an identifiable owner.
 
@@ -2474,7 +2196,7 @@ Ownership ensures that improvements, bug fixes, and architectural changes follow
 
 ---
 
-## Maintain Backward Compatibility
+### Maintain Backward Compatibility
 
 When improving a Skill, avoid introducing breaking behavior without careful planning.
 
@@ -2489,7 +2211,7 @@ This approach mirrors API versioning and reduces disruption across repositories.
 
 ---
 
-## Continuously Measure Skill Effectiveness
+### Continuously Measure Skill Effectiveness
 
 Enterprise Skill libraries should be monitored like production systems.
 
@@ -2508,7 +2230,7 @@ These metrics identify where engineering workflows need refinement.
 
 ---
 
-## Encourage Cross-Team Contributions
+### Encourage Cross-Team Contributions
 
 The best Skill libraries evolve through contributions from multiple engineering disciplines.
 
@@ -2524,7 +2246,7 @@ A collaborative governance model produces more comprehensive and resilient engin
 
 ---
 
-## Document Skill Dependencies
+### Document Skill Dependencies
 
 As the Skill catalog grows, dependencies become increasingly important.
 
@@ -2540,7 +2262,15 @@ Dependency documentation should be maintained alongside each Skill definition.
 
 ---
 
-# 15. Decision Points
+### Establish a Governed Improvement Loop
+
+A self-learning harness may correlate repeated failed gates, reviewer change requests, and post-merge incidents with a specific Skill revision. Suppose the endpoint Skill repeatedly omits tenant-isolation tests in corporate fleet features. The harness should retain the affected run IDs and propose a change to the Skill's validation instructions, accompanied by a failing fixture, expected outcome, and impact assessment. The Skill owner reviews the proposal, evaluates it against the existing fixture suite, approves a versioned release, and rolls it out in controlled stages. Rejected recommendations should be retained with the decision rationale; they must not be silently reapplied.
+
+An improved success rate is useful evidence, but only when measured against comparable task types and checked for regressions in security, correctness, review effort, and cost. The learning system produces recommendations, not new policy authority.
+
+---
+
+## 15. Decision Points
 
 Enterprise architects should establish clear organizational decisions before introducing Skills at scale.
 
@@ -2548,7 +2278,7 @@ The following questions help guide those decisions.
 
 ---
 
-## Decision Point 1 — Where Should Skills Be Stored?
+### Decision Point 1 — Where Should Skills Be Stored?
 
 Possible approaches include:
 
@@ -2563,7 +2293,7 @@ Core engineering Skills remain centrally governed, while repository-specific Ski
 
 ---
 
-## Decision Point 2 — Who Owns Skill Governance?
+### Decision Point 2 — Who Owns Skill Governance?
 
 Potential owners include:
 
@@ -2578,7 +2308,7 @@ Unowned Skill libraries inevitably drift in quality and consistency.
 
 ---
 
-## Decision Point 3 — How Should Skills Be Versioned?
+### Decision Point 3 — How Should Skills Be Versioned?
 
 Possible strategies include:
 
@@ -2590,11 +2320,9 @@ Semantic versioning is generally the most flexible because it communicates compa
 
 ---
 
-## Decision Point 4 — Can AI Modify Skills?
+### Decision Point 4 — Can AI Modify Skills?
 
-This handbook recommends a clear governance policy:
-
-**No.**
+This handbook recommends a clear governance policy: **AI may draft proposed changes, but it must not silently modify the approved Skill catalog or publish changes without authorized human review.**
 
 AI agents may:
 
@@ -2609,7 +2337,7 @@ Every Skill modification should follow normal engineering review and approval pr
 
 ---
 
-## Decision Point 5 — What Defines Successful Skill Execution?
+### Decision Point 5 — What Defines Successful Skill Execution?
 
 Organizations should define success using measurable engineering outcomes rather than code generation alone.
 
@@ -2623,11 +2351,11 @@ Recommended criteria include:
 * reviewer approval obtained
 * production quality achieved
 
-Only then should the Skill be considered successful.
+This defines an **accepted feature change**. For reporting precision, distinguish completion of Skill steps, technical gate pass, and final human acceptance as separate outcomes.
 
 ---
 
-## Decision Point 6 — Should Skills Be Shared Across AI Platforms?
+### Decision Point 6 — Should Skills Be Shared Across AI Platforms?
 
 The answer is generally **yes**.
 
@@ -2637,7 +2365,7 @@ By keeping Skills vendor-neutral, organizations preserve their engineering inves
 
 ---
 
-# 16. Exercises
+## 16. Exercises
 
 ### Exercise 1 — Classify Repository Artifacts
 
@@ -2716,15 +2444,15 @@ Identify:
 
 ---
 
-# 17. Interview Questions
+## 17. Interview Questions
 
 The following questions are intended for software architects, senior developers, AI engineering leads, and platform engineers. They focus on conceptual understanding, architectural reasoning, and enterprise-scale implementation rather than memorization.
 
 ---
 
-## Conceptual Questions
+### Conceptual Questions
 
-### 1. What is a Skill in Enterprise AI Engineering?
+#### 1. What is a Skill in Enterprise AI Engineering?
 
 **Expected discussion points**
 
@@ -2736,7 +2464,7 @@ The following questions are intended for software architects, senior developers,
 
 ---
 
-### 2. How do Skills differ from Instructions?
+#### 2. How do Skills differ from Instructions?
 
 Candidates should explain that:
 
@@ -2751,7 +2479,7 @@ A strong candidate should emphasize that Instructions answer *what must always b
 
 ---
 
-### 3. How do Skills differ from Prompts?
+#### 3. How do Skills differ from Prompts?
 
 Expected answer:
 
@@ -2771,11 +2499,11 @@ Skill
 
 The prompt changes daily.
 
-The Skill may remain unchanged for years.
+The Skill can be reused across many requests until the procedure needs a governed revision.
 
 ---
 
-### 4. Why shouldn't engineering knowledge be embedded inside prompts?
+#### 4. Why shouldn't engineering knowledge be embedded inside prompts?
 
 Look for discussion around:
 
@@ -2789,7 +2517,7 @@ Strong candidates should explain why reusable Skills improve consistency and mai
 
 ---
 
-### 5. Why are Skills considered engineering assets?
+#### 5. Why are Skills considered engineering assets?
 
 A complete answer should include:
 
@@ -2803,9 +2531,9 @@ A complete answer should include:
 
 ---
 
-## Architecture Questions
+### Architecture Questions
 
-### 6. How should Skills be organized in a large enterprise?
+#### 6. How should Skills be organized in a large enterprise?
 
 Expected topics:
 
@@ -2818,7 +2546,7 @@ Expected topics:
 
 ---
 
-### 7. What information belongs inside a Skill?
+#### 7. What information belongs inside a Skill?
 
 Expected answer:
 
@@ -2834,7 +2562,7 @@ Expected answer:
 
 ---
 
-### 8. Why should Skills validate preconditions?
+#### 8. Why should Skills validate preconditions?
 
 Candidates should discuss:
 
@@ -2846,7 +2574,7 @@ Candidates should discuss:
 
 ---
 
-### 9. What is Skill composition?
+#### 9. What is Skill composition?
 
 Expected discussion:
 
@@ -2854,7 +2582,7 @@ Large software features are implemented by orchestrating multiple reusable Skill
 
 Example:
 
-```text id="4t3q9v"
+```text
 Create API
 
 ↓
@@ -2886,23 +2614,15 @@ The candidate should recognize that complex engineering work emerges from coordi
 
 ---
 
-### 10. Should a Skill understand business requirements?
+#### 10. Should a Skill understand business requirements?
 
-The preferred answer is:
-
-No.
-
-A Skill should understand recurring engineering activities rather than individual business features.
-
-Business intent belongs in the Prompt.
-
-Engineering implementation belongs in the Skill.
+The preferable answer is **not by default**. A general-purpose Skill should capture reusable engineering activities rather than the details of one feature. Domain-specific reusable Skills can also be valid when they have a clear owner, bounded applicability, and repeated use cases. The Prompt and linked acceptance criteria supply the current business intent.
 
 ---
 
-## Governance Questions
+### Governance Questions
 
-### 11. Who should own enterprise Skills?
+#### 11. Who should own enterprise Skills?
 
 Possible answers include:
 
@@ -2915,11 +2635,9 @@ The important point is that ownership should be explicit.
 
 ---
 
-### 12. Should AI agents modify Skills automatically?
+#### 12. Should AI agents modify Skills automatically?
 
-The expected answer is:
-
-No.
+The expected answer is: **not in the governed, approved catalog without explicit review and authorization**. They can prepare drafts and open a proposed Skill change for human consideration.
 
 AI agents may:
 
@@ -2931,7 +2649,7 @@ Human approval should always be required before modifying governed engineering a
 
 ---
 
-### 13. How should Skill effectiveness be measured?
+#### 13. How should Skill effectiveness be measured?
 
 Candidates should discuss metrics such as:
 
@@ -2947,7 +2665,7 @@ Engineering quality—not generation speed—should be the primary objective.
 
 ---
 
-### 14. What are the risks of poorly designed Skills?
+#### 14. What are the risks of poorly designed Skills?
 
 A comprehensive answer may include:
 
@@ -2960,13 +2678,13 @@ A comprehensive answer may include:
 
 ---
 
-### 15. How do Skills contribute to Enterprise AI Engineering?
+#### 15. How do Skills contribute to Enterprise AI Engineering?
 
 Strong candidates should conclude that Skills transform engineering experience into reusable organizational knowledge, enabling AI coding agents to execute proven implementation workflows consistently across repositories and teams.
 
 ---
 
-# 18. Chapter Summary
+## 18. Chapter Summary
 
 This chapter introduced **Skills** as one of the foundational building blocks of Repository Intelligence.
 
@@ -3029,7 +2747,7 @@ As AI-assisted software development continues to mature, organizations that inve
 
 ---
 
-# 19. Further Reading
+## 19. Further Reading
 
 The concepts introduced in this chapter provide the foundation for the remaining chapters in Part II and later sections of this handbook.
 
@@ -3043,8 +2761,14 @@ Recommended continuation within this handbook:
 * **Part III — Harness Engineering** — Orchestrating Skills, Instructions, Roles, and Prompts within automated AI engineering workflows.
 * **Part VI — Self-Learning AI Systems** — Measuring Skill effectiveness, recommending improvements, and evolving engineering workflows through governed feedback loops.
 
+For implementation details and evolving host-specific behavior, consult the primary documentation:
+
+- [Agent Skills open format](https://agentskills.io/) — Skill package anatomy and portable metadata.
+- [Claude Code: Extend Claude with Skills](https://code.claude.com/docs/en/skills) — Discovery, invocation, and package conventions.
+- [GitHub: Adding Agent Skills for GitHub Copilot](https://docs.github.com/en/copilot/how-tos/copilot-on-github/customize-copilot/customize-cloud-agent/add-skills) — Supported repository locations and agent behavior.
+- [OpenAI: Skills](https://developers.openai.com/api/docs/guides/tools-skills) — Portable Skills and runtime execution concepts.
+- [OpenAI: Codex workflow and repository guidance](https://developers.openai.com/cookbook/examples/codex/iterating-development-workflows-with-codex) — `AGENTS.md` and repeatable development workflows.
+
 By progressing through these chapters, readers will move from understanding individual repository intelligence artifacts to designing complete enterprise AI engineering systems capable of delivering reliable, repeatable, and governable software development at scale.
 
 ---
-
-**Chapter 7 status: Complete**

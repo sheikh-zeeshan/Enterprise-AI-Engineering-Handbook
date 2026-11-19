@@ -334,7 +334,7 @@ The Metrics subsystem observes that evidence and calculates measurements.
 
 For example:
 
-```
+```text
 Validator execution:
     dotnet test
 
@@ -504,7 +504,7 @@ An attempt may execute several gates, and a gate may execute more than once beca
 
 Accordingly:
 
-\\[ \text{Population Items} \ne \text{Runs} \ne \text{Attempts} \ne \text{Agent Invocations} \\]
+\[ \text{Population Items} \ne \text{Runs} \ne \text{Attempts} \ne \text{Agent Invocations} \]
 
 Treating these counts as interchangeable introduces substantial reporting errors.
 
@@ -563,7 +563,7 @@ For an illustrative Alpha Car Detailing reporting snapshot:
 
 The counts are mutually exclusive within this example.
 
-\\[ 500 = 140 + 25 + 285 + 30 + 20 \\]
+\[ 500 = 140 + 25 + 285 + 30 + 20 \]
 
 A production system should define whether its Population includes deferred, canceled, blocked, or otherwise ineligible items.
 
@@ -581,7 +581,7 @@ These measurements must not be mixed without understanding their time semantics.
 
 For example:
 
-```
+```text
 Population snapshot:
     500 items at 18:00 UTC
 
@@ -603,7 +603,7 @@ Operational work state and engineering outcome state should be modeled independe
 
 A basic operational lifecycle may be:
 
-```
+```text
 Queued → Running → Completed
                  → Failed
                  → Exhausted
@@ -633,7 +633,7 @@ The engineering outcome might separately be:
 
 For example:
 
-```
+```text
 Operational state: Completed
 Validation: Passed
 Review: Accepted with no blocking findings
@@ -654,11 +654,11 @@ Throughput measures the amount of work reaching a defined completion boundary du
 
 For engineering acceptance throughput:
 
-\\[ \text{Accepted Throughput} = \frac{\text{Distinct work items accepted during interval}} {\text{Interval duration}} \\]
+\[ \text{Accepted Throughput} = \frac{\text{Distinct work items accepted during interval}} {\text{Interval duration}} \]
 
 For example, if 60 distinct work items achieved engineering acceptance during five working days:
 
-\\[ \text{Accepted Throughput} = \frac{60}{5}=12 \\]
+\[ \text{Accepted Throughput} = \frac{60}{5}=12 \]
 
 The resulting throughput is 12 accepted work items per working day.
 
@@ -687,7 +687,7 @@ It requires a declared success criterion and denominator.
 
 For example:
 
-\\[ \text{Engineering Success Rate} = \frac{\text{Accepted terminal work items}} {\text{All eligible terminal work items}} \times 100 \\]
+\[ \text{Engineering Success Rate} = \frac{\text{Accepted terminal work items}} {\text{All eligible terminal work items}} \times 100 \]
 
 Suppose 100 work items reached terminal disposition during the reporting period:
 
@@ -697,7 +697,7 @@ Suppose 100 work items reached terminal disposition during the reporting period:
 
 Then:
 
-\\[ \text{Engineering Success Rate} = \frac{78}{100}\times100 =78\\% \\]
+\[ \text{Engineering Success Rate} = \frac{78}{100}\times100 =78\% \]
 
 This is a terminal-cohort engineering success rate.
 
@@ -717,7 +717,7 @@ Failure rate measures unsuccessful outcomes within a defined measurement populat
 
 For terminal work items:
 
-\\[ \text{Failure Rate} = \frac{\text{Failed terminal work items}} {\text{All terminal work items}} \times100 \\]
+\[ \text{Failure Rate} = \frac{\text{Failed terminal work items}} {\text{All terminal work items}} \times100 \]
 
 The example above produces a failure rate of 14%.
 
@@ -769,11 +769,11 @@ Two complementary retry measurements are useful.
 
 Retry incidence rate:
 
-\\[ \text{Retry Incidence Rate} = \frac{\text{Runs with at least one retry}} {\text{Eligible runs}} \times100 \\]
+\[ \text{Retry Incidence Rate} = \frac{\text{Runs with at least one retry}} {\text{Eligible runs}} \times100 \]
 
 Retries per run:
 
-\\[ \text{Retries per Run} = \frac{\text{Total retry executions}} {\text{Eligible runs}} \\]
+\[ \text{Retries per Run} = \frac{\text{Total retry executions}} {\text{Eligible runs}} \]
 
 Suppose 100 runs were executed.
 
@@ -812,7 +812,7 @@ Exhaustion is an explicit terminal or intervention-required outcome. It should n
 
 For terminal work items:
 
-\\[ \text{Exhaustion Rate} = \frac{\text{Exhausted terminal items}} {\text{All terminal items}} \times100 \\]
+\[ \text{Exhaustion Rate} = \frac{\text{Exhausted terminal items}} {\text{All terminal items}} \times100 \]
 
 If eight out of 100 terminal items were exhausted, the exhaustion rate is 8%.
 
@@ -840,11 +840,11 @@ Its definition depends on the unit of analysis.
 
 One useful measurement is:
 
-\\[ \text{Validation Execution Pass Rate} = \frac{\text{Passing validation executions}} {\text{Completed validation executions}} \times100 \\]
+\[ \text{Validation Execution Pass Rate} = \frac{\text{Passing validation executions}} {\text{Completed validation executions}} \times100 \]
 
 A second measurement evaluates final outcomes:
 
-\\[ \text{Final Validation Pass Rate} = \frac{\text{Terminal work items passing mandatory validation}} {\text{Terminal work items requiring validation}} \times100 \\]
+\[ \text{Final Validation Pass Rate} = \frac{\text{Terminal work items passing mandatory validation}} {\text{Terminal work items requiring validation}} \times100 \]
 
 The two measures are not interchangeable.
 
@@ -880,9 +880,9 @@ Each gate should have a stable identifier and a versioned definition.
 
 For a given gate:
 
-\\[ \text{Gate Pass Rate} = \frac{\text{Passing completed executions}} {\text{All completed executions of that gate}} \times100 \\]
+\[ \text{Gate Pass Rate} = \frac{\text{Passing completed executions}} {\text{All completed executions of that gate}} \times100 \]
 
-\\[ \text{Gate Failure Rate} = \frac{\text{Failing completed executions}} {\text{All completed executions of that gate}} \times100 \\]
+\[ \text{Gate Failure Rate} = \frac{\text{Failing completed executions}} {\text{All completed executions of that gate}} \times100 \]
 
 If the gate supports additional outcomes such as inconclusive or error, pass and failure rates need not total 100%.
 
@@ -904,7 +904,7 @@ Gate duration measures the time required to execute a particular deterministic c
 
 For an individual execution:
 
-\\[ \text{Gate Duration} = \text{Execution End Time} - \text{Execution Start Time} \\]
+\[ \text{Gate Duration} = \text{Execution End Time} - \text{Execution Start Time} \]
 
 Useful aggregate measurements include:
 
@@ -967,7 +967,7 @@ Review measurements may include:
 
 A recommended review finding rate is:
 
-\\[ \text{Review Finding Rate} = \frac{\text{Distinct actionable findings}} {\text{Completed review assessments}} \\]
+\[ \text{Review Finding Rate} = \frac{\text{Distinct actionable findings}} {\text{Completed review assessments}} \]
 
 This produces an average number of findings per completed assessment.
 
@@ -1004,7 +1004,7 @@ For example:
 
 An evaluation pass rate may be defined as:
 
-\\[ \text{Evaluation Pass Rate} = \frac{\text{Passed evaluations}} {\text{All completed evaluations}} \times100 \\]
+\[ \text{Evaluation Pass Rate} = \frac{\text{Passed evaluations}} {\text{All completed evaluations}} \times100 \]
 
 In this example, the rate is 72%.
 
@@ -1034,7 +1034,7 @@ Rework may result from:
 
 A simple work-item rework incidence metric is:
 
-\\[ \text{Rework Rate} = \frac{\text{Work items requiring qualifying rework}} {\text{Eligible work items reaching assessment}} \times100 \\]
+\[ \text{Rework Rate} = \frac{\text{Work items requiring qualifying rework}} {\text{Eligible work items reaching assessment}} \times100 \]
 
 The organization must define what constitutes qualifying rework.
 
@@ -1071,7 +1071,7 @@ Approval-inclusive lead time: Elapsed time from work entry until the required hu
 
 For example:
 
-```
+```text
 Work enters Population       09:00
 Run starts                   09:20
 Implementation completed     09:45
@@ -1113,7 +1113,7 @@ The distinction is important:
 
 A configurable stale condition might be:
 
-\\[ \text{Heartbeat Age} > 2\times\text{Expected Heartbeat Interval} \\]
+\[ \text{Heartbeat Age} > 2\times\text{Expected Heartbeat Interval} \]
 
 This is an illustrative detection policy, not a universal threshold.
 
@@ -1160,7 +1160,7 @@ Examples include:
 
 A practical intervention incidence metric is:
 
-\\[ \text{Human Intervention Rate} = \frac{\text{Work items requiring unplanned human intervention}} {\text{Eligible work items}} \times100 \\]
+\[ \text{Human Intervention Rate} = \frac{\text{Work items requiring unplanned human intervention}} {\text{Eligible work items}} \times100 \]
 
 Human approval should normally be measured separately from unplanned intervention.
 
@@ -1186,7 +1186,7 @@ The correct objective is to reduce unnecessary intervention while preserving app
 
 Approval latency measures the time between an approval request and its recorded disposition.
 
-\\[ \text{Approval Latency} = \text{Decision Time} - \text{Approval Request Time} \\]
+\[ \text{Approval Latency} = \text{Decision Time} - \text{Approval Request Time} \]
 
 The metric can be segmented by:
 
@@ -1240,13 +1240,13 @@ Likewise, an Agent using fewer tokens is not necessarily more effective.
 
 A basic execution cost model is:
 
-\\[ \text{Total Measured Cost} = \text{AI Cost} + \text{Infrastructure Cost} + \text{Tooling Cost} + \text{Allocated Human Cost} \\]
+\[ \text{Total Measured Cost} = \text{AI Cost} + \text{Infrastructure Cost} + \text{Tooling Cost} + \text{Allocated Human Cost} \]
 
 Organizations may exclude some components from a narrower cost metric, but the exclusions must be explicit.
 
 A particularly useful efficiency metric is:
 
-\\[ \text{Cost Per Accepted Outcome} = \frac{\text{Total attributable cost for a work cohort}} {\text{Accepted outcomes in that cohort}} \\]
+\[ \text{Cost Per Accepted Outcome} = \frac{\text{Total attributable cost for a work cohort}} {\text{Accepted outcomes in that cohort}} \]
 
 The numerator should include unsuccessful attempts and associated rework attributable to the cohort.
 
@@ -1262,7 +1262,7 @@ Agent utilization describes how much of an available execution capacity is occup
 
 For a fixed-capacity execution pool:
 
-\\[ \text{Agent Slot Utilization} = \frac{\text{Occupied slot time}} {\text{Available slot time}} \times100 \\]
+\[ \text{Agent Slot Utilization} = \frac{\text{Occupied slot time}} {\text{Available slot time}} \times100 \]
 
 Suppose a Harness provides ten concurrent execution slots over eight hours.
 
@@ -1270,7 +1270,7 @@ The total available capacity is 80 slot-hours.
 
 If recorded occupancy is 52 slot-hours:
 
-\\[ \text{Utilization}=\frac{52}{80}\times100=65\\% \\]
+\[ \text{Utilization}=\frac{52}{80}\times100=65\% \]
 
 This is an execution-capacity measurement, not a measure of intelligence or engineering effectiveness.
 
@@ -1317,7 +1317,7 @@ A baseline establishes the expected or historically observed behavior of the sys
 
 For example:
 
-```
+```text
 Baseline validation failure rate: 12%
 Current validation failure rate: 21%
 ```
@@ -1459,9 +1459,22 @@ The Metrics subsystem correlates these observations and converts them into opera
 
 The resulting information supports dashboards, alerts, analysis, and improvement recommendations.
 
-\#chatgpt-mermaid-\_r_tp1\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(13, 13, 13);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_tp1\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_tp1\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_tp1\_ .error-icon{fill:rgb(243, 243, 243);}#chatgpt-mermaid-\_r_tp1\_ .error-text{fill:rgb(13, 13, 13);stroke:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_tp1\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_tp1\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_tp1\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_tp1\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_tp1\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_tp1\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_tp1\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_tp1\_ .marker.cross{stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_tp1\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_tp1\_ p{margin:0;}#chatgpt-mermaid-\_r_tp1\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_tp1\_ .cluster-label text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_tp1\_ .cluster-label span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_tp1\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_tp1\_ .label text,#chatgpt-mermaid-\_r_tp1\_ span{fill:rgb(13, 13, 13);color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_tp1\_ .node rect,#chatgpt-mermaid-\_r_tp1\_ .node circle,#chatgpt-mermaid-\_r_tp1\_ .node ellipse,#chatgpt-mermaid-\_r_tp1\_ .node polygon,#chatgpt-mermaid-\_r_tp1\_ .node path{fill:rgb(222, 234, 251);stroke:rgb(83, 154, 248);stroke-width:1px;}#chatgpt-mermaid-\_r_tp1\_ .rough-node .label text,#chatgpt-mermaid-\_r_tp1\_ .node .label text,#chatgpt-mermaid-\_r_tp1\_ .image-shape .label,#chatgpt-mermaid-\_r_tp1\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_tp1\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_tp1\_ .rough-node .label,#chatgpt-mermaid-\_r_tp1\_ .node .label,#chatgpt-mermaid-\_r_tp1\_ .image-shape .label,#chatgpt-mermaid-\_r_tp1\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_tp1\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_tp1\_ .root .anchor path{fill:rgb(143, 143, 143)!important;stroke-width:0;stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_tp1\_ .arrowheadPath{fill:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_tp1\_ .edgePath .path{stroke:rgb(143, 143, 143);stroke-width:1px;}#chatgpt-mermaid-\_r_tp1\_ .flowchart-link{stroke:rgb(143, 143, 143);fill:none;}#chatgpt-mermaid-\_r_tp1\_ .edgeLabel{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_tp1\_ .edgeLabel p{background-color:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_tp1\_ .edgeLabel rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_tp1\_ .labelBkg{background-color:rgba(252, 252, 252, 0.5);}#chatgpt-mermaid-\_r_tp1\_ .cluster rect{fill:rgb(243, 243, 243);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_tp1\_ .cluster text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_tp1\_ .cluster span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_tp1\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(243, 243, 243);border:1px solid rgba(0, 0, 0, 0.1);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_tp1\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_tp1\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_tp1\_ .icon-shape,#chatgpt-mermaid-\_r_tp1\_ .image-shape{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_tp1\_ .icon-shape p,#chatgpt-mermaid-\_r_tp1\_ .image-shape p{background-color:rgb(252, 252, 252);padding:2px;}#chatgpt-mermaid-\_r_tp1\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_tp1\_ .image-shape .label rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_tp1\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_tp1\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_tp1\_ .node .neo-node{stroke:rgb(83, 154, 248);}#chatgpt-mermaid-\_r_tp1\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_tp1\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_tp1\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_tp1\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_tp1\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_tp1\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_tp1\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_tp1\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_tp1\_ [data-look="neo"].node .neo-line path{stroke:rgb(83, 154, 248);filter:none;}#chatgpt-mermaid-\_r_tp1\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_tp1\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_tp1\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_tp1\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_tp1\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_tp1\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_tp1\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_tp1\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_tp1\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_tp1\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_tp1\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_tp1\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-width:1px;}#chatgpt-mermaid-\_r_tp1\_ .node rect,#chatgpt-mermaid-\_r_tp1\_ .node circle,#chatgpt-mermaid-\_r_tp1\_ .node ellipse,#chatgpt-mermaid-\_r_tp1\_ .node polygon,#chatgpt-mermaid-\_r_tp1\_ .node path{fill:rgb(229, 243, 255);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_tp1\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_tp1\_ .node.mermaid-decision .label-container{fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_tp1\_ .edgePaths .flowchart-link{stroke:rgb(143, 143, 143);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_tp1\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_tp1\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}PopulationHarness RunsAgents and GatesReview, Validation andEvaluationExecution EvidenceMetricsDashboardsAlertsAnalysisHarness ImprovementHuman-Governed Changes
+```mermaid
+flowchart TD
+    P["Population"] --> R["Harness Runs"] --> A["Agents and Gates"]
+    A --> V["Review, Validation, and Evaluation"] --> E["Execution Evidence"]
+    E --> M["Governed Metrics"]
+    M --> D["Dashboards"]
+    M --> L["Alerts"]
+    M --> N["Analysis"]
+    D --> I["Harness Improvement"]
+    L --> I
+    N --> I
+    I --> G["Human-Governed Changes"]
+    G -.-> R
+```
 
-Figure 20.1 — High-level Harness Metrics lifecycle.
+*Figure 20.1 — High-level Harness Metrics lifecycle.*
 
 The diagram illustrates a logical relationship rather than a requirement that metric events be emitted only after evaluation.
 
@@ -1508,9 +1521,43 @@ A possible implementation for Alpha Car Detailing uses a .NET-based Harness, str
 
 The following architecture is illustrative. It does not require any specific cloud provider.
 
-\#chatgpt-mermaid-\_r_tpa\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(13, 13, 13);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_tpa\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_tpa\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_tpa\_ .error-icon{fill:rgb(243, 243, 243);}#chatgpt-mermaid-\_r_tpa\_ .error-text{fill:rgb(13, 13, 13);stroke:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_tpa\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_tpa\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_tpa\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_tpa\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_tpa\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_tpa\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_tpa\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_tpa\_ .marker.cross{stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_tpa\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_tpa\_ p{margin:0;}#chatgpt-mermaid-\_r_tpa\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_tpa\_ .cluster-label text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_tpa\_ .cluster-label span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_tpa\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_tpa\_ .label text,#chatgpt-mermaid-\_r_tpa\_ span{fill:rgb(13, 13, 13);color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_tpa\_ .node rect,#chatgpt-mermaid-\_r_tpa\_ .node circle,#chatgpt-mermaid-\_r_tpa\_ .node ellipse,#chatgpt-mermaid-\_r_tpa\_ .node polygon,#chatgpt-mermaid-\_r_tpa\_ .node path{fill:rgb(222, 234, 251);stroke:rgb(83, 154, 248);stroke-width:1px;}#chatgpt-mermaid-\_r_tpa\_ .rough-node .label text,#chatgpt-mermaid-\_r_tpa\_ .node .label text,#chatgpt-mermaid-\_r_tpa\_ .image-shape .label,#chatgpt-mermaid-\_r_tpa\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_tpa\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_tpa\_ .rough-node .label,#chatgpt-mermaid-\_r_tpa\_ .node .label,#chatgpt-mermaid-\_r_tpa\_ .image-shape .label,#chatgpt-mermaid-\_r_tpa\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_tpa\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_tpa\_ .root .anchor path{fill:rgb(143, 143, 143)!important;stroke-width:0;stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_tpa\_ .arrowheadPath{fill:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_tpa\_ .edgePath .path{stroke:rgb(143, 143, 143);stroke-width:1px;}#chatgpt-mermaid-\_r_tpa\_ .flowchart-link{stroke:rgb(143, 143, 143);fill:none;}#chatgpt-mermaid-\_r_tpa\_ .edgeLabel{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_tpa\_ .edgeLabel p{background-color:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_tpa\_ .edgeLabel rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_tpa\_ .labelBkg{background-color:rgba(252, 252, 252, 0.5);}#chatgpt-mermaid-\_r_tpa\_ .cluster rect{fill:rgb(243, 243, 243);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_tpa\_ .cluster text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_tpa\_ .cluster span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_tpa\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(243, 243, 243);border:1px solid rgba(0, 0, 0, 0.1);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_tpa\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_tpa\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_tpa\_ .icon-shape,#chatgpt-mermaid-\_r_tpa\_ .image-shape{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_tpa\_ .icon-shape p,#chatgpt-mermaid-\_r_tpa\_ .image-shape p{background-color:rgb(252, 252, 252);padding:2px;}#chatgpt-mermaid-\_r_tpa\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_tpa\_ .image-shape .label rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_tpa\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_tpa\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_tpa\_ .node .neo-node{stroke:rgb(83, 154, 248);}#chatgpt-mermaid-\_r_tpa\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_tpa\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_tpa\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_tpa\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_tpa\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_tpa\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_tpa\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_tpa\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_tpa\_ [data-look="neo"].node .neo-line path{stroke:rgb(83, 154, 248);filter:none;}#chatgpt-mermaid-\_r_tpa\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_tpa\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_tpa\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_tpa\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_tpa\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_tpa\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_tpa\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_tpa\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_tpa\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_tpa\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_tpa\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_tpa\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-width:1px;}#chatgpt-mermaid-\_r_tpa\_ .node rect,#chatgpt-mermaid-\_r_tpa\_ .node circle,#chatgpt-mermaid-\_r_tpa\_ .node ellipse,#chatgpt-mermaid-\_r_tpa\_ .node polygon,#chatgpt-mermaid-\_r_tpa\_ .node path{fill:rgb(229, 243, 255);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_tpa\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_tpa\_ .node.mermaid-decision .label-container{fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_tpa\_ .edgePaths .flowchart-link{stroke:rgb(143, 143, 143);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_tpa\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_tpa\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}Presentation LayerEvidence and Metrics LayerCollection LayerExecution LayerMetrics Query APIDashboardsAlert RulesEngineering ReportsExecution Event StoreEvidence and Artifact StoreMetrics AggregatorMetrics Read ModelEvent ProducersTransactional OutboxDurable Event TransportMetrics Ingestion WorkerPopulation ManagerHarness OrchestratorAgent ExecutorsDeterministic GatesReview / Validation /EvaluationHuman Approval
+```mermaid
+flowchart TB
+    subgraph Execution["Execution Layer"]
+      P["Population Manager"] --> O["Harness Orchestrator"]
+      O --> A["Agent Executors"]
+      O --> G["Deterministic Gates"]
+      O --> R["Review / Validation / Evaluation"]
+      O --> H["Human Approval"]
+    end
+    subgraph Collection["Collection Layer"]
+      EP["Event Producers"] --> OB["Transactional Outbox, where applicable"]
+      OB --> T["Durable Event Transport"] --> IW["Metrics Ingestion Worker"]
+    end
+    subgraph Storage["Evidence and Metrics Layer"]
+      ES[("Execution Event Store")] --> MA["Metrics Aggregator"]
+      EV[("Evidence and Artifact Store")] -.-> MA
+      MA --> RM[("Metrics Read Model")]
+    end
+    subgraph Presentation["Presentation Layer"]
+      Q["Authorized Metrics Query API"] --> D["Dashboards"]
+      Q --> RP["Engineering Reports"]
+      AL["Alert Rules"]
+    end
+    P --> EP
+    O --> EP
+    A --> EP
+    G --> EP
+    R --> EP
+    H --> EP
+    IW --> ES
+    G --> EV
+    R --> EV
+    RM --> Q
+    RM --> AL
+```
 
-Figure 20.2 — Reference Metrics architecture for an enterprise AI Engineering Harness.
+*Figure 20.2 — Reference Metrics architecture for an enterprise AI Engineering Harness.*
 
 A transactional outbox is appropriate when a lifecycle transition and its corresponding event must be committed atomically to the same transactional store.
 
@@ -1524,7 +1571,7 @@ Not all events should carry equal authority.
 
 Consider the following event:
 
-```
+```json
 {
   "event_type": "agent.task_completed",
   "run_id": "run-1042",
@@ -1547,7 +1594,7 @@ The Harness should distinguish agent-reported progress from system-verified outc
 
 An authoritative acceptance decision might instead be supported by:
 
-```
+```json
 {
   "event_type": "work_item.acceptance_recorded",
   "event_version": 1,
@@ -1580,7 +1627,7 @@ A common event envelope simplifies ingestion, correlation, validation, and audit
 
 A practical event contract might contain:
 
-```
+```json
 {
   "event_id": "evt-92015",
   "event_type": "gate.execution.completed",
@@ -1636,7 +1683,7 @@ If a metrics consumer increments its counters each time it receives the same eve
 
 For example:
 
-```
+```text
 Run completed
     ↓
 Completion event published
@@ -1683,7 +1730,7 @@ The metrics read model contains calculations optimized for queries.
 
 For example:
 
-```
+```text
 Execution Events
     |
     |--- run.started
@@ -1733,7 +1780,7 @@ Therefore, a production dashboard should expose measurement freshness.
 
 Useful fields include:
 
-```
+```text
 Snapshot Time
 Last Successful Ingestion
 Last Successful Aggregation
@@ -1744,7 +1791,7 @@ Data Quality Status
 
 For example, a dashboard could report:
 
-```
+```text
 Population Total: 500
 Snapshot: 2026-10-08 18:00 UTC
 Last Aggregation: 2026-10-08 18:02 UTC
@@ -1830,7 +1877,7 @@ Suppose the integration-test gate has become the slowest stage of the Harness.
 
 The Metrics subsystem may identify:
 
-```
+```text
 Integration-test P95 duration increased by 45%.
 
 The increase is concentrated in one workflow version.
@@ -1864,9 +1911,27 @@ A trustworthy Harness cannot represent engineering success using a single number
 
 The following diagram demonstrates how the five metric categories contribute to a broader assessment.
 
-\#chatgpt-mermaid-\_r_tr6\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(13, 13, 13);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_tr6\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_tr6\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_tr6\_ .error-icon{fill:rgb(243, 243, 243);}#chatgpt-mermaid-\_r_tr6\_ .error-text{fill:rgb(13, 13, 13);stroke:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_tr6\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_tr6\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_tr6\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_tr6\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_tr6\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_tr6\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_tr6\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_tr6\_ .marker.cross{stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_tr6\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_tr6\_ p{margin:0;}#chatgpt-mermaid-\_r_tr6\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_tr6\_ .cluster-label text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_tr6\_ .cluster-label span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_tr6\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_tr6\_ .label text,#chatgpt-mermaid-\_r_tr6\_ span{fill:rgb(13, 13, 13);color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_tr6\_ .node rect,#chatgpt-mermaid-\_r_tr6\_ .node circle,#chatgpt-mermaid-\_r_tr6\_ .node ellipse,#chatgpt-mermaid-\_r_tr6\_ .node polygon,#chatgpt-mermaid-\_r_tr6\_ .node path{fill:rgb(222, 234, 251);stroke:rgb(83, 154, 248);stroke-width:1px;}#chatgpt-mermaid-\_r_tr6\_ .rough-node .label text,#chatgpt-mermaid-\_r_tr6\_ .node .label text,#chatgpt-mermaid-\_r_tr6\_ .image-shape .label,#chatgpt-mermaid-\_r_tr6\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_tr6\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_tr6\_ .rough-node .label,#chatgpt-mermaid-\_r_tr6\_ .node .label,#chatgpt-mermaid-\_r_tr6\_ .image-shape .label,#chatgpt-mermaid-\_r_tr6\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_tr6\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_tr6\_ .root .anchor path{fill:rgb(143, 143, 143)!important;stroke-width:0;stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_tr6\_ .arrowheadPath{fill:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_tr6\_ .edgePath .path{stroke:rgb(143, 143, 143);stroke-width:1px;}#chatgpt-mermaid-\_r_tr6\_ .flowchart-link{stroke:rgb(143, 143, 143);fill:none;}#chatgpt-mermaid-\_r_tr6\_ .edgeLabel{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_tr6\_ .edgeLabel p{background-color:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_tr6\_ .edgeLabel rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_tr6\_ .labelBkg{background-color:rgba(252, 252, 252, 0.5);}#chatgpt-mermaid-\_r_tr6\_ .cluster rect{fill:rgb(243, 243, 243);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_tr6\_ .cluster text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_tr6\_ .cluster span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_tr6\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(243, 243, 243);border:1px solid rgba(0, 0, 0, 0.1);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_tr6\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_tr6\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_tr6\_ .icon-shape,#chatgpt-mermaid-\_r_tr6\_ .image-shape{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_tr6\_ .icon-shape p,#chatgpt-mermaid-\_r_tr6\_ .image-shape p{background-color:rgb(252, 252, 252);padding:2px;}#chatgpt-mermaid-\_r_tr6\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_tr6\_ .image-shape .label rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_tr6\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_tr6\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_tr6\_ .node .neo-node{stroke:rgb(83, 154, 248);}#chatgpt-mermaid-\_r_tr6\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_tr6\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_tr6\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_tr6\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_tr6\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_tr6\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_tr6\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_tr6\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_tr6\_ [data-look="neo"].node .neo-line path{stroke:rgb(83, 154, 248);filter:none;}#chatgpt-mermaid-\_r_tr6\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_tr6\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_tr6\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_tr6\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_tr6\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_tr6\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_tr6\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_tr6\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_tr6\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_tr6\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_tr6\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_tr6\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-width:1px;}#chatgpt-mermaid-\_r_tr6\_ .node rect,#chatgpt-mermaid-\_r_tr6\_ .node circle,#chatgpt-mermaid-\_r_tr6\_ .node ellipse,#chatgpt-mermaid-\_r_tr6\_ .node polygon,#chatgpt-mermaid-\_r_tr6\_ .node path{fill:rgb(229, 243, 255);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_tr6\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_tr6\_ .node.mermaid-decision .label-container{fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_tr6\_ .edgePaths .flowchart-link{stroke:rgb(143, 143, 143);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_tr6\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_tr6\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}Enterprise AI EngineeringHarnessOperational MetricsEngineering Quality MetricsAgent Performance MetricsBusiness Outcome MetricsCost MetricsThroughput / Backlog /ReliabilityValidation / Review / ReworkRetries / Duration / UtilizationAcceptance / Approval / ValueTokens / Infrastructure / TotalCostBalanced EngineeringAssessment
+```mermaid
+flowchart TB
+    H["Enterprise AI Engineering Harness"]
+    H --> O["Operational Metrics"]
+    H --> Q["Engineering Quality Metrics"]
+    H --> P["Agent Performance Metrics"]
+    H --> B["Business Outcome Metrics"]
+    H --> C["Cost Metrics"]
+    O --> OA["Throughput, Backlog, Reliability"]
+    Q --> QA["Validation, Review, Rework"]
+    P --> PA["Retries, Duration, Utilization"]
+    B --> BA["Acceptance, Approval, Value"]
+    C --> CA["Tokens, Infrastructure, Total Cost"]
+    OA --> Z["Balanced Engineering Assessment"]
+    QA --> Z
+    PA --> Z
+    BA --> Z
+    CA --> Z
+```
 
-Figure 20.3 — The five dimensions of Harness performance measurement.
+*Figure 20.3 — The five dimensions of Harness performance measurement.*
 
 The balanced assessment is not necessarily a mathematical weighted score.
 
@@ -1880,9 +1945,30 @@ For example, a change with an unresolved critical security violation should not 
 
 The following diagram illustrates the principal observation points across work execution.
 
-\#chatgpt-mermaid-\_r_trf\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(13, 13, 13);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_trf\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_trf\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_trf\_ .error-icon{fill:rgb(243, 243, 243);}#chatgpt-mermaid-\_r_trf\_ .error-text{fill:rgb(13, 13, 13);stroke:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_trf\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_trf\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_trf\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_trf\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_trf\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_trf\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_trf\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_trf\_ .marker.cross{stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_trf\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_trf\_ p{margin:0;}#chatgpt-mermaid-\_r_trf\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_trf\_ .cluster-label text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_trf\_ .cluster-label span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_trf\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_trf\_ .label text,#chatgpt-mermaid-\_r_trf\_ span{fill:rgb(13, 13, 13);color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_trf\_ .node rect,#chatgpt-mermaid-\_r_trf\_ .node circle,#chatgpt-mermaid-\_r_trf\_ .node ellipse,#chatgpt-mermaid-\_r_trf\_ .node polygon,#chatgpt-mermaid-\_r_trf\_ .node path{fill:rgb(222, 234, 251);stroke:rgb(83, 154, 248);stroke-width:1px;}#chatgpt-mermaid-\_r_trf\_ .rough-node .label text,#chatgpt-mermaid-\_r_trf\_ .node .label text,#chatgpt-mermaid-\_r_trf\_ .image-shape .label,#chatgpt-mermaid-\_r_trf\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_trf\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_trf\_ .rough-node .label,#chatgpt-mermaid-\_r_trf\_ .node .label,#chatgpt-mermaid-\_r_trf\_ .image-shape .label,#chatgpt-mermaid-\_r_trf\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_trf\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_trf\_ .root .anchor path{fill:rgb(143, 143, 143)!important;stroke-width:0;stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_trf\_ .arrowheadPath{fill:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_trf\_ .edgePath .path{stroke:rgb(143, 143, 143);stroke-width:1px;}#chatgpt-mermaid-\_r_trf\_ .flowchart-link{stroke:rgb(143, 143, 143);fill:none;}#chatgpt-mermaid-\_r_trf\_ .edgeLabel{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_trf\_ .edgeLabel p{background-color:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_trf\_ .edgeLabel rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_trf\_ .labelBkg{background-color:rgba(252, 252, 252, 0.5);}#chatgpt-mermaid-\_r_trf\_ .cluster rect{fill:rgb(243, 243, 243);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_trf\_ .cluster text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_trf\_ .cluster span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_trf\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(243, 243, 243);border:1px solid rgba(0, 0, 0, 0.1);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_trf\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_trf\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_trf\_ .icon-shape,#chatgpt-mermaid-\_r_trf\_ .image-shape{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_trf\_ .icon-shape p,#chatgpt-mermaid-\_r_trf\_ .image-shape p{background-color:rgb(252, 252, 252);padding:2px;}#chatgpt-mermaid-\_r_trf\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_trf\_ .image-shape .label rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_trf\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_trf\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_trf\_ .node .neo-node{stroke:rgb(83, 154, 248);}#chatgpt-mermaid-\_r_trf\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_trf\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_trf\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_trf\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_trf\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_trf\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_trf\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_trf\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_trf\_ [data-look="neo"].node .neo-line path{stroke:rgb(83, 154, 248);filter:none;}#chatgpt-mermaid-\_r_trf\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_trf\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_trf\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_trf\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_trf\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_trf\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_trf\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_trf\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_trf\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_trf\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_trf\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_trf\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-width:1px;}#chatgpt-mermaid-\_r_trf\_ .node rect,#chatgpt-mermaid-\_r_trf\_ .node circle,#chatgpt-mermaid-\_r_trf\_ .node ellipse,#chatgpt-mermaid-\_r_trf\_ .node polygon,#chatgpt-mermaid-\_r_trf\_ .node path{fill:rgb(229, 243, 255);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_trf\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_trf\_ .node.mermaid-decision .label-container{fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_trf\_ .edgePaths .flowchart-link{stroke:rgb(143, 143, 143);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_trf\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_trf\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}Population ItemQueuedRunningDeveloper ExecutionDeterministic GatesMandatory Gates Pass?Recovery Allowed?Failed or ExhaustedReviewer AssessmentValidator EvidenceEvaluator AssessmentAcceptance Criteria Met?Human Approval, if RequiredAccepted OutcomeQueue and Population MetricsExecution and ReliabilityMetricsGate MetricsReview MetricsValidation MetricsOutcome MetricsApproval MetricsFailure and Exhaustion MetricsAccepted Throughput andCycle TimeNoYesNoYesNoYes
+```mermaid
+flowchart TD
+    P["Population Item"] --> Q["Queued"] --> R["Running"]
+    R --> D["Developer Execution"] --> G["Deterministic Gates"]
+    G --> GP{"Mandatory Gates Pass?"}
+    GP -- No --> RET{"Recovery Permitted?"}
+    RET -- Yes --> D
+    RET -- No --> F["Failed or Exhausted"]
+    GP -- Yes --> REV["Reviewer Assessment"] --> VAL["Validator Evidence"] --> EV["Evaluator Assessment"]
+    EV --> OK{"Acceptance Criteria Met?"}
+    OK -- No --> RET
+    OK -- Yes --> H["Human Approval, if Required"] --> A["Accepted Outcome"]
+    Q -.-> M1["Population and Queue Metrics"]
+    R -.-> M2["Execution and Reliability Metrics"]
+    G -.-> M3["Gate Metrics"]
+    REV -.-> M4["Review Metrics"]
+    VAL -.-> M5["Validation Metrics"]
+    EV -.-> M6["Outcome Metrics"]
+    H -.-> M7["Approval Metrics"]
+    F -.-> M8["Failure and Exhaustion Metrics"]
+    A -.-> M9["Accepted Throughput and Cycle Time"]
+```
 
-Figure 20.4 — Harness lifecycle and metric observation points.
+*Figure 20.4 — Harness lifecycle and metric observation points.*
 
 The diagram is simplified.
 
@@ -1894,9 +1980,22 @@ The important requirement is that every significant lifecycle transition produce
 
 The following state diagram represents an illustrative run lifecycle.
 
-\#chatgpt-mermaid-\_r_tro\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(13, 13, 13);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_tro\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_tro\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_tro\_ .error-icon{fill:rgb(243, 243, 243);}#chatgpt-mermaid-\_r_tro\_ .error-text{fill:rgb(13, 13, 13);stroke:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_tro\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_tro\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_tro\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_tro\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_tro\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_tro\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_tro\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_tro\_ .marker.cross{stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_tro\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_tro\_ p{margin:0;}#chatgpt-mermaid-\_r_tro\_ defs [id$="-barbEnd"]{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_tro\_ g.stateGroup text{fill:rgb(83, 154, 248);stroke:none;font-size:10px;}#chatgpt-mermaid-\_r_tro\_ g.stateGroup text{fill:rgb(13, 13, 13);stroke:none;font-size:10px;}#chatgpt-mermaid-\_r_tro\_ g.stateGroup .state-title{font-weight:bolder;fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_tro\_ g.stateGroup rect{fill:rgb(222, 234, 251);stroke:rgb(83, 154, 248);}#chatgpt-mermaid-\_r_tro\_ g.stateGroup line{stroke:rgb(143, 143, 143);stroke-width:1;}#chatgpt-mermaid-\_r_tro\_ .transition{stroke:rgb(143, 143, 143);stroke-width:1;fill:none;}#chatgpt-mermaid-\_r_tro\_ .stateGroup .composit{fill:transparent;border-bottom:1px;}#chatgpt-mermaid-\_r_tro\_ .stateGroup .alt-composit{fill:#e0e0e0;border-bottom:1px;}#chatgpt-mermaid-\_r_tro\_ .state-note{stroke:rgb(107, 198, 127);fill:rgb(243, 243, 243);}#chatgpt-mermaid-\_r_tro\_ .state-note text{fill:rgb(13, 13, 13);stroke:none;font-size:10px;}#chatgpt-mermaid-\_r_tro\_ .stateLabel .box{stroke:none;stroke-width:0;fill:rgb(222, 234, 251);opacity:0.5;}#chatgpt-mermaid-\_r_tro\_ .edgeLabel .label rect{fill:rgb(222, 234, 251);opacity:0.5;}#chatgpt-mermaid-\_r_tro\_ .edgeLabel{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_tro\_ .edgeLabel p{background-color:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_tro\_ .edgeLabel rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_tro\_ .edgeLabel .label text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_tro\_ .label div .edgeLabel{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_tro\_ .stateLabel text{fill:rgb(13, 13, 13);font-size:10px;font-weight:bold;}#chatgpt-mermaid-\_r_tro\_ .node circle.state-start{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_tro\_ .node .fork-join{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_tro\_ .node circle.state-end{fill:rgb(83, 154, 248);stroke:transparent;stroke-width:1.5;}#chatgpt-mermaid-\_r_tro\_ .end-state-inner{fill:transparent;stroke-width:1.5;}#chatgpt-mermaid-\_r_tro\_ .node rect{fill:rgb(222, 234, 251);stroke:rgb(83, 154, 248);stroke-width:1px;}#chatgpt-mermaid-\_r_tro\_ .node polygon{fill:rgb(222, 234, 251);stroke:rgb(83, 154, 248);stroke-width:1px;}#chatgpt-mermaid-\_r_tro\_ [id$="-barbEnd"]{fill:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_tro\_ .statediagram-cluster rect{fill:rgb(222, 234, 251);stroke:rgb(83, 154, 248);stroke-width:1px;}#chatgpt-mermaid-\_r_tro\_ .cluster-label,#chatgpt-mermaid-\_r_tro\_ .nodeLabel{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_tro\_ .statediagram-cluster rect.outer{rx:5px;ry:5px;}#chatgpt-mermaid-\_r_tro\_ .statediagram-state .divider{stroke:rgb(83, 154, 248);}#chatgpt-mermaid-\_r_tro\_ .statediagram-state .title-state{rx:5px;ry:5px;}#chatgpt-mermaid-\_r_tro\_ .statediagram-cluster.statediagram-cluster .inner{fill:transparent;}#chatgpt-mermaid-\_r_tro\_ .statediagram-cluster.statediagram-cluster-alt .inner{fill:rgb(243, 243, 243);}#chatgpt-mermaid-\_r_tro\_ .statediagram-cluster .inner{rx:0;ry:0;}#chatgpt-mermaid-\_r_tro\_ .statediagram-state rect.basic{rx:5px;ry:5px;}#chatgpt-mermaid-\_r_tro\_ .statediagram-state rect.divider{stroke-dasharray:10,10;fill:rgb(243, 243, 243);}#chatgpt-mermaid-\_r_tro\_ .note-edge{stroke-dasharray:5;}#chatgpt-mermaid-\_r_tro\_ .statediagram-note rect{fill:rgb(243, 243, 243);stroke:rgb(107, 198, 127);stroke-width:1px;rx:0;ry:0;}#chatgpt-mermaid-\_r_tro\_ .statediagram-note rect{fill:rgb(243, 243, 243);stroke:rgb(107, 198, 127);stroke-width:1px;rx:0;ry:0;}#chatgpt-mermaid-\_r_tro\_ .statediagram-note text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_tro\_ .statediagram-note .nodeLabel{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_tro\_ .statediagram .edgeLabel{color:red;}#chatgpt-mermaid-\_r_tro\_ [id$="-dependencyStart"],#chatgpt-mermaid-\_r_tro\_ [id$="-dependencyEnd"]{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);stroke-width:1;}#chatgpt-mermaid-\_r_tro\_ .statediagramTitleText{text-anchor:middle;font-size:18px;fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_tro\_ [data-look="neo"].statediagram-cluster rect{fill:rgb(222, 234, 251);stroke:url(#chatgpt-mermaid-\_r_tro\_-gradient);stroke-width:1;}#chatgpt-mermaid-\_r_tro\_ [data-look="neo"].statediagram-cluster rect.outer{rx:5px;ry:5px;filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_tro\_ .node .neo-node{stroke:rgb(83, 154, 248);}#chatgpt-mermaid-\_r_tro\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_tro\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_tro\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_tro\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_tro\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_tro\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_tro\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_tro\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_tro\_ [data-look="neo"].node .neo-line path{stroke:rgb(83, 154, 248);filter:none;}#chatgpt-mermaid-\_r_tro\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_tro\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_tro\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_tro\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_tro\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_tro\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_tro\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_tro\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}QueuedRunningCompletedFailedExhaustedRecovering
+```mermaid
+stateDiagram-v2
+    [*] --> Queued
+    Queued --> Running
+    Running --> Completed
+    Running --> Failed
+    Running --> Exhausted
+    Running --> Recovering
+    Recovering --> Running
+    Recovering --> Exhausted
+    Completed --> [*]
+    Failed --> [*]
+    Exhausted --> [*]
+```
 
-Figure 20.5 — Simplified operational states used for Harness reporting.
+*Figure 20.5 — Simplified operational states used for Harness reporting.*
 
 In this model, `Recovering` represents a controlled operational condition.
 
@@ -1912,9 +2011,23 @@ A common reporting error is to treat throughput and quality as unrelated measure
 
 The following diagram shows how increasing implementation volume can affect the effective delivery of accepted work.
 
-\#chatgpt-mermaid-\_r_ts1\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(13, 13, 13);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_ts1\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_ts1\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_ts1\_ .error-icon{fill:rgb(243, 243, 243);}#chatgpt-mermaid-\_r_ts1\_ .error-text{fill:rgb(13, 13, 13);stroke:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_ts1\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_ts1\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_ts1\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_ts1\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_ts1\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_ts1\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_ts1\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_ts1\_ .marker.cross{stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_ts1\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_ts1\_ p{margin:0;}#chatgpt-mermaid-\_r_ts1\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_ts1\_ .cluster-label text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_ts1\_ .cluster-label span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_ts1\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_ts1\_ .label text,#chatgpt-mermaid-\_r_ts1\_ span{fill:rgb(13, 13, 13);color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_ts1\_ .node rect,#chatgpt-mermaid-\_r_ts1\_ .node circle,#chatgpt-mermaid-\_r_ts1\_ .node ellipse,#chatgpt-mermaid-\_r_ts1\_ .node polygon,#chatgpt-mermaid-\_r_ts1\_ .node path{fill:rgb(222, 234, 251);stroke:rgb(83, 154, 248);stroke-width:1px;}#chatgpt-mermaid-\_r_ts1\_ .rough-node .label text,#chatgpt-mermaid-\_r_ts1\_ .node .label text,#chatgpt-mermaid-\_r_ts1\_ .image-shape .label,#chatgpt-mermaid-\_r_ts1\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_ts1\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_ts1\_ .rough-node .label,#chatgpt-mermaid-\_r_ts1\_ .node .label,#chatgpt-mermaid-\_r_ts1\_ .image-shape .label,#chatgpt-mermaid-\_r_ts1\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_ts1\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_ts1\_ .root .anchor path{fill:rgb(143, 143, 143)!important;stroke-width:0;stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_ts1\_ .arrowheadPath{fill:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_ts1\_ .edgePath .path{stroke:rgb(143, 143, 143);stroke-width:1px;}#chatgpt-mermaid-\_r_ts1\_ .flowchart-link{stroke:rgb(143, 143, 143);fill:none;}#chatgpt-mermaid-\_r_ts1\_ .edgeLabel{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_ts1\_ .edgeLabel p{background-color:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_ts1\_ .edgeLabel rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_ts1\_ .labelBkg{background-color:rgba(252, 252, 252, 0.5);}#chatgpt-mermaid-\_r_ts1\_ .cluster rect{fill:rgb(243, 243, 243);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_ts1\_ .cluster text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_ts1\_ .cluster span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_ts1\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(243, 243, 243);border:1px solid rgba(0, 0, 0, 0.1);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_ts1\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_ts1\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_ts1\_ .icon-shape,#chatgpt-mermaid-\_r_ts1\_ .image-shape{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_ts1\_ .icon-shape p,#chatgpt-mermaid-\_r_ts1\_ .image-shape p{background-color:rgb(252, 252, 252);padding:2px;}#chatgpt-mermaid-\_r_ts1\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_ts1\_ .image-shape .label rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_ts1\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_ts1\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_ts1\_ .node .neo-node{stroke:rgb(83, 154, 248);}#chatgpt-mermaid-\_r_ts1\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_ts1\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_ts1\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_ts1\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_ts1\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_ts1\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_ts1\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_ts1\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_ts1\_ [data-look="neo"].node .neo-line path{stroke:rgb(83, 154, 248);filter:none;}#chatgpt-mermaid-\_r_ts1\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_ts1\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_ts1\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_ts1\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_ts1\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_ts1\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_ts1\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_ts1\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_ts1\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_ts1\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_ts1\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_ts1\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-width:1px;}#chatgpt-mermaid-\_r_ts1\_ .node rect,#chatgpt-mermaid-\_r_ts1\_ .node circle,#chatgpt-mermaid-\_r_ts1\_ .node ellipse,#chatgpt-mermaid-\_r_ts1\_ .node polygon,#chatgpt-mermaid-\_r_ts1\_ .node path{fill:rgb(229, 243, 255);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_ts1\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_ts1\_ .node.mermaid-decision .label-container{fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_ts1\_ .edgePaths .flowchart-link{stroke:rgb(143, 143, 143);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_ts1\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_ts1\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}Implementation ThroughputValidation and ReviewAccepted WorkRework RequiredRejected or ExhaustedAdditional Execution CostAdditional Cycle TimeEngineering ValueEfficiency Assessment
+```mermaid
+flowchart LR
+    I["Implementation Throughput"] --> V["Validation and Review"]
+    V --> A["Accepted Work"]
+    V --> R["Rework Required"]
+    V --> F["Rejected or Exhausted"]
+    R --> C["Additional Execution Cost"]
+    R --> T["Additional Cycle Time"]
+    R --> V
+    A --> B["Engineering Value"]
+    B --> E["Efficiency Assessment"]
+    C --> E
+    T --> E
+    F --> E
+```
 
-Figure 20.6 — Why engineering productivity must account for quality and rework.
+*Figure 20.6 — Why engineering productivity must account for quality and rework.*
 
 Increasing implementation throughput is beneficial only when it contributes to acceptable outcomes without disproportionate increases in defects, rework, risk, or cost.
 
@@ -1922,17 +2035,23 @@ Increasing implementation throughput is beneficial only when it contributes to a
 
 The final diagram connects measurements to the controlled improvement process.
 
-\#chatgpt-mermaid-\_r_tsa\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(13, 13, 13);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_tsa\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_tsa\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_tsa\_ .error-icon{fill:rgb(243, 243, 243);}#chatgpt-mermaid-\_r_tsa\_ .error-text{fill:rgb(13, 13, 13);stroke:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_tsa\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_tsa\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_tsa\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_tsa\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_tsa\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_tsa\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_tsa\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_tsa\_ .marker.cross{stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_tsa\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_tsa\_ p{margin:0;}#chatgpt-mermaid-\_r_tsa\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_tsa\_ .cluster-label text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_tsa\_ .cluster-label span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_tsa\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_tsa\_ .label text,#chatgpt-mermaid-\_r_tsa\_ span{fill:rgb(13, 13, 13);color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_tsa\_ .node rect,#chatgpt-mermaid-\_r_tsa\_ .node circle,#chatgpt-mermaid-\_r_tsa\_ .node ellipse,#chatgpt-mermaid-\_r_tsa\_ .node polygon,#chatgpt-mermaid-\_r_tsa\_ .node path{fill:rgb(222, 234, 251);stroke:rgb(83, 154, 248);stroke-width:1px;}#chatgpt-mermaid-\_r_tsa\_ .rough-node .label text,#chatgpt-mermaid-\_r_tsa\_ .node .label text,#chatgpt-mermaid-\_r_tsa\_ .image-shape .label,#chatgpt-mermaid-\_r_tsa\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_tsa\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_tsa\_ .rough-node .label,#chatgpt-mermaid-\_r_tsa\_ .node .label,#chatgpt-mermaid-\_r_tsa\_ .image-shape .label,#chatgpt-mermaid-\_r_tsa\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_tsa\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_tsa\_ .root .anchor path{fill:rgb(143, 143, 143)!important;stroke-width:0;stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_tsa\_ .arrowheadPath{fill:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_tsa\_ .edgePath .path{stroke:rgb(143, 143, 143);stroke-width:1px;}#chatgpt-mermaid-\_r_tsa\_ .flowchart-link{stroke:rgb(143, 143, 143);fill:none;}#chatgpt-mermaid-\_r_tsa\_ .edgeLabel{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_tsa\_ .edgeLabel p{background-color:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_tsa\_ .edgeLabel rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_tsa\_ .labelBkg{background-color:rgba(252, 252, 252, 0.5);}#chatgpt-mermaid-\_r_tsa\_ .cluster rect{fill:rgb(243, 243, 243);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_tsa\_ .cluster text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_tsa\_ .cluster span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_tsa\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(243, 243, 243);border:1px solid rgba(0, 0, 0, 0.1);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_tsa\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_tsa\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_tsa\_ .icon-shape,#chatgpt-mermaid-\_r_tsa\_ .image-shape{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_tsa\_ .icon-shape p,#chatgpt-mermaid-\_r_tsa\_ .image-shape p{background-color:rgb(252, 252, 252);padding:2px;}#chatgpt-mermaid-\_r_tsa\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_tsa\_ .image-shape .label rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_tsa\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_tsa\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_tsa\_ .node .neo-node{stroke:rgb(83, 154, 248);}#chatgpt-mermaid-\_r_tsa\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_tsa\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_tsa\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_tsa\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_tsa\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_tsa\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_tsa\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_tsa\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_tsa\_ [data-look="neo"].node .neo-line path{stroke:rgb(83, 154, 248);filter:none;}#chatgpt-mermaid-\_r_tsa\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_tsa\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_tsa\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_tsa\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_tsa\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_tsa\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_tsa\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_tsa\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_tsa\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_tsa\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_tsa\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_tsa\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-width:1px;}#chatgpt-mermaid-\_r_tsa\_ .node rect,#chatgpt-mermaid-\_r_tsa\_ .node circle,#chatgpt-mermaid-\_r_tsa\_ .node ellipse,#chatgpt-mermaid-\_r_tsa\_ .node polygon,#chatgpt-mermaid-\_r_tsa\_ .node path{fill:rgb(229, 243, 255);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_tsa\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_tsa\_ .node.mermaid-decision .label-container{fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_tsa\_ .edgePaths .flowchart-link{stroke:rgb(143, 143, 143);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_tsa\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_tsa\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}Validated MetricsBaseline and Trend AnalysisMeaningful Deviation?Continue ObservationEvidence-Based InvestigationRoot Cause AssessmentImprovement ProposalHuman Governance ApprovalRecord DecisionControlled Harness ChangeValidation and RegressionTestingCompare Against BaselineNoYesRejectedApproved
+```mermaid
+flowchart TD
+    M["Validated Metrics"] --> B["Baseline and Trend Analysis"] --> D{"Meaningful Deviation?"}
+    D -- No --> O["Continue Observation"]
+    D -- Yes --> I["Evidence-Based Investigation"] --> R["Root Cause Assessment"] --> P["Improvement Proposal"]
+    P --> G{"Human Governance Approval?"}
+    G -- Rejected --> L["Record Decision"]
+    G -- Approved --> C["Controlled Harness Change"] --> V["Validation and Regression Testing"] --> N["Compare Against Baseline"] --> M
+```
 
-Figure 20.7 — Metrics-driven improvement under human governance.
+*Figure 20.7 — Metrics-driven improvement under human governance.*
 
 This feedback loop distinguishes an enterprise Harness from a system that merely accumulates execution counters.
 
 The purpose of measurement is to support reliable decisions and controlled engineering improvement.
 
 A metric that is collected but never interpreted, investigated, or used to inform action provides limited operational value.
-
-Chapter 20 status: In progress — next section: Hands-on Example
 
 ## 7. Hands-on Example
 
@@ -1990,7 +2109,7 @@ Business objective:
 
 Provide an auditable measurement capability that allows engineering teams to evaluate Harness throughput, execution outcomes, validation quality, retry behavior, and operational health without relying on self-reported Agent success.
 
-The initial implementation must:
+The complete feature must ultimately satisfy the following requirements. The code excerpts in this hands-on section demonstrate its foundational vertical slice, not a complete production implementation:
 
 1. Record Population and Harness execution events.
 2. Preserve unique event identities and work-item correlations.
@@ -2066,7 +2185,7 @@ The Metrics implementation belongs to the Harness rather than the Alpha Car Deta
 
 A suitable repository structure is:
 
-```
+```text
 harness/
 └── src/
     └── Metrics/
@@ -2083,6 +2202,7 @@ harness/
         │
         ├── Metrics.Infrastructure/
         │   ├── Persistence/
+        │   ├── Queries/
         │   ├── EventProcessing/
         │   └── Aggregation/
         │
@@ -2115,7 +2235,7 @@ Its responsibility is to measure the engineering processes used to develop those
 
 The team begins with the operational work-state model.
 
-```
+```csharp
 namespace Metrics.Domain.Enums;
 
 public enum WorkItemStatus
@@ -2136,14 +2256,14 @@ Any extension must update the state-transition rules, metric definitions, and re
 
 The team then creates the Population entity.
 
-```
+```csharp
 using Metrics.Domain.Enums;
 
 namespace Metrics.Domain.Entities;
 
 public sealed class PopulationItem
 {
-    public Guid Id { get; private set; }
+    public string Id { get; private set; } = string.Empty;
 
     public string RepositoryId { get; private set; } = string.Empty;
 
@@ -2162,12 +2282,12 @@ public sealed class PopulationItem
     }
 
     public PopulationItem(
-        Guid id,
+        string id,
         string repositoryId,
         string workReference,
         DateTimeOffset createdAt)
     {
-        if (id == Guid.Empty)
+        if (string.IsNullOrWhiteSpace(id))
             throw new ArgumentException("A work item ID is required.");
 
         if (string.IsNullOrWhiteSpace(repositoryId))
@@ -2258,18 +2378,18 @@ It should preserve events that explain how that state was reached.
 
 A simple execution event entity is:
 
-```
+```csharp
 namespace Metrics.Domain.Entities;
 
 public sealed class HarnessMetricEvent
 {
-    public Guid EventId { get; init; }
+    public required string EventId { get; init; }
 
-    public Guid PopulationItemId { get; init; }
+    public required string PopulationItemId { get; init; }
 
-    public Guid RunId { get; init; }
+    public string? RunId { get; init; }
 
-    public Guid? AttemptId { get; init; }
+    public string? AttemptId { get; init; }
 
     public required string EventType { get; init; }
 
@@ -2295,7 +2415,7 @@ The system should also validate event schemas and allowed event types before app
 
 Representative event types include:
 
-```
+```text
 population.item.created
 run.started
 agent.invocation.started
@@ -2322,7 +2442,7 @@ The initial implementation needs only a subset of these events, but the architec
 
 Entity Framework Core can enforce event uniqueness and support metric queries.
 
-```
+```csharp
 using Microsoft.EntityFrameworkCore;
 using Metrics.Domain.Entities;
 
@@ -2348,6 +2468,9 @@ public sealed class MetricsDbContext : DbContext
         {
             entity.HasKey(x => x.Id);
 
+            entity.Property(x => x.Id)
+                .HasMaxLength(120);
+
             entity.Property(x => x.RepositoryId)
                 .HasMaxLength(200)
                 .IsRequired();
@@ -2370,6 +2493,11 @@ public sealed class MetricsDbContext : DbContext
         modelBuilder.Entity<HarnessMetricEvent>(entity =>
         {
             entity.HasKey(x => x.EventId);
+
+            entity.Property(x => x.EventId).HasMaxLength(120);
+            entity.Property(x => x.PopulationItemId).HasMaxLength(120);
+            entity.Property(x => x.RunId).HasMaxLength(120);
+            entity.Property(x => x.AttemptId).HasMaxLength(120);
 
             entity.Property(x => x.EventType)
                 .HasMaxLength(150)
@@ -2410,7 +2538,7 @@ The first dashboard requirement is a reliable Population snapshot.
 
 Define a response contract:
 
-```
+```csharp
 namespace Metrics.Application.Contracts;
 
 public sealed record PopulationKpiSnapshot(
@@ -2423,17 +2551,32 @@ public sealed record PopulationKpiSnapshot(
     DateTimeOffset SnapshotAt);
 ```
 
-The query service calculates all state counts from the Population table.
+The Application layer defines the query contract without depending on Entity Framework Core or the Infrastructure layer:
 
-```
-using Microsoft.EntityFrameworkCore;
+```csharp
 using Metrics.Application.Contracts;
-using Metrics.Domain.Enums;
-using Metrics.Infrastructure.Persistence;
 
 namespace Metrics.Application.Queries;
 
-public sealed class PopulationMetricsQuery
+public interface IPopulationMetricsQuery
+{
+    Task<PopulationKpiSnapshot> ExecuteAsync(
+        CancellationToken cancellationToken);
+}
+```
+
+The Infrastructure implementation calculates all state counts from the authoritative Population table:
+
+```csharp
+using Microsoft.EntityFrameworkCore;
+using Metrics.Application.Contracts;
+using Metrics.Application.Queries;
+using Metrics.Domain.Enums;
+using Metrics.Infrastructure.Persistence;
+
+namespace Metrics.Infrastructure.Queries;
+
+public sealed class PopulationMetricsQuery : IPopulationMetricsQuery
 {
     private readonly MetricsDbContext _dbContext;
     private readonly TimeProvider _timeProvider;
@@ -2491,12 +2634,12 @@ In a production implementation, snapshot consistency should be established using
 
 Calculations should be independently testable without requiring a database.
 
-```
+```csharp
 namespace Metrics.Application.Services;
 
 public static class MetricCalculator
 {
-    public static decimal Percentage(
+    public static decimal? Percentage(
         long numerator,
         long denominator)
     {
@@ -2514,7 +2657,7 @@ public static class MetricCalculator
         }
 
         if (denominator == 0)
-            return 0m;
+            return null;
 
         return Math.Round(
             numerator * 100m / denominator,
@@ -2548,9 +2691,7 @@ public static class MetricCalculator
 }
 ```
 
-The percentage function uses a defined zero-denominator convention for programmatic calculations.
-
-However, a production dashboard should normally display N/A when a rate has no eligible observations, rather than interpreting the resulting zero as an observed performance result.
+The percentage function returns `null` for a zero denominator because a rate without eligible observations is undefined. The dashboard should render that result as **N/A**, not 0%.
 
 The median calculation rejects empty data because there is no median without observations.
 
@@ -2562,7 +2703,7 @@ The next requirement is to distinguish successful engineering outcomes from oper
 
 For this purpose, the Metrics service uses a governed terminal outcome projection.
 
-```
+```csharp
 namespace Metrics.Application.Contracts;
 
 public sealed record TerminalOutcomeCounts(
@@ -2576,14 +2717,14 @@ public sealed record TerminalOutcomeCounts(
 
 The calculation is straightforward:
 
-```
+```csharp
 using Metrics.Application.Contracts;
 
 namespace Metrics.Application.Services;
 
 public static class OutcomeMetrics
 {
-    public static decimal SuccessRate(
+    public static decimal? SuccessRate(
         TerminalOutcomeCounts counts)
     {
         return MetricCalculator.Percentage(
@@ -2591,7 +2732,7 @@ public static class OutcomeMetrics
             counts.Total);
     }
 
-    public static decimal FailureRate(
+    public static decimal? FailureRate(
         TerminalOutcomeCounts counts)
     {
         return MetricCalculator.Percentage(
@@ -2599,7 +2740,7 @@ public static class OutcomeMetrics
             counts.Total);
     }
 
-    public static decimal ExhaustionRate(
+    public static decimal? ExhaustionRate(
         TerminalOutcomeCounts counts)
     {
         return MetricCalculator.Percentage(
@@ -2619,7 +2760,7 @@ Likewise, acceptance must not be inferred solely from operational completion.
 
 Consider the following example:
 
-```
+```text
 Accepted:   78
 Failed:     14
 Exhausted:   8
@@ -2643,7 +2784,7 @@ The Harness must detect running work whose heartbeat is older than the configure
 
 Define a policy:
 
-```
+```csharp
 namespace Metrics.Application.Contracts;
 
 public sealed record HeartbeatPolicy(
@@ -2653,7 +2794,7 @@ public sealed record HeartbeatPolicy(
 
 Implement deterministic detection:
 
-```
+```csharp
 using Metrics.Application.Contracts;
 
 namespace Metrics.Application.Services;
@@ -2688,7 +2829,7 @@ public static class HeartbeatMetrics
 
 For example:
 
-```
+```csharp
 var policy = new HeartbeatPolicy(
     ExpectedInterval: TimeSpan.FromSeconds(30),
     StaleMultiplier: 2m);
@@ -2717,10 +2858,12 @@ The Metrics API provides read-only access to authorized dashboard data.
 
 A minimal endpoint can be implemented as follows:
 
-```
+```csharp
 using Metrics.Application.Queries;
+using Metrics.Infrastructure.Queries;
 using Metrics.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -2730,10 +2873,16 @@ builder.Services.AddDbContext<MetricsDbContext>(options =>
 
 builder.Services.AddSingleton(TimeProvider.System);
 
-builder.Services.AddScoped<PopulationMetricsQuery>();
+builder.Services.AddScoped<IPopulationMetricsQuery, PopulationMetricsQuery>();
 
-builder.Services.AddAuthentication()
-    .AddJwtBearer();
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.Authority = builder.Configuration["Authentication:Authority"]
+            ?? throw new InvalidOperationException("Configure the token authority.");
+        options.Audience = builder.Configuration["Authentication:Audience"]
+            ?? throw new InvalidOperationException("Configure the token audience.");
+    });
 
 builder.Services.AddAuthorization(options =>
 {
@@ -2750,7 +2899,7 @@ app.UseAuthorization();
 app.MapGet(
     "/api/metrics/population",
     async (
-        PopulationMetricsQuery query,
+        IPopulationMetricsQuery query,
         CancellationToken cancellationToken) =>
     {
         var result = await query.ExecuteAsync(cancellationToken);
@@ -2770,7 +2919,7 @@ An authenticated user with general metrics access should not automatically recei
 
 A representative response is:
 
-```
+```json
 {
   "total": 500,
   "queued": 140,
@@ -2788,65 +2937,24 @@ A production contract should additionally include the reporting scope, aggregati
 
 The first dashboard should focus on a small set of trustworthy KPIs rather than attempting to display every available metric.
 
-Alpha Car Detailing — Harness Metrics
+**Illustrative dashboard — Population snapshot**
 
-Illustrative dashboard • Population snapshot
+| Operational KPI | Value | Operational KPI | Value |
+|---|---:|---|---:|
+| Programs Total | 500 | Completed | 285 |
+| Failed | 30 | Exhausted | 20 |
+| Running | 25 | Queued | 140 |
 
-Example data
+**Illustrative period-based KPIs**
 
-Programs Total
+| KPI | Value |
+|---|---:|
+| Accepted throughput | 12 accepted items/day |
+| Median gate duration | 55 seconds |
+| Retry incidence | 30% |
+| Validation failure rate | 12% |
 
-# 500
-
-Completed
-
-# 285
-
-Failed
-
-# 30
-
-Exhausted
-
-# 20
-
-Running
-
-# 25
-
-Queued
-
-# 140
-
-Population distribution
-
-Completed
-
-Queued
-
-Running
-
-Failed
-
-Exhausted
-
-Accepted throughput
-
-## 12/day
-
-Median gate duration
-
-## 55 sec
-
-Retry incidence
-
-## 30%
-
-Validation failure rate
-
-## 12%
-
-The flow KPIs use separate illustrative reporting cohorts and are not calculated from the Population snapshot.
+The period-based KPIs use separate illustrative reporting cohorts; they cannot be derived from the Population snapshot alone. Production dashboards should show the relevant reporting windows, metric-definition versions, and data freshness.
 
 The dashboard should eventually support drill-down from each KPI into its underlying work items, runs, and evidence.
 
@@ -2871,11 +2979,11 @@ The team creates a dataset with known values:
 
 The corresponding assertion is:
 
-\\[ 18 = 3 + 2 + 7 + 4 + 2 \\]
+\[ 18 = 3 + 2 + 7 + 4 + 2 \]
 
 Unit tests verify the calculation functions.
 
-```
+```csharp
 using Metrics.Application.Contracts;
 using Metrics.Application.Services;
 using Xunit;
@@ -2888,6 +2996,12 @@ public sealed class MetricCalculatorTests
         var result = MetricCalculator.Percentage(78, 100);
 
         Assert.Equal(78m, result);
+    }
+
+    [Fact]
+    public void Percentage_WithEmptyCohort_IsUnavailable()
+    {
+        Assert.Null(MetricCalculator.Percentage(0, 0));
     }
 
     [Fact]
@@ -2973,9 +3087,15 @@ Metrics correctness must be subject to the same engineering discipline as the re
 
 A suitable validation sequence is:
 
-\#chatgpt-mermaid-\_r_th8\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(13, 13, 13);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_th8\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_th8\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_th8\_ .error-icon{fill:rgb(243, 243, 243);}#chatgpt-mermaid-\_r_th8\_ .error-text{fill:rgb(13, 13, 13);stroke:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_th8\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_th8\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_th8\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_th8\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_th8\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_th8\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_th8\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_th8\_ .marker.cross{stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_th8\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_th8\_ p{margin:0;}#chatgpt-mermaid-\_r_th8\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_th8\_ .cluster-label text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_th8\_ .cluster-label span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_th8\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_th8\_ .label text,#chatgpt-mermaid-\_r_th8\_ span{fill:rgb(13, 13, 13);color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_th8\_ .node rect,#chatgpt-mermaid-\_r_th8\_ .node circle,#chatgpt-mermaid-\_r_th8\_ .node ellipse,#chatgpt-mermaid-\_r_th8\_ .node polygon,#chatgpt-mermaid-\_r_th8\_ .node path{fill:rgb(222, 234, 251);stroke:rgb(83, 154, 248);stroke-width:1px;}#chatgpt-mermaid-\_r_th8\_ .rough-node .label text,#chatgpt-mermaid-\_r_th8\_ .node .label text,#chatgpt-mermaid-\_r_th8\_ .image-shape .label,#chatgpt-mermaid-\_r_th8\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_th8\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_th8\_ .rough-node .label,#chatgpt-mermaid-\_r_th8\_ .node .label,#chatgpt-mermaid-\_r_th8\_ .image-shape .label,#chatgpt-mermaid-\_r_th8\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_th8\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_th8\_ .root .anchor path{fill:rgb(143, 143, 143)!important;stroke-width:0;stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_th8\_ .arrowheadPath{fill:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_th8\_ .edgePath .path{stroke:rgb(143, 143, 143);stroke-width:1px;}#chatgpt-mermaid-\_r_th8\_ .flowchart-link{stroke:rgb(143, 143, 143);fill:none;}#chatgpt-mermaid-\_r_th8\_ .edgeLabel{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_th8\_ .edgeLabel p{background-color:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_th8\_ .edgeLabel rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_th8\_ .labelBkg{background-color:rgba(252, 252, 252, 0.5);}#chatgpt-mermaid-\_r_th8\_ .cluster rect{fill:rgb(243, 243, 243);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_th8\_ .cluster text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_th8\_ .cluster span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_th8\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(243, 243, 243);border:1px solid rgba(0, 0, 0, 0.1);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_th8\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_th8\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_th8\_ .icon-shape,#chatgpt-mermaid-\_r_th8\_ .image-shape{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_th8\_ .icon-shape p,#chatgpt-mermaid-\_r_th8\_ .image-shape p{background-color:rgb(252, 252, 252);padding:2px;}#chatgpt-mermaid-\_r_th8\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_th8\_ .image-shape .label rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_th8\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_th8\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_th8\_ .node .neo-node{stroke:rgb(83, 154, 248);}#chatgpt-mermaid-\_r_th8\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_th8\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_th8\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_th8\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_th8\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_th8\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_th8\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_th8\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_th8\_ [data-look="neo"].node .neo-line path{stroke:rgb(83, 154, 248);filter:none;}#chatgpt-mermaid-\_r_th8\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_th8\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_th8\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_th8\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_th8\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_th8\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_th8\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_th8\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_th8\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_th8\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_th8\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_th8\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-width:1px;}#chatgpt-mermaid-\_r_th8\_ .node rect,#chatgpt-mermaid-\_r_th8\_ .node circle,#chatgpt-mermaid-\_r_th8\_ .node ellipse,#chatgpt-mermaid-\_r_th8\_ .node polygon,#chatgpt-mermaid-\_r_th8\_ .node path{fill:rgb(229, 243, 255);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_th8\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_th8\_ .node.mermaid-decision .label-container{fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_th8\_ .edgePaths .flowchart-link{stroke:rgb(143, 143, 143);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_th8\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_th8\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}Metrics Code ChangeBuildUnit TestsDatabase Integration TestsEvent Idempotency TestsKPI Reconciliation TestsSecurity and AuthorizationTestsPerformance TestsReviewer AssessmentEvaluator AssessmentHuman Approval
+```mermaid
+flowchart TD
+    C["Metrics Code Change"] --> B["Build"] --> U["Unit Tests"] --> I["Database Integration Tests"]
+    I --> D["Event Idempotency Tests"] --> R["KPI Reconciliation Tests"]
+    R --> S["Security and Authorization Tests"] --> P["Performance Tests"]
+    P --> RE["Reviewer Assessment"] --> E["Evaluator Assessment"] --> H["Human Approval"]
+```
 
-Figure 20.8 — Deterministic validation pipeline for the Metrics capability.
+*Figure 20.8 — Deterministic validation pipeline for the Metrics capability.*
 
 The tests should verify both the mathematical correctness of calculations and the integrity of the underlying measurement lifecycle.
 
@@ -3038,7 +3158,7 @@ This is the practical value of a trustworthy Metrics capability.
 
 ### 7.20 Hands-on Completion Criteria
 
-The exercise is complete when the following conditions have been demonstrated:
+The full implementation exercise is complete when the following conditions have been demonstrated. The selected code excerpts alone do not prove all of them; they require the additional integration, ingestion, and reconciliation work described above:
 
 - Population work states are defined and enforced.
 - Execution events are persisted with stable identities.
@@ -3058,8 +3178,6 @@ The full enterprise implementation can extend these foundations to Reviewer find
 The most important outcome of the exercise is not the dashboard itself.
 
 It is the establishment of a reliable relationship between engineering work, execution evidence, measurement, and controlled improvement.
-
-Chapter 20 status: In progress — next section: Claude Example
 
 ## 8. Claude Example
 
@@ -3149,7 +3267,7 @@ Claude must identify:
 
 The initial instruction might be:
 
-```
+```text
 Analyze the existing AI Engineering Harness repository.
 
 Focus on:
@@ -3193,7 +3311,7 @@ For a Claude-first repository, these standards may be represented in `CLAUDE.md`
 
 A relevant portion of the Instructions might read:
 
-```
+```markdown
 # Harness Engineering Instructions
 
 ## Architecture
@@ -3243,7 +3361,7 @@ The organization may define a reusable Skill for implementing or extending Harne
 
 An illustrative repository structure is:
 
-```
+```text
 .claude/
 └── skills/
     └── implement-harness-metric/
@@ -3252,7 +3370,7 @@ An illustrative repository structure is:
 
 The Skill defines a repeatable engineering workflow.
 
-```
+```markdown
 ---
 name: implement-harness-metric
 description: Implement or extend a governed Harness metric
@@ -3313,7 +3431,7 @@ It does not establish the business target for a particular metric or authorize c
 
 After repository discovery, the Lead Agent can prepare a focused implementation Prompt.
 
-```
+```text
 Goal:
 Implement the Harness Metrics capability for Alpha Car Detailing.
 
@@ -3366,7 +3484,7 @@ Its responsibility is to understand the objective and establish a controlled imp
 
 For example:
 
-```
+```text
 You are acting as the Lead Agent.
 
 Review the Harness Metrics requirement and existing
@@ -3411,7 +3529,7 @@ Those temporary observations must not silently become permanent Repository Instr
 
 The Developer Agent can begin with one complete metric path:
 
-```
+```text
 Population Event
     ↓
 Validated Ingestion
@@ -3427,7 +3545,7 @@ Deterministic Verification
 
 A representative Developer Agent instruction is:
 
-```
+```text
 Implement work packages MET-01 through MET-03.
 
 Use the approved implementation plan.
@@ -3466,7 +3584,7 @@ An engineer may invoke Claude Code interactively for exploratory work or invoke 
 
 The following command illustrates the basic non-interactive pattern:
 
-```
+```bash
 claude -p \
   "Implement the approved MET-03 Population metrics work package."
 ```
@@ -3498,7 +3616,7 @@ The Harness should record the execution of the Developer Agent separately from t
 
 A possible Agent invocation record is:
 
-```
+```json
 {
   "agent_invocation_id": "inv-301",
   "run_id": "run-1042",
@@ -3538,7 +3656,7 @@ After the Developer Agent completes the implementation, the Harness submits the 
 
 A suitable Claude-based Reviewer instruction is:
 
-```
+```text
 You are acting as the Reviewer Agent.
 
 Independently review the Harness Metrics implementation.
@@ -3570,7 +3688,7 @@ That finding represents a substantive metric-definition defect.
 
 For example:
 
-```
+```json
 {
   "review_id": "rev-204",
   "run_id": "run-1042",
@@ -3613,7 +3731,7 @@ The Harness invokes deterministic tools to produce the underlying evidence.
 
 For example:
 
-```
+```bash
 dotnet build --configuration Release
 dotnet test --configuration Release
 ```
@@ -3628,7 +3746,7 @@ Suppose the implementation passes all unit tests but fails an integration test b
 
 The Harness should record:
 
-```
+```text
 Build Gate:          Passed
 Unit Test Gate:      Passed
 Integration Gate:    Failed
@@ -3650,15 +3768,23 @@ The original run and evidence must remain traceable.
 
 A typical correction cycle is:
 
-\#chatgpt-mermaid-\_r_tk9\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(13, 13, 13);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_tk9\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_tk9\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_tk9\_ .error-icon{fill:rgb(243, 243, 243);}#chatgpt-mermaid-\_r_tk9\_ .error-text{fill:rgb(13, 13, 13);stroke:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_tk9\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_tk9\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_tk9\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_tk9\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_tk9\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_tk9\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_tk9\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_tk9\_ .marker.cross{stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_tk9\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_tk9\_ p{margin:0;}#chatgpt-mermaid-\_r_tk9\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_tk9\_ .cluster-label text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_tk9\_ .cluster-label span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_tk9\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_tk9\_ .label text,#chatgpt-mermaid-\_r_tk9\_ span{fill:rgb(13, 13, 13);color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_tk9\_ .node rect,#chatgpt-mermaid-\_r_tk9\_ .node circle,#chatgpt-mermaid-\_r_tk9\_ .node ellipse,#chatgpt-mermaid-\_r_tk9\_ .node polygon,#chatgpt-mermaid-\_r_tk9\_ .node path{fill:rgb(222, 234, 251);stroke:rgb(83, 154, 248);stroke-width:1px;}#chatgpt-mermaid-\_r_tk9\_ .rough-node .label text,#chatgpt-mermaid-\_r_tk9\_ .node .label text,#chatgpt-mermaid-\_r_tk9\_ .image-shape .label,#chatgpt-mermaid-\_r_tk9\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_tk9\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_tk9\_ .rough-node .label,#chatgpt-mermaid-\_r_tk9\_ .node .label,#chatgpt-mermaid-\_r_tk9\_ .image-shape .label,#chatgpt-mermaid-\_r_tk9\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_tk9\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_tk9\_ .root .anchor path{fill:rgb(143, 143, 143)!important;stroke-width:0;stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_tk9\_ .arrowheadPath{fill:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_tk9\_ .edgePath .path{stroke:rgb(143, 143, 143);stroke-width:1px;}#chatgpt-mermaid-\_r_tk9\_ .flowchart-link{stroke:rgb(143, 143, 143);fill:none;}#chatgpt-mermaid-\_r_tk9\_ .edgeLabel{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_tk9\_ .edgeLabel p{background-color:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_tk9\_ .edgeLabel rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_tk9\_ .labelBkg{background-color:rgba(252, 252, 252, 0.5);}#chatgpt-mermaid-\_r_tk9\_ .cluster rect{fill:rgb(243, 243, 243);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_tk9\_ .cluster text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_tk9\_ .cluster span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_tk9\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(243, 243, 243);border:1px solid rgba(0, 0, 0, 0.1);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_tk9\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_tk9\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_tk9\_ .icon-shape,#chatgpt-mermaid-\_r_tk9\_ .image-shape{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_tk9\_ .icon-shape p,#chatgpt-mermaid-\_r_tk9\_ .image-shape p{background-color:rgb(252, 252, 252);padding:2px;}#chatgpt-mermaid-\_r_tk9\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_tk9\_ .image-shape .label rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_tk9\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_tk9\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_tk9\_ .node .neo-node{stroke:rgb(83, 154, 248);}#chatgpt-mermaid-\_r_tk9\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_tk9\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_tk9\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_tk9\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_tk9\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_tk9\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_tk9\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_tk9\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_tk9\_ [data-look="neo"].node .neo-line path{stroke:rgb(83, 154, 248);filter:none;}#chatgpt-mermaid-\_r_tk9\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_tk9\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_tk9\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_tk9\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_tk9\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_tk9\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_tk9\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_tk9\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_tk9\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_tk9\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_tk9\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_tk9\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-width:1px;}#chatgpt-mermaid-\_r_tk9\_ .node rect,#chatgpt-mermaid-\_r_tk9\_ .node circle,#chatgpt-mermaid-\_r_tk9\_ .node ellipse,#chatgpt-mermaid-\_r_tk9\_ .node polygon,#chatgpt-mermaid-\_r_tk9\_ .node path{fill:rgb(229, 243, 255);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_tk9\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_tk9\_ .node.mermaid-decision .label-container{fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_tk9\_ .edgePaths .flowchart-link{stroke:rgb(143, 143, 143);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_tk9\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_tk9\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}Developer ImplementationReviewer AssessmentDeterministic ValidationRequirements Satisfied?Record Findings and EvidenceRetry Policy Allows Correction?Developer ReworkFailed or ExhaustedEvaluator AssessmentNoYesNoYes
+```mermaid
+flowchart TD
+    D["Developer Implementation"] --> R["Reviewer Assessment"] --> V["Deterministic Validation"]
+    V --> C{"Requirements Satisfied?"}
+    C -- No --> F["Record Findings and Evidence"] --> P{"Retry Policy Allows Correction?"}
+    P -- Yes --> W["Developer Rework"] --> R
+    P -- No --> X["Failed or Exhausted"]
+    C -- Yes --> E["Evaluator Assessment"]
+```
 
-Figure 20.9 — Claude-based implementation correction under Harness control.
+*Figure 20.9 — Claude-based implementation correction under Harness control.*
 
 The Harness should distinguish the reason for each retry.
 
 For example:
 
-```
+```text
 Attempt 1:
     Idempotency test failed.
 
@@ -3691,7 +3817,7 @@ The Evaluator Agent must assess whether the completed Metrics capability satisfi
 
 For example:
 
-```
+```text
 You are acting as the Evaluator Agent.
 
 Evaluate the completed Harness Metrics implementation
@@ -3770,7 +3896,7 @@ A practical test can demonstrate the principle.
 
 Suppose a test dataset contains:
 
-```
+```text
 Accepted:     70
 Failed:       20
 Exhausted:    10
@@ -3914,7 +4040,7 @@ These considerations preserve the distinction between a capable coding Agent and
 
 When the Claude-based implementation has completed its permitted iterations, the Harness should be able to produce a structured result such as:
 
-```
+```json
 {
   "work_item": "ACD-HARNESS-METRICS-001",
   "run_id": "run-1042",
@@ -3964,17 +4090,25 @@ However, Claude must not become the authority that defines whether its own work 
 
 The enterprise architecture must maintain a clear separation:
 
-\#chatgpt-mermaid-\_r_tlb\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(13, 13, 13);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_tlb\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_tlb\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_tlb\_ .error-icon{fill:rgb(243, 243, 243);}#chatgpt-mermaid-\_r_tlb\_ .error-text{fill:rgb(13, 13, 13);stroke:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_tlb\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_tlb\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_tlb\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_tlb\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_tlb\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_tlb\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_tlb\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_tlb\_ .marker.cross{stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_tlb\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_tlb\_ p{margin:0;}#chatgpt-mermaid-\_r_tlb\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_tlb\_ .cluster-label text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_tlb\_ .cluster-label span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_tlb\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_tlb\_ .label text,#chatgpt-mermaid-\_r_tlb\_ span{fill:rgb(13, 13, 13);color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_tlb\_ .node rect,#chatgpt-mermaid-\_r_tlb\_ .node circle,#chatgpt-mermaid-\_r_tlb\_ .node ellipse,#chatgpt-mermaid-\_r_tlb\_ .node polygon,#chatgpt-mermaid-\_r_tlb\_ .node path{fill:rgb(222, 234, 251);stroke:rgb(83, 154, 248);stroke-width:1px;}#chatgpt-mermaid-\_r_tlb\_ .rough-node .label text,#chatgpt-mermaid-\_r_tlb\_ .node .label text,#chatgpt-mermaid-\_r_tlb\_ .image-shape .label,#chatgpt-mermaid-\_r_tlb\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_tlb\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_tlb\_ .rough-node .label,#chatgpt-mermaid-\_r_tlb\_ .node .label,#chatgpt-mermaid-\_r_tlb\_ .image-shape .label,#chatgpt-mermaid-\_r_tlb\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_tlb\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_tlb\_ .root .anchor path{fill:rgb(143, 143, 143)!important;stroke-width:0;stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_tlb\_ .arrowheadPath{fill:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_tlb\_ .edgePath .path{stroke:rgb(143, 143, 143);stroke-width:1px;}#chatgpt-mermaid-\_r_tlb\_ .flowchart-link{stroke:rgb(143, 143, 143);fill:none;}#chatgpt-mermaid-\_r_tlb\_ .edgeLabel{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_tlb\_ .edgeLabel p{background-color:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_tlb\_ .edgeLabel rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_tlb\_ .labelBkg{background-color:rgba(252, 252, 252, 0.5);}#chatgpt-mermaid-\_r_tlb\_ .cluster rect{fill:rgb(243, 243, 243);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_tlb\_ .cluster text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_tlb\_ .cluster span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_tlb\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(243, 243, 243);border:1px solid rgba(0, 0, 0, 0.1);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_tlb\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_tlb\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_tlb\_ .icon-shape,#chatgpt-mermaid-\_r_tlb\_ .image-shape{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_tlb\_ .icon-shape p,#chatgpt-mermaid-\_r_tlb\_ .image-shape p{background-color:rgb(252, 252, 252);padding:2px;}#chatgpt-mermaid-\_r_tlb\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_tlb\_ .image-shape .label rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_tlb\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_tlb\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_tlb\_ .node .neo-node{stroke:rgb(83, 154, 248);}#chatgpt-mermaid-\_r_tlb\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_tlb\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_tlb\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_tlb\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_tlb\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_tlb\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_tlb\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_tlb\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_tlb\_ [data-look="neo"].node .neo-line path{stroke:rgb(83, 154, 248);filter:none;}#chatgpt-mermaid-\_r_tlb\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_tlb\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_tlb\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_tlb\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_tlb\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_tlb\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_tlb\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_tlb\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_tlb\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_tlb\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_tlb\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_tlb\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-width:1px;}#chatgpt-mermaid-\_r_tlb\_ .node rect,#chatgpt-mermaid-\_r_tlb\_ .node circle,#chatgpt-mermaid-\_r_tlb\_ .node ellipse,#chatgpt-mermaid-\_r_tlb\_ .node polygon,#chatgpt-mermaid-\_r_tlb\_ .node path{fill:rgb(229, 243, 255);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_tlb\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_tlb\_ .node.mermaid-decision .label-container{fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_tlb\_ .edgePaths .flowchart-link{stroke:rgb(143, 143, 143);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_tlb\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_tlb\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}Engineering RequirementHarness OrchestratorClaude Code AgentsImplementation ArtifactsIndependent ReviewDeterministic ValidationEvaluationGoverned Outcome RecordMetrics AggregationDashboards and AnalysisImprovement ProposalsHuman Governance
+```mermaid
+flowchart TD
+    R["Engineering Requirement"] --> H["Harness Orchestrator"] --> C["Claude Code Agents"]
+    C --> I["Implementation Artifacts"]
+    I --> REV["Independent Review"]
+    I --> VAL["Deterministic Validation"]
+    REV --> E["Evaluation"]
+    VAL --> E
+    E --> O["Governed Outcome Record"] --> M["Metrics Aggregation"]
+    M --> D["Dashboards and Analysis"] --> P["Improvement Proposals"] --> G["Human Governance"]
+```
 
-Figure 20.10 — Claude Code participates in engineering execution while the Harness retains measurement and governance authority.
+*Figure 20.10 — Claude Code participates in engineering execution while the Harness retains measurement and governance authority.*
 
 The architecture illustrates the central principle of this chapter.
 
 Claude performs engineering work. The Harness records execution. Deterministic gates verify objective conditions. Reviewers assess implementation quality. Evaluators assess goal satisfaction. Humans approve governed decisions. Metrics measure the resulting evidence.
 
 This separation allows the organization to benefit from AI-assisted engineering while maintaining reliable, auditable, and meaningful measures of engineering performance.
-
-Chapter 20 status: In progress — next section: GitHub Copilot Comparison
 
 ## 9. GitHub Copilot Comparison
 
@@ -4045,13 +4179,7 @@ Depending on reporting scope and available features, these measurements can incl
 - Repository-level pull request activity.
 - Selected measures of AI-assisted development engagement.
 
-Native reports support different scopes and granularities, and some reports require specific enterprise permissions or enabled policies.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://docs.github.com\&sz=32)
-
-GitHub Docs
-
-+2
+Native reports support different scopes and granularities, and some reports require specific enterprise permissions or enabled policies (see [GitHub Copilot usage metrics](https://docs.github.com/en/copilot/concepts/billing-and-usage/copilot-usage-metrics/copilot-metrics)).
 
 These measurements are valuable for understanding platform adoption and utilization.
 
@@ -4153,11 +4281,11 @@ A work item may require multiple pull requests.
 
 Therefore:
 
-\\[ \text{Pull Requests} \ne \text{Population Items} \\]
+\[ \text{Pull Requests} \ne \text{Population Items} \]
 
 Likewise:
 
-\\[ \text{Workflow Executions} \ne \text{Accepted Engineering Outcomes} \\]
+\[ \text{Workflow Executions} \ne \text{Accepted Engineering Outcomes} \]
 
 The Harness should maintain its own canonical work-item identity and correlate GitHub activity with that identity.
 
@@ -4171,9 +4299,25 @@ The adapter collects relevant repository and workflow observations.
 
 The Harness normalizes these observations into its internal execution and evidence model.
 
-\#chatgpt-mermaid-\_r_tlt\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(13, 13, 13);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_tlt\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_tlt\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_tlt\_ .error-icon{fill:rgb(243, 243, 243);}#chatgpt-mermaid-\_r_tlt\_ .error-text{fill:rgb(13, 13, 13);stroke:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_tlt\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_tlt\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_tlt\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_tlt\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_tlt\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_tlt\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_tlt\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_tlt\_ .marker.cross{stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_tlt\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_tlt\_ p{margin:0;}#chatgpt-mermaid-\_r_tlt\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_tlt\_ .cluster-label text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_tlt\_ .cluster-label span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_tlt\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_tlt\_ .label text,#chatgpt-mermaid-\_r_tlt\_ span{fill:rgb(13, 13, 13);color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_tlt\_ .node rect,#chatgpt-mermaid-\_r_tlt\_ .node circle,#chatgpt-mermaid-\_r_tlt\_ .node ellipse,#chatgpt-mermaid-\_r_tlt\_ .node polygon,#chatgpt-mermaid-\_r_tlt\_ .node path{fill:rgb(222, 234, 251);stroke:rgb(83, 154, 248);stroke-width:1px;}#chatgpt-mermaid-\_r_tlt\_ .rough-node .label text,#chatgpt-mermaid-\_r_tlt\_ .node .label text,#chatgpt-mermaid-\_r_tlt\_ .image-shape .label,#chatgpt-mermaid-\_r_tlt\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_tlt\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_tlt\_ .rough-node .label,#chatgpt-mermaid-\_r_tlt\_ .node .label,#chatgpt-mermaid-\_r_tlt\_ .image-shape .label,#chatgpt-mermaid-\_r_tlt\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_tlt\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_tlt\_ .root .anchor path{fill:rgb(143, 143, 143)!important;stroke-width:0;stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_tlt\_ .arrowheadPath{fill:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_tlt\_ .edgePath .path{stroke:rgb(143, 143, 143);stroke-width:1px;}#chatgpt-mermaid-\_r_tlt\_ .flowchart-link{stroke:rgb(143, 143, 143);fill:none;}#chatgpt-mermaid-\_r_tlt\_ .edgeLabel{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_tlt\_ .edgeLabel p{background-color:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_tlt\_ .edgeLabel rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_tlt\_ .labelBkg{background-color:rgba(252, 252, 252, 0.5);}#chatgpt-mermaid-\_r_tlt\_ .cluster rect{fill:rgb(243, 243, 243);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_tlt\_ .cluster text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_tlt\_ .cluster span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_tlt\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(243, 243, 243);border:1px solid rgba(0, 0, 0, 0.1);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_tlt\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_tlt\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_tlt\_ .icon-shape,#chatgpt-mermaid-\_r_tlt\_ .image-shape{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_tlt\_ .icon-shape p,#chatgpt-mermaid-\_r_tlt\_ .image-shape p{background-color:rgb(252, 252, 252);padding:2px;}#chatgpt-mermaid-\_r_tlt\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_tlt\_ .image-shape .label rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_tlt\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_tlt\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_tlt\_ .node .neo-node{stroke:rgb(83, 154, 248);}#chatgpt-mermaid-\_r_tlt\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_tlt\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_tlt\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_tlt\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_tlt\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_tlt\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_tlt\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_tlt\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_tlt\_ [data-look="neo"].node .neo-line path{stroke:rgb(83, 154, 248);filter:none;}#chatgpt-mermaid-\_r_tlt\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_tlt\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_tlt\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_tlt\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_tlt\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_tlt\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_tlt\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_tlt\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_tlt\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_tlt\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_tlt\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_tlt\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-width:1px;}#chatgpt-mermaid-\_r_tlt\_ .node rect,#chatgpt-mermaid-\_r_tlt\_ .node circle,#chatgpt-mermaid-\_r_tlt\_ .node ellipse,#chatgpt-mermaid-\_r_tlt\_ .node polygon,#chatgpt-mermaid-\_r_tlt\_ .node path{fill:rgb(229, 243, 255);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_tlt\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_tlt\_ .node.mermaid-decision .label-container{fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_tlt\_ .edgePaths .flowchart-link{stroke:rgb(143, 143, 143);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_tlt\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_tlt\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}Harness PopulationHarness OrchestratorGitHub Copilot Coding AgentHuman Developer with CopilotGitHub RepositoryCommits and Pull RequestsGitHub Actions ValidationIndependent ReviewGitHub Evidence AdapterNormalized Execution EvidenceHarness MetricsDashboards and AlertsEngineering Analysis
+```mermaid
+flowchart TD
+    P["Harness Population"] --> O["Harness Orchestrator"]
+    O --> A["GitHub Copilot Coding Agent"]
+    O --> H["Human Developer with Copilot"]
+    A --> G["GitHub Repository"]
+    H --> G
+    G --> PR["Commits and Pull Requests"]
+    PR --> CI["GitHub Actions Validation"]
+    PR --> R["Independent Review"]
+    PR --> E["GitHub Evidence Adapter"]
+    CI --> E
+    R --> E
+    E --> N["Normalized Execution Evidence"] --> M["Harness Metrics"]
+    M --> D["Dashboards and Alerts"]
+    M --> X["Engineering Analysis"]
+```
 
-Figure 20.11 — Integrating GitHub Copilot engineering activity with the Harness Metrics architecture.
+*Figure 20.11 — Integrating GitHub Copilot engineering activity with the Harness Metrics architecture.*
 
 The integration adapter should not become a second orchestration authority.
 
@@ -4189,7 +4333,7 @@ A GitHub Actions workflow may run several deterministic checks for the booking A
 
 For example:
 
-```
+```yaml
 name: Booking API Validation
 
 on:
@@ -4229,7 +4373,7 @@ The Harness can collect the workflow identity, commit SHA, check results, durati
 
 A normalized result could resemble:
 
-```
+```json
 {
   "event_type": "gate.execution.completed",
   "source": "github-actions",
@@ -4273,11 +4417,11 @@ Across those items, the CI/CD system records:
 
 If the defined validation execution pass rate includes all completed executions:
 
-\\[ \text{Validation Pass Rate} = \frac{56}{80}\times100 =70\\% \\]
+\[ \text{Validation Pass Rate} = \frac{56}{80}\times100 =70\% \]
 
 The validation failure rate is:
 
-\\[ \text{Validation Failure Rate} = \frac{19}{80}\times100 =23.75\\% \\]
+\[ \text{Validation Failure Rate} = \frac{19}{80}\times100 =23.75\% \]
 
 The infrastructure error rate is 6.25%.
 
@@ -4337,7 +4481,7 @@ Pull requests often undergo several changes before approval.
 
 For example:
 
-```
+```text
 Initial implementation
     ↓
 Pull request opened
@@ -4359,7 +4503,7 @@ The Harness should preserve this history.
 
 A useful metric might be:
 
-\\[ \text{Rework Incidence} = \frac{\text{Work items requiring qualifying rework}} {\text{Work items reaching assessment}} \times100 \\]
+\[ \text{Rework Incidence} = \frac{\text{Work items requiring qualifying rework}} {\text{Work items reaching assessment}} \times100 \]
 
 However, counting every additional commit as rework would be misleading.
 
@@ -4387,7 +4531,7 @@ A human reviewer approves the change at 12:30.
 
 The approval latency is:
 
-\\[ 12{:}30-10{:}00=150\text{ minutes} \\]
+\[ 12{:}30-10{:}00=150\text{ minutes} \]
 
 The Harness should distinguish approval latency from implementation time.
 
@@ -4409,17 +4553,11 @@ These should not be combined under a single ambiguous metric.
 
 An enterprise may wish to combine Harness outcome metrics with native GitHub Copilot usage reports.
 
-GitHub provides supported API endpoints for retrieving Copilot usage reports at enterprise and organization scopes. Report access depends on the configured metrics policy and the caller's permissions.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://docs.github.com\&sz=32)
-
-GitHub Docs
-
-+1
+GitHub provides [supported API endpoints](https://docs.github.com/en/rest/copilot/copilot-usage-metrics) for retrieving Copilot usage reports at enterprise and organization scopes. Report access depends on the configured metrics policy and the caller's permissions.
 
 For an authorized enterprise integration, a report request may use an endpoint such as:
 
-```
+```http
 GET /enterprises/{enterprise}/copilot/metrics/reports/enterprise-28-day/latest
 ```
 
@@ -4506,7 +4644,7 @@ The existing Harness can introduce a platform integration boundary.
 
 For example:
 
-```
+```csharp
 namespace Harness.Application.Contracts;
 
 public interface IAgentExecutionAdapter
@@ -4521,7 +4659,7 @@ public interface IAgentExecutionAdapter
 
 The resulting execution contract might be:
 
-```
+```csharp
 namespace Harness.Application.Contracts;
 
 public sealed record AgentExecutionResult(
@@ -4550,7 +4688,7 @@ A common enterprise schema enables comparisons across tools.
 
 For example:
 
-```
+```json
 {
   "population_item_id": "acd-booking-042",
   "run_id": "run-1042",
@@ -4677,8 +4815,6 @@ Claude Code and GitHub Copilot may differ in how engineering work is initiated, 
 
 This principle enables a multi-platform AI Engineering Harness in which vendors can change without requiring the organization to redefine engineering quality.
 
-Chapter 20 status: In progress — next section: Codex Comparison
-
 ## 10. Codex Comparison
 
 ### 10.1 Applying Harness Metrics to OpenAI Codex
@@ -4724,13 +4860,7 @@ For an enterprise Harness, three integration patterns are particularly relevant.
 | Non-interactive Codex CLI              | The Harness invokes Codex for a controlled engineering task  | Collect process status, structured events, timing, resource usage, and artifacts |
 | Codex SDK or supported cloud workflows | Applications or managed workflows coordinate Codex execution | Consume supported execution events and correlate them with Harness records       |
 
-The supported Codex CLI and SDK interfaces provide structured execution events that can help automate collection and correlation.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://github.com\&sz=32)
-
-GitHub
-
-+2
+Supported [Codex execution interfaces](https://developers.openai.com/codex/) provide structured execution events that can help automate collection and correlation.
 
 Not every execution model exposes identical telemetry.
 
@@ -4826,7 +4956,7 @@ For example, the organization may select the nearest-rank percentile method.
 
 Under this method, for a sorted dataset of \\(n\\) observations:
 
-\\[ P_p = x\_{\lceil (p/100)n \rceil} \\]
+\[ P_p = x\_{\lceil (p/100)n \rceil} \]
 
 Here, \\(x\\) identifies the corresponding ordered observation.
 
@@ -4842,7 +4972,7 @@ For a Codex-integrated repository, these may be represented in an `AGENTS.md` fi
 
 A relevant instruction section might be:
 
-```
+```markdown
 # Harness Metrics Engineering Instructions
 
 ## Architecture
@@ -4888,7 +5018,7 @@ The format and file conventions may differ, but the engineering responsibilities
 
 The Lead Agent prepares a focused implementation Prompt.
 
-```
+```text
 Goal:
 Extend the Harness Metrics capability to support
 gate duration percentiles and long-running gate detection.
@@ -4938,21 +5068,15 @@ Codex CLI provides a non-interactive execution mode that can be integrated into 
 
 A simple invocation is:
 
-```
+```bash
 codex exec "Implement the approved gate duration metrics work package."
 ```
 
-For automated event collection, Codex supports JSON Lines output through the `--json` option.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://learn.chatgpt.com\&sz=32)
-
-ChatGPT Learn
-
-+1
+For automated event collection, Codex supports JSON Lines output through the `--json` option (see the [Codex documentation](https://developers.openai.com/codex/)).
 
 For example:
 
-```
+```bash
 codex exec --json \
   "Implement the approved gate duration metrics work package." \
   > codex-events.jsonl
@@ -4992,22 +5116,16 @@ The supported event model includes categories such as:
 - `turn.completed`
 - `turn.failed`
 
-Completed-turn events can include token usage information.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://github.com\&sz=32)
-
-GitHub
-
-+1
+Completed-turn events can include token usage information.
 
 For example, an illustrative event stream might contain:
 
-```
+```json
 {"type":"thread.started","thread_id":"codex-thread-1042"}
 {"type":"turn.started"}
 {"type":"item.started","item":{"id":"item-1","type":"command_execution","command":"dotnet test","status":"in_progress"}}
 {"type":"item.completed","item":{"id":"item-1","type":"command_execution","command":"dotnet test","status":"completed","exit_code":0}}
-{"type":"turn.completed","usage":{"input_tokens":18400,"cached_input_tokens":4200,"cache_write_input_tokens":0,"output_tokens":5100,"reasoning_output_tokens":1800}}
+{"type":"turn.completed","usage":{"input_tokens":18400,"cached_input_tokens":4200,"output_tokens":5100}}
 ```
 
 The event values are illustrative.
@@ -5030,9 +5148,19 @@ The Harness should introduce a Codex integration adapter that translates relevan
 
 For example:
 
-\#chatgpt-mermaid-\_r_18r\_{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:14px;fill:rgb(26, 28, 31);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_18r\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_18r\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_18r\_ .error-icon{fill:rgba(255, 255, 255, 0.96);}#chatgpt-mermaid-\_r_18r\_ .error-text{fill:rgb(26, 28, 31);stroke:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_18r\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_18r\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_18r\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_18r\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_18r\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_18r\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_18r\_ .marker{fill:rgba(26, 28, 31, 0.494);stroke:rgba(26, 28, 31, 0.494);}#chatgpt-mermaid-\_r_18r\_ .marker.cross{stroke:rgba(26, 28, 31, 0.494);}#chatgpt-mermaid-\_r_18r\_ svg{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:14px;}#chatgpt-mermaid-\_r_18r\_ p{margin:0;}#chatgpt-mermaid-\_r_18r\_ .label{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_18r\_ .cluster-label text{fill:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_18r\_ .cluster-label span{color:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_18r\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_18r\_ .label text,#chatgpt-mermaid-\_r_18r\_ span{fill:rgb(26, 28, 31);color:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_18r\_ .node rect,#chatgpt-mermaid-\_r_18r\_ .node circle,#chatgpt-mermaid-\_r_18r\_ .node ellipse,#chatgpt-mermaid-\_r_18r\_ .node polygon,#chatgpt-mermaid-\_r_18r\_ .node path{fill:rgb(224, 237, 254);stroke:rgb(83, 154, 248);stroke-width:1px;}#chatgpt-mermaid-\_r_18r\_ .rough-node .label text,#chatgpt-mermaid-\_r_18r\_ .node .label text,#chatgpt-mermaid-\_r_18r\_ .image-shape .label,#chatgpt-mermaid-\_r_18r\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_18r\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_18r\_ .rough-node .label,#chatgpt-mermaid-\_r_18r\_ .node .label,#chatgpt-mermaid-\_r_18r\_ .image-shape .label,#chatgpt-mermaid-\_r_18r\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_18r\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_18r\_ .root .anchor path{fill:rgba(26, 28, 31, 0.494)!important;stroke-width:0;stroke:rgba(26, 28, 31, 0.494);}#chatgpt-mermaid-\_r_18r\_ .arrowheadPath{fill:rgba(26, 28, 31, 0.494);}#chatgpt-mermaid-\_r_18r\_ .edgePath .path{stroke:rgba(26, 28, 31, 0.494);stroke-width:1px;}#chatgpt-mermaid-\_r_18r\_ .flowchart-link{stroke:rgba(26, 28, 31, 0.494);fill:none;}#chatgpt-mermaid-\_r_18r\_ .edgeLabel{background-color:rgb(255, 255, 255);text-align:center;}#chatgpt-mermaid-\_r_18r\_ .edgeLabel p{background-color:rgb(255, 255, 255);}#chatgpt-mermaid-\_r_18r\_ .edgeLabel rect{opacity:0.5;background-color:rgb(255, 255, 255);fill:rgb(255, 255, 255);}#chatgpt-mermaid-\_r_18r\_ .labelBkg{background-color:rgba(255, 255, 255, 0.5);}#chatgpt-mermaid-\_r_18r\_ .cluster rect{fill:rgba(255, 255, 255, 0.96);stroke:rgba(26, 28, 31, 0.08);stroke-width:1px;}#chatgpt-mermaid-\_r_18r\_ .cluster text{fill:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_18r\_ .cluster span{color:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_18r\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:12px;background:rgba(255, 255, 255, 0.96);border:1px solid rgba(26, 28, 31, 0.08);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_18r\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_18r\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_18r\_ .icon-shape,#chatgpt-mermaid-\_r_18r\_ .image-shape{background-color:rgb(255, 255, 255);text-align:center;}#chatgpt-mermaid-\_r_18r\_ .icon-shape p,#chatgpt-mermaid-\_r_18r\_ .image-shape p{background-color:rgb(255, 255, 255);padding:2px;}#chatgpt-mermaid-\_r_18r\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_18r\_ .image-shape .label rect{opacity:0.5;background-color:rgb(255, 255, 255);fill:rgb(255, 255, 255);}#chatgpt-mermaid-\_r_18r\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_18r\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_18r\_ .node .neo-node{stroke:rgb(83, 154, 248);}#chatgpt-mermaid-\_r_18r\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_18r\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_18r\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_18r\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_18r\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_18r\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_18r\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_18r\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_18r\_ [data-look="neo"].node .neo-line path{stroke:rgb(83, 154, 248);filter:none;}#chatgpt-mermaid-\_r_18r\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_18r\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_18r\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_18r\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_18r\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_18r\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_18r\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_18r\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_18r\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_18r\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_18r\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_18r\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-width:1px;}#chatgpt-mermaid-\_r_18r\_ .node rect,#chatgpt-mermaid-\_r_18r\_ .node circle,#chatgpt-mermaid-\_r_18r\_ .node ellipse,#chatgpt-mermaid-\_r_18r\_ .node polygon,#chatgpt-mermaid-\_r_18r\_ .node path{fill:rgb(229, 243, 255);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_18r\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_18r\_ .node.mermaid-decision .label-container{fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_18r\_ .edgePaths .flowchart-link{stroke:rgba(26, 28, 31, 0.494);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_18r\_ .marker{fill:rgba(26, 28, 31, 0.494);stroke:rgba(26, 28, 31, 0.494);}#chatgpt-mermaid-\_r_18r\_ :root{--mermaid-font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;}Harness OrchestratorCodex ExecutionStructured Execution EventsChanged Files and ArtifactsCodex Metrics AdapterNormalized Harness EventsExecution Event StoreMetrics AggregatorDashboards and AnalysisDeterministic ValidationValidation Evidence
+```mermaid
+flowchart TD
+    H["Harness Orchestrator"] --> C["Codex Execution"]
+    C --> S["Structured Execution Events"]
+    C --> F["Changed Files and Artifacts"]
+    S --> A["Codex Metrics Adapter"]
+    F --> A
+    A --> N["Normalized Harness Events"] --> E[("Execution Event Store")]
+    H --> V["Deterministic Validation"] --> D["Validation Evidence"] --> E
+    E --> M["Metrics Aggregator"] --> DASH["Dashboards and Analysis"]
+```
 
-Figure 20.12 — Codex execution telemetry integrated with authoritative Harness evidence.
+*Figure 20.12 — Codex execution telemetry integrated with authoritative Harness evidence.*
 
 The adapter should perform normalization rather than reinterpret engineering policy.
 
@@ -5058,7 +5186,7 @@ For a .NET-based Harness, a useful integration pattern is to execute Codex as a 
 
 The following example demonstrates the collection boundary.
 
-```
+```csharp
 using System.Diagnostics;
 using System.Text.Json;
 
@@ -5161,7 +5289,7 @@ These identities must be correlated.
 
 A possible correlation record is:
 
-```
+```json
 {
   "population_item_id": "acd-metrics-002",
   "run_id": "run-220",
@@ -5203,7 +5331,7 @@ A Harness retry must be defined according to the orchestrator's execution policy
 
 For example:
 
-```
+```text
 Harness Run: run-220
 
 Attempt 1:
@@ -5246,7 +5374,7 @@ These values can help the Harness estimate or reconcile model resource consumpti
 
 A normalized usage record might be:
 
-```
+```json
 {
   "run_id": "run-220",
   "attempt_id": "attempt-2",
@@ -5357,51 +5485,19 @@ The strongest comparisons focus on engineering outcomes rather than model activi
 
 A useful Codex-specific operational report may include the following measurements.
 
-Codex — Harness Performance
+**Illustrative Codex Harness performance scorecard**
 
-Illustrative engineering KPI report
+| KPI | Value |
+|---|---:|
+| Accepted work items | 42 of 50 |
+| Engineering success rate | 84% |
+| Retry incidence | 26% |
+| Median cycle time | 37 minutes |
+| Human intervention rate | 14% |
+| Cost per accepted item | $5.40 |
+| Validation execution pass rate | 85% |
 
-Example
-
-Accepted work items
-
-## 42 / 50
-
-Engineering success
-
-## 84%
-
-Retry incidence
-
-## 26%
-
-Median cycle time
-
-## 37 min
-
-Human intervention
-
-## 14%
-
-Cost per accepted item
-
-## $5.40
-
-Outcome quality and execution evidence
-
-Engineering acceptance
-
-84%
-
-Validation executions passed
-
-85%
-
-Work without unplanned human intervention
-
-86%
-
-The illustrative quality percentages use their own explicitly defined reporting populations.
+These illustrative percentages may use different reporting cohorts; each production KPI must display its own denominator, measurement period, and definition.
 
 A production dashboard should also include:
 
@@ -5437,13 +5533,7 @@ The Harness should enforce the following boundaries.
 | Approval requirements  | Require human authorization for governed actions         |
 | Independent validation | Prevent Agent assertions from replacing verified results |
 
-Codex supports execution sandboxing and approval controls; these are important foundations, but they do not eliminate the need for external governance and monitoring.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://openai.com\&sz=32)
-
-OpenAI
-
-+1
+Codex supports execution sandboxing and approval controls (see [official documentation](https://developers.openai.com/codex/)); these are important foundations, but they do not eliminate the need for external governance and monitoring.
 
 Security events should also contribute to Metrics.
 
@@ -5468,7 +5558,7 @@ One of the most important design requirements is to prevent each platform from i
 
 For example:
 
-```
+```text
 Claude:
     Success = Agent invocation completed
 
@@ -5485,7 +5575,7 @@ They describe different platform activities.
 
 Instead, the Harness should use common engineering definitions:
 
-```
+```text
 Operational Completion:
     The required execution lifecycle reached completion.
 
@@ -5511,7 +5601,7 @@ It does not redefine the organization's engineering outcomes.
 
 A normalized model might use:
 
-```
+```csharp
 public enum AgentPlatform
 {
     ClaudeCode = 1,
@@ -5565,8 +5655,6 @@ The central architectural principle remains:
 This design allows Alpha Car Detailing to adopt additional AI coding platforms without losing historical measurement continuity or weakening its engineering standards.
 
 It also enables the organization to evaluate the effectiveness of different Agents and Harness configurations using evidence rather than vendor-specific activity counts.
-
-Chapter 20 status: In progress — next section: Best Practices
 
 ## 11. Best Practices
 
@@ -5645,7 +5733,7 @@ Instead, the Harness should record the appropriate lifecycle transition after ap
 
 A simple status model may contain:
 
-```
+```text
 Queued
 Running
 Completed
@@ -5675,7 +5763,7 @@ However, the Evaluator determines that the implementation does not correctly enf
 
 The correct reporting is:
 
-```
+```text
 Operational Status: Completed
 Validation Status: Passed
 Reviewer Status: Accepted
@@ -5710,11 +5798,11 @@ For an illustrative terminal cohort:
 
 The terminal engineering success rate is:
 
-\\[ \frac{80}{100}\times100=80\\% \\]
+\[ \frac{80}{100}\times100=80\% \]
 
 The exhaustion rate is:
 
-\\[ \frac{8}{100}\times100=8\\% \\]
+\[ \frac{8}{100}\times100=8\% \]
 
 Queued and running items are not included in this terminal cohort.
 
@@ -5786,7 +5874,7 @@ Metrics become substantially more useful when they can be traced to the underlyi
 
 At minimum, relevant observations should be associated with:
 
-```
+```text
 Population Item
     ↓
 Harness Run
@@ -5822,7 +5910,7 @@ Averages can conceal severe operational problems.
 
 Consider five validation gate durations:
 
-```
+```text
 1 minute
 1 minute
 2 minutes
@@ -5934,7 +6022,7 @@ A Metrics subsystem should distinguish planned human approval from unplanned exe
 
 For example:
 
-```
+```text
 Human Approval:
     Required governance activity
 
@@ -5961,7 +6049,7 @@ A more expensive invocation may produce a correct solution with minimal rework.
 
 A practical economic metric is:
 
-\\[ \text{Cost Per Accepted Outcome} = \frac{\text{Total Attributable Cohort Cost}} {\text{Accepted Work Items}} \\]
+\[ \text{Cost Per Accepted Outcome} = \frac{\text{Total Attributable Cohort Cost}} {\text{Accepted Work Items}} \]
 
 The numerator should include costs attributable to failed attempts, retries, validation, infrastructure, and relevant human rework.
 
@@ -6339,8 +6427,6 @@ It is to produce acceptable engineering outcomes consistently, efficiently, secu
 
 > A successful Harness does not simply do more work faster. It delivers trustworthy engineering outcomes with measurable quality, controlled risk, and transparent cost.
 
-Chapter 20 status: In progress — next section: Anti-patterns
-
 ## 12. Anti-patterns
 
 ### 12.1 Measuring Only Lines of Code
@@ -6379,7 +6465,7 @@ This usually occurs when `Completed` is interpreted as both an operational state
 
 For example:
 
-```
+```text
 Harness execution completed.
     ↓
 Completed counter increased.
@@ -6420,11 +6506,11 @@ A more serious form of this anti-pattern is removing failed work from the denomi
 
 For example, excluding exhausted items produces:
 
-\\[ \frac{80}{80+12}\times100 \approx 86.96\\% \\]
+\[ \frac{80}{80+12}\times100 \approx 86.96\% \]
 
 The correct terminal engineering success rate is:
 
-\\[ \frac{80}{100}\times100=80\\% \\]
+\[ \frac{80}{100}\times100=80\% \]
 
 The difference is substantial.
 
@@ -6500,7 +6586,7 @@ Some reporting systems preserve only the final successful attempt.
 
 For example:
 
-```
+```text
 Attempt 1: Failed
 Attempt 2: Failed
 Attempt 3: Failed
@@ -6541,7 +6627,7 @@ These are not necessarily independent Harness attempts.
 
 For example:
 
-```
+```text
 Agent turn 1: Inspect repository
 Agent turn 2: Analyze architecture
 Agent turn 3: Implement changes
@@ -6611,7 +6697,7 @@ Failed executions with valid timing evidence should remain included in the appro
 
 A dashboard may report:
 
-```
+```text
 Validation failure rate: 17%
 ```
 
@@ -6693,9 +6779,14 @@ This means an event may be received more than once.
 
 Consider:
 
-\#chatgpt-mermaid-\_r_103\_{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:14px;fill:rgb(26, 28, 31);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_103\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_103\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_103\_ .error-icon{fill:rgba(255, 255, 255, 0.96);}#chatgpt-mermaid-\_r_103\_ .error-text{fill:rgb(26, 28, 31);stroke:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_103\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_103\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_103\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_103\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_103\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_103\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_103\_ .marker{fill:rgba(26, 28, 31, 0.494);stroke:rgba(26, 28, 31, 0.494);}#chatgpt-mermaid-\_r_103\_ .marker.cross{stroke:rgba(26, 28, 31, 0.494);}#chatgpt-mermaid-\_r_103\_ svg{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:14px;}#chatgpt-mermaid-\_r_103\_ p{margin:0;}#chatgpt-mermaid-\_r_103\_ .label{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_103\_ .cluster-label text{fill:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_103\_ .cluster-label span{color:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_103\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_103\_ .label text,#chatgpt-mermaid-\_r_103\_ span{fill:rgb(26, 28, 31);color:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_103\_ .node rect,#chatgpt-mermaid-\_r_103\_ .node circle,#chatgpt-mermaid-\_r_103\_ .node ellipse,#chatgpt-mermaid-\_r_103\_ .node polygon,#chatgpt-mermaid-\_r_103\_ .node path{fill:rgb(224, 237, 254);stroke:rgb(83, 154, 248);stroke-width:1px;}#chatgpt-mermaid-\_r_103\_ .rough-node .label text,#chatgpt-mermaid-\_r_103\_ .node .label text,#chatgpt-mermaid-\_r_103\_ .image-shape .label,#chatgpt-mermaid-\_r_103\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_103\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_103\_ .rough-node .label,#chatgpt-mermaid-\_r_103\_ .node .label,#chatgpt-mermaid-\_r_103\_ .image-shape .label,#chatgpt-mermaid-\_r_103\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_103\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_103\_ .root .anchor path{fill:rgba(26, 28, 31, 0.494)!important;stroke-width:0;stroke:rgba(26, 28, 31, 0.494);}#chatgpt-mermaid-\_r_103\_ .arrowheadPath{fill:rgba(26, 28, 31, 0.494);}#chatgpt-mermaid-\_r_103\_ .edgePath .path{stroke:rgba(26, 28, 31, 0.494);stroke-width:1px;}#chatgpt-mermaid-\_r_103\_ .flowchart-link{stroke:rgba(26, 28, 31, 0.494);fill:none;}#chatgpt-mermaid-\_r_103\_ .edgeLabel{background-color:rgb(255, 255, 255);text-align:center;}#chatgpt-mermaid-\_r_103\_ .edgeLabel p{background-color:rgb(255, 255, 255);}#chatgpt-mermaid-\_r_103\_ .edgeLabel rect{opacity:0.5;background-color:rgb(255, 255, 255);fill:rgb(255, 255, 255);}#chatgpt-mermaid-\_r_103\_ .labelBkg{background-color:rgba(255, 255, 255, 0.5);}#chatgpt-mermaid-\_r_103\_ .cluster rect{fill:rgba(255, 255, 255, 0.96);stroke:rgba(26, 28, 31, 0.08);stroke-width:1px;}#chatgpt-mermaid-\_r_103\_ .cluster text{fill:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_103\_ .cluster span{color:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_103\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:12px;background:rgba(255, 255, 255, 0.96);border:1px solid rgba(26, 28, 31, 0.08);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_103\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_103\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_103\_ .icon-shape,#chatgpt-mermaid-\_r_103\_ .image-shape{background-color:rgb(255, 255, 255);text-align:center;}#chatgpt-mermaid-\_r_103\_ .icon-shape p,#chatgpt-mermaid-\_r_103\_ .image-shape p{background-color:rgb(255, 255, 255);padding:2px;}#chatgpt-mermaid-\_r_103\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_103\_ .image-shape .label rect{opacity:0.5;background-color:rgb(255, 255, 255);fill:rgb(255, 255, 255);}#chatgpt-mermaid-\_r_103\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_103\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_103\_ .node .neo-node{stroke:rgb(83, 154, 248);}#chatgpt-mermaid-\_r_103\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_103\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_103\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_103\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_103\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_103\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_103\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_103\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_103\_ [data-look="neo"].node .neo-line path{stroke:rgb(83, 154, 248);filter:none;}#chatgpt-mermaid-\_r_103\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_103\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_103\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_103\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_103\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_103\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_103\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_103\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_103\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_103\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_103\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_103\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-width:1px;}#chatgpt-mermaid-\_r_103\_ .node rect,#chatgpt-mermaid-\_r_103\_ .node circle,#chatgpt-mermaid-\_r_103\_ .node ellipse,#chatgpt-mermaid-\_r_103\_ .node polygon,#chatgpt-mermaid-\_r_103\_ .node path{fill:rgb(229, 243, 255);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_103\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_103\_ .node.mermaid-decision .label-container{fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_103\_ .edgePaths .flowchart-link{stroke:rgba(26, 28, 31, 0.494);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_103\_ .marker{fill:rgba(26, 28, 31, 0.494);stroke:rgba(26, 28, 31, 0.494);}#chatgpt-mermaid-\_r_103\_ :root{--mermaid-font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;}Run CompletedCompletion Event PublishedMetrics ConsumerCompletion Count IncreasedConsumer Fails BeforeCheckpointEvent RedeliveredCompletion Count IncreasedAgain
+```mermaid
+flowchart TD
+    R["Run Completed"] --> P["Completion Event Published"] --> C["Metrics Consumer"]
+    C --> I["Completion Count Increased"] --> F["Consumer Fails Before Checkpoint"]
+    F --> D["Event Redelivered"] --> X["Completion Count Incorrectly Increased Again"]
+```
 
-Figure 20.13 — Duplicate event delivery inflating completion metrics.
+*Figure 20.13 — Duplicate event delivery inflating completion metrics.*
 
 Without idempotent ingestion, the dashboard may report more completed work than actually exists.
 
@@ -6739,7 +6830,7 @@ A particularly dangerous anti-pattern is assuming success when no failure is rec
 
 For example:
 
-```
+```text
 Build: Passed
 Unit Tests: Passed
 Security Gate: Not executed
@@ -6879,7 +6970,7 @@ Throughput describes transitions or accepted outcomes during a defined interval.
 
 For example:
 
-```
+```text
 Completed items currently in Population: 500
 
 Items completed during the last 24 hours: 20
@@ -6927,7 +7018,7 @@ If the Metrics subsystem measures only automated execution, the reported cycle t
 
 For example:
 
-```
+```text
 Automated implementation: 15 minutes
 Validation and evaluation: 20 minutes
 Approval waiting: 2 days
@@ -6971,7 +7062,7 @@ An organization may attempt to simplify Harness evaluation into one weighted sco
 
 For example:
 
-\\[ \text{Productivity Score} = 0.5(\text{Throughput}) + 0.3(\text{Speed}) + 0.2(\text{Quality}) \\]
+\[ \text{Productivity Score} = 0.5(\text{Throughput}) + 0.3(\text{Speed}) + 0.2(\text{Quality}) \]
 
 Such a score may appear convenient.
 
@@ -7067,8 +7158,6 @@ Most importantly, metrics must remain instruments of engineering judgment rather
 
 > The purpose of Harness Metrics is not to make automation look successful. It is to reveal, with trustworthy evidence, whether automation is producing acceptable engineering outcomes and where improvement is required.
 
-Chapter 20 status: In progress — next section: Architect’s Notes
-
 ## 13. Architect’s Notes
 
 ### 13.1 Metrics Are Part of the Harness Architecture, Not a Reporting Extension
@@ -7142,7 +7231,7 @@ A common design mistake is to create database columns and event contracts direct
 
 For example, an engineer may introduce a table containing:
 
-```
+```text
 ProgramsTotal
 ProgramsPassed
 ProgramsFailed
@@ -7157,7 +7246,7 @@ It cannot independently establish when a program failed, whether it was retried,
 
 A more extensible architecture records meaningful lifecycle events:
 
-```
+```text
 population.item.created
 run.started
 gate.execution.completed
@@ -7172,9 +7261,15 @@ These events represent facts about the engineering process.
 
 Metrics are projections derived from those facts.
 
-\#chatgpt-mermaid-\_r_3pj\_{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:14px;fill:rgb(26, 28, 31);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_3pj\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_3pj\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_3pj\_ .error-icon{fill:rgba(255, 255, 255, 0.96);}#chatgpt-mermaid-\_r_3pj\_ .error-text{fill:rgb(26, 28, 31);stroke:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_3pj\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_3pj\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_3pj\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_3pj\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_3pj\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_3pj\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_3pj\_ .marker{fill:rgba(26, 28, 31, 0.494);stroke:rgba(26, 28, 31, 0.494);}#chatgpt-mermaid-\_r_3pj\_ .marker.cross{stroke:rgba(26, 28, 31, 0.494);}#chatgpt-mermaid-\_r_3pj\_ svg{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:14px;}#chatgpt-mermaid-\_r_3pj\_ p{margin:0;}#chatgpt-mermaid-\_r_3pj\_ .label{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_3pj\_ .cluster-label text{fill:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_3pj\_ .cluster-label span{color:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_3pj\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_3pj\_ .label text,#chatgpt-mermaid-\_r_3pj\_ span{fill:rgb(26, 28, 31);color:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_3pj\_ .node rect,#chatgpt-mermaid-\_r_3pj\_ .node circle,#chatgpt-mermaid-\_r_3pj\_ .node ellipse,#chatgpt-mermaid-\_r_3pj\_ .node polygon,#chatgpt-mermaid-\_r_3pj\_ .node path{fill:rgb(224, 237, 254);stroke:rgb(83, 154, 248);stroke-width:1px;}#chatgpt-mermaid-\_r_3pj\_ .rough-node .label text,#chatgpt-mermaid-\_r_3pj\_ .node .label text,#chatgpt-mermaid-\_r_3pj\_ .image-shape .label,#chatgpt-mermaid-\_r_3pj\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_3pj\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_3pj\_ .rough-node .label,#chatgpt-mermaid-\_r_3pj\_ .node .label,#chatgpt-mermaid-\_r_3pj\_ .image-shape .label,#chatgpt-mermaid-\_r_3pj\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_3pj\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_3pj\_ .root .anchor path{fill:rgba(26, 28, 31, 0.494)!important;stroke-width:0;stroke:rgba(26, 28, 31, 0.494);}#chatgpt-mermaid-\_r_3pj\_ .arrowheadPath{fill:rgba(26, 28, 31, 0.494);}#chatgpt-mermaid-\_r_3pj\_ .edgePath .path{stroke:rgba(26, 28, 31, 0.494);stroke-width:1px;}#chatgpt-mermaid-\_r_3pj\_ .flowchart-link{stroke:rgba(26, 28, 31, 0.494);fill:none;}#chatgpt-mermaid-\_r_3pj\_ .edgeLabel{background-color:rgb(255, 255, 255);text-align:center;}#chatgpt-mermaid-\_r_3pj\_ .edgeLabel p{background-color:rgb(255, 255, 255);}#chatgpt-mermaid-\_r_3pj\_ .edgeLabel rect{opacity:0.5;background-color:rgb(255, 255, 255);fill:rgb(255, 255, 255);}#chatgpt-mermaid-\_r_3pj\_ .labelBkg{background-color:rgba(255, 255, 255, 0.5);}#chatgpt-mermaid-\_r_3pj\_ .cluster rect{fill:rgba(255, 255, 255, 0.96);stroke:rgba(26, 28, 31, 0.08);stroke-width:1px;}#chatgpt-mermaid-\_r_3pj\_ .cluster text{fill:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_3pj\_ .cluster span{color:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_3pj\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:12px;background:rgba(255, 255, 255, 0.96);border:1px solid rgba(26, 28, 31, 0.08);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_3pj\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_3pj\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_3pj\_ .icon-shape,#chatgpt-mermaid-\_r_3pj\_ .image-shape{background-color:rgb(255, 255, 255);text-align:center;}#chatgpt-mermaid-\_r_3pj\_ .icon-shape p,#chatgpt-mermaid-\_r_3pj\_ .image-shape p{background-color:rgb(255, 255, 255);padding:2px;}#chatgpt-mermaid-\_r_3pj\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_3pj\_ .image-shape .label rect{opacity:0.5;background-color:rgb(255, 255, 255);fill:rgb(255, 255, 255);}#chatgpt-mermaid-\_r_3pj\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_3pj\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_3pj\_ .node .neo-node{stroke:rgb(83, 154, 248);}#chatgpt-mermaid-\_r_3pj\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_3pj\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_3pj\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_3pj\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_3pj\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_3pj\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_3pj\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_3pj\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_3pj\_ [data-look="neo"].node .neo-line path{stroke:rgb(83, 154, 248);filter:none;}#chatgpt-mermaid-\_r_3pj\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_3pj\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_3pj\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_3pj\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_3pj\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_3pj\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_3pj\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_3pj\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_3pj\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_3pj\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_3pj\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_3pj\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-width:1px;}#chatgpt-mermaid-\_r_3pj\_ .node rect,#chatgpt-mermaid-\_r_3pj\_ .node circle,#chatgpt-mermaid-\_r_3pj\_ .node ellipse,#chatgpt-mermaid-\_r_3pj\_ .node polygon,#chatgpt-mermaid-\_r_3pj\_ .node path{fill:rgb(229, 243, 255);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_3pj\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_3pj\_ .node.mermaid-decision .label-container{fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_3pj\_ .edgePaths .flowchart-link{stroke:rgba(26, 28, 31, 0.494);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_3pj\_ .marker{fill:rgba(26, 28, 31, 0.494);stroke:rgba(26, 28, 31, 0.494);}#chatgpt-mermaid-\_r_3pj\_ :root{--mermaid-font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;}Authoritative Lifecycle EventsEvent StoreMetrics AggregationRead ModelsOperational DashboardQuality DashboardCost Dashboard
+```mermaid
+flowchart LR
+    E["Authoritative Lifecycle Events"] --> S[("Event Store")] --> A["Metrics Aggregation"] --> R[("Read Models")]
+    R --> O["Operational Dashboard"]
+    R --> Q["Quality Dashboard"]
+    R --> C["Cost Dashboard"]
+```
 
-Figure 20.14 — Event-derived metrics supporting multiple reporting perspectives.
+*Figure 20.14 — Event-derived metrics supporting multiple reporting perspectives.*
 
 This architecture allows new dashboards and KPI definitions to be introduced without requiring each execution component to implement new counting logic.
 
@@ -7190,7 +7285,7 @@ An incorrect identity model can substantially distort metrics.
 
 Consider the following scenario:
 
-```
+```text
 Population Item: ACD-BOOKING-042
 
 Harness Run 1
@@ -7247,7 +7342,7 @@ For example:
 
 Version 1 — Engineering Success Rate
 
-```
+```text
 Completed work items passing mandatory validation
 -------------------------------------------------
 Eligible terminal work items
@@ -7255,7 +7350,7 @@ Eligible terminal work items
 
 Version 2 — Engineering Success Rate
 
-```
+```text
 Terminal work items satisfying all governed
 engineering acceptance conditions
 -------------------------------------------------
@@ -7268,7 +7363,7 @@ The architect should require versioning for important metric contracts.
 
 A metric-definition record may contain:
 
-```
+```yaml
 metric_id: engineering_success_rate
 definition_version: 2
 unit: percentage
@@ -7295,7 +7390,7 @@ An Evaluator pass may establish goal satisfaction while human approval remains p
 
 Therefore, a single Boolean field such as:
 
-```
+```csharp
 public bool IsSuccessful { get; set; }
 ```
 
@@ -7303,7 +7398,7 @@ is insufficient as the complete engineering outcome model.
 
 A more appropriate model preserves independent dimensions.
 
-```
+```csharp
 public sealed record HarnessOutcome(
     string OperationalStatus,
     string ValidationStatus,
@@ -7357,7 +7452,7 @@ The Metrics subsystem should periodically compare aggregated results against aut
 
 For example:
 
-\\[ \text{Population Total} = \text{Queued} + \text{Running} + \text{Completed} + \text{Failed} + \text{Exhausted} \\]
+\[ \text{Population Total} = \text{Queued} + \text{Running} + \text{Completed} + \text{Failed} + \text{Exhausted} \]
 
 This invariant applies to the chapter's simplified five-state Population model.
 
@@ -7407,7 +7502,7 @@ The architect should separate:
 
 For example:
 
-```
+```text
 Metric:
     gate_duration_seconds
 
@@ -7568,7 +7663,7 @@ Consider the decision to execute validation gates serially or concurrently.
 
 A serial pipeline may perform:
 
-```
+```text
 Build
   ↓
 Unit Tests
@@ -7580,9 +7675,18 @@ Security Scan
 
 A concurrent design may execute independent checks after an appropriate shared preparation stage.
 
-\#chatgpt-mermaid-\_r_3rf\_{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:14px;fill:rgb(26, 28, 31);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_3rf\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_3rf\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_3rf\_ .error-icon{fill:rgba(255, 255, 255, 0.96);}#chatgpt-mermaid-\_r_3rf\_ .error-text{fill:rgb(26, 28, 31);stroke:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_3rf\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_3rf\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_3rf\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_3rf\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_3rf\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_3rf\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_3rf\_ .marker{fill:rgba(26, 28, 31, 0.494);stroke:rgba(26, 28, 31, 0.494);}#chatgpt-mermaid-\_r_3rf\_ .marker.cross{stroke:rgba(26, 28, 31, 0.494);}#chatgpt-mermaid-\_r_3rf\_ svg{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:14px;}#chatgpt-mermaid-\_r_3rf\_ p{margin:0;}#chatgpt-mermaid-\_r_3rf\_ .label{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_3rf\_ .cluster-label text{fill:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_3rf\_ .cluster-label span{color:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_3rf\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_3rf\_ .label text,#chatgpt-mermaid-\_r_3rf\_ span{fill:rgb(26, 28, 31);color:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_3rf\_ .node rect,#chatgpt-mermaid-\_r_3rf\_ .node circle,#chatgpt-mermaid-\_r_3rf\_ .node ellipse,#chatgpt-mermaid-\_r_3rf\_ .node polygon,#chatgpt-mermaid-\_r_3rf\_ .node path{fill:rgb(224, 237, 254);stroke:rgb(83, 154, 248);stroke-width:1px;}#chatgpt-mermaid-\_r_3rf\_ .rough-node .label text,#chatgpt-mermaid-\_r_3rf\_ .node .label text,#chatgpt-mermaid-\_r_3rf\_ .image-shape .label,#chatgpt-mermaid-\_r_3rf\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_3rf\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_3rf\_ .rough-node .label,#chatgpt-mermaid-\_r_3rf\_ .node .label,#chatgpt-mermaid-\_r_3rf\_ .image-shape .label,#chatgpt-mermaid-\_r_3rf\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_3rf\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_3rf\_ .root .anchor path{fill:rgba(26, 28, 31, 0.494)!important;stroke-width:0;stroke:rgba(26, 28, 31, 0.494);}#chatgpt-mermaid-\_r_3rf\_ .arrowheadPath{fill:rgba(26, 28, 31, 0.494);}#chatgpt-mermaid-\_r_3rf\_ .edgePath .path{stroke:rgba(26, 28, 31, 0.494);stroke-width:1px;}#chatgpt-mermaid-\_r_3rf\_ .flowchart-link{stroke:rgba(26, 28, 31, 0.494);fill:none;}#chatgpt-mermaid-\_r_3rf\_ .edgeLabel{background-color:rgb(255, 255, 255);text-align:center;}#chatgpt-mermaid-\_r_3rf\_ .edgeLabel p{background-color:rgb(255, 255, 255);}#chatgpt-mermaid-\_r_3rf\_ .edgeLabel rect{opacity:0.5;background-color:rgb(255, 255, 255);fill:rgb(255, 255, 255);}#chatgpt-mermaid-\_r_3rf\_ .labelBkg{background-color:rgba(255, 255, 255, 0.5);}#chatgpt-mermaid-\_r_3rf\_ .cluster rect{fill:rgba(255, 255, 255, 0.96);stroke:rgba(26, 28, 31, 0.08);stroke-width:1px;}#chatgpt-mermaid-\_r_3rf\_ .cluster text{fill:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_3rf\_ .cluster span{color:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_3rf\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:12px;background:rgba(255, 255, 255, 0.96);border:1px solid rgba(26, 28, 31, 0.08);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_3rf\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_3rf\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_3rf\_ .icon-shape,#chatgpt-mermaid-\_r_3rf\_ .image-shape{background-color:rgb(255, 255, 255);text-align:center;}#chatgpt-mermaid-\_r_3rf\_ .icon-shape p,#chatgpt-mermaid-\_r_3rf\_ .image-shape p{background-color:rgb(255, 255, 255);padding:2px;}#chatgpt-mermaid-\_r_3rf\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_3rf\_ .image-shape .label rect{opacity:0.5;background-color:rgb(255, 255, 255);fill:rgb(255, 255, 255);}#chatgpt-mermaid-\_r_3rf\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_3rf\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_3rf\_ .node .neo-node{stroke:rgb(83, 154, 248);}#chatgpt-mermaid-\_r_3rf\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_3rf\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_3rf\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_3rf\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_3rf\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_3rf\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_3rf\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_3rf\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_3rf\_ [data-look="neo"].node .neo-line path{stroke:rgb(83, 154, 248);filter:none;}#chatgpt-mermaid-\_r_3rf\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_3rf\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_3rf\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_3rf\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_3rf\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_3rf\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_3rf\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_3rf\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_3rf\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_3rf\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_3rf\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_3rf\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-width:1px;}#chatgpt-mermaid-\_r_3rf\_ .node rect,#chatgpt-mermaid-\_r_3rf\_ .node circle,#chatgpt-mermaid-\_r_3rf\_ .node ellipse,#chatgpt-mermaid-\_r_3rf\_ .node polygon,#chatgpt-mermaid-\_r_3rf\_ .node path{fill:rgb(229, 243, 255);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_3rf\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_3rf\_ .node.mermaid-decision .label-container{fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_3rf\_ .edgePaths .flowchart-link{stroke:rgba(26, 28, 31, 0.494);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_3rf\_ .marker{fill:rgba(26, 28, 31, 0.494);stroke:rgba(26, 28, 31, 0.494);}#chatgpt-mermaid-\_r_3rf\_ :root{--mermaid-font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;}Shared Build and PreparationUnit TestsIntegration TestsSecurity ScanEvidence AggregationMandatory Gate Decision
+```mermaid
+flowchart TD
+    B["Shared Build and Preparation"] --> U["Unit Tests"]
+    B --> I["Integration Tests"]
+    B --> S["Security Scan"]
+    U --> E["Evidence Aggregation"]
+    I --> E
+    S --> E
+    E --> D["Mandatory Gate Decision"]
+```
 
-Figure 20.15 — Parallel validation as a potential Harness efficiency improvement.
+*Figure 20.15 — Parallel validation as a potential Harness efficiency improvement.*
 
 The architect should evaluate the decision using:
 
@@ -7672,9 +7776,16 @@ The Metrics architecture should accommodate this without creating separate defin
 
 A suitable design introduces platform-specific adapters.
 
-\#chatgpt-mermaid-\_r_3ro\_{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:14px;fill:rgb(26, 28, 31);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_3ro\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_3ro\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_3ro\_ .error-icon{fill:rgba(255, 255, 255, 0.96);}#chatgpt-mermaid-\_r_3ro\_ .error-text{fill:rgb(26, 28, 31);stroke:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_3ro\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_3ro\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_3ro\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_3ro\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_3ro\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_3ro\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_3ro\_ .marker{fill:rgba(26, 28, 31, 0.494);stroke:rgba(26, 28, 31, 0.494);}#chatgpt-mermaid-\_r_3ro\_ .marker.cross{stroke:rgba(26, 28, 31, 0.494);}#chatgpt-mermaid-\_r_3ro\_ svg{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:14px;}#chatgpt-mermaid-\_r_3ro\_ p{margin:0;}#chatgpt-mermaid-\_r_3ro\_ .label{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_3ro\_ .cluster-label text{fill:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_3ro\_ .cluster-label span{color:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_3ro\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_3ro\_ .label text,#chatgpt-mermaid-\_r_3ro\_ span{fill:rgb(26, 28, 31);color:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_3ro\_ .node rect,#chatgpt-mermaid-\_r_3ro\_ .node circle,#chatgpt-mermaid-\_r_3ro\_ .node ellipse,#chatgpt-mermaid-\_r_3ro\_ .node polygon,#chatgpt-mermaid-\_r_3ro\_ .node path{fill:rgb(224, 237, 254);stroke:rgb(83, 154, 248);stroke-width:1px;}#chatgpt-mermaid-\_r_3ro\_ .rough-node .label text,#chatgpt-mermaid-\_r_3ro\_ .node .label text,#chatgpt-mermaid-\_r_3ro\_ .image-shape .label,#chatgpt-mermaid-\_r_3ro\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_3ro\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_3ro\_ .rough-node .label,#chatgpt-mermaid-\_r_3ro\_ .node .label,#chatgpt-mermaid-\_r_3ro\_ .image-shape .label,#chatgpt-mermaid-\_r_3ro\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_3ro\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_3ro\_ .root .anchor path{fill:rgba(26, 28, 31, 0.494)!important;stroke-width:0;stroke:rgba(26, 28, 31, 0.494);}#chatgpt-mermaid-\_r_3ro\_ .arrowheadPath{fill:rgba(26, 28, 31, 0.494);}#chatgpt-mermaid-\_r_3ro\_ .edgePath .path{stroke:rgba(26, 28, 31, 0.494);stroke-width:1px;}#chatgpt-mermaid-\_r_3ro\_ .flowchart-link{stroke:rgba(26, 28, 31, 0.494);fill:none;}#chatgpt-mermaid-\_r_3ro\_ .edgeLabel{background-color:rgb(255, 255, 255);text-align:center;}#chatgpt-mermaid-\_r_3ro\_ .edgeLabel p{background-color:rgb(255, 255, 255);}#chatgpt-mermaid-\_r_3ro\_ .edgeLabel rect{opacity:0.5;background-color:rgb(255, 255, 255);fill:rgb(255, 255, 255);}#chatgpt-mermaid-\_r_3ro\_ .labelBkg{background-color:rgba(255, 255, 255, 0.5);}#chatgpt-mermaid-\_r_3ro\_ .cluster rect{fill:rgba(255, 255, 255, 0.96);stroke:rgba(26, 28, 31, 0.08);stroke-width:1px;}#chatgpt-mermaid-\_r_3ro\_ .cluster text{fill:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_3ro\_ .cluster span{color:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_3ro\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:12px;background:rgba(255, 255, 255, 0.96);border:1px solid rgba(26, 28, 31, 0.08);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_3ro\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_3ro\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_3ro\_ .icon-shape,#chatgpt-mermaid-\_r_3ro\_ .image-shape{background-color:rgb(255, 255, 255);text-align:center;}#chatgpt-mermaid-\_r_3ro\_ .icon-shape p,#chatgpt-mermaid-\_r_3ro\_ .image-shape p{background-color:rgb(255, 255, 255);padding:2px;}#chatgpt-mermaid-\_r_3ro\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_3ro\_ .image-shape .label rect{opacity:0.5;background-color:rgb(255, 255, 255);fill:rgb(255, 255, 255);}#chatgpt-mermaid-\_r_3ro\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_3ro\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_3ro\_ .node .neo-node{stroke:rgb(83, 154, 248);}#chatgpt-mermaid-\_r_3ro\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_3ro\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_3ro\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_3ro\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_3ro\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_3ro\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_3ro\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_3ro\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_3ro\_ [data-look="neo"].node .neo-line path{stroke:rgb(83, 154, 248);filter:none;}#chatgpt-mermaid-\_r_3ro\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_3ro\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_3ro\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_3ro\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_3ro\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_3ro\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_3ro\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_3ro\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_3ro\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_3ro\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_3ro\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_3ro\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-width:1px;}#chatgpt-mermaid-\_r_3ro\_ .node rect,#chatgpt-mermaid-\_r_3ro\_ .node circle,#chatgpt-mermaid-\_r_3ro\_ .node ellipse,#chatgpt-mermaid-\_r_3ro\_ .node polygon,#chatgpt-mermaid-\_r_3ro\_ .node path{fill:rgb(229, 243, 255);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_3ro\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_3ro\_ .node.mermaid-decision .label-container{fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_3ro\_ .edgePaths .flowchart-link{stroke:rgba(26, 28, 31, 0.494);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_3ro\_ .marker{fill:rgba(26, 28, 31, 0.494);stroke:rgba(26, 28, 31, 0.494);}#chatgpt-mermaid-\_r_3ro\_ :root{--mermaid-font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;}Claude Code AdapterNormalized Execution ContractGitHub Copilot AdapterCodex AdapterHarness Execution RecordsAuthoritative EngineeringEvidenceGoverned MetricsEnterprise Dashboards
+```mermaid
+flowchart TD
+    C["Claude Code Adapter"] --> N["Normalized Execution Contract"]
+    G["GitHub Copilot Adapter"] --> N
+    O["Codex Adapter"] --> N
+    N --> R["Harness Execution Records"] --> E["Authoritative Engineering Evidence"]
+    E --> M["Governed Metrics"] --> D["Enterprise Dashboards"]
+```
 
-Figure 20.16 — Vendor-neutral measurement through normalized Harness contracts.
+*Figure 20.16 — Vendor-neutral measurement through normalized Harness contracts.*
 
 The adapters may provide different levels of telemetry.
 
@@ -7720,7 +7831,7 @@ Inference cost is only one component of AI Engineering economics.
 
 The architect should consider:
 
-\\[ \text{Total Engineering Cost} = \text{Model Cost} + \text{Infrastructure Cost} + \text{Tooling Cost} + \text{Human Effort Cost} \\]
+\[ \text{Total Engineering Cost} = \text{Model Cost} + \text{Infrastructure Cost} + \text{Tooling Cost} + \text{Human Effort Cost} \]
 
 The system should also account for rework and failed attempts without double-counting their costs.
 
@@ -7784,7 +7895,7 @@ Metrics can support a self-improving Harness, but the improvement process must r
 
 Consider this sequence:
 
-```
+```text
 Metrics identify repeated architecture failures.
     ↓
 Analysis identifies missing repository guidance.
@@ -7874,8 +7985,6 @@ They should help Agents become more effective, but never by allowing those Agent
 They should support autonomous engineering, but never by eliminating the evidence and human accountability required for responsible enterprise software development.
 
 The architecture succeeds when every important engineering outcome can be explained through its original objective, execution history, validation evidence, independent assessments, resource consumption, and final governed disposition.
-
-Chapter 20 status: In progress — next section: Enterprise Tips
 
 ## 14. Enterprise Tips
 
@@ -8010,7 +8119,7 @@ A Metrics catalog should record:
 
 An illustrative definition is:
 
-```
+```yaml
 metric_id: harness.exhaustion_rate
 version: 1
 display_name: Exhaustion Rate
@@ -8074,7 +8183,7 @@ The Metrics architecture must distinguish reporting scopes.
 
 For example:
 
-```
+```text
 Organization
     ├── Client A
     │   ├── Repository 1
@@ -8101,7 +8210,7 @@ Metrics events should contain only the information necessary for measurement and
 
 For example, a security gate event may contain:
 
-```
+```json
 {
   "gate_id": "security-scan",
   "status": "failed",
@@ -8152,9 +8261,15 @@ The Harness event store preserves the authoritative lifecycle and evidence relat
 
 A recommended architecture is:
 
-\#chatgpt-mermaid-\_r_3ss\_{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:14px;fill:rgb(26, 28, 31);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_3ss\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_3ss\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_3ss\_ .error-icon{fill:rgba(255, 255, 255, 0.96);}#chatgpt-mermaid-\_r_3ss\_ .error-text{fill:rgb(26, 28, 31);stroke:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_3ss\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_3ss\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_3ss\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_3ss\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_3ss\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_3ss\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_3ss\_ .marker{fill:rgba(26, 28, 31, 0.494);stroke:rgba(26, 28, 31, 0.494);}#chatgpt-mermaid-\_r_3ss\_ .marker.cross{stroke:rgba(26, 28, 31, 0.494);}#chatgpt-mermaid-\_r_3ss\_ svg{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:14px;}#chatgpt-mermaid-\_r_3ss\_ p{margin:0;}#chatgpt-mermaid-\_r_3ss\_ .label{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_3ss\_ .cluster-label text{fill:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_3ss\_ .cluster-label span{color:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_3ss\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_3ss\_ .label text,#chatgpt-mermaid-\_r_3ss\_ span{fill:rgb(26, 28, 31);color:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_3ss\_ .node rect,#chatgpt-mermaid-\_r_3ss\_ .node circle,#chatgpt-mermaid-\_r_3ss\_ .node ellipse,#chatgpt-mermaid-\_r_3ss\_ .node polygon,#chatgpt-mermaid-\_r_3ss\_ .node path{fill:rgb(224, 237, 254);stroke:rgb(83, 154, 248);stroke-width:1px;}#chatgpt-mermaid-\_r_3ss\_ .rough-node .label text,#chatgpt-mermaid-\_r_3ss\_ .node .label text,#chatgpt-mermaid-\_r_3ss\_ .image-shape .label,#chatgpt-mermaid-\_r_3ss\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_3ss\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_3ss\_ .rough-node .label,#chatgpt-mermaid-\_r_3ss\_ .node .label,#chatgpt-mermaid-\_r_3ss\_ .image-shape .label,#chatgpt-mermaid-\_r_3ss\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_3ss\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_3ss\_ .root .anchor path{fill:rgba(26, 28, 31, 0.494)!important;stroke-width:0;stroke:rgba(26, 28, 31, 0.494);}#chatgpt-mermaid-\_r_3ss\_ .arrowheadPath{fill:rgba(26, 28, 31, 0.494);}#chatgpt-mermaid-\_r_3ss\_ .edgePath .path{stroke:rgba(26, 28, 31, 0.494);stroke-width:1px;}#chatgpt-mermaid-\_r_3ss\_ .flowchart-link{stroke:rgba(26, 28, 31, 0.494);fill:none;}#chatgpt-mermaid-\_r_3ss\_ .edgeLabel{background-color:rgb(255, 255, 255);text-align:center;}#chatgpt-mermaid-\_r_3ss\_ .edgeLabel p{background-color:rgb(255, 255, 255);}#chatgpt-mermaid-\_r_3ss\_ .edgeLabel rect{opacity:0.5;background-color:rgb(255, 255, 255);fill:rgb(255, 255, 255);}#chatgpt-mermaid-\_r_3ss\_ .labelBkg{background-color:rgba(255, 255, 255, 0.5);}#chatgpt-mermaid-\_r_3ss\_ .cluster rect{fill:rgba(255, 255, 255, 0.96);stroke:rgba(26, 28, 31, 0.08);stroke-width:1px;}#chatgpt-mermaid-\_r_3ss\_ .cluster text{fill:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_3ss\_ .cluster span{color:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_3ss\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:12px;background:rgba(255, 255, 255, 0.96);border:1px solid rgba(26, 28, 31, 0.08);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_3ss\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_3ss\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_3ss\_ .icon-shape,#chatgpt-mermaid-\_r_3ss\_ .image-shape{background-color:rgb(255, 255, 255);text-align:center;}#chatgpt-mermaid-\_r_3ss\_ .icon-shape p,#chatgpt-mermaid-\_r_3ss\_ .image-shape p{background-color:rgb(255, 255, 255);padding:2px;}#chatgpt-mermaid-\_r_3ss\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_3ss\_ .image-shape .label rect{opacity:0.5;background-color:rgb(255, 255, 255);fill:rgb(255, 255, 255);}#chatgpt-mermaid-\_r_3ss\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_3ss\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_3ss\_ .node .neo-node{stroke:rgb(83, 154, 248);}#chatgpt-mermaid-\_r_3ss\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_3ss\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_3ss\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_3ss\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_3ss\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_3ss\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_3ss\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_3ss\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_3ss\_ [data-look="neo"].node .neo-line path{stroke:rgb(83, 154, 248);filter:none;}#chatgpt-mermaid-\_r_3ss\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_3ss\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_3ss\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_3ss\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_3ss\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_3ss\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_3ss\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_3ss\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_3ss\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_3ss\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_3ss\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_3ss\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-width:1px;}#chatgpt-mermaid-\_r_3ss\_ .node rect,#chatgpt-mermaid-\_r_3ss\_ .node circle,#chatgpt-mermaid-\_r_3ss\_ .node ellipse,#chatgpt-mermaid-\_r_3ss\_ .node polygon,#chatgpt-mermaid-\_r_3ss\_ .node path{fill:rgb(229, 243, 255);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_3ss\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_3ss\_ .node.mermaid-decision .label-container{fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_3ss\_ .edgePaths .flowchart-link{stroke:rgba(26, 28, 31, 0.494);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_3ss\_ .marker{fill:rgba(26, 28, 31, 0.494);stroke:rgba(26, 28, 31, 0.494);}#chatgpt-mermaid-\_r_3ss\_ :root{--mermaid-font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;}AI Engineering HarnessOpenTelemetryInstrumentationAuthoritative Execution EventsObservability PlatformExecution Event StoreMetrics AggregationEngineering KPI DashboardsOperational MonitoringOperational AlertsEngineering Analysis
+```mermaid
+flowchart TD
+    H["AI Engineering Harness"] --> OT["OpenTelemetry Instrumentation"]
+    H --> EV["Authoritative Execution Events"]
+    OT --> OP["Observability Platform"] --> OM["Operational Monitoring"] --> AL["Operational Alerts"]
+    EV --> ES[("Execution Event Store")] --> M["Metrics Aggregation"] --> D["Engineering KPI Dashboards"] --> A["Engineering Analysis"]
+```
 
-Figure 20.17 — Enterprise observability and Harness Metrics working together.
+*Figure 20.17 — Enterprise observability and Harness Metrics working together.*
 
 The organization should not assume that conventional application monitoring automatically provides complete engineering acceptance metrics.
 
@@ -8300,7 +8415,7 @@ However, the organization should account for the cost of developing and maintain
 
 For example:
 
-\\[ \text{Net Benefit} = \text{Estimated Avoided Engineering Cost} - \text{Total Incremental Harness Cost} \\]
+\[ \text{Net Benefit} = \text{Estimated Avoided Engineering Cost} - \text{Total Incremental Harness Cost} \]
 
 This is a simplified financial model, not a complete return-on-investment calculation.
 
@@ -8339,7 +8454,7 @@ The Metrics subsystem should support traceability from the aggregate measurement
 
 For example:
 
-```
+```text
 Engineering Success Rate: 84%
     ↓
 Accepted Work Items
@@ -8425,9 +8540,15 @@ A mature Harness may eventually analyze metrics and propose its own improvements
 
 For example:
 
-\#chatgpt-mermaid-\_r_3tb\_{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:14px;fill:rgb(26, 28, 31);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_3tb\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_3tb\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_3tb\_ .error-icon{fill:rgba(255, 255, 255, 0.96);}#chatgpt-mermaid-\_r_3tb\_ .error-text{fill:rgb(26, 28, 31);stroke:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_3tb\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_3tb\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_3tb\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_3tb\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_3tb\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_3tb\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_3tb\_ .marker{fill:rgba(26, 28, 31, 0.494);stroke:rgba(26, 28, 31, 0.494);}#chatgpt-mermaid-\_r_3tb\_ .marker.cross{stroke:rgba(26, 28, 31, 0.494);}#chatgpt-mermaid-\_r_3tb\_ svg{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:14px;}#chatgpt-mermaid-\_r_3tb\_ p{margin:0;}#chatgpt-mermaid-\_r_3tb\_ .label{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_3tb\_ .cluster-label text{fill:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_3tb\_ .cluster-label span{color:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_3tb\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_3tb\_ .label text,#chatgpt-mermaid-\_r_3tb\_ span{fill:rgb(26, 28, 31);color:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_3tb\_ .node rect,#chatgpt-mermaid-\_r_3tb\_ .node circle,#chatgpt-mermaid-\_r_3tb\_ .node ellipse,#chatgpt-mermaid-\_r_3tb\_ .node polygon,#chatgpt-mermaid-\_r_3tb\_ .node path{fill:rgb(224, 237, 254);stroke:rgb(83, 154, 248);stroke-width:1px;}#chatgpt-mermaid-\_r_3tb\_ .rough-node .label text,#chatgpt-mermaid-\_r_3tb\_ .node .label text,#chatgpt-mermaid-\_r_3tb\_ .image-shape .label,#chatgpt-mermaid-\_r_3tb\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_3tb\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_3tb\_ .rough-node .label,#chatgpt-mermaid-\_r_3tb\_ .node .label,#chatgpt-mermaid-\_r_3tb\_ .image-shape .label,#chatgpt-mermaid-\_r_3tb\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_3tb\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_3tb\_ .root .anchor path{fill:rgba(26, 28, 31, 0.494)!important;stroke-width:0;stroke:rgba(26, 28, 31, 0.494);}#chatgpt-mermaid-\_r_3tb\_ .arrowheadPath{fill:rgba(26, 28, 31, 0.494);}#chatgpt-mermaid-\_r_3tb\_ .edgePath .path{stroke:rgba(26, 28, 31, 0.494);stroke-width:1px;}#chatgpt-mermaid-\_r_3tb\_ .flowchart-link{stroke:rgba(26, 28, 31, 0.494);fill:none;}#chatgpt-mermaid-\_r_3tb\_ .edgeLabel{background-color:rgb(255, 255, 255);text-align:center;}#chatgpt-mermaid-\_r_3tb\_ .edgeLabel p{background-color:rgb(255, 255, 255);}#chatgpt-mermaid-\_r_3tb\_ .edgeLabel rect{opacity:0.5;background-color:rgb(255, 255, 255);fill:rgb(255, 255, 255);}#chatgpt-mermaid-\_r_3tb\_ .labelBkg{background-color:rgba(255, 255, 255, 0.5);}#chatgpt-mermaid-\_r_3tb\_ .cluster rect{fill:rgba(255, 255, 255, 0.96);stroke:rgba(26, 28, 31, 0.08);stroke-width:1px;}#chatgpt-mermaid-\_r_3tb\_ .cluster text{fill:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_3tb\_ .cluster span{color:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_3tb\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:12px;background:rgba(255, 255, 255, 0.96);border:1px solid rgba(26, 28, 31, 0.08);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_3tb\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_3tb\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_3tb\_ .icon-shape,#chatgpt-mermaid-\_r_3tb\_ .image-shape{background-color:rgb(255, 255, 255);text-align:center;}#chatgpt-mermaid-\_r_3tb\_ .icon-shape p,#chatgpt-mermaid-\_r_3tb\_ .image-shape p{background-color:rgb(255, 255, 255);padding:2px;}#chatgpt-mermaid-\_r_3tb\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_3tb\_ .image-shape .label rect{opacity:0.5;background-color:rgb(255, 255, 255);fill:rgb(255, 255, 255);}#chatgpt-mermaid-\_r_3tb\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_3tb\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_3tb\_ .node .neo-node{stroke:rgb(83, 154, 248);}#chatgpt-mermaid-\_r_3tb\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_3tb\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_3tb\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_3tb\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_3tb\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_3tb\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_3tb\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_3tb\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_3tb\_ [data-look="neo"].node .neo-line path{stroke:rgb(83, 154, 248);filter:none;}#chatgpt-mermaid-\_r_3tb\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_3tb\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_3tb\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_3tb\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_3tb\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_3tb\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_3tb\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_3tb\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_3tb\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_3tb\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_3tb\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_3tb\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-width:1px;}#chatgpt-mermaid-\_r_3tb\_ .node rect,#chatgpt-mermaid-\_r_3tb\_ .node circle,#chatgpt-mermaid-\_r_3tb\_ .node ellipse,#chatgpt-mermaid-\_r_3tb\_ .node polygon,#chatgpt-mermaid-\_r_3tb\_ .node path{fill:rgb(229, 243, 255);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_3tb\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_3tb\_ .node.mermaid-decision .label-container{fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_3tb\_ .edgePaths .flowchart-link{stroke:rgba(26, 28, 31, 0.494);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_3tb\_ .marker{fill:rgba(26, 28, 31, 0.494);stroke:rgba(26, 28, 31, 0.494);}#chatgpt-mermaid-\_r_3tb\_ :root{--mermaid-font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;}Harness MetricsTrend and Failure AnalysisImprovement ProposalArchitecture and GovernanceReviewApproved?Record DecisionControlled ImplementationDeterministic ValidationBaseline ComparisonNoYes
+```mermaid
+flowchart TD
+    M["Harness Metrics"] --> A["Trend and Failure Analysis"] --> P["Improvement Proposal"]
+    P --> R["Architecture and Governance Review"] --> D{"Approved?"}
+    D -- No --> X["Record Decision"]
+    D -- Yes --> I["Controlled Implementation"] --> V["Deterministic Validation"] --> B["Baseline Comparison"] --> M
+```
 
-Figure 20.18 — Governed improvement based on Harness Metrics.
+*Figure 20.18 — Governed improvement based on Harness Metrics.*
 
 The Harness may identify that a particular Skill is associated with repeated validation failures.
 
@@ -8561,8 +8682,6 @@ A mature enterprise Harness does not simply automate engineering work.
 
 It establishes the evidence required to demonstrate that the automation is effective, trustworthy, and aligned with organizational objectives.
 
-Chapter 20 status: In progress — next section: Decision Points
-
 ## 15. Decision Points
 
 ### 15.1 Decision Point: What Should Define Harness Success?
@@ -8684,7 +8803,7 @@ A common source of disagreement is the denominator used to calculate engineering
 
 Consider a Population containing:
 
-```
+```text
 Accepted:    70
 Failed:      15
 Exhausted:   10
@@ -8698,11 +8817,11 @@ These produce different results.
 
 Using all Population items:
 
-\\[ \frac{70}{100}\times100=70\\% \\]
+\[ \frac{70}{100}\times100=70\% \]
 
 Using terminal items:
 
-\\[ \frac{70}{70+15+10}\times100\approx73.68\\% \\]
+\[ \frac{70}{70+15+10}\times100\approx73.68\% \]
 
 Both calculations can answer legitimate questions, but they must not share the same ambiguous label.
 
@@ -9193,640 +9312,6 @@ These questions cannot be answered by a single success counter or productivity s
 They require a balanced, evidence-based measurement architecture.
 
 > Decision Point: When operational efficiency conflicts with engineering quality, security, or mandatory governance, the Harness must preserve the required engineering controls. Optimization should improve how acceptable outcomes are produced, not redefine what counts as acceptable.
-
-Chapter 20 status: In progress — next section: Exercises
-## 15. Decision Points
-
-### 15.1 Decision Point: What Should Define Harness Success?
-
-The first architectural decision concerns the meaning of success.
-
-A Harness can successfully execute an AI Agent without producing acceptable software. Similarly, a work item may pass deterministic validation while failing business acceptance criteria.
-
-The organization must decide which outcome qualifies as engineering success.
-
-Available options:
-
-| Option                              | Definition                                                                      | Limitation                                           |
-| ----------------------------------- | ------------------------------------------------------------------------------- | ---------------------------------------------------- |
-| A — Execution completion            | The Harness Run finishes                                                        | Does not establish correctness                       |
-| B — Validation success              | All mandatory deterministic gates pass                                          | May not establish goal satisfaction                  |
-| C — Evaluation success              | The Evaluator confirms acceptance criteria                                      | Does not necessarily include required approval       |
-| D — Governed engineering acceptance | Required validation, review, evaluation, and applicable approvals are satisfied | Requires broader evidence and lifecycle coordination |
-
-Recommended decision: Use governed engineering acceptance as the primary measure of successful delivery, while retaining operational completion and individual assessment outcomes as separate metrics.
-
-For Alpha Car Detailing, a corporate booking API should not count as accepted work until its required engineering conditions are satisfied.
-
-An organization may also measure technically accepted work separately from human-approved work where approval is a distinct milestone.
-
-Decision principle: The definition of success must reflect the intended engineering outcome, not the convenience of the execution platform.
-
-### 15.2 Decision Point: What Is the Primary Measurement Unit?
-
-Harness execution involves several related entities.
-
-A Population item may have multiple Runs. Each Run may contain multiple attempts. An attempt may involve several Agent invocations and gate executions.
-
-The organization must decide which entity is counted for each KPI.
-
-| Measurement               | Recommended unit                                     |
-| ------------------------- | ---------------------------------------------------- |
-| Population Total          | Distinct Population items                            |
-| Active Work               | Population items or Runs, explicitly labeled         |
-| Execution Throughput      | Completed Runs per interval                          |
-| Accepted Throughput       | Distinct accepted work items per interval            |
-| Retry Rate                | Runs or attempts, according to the metric definition |
-| Gate Failure Rate         | Gate executions                                      |
-| Review Finding Rate       | Review assessments or reviewed work items            |
-| Agent Utilization         | Execution capacity and occupied time                 |
-| Cost per Accepted Outcome | Accepted work items within a defined cohort          |
-
-Recommended decision: Use Population items for work inventory and accepted engineering outcomes, Runs for orchestration execution, attempts for retry and rework analysis, and gate executions for deterministic validation measurements.
-
-Avoid using one identifier or counting unit for every metric.
-
-Decision principle: The measurement unit must match the engineering question being answered.
-
-### 15.3 Decision Point: Should Metrics Be Calculated from Current State or Execution Events?
-
-There are two common approaches to obtaining Harness Metrics.
-
-Option A — Current-state queries
-
-The Metrics service queries operational tables directly.
-
-Advantages include relatively simple implementation and efficient Population snapshots.
-
-Limitations include reduced historical visibility and difficulty reconstructing earlier retries or transitions.
-
-Option B — Event-derived metrics
-
-The Metrics service consumes structured execution events and creates projections.
-
-Advantages include historical traceability, replay, and detailed analysis.
-
-Limitations include additional ingestion, processing, and data-consistency responsibilities.
-
-| Consideration                   | Current-state queries              | Event-derived metrics                         |
-| ------------------------------- | ---------------------------------- | --------------------------------------------- |
-| Current Population counts       | Well suited                        | Supported through projections                 |
-| Historical retries              | Limited without additional records | Well suited                                   |
-| Execution auditability          | Depends on retained history        | Strong when events are preserved correctly    |
-| Implementation complexity       | Lower                              | Higher                                        |
-| Reprocessing historical metrics | Limited                            | Supported when source events remain available |
-| Distributed execution           | Requires coordinated state updates | Naturally supports event-oriented integration |
-
-Recommended decision: Use a hybrid architecture.
-
-Maintain authoritative operational state for reliable current snapshots and durable execution events for historical measurement, auditability, and aggregation.
-
-For Alpha Car Detailing, the Population Manager should remain authoritative for current work state, while the Metrics subsystem consumes and correlates execution evidence.
-
-Decision principle: Current state explains where work is now; historical events explain how it reached that state.
-
-### 15.4 Decision Point: Should Metrics Be Collected Synchronously or Asynchronously?
-
-Metrics collection must not compromise Harness execution reliability.
-
-A synchronous design updates measurements within the execution workflow.
-
-An asynchronous design publishes observations for independent processing.
-
-| Consideration        | Synchronous                              | Asynchronous                                |
-| -------------------- | ---------------------------------------- | ------------------------------------------- |
-| Immediate visibility | Potentially stronger                     | Subject to processing delay                 |
-| Execution coupling   | Higher                                   | Lower                                       |
-| Failure isolation    | Requires careful handling                | Generally stronger                          |
-| Scaling              | Tied more closely to execution           | Can scale independently                     |
-| Delivery complexity  | Simpler for small systems                | Requires durable processing and idempotency |
-| Data consistency     | Can be transactional within one boundary | Often eventually consistent                 |
-
-Recommended decision: Record authoritative lifecycle transitions durably within their owning transaction where applicable, and process metrics projections asynchronously.
-
-For important state changes, a transactional outbox may ensure that the state transition and corresponding event are committed consistently.
-
-External Agent execution telemetry may require a different durable collection mechanism.
-
-Decision principle: Metrics processing must not become an unnecessary dependency that prevents the Harness from completing legitimate engineering work.
-
-### 15.5 Decision Point: How Should Failed and Exhausted Work Affect Success Rates?
-
-A common source of disagreement is the denominator used to calculate engineering success.
-
-Consider a Population containing:
-
-```
-Accepted:    70
-Failed:      15
-Exhausted:   10
-Running:      5
-Total:      100
-```
-
-The organization could use all Population items or only eligible terminal items as the denominator.
-
-These produce different results.
-
-Using all Population items:
-
-\\[ \frac{70}{100}\times100=70\\% \\]
-
-Using terminal items:
-
-\\[ \frac{70}{70+15+10}\times100\approx73.68\\% \\]
-
-Both calculations can answer legitimate questions, but they must not share the same ambiguous label.
-
-Recommended decision: Use an explicitly defined terminal-cohort engineering success rate as a principal outcome KPI. Report unfinished work, backlog age, and fixed-intake-cohort outcomes separately.
-
-Failed and exhausted terminal work must remain in the terminal denominator.
-
-For fixed intake cohorts, the dashboard should explicitly identify pending outcomes and the cohort's observation horizon.
-
-Decision principle: The denominator must never be selected merely because it produces a more favorable result.
-
-### 15.6 Decision Point: How Should Retries Be Counted?
-
-A Harness may retry execution because of infrastructure failure, validation failure, or implementation rework.
-
-The organization must decide whether these activities belong to one metric.
-
-Option A: Count every repeated Agent invocation as a retry.
-
-Option B: Count only formal Harness attempts after an earlier attempt has failed or requires correction.
-
-Option C: Maintain separate retry categories.
-
-Recommended decision: Use formal Harness attempt transitions to define retries, and classify them by cause.
-
-At minimum, distinguish:
-
-- Operational retry.
-- Implementation correction.
-- Validation-driven rework.
-- Review-driven rework.
-- Evaluation-driven rework.
-
-A Codex turn or Claude tool call should not automatically qualify as a Harness retry.
-
-Decision principle: Retry metrics must reflect orchestration decisions rather than vendor-specific interaction patterns.
-
-### 15.7 Decision Point: What Should Happen When Mandatory Gate Evidence Is Missing?
-
-A gate can produce several outcomes:
-
-- Passed.
-- Failed.
-- Error.
-- Canceled.
-- Skipped.
-- Inconclusive.
-- Not executed.
-
-The organization must determine how these outcomes affect engineering acceptance.
-
-For example, the Alpha Car Detailing booking API may pass its unit tests while its mandatory security scan fails to execute.
-
-Three possible policies exist:
-
-| Option                                                        | Behavior                               | Risk                                                      |
-| ------------------------------------------------------------- | -------------------------------------- | --------------------------------------------------------- |
-| A — Assume pass                                               | Missing gate does not block acceptance | Unsafe and misleading                                     |
-| B — Fail acceptance immediately                               | Missing evidence prevents acceptance   | Safe but may require recovery for infrastructure problems |
-| C — Block acceptance pending recovery or authorized exception | Missing evidence remains explicit      | Preserves assurance and controlled recovery               |
-
-Recommended decision: Use Option C.
-
-A mandatory gate without a valid passing result should not satisfy the acceptance condition.
-
-The Harness may retry the gate, repair infrastructure, or escalate according to policy.
-
-Any permitted exception must be explicitly authorized and audited.
-
-Decision principle: Absence of failure evidence is not evidence of successful validation.
-
-### 15.8 Decision Point: Which Duration Metrics Should Be Published?
-
-Harness duration can be measured across several boundaries.
-
-Possible metrics include:
-
-- Agent invocation duration.
-- Attempt duration.
-- Active execution time.
-- Gate execution duration.
-- Queue waiting time.
-- Engineering cycle time.
-- Approval latency.
-- Approval-inclusive lead time.
-
-A single duration metric cannot represent all these concerns.
-
-Recommended decision: Publish separate execution, engineering, and approval-inclusive duration measurements with clear start and end conditions.
-
-For example:
-
-| Metric                       | Start                                        | End                                 |
-| ---------------------------- | -------------------------------------------- | ----------------------------------- |
-| Execution Duration           | Harness Run starts                           | Run terminates                      |
-| Engineering Cycle Time       | Work enters the defined engineering workflow | Engineering acceptance reached      |
-| Approval Latency             | Approval requested                           | Approval decision recorded          |
-| Approval-Inclusive Lead Time | Work enters the defined workflow             | Required approval milestone reached |
-
-Incomplete work requires separate aging metrics.
-
-Do not calculate performance exclusively from successful completed runs.
-
-Decision principle: Duration measurements must preserve waiting, rework, and unfinished execution rather than hiding inconvenient delays.
-
-### 15.9 Decision Point: Which Statistical Measures Should Be Used?
-
-Averages are simple to calculate but can conceal long-running execution.
-
-The organization must select statistical measures appropriate to each KPI.
-
-| Metric                    | Recommended presentation                       |
-| ------------------------- | ---------------------------------------------- |
-| Population counts         | Exact counts                                   |
-| Success and failure rates | Percentages with denominators                  |
-| Throughput                | Rate over an explicit interval                 |
-| Gate duration             | Median, P95, maximum, execution count          |
-| Cycle time                | Median, P95, work-in-progress age              |
-| Approval latency          | Median, P95, pending approval age              |
-| Cost                      | Total, distribution, cost per accepted outcome |
-| Review findings           | Count, incidence, severity distribution        |
-
-Recommended decision: Use median and tail measurements for duration-based KPIs, supported by sample size and historical trends.
-
-Use explicit statistical definitions, especially for percentiles.
-
-Decision principle: The chosen aggregation must reveal operational behavior rather than conceal it.
-
-### 15.10 Decision Point: Should Cost Be Measured Per Run or Per Accepted Outcome?
-
-An enterprise may calculate AI model cost per invocation or Harness Run.
-
-This is useful for resource management.
-
-However, a cheap run that fails repeatedly may create more total engineering cost than an expensive run that succeeds.
-
-Consider:
-
-| Measurement                         | Workflow A | Workflow B |
-| ----------------------------------- | ---------- | ---------- |
-| Average individual run cost         | $2         | $4         |
-| Runs required per accepted outcome  | 4          | 1          |
-| Total run cost per accepted outcome | $8         | $4         |
-
-The example excludes other costs for simplicity.
-
-Workflow B appears more expensive at the individual-run level but is more economical for the accepted outcome.
-
-Recommended decision: Report both execution-level cost and cost per accepted engineering outcome.
-
-For total engineering economics, include attributable infrastructure, retries, validation, rework, and human effort.
-
-Decision principle: Cost efficiency should be measured at the level of useful engineering results.
-
-### 15.11 Decision Point: Should Human Intervention Be Considered Failure?
-
-A Harness may require human participation for several reasons.
-
-Some are operational problems.
-
-Others are intentional governance requirements.
-
-Examples include:
-
-| Human activity                        | Classification         |
-| ------------------------------------- | ---------------------- |
-| Repairing a failed worker             | Unplanned intervention |
-| Resolving ambiguous requirements      | Engineering escalation |
-| Correcting an Agent's code            | Engineering rework     |
-| Approving a security-sensitive change | Planned governance     |
-| Authorizing production deployment     | Planned governance     |
-
-Treating all human activity as automation failure creates undesirable incentives.
-
-An Agent may proceed without clarification to avoid increasing the intervention rate.
-
-Recommended decision: Measure unplanned intervention, engineering escalation, and planned approval separately.
-
-Avoid setting a universal target of zero human involvement.
-
-Decision principle: Good automation knows when to operate independently and when human judgment is required.
-
-### 15.12 Decision Point: When Should a Run Be Classified as Stale or Stuck?
-
-Long-running engineering work is not necessarily defective.
-
-A security scan or integration test may legitimately require more time than a simple unit-test gate.
-
-The Harness must distinguish execution duration from execution health.
-
-Possible detection signals include:
-
-- Missing heartbeat.
-- Expired execution lease.
-- Missing progress checkpoint.
-- Execution duration exceeding a configured threshold.
-- Unavailable worker.
-- Repeated unchanged execution state.
-
-Recommended decision: Use multiple signals and stage-specific thresholds.
-
-For example, a heartbeat warning may occur when heartbeat age exceeds twice the configured interval, subject to deployment-specific tuning.
-
-A stuck-work classification should consider the current operation and expected progress behavior.
-
-Decision principle: Stale detection should improve recovery without creating unnecessary duplicate execution or terminating legitimate long-running work.
-
-### 15.13 Decision Point: Should Metrics Be Calculated in Real Time?
-
-Not every engineering measurement requires immediate updates.
-
-Operational metrics such as worker health and stale execution may require near-real-time visibility.
-
-Longer-term engineering measurements can often be processed periodically.
-
-| Measurement               | Typical freshness requirement       |
-| ------------------------- | ----------------------------------- |
-| Worker heartbeat          | Near real time                      |
-| Running and queued work   | Near real time                      |
-| Stale and stuck execution | Near real time                      |
-| Gate failure alerts       | Promptly after evidence is recorded |
-| Daily throughput          | Periodic aggregation                |
-| Review finding trends     | Daily or weekly                     |
-| Cost per accepted outcome | Periodic reconciliation             |
-| Business outcome trends   | Weekly or monthly                   |
-
-These are examples, not universal service objectives.
-
-Recommended decision: Use multiple aggregation and reporting intervals according to operational importance.
-
-Avoid introducing complex real-time infrastructure for measurements that support only periodic management decisions.
-
-Decision principle: Freshness requirements should be determined by the decisions the metric supports.
-
-### 15.14 Decision Point: How Should Metrics Support Multiple AI Platforms?
-
-An enterprise may use Claude Code, GitHub Copilot, Codex, and future coding agents.
-
-Each platform may expose different execution and usage information.
-
-The organization must decide whether to maintain separate Metrics implementations or establish common contracts.
-
-Option A: Platform-specific dashboards and metric definitions.
-
-Option B: One normalized enterprise Metrics model with platform-specific adapters.
-
-Recommended decision: Use Option B.
-
-The platform adapter may capture:
-
-- Execution identity.
-- Invocation duration.
-- Available resource usage.
-- Process or task status.
-- Artifact references.
-- Platform-specific diagnostics.
-
-The Harness must independently preserve:
-
-- Population identity.
-- Run and Attempt identity.
-- Mandatory validation.
-- Review and evaluation evidence.
-- Engineering acceptance.
-- Human approval.
-
-Unavailable telemetry should remain explicitly unavailable rather than being reported as zero.
-
-Decision principle: Platform differences should affect integration mechanics, not enterprise acceptance standards.
-
-### 15.15 Decision Point: How Should Metrics Be Used for Team Performance?
-
-Engineering leadership may want to use Harness Metrics to compare teams or individual developers.
-
-This introduces important interpretation and governance risks.
-
-A team working on complex event-driven integration may have lower throughput and higher rework than a team implementing routine configuration changes.
-
-Individual Agent usage patterns also differ according to experience, task responsibilities, and engineering judgment.
-
-Recommended decision: Prioritize team-level process improvement, system reliability, and engineering outcomes rather than simplistic individual rankings.
-
-Where performance-related use is appropriate, the organization should define transparent policies, account for workload differences, and preserve human review.
-
-Avoid using generated lines of code, accepted AI suggestions, or token volume as standalone measures of individual developer performance.
-
-Decision principle: Metrics should improve engineering decisions without creating incentives to inflate activity or avoid difficult work.
-
-### 15.16 Decision Point: Who May Change Metric Definitions?
-
-Metric definitions influence engineering reporting, budgets, governance, and management decisions.
-
-A Developer Agent implementing the Metrics subsystem should not automatically have permission to redefine how success is measured.
-
-Possible governance models include:
-
-| Model                           | Characteristics                                         |
-| ------------------------------- | ------------------------------------------------------- |
-| Agent-controlled                | Fast changes but weak independence                      |
-| Individual developer-controlled | Simple but potentially inconsistent                     |
-| Engineering-owner controlled    | Clear technical accountability                          |
-| Governed approval               | Review, versioning, testing, and explicit authorization |
-
-Recommended decision: Use governed approval for important KPI definitions.
-
-Agents may propose changes.
-
-Developers may implement approved changes.
-
-Independent tests and reviews should establish correctness.
-
-Authorized owners approve changes to reporting semantics.
-
-Decision principle: The participant being measured must not have unrestricted authority to redefine its own success criteria.
-
-### 15.17 Decision Point: How Much Historical Evidence Should Be Retained?
-
-Comprehensive event and evidence retention improves auditability, failure investigation, and future learning.
-
-However, it introduces storage cost, privacy obligations, and security requirements.
-
-Possible retention strategies include:
-
-- Short-lived operational telemetry.
-- Medium-term detailed execution records.
-- Long-term aggregated metrics.
-- Governed retention of approval and audit evidence.
-
-Recommended decision: Establish separate retention policies for raw telemetry, structured execution events, detailed artifacts, aggregated metrics, and formal approval records.
-
-The policy should reflect business, contractual, legal, security, and operational requirements.
-
-Do not retain sensitive Agent transcripts indefinitely merely because they might be useful for future analysis.
-
-Decision principle: Preserve enough trustworthy evidence to explain engineering outcomes while minimizing unnecessary storage and sensitive-data exposure.
-
-### 15.18 Decision Point: When Should a Metric Trigger an Alert?
-
-An organization may be tempted to configure alerts for every unfavorable KPI movement.
-
-However, excessive alerts create noise and reduce operational effectiveness.
-
-A reliable alert should correspond to a condition requiring action.
-
-For example:
-
-| Condition                                      | Recommended treatment            |
-| ---------------------------------------------- | -------------------------------- |
-| Worker lease lost                              | Operational alert                |
-| Mandatory security gate skipped                | Blocking security alert          |
-| Exhaustion rate increases over several periods | Trend investigation              |
-| Retry incidence increases slightly for one day | Observation or periodic analysis |
-| Metrics ingestion stops                        | Operational alert                |
-| Cost per accepted outcome gradually increases  | Engineering and FinOps review    |
-
-Recommended decision: Define alert severity based on operational impact, urgency, and risk.
-
-Every important alert should identify a response owner and investigation procedure.
-
-Decision principle: An alert is useful when it changes an operational decision, not merely when a number changes.
-
-### 15.19 Decision Point: Should the Harness Automatically Optimize Itself Based on Metrics?
-
-A mature Harness may detect patterns and recommend improvements.
-
-For example:
-
-- High retry incidence may indicate weak task decomposition.
-- Repeated architecture findings may indicate missing Instructions.
-- Long gate duration may indicate test infrastructure problems.
-- Frequent exhaustion may indicate inadequate repository context.
-
-The system may propose changes to:
-
-- Skills.
-- Prompts.
-- Instructions.
-- Task decomposition.
-- Execution scheduling.
-- Validation infrastructure.
-- Retry configuration.
-
-However, allowing unrestricted automatic changes introduces significant governance risks.
-
-The Harness might improve reported performance by weakening the standards used to evaluate it.
-
-Recommended decision: Allow automated analysis and improvement proposals, but require appropriate human approval before changing governed engineering assets or policies.
-
-Low-risk operational tuning may be automated only within previously authorized boundaries.
-
-Decision principle: Autonomous improvement must preserve the independence and integrity of engineering acceptance.
-
-### 15.20 Decision Point: How Should Business Value Be Measured?
-
-Operational efficiency and technical quality do not fully establish business value.
-
-For Alpha Car Detailing, the engineering goal may be to improve the corporate fleet booking process.
-
-Relevant business outcomes might include:
-
-- Reduction in duplicate bookings.
-- Improvement in booking reliability.
-- Reduction in failed booking transactions.
-- Faster delivery of approved features.
-- Reduction in production defects.
-- Improved ability to enforce corporate fleet policies.
-
-These measurements may originate outside the Harness.
-
-The organization must decide how to connect engineering work with downstream business outcomes.
-
-Recommended decision: Preserve traceability between engineering work items, accepted changes, deployment records, and relevant business measurements where reliable attribution is possible.
-
-Do not claim that an AI Agent caused a business improvement merely because the two events occurred in the same period.
-
-Decision principle: Business outcome metrics should demonstrate value through evidence rather than assumed relationships.
-
-### 15.21 Consolidated Decision Matrix
-
-The following matrix summarizes the recommended architectural choices.
-
-| Decision area              | Recommended approach                                         |
-| -------------------------- | ------------------------------------------------------------ |
-| Success definition         | Governed engineering acceptance                              |
-| Primary measurement unit   | Explicit Population, Run, Attempt, and Gate entities         |
-| Metrics source             | Authoritative state combined with durable events             |
-| Collection architecture    | Durable event capture and asynchronous aggregation           |
-| Success denominator        | Explicit eligible terminal cohort                            |
-| Retry counting             | Orchestrator-defined attempts with reason classification     |
-| Missing gate evidence      | Block acceptance pending recovery or authorized exception    |
-| Duration reporting         | Separate execution, engineering, and approval-inclusive time |
-| Statistical reporting      | Median, tail percentiles, counts, and aging                  |
-| Cost measurement           | Execution cost plus cost per accepted outcome                |
-| Human involvement          | Distinguish intervention, escalation, and approval           |
-| Stale detection            | Heartbeat, progress, lease, and duration signals             |
-| Data freshness             | Different objectives according to operational need           |
-| Multi-platform integration | Common Metrics contracts and platform adapters               |
-| Team comparisons           | Context-aware process and outcome analysis                   |
-| Definition governance      | Versioned contracts and controlled approval                  |
-| Evidence retention         | Governed, risk-based retention policies                      |
-| Alerting                   | Actionable, severity-based operational alerts                |
-| Autonomous improvement     | Evidence-based proposals with human governance               |
-| Business value             | Traceable downstream outcomes with careful attribution       |
-
-### 15.22 Applying the Decisions to Alpha Car Detailing
-
-The Alpha Car Detailing architecture team must now approve the Metrics design before implementing additional dashboards.
-
-The team adopts the following decisions:
-
-1. The Population Manager remains authoritative for work inventory.
-2. The Harness Orchestrator controls Run and Attempt lifecycles.
-3. Structured execution events preserve historical activity.
-4. The Metrics subsystem calculates measurements from validated events and authoritative projections.
-5. Operational completion and engineering acceptance remain separate.
-6. Failed, exhausted, and retried work remain visible.
-7. Mandatory gate evidence is required for applicable acceptance conditions.
-8. Duration measurements include median, tail behavior, and unfinished-work aging.
-9. Cost reporting includes unsuccessful attempts and attributable rework.
-10. Metric definitions are versioned and governed.
-11. Dashboards expose evidence references and data freshness.
-12. Claude Code, GitHub Copilot, and Codex use the same engineering outcome definitions.
-13. Improvement recommendations cannot silently change engineering policies.
-
-These decisions create an explicit architectural contract for future Harness development.
-
-They also provide criteria against which the Reviewer, Validator, and Evaluator Agents can assess the Metrics implementation.
-
-### 15.23 Final Decision Principle
-
-The purpose of architectural decision-making is not to maximize the number of collected measurements.
-
-It is to establish which measurements are trustworthy, which decisions they support, and which controls preserve their meaning.
-
-A Metrics architecture should enable the organization to answer:
-
-- Is the Harness processing work reliably?
-- Is it delivering acceptable engineering outcomes?
-- Are failures and retries visible?
-- Are deterministic gates effective?
-- Is human intervention understood?
-- Are engineering costs justified?
-- Are improvements measurable?
-- Are governance requirements being preserved?
-
-These questions cannot be answered by a single success counter or productivity score.
-
-They require a balanced, evidence-based measurement architecture.
-
-> Decision Point: When operational efficiency conflicts with engineering quality, security, or mandatory governance, the Harness must preserve the required engineering controls. Optimization should improve how acceptable outcomes are produced, not redefine what counts as acceptable.
-
-Chapter 20 status: In progress — next section: Exercises
 
 ## 16. Exercises
 
@@ -9922,7 +9407,7 @@ Tasks
 
 Expected result
 
-```
+```json
 {
   "total": 100,
   "queued": 18,
@@ -9935,7 +9420,7 @@ Expected result
 
 The implementation must enforce:
 
-\\[ \text{Total}=\sum \text{Mutually Exclusive State Counts} \\]
+\[ \text{Total}=\sum \text{Mutually Exclusive State Counts} \]
 
 Expected deliverables
 
@@ -9977,11 +9462,11 @@ Tasks
 
 Expected calculations
 
-\\[ \text{Success Rate}=\frac{90}{120}\times100=75\\% \\]
+\[ \text{Success Rate}=\frac{90}{120}\times100=75\% \]
 
-\\[ \text{Failure Rate}=\frac{18}{120}\times100=15\\% \\]
+\[ \text{Failure Rate}=\frac{18}{120}\times100=15\% \]
 
-\\[ \text{Exhaustion Rate}=\frac{12}{120}\times100=10\\% \\]
+\[ \text{Exhaustion Rate}=\frac{12}{120}\times100=10\% \]
 
 Expected deliverables
 
@@ -10008,7 +9493,7 @@ During a worker restart, an event is delivered more than once.
 
 Consider:
 
-```
+```text
 Event ID: evt-1001
 Type: run.completed
 Run ID: run-220
@@ -10029,7 +9514,7 @@ Tasks
 
 Expected behavior
 
-```
+```text
 Events received: 3
 Distinct authoritative events: 1
 Completion transitions counted: 1
@@ -10055,7 +9540,7 @@ The Validator Agent executes the integration-test gate for several Alpha Car Det
 
 The following completed gate durations, in seconds, are recorded:
 
-```
+```text
 30, 35, 40, 45, 50, 55, 60, 90, 120, 300
 ```
 
@@ -10134,15 +9619,14 @@ Tasks
 
 Expected result
 
-Stale detection result
+**Expected result — two stale running Runs**
 
-2 stale runs
-
-| RUN-101 | Healthy              |
-| ------- | -------------------- |
-| RUN-102 | Healthy              |
-| RUN-103 | Stale                |
-| RUN-104 | Stale                |
+| Run | Health classification |
+|---|---|
+| RUN-101 | Healthy |
+| RUN-102 | Healthy |
+| RUN-103 | Stale |
+| RUN-104 | Stale |
 | RUN-105 | Excluded — completed |
 
 Expected deliverables
@@ -10182,13 +9666,13 @@ Tasks
 
 Expected results
 
-\\[ \text{Retry Incidence}=\frac{15}{50}\times100=30\\% \\]
+\[ \text{Retry Incidence}=\frac{15}{50}\times100=30\% \]
 
-\\[ \text{Total Retries}=10+(5\times3)=25 \\]
+\[ \text{Total Retries}=10+(5\times3)=25 \]
 
-\\[ \text{Retries Per Run}=\frac{25}{50}=0.5 \\]
+\[ \text{Retries Per Run}=\frac{25}{50}=0.5 \]
 
-\\[ \text{Rework Incidence}=\frac{12}{50}\times100=24\\% \\]
+\[ \text{Rework Incidence}=\frac{12}{50}\times100=24\% \]
 
 Expected deliverables
 
@@ -10213,7 +9697,7 @@ Tasks
 
 Implement endpoints similar to:
 
-```
+```http
 GET /api/metrics/population
 GET /api/metrics/outcomes
 GET /api/metrics/throughput
@@ -10331,15 +9815,11 @@ Tasks
 
 Expected analysis
 
-Execution time by activity
-
-Minutes spent across one six-hour Harness Run
-
-0 min35 min70 min105 min140 minRepository discoveryImplementationBuildUnit testsIntegration testsReview & evaluationWaiting & recovery
+The activity-duration table above shows that integration tests contribute the largest individual share of the six-hour execution.
 
 Build, unit tests, and integration tests account for:
 
-\\[ 60+75+120=255\text{ minutes} \\]
+\[ 60+75+120=255\text{ minutes} \]
 
 That is approximately 70.83% of the total cycle time.
 
@@ -10419,13 +9899,13 @@ A Developer Agent modifies the Metrics aggregation logic.
 
 The original calculation is:
 
-\\[ \text{Success Rate} = \frac{\text{Accepted Terminal Items}} {\text{All Eligible Terminal Items}} \times100 \\]
+\[ \text{Success Rate} = \frac{\text{Accepted Terminal Items}} {\text{All Eligible Terminal Items}} \times100 \]
 
 The modified implementation excludes exhausted work from the denominator.
 
 The test dataset contains:
 
-```
+```text
 Accepted:   70
 Failed:     20
 Exhausted:  10
@@ -10445,11 +9925,11 @@ Expected results
 
 Correct success rate:
 
-\\[ \frac{70}{100}\times100=70\\% \\]
+\[ \frac{70}{100}\times100=70\% \]
 
 Incorrect modified result:
 
-\\[ \frac{70}{90}\times100\approx77.78\\% \\]
+\[ \frac{70}{90}\times100\approx77.78\% \]
 
 The modified calculation overstates success by approximately 7.78 percentage points.
 
@@ -10530,9 +10010,16 @@ Tasks
 
 The expected evidence path is:
 
-\#chatgpt-mermaid-\_r_4g5\_{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:14px;fill:rgb(26, 28, 31);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_4g5\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_4g5\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_4g5\_ .error-icon{fill:rgba(255, 255, 255, 0.96);}#chatgpt-mermaid-\_r_4g5\_ .error-text{fill:rgb(26, 28, 31);stroke:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_4g5\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_4g5\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_4g5\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_4g5\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_4g5\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_4g5\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_4g5\_ .marker{fill:rgba(26, 28, 31, 0.494);stroke:rgba(26, 28, 31, 0.494);}#chatgpt-mermaid-\_r_4g5\_ .marker.cross{stroke:rgba(26, 28, 31, 0.494);}#chatgpt-mermaid-\_r_4g5\_ svg{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:14px;}#chatgpt-mermaid-\_r_4g5\_ p{margin:0;}#chatgpt-mermaid-\_r_4g5\_ .label{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_4g5\_ .cluster-label text{fill:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_4g5\_ .cluster-label span{color:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_4g5\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_4g5\_ .label text,#chatgpt-mermaid-\_r_4g5\_ span{fill:rgb(26, 28, 31);color:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_4g5\_ .node rect,#chatgpt-mermaid-\_r_4g5\_ .node circle,#chatgpt-mermaid-\_r_4g5\_ .node ellipse,#chatgpt-mermaid-\_r_4g5\_ .node polygon,#chatgpt-mermaid-\_r_4g5\_ .node path{fill:rgb(224, 237, 254);stroke:rgb(83, 154, 248);stroke-width:1px;}#chatgpt-mermaid-\_r_4g5\_ .rough-node .label text,#chatgpt-mermaid-\_r_4g5\_ .node .label text,#chatgpt-mermaid-\_r_4g5\_ .image-shape .label,#chatgpt-mermaid-\_r_4g5\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_4g5\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_4g5\_ .rough-node .label,#chatgpt-mermaid-\_r_4g5\_ .node .label,#chatgpt-mermaid-\_r_4g5\_ .image-shape .label,#chatgpt-mermaid-\_r_4g5\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_4g5\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_4g5\_ .root .anchor path{fill:rgba(26, 28, 31, 0.494)!important;stroke-width:0;stroke:rgba(26, 28, 31, 0.494);}#chatgpt-mermaid-\_r_4g5\_ .arrowheadPath{fill:rgba(26, 28, 31, 0.494);}#chatgpt-mermaid-\_r_4g5\_ .edgePath .path{stroke:rgba(26, 28, 31, 0.494);stroke-width:1px;}#chatgpt-mermaid-\_r_4g5\_ .flowchart-link{stroke:rgba(26, 28, 31, 0.494);fill:none;}#chatgpt-mermaid-\_r_4g5\_ .edgeLabel{background-color:rgb(255, 255, 255);text-align:center;}#chatgpt-mermaid-\_r_4g5\_ .edgeLabel p{background-color:rgb(255, 255, 255);}#chatgpt-mermaid-\_r_4g5\_ .edgeLabel rect{opacity:0.5;background-color:rgb(255, 255, 255);fill:rgb(255, 255, 255);}#chatgpt-mermaid-\_r_4g5\_ .labelBkg{background-color:rgba(255, 255, 255, 0.5);}#chatgpt-mermaid-\_r_4g5\_ .cluster rect{fill:rgba(255, 255, 255, 0.96);stroke:rgba(26, 28, 31, 0.08);stroke-width:1px;}#chatgpt-mermaid-\_r_4g5\_ .cluster text{fill:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_4g5\_ .cluster span{color:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_4g5\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:12px;background:rgba(255, 255, 255, 0.96);border:1px solid rgba(26, 28, 31, 0.08);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_4g5\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_4g5\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_4g5\_ .icon-shape,#chatgpt-mermaid-\_r_4g5\_ .image-shape{background-color:rgb(255, 255, 255);text-align:center;}#chatgpt-mermaid-\_r_4g5\_ .icon-shape p,#chatgpt-mermaid-\_r_4g5\_ .image-shape p{background-color:rgb(255, 255, 255);padding:2px;}#chatgpt-mermaid-\_r_4g5\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_4g5\_ .image-shape .label rect{opacity:0.5;background-color:rgb(255, 255, 255);fill:rgb(255, 255, 255);}#chatgpt-mermaid-\_r_4g5\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_4g5\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_4g5\_ .node .neo-node{stroke:rgb(83, 154, 248);}#chatgpt-mermaid-\_r_4g5\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_4g5\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_4g5\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_4g5\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_4g5\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_4g5\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_4g5\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_4g5\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_4g5\_ [data-look="neo"].node .neo-line path{stroke:rgb(83, 154, 248);filter:none;}#chatgpt-mermaid-\_r_4g5\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_4g5\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_4g5\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_4g5\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_4g5\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_4g5\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_4g5\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_4g5\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_4g5\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_4g5\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_4g5\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_4g5\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-width:1px;}#chatgpt-mermaid-\_r_4g5\_ .node rect,#chatgpt-mermaid-\_r_4g5\_ .node circle,#chatgpt-mermaid-\_r_4g5\_ .node ellipse,#chatgpt-mermaid-\_r_4g5\_ .node polygon,#chatgpt-mermaid-\_r_4g5\_ .node path{fill:rgb(229, 243, 255);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_4g5\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_4g5\_ .node.mermaid-decision .label-container{fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_4g5\_ .edgePaths .flowchart-link{stroke:rgba(26, 28, 31, 0.494);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_4g5\_ .marker{fill:rgba(26, 28, 31, 0.494);stroke:rgba(26, 28, 31, 0.494);}#chatgpt-mermaid-\_r_4g5\_ :root{--mermaid-font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;}Engineering Success RateEligible Work CohortPopulation ItemHarness RunExecution AttemptsValidation EvidenceReviewer EvidenceEvaluator EvidenceApproval Record, if Required
+```mermaid
+flowchart TD
+    K["Engineering Success Rate"] --> C["Eligible Work Cohort"] --> P["Population Item"]
+    P --> R["Harness Run"] --> A["Execution Attempts"]
+    A --> V["Validation Evidence"]
+    A --> RV["Reviewer Evidence"]
+    A --> EV["Evaluator Evidence"] --> AP["Approval Record, if Required"]
+```
 
-Figure 20.19 — KPI audit trail from aggregated measurement to engineering evidence.
+*Figure 20.19 — KPI audit trail from aggregated measurement to engineering evidence.*
 
 Expected deliverables
 
@@ -10639,9 +10126,37 @@ The solution must demonstrate:
 
 #### Required architecture
 
-\#chatgpt-mermaid-\_r_4ge\_{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:14px;fill:rgb(26, 28, 31);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_4ge\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_4ge\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_4ge\_ .error-icon{fill:rgba(255, 255, 255, 0.96);}#chatgpt-mermaid-\_r_4ge\_ .error-text{fill:rgb(26, 28, 31);stroke:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_4ge\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_4ge\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_4ge\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_4ge\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_4ge\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_4ge\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_4ge\_ .marker{fill:rgba(26, 28, 31, 0.494);stroke:rgba(26, 28, 31, 0.494);}#chatgpt-mermaid-\_r_4ge\_ .marker.cross{stroke:rgba(26, 28, 31, 0.494);}#chatgpt-mermaid-\_r_4ge\_ svg{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:14px;}#chatgpt-mermaid-\_r_4ge\_ p{margin:0;}#chatgpt-mermaid-\_r_4ge\_ .label{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_4ge\_ .cluster-label text{fill:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_4ge\_ .cluster-label span{color:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_4ge\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_4ge\_ .label text,#chatgpt-mermaid-\_r_4ge\_ span{fill:rgb(26, 28, 31);color:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_4ge\_ .node rect,#chatgpt-mermaid-\_r_4ge\_ .node circle,#chatgpt-mermaid-\_r_4ge\_ .node ellipse,#chatgpt-mermaid-\_r_4ge\_ .node polygon,#chatgpt-mermaid-\_r_4ge\_ .node path{fill:rgb(224, 237, 254);stroke:rgb(83, 154, 248);stroke-width:1px;}#chatgpt-mermaid-\_r_4ge\_ .rough-node .label text,#chatgpt-mermaid-\_r_4ge\_ .node .label text,#chatgpt-mermaid-\_r_4ge\_ .image-shape .label,#chatgpt-mermaid-\_r_4ge\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_4ge\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_4ge\_ .rough-node .label,#chatgpt-mermaid-\_r_4ge\_ .node .label,#chatgpt-mermaid-\_r_4ge\_ .image-shape .label,#chatgpt-mermaid-\_r_4ge\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_4ge\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_4ge\_ .root .anchor path{fill:rgba(26, 28, 31, 0.494)!important;stroke-width:0;stroke:rgba(26, 28, 31, 0.494);}#chatgpt-mermaid-\_r_4ge\_ .arrowheadPath{fill:rgba(26, 28, 31, 0.494);}#chatgpt-mermaid-\_r_4ge\_ .edgePath .path{stroke:rgba(26, 28, 31, 0.494);stroke-width:1px;}#chatgpt-mermaid-\_r_4ge\_ .flowchart-link{stroke:rgba(26, 28, 31, 0.494);fill:none;}#chatgpt-mermaid-\_r_4ge\_ .edgeLabel{background-color:rgb(255, 255, 255);text-align:center;}#chatgpt-mermaid-\_r_4ge\_ .edgeLabel p{background-color:rgb(255, 255, 255);}#chatgpt-mermaid-\_r_4ge\_ .edgeLabel rect{opacity:0.5;background-color:rgb(255, 255, 255);fill:rgb(255, 255, 255);}#chatgpt-mermaid-\_r_4ge\_ .labelBkg{background-color:rgba(255, 255, 255, 0.5);}#chatgpt-mermaid-\_r_4ge\_ .cluster rect{fill:rgba(255, 255, 255, 0.96);stroke:rgba(26, 28, 31, 0.08);stroke-width:1px;}#chatgpt-mermaid-\_r_4ge\_ .cluster text{fill:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_4ge\_ .cluster span{color:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_4ge\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:12px;background:rgba(255, 255, 255, 0.96);border:1px solid rgba(26, 28, 31, 0.08);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_4ge\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_4ge\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_4ge\_ .icon-shape,#chatgpt-mermaid-\_r_4ge\_ .image-shape{background-color:rgb(255, 255, 255);text-align:center;}#chatgpt-mermaid-\_r_4ge\_ .icon-shape p,#chatgpt-mermaid-\_r_4ge\_ .image-shape p{background-color:rgb(255, 255, 255);padding:2px;}#chatgpt-mermaid-\_r_4ge\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_4ge\_ .image-shape .label rect{opacity:0.5;background-color:rgb(255, 255, 255);fill:rgb(255, 255, 255);}#chatgpt-mermaid-\_r_4ge\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_4ge\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_4ge\_ .node .neo-node{stroke:rgb(83, 154, 248);}#chatgpt-mermaid-\_r_4ge\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_4ge\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_4ge\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_4ge\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_4ge\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_4ge\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_4ge\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_4ge\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_4ge\_ [data-look="neo"].node .neo-line path{stroke:rgb(83, 154, 248);filter:none;}#chatgpt-mermaid-\_r_4ge\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_4ge\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_4ge\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_4ge\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_4ge\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_4ge\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_4ge\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_4ge\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_4ge\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_4ge\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_4ge\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_4ge\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-width:1px;}#chatgpt-mermaid-\_r_4ge\_ .node rect,#chatgpt-mermaid-\_r_4ge\_ .node circle,#chatgpt-mermaid-\_r_4ge\_ .node ellipse,#chatgpt-mermaid-\_r_4ge\_ .node polygon,#chatgpt-mermaid-\_r_4ge\_ .node path{fill:rgb(229, 243, 255);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_4ge\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_4ge\_ .node.mermaid-decision .label-container{fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_4ge\_ .edgePaths .flowchart-link{stroke:rgba(26, 28, 31, 0.494);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_4ge\_ .marker{fill:rgba(26, 28, 31, 0.494);stroke:rgba(26, 28, 31, 0.494);}#chatgpt-mermaid-\_r_4ge\_ :root{--mermaid-font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;}Enterprise ConsumersMetrics CapabilityAI Engineering HarnessOperations DashboardEngineering Quality DashboardManagement ScorecardAlertsEvent IngestionExecution Event StoreMetrics AggregatorMetrics Read ModelMetrics Query APIPopulationOrchestratorAI AgentsDeterministic GatesReview / Validation /Evaluation
+```mermaid
+flowchart TB
+    subgraph H["AI Engineering Harness"]
+      P["Population"]
+      O["Orchestrator"]
+      A["AI Agents"]
+      G["Deterministic Gates"]
+      R["Review / Validation / Evaluation"]
+    end
+    subgraph M["Metrics Capability"]
+      I["Event Ingestion"] --> E[("Execution Event Store")] --> AG["Metrics Aggregator"]
+      AG --> RM[("Metrics Read Model")] --> API["Metrics Query API"]
+    end
+    subgraph C["Enterprise Consumers"]
+      OPS["Operations Dashboard"]
+      Q["Engineering Quality Dashboard"]
+      MG["Management Scorecard"]
+      AL["Alerts"]
+    end
+    P --> I
+    O --> I
+    A --> I
+    G --> I
+    R --> I
+    API --> OPS
+    API --> Q
+    API --> MG
+    RM --> AL
+```
 
-Figure 20.20 — Capstone Metrics capability integrated into the Alpha Car Detailing Harness.
+*Figure 20.20 — Capstone Metrics capability integrated into the Alpha Car Detailing Harness.*
 
 #### Required test scenarios
 
@@ -10717,7 +10232,7 @@ Then use independent, governed measurement and validation to determine whether t
 
 For example:
 
-```
+```text
 Goal:
 Reduce median validation duration by at least 25%.
 
@@ -10747,8 +10262,6 @@ This exercise demonstrates the complete engineering philosophy behind Harness Me
 The Harness should improve its performance through evidence-based decisions while preserving the standards used to determine engineering success.
 
 > Exercise Principle: A Metrics capability is complete only when it can accurately explain both successful and unsuccessful engineering work—and when those measurements can support improvements without compromising quality, security, or governance.
-
-Chapter 20 status: In progress — next section: Interview Questions
 
 ## 17. Interview Questions
 
@@ -10867,7 +10380,7 @@ The relationships are generally one-to-many.
 
 For example:
 
-```
+```text
 Population Item
     └── Harness Run
         ├── Attempt 1
@@ -10890,7 +10403,7 @@ Population Total should count distinct eligible Population items according to a 
 
 For the simplified lifecycle used in this chapter:
 
-\\[ \text{Total} = \text{Queued} + \text{Running} + \text{Completed} + \text{Failed} + \text{Exhausted} \\]
+\[ \text{Total} = \text{Queued} + \text{Running} + \text{Completed} + \text{Failed} + \text{Exhausted} \]
 
 The state categories must be mutually exclusive and collectively exhaustive within the selected Population model.
 
@@ -10902,7 +10415,7 @@ Answer:
 
 One useful definition is the terminal-cohort engineering success rate:
 
-\\[ \text{Engineering Success Rate} = \frac{\text{Accepted Terminal Work Items}} {\text{All Eligible Terminal Work Items}} \times100 \\]
+\[ \text{Engineering Success Rate} = \frac{\text{Accepted Terminal Work Items}} {\text{All Eligible Terminal Work Items}} \times100 \]
 
 The denominator must include unsuccessful terminal outcomes, including failed and exhausted work where applicable.
 
@@ -11197,7 +10710,7 @@ Cost per accepted outcome measures the resources required to achieve useful engi
 
 For a defined cohort:
 
-\\[ \text{Cost Per Accepted Outcome} = \frac{\text{Total Attributable Cohort Cost}} {\text{Accepted Work Items}} \\]
+\[ \text{Cost Per Accepted Outcome} = \frac{\text{Total Attributable Cohort Cost}} {\text{Accepted Work Items}} \]
 
 The numerator should include attributable unsuccessful attempts and rework.
 
@@ -11481,9 +10994,28 @@ A suitable design should include:
 
 A reference architecture is:
 
-\#chatgpt-mermaid-\_r_4hv\_{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:14px;fill:rgb(26, 28, 31);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_4hv\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_4hv\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_4hv\_ .error-icon{fill:rgba(255, 255, 255, 0.96);}#chatgpt-mermaid-\_r_4hv\_ .error-text{fill:rgb(26, 28, 31);stroke:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_4hv\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_4hv\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_4hv\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_4hv\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_4hv\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_4hv\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_4hv\_ .marker{fill:rgba(26, 28, 31, 0.494);stroke:rgba(26, 28, 31, 0.494);}#chatgpt-mermaid-\_r_4hv\_ .marker.cross{stroke:rgba(26, 28, 31, 0.494);}#chatgpt-mermaid-\_r_4hv\_ svg{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:14px;}#chatgpt-mermaid-\_r_4hv\_ p{margin:0;}#chatgpt-mermaid-\_r_4hv\_ .label{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_4hv\_ .cluster-label text{fill:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_4hv\_ .cluster-label span{color:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_4hv\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_4hv\_ .label text,#chatgpt-mermaid-\_r_4hv\_ span{fill:rgb(26, 28, 31);color:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_4hv\_ .node rect,#chatgpt-mermaid-\_r_4hv\_ .node circle,#chatgpt-mermaid-\_r_4hv\_ .node ellipse,#chatgpt-mermaid-\_r_4hv\_ .node polygon,#chatgpt-mermaid-\_r_4hv\_ .node path{fill:rgb(224, 237, 254);stroke:rgb(83, 154, 248);stroke-width:1px;}#chatgpt-mermaid-\_r_4hv\_ .rough-node .label text,#chatgpt-mermaid-\_r_4hv\_ .node .label text,#chatgpt-mermaid-\_r_4hv\_ .image-shape .label,#chatgpt-mermaid-\_r_4hv\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_4hv\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_4hv\_ .rough-node .label,#chatgpt-mermaid-\_r_4hv\_ .node .label,#chatgpt-mermaid-\_r_4hv\_ .image-shape .label,#chatgpt-mermaid-\_r_4hv\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_4hv\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_4hv\_ .root .anchor path{fill:rgba(26, 28, 31, 0.494)!important;stroke-width:0;stroke:rgba(26, 28, 31, 0.494);}#chatgpt-mermaid-\_r_4hv\_ .arrowheadPath{fill:rgba(26, 28, 31, 0.494);}#chatgpt-mermaid-\_r_4hv\_ .edgePath .path{stroke:rgba(26, 28, 31, 0.494);stroke-width:1px;}#chatgpt-mermaid-\_r_4hv\_ .flowchart-link{stroke:rgba(26, 28, 31, 0.494);fill:none;}#chatgpt-mermaid-\_r_4hv\_ .edgeLabel{background-color:rgb(255, 255, 255);text-align:center;}#chatgpt-mermaid-\_r_4hv\_ .edgeLabel p{background-color:rgb(255, 255, 255);}#chatgpt-mermaid-\_r_4hv\_ .edgeLabel rect{opacity:0.5;background-color:rgb(255, 255, 255);fill:rgb(255, 255, 255);}#chatgpt-mermaid-\_r_4hv\_ .labelBkg{background-color:rgba(255, 255, 255, 0.5);}#chatgpt-mermaid-\_r_4hv\_ .cluster rect{fill:rgba(255, 255, 255, 0.96);stroke:rgba(26, 28, 31, 0.08);stroke-width:1px;}#chatgpt-mermaid-\_r_4hv\_ .cluster text{fill:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_4hv\_ .cluster span{color:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_4hv\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:12px;background:rgba(255, 255, 255, 0.96);border:1px solid rgba(26, 28, 31, 0.08);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_4hv\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_4hv\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_4hv\_ .icon-shape,#chatgpt-mermaid-\_r_4hv\_ .image-shape{background-color:rgb(255, 255, 255);text-align:center;}#chatgpt-mermaid-\_r_4hv\_ .icon-shape p,#chatgpt-mermaid-\_r_4hv\_ .image-shape p{background-color:rgb(255, 255, 255);padding:2px;}#chatgpt-mermaid-\_r_4hv\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_4hv\_ .image-shape .label rect{opacity:0.5;background-color:rgb(255, 255, 255);fill:rgb(255, 255, 255);}#chatgpt-mermaid-\_r_4hv\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_4hv\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_4hv\_ .node .neo-node{stroke:rgb(83, 154, 248);}#chatgpt-mermaid-\_r_4hv\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_4hv\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_4hv\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_4hv\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_4hv\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_4hv\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_4hv\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_4hv\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_4hv\_ [data-look="neo"].node .neo-line path{stroke:rgb(83, 154, 248);filter:none;}#chatgpt-mermaid-\_r_4hv\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_4hv\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_4hv\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_4hv\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_4hv\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_4hv\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_4hv\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_4hv\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_4hv\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_4hv\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_4hv\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_4hv\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-width:1px;}#chatgpt-mermaid-\_r_4hv\_ .node rect,#chatgpt-mermaid-\_r_4hv\_ .node circle,#chatgpt-mermaid-\_r_4hv\_ .node ellipse,#chatgpt-mermaid-\_r_4hv\_ .node polygon,#chatgpt-mermaid-\_r_4hv\_ .node path{fill:rgb(229, 243, 255);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_4hv\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_4hv\_ .node.mermaid-decision .label-container{fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_4hv\_ .edgePaths .flowchart-link{stroke:rgba(26, 28, 31, 0.494);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_4hv\_ .marker{fill:rgba(26, 28, 31, 0.494);stroke:rgba(26, 28, 31, 0.494);}#chatgpt-mermaid-\_r_4hv\_ :root{--mermaid-font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;}Population ManagerHarness OrchestratorAgent ExecutorsDeterministic GatesReview and EvaluationDurable Event CollectionExecution Event StoreEvidence StoreMetrics AggregatorMetrics Read ModelAuthorized Metrics APIDashboardsAlertsEngineering Reports
+```mermaid
+flowchart TB
+    P["Population Manager"] --> H["Harness Orchestrator"]
+    H --> A["Agent Executors"]
+    H --> G["Deterministic Gates"]
+    H --> R["Review and Evaluation"]
+    P --> E["Durable Event Collection"]
+    H --> E
+    A --> E
+    G --> E
+    R --> E
+    E --> S[("Execution Event Store")] --> M["Metrics Aggregator"] --> RD[("Metrics Read Model")]
+    G --> V[("Evidence Store")]
+    R --> V
+    V -.-> M
+    RD --> API["Authorized Metrics API"]
+    API --> D["Dashboards"]
+    API --> REP["Engineering Reports"]
+    RD --> AL["Alerts"]
+```
 
-Figure 20.21 — Reference enterprise architecture for reliable Harness Metrics.
+*Figure 20.21 — Reference enterprise architecture for reliable Harness Metrics.*
 
 The candidate should explain how the architecture prevents duplicate counting, preserves evidence, handles delayed events, and protects metric definitions from unauthorized change.
 
@@ -11610,7 +11142,6 @@ They are part of the engineering control system that makes AI-assisted developme
 
 > Interview Principle: A trustworthy AI Engineering Harness must be able to explain not only how much work it completed, but also whether that work was acceptable, what it cost, what failed along the way, and what evidence supports the final outcome.
 
-Chapter 20 status: In progress — next section: Chapter Summary
 ## 18. Chapter Summary
 
 ### 18.1 Metrics Make Harness Engineering Measurable
@@ -11671,7 +11202,7 @@ Each attempt may involve multiple Agent invocations and deterministic gate execu
 
 These entities are related but not interchangeable.
 
-```
+```text
 Population Item
     ↓
 Harness Run
@@ -11730,7 +11261,7 @@ The chapter also demonstrated the importance of explicit denominators.
 
 For example:
 
-\\[ \text{Engineering Success Rate} = \frac{\text{Accepted Terminal Work Items}} {\text{All Eligible Terminal Work Items}} \times100 \\]
+\[ \text{Engineering Success Rate} = \frac{\text{Accepted Terminal Work Items}} {\text{All Eligible Terminal Work Items}} \times100 \]
 
 Failed and exhausted terminal work must remain represented in the denominator.
 
@@ -11836,7 +11367,7 @@ A more expensive execution may produce a correct implementation with minimal rew
 
 A useful economic measure is:
 
-\\[ \text{Cost Per Accepted Outcome} = \frac{\text{Total Attributable Cohort Cost}} {\text{Accepted Work Items}} \\]
+\[ \text{Cost Per Accepted Outcome} = \frac{\text{Total Attributable Cohort Cost}} {\text{Accepted Work Items}} \]
 
 The calculation should include attributable failed attempts, retries, infrastructure costs, and relevant human effort.
 
@@ -11863,9 +11394,16 @@ The chapter introduced a reference Metrics architecture consisting of:
 
 The central information flow is:
 
-\#chatgpt-mermaid-\_r_4j6\_{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:14px;fill:rgb(26, 28, 31);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_4j6\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_4j6\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_4j6\_ .error-icon{fill:rgba(255, 255, 255, 0.96);}#chatgpt-mermaid-\_r_4j6\_ .error-text{fill:rgb(26, 28, 31);stroke:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_4j6\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_4j6\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_4j6\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_4j6\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_4j6\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_4j6\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_4j6\_ .marker{fill:rgba(26, 28, 31, 0.494);stroke:rgba(26, 28, 31, 0.494);}#chatgpt-mermaid-\_r_4j6\_ .marker.cross{stroke:rgba(26, 28, 31, 0.494);}#chatgpt-mermaid-\_r_4j6\_ svg{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:14px;}#chatgpt-mermaid-\_r_4j6\_ p{margin:0;}#chatgpt-mermaid-\_r_4j6\_ .label{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_4j6\_ .cluster-label text{fill:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_4j6\_ .cluster-label span{color:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_4j6\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_4j6\_ .label text,#chatgpt-mermaid-\_r_4j6\_ span{fill:rgb(26, 28, 31);color:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_4j6\_ .node rect,#chatgpt-mermaid-\_r_4j6\_ .node circle,#chatgpt-mermaid-\_r_4j6\_ .node ellipse,#chatgpt-mermaid-\_r_4j6\_ .node polygon,#chatgpt-mermaid-\_r_4j6\_ .node path{fill:rgb(224, 237, 254);stroke:rgb(83, 154, 248);stroke-width:1px;}#chatgpt-mermaid-\_r_4j6\_ .rough-node .label text,#chatgpt-mermaid-\_r_4j6\_ .node .label text,#chatgpt-mermaid-\_r_4j6\_ .image-shape .label,#chatgpt-mermaid-\_r_4j6\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_4j6\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_4j6\_ .rough-node .label,#chatgpt-mermaid-\_r_4j6\_ .node .label,#chatgpt-mermaid-\_r_4j6\_ .image-shape .label,#chatgpt-mermaid-\_r_4j6\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_4j6\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_4j6\_ .root .anchor path{fill:rgba(26, 28, 31, 0.494)!important;stroke-width:0;stroke:rgba(26, 28, 31, 0.494);}#chatgpt-mermaid-\_r_4j6\_ .arrowheadPath{fill:rgba(26, 28, 31, 0.494);}#chatgpt-mermaid-\_r_4j6\_ .edgePath .path{stroke:rgba(26, 28, 31, 0.494);stroke-width:1px;}#chatgpt-mermaid-\_r_4j6\_ .flowchart-link{stroke:rgba(26, 28, 31, 0.494);fill:none;}#chatgpt-mermaid-\_r_4j6\_ .edgeLabel{background-color:rgb(255, 255, 255);text-align:center;}#chatgpt-mermaid-\_r_4j6\_ .edgeLabel p{background-color:rgb(255, 255, 255);}#chatgpt-mermaid-\_r_4j6\_ .edgeLabel rect{opacity:0.5;background-color:rgb(255, 255, 255);fill:rgb(255, 255, 255);}#chatgpt-mermaid-\_r_4j6\_ .labelBkg{background-color:rgba(255, 255, 255, 0.5);}#chatgpt-mermaid-\_r_4j6\_ .cluster rect{fill:rgba(255, 255, 255, 0.96);stroke:rgba(26, 28, 31, 0.08);stroke-width:1px;}#chatgpt-mermaid-\_r_4j6\_ .cluster text{fill:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_4j6\_ .cluster span{color:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_4j6\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:12px;background:rgba(255, 255, 255, 0.96);border:1px solid rgba(26, 28, 31, 0.08);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_4j6\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(26, 28, 31);}#chatgpt-mermaid-\_r_4j6\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_4j6\_ .icon-shape,#chatgpt-mermaid-\_r_4j6\_ .image-shape{background-color:rgb(255, 255, 255);text-align:center;}#chatgpt-mermaid-\_r_4j6\_ .icon-shape p,#chatgpt-mermaid-\_r_4j6\_ .image-shape p{background-color:rgb(255, 255, 255);padding:2px;}#chatgpt-mermaid-\_r_4j6\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_4j6\_ .image-shape .label rect{opacity:0.5;background-color:rgb(255, 255, 255);fill:rgb(255, 255, 255);}#chatgpt-mermaid-\_r_4j6\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_4j6\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_4j6\_ .node .neo-node{stroke:rgb(83, 154, 248);}#chatgpt-mermaid-\_r_4j6\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_4j6\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_4j6\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_4j6\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_4j6\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_4j6\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_4j6\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_4j6\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_4j6\_ [data-look="neo"].node .neo-line path{stroke:rgb(83, 154, 248);filter:none;}#chatgpt-mermaid-\_r_4j6\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_4j6\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_4j6\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_4j6\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_4j6\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_4j6\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_4j6\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_4j6\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_4j6\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_4j6\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_4j6\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_4j6\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-width:1px;}#chatgpt-mermaid-\_r_4j6\_ .node rect,#chatgpt-mermaid-\_r_4j6\_ .node circle,#chatgpt-mermaid-\_r_4j6\_ .node ellipse,#chatgpt-mermaid-\_r_4j6\_ .node polygon,#chatgpt-mermaid-\_r_4j6\_ .node path{fill:rgb(229, 243, 255);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_4j6\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_4j6\_ .node.mermaid-decision .label-container{fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_4j6\_ .edgePaths .flowchart-link{stroke:rgba(26, 28, 31, 0.494);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_4j6\_ .marker{fill:rgba(26, 28, 31, 0.494);stroke:rgba(26, 28, 31, 0.494);}#chatgpt-mermaid-\_r_4j6\_ :root{--mermaid-font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;}PopulationHarness RunsAgents and Deterministic GatesReview, Validation andEvaluationExecution EvidenceMetrics AggregationDashboards, Alerts andAnalysisHarness ImprovementHuman-Governed Changes
+```mermaid
+flowchart TD
+    P["Population"] --> H["Harness Runs"] --> A["Agents and Deterministic Gates"]
+    A --> R["Review, Validation, and Evaluation"] --> E["Execution Evidence"]
+    E --> M["Metrics Aggregation"] --> D["Dashboards, Alerts, and Analysis"]
+    D --> I["Harness Improvement"] --> G["Human-Governed Changes"]
+    G -.-> H
+```
 
-Figure 20.22 — Metrics as the evidence-based feedback mechanism of the enterprise Harness.
+*Figure 20.22 — Metrics as the evidence-based feedback mechanism of the enterprise Harness.*
 
 The architecture separates the production of engineering evidence from the calculation and presentation of metrics.
 
@@ -12064,8 +11602,6 @@ The result is not merely faster software development.
 
 It is AI-assisted engineering whose performance, quality, reliability, and business value can be measured and defended through evidence.
 
-Chapter 20 status: In progress — next section: Further Reading
-
 ## 19. Further Reading
 
 Harness Metrics sit at the intersection of software engineering measurement, distributed systems observability, site reliability engineering, AI Agent execution, security governance, and business outcome evaluation.
@@ -12082,23 +11618,19 @@ The following references provide additional technical and architectural guidance
 
 Publisher: Google Cloud / DevOps Research and Assessment (DORA)
 
-Reference: DORA — Software Delivery Performance Metrics
+Reference: [DORA — Software Delivery Performance Metrics](https://dora.dev/guides/dora-metrics/)
 
 DORA provides a research-based framework for evaluating software delivery performance.
 
-Its current model examines five software delivery performance metrics, including change lead time, deployment frequency, failed deployment recovery time, change fail rate, and deployment rework rate.&#x20;
+Its current model examines five software delivery performance metrics, including change lead time, deployment frequency, failed deployment recovery time, change fail rate, and deployment rework rate.
 
-[image](https://www.google.com/s2/favicons?domain=https://dora.dev\&sz=32)
-
-DORA’s software delivery performance metrics
-
-Relevance to Harness Engineering
+**Relevance to Harness Engineering**
 
 DORA provides an important foundation for understanding why engineering performance cannot be evaluated through output volume or speed alone.
 
 Its focus on delivery throughput and instability aligns with the balanced measurement principles established throughout this chapter.
 
-Recommended study areas:
+**Recommended study areas:**
 
 - Software delivery throughput.
 - Change lead time.
@@ -12107,7 +11639,7 @@ Recommended study areas:
 - Deployment rework.
 - Continuous improvement through evidence.
 
-Alpha Car Detailing application:
+**Alpha Car Detailing application:**
 
 Compare the Harness's accepted engineering throughput with downstream software delivery outcomes.
 
@@ -12121,19 +11653,19 @@ Authors: Nicole Forsgren, Jez Humble, and Gene Kim
 
 Publisher: IT Revolution Press, 2018
 
-Reference: Accelerate: The Science of Lean Software and DevOps
+Reference: [Accelerate: The Science of Lean Software and DevOps](https://itrevolution.com/product/accelerate/)
 
 This book examines the relationship between software delivery practices, organizational capabilities, performance, and improvement.
 
 It provides a foundation for understanding how software engineering organizations can evaluate delivery effectiveness without relying on simplistic activity measures.
 
-Relevance to Harness Engineering
+**Relevance to Harness Engineering**
 
 AI coding agents change how engineering work is performed, but they do not eliminate the need to measure software delivery outcomes.
 
 The book is particularly useful when designing management-level metrics that combine delivery speed, quality, and organizational effectiveness.
 
-Recommended study areas:
+**Recommended study areas:**
 
 - Software delivery performance.
 - Continuous delivery.
@@ -12141,7 +11673,7 @@ Recommended study areas:
 - Measurement-driven improvement.
 - Engineering culture.
 
-Alpha Car Detailing application:
+**Alpha Car Detailing application:**
 
 Use its principles to evaluate whether the introduction of the AI Engineering Harness improves delivery performance over time.
 
@@ -12153,19 +11685,19 @@ Authors: Nicole Forsgren, Margaret-Anne Storey, Chandra Maddila, Thomas Zimmerma
 
 Publication: ACM Queue, 2021
 
-Reference: The SPACE of Developer Productivity
+Reference: [The SPACE of Developer Productivity](https://queue.acm.org/detail.cfm?id=3454124)
 
 The SPACE framework proposes a multidimensional approach to developer productivity.
 
 Its dimensions include satisfaction and well-being, performance, activity, communication and collaboration, and efficiency and flow.
 
-Relevance to Harness Engineering
+**Relevance to Harness Engineering**
 
 SPACE provides an important counterbalance to the tendency to evaluate engineering productivity through activity counters.
 
 Although the framework concerns developer productivity rather than autonomous Harness execution specifically, its multidimensional approach is highly relevant.
 
-Recommended study areas:
+**Recommended study areas:**
 
 - Productivity measurement.
 - Activity versus performance.
@@ -12173,7 +11705,7 @@ Recommended study areas:
 - Contextual interpretation.
 - Risks of relying on a single productivity metric.
 
-Alpha Car Detailing application:
+**Alpha Car Detailing application:**
 
 Use SPACE principles when evaluating how AI-assisted development affects engineering teams.
 
@@ -12187,7 +11719,7 @@ Editors: Betsy Beyer, Chris Jones, Jennifer Petoff, and Niall Richard Murphy
 
 Publisher: O'Reilly Media, 2016
 
-Reference: Site Reliability Engineering — Online Book
+Reference: [Site Reliability Engineering — Online Book](https://sre.google/sre-book/table-of-contents/)
 
 This book provides practical and architectural guidance for operating reliable distributed systems.
 
@@ -12200,11 +11732,9 @@ Particularly relevant chapters include:
 - Automation.
 - Managing Incidents.
 
-[image](https://www.google.com/s2/favicons?domain=https://sre.google\&sz=32)
-
 Site reliability engineering book Google index
 
-Relevance to Harness Engineering
+**Relevance to Harness Engineering**
 
 An enterprise Harness is an operational system.
 
@@ -12212,7 +11742,7 @@ It schedules work, coordinates distributed execution, depends on external servic
 
 The SRE principles of monitoring, service objectives, risk management, and reducing unnecessary operational effort apply directly.
 
-Alpha Car Detailing application:
+**Alpha Car Detailing application:**
 
 Establish operational reliability objectives for the Harness, including:
 
@@ -12231,11 +11761,11 @@ Editors: Betsy Beyer, Niall Richard Murphy, David K. Rensin, Kent Kawahara, and 
 
 Publisher: O'Reilly Media, 2018
 
-Reference: The Site Reliability Workbook
+Reference: [The Site Reliability Workbook](https://sre.google/workbook/table-of-contents/)
 
 This companion book provides practical approaches to applying SRE principles.
 
-Relevance to Harness Engineering
+**Relevance to Harness Engineering**
 
 It is especially useful for converting abstract reliability objectives into operational practices.
 
@@ -12248,7 +11778,7 @@ Important topics include:
 - Operational risk.
 - Continuous reliability improvement.
 
-Alpha Car Detailing application:
+**Alpha Car Detailing application:**
 
 Create operational runbooks for situations such as exhausted Runs, missing worker heartbeats, failed event ingestion, and unavailable validation infrastructure.
 
@@ -12260,19 +11790,13 @@ The objective is to connect Metrics and alerts to defined engineering responses.
 
 Organization: Cloud Native Computing Foundation / OpenTelemetry
 
-Reference: OpenTelemetry Documentation
+Reference: [OpenTelemetry Documentation](https://opentelemetry.io/docs/)
 
 OpenTelemetry provides a vendor-neutral approach to instrumenting and collecting observability data.
 
-Its specifications and documentation cover metrics, traces, logs, resources, and semantic conventions.&#x20;
+Its specifications and documentation cover metrics, traces, logs, resources, and semantic conventions.
 
-[image](https://www.google.com/s2/favicons?domain=https://opentelemetry.io\&sz=32)
-
-OpenTelemetry
-
-+1
-
-Relevance to Harness Engineering
+**Relevance to Harness Engineering**
 
 OpenTelemetry is useful for instrumenting Harness components without tightly coupling them to a particular observability vendor.
 
@@ -12285,7 +11809,7 @@ It can support measurements involving:
 - Infrastructure resource consumption.
 - Distributed execution traces.
 
-Recommended study areas:
+**Recommended study areas:**
 
 - Metrics instruments.
 - Traces and spans.
@@ -12295,7 +11819,7 @@ Recommended study areas:
 - OpenTelemetry Collector.
 - Exporters and telemetry pipelines.
 
-Alpha Car Detailing application:
+**Alpha Car Detailing application:**
 
 Instrument the .NET Harness Orchestrator, Metrics API, background workers, and gate execution components using common observability conventions.
 
@@ -12305,17 +11829,17 @@ OpenTelemetry instrumentation does not replace the engineering acceptance model.
 
 #### 7. OpenTelemetry — Metrics Semantic Conventions
 
-Reference: Metrics Semantic Conventions
+Reference: [Metrics Semantic Conventions](https://opentelemetry.io/docs/specs/semconv/general/metrics/)
 
 This specification provides guidance on metric names, units, instrument types, and consistent attributes.
 
-Relevance to Harness Engineering
+**Relevance to Harness Engineering**
 
 Consistent metric names and units are essential when many services and repositories publish operational measurements.
 
 The specification helps prevent ambiguous naming and incompatible units.
 
-Recommended study areas:
+**Recommended study areas:**
 
 - Metric naming.
 - Instrument selection.
@@ -12323,11 +11847,11 @@ Recommended study areas:
 - Attribute consistency.
 - Metric aggregation semantics.
 
-Alpha Car Detailing application:
+**Alpha Car Detailing application:**
 
 Define clear instrumentation such as:
 
-```
+```text
 harness.runs.started
 harness.runs.completed
 harness.gate.duration
@@ -12343,17 +11867,11 @@ Their meaning, units, dimensions, and reporting behavior should be documented in
 
 Publisher: Microsoft
 
-Reference: .NET Observability with OpenTelemetry
+Reference: [.NET Observability with OpenTelemetry](https://learn.microsoft.com/en-us/dotnet/core/diagnostics/observability-with-otel)
 
-Microsoft's documentation explains how .NET applications can produce logs, metrics, and distributed traces using standard platform APIs and OpenTelemetry instrumentation.&#x20;
+Microsoft's documentation explains how .NET applications can produce logs, metrics, and distributed traces using standard platform APIs and OpenTelemetry instrumentation.
 
-[image](https://www.google.com/s2/favicons?domain=https://learn.microsoft.com\&sz=32)
-
-Microsoft Learn
-
-+1
-
-Relevance to Harness Engineering
+**Relevance to Harness Engineering**
 
 This reference is directly applicable to the .NET 10 implementation used throughout the Alpha Car Detailing example.
 
@@ -12364,7 +11882,7 @@ Important APIs include:
 - `Microsoft.Extensions.Logging`
 - OpenTelemetry instrumentation and exporters.
 
-Alpha Car Detailing application:
+**Alpha Car Detailing application:**
 
 Use standard .NET instrumentation to measure background worker processing, API latency, gate timing, and execution infrastructure behavior.
 
@@ -12374,23 +11892,19 @@ Maintain a clear boundary between runtime telemetry and authoritative Harness li
 
 Organization: Prometheus
 
-Reference: Prometheus — Histograms and Summaries
+Reference: [Prometheus — Histograms and Summaries](https://prometheus.io/docs/practices/histograms/)
 
 This reference explains how to record and analyze distributions rather than relying exclusively on arithmetic averages.
 
-It covers histograms, summaries, quantiles, aggregation, and estimation considerations.&#x20;
+It covers histograms, summaries, quantiles, aggregation, and estimation considerations.
 
-[image](https://www.google.com/s2/favicons?domain=https://prometheus.io\&sz=32)
-
-Prometheus
-
-Relevance to Harness Engineering
+**Relevance to Harness Engineering**
 
 The chapter repeatedly emphasized the importance of median and tail-duration measurements.
 
 Prometheus guidance helps explain how to implement these measurements in distributed systems.
 
-Alpha Car Detailing application:
+**Alpha Car Detailing application:**
 
 Measure gate execution duration using histogram-based instrumentation.
 
@@ -12406,17 +11920,17 @@ Author: Martin Kleppmann
 
 Publisher: O'Reilly Media, 2017
 
-Reference: Designing Data-Intensive Applications
+Reference: [Designing Data-Intensive Applications](https://dataintensive.net/)
 
 This book provides a foundation for understanding reliable data storage, event processing, consistency, replication, and distributed systems.
 
-Relevance to Harness Engineering
+**Relevance to Harness Engineering**
 
 An enterprise Metrics subsystem must handle duplicate events, delayed delivery, concurrent updates, replay, and data consistency.
 
 These concerns are distributed systems problems rather than merely dashboard implementation details.
 
-Recommended study areas:
+**Recommended study areas:**
 
 - Data models and storage.
 - Transactions.
@@ -12425,7 +11939,7 @@ Recommended study areas:
 - Fault tolerance.
 - Derived data and materialized views.
 
-Alpha Car Detailing application:
+**Alpha Car Detailing application:**
 
 Design a Metrics ingestion pipeline in which duplicate Run completion events cannot inflate accepted throughput, and historical execution records can be replayed to rebuild reporting projections.
 
@@ -12435,11 +11949,11 @@ Authors: Gregor Hohpe and Bobby Woolf
 
 Publisher: Addison-Wesley, 2003
 
-Reference: Enterprise Integration Patterns
+Reference: [Enterprise Integration Patterns](https://www.enterpriseintegrationpatterns.com/)
 
 This book describes architectural patterns for reliable integration and messaging.
 
-Relevance to Harness Engineering
+**Relevance to Harness Engineering**
 
 Harness Metrics commonly depend on communication among orchestrators, workers, validation services, event consumers, and persistence components.
 
@@ -12452,7 +11966,7 @@ Useful patterns include:
 - Error handling.
 - Message correlation.
 
-Alpha Car Detailing application:
+**Alpha Car Detailing application:**
 
 Apply correlation and idempotent message-processing patterns to Metrics events emitted by the Harness Orchestrator and distributed workers.
 
@@ -12464,19 +11978,19 @@ Preserve a consistent association between Population Items, Runs, Attempts, and 
 
 Provider: Anthropic
 
-Reference: Claude Code Documentation
+Reference: [Claude Code Documentation](https://code.claude.com/docs/en/overview)
 
 Claude Code is the primary Agent execution platform used throughout this handbook.
 
 The documentation provides guidance on configuration, development workflows, execution permissions, automation, and supported integrations.
 
-Relevance to Harness Engineering
+**Relevance to Harness Engineering**
 
 Claude Code can participate in governed engineering workflows involving repository discovery, implementation, review, and validation.
 
 Readers should study the supported execution and monitoring capabilities appropriate to their installed version.
 
-Recommended study areas:
+**Recommended study areas:**
 
 - Repository Instructions.
 - Agent execution.
@@ -12486,7 +12000,7 @@ Recommended study areas:
 - Monitoring and usage reporting.
 - Automation integration.
 
-Alpha Car Detailing application:
+**Alpha Car Detailing application:**
 
 Integrate Claude Code as an Agent execution component while maintaining authoritative Run state, deterministic gate outcomes, and independent engineering acceptance within the Harness.
 
@@ -12494,23 +12008,17 @@ Integrate Claude Code as an Agent execution component while maintaining authorit
 
 Provider: GitHub
 
-Reference: GitHub Copilot Usage Metrics
+Reference: [GitHub Copilot Usage Metrics](https://docs.github.com/en/copilot/concepts/billing-and-usage/copilot-usage-metrics/copilot-metrics)
 
-GitHub documents reporting capabilities for Copilot adoption, usage, engagement, code generation, and relevant pull request activity.&#x20;
+GitHub documents reporting capabilities for Copilot adoption, usage, engagement, code generation, and relevant pull request activity.
 
-[image](https://www.google.com/s2/favicons?domain=https://docs.github.com\&sz=32)
-
-GitHub Docs
-
-+1
-
-Relevance to Harness Engineering
+**Relevance to Harness Engineering**
 
 These reports are useful for understanding how teams use GitHub Copilot.
 
 However, native usage metrics must not be confused with independently verified engineering acceptance.
 
-Recommended study areas:
+**Recommended study areas:**
 
 - Copilot adoption.
 - Feature engagement.
@@ -12518,7 +12026,7 @@ Recommended study areas:
 - Repository-level reporting.
 - Usage report interpretation.
 
-Alpha Car Detailing application:
+**Alpha Car Detailing application:**
 
 Compare Copilot usage trends with Harness outcome measurements such as validation failures, accepted throughput, rework, and engineering cycle time.
 
@@ -12528,21 +12036,15 @@ Avoid interpreting accepted suggestions or generated code as proof of engineerin
 
 Provider: GitHub
 
-Reference: GitHub Copilot Usage Metrics API
+Reference: [GitHub Copilot Usage Metrics API](https://docs.github.com/en/rest/copilot/copilot-usage-metrics)
 
-The REST API provides programmatic access to supported Copilot usage reports, subject to appropriate permissions and reporting availability.&#x20;
+The REST API provides programmatic access to supported Copilot usage reports, subject to appropriate permissions and reporting availability.
 
-[image](https://www.google.com/s2/favicons?domain=https://docs.github.com\&sz=32)
-
-GitHub Docs
-
-+1
-
-Relevance to Harness Engineering
+**Relevance to Harness Engineering**
 
 This reference is useful when designing a Copilot Metrics integration adapter.
 
-Alpha Car Detailing application:
+**Alpha Car Detailing application:**
 
 Retrieve authorized Copilot usage reports and incorporate relevant utilization measurements into enterprise reporting.
 
@@ -12554,19 +12056,15 @@ Do not assume that aggregated usage reports identify individual Harness Runs or 
 
 Provider: GitHub
 
-Reference: GitHub Actions Workflow Runs API
+Reference: [GitHub Actions Workflow Runs API](https://docs.github.com/en/rest/actions/workflow-runs)
 
-This API supports querying workflow executions and their operational results.&#x20;
+This API supports querying workflow executions and their operational results.
 
-[image](https://www.google.com/s2/favicons?domain=https://docs.github.com\&sz=32)
-
-GitHub Docs
-
-Relevance to Harness Engineering
+**Relevance to Harness Engineering**
 
 GitHub Actions can provide independent validation evidence for AI-generated changes.
 
-Alpha Car Detailing application:
+**Alpha Car Detailing application:**
 
 Correlate GitHub Actions workflow executions with Harness Runs, commits, and pull requests.
 
@@ -12576,15 +12074,15 @@ Use these observations to calculate applicable gate duration, validation outcome
 
 Provider: OpenAI
 
-Reference: OpenAI Codex Documentation
+Reference: [OpenAI Codex Documentation](https://developers.openai.com/codex/)
 
 The Codex documentation describes supported coding workflows, execution environments, and integration capabilities.
 
-Relevance to Harness Engineering
+**Relevance to Harness Engineering**
 
 Codex can participate in a Harness through supported interactive and automated execution interfaces.
 
-Recommended study areas:
+**Recommended study areas:**
 
 - Codex CLI.
 - Non-interactive execution.
@@ -12594,7 +12092,7 @@ Recommended study areas:
 - Sandboxing.
 - Task and session management.
 
-Alpha Car Detailing application:
+**Alpha Car Detailing application:**
 
 Create a Codex execution adapter that associates supported execution observations with the Harness's Population, Run, Attempt, and evidence contracts.
 
@@ -12606,11 +12104,11 @@ Keep Codex execution completion separate from engineering acceptance.
 
 Organization: National Institute of Standards and Technology
 
-Reference: NIST AI Risk Management Framework
+Reference: [NIST AI Risk Management Framework](https://www.nist.gov/itl/ai-risk-management-framework)
 
 The AI Risk Management Framework provides guidance for identifying, assessing, and managing risks associated with AI systems.
 
-Relevance to Harness Engineering
+**Relevance to Harness Engineering**
 
 Although the framework is broader than AI coding agents, its governance principles are relevant to enterprise Harness design.
 
@@ -12623,7 +12121,7 @@ Important concerns include:
 - Governance.
 - Documentation.
 
-Alpha Car Detailing application:
+**Alpha Car Detailing application:**
 
 Establish accountable ownership for Metrics definitions, AI execution policies, validation requirements, and approval controls.
 
@@ -12633,17 +12131,17 @@ Ensure that important success measurements cannot be silently modified by the Ag
 
 Organization: OWASP GenAI Security Project
 
-Reference: OWASP GenAI Security Project
+Reference: [OWASP GenAI Security Project](https://genai.owasp.org/)
 
 OWASP provides security guidance concerning large language model applications and Agent-based systems.
 
-Relevance to Harness Engineering
+**Relevance to Harness Engineering**
 
 A Metrics subsystem may consume Agent-generated content, external tool output, logs, and execution artifacts.
 
 These inputs may be untrusted or contain sensitive information.
 
-Alpha Car Detailing application:
+**Alpha Car Detailing application:**
 
 Protect metric ingestion and evidence processing against malicious content, unauthorized state modification, sensitive-data exposure, and misuse of Agent execution permissions.
 
@@ -12723,5 +12221,3 @@ The Alpha Car Detailing Harness should therefore evolve its measurement capabili
 Metrics should support continuous improvement without permitting the system to weaken the standards against which its success is measured.
 
 > Final Principle: A trustworthy AI Engineering Harness does not simply report that engineering work was completed. It provides measurable, auditable evidence that the intended work was performed correctly, reliably, securely, and with appropriate use of engineering resources.
-
-Chapter 20 status: Complete

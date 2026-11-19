@@ -2,7 +2,7 @@
 
 Engineering confidence does not come from an agent saying, “The implementation looks correct.” It comes from repeatable evidence showing that the implementation satisfies defined conditions.
 
-The Validator Agent is responsible for producing that evidence.
+The Validator Agent is responsible for verifying that evidence and making the result traceable to the reviewed implementation.
 
 ## Story-driven Opening
 
@@ -20,7 +20,7 @@ The Lead Agent handed the reviewed implementation to the Validator Agent with a 
 - Execute unit and integration tests.
 - Run static analysis.
 - Verify architecture rules.
-- scan dependencies and source code for known security problems.
+- Scan dependencies and source code for known security problems.
 - Validate the REST API contract.
 - Validate the `CorporateFleetBookingCreated` event contract.
 - Verify that the database migration could be applied safely.
@@ -29,7 +29,7 @@ The Lead Agent handed the reviewed implementation to the Validator Agent with a 
 
 The Validator Agent started with the build. It passed without warnings.
 
-The domain unit tests passed. The application tests passed. Most integration tests passed.
+The domain, application, and integration tests passed.
 
 One contract compatibility check failed.
 
@@ -39,8 +39,8 @@ The Validator Agent did not decide whether the change was acceptable. It did not
 
 | Result field | Recorded value |
 | --- | --- |
-| Check performed | Backward-compatibility validation for `CorporateFleetBookingCreated` |
-| Expected condition | No breaking changes to required event fields |
+| Check performed | Producer compatibility with existing version 1 consumers of `CorporateFleetBookingCreated` |
+| Expected condition | New payloads must still satisfy the published v1 contract, including its required fields |
 | Actual result | `stationId` changed from required to optional |
 | Evidence | Contract comparison report and generated schema diff |
 | Status | Fail |
@@ -204,7 +204,7 @@ Its principal question is:
 
 The Validator Agent receives an implementation evidence package, identifies the applicable validation profile, prepares or verifies the execution environment, runs the required gates, collects evidence, classifies outcomes, and reports the results.
 
-It does not decide whether subjective design choices are elegant. It does not determine whether users will value the capability. It does not approve production deployment unless a narrowly defined organizational process explicitly assigns such authority—and even then, it reports validation evidence rather than replacing accountable human decision-makers.
+It does not decide whether a design is maintainable or an outcome meets user needs. It does not authorize merge, release, or production deployment. The harness may enforce a passing validation result as a prerequisite, but passing a gate is not an approval decision.
 
 ### Validator Agent Responsibilities
 
@@ -463,7 +463,7 @@ For a Clean Architecture implementation, checks may enforce that:
 - Application does not reference API.
 - API does not access persistence implementations directly.
 - Infrastructure implements ports defined by inner layers.
-- domain types do not depend on framework-specific persistence attributes.
+- Domain types do not depend on framework-specific persistence attributes.
 - handlers do not bypass established application abstractions.
 - microservices do not reference another service’s internal projects.
 - integration contracts reside in approved assemblies.
@@ -618,7 +618,7 @@ Migration validation may include:
 
 Suppose the corporate fleet booking change makes `StationId` non-nullable. Applying that migration to a populated database will fail if existing rows contain null values. A migration that succeeds only on an empty database is not sufficient evidence for an upgrade scenario.
 
-The Validator Agent reports this as a failure or an inconclusive result according to the defined profile. It does not add a default value arbitrarily or delete incompatible records to force the migration to pass.
+If the migration fails against the required upgrade fixture because existing rows contain nulls, the upgrade gate is **Fail**. If the migration runs but the evidence cannot establish whether the required postconditions hold, the gate is **Inconclusive**. The Validator Agent does not add a default arbitrarily or delete records to force a pass.
 
 ### Configuration Validation
 
@@ -770,14 +770,12 @@ A simple aggregation policy can be defined as follows:
 
 | Individual results | Overall outcome |
 | --- | --- |
-| All mandatory checks pass | Pass |
 | Any mandatory check fails | Fail |
-| No failures, but at least one mandatory check is blocked | Blocked |
-| No failures or blocks, but at least one mandatory check is inconclusive | Inconclusive |
-| Required evidence missing | Inconclusive or fail, according to policy |
-| Required check silently omitted | Invalid validation run; treat as fail or escalate |
+| No mandatory failures, but a mandatory prerequisite prevents execution | Blocked |
+| No mandatory failures or blocks, but a mandatory result or its required evidence is missing, incomplete, or unreliable | Inconclusive |
+| Every mandatory check in the resolved profile has a valid Pass with all required evidence | Pass |
 
-This policy should be encoded in the harness instead of left to agent discretion.
+Evaluate these rows in order against the resolved gate inventory, not just the records that happen to be present. An omitted gate with no known prerequisite failure is incomplete evidence. Retain each gate's status and any advisory findings even when a higher-priority outcome determines the overall result. Encode this policy in the harness instead of leaving it to agent discretion.
 
 ### Failure Handling
 
@@ -986,7 +984,7 @@ The Validator Agent produces a validation result package containing:
 - escalation information;
 - integrity or attestation information where required.
 
-A concise machine-readable representation might resemble:
+The following excerpt shows two gate records. The full manifest also records the reviewed commit, the resolved gate inventory, and the run and attempt identifiers.
 
 ```json
 {
@@ -997,6 +995,7 @@ A concise machine-readable representation might resemble:
   "checks": [
     {
       "name": "solution-build",
+      "checkPerformed": "Run the approved Release build",
       "expectedCondition": "Release build completes with no warnings",
       "actualResult": "Build completed with 0 warnings and 0 errors",
       "status": "Pass",
@@ -1005,10 +1004,11 @@ A concise machine-readable representation might resemble:
         "artifacts/build.binlog"
       ],
       "failureDetails": null,
-      "recommendedNextAction": null
+      "recommendedNextAction": "Continue with checks that depend on the build"
     },
     {
       "name": "event-contract-compatibility",
+      "checkPerformed": "Verify candidate producer compatibility with the published v1 consumer contract",
       "expectedCondition": "No breaking change against schema version 1.0",
       "actualResult": "Required field stationId became optional",
       "status": "Fail",
@@ -1229,8 +1229,6 @@ sequenceDiagram
 
 The revision identifier is part of every handoff. Evidence for Revision A cannot be reused as proof that Revision B passed unless the validation policy explicitly allows unaffected results to be carried forward and preserves the basis for that decision.
 
-Chapter 17 status: In progress — next section: Hands-on Example
-
 ## Hands-on Example
 
 The Alpha Car Detailing team has implemented corporate fleet booking in the Booking microservice. An authorized corporate fleet coordinator can submit one booking request containing multiple vehicles, select a station and service package, and receive a booking identifier.
@@ -1253,7 +1251,9 @@ The change affects:
 - application configuration;
 - the Booking service deployment manifest.
 
-Because the implementation crosses several boundaries, compilation and unit tests alone are insufficient. The applicable validation profile requires:
+This walkthrough uses a separate validation run from the opening story. Its first failure concerns booking idempotency, not the event contract. The abbreviated commit IDs used in the narrative are display labels; validation requests and evidence manifests bind to full commit IDs.
+
+Because the implementation crosses several boundaries, compilation and unit tests alone are insufficient. The applicable validation profile requires these 15 gates:
 
 | Gate | Expected condition |
 | --- | --- |
@@ -1264,10 +1264,11 @@ Because the implementation crosses several boundaries, compilation and unit test
 | Application tests | Command handling and idempotency behavior pass |
 | Integration tests | API, database, and outbox scenarios pass |
 | Architecture tests | Clean Architecture dependency rules pass |
+| Contract tests | The running API and serialized event satisfy the required contract assertions |
 | Static analysis | No findings above the configured quality threshold |
 | Security checks | No secrets or prohibited vulnerable dependencies are detected |
 | API contract | OpenAPI is valid and contains no unapproved breaking changes |
-| Event contract | Event schema is valid and backward compatible |
+| Event contract | New payloads conform to the published v1 schema and remain readable by existing v1 consumers |
 | Migration validation | Migration succeeds for empty and representative upgraded databases |
 | Configuration validation | Required settings bind successfully and contain no plaintext secrets |
 | Deployment validation | Kubernetes manifests render and pass approved policies |
@@ -1322,8 +1323,8 @@ The Lead Agent supplies a validation request containing:
 ```yaml
 taskId: ACD-CFB-142
 feature: Corporate Fleet Booking
-sourceRevision: 8d34e7a
-reviewedRevision: 8d34e7a
+sourceRevision: "8d34e7a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7"
+reviewedRevision: "8d34e7a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7"
 reviewOutcome: approved-for-validation
 validationProfile: booking-service-v3
 riskClassification: medium
@@ -1358,7 +1359,7 @@ The Validator Agent verifies that:
 - the profile is the approved version;
 - all required tools are available.
 
-If the source revision does not match the reviewed revision, validation stops with a blocked result. Passing evidence from an unreviewed revision would not satisfy the workflow.
+If the source revision does not match the reviewed revision, validation stops with a **Blocked** result. Passing evidence from an unreviewed revision would not satisfy the workflow.
 
 ### Step 2: Prepare an Isolated Environment
 
@@ -1379,6 +1380,7 @@ Example environment verification:
 
 ```powershell
 $ErrorActionPreference = "Stop"
+$PSNativeCommandUseErrorActionPreference = $true
 
 dotnet --info
 docker version
@@ -1387,28 +1389,28 @@ git --version
 dotnet tool restore
 ```
 
-The validation record captures tool versions. If the required SDK is unavailable, the result is **Blocked** rather than **Fail**, because the implementation has not yet violated a tested condition.
+These snippets assume PowerShell 7.4 or later, with native command failures surfaced as terminating errors. The validation wrapper captures the original exit code and diagnostics before applying policy. If the required SDK is unavailable, the result is **Blocked** rather than **Fail**, because the implementation has not yet violated a tested condition.
 
 ### Step 3: Verify Revision Integrity
 
 The Validator Agent records the current revision:
 
 ```powershell
-$expectedRevision = "8d34e7a"
-$actualRevision = git rev-parse --short HEAD
+$expectedRevision = "8d34e7a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7" # Illustrative reviewed commit.
+$actualRevision = git rev-parse --verify HEAD
 
 if ($actualRevision -ne $expectedRevision) {
     throw "Revision mismatch. Expected $expectedRevision but found $actualRevision."
 }
 
-$statusOutput = git status --porcelain
+$statusOutput = git status --porcelain=v1 --untracked-files=all
 
 if ($statusOutput) {
     throw "The validation workspace contains uncommitted changes."
 }
 ```
 
-A stronger enterprise workflow may validate a full commit digest instead of an abbreviated identifier.
+The illustrative commit must be replaced with the full commit ID from the independent review record when running the example. The validation wrapper records the checked-out commit and workspace state and classifies a mismatch or dirty checkout as **Blocked**. Repository setup that writes into the checkout should occur after this check, or outside the checkout.
 
 The recorded result is:
 
@@ -1429,6 +1431,7 @@ The Validator Agent executes a locked restore and Release build:
 ```powershell
 dotnet restore .\AlphaCarDetailing.sln --locked-mode
 
+$null = New-Item -ItemType Directory -Force -Path .\artifacts
 dotnet build .\AlphaCarDetailing.sln `
     --configuration Release `
     --no-restore `
@@ -1476,7 +1479,7 @@ dotnet test `
     --results-directory .\artifacts\test-results
 ```
 
-Representative tests include:
+Representative tests include the following. The test fixture uses a fixed booking clock; the scheduled date must be valid relative to that clock.
 
 ```csharp
 [Fact]
@@ -1486,7 +1489,7 @@ public void Create_ShouldRejectEmptyVehicleCollection()
         CorporateAccountId.New(),
         StationId.New(),
         ServicePackageId.New(),
-        scheduledDate: DateOnly.FromDateTime(DateTime.UtcNow.AddDays(7)),
+        scheduledDate: new DateOnly(2026, 9, 22),
         vehicles: []);
 
     result.IsFailure.ShouldBeTrue();
@@ -1502,7 +1505,7 @@ public void Create_ShouldRejectDuplicateVehicles()
         CorporateAccountId.New(),
         StationId.New(),
         ServicePackageId.New(),
-        scheduledDate: DateOnly.FromDateTime(DateTime.UtcNow.AddDays(7)),
+        scheduledDate: new DateOnly(2026, 9, 22),
         vehicles: [vehicleId, vehicleId]);
 
     result.IsFailure.ShouldBeTrue();
@@ -1547,8 +1550,8 @@ The integration tests start the Booking API with a disposable SQL Server databas
 Representative scenarios include:
 
 1. An authorized fleet coordinator creates a booking.
-2. An unauthorized user receives `403 Forbidden`.
-3. Invalid input produces an RFC 7807-compatible problem response.
+2. An authenticated caller without permission receives `403 Forbidden`.
+3. Invalid input produces an RFC 9457 problem details response.
 4. The booking and outbox record are committed atomically.
 5. Repeated requests with the same idempotency key return the same logical result.
 6. A failed transaction does not leave a partial booking or orphaned outbox record.
@@ -1589,19 +1592,19 @@ public async Task CreateCorporateFleetBooking_ShouldPersistBookingAndOutboxMessa
 
     result.ShouldNotBeNull();
 
-    await Database.Bookings
-        .AnyAsync(x => x.Id == result.BookingId)
-        .ShouldBeTrue();
+    var bookingExists = await Database.Bookings
+        .AnyAsync(x => x.Id == result.BookingId);
+    bookingExists.ShouldBeTrue();
 
-    await Database.OutboxMessages
+    var outboxMessageExists = await Database.OutboxMessages
         .AnyAsync(x =>
             x.EventType == "CorporateFleetBookingCreated" &&
-            x.AggregateId == result.BookingId)
-        .ShouldBeTrue();
+            x.AggregateId == result.BookingId);
+    outboxMessageExists.ShouldBeTrue();
 }
 ```
 
-The Validator Agent preserves the test report and code-coverage artifact. If code coverage is an enforced gate, it records the configured threshold and actual percentage. It does not invent a threshold during validation.
+This test verifies the success case. A separate rollback test must induce a controlled persistence failure and verify that neither record remains. The Validator Agent preserves the test report and code-coverage artifact. If coverage is an enforced gate, it records the configured threshold and actual percentage.
 
 ### Step 8: Validate Architecture Rules
 
@@ -1717,7 +1720,7 @@ The required checks include:
 - request-schema compatibility;
 - response-schema compatibility;
 - defined `201`, `400`, `401`, `403`, `409`, and `500` responses;
-- RFC 7807 problem response definitions;
+- RFC 9457 problem details response definitions;
 - no unapproved breaking changes.
 
 The expected operation is conceptually:
@@ -1744,15 +1747,30 @@ The expected operation is conceptually:
         description: Caller is not authorized
       "409":
         description: Booking conflict
+      "500":
+        description: Unexpected server error
 ```
 
-Suppose the comparison identifies that the implementation removed the `409 Conflict` response from the specification. Even if the endpoint still compiles and its happy-path tests pass, the contract check fails.
+This fragment shows the status-code inventory, not the complete request or response schemas. In a separate negative case, removing the declared `409 Conflict` response fails the profile's explicit response-inventory check even if a generic compatibility tool does not classify that change as breaking.
 
 The Validator Agent records the generated specification and contract diff as evidence.
 
+The profile also requires a separate test gate. It runs the Booking contract test project, which verifies the running endpoint and serialized event against the approved contracts:
+
+```powershell
+dotnet test `
+    .\tests\Services\Booking\AlphaCarDetailing.Booking.ContractTests `
+    --configuration Release `
+    --no-build `
+    --logger "trx;LogFileName=contract-tests.trx" `
+    --results-directory .\artifacts\test-results
+```
+
+The TRX report proves which assertions executed. It does not replace an API or event compatibility report.
+
 ### Step 12: Validate the Event Contract
 
-The `CorporateFleetBookingCreated` event must conform to the approved JSON Schema and remain backward compatible with version 1 consumers.
+The `CorporateFleetBookingCreated` event must conform to the approved JSON Schema. The Booking profile also requires that existing v1 consumers can read new producer payloads. Name the reader and writer explicitly: compatibility labels alone do not specify the direction consistently across tools.
 
 The validation verifies:
 
@@ -1765,9 +1783,9 @@ The validation verifies:
 - vehicle count constraints;
 - scheduled-date format;
 - additional-property policy;
-- backward compatibility.
+- compatibility of candidate producer payloads with the approved v1 consumer contract.
 
-A representative schema fragment is:
+A representative schema fragment for the envelope's `data` property is:
 
 ```json
 {
@@ -1806,7 +1824,7 @@ A representative schema fragment is:
 }
 ```
 
-The Validator Agent also serializes a representative event and validates the produced JSON—not only the declared C# type—against the schema.
+The Validator Agent also serializes a representative event and validates the complete JSON against the approved envelope schema—not only the declared C# type or the `data` fragment. If the chosen JSON Schema validator treats `format` as an annotation, enable format assertions or enforce UUIDs and dates with explicit contract tests. Retrieve the protected baseline by an immutable version or digest, and use an approved compatibility tool and consumer tests rather than assuming a registry's storage feature enforces the JSON contract.
 
 This catches problems such as:
 
@@ -1831,7 +1849,7 @@ The Validator Agent performs two migration scenarios.
 
 #### Empty-Database Scenario
 
-The migration is applied to a newly created database:
+Apply the migration only after provisioning a disposable database and verifying its identity. The harness supplies an isolated startup configuration that targets only this database, and the validation runner has no credentials or network access for shared or production databases. Do not pass credentials in command arguments or record them in the evidence.
 
 ```powershell
 dotnet ef database update `
@@ -1852,7 +1870,7 @@ The Validator Agent:
 4. Verifies required tables, columns, constraints, and indexes.
 5. Starts the application against the upgraded database.
 6. Executes a booking integration scenario.
-7. confirms that existing records remain accessible.
+7. Confirms that existing records remain accessible.
 
 The migration report must identify potentially destructive operations such as:
 
@@ -1870,17 +1888,24 @@ If the migration changes a nullable column to non-nullable without a safe data-h
 The Booking API requires strongly typed configuration:
 
 ```csharp
+using System.ComponentModel.DataAnnotations;
+
 public sealed class BookingEventOptions
 {
     public const string SectionName = "BookingEvents";
 
-    public required string EventHubName { get; init; }
+    [Required]
+    public string EventHubName { get; init; } = string.Empty;
 
-    public required string SchemaGroup { get; init; }
+    [Required]
+    public string SchemaGroup { get; init; } = string.Empty;
 
-    public int MaximumRetryCount { get; init; }
+    [Required]
+    [Range(0, 10)]
+    public int? MaximumRetryCount { get; init; }
 
-    public TimeSpan RetryDelay { get; init; }
+    [Required]
+    public TimeSpan? RetryDelay { get; init; }
 }
 ```
 
@@ -1892,12 +1917,12 @@ services
     .BindConfiguration(BookingEventOptions.SectionName)
     .ValidateDataAnnotations()
     .Validate(
-        options => options.MaximumRetryCount is >= 0 and <= 10,
-        "MaximumRetryCount must be between 0 and 10.")
+        options => options.RetryDelay is { } delay && delay > TimeSpan.Zero,
+        "RetryDelay must be a positive duration.")
     .ValidateOnStart();
 ```
 
-The Validator Agent verifies that:
+The data annotations enforce required settings at runtime. Nullable value types let validation distinguish a missing retry count from a legitimate zero. The Validator Agent verifies that:
 
 - all required values are provided through approved sources;
 - integer and duration values bind correctly;
@@ -2019,7 +2044,7 @@ A targeted passing test is not enough for the final outcome. The correction may 
 
 ### Example Final Validation Report
 
-After the correction, the Validator Agent produces:
+After the correction, the Validator Agent derives this human-readable report from the evidence manifest. Artifact paths are relative to the individual run's evidence directory. The manifest carries full commit IDs, the resolved profile version, toolchain metadata, and attempt history.
 
 ```markdown
 # Validation Report
@@ -2033,42 +2058,31 @@ Overall status: PASS
 
 ## Results
 
-| Check | Expected condition | Actual result | Status |
-|---|---|---|---|
-| Revision integrity | Reviewed revision with clean workspace | Revision matched; workspace clean | Pass |
-| Restore | Locked restore succeeds | Restore completed | Pass |
-| Build | Release build succeeds with no warnings | 0 warnings, 0 errors | Pass |
-| Domain tests | All tests pass | 42 of 42 passed | Pass |
-| Application tests | All tests pass | 57 of 57 passed | Pass |
-| Integration tests | All tests pass | 38 of 38 passed | Pass |
-| Architecture tests | No prohibited dependencies | 12 of 12 passed | Pass |
-| Static analysis | No prohibited findings | No findings above threshold | Pass |
-| Security checks | No disallowed findings | No secrets; no high or critical vulnerabilities | Pass |
-| API contract | Valid and backward compatible | No breaking changes | Pass |
-| Event contract | Valid and backward compatible | Schema and compatibility checks passed | Pass |
-| Database migration | Empty and upgrade scenarios succeed | Both scenarios passed | Pass |
-| Configuration | Required settings bind securely | All checks passed | Pass |
-| Deployment | Manifests satisfy approved policies | All policies passed | Pass |
+| Check | Expected condition | Actual result | Evidence | Status |
+|---|---|---|---|---|
+| Revision integrity | Reviewed commit; clean workspace | Commit matched; workspace clean | revision-integrity.json | Pass |
+| Restore | Locked restore succeeds | Restore completed | restore.log | Pass |
+| Build | Release build succeeds with no warnings | 0 warnings, 0 errors | build.binlog | Pass |
+| Domain tests | All required tests pass | 42 of 42 passed | domain-tests.trx | Pass |
+| Application tests | All required tests pass | 57 of 57 passed | application-tests.trx | Pass |
+| Integration tests | All required tests pass | 38 of 38 passed | integration-tests.trx | Pass |
+| Architecture tests | No prohibited dependencies | 12 of 12 passed | architecture-tests.trx | Pass |
+| Contract tests | All required contract assertions pass | 9 of 9 passed | contract-tests.trx | Pass |
+| Static analysis | No findings above threshold | No prohibited findings | static-analysis.sarif | Pass |
+| Security checks | No disallowed findings | None detected | security-results.sarif | Pass |
+| API contract | Valid specification; no prohibited changes | Valid; no prohibited changes | openapi-diff.json | Pass |
+| Event contract | New payloads satisfy published v1 contract | Schema and consumer checks passed | event-compatibility.json | Pass |
+| Database migration | Empty and upgrade scenarios succeed | Both scenarios passed | migration-report.json | Pass |
+| Configuration | Required settings bind securely | All checks passed | configuration-report.json | Pass |
+| Deployment | Rendered manifests satisfy approved policies | All policies passed | deployment-policy.json | Pass |
+
+Mandatory gates passed: 15 of 15. Failure details: None for this run.
 
 ## Previous Failure
 
 Revision `8d34e7a` failed the duplicate-idempotency integration test.
 Revision `c719b42` contains the reviewed correction and passed the full
 validation profile.
-
-## Evidence
-
-- Build binary log
-- Test result files
-- Coverage report
-- Architecture test report
-- Static-analysis report
-- Security reports
-- OpenAPI compatibility report
-- Event schema compatibility report
-- Database migration report
-- Configuration validation report
-- Deployment policy report
 
 ## Recommended Next Action
 
@@ -2090,8 +2104,6 @@ The Validator Agent has not established that:
 - the organization should release the feature.
 
 Those questions remain with the Evaluator Agent and the authorized human decision-makers.
-
-Chapter 17 status: In progress — next section: Claude Example
 
 ## Claude Example
 
@@ -2161,7 +2173,7 @@ A disciplined Claude Code session follows five stages:
 1. Discover the applicable validation controls.
 2. Verify the source revision and environment.
 3. Execute the mandatory checks.
-4. collect complete evidence.
+4. Collect complete evidence.
 5. Classify and report the results without weakening the gates.
 
 ```mermaid
@@ -2219,7 +2231,7 @@ Validation controls discovered:
   contracts/events/corporate-fleet-booking-created.v1.json
 - Migration owner: AlphaCarDetailing.Booking.Infrastructure
 - Deployment manifests: deploy/booking
-- Mandatory gate count: 13
+- Mandatory gate count: 15
 
 No validation command has been executed yet.
 ```
@@ -2280,7 +2292,7 @@ When the repository provides a governed validation script, Claude should prefer 
 
 ```powershell
 .\harness\scripts\validate-booking-service.ps1 `
-    -SourceRevision "c719b42" `
+    -SourceRevision "c719b42a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e" `
     -Profile "booking-service-v3" `
     -EvidenceDirectory ".\artifacts\validation\ACD-CFB-142"
 ```
@@ -2424,8 +2436,8 @@ Check performed:
 Compare CorporateFleetBookingCreated schema with the registered version.
 
 Expected condition:
-The proposed schema must satisfy the configured backward-compatibility
-policy.
+Candidate producer payloads must satisfy the published v1 consumer
+contract.
 
 Actual result:
 The schema registry rejected the request because the validation identity
@@ -2484,12 +2496,12 @@ Claude can coordinate API validation by:
 Suppose the tool reports:
 
 ```text
-Breaking change:
+Published response guarantee removed:
 POST /api/corporate-fleet-bookings
-Request property "stationId" changed from required to optional.
+Response property "bookingId" changed from required to optional.
 ```
 
-Claude reports **Fail** even if it reasons that optional station selection could support future business requirements. That reasoning belongs in a separate design decision. The deterministic rule detected an unapproved breaking change.
+Claude reports **Fail** because an existing client is entitled to rely on `bookingId` being present in a successful response. Whether to change that promise is a contract-governance decision, not a validation decision.
 
 ### Validating Event Compatibility
 
@@ -2497,7 +2509,7 @@ For the `CorporateFleetBookingCreated` event, Claude should validate:
 
 - the JSON Schema document;
 - a representative serialized event;
-- the registered compatibility policy;
+- the protected v1 baseline and the profile's producer-to-consumer compatibility rule;
 - schema metadata;
 - consumer deserialization tests where required.
 
@@ -2505,7 +2517,7 @@ Claude can summarize the result, but the compatibility tool’s report remains t
 
 ```markdown
 Check performed:
-Backward-compatibility validation for CorporateFleetBookingCreated v1.
+Compatibility of new CorporateFleetBookingCreated payloads with v1 consumers.
 
 Expected condition:
 No required field may be removed or weakened without an approved versioned
@@ -2583,11 +2595,13 @@ Overall status: PASS
 | Gate | Status | Evidence |
 |---|---|---|
 | Revision integrity | Pass | revision-integrity.json |
-| Restore and build | Pass | build.binlog |
+| Restore | Pass | restore.log |
+| Release build | Pass | build.binlog |
 | Domain tests | Pass | domain-tests.trx |
 | Application tests | Pass | application-tests.trx |
 | Integration tests | Pass | integration-tests.trx |
 | Architecture tests | Pass | architecture-tests.trx |
+| Contract tests | Pass | contract-tests.trx |
 | Static analysis | Pass | static-analysis.sarif |
 | Security validation | Pass | security-results.sarif |
 | API contract | Pass | openapi-diff.json |
@@ -2612,9 +2626,9 @@ The corresponding machine-readable output might be:
   "reviewedRevision": "c719b42",
   "profile": "booking-service-v3",
   "status": "Pass",
-  "requiredChecks": 13,
-  "executedChecks": 13,
-  "passedChecks": 13,
+  "requiredChecks": 15,
+  "executedChecks": 15,
+  "passedChecks": 15,
   "failedChecks": 0,
   "blockedChecks": 0,
   "inconclusiveChecks": 0,
@@ -2704,8 +2718,8 @@ A passing Claude validation session ends with a controlled handoff:
 Validation completed for revision c719b42.
 
 Overall result: Pass
-Mandatory gates executed: 13 of 13
-Mandatory gates passed: 13 of 13
+Mandatory gates executed: 15 of 15
+Mandatory gates passed: 15 of 15
 Skipped gates: 0
 Evidence package: artifacts/validation/ACD-CFB-142
 
@@ -2719,8 +2733,6 @@ approval, or production authorization.
 A failing session returns to the Developer Agent through the governed workflow. A blocked or inconclusive session escalates to the role authorized to resolve the missing prerequisite or ambiguous condition.
 
 In every case, Claude’s most important responsibility as the Validator Agent is not to sound confident. It is to preserve the integrity of the validation process.
-
-Chapter 17 status: In progress — next section: GitHub Copilot Comparison
 
 ## GitHub Copilot Comparison
 
@@ -2837,8 +2849,8 @@ A developer or validator can ask Copilot to execute the approved local workflow:
 Validate task ACD-CFB-142 at reviewed commit c719b42 using
 harness/validation/booking-service.yaml.
 
-Do not modify any files. First show the required gates resolved from the
-profile. Then run the approved validation script and collect evidence under
+Do not modify tracked files. First show the required gates resolved from
+the profile. Then run the approved validation script and collect evidence under
 artifacts/validation/ACD-CFB-142.
 
 Stop advancement if any mandatory gate does not pass.
@@ -2848,7 +2860,7 @@ Copilot may then use repository commands such as:
 
 ```powershell
 .\harness\scripts\validate-booking-service.ps1 `
-    -SourceRevision "c719b42" `
+    -SourceRevision "c719b42a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e" `
     -Profile "booking-service-v3" `
     -EvidenceDirectory ".\artifacts\validation\ACD-CFB-142"
 ```
@@ -2869,69 +2881,61 @@ Local execution provides fast feedback, but its evidence may be less authoritati
 
 GitHub Actions can provide a controlled execution environment for deterministic validation. Copilot can help create, explain, diagnose, and summarize the workflow, but the workflow itself should remain repository-controlled and independently reviewed.
 
-A simplified workflow might be:
+This illustrative workflow tests the pull request head, not GitHub's synthetic merge commit. It can run before review for fast feedback. The harness accepts its evidence after review only if the independent review record names the exact tested SHA and the workflow and controls used for the run are trusted. The example assumes a cross-platform validation script and a reviewed SDK pin in `global.json`:
 
 ```yaml
 name: Validate Booking Service
 
 on:
   pull_request:
-    paths:
-      - "src/Services/Booking/**"
-      - "tests/Services/Booking/**"
-      - "contracts/api/**"
-      - "contracts/events/**"
-      - "deploy/booking/**"
-      - "harness/validation/**"
 
 permissions:
   contents: read
-  security-events: write
 
 jobs:
   validate:
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    env:
+      VALIDATION_SHA: ${{ github.event.pull_request.head.sha }}
 
     steps:
-      - name: Check out reviewed revision
+      - name: Check out the pull request head
         uses: actions/checkout@v4
         with:
+          ref: ${{ env.VALIDATION_SHA }}
           persist-credentials: false
 
       - name: Set up .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: "10.0.x"
-
-      - name: Restore tools
-        run: dotnet tool restore
+          global-json-file: global.json
 
       - name: Validate Booking service
         shell: pwsh
         run: |
           ./harness/scripts/validate-booking-service.ps1 `
-            -SourceRevision "${{ github.event.pull_request.head.sha }}" `
+            -SourceRevision $env:VALIDATION_SHA `
             -Profile "booking-service-v3" `
-            -EvidenceDirectory "./artifacts/validation"
+            -EvidenceDirectory (Join-Path $env:RUNNER_TEMP "booking-validation")
 
       - name: Upload validation evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: booking-validation-evidence
-          path: artifacts/validation
+          name: booking-validation-evidence-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/booking-validation
           if-no-files-found: error
           retention-days: 30
 ```
 
-The use of `if: always()` for evidence upload is important. Failure evidence is often more valuable than success output. A workflow that uploads reports only after a pass can conceal the information needed for diagnosis.
+The validation script writes a manifest and redacted diagnostics even when a prerequisite is missing or a gate fails. Its exit code is zero only for a complete Pass. The upload step attempts to retain evidence even after a failure and uses a distinct artifact name for each attempt. A cancelled runner or missing artifact is not evidence of success.
 
-In a production repository, actions should be pinned according to organizational supply-chain policy, permissions should follow least privilege, and sensitive deployment environments should remain protected.
+For authoritative CI, pin actions to approved commit SHAs and use trusted workflow and gate definitions outside the candidate change's control. Execute candidate code in an isolated, least-privilege runner without deployment credentials. If policy also validates the merge result or uses a merge queue, record and check out that tested commit separately; evidence for the pull request head is not evidence for the merged tree. See [GitHub Actions workflow events](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows) and [troubleshooting required status checks](https://docs.github.com/en/pull-requests/how-tos/merge-and-close-pull-requests/troubleshooting-required-status-checks).
 
 ### Required Checks and Branch Protection
 
-The authoritative validation workflow should be configured as a required check before merge. This prevents Copilot, a developer, or another agent from advancing a change based only on a conversational statement that validation passed.
+Require an aggregate validation check before merge. Do not put path filters on a required workflow that must report a result for every pull request. If risk-based selection excludes some gates, record the selection inside the workflow and have the aggregate check verify every applicable mandatory result and artifact before succeeding. Keep the independent review requirement separate from the validation check.
 
 For the corporate fleet booking pull request, required checks might include:
 
@@ -2958,7 +2962,7 @@ Copilot can help summarize validation evidence on a pull request. For example:
 ## Validator Agent Result
 
 Task: ACD-CFB-142  
-Commit: c719b42  
+Commit: 8d34e7a  
 Profile: booking-service-v3  
 Overall status: FAIL
 
@@ -3091,7 +3095,7 @@ Event: CorporateFleetBookingCreated
 Baseline version: 1.0
 Proposed version: 1.0
 Detected change: stationId changed from required to optional
-Compatibility policy: backward
+Compatibility policy: candidate producer payloads must satisfy the existing v1 contract
 Tool result: incompatible
 ```
 
@@ -3250,8 +3254,8 @@ Validation completed for task ACD-CFB-142.
 Validated commit: c719b42
 Validation profile: booking-service-v3
 Overall result: Pass
-Mandatory checks executed: 13 of 13
-Mandatory checks passed: 13 of 13
+Mandatory checks executed: 15 of 15
+Mandatory checks passed: 15 of 15
 Skipped checks: 0
 Unresolved findings: 0
 
@@ -3265,8 +3269,6 @@ production authorization.
 ```
 
 This keeps the boundary clear: GitHub Copilot helps place reliable validation evidence into the engineering workflow, but the evidence—not Copilot’s confidence—determines the validation result.
-
-Chapter 17 status: In progress — next section: Codex Comparison
 
 ## Codex Comparison
 
@@ -3396,7 +3398,7 @@ A suitable plan might be:
 5. Run architecture, static-analysis, and security gates.
 6. Run API and event contract gates.
 7. Run migration, configuration, and deployment gates.
-8. verify that evidence exists for every mandatory check.
+8. Verify that evidence exists for every mandatory check.
 9. Aggregate results according to the approved outcome policy.
 ```
 
@@ -3408,7 +3410,7 @@ When the repository includes an approved validation script, Codex should use it:
 
 ```powershell
 .\harness\scripts\validate-booking-service.ps1 `
-    -SourceRevision "c719b42" `
+    -SourceRevision "c719b42a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e" `
     -Profile "booking-service-v3" `
     -EvidenceDirectory ".\artifacts\validation\ACD-CFB-142"
 ```
@@ -3867,22 +3869,14 @@ Controls should include:
 
 The three platforms can support the same vendor-neutral Validator Agent contract.
 
-| Capability | Claude Code | GitHub Copilot | OpenAI Codex |
+| Integration decision | Claude Code example | GitHub Copilot example | OpenAI Codex example |
 | --- | --- | --- | --- |
-| Repository-wide reasoning | Strong | Strong within supported repository context | Strong |
-| Terminal orchestration | Strong | Depends on operating surface | Strong |
-| IDE integration | Depends on client and workflow | Strong | Depends on operating environment |
-| GitHub pull-request integration | Requires surrounding integration | Strong | Requires surrounding integration |
-| Controlled workspace execution | Depends on harness | Available through configured workflows | Strong in isolated task environments |
-| Instruction mechanism | Claude and repository Instructions | Copilot and repository Instructions | `AGENTS.md` and repository Instructions |
-| Validation artifact generation | Strong | Strong through workflows | Strong |
-| Failure diagnosis | Strong | Strong, especially near developer workflow | Strong |
-| Deterministic authority | External tools and governed gates | External tools and governed gates | External tools and governed gates |
-| Can approve its own work | No | No | No |
-| Can replace evaluation | No | No | No |
-| Can replace human approval | No | No | No |
+| Where the role starts | Terminal session with a Validator assignment | Editor session or repository prompt linked to the pull request | Isolated repository task with a Validator assignment |
+| How the role receives Instructions | `CLAUDE.md` points to the governed role and profile | Copilot Instructions and prompt point to the same role and profile | `AGENTS.md` points to the same role and profile |
+| Where authoritative evidence comes from | Approved validation runner | Required GitHub Actions workflow | Approved validation runner |
+| What the adapter returns | Run reference and diagnostic summary | Pull-request summary linked to run artifacts | Evidence manifest reference and diagnostic summary |
 
-The differences are operational rather than conceptual. An enterprise harness should define the role once and provide platform adapters for Claude Code, GitHub Copilot, and Codex.
+These are integration patterns, not capability rankings. Define the role once and keep the gate policy, evidence schema, and approval boundaries the same across all three adapters.
 
 ### Portable Validator Agent Contract
 
@@ -3945,9 +3939,9 @@ Reviewed revision: c719b42
 Validation profile: booking-service-v3
 Overall result: Pass
 
-Mandatory checks required: 13
-Mandatory checks executed: 13
-Mandatory checks passed: 13
+Mandatory checks required: 15
+Mandatory checks executed: 15
+Mandatory checks passed: 15
 Failed checks: 0
 Blocked checks: 0
 Inconclusive checks: 0
@@ -3967,8 +3961,6 @@ business, release, deployment, or production approval.
 When a gate fails, Codex returns the evidence to the Developer Agent through the governed workflow. When validation is blocked or inconclusive, it escalates rather than inventing certainty.
 
 Claude Code, GitHub Copilot, and Codex can all make validation more accessible and efficient. The trustworthy design is the same across platforms: AI coordinates the work, deterministic tools produce the evidence, the harness enforces the outcome, and accountable people retain approval authority.
-
-Chapter 17 status: In progress — next section: Best Practices
 
 ## Best Practices
 
@@ -4041,7 +4033,7 @@ appliesTo:
 gates:
   - id: release-build
     required: true
-    expected: zero-errors-and-prohibited-warnings
+    expected: zero-errors-and-no-prohibited-warnings
 
   - id: integration-tests
     required: true
@@ -4049,7 +4041,7 @@ gates:
 
   - id: event-contract
     required: true
-    expected: backward-compatible
+    expected: candidate-payloads-satisfy-published-v1-contract
 
   - id: migration-upgrade
     required: true
@@ -4087,7 +4079,7 @@ A standard entry point might be:
 ```powershell
 .\harness\scripts\validate.ps1 `
     -Profile "booking-service-v3" `
-    -Revision "c719b42" `
+    -Revision "c719b42a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e" `
     -EvidenceDirectory ".\artifacts\validation\ACD-CFB-142"
 ```
 
@@ -4144,15 +4136,15 @@ Store evidence using stable names and associate it with the task and source revi
 
 ### Require a Complete Evidence Manifest
 
-The Validator Agent should generate a manifest listing every mandatory check and its evidence.
+The Validator Agent should generate a manifest listing every mandatory check and its evidence. The following excerpt omits the other gate records for brevity:
 
 ```json
 {
   "taskId": "ACD-CFB-142",
   "sourceRevision": "c719b42",
   "profile": "booking-service-v3",
-  "requiredChecks": 13,
-  "executedChecks": 13,
+  "requiredChecks": 15,
+  "executedChecks": 15,
   "checks": [
     {
       "id": "release-build",
@@ -4591,8 +4583,6 @@ Before reporting Pass, the Validator Agent should confirm:
 - [ ] The report does not claim evaluation or production approval.
 
 The checklist is a final completeness control. It does not replace any underlying deterministic gate.
-
-Chapter 17 status: In progress — next section: Anti-patterns
 
 ## Anti-patterns
 
@@ -5035,8 +5025,6 @@ Validation does not decide:
 
 The defining characteristic of these anti-patterns is not merely poor automation. It is loss of evidence integrity. Once failed checks, missing artifacts, retries, or gate changes can be hidden, the validation process no longer provides a trustworthy control.
 
-Chapter 17 status: In progress — next section: Architect’s Notes
-
 ## Architect’s Notes
 
 ### Validation Is an Architectural Capability
@@ -5243,11 +5231,11 @@ Validation evidence has consumers:
 - Developer Agents need reproducible failures.
 - Reviewer Agents need confirmation of addressed concerns.
 - Evaluator Agents need technical-gate results.
-- architects need boundary and compatibility results.
-- security teams need scanner findings.
-- platform teams need infrastructure and configuration reports.
-- auditors need traceability.
-- human approvers need concise risk information.
+- Architects need boundary and compatibility results.
+- Security teams need scanner findings.
+- Platform teams need infrastructure and configuration reports.
+- Auditors need traceability.
+- Human approvers need concise risk information.
 
 Evidence packages should therefore be stable, searchable, structured, and appropriately retained.
 
@@ -5497,8 +5485,6 @@ When designing the Validator Agent capability, ask:
 
 The goal is not to automate every engineering judgment. The goal is to create a validation architecture in which objective claims are supported by repeatable evidence, subjective decisions remain visible, and no agent can manufacture confidence by weakening the conditions used to measure it.
 
-Chapter 17 status: In progress — next section: Enterprise Tips
-
 ## Enterprise Tips
 
 ### Start with a Minimum Mandatory Gate Set
@@ -5609,7 +5595,7 @@ Developers and agents should be able to reproduce validation using one repositor
 ```powershell
 .\harness\scripts\validate.ps1 `
     -Profile "booking-service-v3" `
-    -Revision "c719b42"
+    -Revision "c719b42a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e"
 ```
 
 The CI system should invoke the same core automation where practical. This reduces differences between local and authoritative validation.
@@ -5788,11 +5774,14 @@ Else if any mandatory gate is blocked:
 Else if any mandatory gate is inconclusive:
     Overall status = Inconclusive
 
-Else if any required evidence is missing:
+Else if any mandatory result is absent, unknown, or lacks required evidence:
     Overall status = Inconclusive
 
-Else:
+Else if every mandatory gate in the resolved profile has a valid Pass:
     Overall status = Pass
+
+Else:
+    Overall status = Inconclusive
 ```
 
 The AI agent may explain the outcome, but the harness should calculate it.
@@ -6003,8 +5992,6 @@ A phased rollout can reduce adoption risk:
 
 The goal is not maximum automation on the first day. The goal is a validation capability whose results become more comprehensive without becoming less trustworthy.
 
-Chapter 17 status: In progress — next section: Decision Points
-
 ## Decision Points
 
 Designing a Validator Agent requires explicit decisions about scope, independence, execution, evidence, failure handling, and authority. These decisions should be encoded in repository Instructions, validation profiles, policies, and architecture records rather than left to an agent during execution.
@@ -6086,7 +6073,7 @@ Examples include:
 - all critical tests execute and pass;
 - no new high or critical security findings exist;
 - API comparison reports no unapproved breaking changes;
-- event schema satisfies backward compatibility;
+- new producer payloads satisfy the published consumer contract;
 - migration succeeds against representative upgrade data;
 - deployment manifests satisfy all mandatory policies.
 
@@ -6462,7 +6449,7 @@ For the corporate fleet booking capability, the team records:
 | Build policy | Release build with warnings treated as errors |
 | Test policy | All mandatory tests must execute and pass |
 | API policy | No unapproved breaking OpenAPI changes |
-| Event policy | Backward-compatible JSON Schema |
+| Event policy | Candidate producer payloads must satisfy the published v1 consumer contract |
 | Migration policy | Empty and representative upgrade scenarios |
 | Security policy | No new high or critical findings |
 | Retry policy | Infrastructure retries only; all attempts retained |
@@ -6471,8 +6458,6 @@ For the corporate fleet booking capability, the team records:
 | Production approval | Release Manager and accountable service owner |
 
 These decisions remove ambiguity before validation begins. The Validator Agent can then operate as an evidence-producing role rather than a policy-making role.
-
-Chapter 17 status: In progress — next section: Exercises
 
 ## Exercises
 
@@ -6516,9 +6501,9 @@ Classify each activity as primarily belonging to the Reviewer Agent, Validator A
 5. Compare the generated OpenAPI document with the approved baseline.
 6. Decide whether the implementation fulfills the intended business outcome.
 7. Run a vulnerable dependency scan.
-8. assess whether the selected domain model expresses the business clearly.
-9. verify that repeated requests with the same idempotency key create one booking.
-10. determine whether the feature should be accepted despite a confusing user workflow.
+8. Assess whether the selected domain model expresses the business clearly.
+9. Verify that repeated requests with the same idempotency key create one booking.
+10. Assess whether a confusing user workflow still meets the agreed usability criteria.
 
 **Expected outcome:**
 
@@ -6610,8 +6595,9 @@ Test the logic against these cases:
 | B | Twelve pass, one fails | Fail |
 | C | All completed gates pass, one is blocked | Blocked |
 | D | All gates pass, but a required report is missing | Inconclusive |
-| E | Mandatory gates pass, advisory gate fails | Pass with advisory finding |
+| E | Mandatory gates pass, advisory gate fails | Pass; retain the advisory finding separately |
 | F | One gate fails and another is blocked | Fail |
+| G | All recorded gates pass, but one mandatory gate is absent from the report | Inconclusive |
 
 ### Exercise 6: Create a Validation Result Schema
 
@@ -6758,18 +6744,18 @@ Then remove the exercise violation and verify that the test passes.
 
 Generate the OpenAPI document for the Booking API and compare it with the approved baseline.
 
-Introduce one breaking change at a time:
+Introduce one contract change at a time:
 
 - remove the `409 Conflict` response;
 - make `bookingId` optional;
 - change `stationId` from a UUID string to an integer;
-- remove the required `Idempotency-Key` header;
+- remove support for the documented `Idempotency-Key` behavior;
 - rename the endpoint route.
 
 For each change:
 
-1. execute the compatibility tool;
-2. record the detected difference;
+1. execute the compatibility tool and the profile's explicit contract checks;
+2. record the detected difference and which control detected it;
 3. classify the result;
 4. identify who must approve any intended breaking change.
 
@@ -6791,9 +6777,9 @@ Check:
 - additional properties;
 - representative serialization.
 
-Then make `stationId` optional without changing the schema version.
+Then make `stationId` optional without changing the schema version. Serialize a candidate payload without it and validate that payload against both the candidate schema and the protected v1 consumer contract.
 
-**Expected outcome:** A failed compatibility result supported by a schema-difference report.
+**Expected outcome:** The relaxed schema may accept the candidate payload, but the v1 contract rejects it. Record a failed producer-compatibility gate with the schema diff and the v1 validation result.
 
 ### Exercise 15: Validate a Database Migration
 
@@ -7141,8 +7127,6 @@ For each step, record:
 - next role.
 
 **Expected outcome:** A complete, traceable exercise demonstrating that review, deterministic validation, evaluation, and human approval are complementary controls.
-
-Chapter 17 status: In progress — next section: Interview Questions
 
 ## Interview Questions
 
@@ -7955,7 +7939,28 @@ The Validator Agent must report what the evidence proves—not what the agent ex
 
 Its credibility depends on refusing to weaken conditions, conceal uncertainty, or manufacture a Pass.
 
-Chapter 17 status: In progress — next section: Chapter Summary
+---
+
+## Chapter Summary
+
+The Validator Agent verifies that a reviewed implementation satisfies defined, repeatable engineering conditions. The Reviewer Agent applies engineering judgment; the Validator Agent verifies executable conditions; the Evaluator Agent assesses whether the result achieves the intended outcome. A technical Pass does not authorize merge, deployment, or any decision reserved for an accountable human.
+
+Alpha Car Detailing's corporate fleet booking example shows why compilation is only one gate. A green build cannot establish that concurrent requests create one booking, that booking and outbox records commit atomically, that a new event remains readable by existing consumers, or that a migration preserves representative data. Each claim requires a check with its own expected condition and evidence.
+
+The harness resolves a versioned validation profile and applies it to an immutable reviewed revision in a controlled workspace. Each result records the check performed, expected condition, actual result, evidence, status, failure details, and recommended next action. The evidence package preserves original attempts and redacts protected values.
+
+| Outcome | What the evidence establishes | Next step |
+| --- | --- | --- |
+| **Pass** | Every mandatory check met its expected condition and has sufficient evidence | Forward the reviewed revision and evidence to the Evaluator Agent |
+| **Fail** | At least one mandatory condition was violated | Preserve the failure and route the correction to the responsible role; review and validate the new revision |
+| **Blocked** | A mandatory check could not run because a prerequisite was unavailable | Resolve the prerequisite through its owner or escalate |
+| **Inconclusive** | The available evidence cannot establish a mandatory result | Investigate or escalate; do not advance on an assumed pass |
+
+The Validator Agent must not repair the implementation under test, weaken a gate, discard failed attempts, or replace an approved baseline to erase a failure. An authorized exception belongs in a separate approval record and never rewrites the validation outcome.
+
+Claude Code, GitHub Copilot, and OpenAI Codex can all coordinate this work. Controlled execution and traceable evidence make the result authoritative, regardless of which platform summarizes it.
+
+---
 
 ## Further Reading
 
@@ -7978,6 +7983,10 @@ The following resources provide authoritative guidance for implementing determin
 - **Microsoft Learn — `dotnet test` Command**
 
   Documents the .NET CLI test command, result logging, filtering, configuration selection, diagnostic output, and other options required by automated validation scripts. [.NET CLI: `dotnet test`](https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-test)
+
+- **Microsoft Learn — Options Pattern in .NET**
+
+  Covers runtime options validation with data annotations and startup validation. [Options pattern in .NET](https://learn.microsoft.com/en-us/dotnet/core/extensions/options)
 
 ### Database Migration Validation
 
@@ -8004,6 +8013,14 @@ Migration generation should be treated as the beginning of validation rather tha
 - **JSON Schema — Draft 2020-12**
 
   Defines the JSON Schema version used by the Alpha Car Detailing event-contract examples. It covers schema structure, validation vocabularies, references, annotations, and instance-validation behavior. [JSON Schema Draft 2020-12](https://json-schema.org/draft/2020-12)
+
+- **RFC Editor — RFC 9457: Problem Details for HTTP APIs**
+
+  Defines the machine-readable HTTP error response format used in the Booking API example and supersedes RFC 7807. [RFC 9457](https://www.rfc-editor.org/rfc/rfc9457.html)
+
+- **Microsoft Learn — Schema Registry in Azure Event Hubs**
+
+  Distinguishes registry storage from schema evolution enforcement and explains compatibility direction from the reader's perspective. [Schema Registry in Azure Event Hubs](https://learn.microsoft.com/en-us/azure/event-hubs/schema-registry-concepts)
 
 - **JSON Schema — Validating OpenAPI and JSON Schema**
 
@@ -8055,7 +8072,7 @@ API or event schema validity does not by itself prove backward compatibility. En
 
 - **GitHub Docs — Workflow Artifacts**
 
-  Explains how GitHub Actions workflows can store and share build outputs, test reports, logs, and other evidence. Artifact upload should normally occur even when an earlier validation step fails. [Store and share data with workflow artifacts](https://docs.github.com/en/actions/using-workflows/storing-workflow-data-as-artifacts)
+  Explains how GitHub Actions workflows can store and share build outputs, test reports, logs, and other evidence. Artifact upload should normally be attempted even when an earlier validation step fails. [Store and share data with workflow artifacts](https://docs.github.com/en/actions/tutorials/store-and-share-data)
 
 - **GitHub Docs — About Protected Branches**
 
@@ -8121,7 +8138,6 @@ Readers should connect this chapter with:
 - **Chapter 14 — Lead Agent**, for validation-profile selection, workflow coordination, and escalation.
 - **Chapter 15 — Developer Agent**, for implementation evidence and correction cycles.
 - **Chapter 16 — Reviewer Agent**, for the independent judgment that precedes deterministic validation.
+- **Chapter 18 — Evaluator Agent**, for assessing outcome fitness after technical validation.
 
 Together, these chapters establish a governed engineering workflow in which implementation, review, validation, evaluation, and approval remain separate but connected responsibilities.
-
-Chapter 17 status: Complete

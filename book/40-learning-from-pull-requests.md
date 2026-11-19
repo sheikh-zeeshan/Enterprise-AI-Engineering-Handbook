@@ -17,13 +17,13 @@ The Harness created a pull request.
 
 During human review, however, several problems appeared.
 
-The first reviewer noticed that the implementation updated the booking record before publishing the corresponding domain event. The repository's established transaction pattern required the booking change and its integration event to participate in the same transactional outbox boundary.
+The first reviewer noticed that the implementation persisted the booking update but published the external integration event directly, without persisting an outbox record in the same transaction. The established architecture required booking state and the integration-event outbox record to be committed atomically.
 
 A second reviewer found that the Developer Agent had added unit tests but had not added the integration test required for the booking modification endpoint.
 
 A security reviewer raised another issue. The new endpoint accepted a fleet account identifier directly from the request body without confirming that the authenticated user was authorized to manage that fleet.
 
-The pull request was returned for changes.
+The pull request was returned for changes. The existing tests had passed, but the checks had not covered these missing behavioral and authorization scenarios.
 
 The Developer Agent corrected the implementation. The next revision passed the architecture tests and security checks, but another reviewer noticed that the API response contract had changed in a way that could break an existing fleet-management client.
 
@@ -632,7 +632,7 @@ A reviewer may approve because:
 
 Therefore, approval should be correlated with surrounding evidence.
 
-A PR that receives immediate approval with clean validation results may indicate a successful pattern.
+A PR that receives prompt approval with clean, commit-current validation results may indicate a successful pattern; it does not prove the absence of undiscovered defects.
 
 A PR that receives approval after six revisions provides a very different learning signal.
 
@@ -896,18 +896,9 @@ The delay might come from:
 - external vendor review;
 - release freeze.
 
-Therefore, time-to-approval should be decomposed when possible.
+Therefore, workflow time should be attributed to **non-overlapping states** where possible: active rework, waiting for review, waiting for validation, waiting for business clarification, and governance hold. Measure merge-queue time separately because it may occur *after* approval. Parallel activities can overlap; adding their independent durations without accounting for overlap double-counts elapsed time.
 
-```text
-Total PR duration
-    =
-Implementation rework time
-+ waiting for reviewers
-+ waiting for validation
-+ waiting for business clarification
-+ governance hold
-+ merge queue delay
-```
+For PR-842, time to first review is 47 minutes (09:15–10:02 UTC), time from creation to approval is 326 minutes (09:15–14:41 UTC), and time from approval to merge is 22 minutes (14:41–15:03 UTC). These are different metrics and should not be conflated.
 
 An enterprise Harness should avoid optimizing blindly for the shortest approval duration.
 
@@ -1347,7 +1338,7 @@ pattern so state persistence and event persistence share
 the transaction boundary.
 ```
 
-Even then, the entry should be approved before becoming authoritative memory.
+Even then, the entry should be approved before becoming governed Harness Memory. Where an Instruction already defines the rule, Memory should link to that authority rather than silently create a competing standard.
 
 ---
 
@@ -1506,20 +1497,9 @@ counterexamples
 policy alignment
 ```
 
-A conceptual model could be:
+A practical assessment should examine both **support** and **possible confounders**. Recurrence among comparable PRs, independent corroboration, and consistent resolutions increase confidence; counterexamples, changed review policies, missing provenance, and small or biased samples reduce it. No single multiplication or weighted sum should be presented as a calibrated probability without validation against held-out examples.
 
-```text
-Confidence =
-    Frequency
-  × Evidence Quality
-  × Reviewer Agreement
-  × Reproducibility
-  × Context Consistency
-  × Corroboration
-  - Contradictory Evidence
-```
-
-The exact mathematics are less important than making the evidence model explicit.
+A transparent record can state: *7 of 10 comparable PRs contained the finding; two independent reviewers confirmed it; the current Skill omitted the relevant step; one counterexample exists; the hypothesis remains subject to human review.* Numerical confidence scores later in this chapter are illustrative, not empirically calibrated.
 
 ---
 
@@ -1712,7 +1692,7 @@ flowchart LR
     Q --> T[Harness Memory]
     Q --> U[Skills]
     Q --> V[Prompts]
-    Q --> W[Instruction Proposals]
+    Q --> W[Approved Instruction Changes]
     Q --> X[Workflow / Gate Changes]
 
     T --> Y[Future Harness Runs]
@@ -1747,7 +1727,7 @@ Work-item systems
 Harness execution history
 ```
 
-The collector should preserve raw source evidence before classification.
+The collector should preserve raw source evidence before classification. The **PR Evidence Data Contract**, introduced later in this section, defines the normalized record and how each finding links back to its source.
 
 That separation matters.
 
@@ -1974,7 +1954,7 @@ After approval, the improvement publisher applies the governed change through no
 For example:
 
 ```text
-skill/create-booking-api.md
+skills/create-booking-api.md
 v7 → v8
 ```
 
@@ -2028,6 +2008,350 @@ Adaptive learning must itself be evaluated.
 
 ---
 
+### PR Evidence Data Contract
+
+An Adaptive Harness needs a stable, versioned representation of pull-request evidence. Git repositories, CI/CD platforms, security scanners, architecture gates, human reviewers, and AI Agents use different identifiers and event structures. Without a canonical contract, the Learning Engine cannot distinguish a repeated engineering defect from duplicated webhook delivery, a stale validation result, or a review comment that was later dismissed.
+
+The **PR Evidence Data Contract** defines observable facts and their provenance. It does **not** decide what the organization should learn. Evidence assessment, root-cause hypotheses, candidate learning, and governance decisions belong in separate records. This boundary lets an enterprise improve classification logic without rewriting historical observations.
+
+The contract must support traceability to the originating Harness run; collection of reviews, revisions, validations, and outcomes; provider-neutral normalization; provenance; reproducible reclassification; and auditable governance. A pull request not created by the Harness may still be collected, but it must be marked as having no originating Harness run rather than assigned an invented correlation.
+
+#### Evidence Contract Architecture
+
+```mermaid
+flowchart TD
+    subgraph Sources[Evidence Sources]
+        GP[Git Provider]
+        CI[CI and Test Pipelines]
+        SEC[Security and Architecture Tools]
+        REV[Human and AI Reviews]
+        RUN[Harness Run Records]
+    end
+    GP --> COL[Evidence Collector]
+    CI --> COL
+    SEC --> COL
+    REV --> COL
+    RUN --> COL
+    COL --> RAW[(Append-only Source Events)]
+    RAW --> NORM[Normalize and Deduplicate]
+    NORM --> CONTRACT[PR Evidence Contract v1]
+    CONTRACT --> STORE[(Versioned Evidence Store)]
+    STORE --> ASSESS[Evidence Assessment]
+    ASSESS --> LEARN[Candidate Learning]
+    LEARN --> GOV{Human Governance}
+    GOV -->|Approved| PUB[Versioned Improvement]
+    GOV -->|Rejected or deferred| ARCH[(Decision History)]
+```
+
+The raw store preserves provider events where retention policy allows. The normalized store makes downstream queries consistent without treating normalization as an authoritative policy decision. A later correction creates a new record revision or an append-only correction event; it must not silently erase the original observation.
+
+#### Canonical Entities
+
+| Entity | Responsibility |
+| --- | --- |
+| `PullRequestEvidence` | Evidence envelope, schema version, collection status, and correlation identifiers |
+| `PullRequestIdentity` | Provider, repository, PR identifier, source and target branches, and commit references |
+| `HarnessContext` | Harness run and the exact Prompt, Skill, Instruction, and agent configuration versions |
+| `ReviewEvidence` | Review events, source-reported findings, approvals, requests for changes, and disagreement |
+| `ValidationEvidence` | Build, test, security, architecture, and contract results associated with specific commits |
+| `RevisionEvidence` | PR revision identifiers, changed-file counts, and relationships to addressed findings |
+| `OutcomeEvidence` | Closure or merge state, merge reason, approval evidence, and lifecycle timing |
+| `EvidenceProvenance` | Provider event identifiers, source references, collection timestamps, and evidence integrity |
+
+`EvidenceClassification`, `RootCauseAssessment`, and `CandidateLearning` are **not** fields of the raw evidence record. They are separate derived artifacts referencing stable evidence identifiers. A human reviewer's source-reported severity may be preserved as an observation, but the Harness's own severity assessment must be attributed to an assessment record.
+
+#### Example Canonical JSON Record
+
+The following illustrative record represents a completed Alpha Car Detailing fleet-booking PR. Identifiers and URLs are synthetic. Git commit values are represented by example 40-character hexadecimal identifiers; a production contract must preserve the provider's actual object IDs and supported hash algorithm.
+
+```json
+{
+  "schemaVersion": "1.0.0",
+  "evidenceId": "PRE-2026-0042",
+  "recordVersion": 1,
+  "recordStatus": "finalized",
+  "collectedAt": "2026-11-13T16:00:00Z",
+  "pullRequest": {
+    "provider": "github",
+    "repositoryId": "acd-repository-01",
+    "repository": "alpha-car-detailing",
+    "number": 842,
+    "sourceBranch": "feature/fleet-booking-update",
+    "targetBranch": "main",
+    "baseCommit": "1111111111111111111111111111111111111111",
+    "headCommit": "3333333333333333333333333333333333333333",
+    "createdAt": "2026-11-13T09:15:00Z",
+    "closedAt": "2026-11-13T15:03:00Z"
+  },
+  "harnessContext": {
+    "runId": "RUN-2026-1844",
+    "workItemId": "ACD-1942",
+    "prompt": { "id": "fleet-booking-change", "version": "4" },
+    "skills": [
+      { "id": "create-api-feature", "version": "7" }
+    ],
+    "instructions": { "id": "enterprise-instructions", "version": "12" },
+    "agents": [
+      { "role": "lead", "configurationVersion": "5" },
+      { "role": "developer", "configurationVersion": "8" },
+      { "role": "reviewer", "configurationVersion": "6" },
+      { "role": "validator", "configurationVersion": "9" },
+      { "role": "evaluator", "configurationVersion": "4" }
+    ]
+  },
+  "reviews": [
+    {
+      "reviewId": "REV-101",
+      "reviewerType": "human",
+      "reviewerRole": "security",
+      "decision": "changes_requested",
+      "submittedAt": "2026-11-13T10:02:00Z",
+      "findings": [
+        {
+          "findingId": "FND-501",
+          "reportedText": "Verify the caller can modify this fleet.",
+          "sourceRuleId": null,
+          "addressedInRevision": 2,
+          "provenanceId": "PROV-501"
+        }
+      ]
+    },
+    {
+      "reviewId": "REV-103",
+      "reviewerType": "human",
+      "reviewerRole": "api-contract-owner",
+      "decision": "changes_requested",
+      "submittedAt": "2026-11-13T12:45:00Z",
+      "findings": [
+        {
+          "findingId": "FND-502",
+          "reportedText": "Preserve the existing booking response contract.",
+          "sourceRuleId": null,
+          "addressedInRevision": 3,
+          "provenanceId": "PROV-502"
+        }
+      ]
+    },
+    {
+      "reviewId": "REV-104",
+      "reviewerType": "human",
+      "reviewerRole": "security",
+      "decision": "approved",
+      "submittedAt": "2026-11-13T14:35:00Z",
+      "findings": [],
+      "provenanceId": "PROV-104"
+    },
+    {
+      "reviewId": "REV-102",
+      "reviewerType": "human",
+      "reviewerRole": "feature-owner",
+      "decision": "approved",
+      "submittedAt": "2026-11-13T14:41:00Z",
+      "findings": [],
+      "provenanceId": "PROV-102"
+    }
+  ],
+  "validations": [
+    {
+      "validationId": "VAL-201",
+      "type": "integration-test",
+      "gateId": "fleet-api-tests",
+      "status": "passed",
+      "commit": "3333333333333333333333333333333333333333",
+      "executedAt": "2026-11-13T14:20:00Z",
+      "provenanceId": "PROV-201"
+    }
+  ],
+  "revisions": [
+    {
+      "revision": 1,
+      "commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "reason": "initial-submission",
+      "addressedFindings": []
+    },
+    {
+      "revision": 2,
+      "commit": "2222222222222222222222222222222222222222",
+      "reason": "review-rework",
+      "addressedFindings": ["FND-501"],
+      "changedFiles": 4,
+      "addedLines": 57,
+      "deletedLines": 12
+    },
+    {
+      "revision": 3,
+      "commit": "3333333333333333333333333333333333333333",
+      "reason": "review-rework",
+      "addressedFindings": ["FND-502"],
+      "changedFiles": 2,
+      "addedLines": 18,
+      "deletedLines": 5
+    }
+  ],
+  "outcome": {
+    "state": "merged",
+    "approvalObserved": true,
+    "approvedAt": "2026-11-13T14:41:00Z",
+    "mergedAt": "2026-11-13T15:03:00Z",
+    "mergeCommit": "4444444444444444444444444444444444444444",
+    "closureReason": "accepted",
+    "revisionCount": 3,
+    "requiredChangeCycles": 2,
+    "firstReviewMinutes": 47,
+    "timeToApprovalMinutes": 326
+  },
+  "provenance": [
+    {
+      "provenanceId": "PROV-501",
+      "sourceType": "human-review-comment",
+      "sourceSystem": "github",
+      "sourceRecordId": "review-comment-501",
+      "sourceUrl": "https://example.invalid/pr/842#comment-501"
+    },
+    {
+      "provenanceId": "PROV-502",
+      "sourceType": "human-review-comment",
+      "sourceSystem": "github",
+      "sourceRecordId": "review-comment-502",
+      "sourceUrl": "https://example.invalid/pr/842#comment-502"
+    },
+    {
+      "provenanceId": "PROV-104",
+      "sourceType": "human-review",
+      "sourceSystem": "github",
+      "sourceRecordId": "review-104",
+      "sourceUrl": "https://example.invalid/pr/842#review-104"
+    },
+    {
+      "provenanceId": "PROV-102",
+      "sourceType": "human-review",
+      "sourceSystem": "github",
+      "sourceRecordId": "review-102",
+      "sourceUrl": "https://example.invalid/pr/842#review-102"
+    },
+    {
+      "provenanceId": "PROV-201",
+      "sourceType": "ci-pipeline",
+      "sourceSystem": "github-actions",
+      "sourceRecordId": "workflow-run-201",
+      "sourceUrl": "https://example.invalid/actions/runs/201"
+    }
+  ]
+}
+```
+
+This compact example is not a complete transcript: the full source event archive may contain additional review discussions, gate executions, commit events, and author responses. Crucially, `addressedInRevision` records the author's response to a finding, not proof that the defect was completely resolved. Confirmation belongs to subsequent validation or review evidence.
+
+#### Required Fields and Invariants
+
+| Field | Requirement | Invariant |
+| --- | --- | --- |
+| `schemaVersion` | Required | Must be a recognized contract version |
+| `evidenceId` | Required | Stable unique identity; not reused across PRs |
+| `recordVersion` | Required | Monotonically increases on correction or replacement |
+| `pullRequest.provider` | Required | Canonical provider or registered extension |
+| `pullRequest.repositoryId` | Required | Stable repository identity, not display name alone |
+| `pullRequest.number` | Required | Provider-specific identifier scoped to repository |
+| `harnessContext.runId` | Conditional | Required for Harness-created PRs; otherwise absent or explicitly null |
+| `reviews[].reviewId` | Required per review | Unique within the evidence record |
+| `reviews[].findings[].findingId` | Required per finding | Unique within the evidence record |
+| `validations[].commit` | Conditional | Required for commit-scoped checks; must reference the tested revision |
+| `outcome.state` | Required | Controlled lifecycle state; must not imply quality |
+| `provenanceId` | Required on externally derived findings and checks | Must resolve to a source entry |
+| `collectedAt` | Required | UTC timestamp, distinct from source event time |
+
+A useful normalized vocabulary is:
+
+```text
+PR state:          open | merged | closed | unknown
+Review decision:   approved | changes_requested | commented | dismissed
+Validation:        passed | failed | skipped | cancelled | inconclusive
+Finding assessment: unreviewed | confirmed | disputed | false_positive | accepted_risk
+Finding resolution: open | addressed | verified_fixed | waived | superseded
+Evidence status:   partial | finalized | corrected
+```
+
+`Finding assessment` and `Finding resolution` are shown for interoperability, but belong to the derived assessment or adjudication record unless supplied explicitly by the source. Provider-specific terminal reasons such as *feature cancelled*, *duplicate*, or *implementation rejected* must be retained independently from the normalized `closed` state.
+
+#### Evidence, Assessment, and Candidate Learning
+
+The three contracts form a governed chain:
+
+```mermaid
+flowchart LR
+    E[PR Evidence Contract] --> A[Evidence Assessment Contract]
+    A --> C[Candidate Learning Contract]
+    C --> H{Human Approval}
+    H -->|Approved| V[Versioned Artifact or Harness Memory]
+    H -->|Rejected or deferred| D[Audited Decision]
+```
+
+For example, the evidence record preserves a review comment and its provenance. A separate assessment adds a classification and a falsifiable hypothesis:
+
+```json
+{
+  "assessmentId": "ASS-220",
+  "assessmentMethodVersion": "2.1",
+  "evidenceRefs": [{ "evidenceId": "PRE-2026-0042", "findingId": "FND-501" }],
+  "classification": {
+    "category": "security",
+    "subcategory": "resource-authorization",
+    "status": "confirmed"
+  },
+  "hypothesis": "The API Skill omits fleet-resource authorization checks.",
+  "supportingEvidenceIds": ["PRE-2026-0042", "PRE-2026-0047"],
+  "counterexampleEvidenceIds": ["PRE-2026-0049"],
+  "confidence": 0.87
+}
+```
+
+A candidate change can then reference that assessment without granting itself authority:
+
+```json
+{
+  "candidateId": "CL-118",
+  "assessmentId": "ASS-220",
+  "targetType": "skill",
+  "targetId": "create-api-feature",
+  "proposedChange": "Add fleet-resource authorization verification.",
+  "status": "awaiting_human_approval",
+  "approverRole": "platform-engineering"
+}
+```
+
+A confidence score is not independently validated by placing it in JSON. Scores must be generated by a documented method, tested against representative evidence, and calibrated where probabilistic meaning is claimed. The threshold for **surfacing a proposal** should be distinct from authorization to **apply an approved change**.
+
+#### Ingestion, Security, and Versioning
+
+Enterprise integration requires idempotency. Providers may retry webhooks, deliver events out of order, or edit previously submitted review comments. Use a stable provider-event key, a deduplication strategy, event time and collection time, and an append-only correction history. Do not count a retransmitted finding as another independent PR occurrence.
+
+Validation freshness is critical. A passing CI result applies to the exact commit it tested; it does not certify a later head commit. Where branch protection requires newer checks, the Harness must verify the latest eligible validation before treating a PR as ready. A later review dismissal or a reopened PR likewise requires evidence-record revision rather than retrospective erasure.
+
+The evidence contract is also a security boundary. Review content may include proprietary code, credentials accidentally pasted into comments, internal architecture, and vulnerability detail. Apply least-privilege access, redaction, retention limits, encrypted storage, and restricted access to sensitive findings. Reviewer identities may be represented by stable pseudonymous identifiers when attribution does not require a name.
+
+Treat review text and tool output as **untrusted inputs**: the Learning Engine must not execute instructions embedded in a PR comment. Classify them as source data, preserve attribution, and require explicit policy-authorized actions for any resulting change.
+
+Use semantic versioning for the contract itself: optional backward-compatible fields may increment a minor version; incompatible identity or semantics changes require a major version and a migration plan. Readers must reject unsupported incompatible versions rather than guessing at their meaning.
+
+#### Contract Acceptance Criteria
+
+Before enabling live PR learning, validate the contract against representative examples: clean merges; multiple review cycles; failed and stale CI checks; reviewer disagreement; reopened or cancelled PRs; false-positive bot comments; and a security finding accepted under an explicit, time-bounded exception. Acceptance criteria should establish that:
+
+- every significant finding resolves to traceable provenance;
+- the same delivered source event cannot inflate occurrence counts;
+- only a commit-matching validation result supports a specific revision;
+- closure reason and engineering quality remain distinct;
+- reviewer disagreement and counterexamples remain visible;
+- raw evidence, assessments, candidates, and approved memory cannot be confused;
+- corrected evidence remains auditable and reprocessable;
+- no unapproved candidate can modify a governed Skill, Prompt, Instruction, gate, or Harness Memory entry.
+
+> **Architect's Note — The contract is part of the governance boundary.** An evidence contract that loses provenance, revision identity, or reviewer disagreement cannot support reliable learning. Preserve source facts, make interpretation revisable, and publish improvements only through the normal approval and version-control process.
+
+> **Enterprise Tip — Test the contract before trusting the feedback loop.** Contract tests for duplicate deliveries, stale checks, and amended review comments are as important as tests for clean successful PRs. A feedback system that counts evidence incorrectly can confidently learn the wrong lesson.
+
+---
+
 ## Professional Diagrams
 
 ### Pull-Request Learning Flow
@@ -2049,7 +2373,7 @@ flowchart TD
     K --> L[Harness Memory]
     K --> M[Skill]
     K --> N[Prompt]
-    K --> O[Instruction Proposal]
+    K --> O[Approved Instruction Change]
     K --> P[Workflow / Gate]
 
     L --> Q[Future Runs]
@@ -2198,7 +2522,7 @@ Alpha Car Detailing provides a useful scenario for implementing PR-based learnin
 
 Assume the team has observed recurring issues in pull requests that modify corporate fleet booking endpoints.
 
-During the previous quarter, twelve relevant PRs were created.
+During the previous quarter, twelve relevant PRs were created. This initial summary describes the full quarter; the later Skill-version comparison uses separate historical cohorts rather than these same twelve PRs.
 
 The evidence summary is:
 
@@ -2261,6 +2585,8 @@ This relationship is essential for root-cause analysis.
 ---
 
 ### Step 2: Capture PR Events
+
+Capture source events in an append-only store, then map them into the versioned PR Evidence Data Contract. The following condensed stream omits the source identifiers and commit references that the complete canonical record requires.
 
 A normalized event stream might look like:
 
@@ -2404,7 +2730,7 @@ Version 6 had explicitly required:
 "Add unit and API integration tests for mutation endpoints."
 ```
 
-This is strong supporting evidence.
+This supports a plausible regression hypothesis, although differing PR scope, reviewers, and validation policies remain alternative explanations.
 
 ---
 
@@ -2616,7 +2942,7 @@ to:
 1 / 15
 ```
 
-This strengthens confidence that the approved improvements were useful.
+This supports—but does not prove—the usefulness of the approved improvements. A credible comparison also checks PR complexity, reviewer coverage, and validation-policy stability.
 
 If the results had not improved, the Harness would reopen the learning hypothesis.
 
@@ -3687,7 +4013,7 @@ A pull request may contain evidence from:
 
 The Harness should not reduce this evidence to a binary `merged` or `rejected` outcome.
 
-Instead, it should preserve the complete lifecycle, classify the evidence, correlate findings with the engineering context that produced them, detect recurring patterns, estimate confidence, and generate candidate improvements.
+Instead, it should preserve the complete lifecycle through a versioned PR Evidence Data Contract, classify the evidence separately, correlate findings with the engineering context that produced them, detect recurring patterns, estimate confidence, and generate candidate improvements.
 
 A mature learning flow is:
 
@@ -3757,27 +4083,16 @@ That distinction separates an uncontrolled feedback loop from an enterprise self
 
 ## Further Reading
 
-Readers should continue this topic by studying the following areas:
+The following resources provide useful foundations for evaluating PR evidence, reviewing software quality, and governing adaptive improvement:
 
-- software engineering feedback loops;
-- continuous improvement systems;
-- socio-technical systems;
-- evidence-based software engineering;
-- causal analysis;
-- root-cause analysis;
-- code-review effectiveness;
-- architecture governance;
-- DevSecOps feedback loops;
-- software quality metrics;
-- statistical process control;
-- experiment design;
-- change-management governance;
-- provenance and auditability;
-- software supply-chain evidence;
-- policy-as-code;
-- architecture-as-code;
-- continuous compliance;
-- human-in-the-loop AI systems.
+- Nicole Forsgren, Jez Humble, and Gene Kim, *Accelerate: The Science of Lean Software and DevOps* — evidence-based delivery measurement and the hazards of optimizing isolated indicators.
+- Gene Kim, Jez Humble, Patrick Debois, and John Willis, *The DevOps Handbook* — organizational feedback loops, quality at the source, and continuous improvement.
+- Google, *Site Reliability Engineering* and *The Site Reliability Workbook* — operational evidence, postmortems, reliability measurement, and learning without blame.
+- NIST, *AI Risk Management Framework (AI RMF 1.0)* — governance, accountability, and disciplined treatment of AI system risks.
+- OWASP, *Software Assurance Maturity Model (SAMM)* — maturity practices for design, implementation, verification, and security governance.
+- The hosting provider's current API documentation for pull requests, review events, check runs, and webhooks — source event semantics and integration limitations should be verified against the actual provider and version in use.
+
+For implementation research, pay particular attention to evidence provenance, root-cause analysis, causal inference, statistical process control, code-review effectiveness, secure event ingestion, and immutable audit records.
 
 Within the Enterprise AI Engineering Handbook, this chapter should be read together with the chapters covering:
 
@@ -3791,424 +4106,6 @@ Within the Enterprise AI Engineering Handbook, this chapter should be read toget
 - Knowledge Graphs;
 - Autonomous Improvement Engines.
 
-Together, these concepts establish the foundation for a Harness that does more than execute engineering work.
-
-It observes.
-
-It preserves evidence.
-
-It identifies patterns.
-
-It proposes improvements.
-
-It measures whether those improvements work.
-
-And, critically, it remains governed.
-
-**Chapter 40 status: Complete**
-
-
-CHAPTER 40 — ADDITIONAL SECTION
-
-# **PR Evidence Data Contract**
-
-## **Purpose**
-
-An Adaptive Harness cannot reliably learn from pull requests unless the evidence it collects follows a consistent, structured, and versioned data contract.
-
-Pull-request information originates from multiple systems: Git repositories, CI/CD pipelines, security scanners, architecture validation tools, human reviewers, AI Agents, and Harness execution records. Each source uses different identifiers, event structures, and classifications.
-
-The **PR Evidence Data Contract** establishes a vendor-neutral representation of this information.
-
-It defines what evidence is collected, how it is correlated with a Harness run, how its provenance is preserved, and how it becomes available to the Learning Engine.
-
-The contract is not itself a learning policy. It describes observations and their sources. Classification, pattern detection, confidence assessment, and improvement approval occur in subsequent stages.
-
-> **Core principle:** The PR Evidence Data Contract records what happened, not what the Harness should permanently learn from it.
-
-### **Contract boundaries**
-
-The contract should support six primary capabilities:
-
-1. **Traceability:** Connect a pull request to its originating Harness run, Prompt, Skill, Instructions, agent versions, and source commits.
-2. **Evidence collection:** Capture review findings, approvals, requested changes, validation results, revisions, and final outcomes.
-3. **Normalization:** Represent comparable evidence consistently across GitHub, Azure DevOps, GitLab, and other repository platforms.
-4. **Provenance:** Preserve the source and original reference for every significant observation.
-5. **Reproducibility:** Allow the Learning Engine to reassess earlier evidence when classifications or learning algorithms change.
-6. **Governance:** Clearly separate collected evidence from candidate learning and approved engineering knowledge.
-
-## **Contract Architecture**
-
-The data contract sits between the collection and interpretation layers of the Adaptive Harness.
-
-\#chatgpt-mermaid-\_r_16q9\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(237, 237, 237);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_16q9\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_16q9\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_16q9\_ .error-icon{fill:rgb(48, 48, 48);}#chatgpt-mermaid-\_r_16q9\_ .error-text{fill:rgb(237, 237, 237);stroke:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_16q9\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_16q9\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_16q9\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_16q9\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_16q9\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_16q9\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_16q9\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_16q9\_ .marker.cross{stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_16q9\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_16q9\_ p{margin:0;}#chatgpt-mermaid-\_r_16q9\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_16q9\_ .cluster-label text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_16q9\_ .cluster-label span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_16q9\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_16q9\_ .label text,#chatgpt-mermaid-\_r_16q9\_ span{fill:rgb(237, 237, 237);color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_16q9\_ .node rect,#chatgpt-mermaid-\_r_16q9\_ .node circle,#chatgpt-mermaid-\_r_16q9\_ .node ellipse,#chatgpt-mermaid-\_r_16q9\_ .node polygon,#chatgpt-mermaid-\_r_16q9\_ .node path{fill:rgb(9, 23, 44);stroke:rgb(31, 78, 148);stroke-width:1px;}#chatgpt-mermaid-\_r_16q9\_ .rough-node .label text,#chatgpt-mermaid-\_r_16q9\_ .node .label text,#chatgpt-mermaid-\_r_16q9\_ .image-shape .label,#chatgpt-mermaid-\_r_16q9\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_16q9\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_16q9\_ .rough-node .label,#chatgpt-mermaid-\_r_16q9\_ .node .label,#chatgpt-mermaid-\_r_16q9\_ .image-shape .label,#chatgpt-mermaid-\_r_16q9\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_16q9\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_16q9\_ .root .anchor path{fill:rgb(175, 175, 175)!important;stroke-width:0;stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_16q9\_ .arrowheadPath{fill:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_16q9\_ .edgePath .path{stroke:rgb(175, 175, 175);stroke-width:1px;}#chatgpt-mermaid-\_r_16q9\_ .flowchart-link{stroke:rgb(175, 175, 175);fill:none;}#chatgpt-mermaid-\_r_16q9\_ .edgeLabel{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_16q9\_ .edgeLabel p{background-color:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_16q9\_ .edgeLabel rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_16q9\_ .labelBkg{background-color:rgba(0, 0, 0, 0.5);}#chatgpt-mermaid-\_r_16q9\_ .cluster rect{fill:rgb(48, 48, 48);stroke:rgba(255, 255, 255, 0.15);stroke-width:1px;}#chatgpt-mermaid-\_r_16q9\_ .cluster text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_16q9\_ .cluster span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_16q9\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(48, 48, 48);border:1px solid rgba(255, 255, 255, 0.15);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_16q9\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_16q9\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_16q9\_ .icon-shape,#chatgpt-mermaid-\_r_16q9\_ .image-shape{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_16q9\_ .icon-shape p,#chatgpt-mermaid-\_r_16q9\_ .image-shape p{background-color:rgb(0, 0, 0);padding:2px;}#chatgpt-mermaid-\_r_16q9\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_16q9\_ .image-shape .label rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_16q9\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_16q9\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_16q9\_ .node .neo-node{stroke:rgb(31, 78, 148);}#chatgpt-mermaid-\_r_16q9\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_16q9\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_16q9\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_16q9\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_16q9\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_16q9\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_16q9\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_16q9\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_16q9\_ [data-look="neo"].node .neo-line path{stroke:rgb(31, 78, 148);filter:none;}#chatgpt-mermaid-\_r_16q9\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_16q9\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_16q9\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_16q9\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_16q9\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_16q9\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_16q9\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_16q9\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_16q9\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_16q9\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_16q9\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_16q9\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-width:1px;}#chatgpt-mermaid-\_r_16q9\_ .node rect,#chatgpt-mermaid-\_r_16q9\_ .node circle,#chatgpt-mermaid-\_r_16q9\_ .node ellipse,#chatgpt-mermaid-\_r_16q9\_ .node polygon,#chatgpt-mermaid-\_r_16q9\_ .node path{fill:rgb(0, 40, 77);stroke:rgba(255, 255, 255, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_16q9\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_16q9\_ .mermaid-decision .label-container{fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_16q9\_ .edgePaths .flowchart-link{stroke:rgb(175, 175, 175);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_16q9\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_16q9\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}Adaptive Learning LayerPR Evidence LayerEvidence SourcesEvidence ClassifierCorrelation and PatternDetectionCandidate LearningHuman GovernanceEvidence CollectorsNormalization andDeduplicationPR Evidence Contract v1Immutable Evidence StoreGit ProviderCI/CD PipelineSecurity ScannersArchitecture GatesHuman and AI ReviewsHarness Run Records
-
-The Evidence Store should preserve the original observations independently of derived learning records. Classifications may be revised, but the source events must not be silently rewritten.
-
-## **Canonical Data Model**
-
-A practical first version can consist of the following logical entities.
-
-| Entity                   | Responsibility                                                         |
-| ------------------------ | ---------------------------------------------------------------------- |
-| `PullRequestEvidence`    | Root evidence record and correlation context                           |
-| `PullRequestIdentity`    | Repository, provider, PR number, branches and commit references        |
-| `HarnessContext`         | Run, Prompt, Skill, Instruction and agent version information          |
-| `ReviewEvidence`         | Human or AI review decisions, comments and findings                    |
-| `ValidationEvidence`     | Deterministic build, test, architecture, contract and security results |
-| `RevisionEvidence`       | Changes made between PR revisions and associated rework                |
-| `OutcomeEvidence`        | Approval, closure and merge outcomes                                   |
-| `EvidenceProvenance`     | Original source identifiers and collection metadata                    |
-| `EvidenceClassification` | Normalized category, severity, disposition and confidence              |
-
-These entities should share a stable evidence envelope that supports versioning, timestamps and traceability.
-
-### **Canonical JSON contract**
-
-The following example illustrates a completed Alpha Car Detailing pull request. It is illustrative data, not an actual repository event.
-
-```
-
-{
-  "schemaVersion": "1.0.0",
-  "evidenceId": "PRE-2026-0042",
-  "recordVersion": 1,
-  "recordStatus": "finalized",
-  "collectedAt": "2026-11-13T16:00:00Z",
-
-  "pullRequest": {
-    "provider": "github",
-    "repository": "alpha-car-detailing",
-    "repositoryId": "acd-repository-01",
-    "number": 842,
-    "sourceBranch": "feature/fleet-booking-update",
-    "targetBranch": "main",
-    "baseCommit": "sha256-example-base",
-    "headCommit": "sha256-example-head",
-    "createdAt": "2026-11-13T09:15:00Z",
-    "closedAt": "2026-11-13T15:03:00Z"
-  },
-
-  "harnessContext": {
-    "runId": "RUN-2026-1844",
-    "workItemId": "ACD-1942",
-    "goalId": "GOAL-FLEET-UPDATE",
-    "prompt": {
-      "id": "fleet-booking-change",
-      "version": "4"
-    },
-    "skills": [
-      {
-        "id": "create-api-feature",
-        "version": "7"
-      }
-    ],
-    "instructions": {
-      "id": "enterprise-instructions",
-      "version": "12"
-    },
-    "agents": [
-      {
-        "role": "developer",
-        "configurationVersion": "8"
-      },
-      {
-        "role": "reviewer",
-        "configurationVersion": "6"
-      },
-      {
-        "role": "validator",
-        "configurationVersion": "9"
-      }
-    ]
-  },
-
-  "reviews": [
-    {
-      "reviewId": "REV-101",
-      "reviewerType": "human",
-      "reviewerRole": "security",
-      "decision": "changes_requested",
-      "submittedAt": "2026-11-13T10:02:00Z",
-      "findings": [
-        {
-          "findingId": "FND-501",
-          "category": "security",
-          "subcategory": "resource-authorization",
-          "severity": "high",
-          "requirementLevel": "mandatory",
-          "description": "Fleet ownership was not verified.",
-          "disposition": "confirmed",
-          "resolution": "fixed",
-          "resolvedInRevision": 2,
-          "provenanceId": "PROV-501"
-        }
-      ]
-    }
-  ],
-
-  "validations": [
-    {
-      "validationId": "VAL-201",
-      "type": "integration-test",
-      "gateId": "fleet-api-tests",
-      "status": "passed",
-      "commit": "sha256-example-head",
-      "executedAt": "2026-11-13T14:20:00Z",
-      "provenanceId": "PROV-201"
-    }
-  ],
-
-  "revisions": [
-    {
-      "revision": 2,
-      "commit": "sha256-example-revision2",
-      "reason": "review-rework",
-      "addressedFindings": ["FND-501"],
-      "changedFiles": 4,
-      "addedLines": 57,
-      "deletedLines": 12
-    }
-  ],
-
-  "outcome": {
-    "state": "merged",
-    "approved": true,
-    "mergedAt": "2026-11-13T15:03:00Z",
-    "mergeCommit": "sha256-example-merge",
-    "closureReason": "accepted",
-    "revisionCount": 3,
-    "requiredChangeCycles": 2,
-    "firstReviewMinutes": 47,
-    "timeToApprovalMinutes": 326
-  },
-
-  "provenance": [
-    {
-      "provenanceId": "PROV-501",
-      "sourceType": "human-review",
-      "sourceSystem": "github",
-      "sourceRecordId": "review-comment-501",
-      "sourceUrl": "https://example.invalid/pr/842#comment-501"
-    },
-    {
-      "provenanceId": "PROV-201",
-      "sourceType": "ci-pipeline",
-      "sourceSystem": "github-actions",
-      "sourceRecordId": "workflow-run-201",
-      "sourceUrl": "https://example.invalid/actions/runs/201"
-    }
-  ]
-}
-
-```
-
-The example deliberately excludes a final `learningConclusion` field.
-
-The evidence contract should not declare that the Skill is defective, that the Developer Agent is unreliable, or that an Instruction needs changing. Those are hypotheses to be evaluated against multiple evidence records.
-
-## **Field Requirements and Validation Rules**
-
-A canonical contract should define field-level invariants.
-
-| Field                      | Requirement                           | Validation                                  |
-| -------------------------- | ------------------------------------- | ------------------------------------------- |
-| `schemaVersion`            | Required                              | Supported semantic version                  |
-| `evidenceId`               | Required                              | Unique, immutable logical identifier        |
-| `recordVersion`            | Required                              | Monotonically increasing revision           |
-| `pullRequest.provider`     | Required                              | Recognized provider or extension identifier |
-| `pullRequest.repositoryId` | Required                              | Stable repository identifier                |
-| `pullRequest.number`       | Required                              | Provider-specific PR identifier             |
-| `harnessContext.runId`     | Conditional                           | Required for Harness-generated PRs          |
-| `reviews[].reviewId`       | Required per review                   | Unique within the evidence record           |
-| `findings[].findingId`     | Required per finding                  | Unique within the evidence record           |
-| `validations[].status`     | Required per validation               | Controlled status vocabulary                |
-| `validations[].commit`     | Required per commit-scoped validation | Identifies the tested revision              |
-| `outcome.state`            | Required                              | Controlled lifecycle state                  |
-| `provenanceId`             | Required for significant findings     | Resolves to an original evidence source     |
-| `collectedAt`              | Required                              | UTC timestamp                               |
-
-Recommended state vocabularies include:
-
-```
-Pull request:
-open | merged | closed | abandoned | unknown
-
-Review decision:
-approved | changes_requested | commented | dismissed
-
-Validation:
-passed | failed | skipped | cancelled | inconclusive
-
-Finding disposition:
-unreviewed | confirmed | disputed | false_positive | accepted_risk
-
-Finding resolution:
-open | fixed | waived | superseded | not_applicable
-
-Record status:
-partial | finalized | corrected
-```
-
-Provider-specific states should be mapped into the canonical vocabulary while preserving their original values in provenance or source extensions.
-
-A finalized record should mean that the selected collection boundary has been reached, not that every review issue was successfully resolved.
-
-## **Separating Evidence, Classification, and Learning**
-
-The architecture should maintain three separate data contracts.
-
-CONTRACT 1
-
-**PR Evidence Contract**
-
-Records observable events, source metadata, findings, validations and outcomes.
-
-CONTRACT 2
-
-**Evidence Assessment Contract**
-
-Records classification decisions, root-cause hypotheses, counterexamples, assessment methods and confidence.
-
-CONTRACT 3
-
-**Candidate Learning Contract**
-
-Records proposed improvements, supporting assessments, target artifacts, risk, governance status and approval decisions.
-
-For example, the evidence contract may record:
-
-```
-{
-  "findingId": "FND-501",
-  "category": "security",
-  "subcategory": "resource-authorization",
-  "resolution": "fixed"
-}
-```
-
-The assessment contract may then record:
-
-```
-{
-  "assessmentId": "ASS-220",
-  "hypothesis": "Skill omits resource authorization checks",
-  "supportingEvidenceIds": [
-    "PRE-2026-0042",
-    "PRE-2026-0047",
-    "PRE-2026-0051"
-  ],
-  "counterexampleEvidenceIds": [
-    "PRE-2026-0049"
-  ],
-  "confidence": 0.87,
-  "assessmentMethodVersion": "2.1"
-}
-```
-
-Only after sufficient assessment should a candidate learning record propose:
-
-```
-{
-  "candidateId": "CL-118",
-  "assessmentId": "ASS-220",
-  "targetType": "skill",
-  "targetId": "create-api-feature",
-  "proposedChange": "Add fleet-resource authorization checks",
-  "status": "awaiting_human_approval"
-}
-```
-
-This separation allows the Harness to update its assessment logic without rewriting the historical PR evidence.
-
-## **Enterprise Implementation Considerations**
-
-### **Idempotent ingestion**
-
-Git providers and CI/CD systems may deliver duplicate webhook events.
-
-The collector should construct stable event identities using provider identifiers, event types, delivery IDs and source revision information.
-
-Retries must not create duplicate findings or artificially increase pattern frequency.
-
-### **Out-of-order events**
-
-A validation result may arrive after a human approval. A PR may also be reopened or receive additional commits after earlier checks passed.
-
-The contract should preserve event timestamps and commit association rather than assuming that arrival order represents lifecycle order.
-
-### **Validation freshness**
-
-A passing test result must be associated with the commit actually tested.
-
-If a new commit is pushed after validation, the earlier result must not automatically be interpreted as validation of the latest revision.
-
-This is especially important when the Harness uses PR validation evidence to identify successful implementation patterns.
-
-### **Mutable provider data**
-
-Review comments may be edited, reviews dismissed, checks rerun, and PR states changed.
-
-Raw event history should remain traceable. Corrections to normalized records should use record revisions or append-only correction events rather than silently erasing previous observations.
-
-### **Sensitive information**
-
-PR evidence may contain proprietary source code, internal URLs, employee identities, vulnerability details or confidential business information.
-
-The Harness should apply:
-
-- role-based access controls;
-- data minimization;
-- encryption and retention policies;
-- redaction of sensitive review content where appropriate;
-- separation of security-sensitive evidence;
-- audit logging of access and modification.
-
-### **Contract evolution**
-
-The contract should use semantic versioning and explicit compatibility rules.
-
-For example:
-
-```
-1.0.0 — Initial contract
-1.1.0 — Adds optional reviewer disagreement metadata
-1.2.0 — Adds optional rework classification
-2.0.0 — Introduces incompatible evidence identity changes
-```
-
-Readers and processors should reject unsupported incompatible versions rather than silently misinterpret them.
-
-### **Storage and correlation**
-
-A useful enterprise implementation may store:
-
-- raw provider events in an immutable or append-only evidence store;
-- normalized PR records in a queryable operational store;
-- evidence-to-run relationships in a correlation index;
-- assessments and candidate learning in separately versioned stores;
-- approved knowledge in governed Harness Memory and version-controlled engineering artifacts.
-
-This avoids confusing operational event storage with authoritative knowledge storage.
-
-## **Architect’s Note — The Contract Is Part of the Governance Boundary**
-
-The PR Evidence Data Contract should be treated as an enterprise architecture contract, not a convenient JSON format.
-
-If the contract loses reviewer disagreement, commit-level validation references, event provenance or historical corrections, the Learning Engine cannot reliably reconstruct why an improvement was proposed.
-
-Similarly, if conclusions are embedded directly into raw evidence, future assessments may inherit earlier assumptions as if they were facts.
-
-A well-designed contract makes evidence trustworthy, classifications revisable, and approved learning auditable.
-
-The contract's responsibility ends at representing PR evidence accurately. The Adaptive Harness remains responsible for correlation and interpretation, while governance determines which proposed improvements become authoritative.
-
-## **Enterprise Tip — Establish Contract Tests Before Enabling Learning**
-
-Before connecting live repositories to an Adaptive Harness, validate the contract with representative pull requests covering successful merges, repeated rework, failed validation, reviewer disagreement, rejected implementations, abandoned changes, bot false positives and post-approval commits.
-
-Contract tests should confirm that no lifecycle outcome is misclassified, no original evidence is lost, and no derived recommendation can be mistaken for approved Harness Memory.
-
-**Recommended placement:** Chapter 40, immediately after the *Architecture Discussion* and before *Professional Diagrams*. This section provides the formal data foundation for the PR-learning architecture, diagrams and hands-on implementation.
+Together, these concepts establish the foundation for a Harness that does more than execute engineering work. It observes what happened, preserves and evaluates evidence, identifies recurring patterns, proposes improvements, and measures the outcomes of approved changes. Most importantly, it remains governed: observed evidence never acquires the authority of enterprise policy merely because an AI Agent found it persuasive.
 
 **Chapter 40 status: Complete**

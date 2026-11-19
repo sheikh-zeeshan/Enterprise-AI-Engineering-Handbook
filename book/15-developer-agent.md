@@ -6,62 +6,39 @@ The Developer Agent is the implementation role within the enterprise AI Engineer
 
 > **Core principle:** The Developer Agent implements the assigned work but does not approve its own output or replace deterministic validation, review, evaluation, or human approval.
 
----
+## Story-driven Opening
 
-# Story-driven Opening
+The Alpha Car Detailing engineering team has committed to a corporate fleet-booking release. Corporate customers will be able to reserve a station for multiple vehicles in a single operation. The business expectation sounds simple: accept a request, create a booking, and notify downstream systems. The engineering reality is less forgiving.
 
-Alpha Car Detailing is preparing a new Corporate Fleet Booking capability. The Lead Agent has already interpreted the business goal, inspected the repository, identified the relevant services, selected reusable Skills, and produced a bounded implementation task.
+The Booking service has established domain boundaries. Its Application layer must not depend on Infrastructure. Corporate fleet managers may act only for customers they are authorized to manage. The existing `FleetBookingCreated` contract is consumed outside the service and must remain unchanged for this release. Booking state and the integration event must enter the same transactional outbox workflow, so a database commit cannot succeed while the corresponding event disappears.
 
-The Developer Agent receives that task.
+The Lead Agent has already completed the planning work. It assigns the Developer Agent a bounded task: implement `POST /api/fleet-bookings`, preserve the public event contract, enforce resource-level authorization and fleet-size rules, add tests, and return evidence for independent validation. The Lead also identifies relevant Instructions, Skills, and repository examples. The Developer Agent's job is not to negotiate a new service architecture; it is to implement this assignment within that architecture.
 
-Its assignment is to implement:
+The first difficulty appears during repository inspection. A nearby booking handler publishes its event directly after saving the database transaction. That code is tempting to copy. But the current Instructions require a transactional outbox. The Developer Agent must distinguish an existing example from an approved pattern and choose the latter. Later, a generated migration contains an unrelated column removal. The Agent must investigate instead of committing the generated file because a tool produced it. Finally, local tests pass, but the Agent still must hand the change to the Harness gates, Reviewer Agent, and Validator Agent.
 
-- `POST /api/fleet-bookings`;
-- application behavior for creating a corporate fleet booking;
-- domain invariants;
-- persistence;
-- transactional outbox publication of `FleetBookingCreated`;
-- authorization;
-- observability;
-- unit and integration tests.
-
-The Developer Agent is not asked to redesign the Fleet Booking service. It is not asked to change the public event contract. It is not allowed to weaken architecture or security gates. It is not responsible for approving its own implementation.
-
-The workflow is therefore not:
+This is the difference between code generation and governed implementation. A successful Developer Agent does more than make code compile: it respects the task boundary, understands the repository's current rules, explains what it changed, and knows which decisions belong to another role.
 
 ```text
-Prompt
-  ↓
-AI writes code
-  ↓
-AI says complete
-```
-
-It is:
-
-```text
-Lead Agent
- ↓
+Lead Agent task package
+        ↓
 Developer Agent
- ↓
-Apply Instructions + Skills
- ↓
-Implement Changes
- ↓
-Local Checks
- ↓
-Deterministic Gates
- ↓
-Reviewer Agent
- ↓
-Validator Agent
+        ↓
+Repository evidence + Instructions + Skills
+        ↓
+Code, configuration, tests, migration, outbox
+        ↓
+Local verification and evidence
+        ↓
+Harness-controlled deterministic gates
+        ↓
+Independent Reviewer and Validator
+        ↓
+Required human approval
 ```
 
-The difference is fundamental. The Developer Agent is powerful inside its implementation boundary and deliberately constrained outside it.
+The Developer Agent implements authorized work, preserves the standards used to assess it, and treats tool access as distinct from organizational permission.
 
----
-
-# Learning Objectives
+## Learning Objectives
 
 By the end of this chapter, you should be able to:
 
@@ -76,11 +53,9 @@ By the end of this chapter, you should be able to:
 - produce implementation evidence suitable for Reviewer and Validator Agents;
 - compare how Claude Code, GitHub Copilot, and OpenAI Codex can execute the same Developer Agent contract.
 
----
+## Background
 
-# Background
-
-## From AI Code Generation to Governed Implementation
+### From AI Code Generation to Governed Implementation
 
 AI-assisted development began largely as code suggestion and code completion. Modern coding Agents can inspect repositories, modify multiple files, execute commands, run tests, create migrations, and iterate on failures.
 
@@ -103,7 +78,7 @@ and organizational authority?
 
 The Developer Agent is the role that answers that question.
 
-## The Developer Agent Within the Role Model
+### The Developer Agent Within the Role Model
 
 The enterprise Harness separates major responsibilities:
 
@@ -131,11 +106,9 @@ These roles may be implemented by the same model family or different platforms, 
 
 The Developer Agent can inspect and self-check its work. It cannot convert self-checking into self-approval.
 
----
+## Concepts
 
-# Concepts
-
-## What Is a Developer Agent?
+### What Is a Developer Agent?
 
 A Developer Agent is the governed implementation responsibility within the Harness.
 
@@ -159,7 +132,7 @@ The role is defined by responsibility and authority, not by vendor.
 
 Claude Code, GitHub Copilot, OpenAI Codex, or another future coding Agent can all implement the role.
 
-## Primary Responsibilities
+### Primary Responsibilities
 
 The Developer Agent may be responsible for:
 
@@ -181,7 +154,7 @@ The Developer Agent may be responsible for:
 - recording assumptions, risks, and unresolved issues;
 - producing a structured handoff.
 
-## Authority and Limits
+### Authority and Limits
 
 The Developer Agent should not:
 
@@ -202,7 +175,7 @@ A useful principle is:
 
 The fact that an Agent can execute a command does not mean the Developer Agent role is authorized to execute it.
 
-## Receiving Work from the Lead Agent
+### Receiving Work from the Lead Agent
 
 A strong task package includes:
 
@@ -224,7 +197,7 @@ The Lead Agent determines what work should be performed.
 
 The Developer Agent determines how to implement that assigned work safely.
 
-## Understanding Task Scope
+### Understanding Task Scope
 
 The Developer Agent should identify:
 
@@ -241,7 +214,7 @@ The central rule is:
 
 The Agent may inspect many areas of the repository to understand the task while modifying only the areas required for the implementation.
 
-## Repository Intelligence Usage
+### Repository Intelligence Usage
 
 Repository Intelligence may provide:
 
@@ -257,7 +230,7 @@ Repository Intelligence may provide:
 
 Repository Intelligence accelerates understanding, but critical facts should still be verified against the current repository.
 
-## Applying Instructions
+### Applying Instructions
 
 Instructions define persistent standards and constraints.
 
@@ -275,7 +248,7 @@ Instructions constrain implementation.
 
 If a task cannot be completed without violating an Instruction, the Developer Agent should escalate rather than silently bypassing the rule.
 
-## Executing Skills
+### Executing Skills
 
 Skills encode reusable implementation workflows.
 
@@ -294,7 +267,7 @@ A Skill guides execution but does not grant additional authority.
 
 If a Skill conflicts with an applicable Instruction, the Instruction wins.
 
-## Local Implementation Planning
+### Local Implementation Planning
 
 The Developer Agent may sequence the implementation:
 
@@ -315,7 +288,7 @@ This is local implementation planning.
 
 It is not permission to redesign the overall work package.
 
-## Code Modification
+### Code Modification
 
 The Developer Agent should aim for the **smallest coherent change**.
 
@@ -337,7 +310,7 @@ may all be legitimate.
 
 Adding unrelated refactors, package upgrades, or framework replacements is not.
 
-## API and Event Contracts
+### API and Event Contracts
 
 Published contracts require stronger governance than private implementation details.
 
@@ -351,7 +324,7 @@ The Developer Agent should establish:
 
 If a contract must remain unchanged, the Developer Agent must preserve it.
 
-## Persistence Changes
+### Persistence Changes
 
 Persistence changes should consider:
 
@@ -367,7 +340,7 @@ Generated migrations must be inspected.
 
 Generated output is not generated correctness.
 
-## Security
+### Security
 
 Security must be implemented as part of the feature.
 
@@ -387,7 +360,7 @@ Safe Logging
 
 It must not disable or weaken security controls to make implementation easier.
 
-## Observability
+### Observability
 
 The Developer Agent should add observability according to repository conventions:
 
@@ -399,7 +372,7 @@ The Developer Agent should add observability according to repository conventions
 
 Operational evidence should be useful without exposing secrets or unnecessary sensitive data.
 
-## Configuration
+### Configuration
 
 Configuration should remain separate from secrets.
 
@@ -410,7 +383,7 @@ The Developer Agent should:
 - preserve compatibility with deployment tooling;
 - avoid hard-coded environment values.
 
-## Tests
+### Tests
 
 Tests are part of implementation.
 
@@ -425,7 +398,7 @@ The Developer Agent may need:
 
 Tests should prove behavior, not merely implementation mechanics.
 
-## Tool Usage
+### Tool Usage
 
 Tool access should be least privilege.
 
@@ -451,7 +424,7 @@ branch-protection changes
 governance modification
 ```
 
-## Local Verification Versus Deterministic Gates
+### Local Verification Versus Deterministic Gates
 
 The Developer Agent should perform focused local verification.
 
@@ -467,7 +440,7 @@ Independent review
 
 Local success means ready for the next stage, not approved.
 
-## Failure Classification
+### Failure Classification
 
 A failure should be classified before correction.
 
@@ -482,7 +455,7 @@ A failure should be classified before correction.
 | Existing unrelated failure | Record evidence |
 | Requirement conflict | Escalate |
 
-## Bounded Retry
+### Bounded Retry
 
 Retries should be explicit and limited.
 
@@ -496,7 +469,7 @@ Unbounded retries can cause:
 
 When the retry budget is exhausted, the Developer Agent should preserve evidence and escalate.
 
-## Assumptions and Risks
+### Assumptions and Risks
 
 Material assumptions should be explicit.
 
@@ -515,7 +488,7 @@ API and persistence design use a single StationId.
 
 The Agent should distinguish facts, assumptions, and recommendations.
 
-## Implementation Evidence
+### Implementation Evidence
 
 A strong handoff includes:
 
@@ -537,250 +510,147 @@ Escalations
 Next role
 ```
 
----
+## Architecture Discussion
 
-# Architecture Discussion
+### The Execution Boundary
 
-## Developer Agent as an Execution Boundary
+The Developer Agent belongs to the implementation plane of the Harness. It consumes a governed task package, repository evidence, Instructions, Skills, and a restricted set of tools. It produces repository changes and an auditable account of how those changes were checked. Planning, independent validation, approval, and governance remain outside that boundary.
 
-The Developer Agent belongs in the execution plane of the Harness.
+This separation is an architectural control, not a naming convention. A role prompt that says *do not self-approve* is useful, but it is insufficient if the same execution identity can disable branch protection, rewrite test baselines, or merge directly into a protected branch. The Harness should enforce high-risk restrictions through repository permissions, isolated workspaces, protected files, and separate gate ownership wherever practical.
 
-It consumes governed inputs and produces repository changes plus evidence.
+| Plane | Responsibility | Typical artifacts |
+|---|---|---|
+| Planning | Define work, scope, sequencing, and dependencies | Lead task package, acceptance criteria |
+| Implementation | Create the smallest coherent change | Diff, code, migrations, tests |
+| Deterministic validation | Establish reproducible machine-verifiable results | Build and test logs, contract reports |
+| Independent assessment | Review engineering quality and acceptance | Reviewer findings, Validator verdict |
+| Governance and approval | Resolve exceptions and authorize protected decisions | Decision record, approval trail |
 
-```text
-Harness Control Plane
-        ↓
-Bounded Developer Task
-        ↓
-Developer Agent
-        ↓
-Repository Changes
-        ↓
-Validation Pipeline
-```
+### A Strong Task Contract
 
-The Agent does not own the entire workflow.
+A Developer Agent should receive a concrete assignment rather than a general instruction to improve the repository. The task package should identify the target behavior, constraints, allowed and excluded changes, test expectations, relevant repository sources, escalation owners, and output format.
 
-## Implementation Plane Versus Approval Plane
+For corporate fleet booking, the difference between the original business request and the Developer task is material. The business may ask to “support fleets”; the task says **one booking, one station, bounded vehicle count, frozen event schema, and existing outbox**. If implementation reveals that multi-station booking is required, the Developer must not silently reinterpret the domain model. It should return a decision request to the Lead and the appropriate domain owner.
 
-Implementation and approval should remain separate.
+### Context Resolution Without Context Pollution
 
-```text
-Implementation Plane
-Developer Agent
-      ↓
-Code + Tests + Evidence
+The Harness may assemble several kinds of context, but each serves a different purpose. Instructions are persistent constraints; Skills are reusable procedures; the task prompt defines the present outcome; Steering Notes provide temporary human-maintained mission guidance; Repository Intelligence and Knowledge Sources supply evidence. A scratchpad may capture observations and intermediate decisions, but it remains **temporary, task-scoped, and non-authoritative**.
 
-Approval Plane
-Deterministic Gates
-      ↓
-Reviewer
-      ↓
-Validator
-      ↓
-Human Approval
-```
+That distinction matters when an Agent discovers a potentially better pattern. A note such as *“consider adding a vehicle-details event in a later release”* belongs in the task's findings or scratchpad. It is not authorization to amend the current event schema, rewrite an ADR, or change a Skill. Promotion into authoritative guidance requires a separate governed process.
 
-Combining these planes creates conflicts of responsibility.
+### The Verification Boundary
 
-## Inputs and Outputs
+The Developer Agent is expected to check its own work. It may compile, run focused tests, inspect the diff, and correct ordinary mistakes. Those checks shorten the feedback loop, but they do not establish independent acceptance. The Harness should rerun required deterministic checks in a clean or controlled environment before handing the change to the Reviewer and Validator.
 
-### Inputs
+This distinction also prevents the Agent from defining success in its own terms. The Developer's tests may accidentally encode a mistaken interpretation of the requirement. The Validator must compare the actual change against the **original acceptance criteria**, not merely the tests written by the Developer.
 
-- Lead Agent task;
-- Repository Intelligence;
-- Instructions;
-- selected Skills;
-- Knowledge Sources;
-- acceptance criteria;
-- tool permissions.
+### Failure and Recovery as Part of Architecture
 
-### Outputs
+Correction is a normal part of implementation, not a reason to abandon autonomy. The Harness should classify failures, permit bounded corrections, and preserve iteration evidence. A compiler error generally warrants a code correction; a transient package-feed outage may justify a limited retry; a required breaking contract change warrants escalation. Repeating the same deterministic failure without a new hypothesis should consume the retry budget rather than trigger endless changes.
 
-- code;
-- configuration;
-- tests;
-- migrations;
-- implementation evidence;
-- assumptions;
-- risks;
-- escalation requests.
+If the Developer cannot proceed safely, its result should remain useful: `BLOCKED` or `ESCALATION_REQUIRED` with the exact evidence, affected acceptance criterion, options considered, and responsible decision owner. A stopped Agent that preserves a clear decision record is often safer and more valuable than an Agent that forces a misleading green status.
 
-## Independent Deterministic Gates
+### Approval and Release Are Separate Operations
 
-The Developer Agent may execute the same checks locally, but the Harness should execute important gates independently.
+The Developer Agent should normally hand off a diff or pull request, not a deployment. Merge, production migration, contract publication, and production deployment use authority defined by the organization's release process. Some low-risk changes may eventually progress automatically after required gates and reviews, but this is **Harness policy**, not a privilege acquired by the Developer because the implementation looks complete.
 
-This prevents:
+Architecturally, the unit of success is not lines generated or minutes spent coding. It is a **reviewable, validated, and appropriately approved engineering change**.
 
-- hidden local dependencies;
-- gate suppression;
-- stale local environments;
-- unsupported success claims.
+## Professional Diagrams
 
-## Retry and Correction Architecture
+The following diagrams identify the boundaries that matter operationally. They are conceptual illustrations, not a claim that the Alpha Car Detailing repository already contains a particular Harness implementation.
 
-A mature Harness can support:
-
-```text
-Implement
-   ↓
-Validate
-   ↓
-Failure?
- ┌─┴─────────────┐
-Yes              No
- ↓                ↓
-Classify       Reviewer
- ↓
-Correct / Retry / Escalate
-```
-
-The correction loop should be bounded.
-
-## Human Approval Boundaries
-
-Human approval should remain for decisions whose organizational impact exceeds normal implementation authority.
-
-Examples:
-
-- breaking contract changes;
-- security exceptions;
-- high-risk migrations;
-- architecture exceptions;
-- governance changes;
-- production deployment.
-
----
-
-# Professional Diagrams
-
-## Developer Agent Responsibility Boundary
+### Responsibility and Evidence Flow
 
 ```mermaid
-flowchart LR
-    L[Lead Agent] --> D[Developer Agent]
+flowchart TD
+    L[Lead Agent] -->|Bounded task| D[Developer Agent]
     RI[Repository Intelligence] --> D
-    I[Instructions] --> D
-    S[Skills] --> D
-
-    D --> C[Code / Config / Tests]
-    C --> G[Deterministic Gates]
-    G --> R[Reviewer Agent]
-    R --> V[Validator Agent]
-    V --> H[Human Approval where required]
-
-    D -. cannot self-approve .-> H
+    IN[Instructions and Skills] --> D
+    D --> W[Isolated implementation workspace]
+    W --> C[Diff, configuration, tests, and migration]
+    C --> G[Harness-owned deterministic gates]
+    G -->|Failure within scope| D
+    G -->|Passed| R[Independent Reviewer]
+    R -->|Correction requested| D
+    R -->|Accepted for validation| V[Validator Agent]
+    V -->|Acceptance evidence| A[Required approval workflow]
+    D -->|Conflict or missing authority| E[Lead or designated human owner]
+    G --> AUD[Audit and run evidence]
+    R --> AUD
+    V --> AUD
 ```
 
-## Information Flow
+The Developer can correct issues discovered by independent roles, but it does not control gate definitions or decide whether the review and approval stages may be skipped.
+
+### Implementation Decision Flow
 
 ```mermaid
 flowchart TD
-    T[Lead Task Package]
-      --> U[Understand Scope]
-
-    U --> RI[Inspect Repository Intelligence]
-    RI --> I[Apply Instructions]
-    I --> S[Execute Skills]
-    S --> M[Modify Repository]
-    M --> LC[Local Checks]
-    LC --> E[Produce Evidence]
-    E --> G[Harness Gates]
+    Q[Proposed implementation action] --> S{Within assigned scope?}
+    S -->|No| E[Record finding or escalate]
+    S -->|Yes| I{Permitted by Instructions and authority?}
+    I -->|No or unclear| E
+    I -->|Yes| M[Make focused change]
+    M --> T[Run focused local checks]
+    T --> P{Checks passed?}
+    P -->|Yes| H[Inspect final diff and hand off]
+    P -->|No| C{Failure category?}
+    C -->|Implementation defect| F[Correct with evidence]
+    C -->|Transient| R[Retry within budget]
+    C -->|Authority conflict| E
+    F --> T
+    R --> T
 ```
 
-## Decision Model
+### Fleet Booking Transaction and Event Publication
 
 ```mermaid
-flowchart TD
-    X[Implementation Issue]
-      --> Q{Within Scope and Authority?}
-
-    Q -->|Yes| F[Fix]
-    Q -->|No| E[Escalate]
-
-    F --> V[Verify]
-    V --> P{Passed?}
-
-    P -->|Yes| H[Handoff]
-    P -->|No| R{Retry Budget?}
-
-    R -->|Available| F
-    R -->|Exhausted| E
+sequenceDiagram
+    participant API as Fleet Booking API
+    participant APP as Application Use Case
+    participant DOM as Domain
+    participant DB as Database Transaction
+    participant PUB as Outbox Publisher
+    participant BUS as Message Broker
+    API->>APP: Authorized create-booking request
+    APP->>DOM: Enforce booking invariants
+    DOM-->>APP: Valid FleetBooking
+    APP->>DB: Persist booking and outbox record
+    DB-->>APP: Commit atomically
+    APP-->>API: Created booking identifier
+    PUB->>DB: Read pending outbox records
+    PUB->>BUS: Publish FleetBookingCreated
+    Note over PUB,BUS: Delivery may be retried; consumers need idempotency
 ```
 
----
+The transaction ends when booking state and the outbox message commit. Broker publication is a later operation. This distinction is essential: **an outbox provides atomic persistence of intent to publish, not atomic delivery to the broker**.
 
-# Hands-on Example
+## Hands-on Example
 
-## Scenario
+### Scenario and Explicit Contract
 
-Alpha Car Detailing requires:
+The Alpha Car Detailing team is implementing `POST /api/fleet-bookings` for corporate fleet managers. The request identifies a corporate customer, a supported station, one or more vehicles, and a requested start time. The use case must reject unauthorized customer access, duplicate or empty vehicle sets, and any vehicle count above the configured limit. On success it persists the booking and an existing `FleetBookingCreated` integration event in the transactional outbox.
 
-```text
-POST /api/fleet-bookings
-```
+The Lead Agent explicitly excludes changes to the public event contract, architecture Instructions, gate definitions, authorization-policy names, and unrelated booking flows. The Developer Agent should use existing repository patterns rather than assume that the illustrative types shown below exist verbatim in the sample application.
 
-The requirements are:
+> **Example boundary:** The C# fragments illustrate the shape and decisions of the implementation. They are not presented as a drop-in, compiling replacement for the actual Alpha Car Detailing repository. Namespace choices, result types, entity constructors, and concrete interfaces must be resolved from repository evidence.
 
-- caller must be an authorized `CorporateFleetManager`;
-- caller must belong to the corporate customer;
-- at least one vehicle is required;
-- booking cannot exceed the configured fleet maximum;
-- selected station must support corporate fleet bookings;
-- booking must be persisted;
-- `FleetBookingCreated` must be written through the transactional outbox;
-- correlation must be preserved;
-- observability must be added;
-- unit and integration tests are required.
+### Stage 1 — Inspect, Classify, and Plan
 
-Explicit exclusions:
+Before editing code, identify the service owner, existing endpoint and use-case styles, aggregate rules, persistence abstractions, authorization interfaces, transactional outbox, and testing conventions. The Developer Agent records three classes of finding:
 
-- do not change the public `FleetBookingCreated` contract;
-- do not redefine authorization policy names;
-- do not modify architecture Instructions;
-- do not modify deterministic gate definitions;
-- do not refactor unrelated booking flows.
+| Classification | Example | Developer action |
+|---|---|---|
+| Fact | The current service persists events through an outbox | Follow approved pattern |
+| Assumption | A fleet booking targets exactly one station | Check task and repository; record if material |
+| Decision outside authority | An external consumer needs a new event field | Escalate before contract modification |
 
-Selected Skills:
+The Agent then creates a local sequence: request mapping, validation and authorization, domain creation, persistence and outbox, endpoint behavior, tests, migration inspection, and local verification. This local plan does not expand the Lead Agent task.
 
-```text
-create-rest-endpoint
-add-application-command
-add-domain-behavior
-add-integration-event
-add-transactional-outbox
-add-api-tests
-```
+### Stage 2 — Establish Request and Contract Boundaries
 
-## Step 1 — Confirm Scope
-
-The Developer Agent records the boundary before modifying code.
-
-## Step 2 — Inspect Existing Patterns
-
-Inspect:
-
-- similar booking endpoints;
-- application handlers;
-- domain aggregates;
-- repository abstractions;
-- outbox mappings;
-- authorization services;
-- integration-test fixtures.
-
-## Step 3 — Apply Instructions
-
-The Agent confirms architecture, security, testing, event, and observability constraints.
-
-## Step 4 — Execute Skills
-
-The selected Skills guide the implementation sequence without overriding repository Instructions.
-
-## Step 5 — Preserve Contracts
-
-The Agent verifies the existing `FleetBookingCreated` schema and confirms it is frozen for the task.
-
-## Step 6 — Add the Request Model
+An illustrative HTTP request model is:
 
 ```csharp
 public sealed record CreateFleetBookingRequest(
@@ -790,7 +660,7 @@ public sealed record CreateFleetBookingRequest(
     DateTimeOffset RequestedStartTime);
 ```
 
-## Step 7 — Add the Application Command
+The Application layer may use a command or request object consistent with existing patterns; calling the object a *command* does not by itself require a separate CQRS read model or new messaging infrastructure.
 
 ```csharp
 public sealed record CreateFleetBookingCommand(
@@ -800,639 +670,415 @@ public sealed record CreateFleetBookingCommand(
     DateTimeOffset RequestedStartTime);
 ```
 
-## Step 8 — Add Validation
+The existing public event is treated as frozen. For illustration, it exposes a booking identifier, customer identifier, station identifier, vehicle count, and requested start time. It does **not** need vehicle identifiers simply because the incoming request contains them. The Developer should verify the actual contract in the repository and use its established serializer and envelope.
 
-Validate required fields and request shape using repository-standard validation.
+### Stage 3 — Separate Transport Validation, Authorization, and Domain Rules
 
-## Step 9 — Add Domain Behavior
+Transport validation should reject malformed or missing values in the request. Resource authorization must independently prove that the authenticated caller may manage the requested corporate customer; possession of the `CorporateFleetManager` role alone is insufficient. The caller-supplied `CorporateCustomerId` must never be treated as proof of entitlement.
 
-The domain should enforce invariants such as:
-
-- at least one vehicle;
-- no duplicate vehicles;
-- maximum fleet size.
-
-## Step 10 — Enforce Resource Authorization
-
-The handler verifies that the authenticated user can manage the specified corporate customer.
-
-## Step 11 — Validate Station Capability
-
-Use the approved station boundary rather than direct cross-service database access.
-
-## Step 12 — Implement the Handler
-
-The handler coordinates the use case without violating architecture boundaries.
-
-## Step 13 — Use the Transactional Outbox
-
-Persist:
+The domain must still protect invariants when a booking is created outside this HTTP endpoint. It should enforce a non-empty vehicle collection, no duplicates, and the configured maximum. The Application layer can check station support using an approved service contract or local read model rather than querying another service's database directly.
 
 ```text
-FleetBooking
-+
-FleetBookingCreated outbox message
+HTTP boundary: request shape and authentication
+Application: customer access and station capability
+Domain: booking invariants and state transitions
+Infrastructure: persistence and external-service adapters
 ```
 
-inside the same transaction.
+Do not move domain rules into the endpoint simply because they are easy to express there. The Developer Agent should reuse the repository's existing error/result pattern so forbidden access, invalid input, and business-rule violations have stable API behavior.
 
-## Step 14 — Preserve the Event Contract
+### Stage 4 — Persist State and the Outbox Record Together
 
-Do not add `VehicleIds` merely because they are available.
+The critical implementation boundary is atomic persistence, not immediate broker publication. Conceptually, the Application operation asks abstractions to stage the booking and an event record; Infrastructure performs the write in one database transaction.
 
-## Step 15 — Update EF Core Mapping
+```csharp
+// Illustrative orchestration: abstractions and entity methods are
+// supplied by the repository's approved architecture.
+var booking = FleetBooking.Create(
+    command.CorporateCustomerId,
+    command.StationId,
+    command.VehicleIds,
+    command.RequestedStartTime,
+    maximumVehicles);
 
-Add the minimum mapping needed for persistence.
+await bookingStore.StageAsync(booking, cancellationToken);
+await outbox.StageAsync(
+    FleetBookingCreated.From(booking), cancellationToken);
 
-## Step 16 — Generate and Inspect Migration
+await unitOfWork.CommitAsync(cancellationToken);
+```
 
-Inspect every generated operation.
+The `StageAsync` calls must participate in the **same database transaction**. Merely calling two repository abstractions does not guarantee atomicity. An outbox publisher later reads committed messages and publishes them; it may retry after a failure, so consumers should use the established idempotency mechanism. The Developer should not add direct `eventBus.PublishAsync` after the database commit.
 
-Unexpected drops or renames should block handoff until explained.
+### Stage 5 — Map the Endpoint and Preserve Operational Contracts
 
-## Step 17 — Add the Endpoint
+Keep the HTTP endpoint thin: validate the incoming transport representation, invoke the Application use case, and map the result to the established response conventions. A successful request can return `201 Created` and the canonical resource location if that is the repository's API convention. Unauthorized corporate-customer access should produce the defined forbidden outcome; validation failures should use the existing structured error format.
 
-Keep the endpoint thin.
+Implement structured logs, traces, and correlation propagation using established conventions. Prefer the booking identifier, station identifier when permitted, vehicle count, and correlation identifier over serializing the complete request or vehicle identifiers into logs.
+
+If a new configuration key or EF Core migration is required, inspect deployment references and generated migration operations. An unrelated `DropColumn`, rename, or broad package change is not an acceptable incidental change. Confirm why it appeared, correct the model state or migration, and preserve evidence.
+
+### Stage 6 — Prove Behavior with Tests
+
+The Developer Agent writes focused tests against behavior, not only mock interactions. A useful acceptance matrix is:
+
+| Scenario | Expected outcome | Evidence |
+|---|---|---|
+| Authorized manager, valid vehicle set, supported station | Booking created | API integration test with persistence check |
+| Manager acts for another corporate customer | Access denied (`403` under the agreed API contract) | Authorization integration test |
+| Zero or duplicate vehicles | Invalid booking rejected | Domain and application tests |
+| Requested count exceeds configured maximum | Invalid booking rejected | Domain/application tests |
+| Station does not support fleet bookings | Business rejection | Application test with approved station boundary |
+| Successful creation | Booking and outbox row commit together | Persistence integration test |
+| Transaction fails before commit | Neither booking nor outbox row persists | Transaction failure test |
+| Existing `FleetBookingCreated` schema | No unauthorized change | Contract compatibility gate |
+
+The outbox integration test must inspect actual persisted state. Verifying only that a mocked `PublishAsync` method was called would miss the central reliability requirement.
+
+### Stage 7 — Correct Locally, Then Hand Off
+
+Run the repository-approved build and focused tests. The exact commands should come from repository Instructions or maintained scripts rather than from guesses about project layout. Then inspect `git status`, `git diff --stat`, and the full diff to identify unrelated modifications, security changes, new dependencies, and generated artifacts.
+
+Suppose the architecture gate reports an Application-to-Infrastructure dependency introduced in the handler. The Developer should correct the dependency direction. Suppose the event compatibility gate reports `VehicleIds` added to `FleetBookingCreated`. The Developer should restore the frozen schema. If the business requirement truly cannot be met without changing it, stop and escalate. Neither failure authorizes editing the gate or its baseline.
+
+The Developer may now report **implementation complete and ready for independent gates** only if its required local checks were actually run. If an integration-test environment is unavailable, report that limitation explicitly instead of claiming a full pass.
+
+### Stage 8 — Produce an Evidence-Based Handoff
+
+A machine-readable handoff can supplement a pull-request description. The following is a **format illustration**, not a claim that these checks ran for the manuscript:
+
+```json
+{
+  "role": "developer",
+  "taskId": "ACD-FLEET-CREATE",
+  "status": "READY_FOR_GATES",
+  "scope": "Create corporate fleet booking",
+  "contractsChanged": false,
+  "migrationAdded": true,
+  "localVerification": {
+    "build": "passed",
+    "focusedTests": "passed",
+    "integrationTests": "passed"
+  },
+  "independentGateStatus": "not_run",
+  "assumptions": [
+    "One booking targets one service station"
+  ],
+  "risks": [],
+  "nextRole": "harness-gates"
+}
+```
+
+The actual handoff must replace illustrative values with command names, timestamps or run identifiers, exit codes, changed-file references, and any failures that occurred. The Harness gates then execute independently, followed by Reviewer and Validator. A later approval stage determines whether the change may merge or deploy.
+
+**Key lesson:** The Developer Agent is responsible for a reviewable implementation and truthful evidence. It is not the authority that declares the implementation approved.
+
+## Claude Example
+
+Claude Code is the primary example platform for this handbook, but the Developer Agent's duties are defined by the Harness rather than by Claude-specific terminology. The same task and evidence requirements must survive a platform change.
+
+A bounded implementation prompt can be composed from the task package, current repository context, and approved Instructions and Skills. For the corporate fleet-booking assignment:
 
 ```text
-HTTP Request
-   ↓
-Map to Command
-   ↓
-Application Handler
-   ↓
-Protocol Response
-```
+Role: Developer Agent
 
-## Step 18 — Add Observability
+Goal: Implement POST /api/fleet-bookings according to the Lead task.
 
-Use structured logging, tracing, and correlation according to repository conventions.
+Before editing:
+- Read applicable repository Instructions and selected Skills.
+- Inspect similar endpoints, application behavior, domain rules, the outbox,
+  authorization, persistence, and testing patterns.
+- Verify the current FleetBookingCreated contract.
 
-## Step 19 — Add Unit Tests
-
-Test domain invariants and application behavior.
-
-## Step 20 — Add Integration Tests
-
-Verify:
-
-- valid request returns `201`;
-- unauthorized customer returns `403`;
-- booking is persisted;
-- outbox message is persisted;
-- public contract remains unchanged.
-
-## Step 21 — Run Focused Local Verification
-
-```text
-dotnet build
-focused unit tests
-fleet booking integration tests
-architecture tests
-```
-
-## Step 22 — Handle Architecture Failure Correctly
-
-If an architecture gate reports:
-
-```text
-FleetBookings.Application references FleetBookings.Infrastructure
-```
-
-fix the implementation.
-
-Do not modify the gate.
-
-## Step 23 — Record Out-of-Scope Findings
-
-Example:
-
-```text
-Observation:
-Existing correlation identifier is already present in the shared event envelope.
-
-Action:
-Reused existing mechanism.
-No new correlation field added to the public event.
-```
-
-## Step 24 — Prepare Structured Handoff
-
-Include files changed, tests, local evidence, assumptions, risks, and any unresolved issues.
-
-## Step 25 — Deterministic Gates
-
-The Harness independently executes its gate pipeline.
-
-## Step 26 — Bounded Correction
-
-Correct valid implementation failures within scope.
-
-Escalate authority conflicts.
-
-## Step 27 — Reviewer Handoff
-
-The Reviewer receives a fresh context containing the task, diff, evidence, and gate results.
-
-## Step 28 — Validator Handoff
-
-The Validator determines whether acceptance criteria are satisfied.
-
-## Full Workflow
-
-```mermaid
-flowchart TD
-    L[Lead Agent Task]
-      --> D[Developer Agent]
-    D --> RI[Inspect Repository]
-    RI --> I[Apply Instructions]
-    I --> S[Execute Skills]
-    S --> C[Implement Change]
-    C --> T[Add Tests]
-    T --> LC[Local Verification]
-    LC --> G[Deterministic Gates]
-
-    G -->|Implementation Failure| F[Correct]
-    F --> LC
-
-    G -->|Authority Conflict| E[Escalate]
-
-    G -->|Pass| R[Reviewer Agent]
-    R --> V[Validator Agent]
-```
-
-The Developer Agent implemented the work. It did not approve it.
-
----
-
-# Claude Example
-
-Claude Code can serve as the primary implementation platform while the Developer Agent contract remains vendor-neutral.
-
-A practical Claude-oriented Developer Agent prompt might include:
-
-```text
-Role:
-You are the Developer Agent.
-
-Goal:
-Implement POST /api/fleet-bookings.
-
-Scope:
-Modify only the Fleet Booking implementation and directly required tests/configuration.
-
-Instructions:
-Read and comply with all applicable repository and scoped instructions.
-
-Skills:
-Use the selected endpoint, application-command, domain-behavior,
-integration-event, transactional-outbox, and API-test Skills.
-
-Repository Intelligence:
-Inspect existing patterns before modifying files.
+Scope: Implement the API, application, domain, persistence, observability,
+unit tests, and required integration tests for this feature.
 
 Do not:
-- change FleetBookingCreated;
-- change architecture policy;
-- change security policy;
-- bypass deterministic gates;
-- modify Steering Notes;
-- self-approve.
+- modify the existing FleetBookingCreated contract;
+- change architecture/security policy, gates, or Steering Notes;
+- change unrelated modules or dependencies;
+- self-approve, merge, or deploy.
 
-Required local checks:
-- build;
-- focused tests;
-- integration tests;
-- architecture checks where available.
+During implementation:
+- Make a small coherent diff.
+- Preserve resource-level authorization and transactional outbox semantics.
+- Run relevant repository-approved local commands.
+- Inspect generated migration operations and the final diff.
 
-Required output:
-- files changed;
-- behavior implemented;
-- test evidence;
-- assumptions;
-- risks;
-- unresolved failures;
-- handoff status.
+On completion:
+- Report files changed, commands actually run, observed results,
+  assumptions, risks, failures, and escalation requests.
+- State whether the work is READY_FOR_GATES or blocked.
 ```
 
-Claude should inspect similar repository patterns before editing.
+### What Claude Should Do When Evidence Conflicts
 
-It should use bounded local planning, preserve existing architecture, inspect final diffs, and provide evidence.
+Suppose Claude discovers a nearby handler that publishes directly after `SaveChangesAsync`. The existence of this handler does not override the current outbox Instruction. Claude should identify the discrepancy, follow the governed outbox pattern, and record the old handler as an out-of-scope observation if appropriate.
 
-If it accidentally adds `VehicleIds` to `FleetBookingCreated` and the contract gate fails, the correct response is to restore the approved schema—not update the baseline.
+Now suppose Claude changes the published event by adding `VehicleIds`, and the contract gate fails. The correct correction is to restore the approved contract, not alter the contract baseline. If the request cannot be satisfied under that constraint, Claude should escalate with the affected acceptance criterion and options.
 
-If an architecture gate fails because the Application layer references Infrastructure, Claude should correct the dependency direction rather than suppress the architecture rule.
+A third case concerns authorization. If an integration test expects `403` for access to another corporate customer but gets `201`, Claude should investigate the authorization flow and fix the implementation. Updating the test to `201` would normalize the defect.
 
-If a test expects `403` but receives `201`, Claude should trace the result back to the authorization requirement rather than merely changing the test.
+### Claude-Specific Controls Versus Harness Authority
 
-If repository evidence conflicts materially with the assigned task, Claude should escalate with evidence.
+`CLAUDE.md`, repository settings, tool permissions, and isolated environments may help make the task safer. They are not substitutes for independent Harness gates and review. Give Claude only the repository and command permissions the task requires; treat external content as untrusted input rather than instructions; and use the Harness's approval workflow for any action outside the Developer role.
 
-Claude's ability to execute commands or modify many files does not grant authority to modify every file it can access.
+The desired result is a reviewable diff and an evidence package, **not** a statement from Claude that the change is production-ready.
 
----
+## GitHub Copilot Comparison
 
-# GitHub Copilot Comparison
+GitHub Copilot can execute the same Developer Agent contract through an IDE-centered workflow or a delegated coding-agent workflow. Its repository custom instructions, path-specific guidance, and Skills can help preserve local conventions, but the Harness must still define scope, authority, and handoff requirements.
 
-GitHub Copilot can implement the same Developer Agent role through a more IDE- and GitHub-centered workflow.
+For the fleet-booking task, Copilot should discover similar APIs and tests, implement a bounded change, run or receive the required checks, and prepare evidence for independent review. An IDE suggestion that places direct database access in Application is still an architectural violation. A proposed event-schema change is still governed even when the suggestion looks useful.
 
-The core responsibilities remain unchanged:
+| Concern | Developer Agent contract | Copilot execution consideration |
+|---|---|---|
+| Repository context | Inspect current evidence before editing | Use workspace context and repository/path instructions |
+| Skill usage | Follow approved procedure without gaining authority | Load relevant Skills where supported |
+| Scope | Modify only approved areas | Inspect generated file changes and pull-request diff |
+| Verification | Run focused checks; await independent gates | Distinguish local feedback from CI results |
+| Handoff | Provide facts, assumptions, risks, and evidence | Use a structured PR description or Harness handoff |
+
+GitHub-native code review can support the Reviewer stage, but an implementation Agent should not be promoted to its own approval authority. The organizational controls remain the same as in the Claude example.
+
+## Codex Comparison
+
+OpenAI Codex can act as the Developer Agent through repository work, terminal execution, and isolated task environments. Isolation makes parallel work easier to attribute and recover, but it does not solve logical dependencies. Two Agents using separate worktrees can still conflict if both change the same event contract or domain model.
+
+The Harness should pass Codex the same bounded task, authoritative context, selected Skills, tool policy, and evidence requirements used for Claude or Copilot. `AGENTS.md` can express repository guidance, but it does not grant authority to override protected gates, security policy, or contract ownership.
+
+A successful Codex implementation should end with the same status and artifacts:
 
 ```text
-Understand task
- ↓
-Inspect repository context
- ↓
-Apply Instructions
- ↓
-Implement incrementally
- ↓
-Run checks
- ↓
-Prepare evidence
- ↓
-Independent review
+Task: corporate fleet booking creation
+Code and tests: updated within scope
+Public event contract: unchanged
+Local checks: reported with actual results
+Diff: inspected
+Unresolved blockers: explicit
+Next stage: Harness gates and independent review
 ```
 
-Copilot can be particularly effective when a human developer remains closely in the loop through the IDE.
+The critical distinction is between **sandbox permission** (what files or commands the environment permits) and **organizational authorization** (what the Developer Agent role is allowed to change). Both controls are needed.
 
-The enterprise risk is treating suggestions as automatically correct.
+| Dimension | Claude Code | GitHub Copilot | Codex |
+|---|---|---|---|
+| Typical engagement | Repository-oriented Agent session | IDE and GitHub-oriented workflows | Repository, terminal, and isolated-task workflows |
+| Repository guidance | `CLAUDE.md` and applicable settings | Copilot instructions, `AGENTS.md`, Skills | `AGENTS.md` and applicable settings |
+| Harness requirement | Bounded task and evidence | Same | Same |
+| Non-negotiable boundary | No self-approval or gate modification | Same | Same |
 
-A suggestion that injects Infrastructure directly into Application remains an architecture violation even if it is syntactically correct.
+These are **execution-surface comparisons**, not claims that one platform is intrinsically safer or more capable. Permissions and available features vary by product configuration.
 
-A suggested public contract expansion remains governed.
+## Best Practices
 
-A generated test should still be checked against acceptance criteria.
+### Start from Evidence, Not Code
 
-Repository instructions, path-specific guidance, pull-request workflows, and GitHub-native review can strengthen the workflow, but they do not remove the need for deterministic gates and independent role separation.
+Read the Lead Agent task, identify the authoritative Instructions, inspect comparable repository implementations, and select the relevant Skills. If a pattern conflicts with an Instruction, follow the Instruction and record the discrepancy. Broad discovery is compatible with narrow modification; broad modification is not the price of understanding the repository.
 
-The platform changes.
+### Make a Small, Complete, Architecture-Conformant Change
 
-The Developer Agent contract does not.
+A small change must still be complete: domain invariants, authorization, persistence, outbox, observability, configuration, and tests may span multiple layers. Avoid putting business logic in endpoints merely to reduce file count. Follow established project dependency directions and service ownership. Preserve published contract compatibility and inspect migrations for operational risk.
 
----
+### Treat Security and Reliability as Requirements
 
-# Codex Comparison
+Resource-level authorization is distinct from role authorization. The authenticated user must be entitled to act on the requested corporate customer. Reuse approved secrets, configuration, correlation, idempotency, and logging conventions. The transaction that persists a booking must also persist its outbox message; broker delivery is a later, retryable operation.
 
-OpenAI Codex can also implement the Developer Agent role in repository-oriented and isolated task environments.
+### Verify Claims Rather Than Trusting Output
 
-Its ability to inspect repositories, execute terminal commands, work in isolated worktrees, and perform delegated implementation makes it suitable for bounded Developer Agent tasks.
+Test acceptance behavior, including failure cases and persistence effects. Check the final diff and report the exact subset of tests executed. A local build pass does not imply that all CI gates, contract checks, or independent acceptance tests passed. When a check fails, classify the failure before editing; do not rewrite tests or baselines just to obtain a green status.
 
-The same controls should apply:
+### Preserve Role Separation and Recovery Paths
 
-- scoped task package;
-- repository Instructions;
-- reusable Skills;
-- controlled tool permissions;
-- contract boundaries;
-- deterministic validation;
-- bounded retries;
-- independent review.
+The Developer Agent can self-check and correct within scope, but it does not approve. Give the Reviewer a fresh context and sufficient evidence. Use bounded retries, explicit stop conditions, and clear escalation for architecture, security, contract, or governance decisions. Keep temporary scratchpad observations separate from authoritative repository knowledge.
 
-Parallel Developer Agents can improve throughput when tasks are genuinely independent.
+#### Developer Agent Completion Checklist
 
-They should not be parallelized blindly when they share evolving domain or contract boundaries.
+- [ ] The task scope, exclusions, and approval boundaries were checked.
+- [ ] Repository evidence, Instructions, and applicable Skills were consulted.
+- [ ] The final diff is coherent and contains no unexplained files.
+- [ ] Security, contract, and persistence changes were explicitly assessed.
+- [ ] Required tests and local checks were executed or identified as not run.
+- [ ] Failures, assumptions, risks, and out-of-scope findings were recorded.
+- [ ] The handoff identifies the next Harness stage; no self-approval is claimed.
 
-Codex sandboxing or worktree isolation improves execution safety, but workspace isolation is not the same as organizational authority.
+## Anti-patterns
 
-The Harness should still determine what the Developer Agent may modify and what requires escalation.
+The most damaging Developer Agent failures are not always compile errors. Many create valid-looking code while weakening the engineering controls around it.
 
----
+| Anti-pattern | Why it fails | Preferred response |
+|---|---|---|
+| **Coding before discovery** | Reintroduces obsolete patterns or violates local architecture | Inspect current implementation and Instructions first |
+| **Scope-creep refactoring** | Hides unrelated changes and complicates review and rollback | Keep the feature diff focused; record other findings |
+| **Contract drift** | Breaks consumers beyond the visible repository | Preserve frozen contracts or request approval |
+| **Direct publish instead of outbox** | Creates a database/message dual-write failure window | Stage business state and outbox row atomically |
+| **Cross-service database access** | Breaks service ownership and deployment independence | Use an approved API, projection, or event-based integration |
+| **API-only business rules** | Allows invalid state through other entry points | Protect invariants at the Domain boundary |
+| **Authentication as authorization** | Permits access to another customer's resources | Enforce customer/resource entitlement |
+| **Security workaround** | Trades correctness for a green test or build | Fix the defect or seek an authorized exception |
+| **Generated migration accepted blindly** | Can delete or transform unrelated production data | Inspect, explain, and test every operation |
+| **Test laundering** | Changes tests or snapshots to fit incorrect behavior | Compare with original acceptance criteria |
+| **Gate laundering** | Lets the Agent redefine the conditions for success | Keep gate policy independently owned |
+| **Unbounded retry / random debugging** | Produces unstable changes and wasted resources | Classify, hypothesize, correct narrowly, and stop on budget |
+| **Hidden assumptions** | Converts uncertainty into apparently authoritative behavior | Label facts, assumptions, and recommendations |
+| **Self-review as approval** | Fails to provide independent challenge | Hand off to a fresh Reviewer and Validator context |
+| **Unsupported success claims** | Misleads downstream decision-makers | Report actual checks and stage-accurate status |
 
-# Best Practices
+#### Example: A Green Gate That Should Not Be Trusted
 
-The following practices improve Developer Agent reliability:
+Suppose a contract test fails after the Developer changes `FleetBookingCreated`. The Agent updates the stored schema snapshot until the test passes. The green result is no longer evidence of compatibility, because the implementation changed both the behavior and the standard used to evaluate it. The correct options are to restore the approved schema or obtain independent contract-owner approval for a governed evolution.
 
-- begin with the assigned task, not with code;
-- discover broadly and modify narrowly;
-- prefer repository evidence over generic model knowledge;
-- inspect similar implementations before creating new patterns;
-- read Instructions before executing Skills;
-- treat Skills as workflows, not permissions;
-- make the smallest coherent change;
-- preserve architecture boundaries;
-- keep API endpoints thin;
-- place true business invariants in the domain;
-- treat authorization as more than authentication;
-- never weaken security to complete a task;
-- treat public contracts as controlled assets;
-- prefer additive contract evolution where appropriate;
-- respect service ownership boundaries;
-- preserve transactional consistency;
-- inspect generated migrations;
-- consider rolling-deployment compatibility;
-- reuse approved dependencies;
-- keep secrets out of configuration files;
-- validate important configuration;
-- make observability part of implementation;
-- use structured logging;
-- avoid logging unnecessary sensitive data;
-- write tests against requirements;
-- do not modify tests merely to make them pass;
-- inspect the final diff;
-- keep deterministic validation independent;
-- treat gate failures as evidence;
-- classify failures before correcting them;
-- use bounded retries;
-- escalate decisions rather than routine work;
-- make assumptions explicit;
-- preserve failure evidence;
-- produce structured handoffs;
-- distinguish implementation completion from acceptance;
-- never self-approve;
-- preserve Reviewer and Validator independence;
-- protect governance artifacts;
-- use least-privilege tool access;
-- isolate parallel Agent workspaces.
+A similar failure occurs when the Agent deletes a failing authorization test, disables a security warning, or modifies `AGENTS.md` to permit an otherwise forbidden dependency. Each shortcut may make the local workflow appear successful while invalidating the engineering result.
 
-A disciplined Developer Agent cycle is:
+> **Anti-pattern principle:** The Developer Agent should solve implementation problems without changing the definition of acceptable implementation.
 
-```mermaid
-flowchart TD
-    T[Receive Lead Task]
-      --> B[Confirm Scope]
-    B --> R[Gather Repository Evidence]
-    R --> I[Apply Instructions]
-    I --> S[Execute Skills]
-    S --> C[Implement Smallest Coherent Change]
-    C --> TST[Implement Tests]
-    TST --> D[Inspect Diff]
-    D --> L[Local Verification]
-    L --> Q{Passed?}
-    Q -->|No| F[Classify Failure]
-    F -->|Correctable| C
-    F -->|Authority Boundary| E[Escalate]
-    Q -->|Yes| H[Structured Handoff]
-```
+## Architect’s Notes
 
----
+### Design Autonomy as an Explicit Boundary
 
-# Anti-patterns
+The Developer Agent is an architectural execution component, not merely a coding persona. Define what it can read, modify, execute, and request. Separate the authority to implement from the authority to plan, validate, approve, merge, and deploy. In high-risk repositories, enforce those boundaries through tools, identity, branch protection, and file ownership instead of relying on language instructions alone.
 
-Common Developer Agent anti-patterns include:
+A useful classification is:
 
-- unbounded repository modification;
-- coding before repository discovery;
-- generic best practice over repository practice;
-- treating Instructions as suggestions;
-- self-modifying governance;
-- scope-creep refactoring;
-- architecture rewrite disguised as feature work;
-- contract drift;
-- updating baselines merely to make contract gates pass;
-- direct event publication around an outbox requirement;
-- cross-service database access;
-- business logic in endpoints;
-- validation only at the API boundary;
-- treating authentication as complete authorization;
-- removing security controls while debugging;
-- logging entire request objects;
-- hard-coded secrets;
-- dependency shopping;
-- package upgrades as side effects;
-- trusting generated migrations without inspection;
-- destructive migrations without operational thinking;
-- changing tests to match bugs;
-- deleting or skipping failing tests;
-- excessive mocking;
-- claiming “all tests passed” after running only a subset;
-- treating local success as final success;
-- bypassing deterministic gates;
-- blanket warning suppression;
-- infinite retry loops;
-- random-walk debugging;
-- hiding pre-existing failures;
-- claiming failures are pre-existing without evidence;
-- hidden assumptions;
-- converting uncertainty into confidence;
-- silently reinterpreting acceptance criteria;
-- implementing the original prompt instead of the bounded Lead plan;
-- Developer Agent acting as Architect, Security Approver, Reviewer, Validator, or Human Approver;
-- same conversation for implementation and independent review;
-- abstraction explosion;
-- premature optimization;
-- accidental repository-wide formatting;
-- silent configuration defaults;
-- assuming tool access equals permission;
-- production validation during development;
-- force-push as routine recovery;
-- vague success or failure reporting;
-- claiming production readiness without evidence.
+| Change class | Typical treatment |
+|---|---|
+| Internal code and tests | Bounded Developer autonomy with required gates |
+| Public API or event contract | Contract-owner review and compatibility evidence |
+| Data schema or migration | Operational compatibility review |
+| Authorization or secret handling | Security review |
+| CI gates, Instructions, Skills, or governance files | Independently owned policy-change workflow |
+| Production operation | Separate release or operations authority |
 
-The central warning is:
+### Make the Correct Path the Easy Path
 
-> A Developer Agent should solve implementation problems without changing the definition of acceptable implementation.
+An Agent-ready repository should offer clear service ownership, consistent patterns, explicit contract schemas, reusable outbox and authorization abstractions, deterministic build commands, architecture tests, and stable test fixtures. Platform engineering can provide paved-road Skills and tooling so that correct implementation requires less improvisation than an unauthorized shortcut.
 
----
+Repository Intelligence should be curated and refreshed. It is an acceleration mechanism, not a substitute for checking current source. Context should retain provenance: a task prompt, an Instruction, a Skill, a Steering Note, a retrieved web page, and a scratchpad observation are not interchangeable authorities.
 
-# Architect’s Notes
+### Treat the Diff as a Routing Signal
 
-The Developer Agent should be designed as part of the Harness, not in isolation.
+The final diff can identify increased risk even when the original task looked small. A new migration, event-schema modification, package upgrade, security-policy change, or infrastructure file should trigger the appropriate downstream reviewer. The Developer Agent may identify these changes, but the Harness or designated governance owner should own the routing policy.
 
-Key architectural considerations include:
+### Keep Assessment Independent
 
-- define the role independently from the model vendor;
-- make authority more explicit than capability;
-- bound autonomy by change type and risk;
-- keep planning authority separate from implementation authority;
-- make Repository Intelligence a first-class service;
-- refresh Repository Intelligence against live repository state;
-- assign clear ownership to Instructions and governance artifacts;
-- reinforce machine-testable Instructions with deterministic gates;
-- avoid giant prompts by separating role, Instructions, Skills, task, Steering Notes, and Repository Intelligence;
-- version Skills and govern their evolution;
-- optimize for reviewable diffs, not generated code volume;
-- route review based on the actual final diff;
-- run cheap deterministic gates before expensive review;
-- provide actionable gate diagnostics;
-- prevent the Developer Agent from controlling its own gates;
-- separate test creation from independent acceptance validation;
-- build independent Reviewer contexts;
-- support replaceable model providers;
-- protect public contracts more strongly than private code;
-- establish event contract ownership;
-- include operational context in persistence changes;
-- treat configuration as a contract;
-- standardize observability conventions;
-- make architecture executable through tests;
-- prefer technical security controls over prompt-only security;
-- design escalation as a first-class result;
-- preserve iteration history;
-- measure engineering outcomes;
-- guard against reward hacking;
-- isolate parallel Agent workspaces;
-- define merge ownership;
-- keep human approval risk-based and meaningful;
-- preserve auditability;
-- fail closed on high-risk authority uncertainty;
-- allow “no change” as a valid result;
-- design future learning around evidence, not silent standard changes.
+The Developer should produce tests, then the Harness runs required gates independently. The Reviewer challenges engineering quality; the Validator verifies acceptance criteria; the Evaluator may assess broader quality. Using the same underlying model across roles does not automatically eliminate independence, but fresh execution contexts and independent evidence are necessary. For high-risk work, additional human or specialist diversity may be warranted.
 
-A mature reference model is:
+### Architect for Recovery and Learning
 
-```mermaid
-flowchart TD
-    U[Goal] --> L[Lead Agent]
-    RI[Repository Intelligence] --> L
-    L --> T[Bounded Task]
-    T --> D[Developer Agent]
-    I[Instructions] --> D
-    S[Skills] --> D
-    D --> W[Isolated Workspace]
-    W --> C[Code / Config / Tests]
-    C --> G[Deterministic Gates]
-    G --> R[Reviewer]
-    R --> V[Validator]
-    V --> H[Human Approval where required]
-    G --> A[Audit Evidence]
-    R --> A
-    V --> A
-    A --> LE[Learning Analysis]
-    LE --> P[Proposed Improvements]
-    P --> GOV[Governance Review]
-```
+An enterprise Harness should record task identifiers, model and Skill versions where available, commands and exit codes, diff hashes or commit IDs, gate results, correction cycles, escalations, and approval decisions. Use those records to measure first-pass gate success, review rework, escaped defects, and time to validated change—not code volume alone.
 
----
+Repeated implementation failures may expose weak repository tests, ambiguous Instructions, or an incomplete Skill. The Harness can propose a change based on evidence. It must not silently change governed standards, and a temporary scratchpad finding must not become authoritative knowledge without review.
 
-# Enterprise Tips
+> **Architect’s note:** Optimize for an approved, recoverable engineering change—not for maximum Agent autonomy or lines generated.
 
-Enterprise adoption should focus on safe delegation rather than maximum code generation.
+## Enterprise Tips
 
-Recommended practices include:
+Enterprise adoption should be incremental and measurable. Begin in repositories with reproducible builds, clear ownership, useful tests, and explicit Instructions. A legacy service with weak test coverage may benefit from supervised Agent assistance before it is safe for an autonomous correction loop.
 
-- start with narrow, high-confidence tasks;
-- standardize the Developer Agent contract;
-- keep the contract vendor-neutral;
-- centralize critical enterprise Instructions;
-- keep repository Instructions concise and scoped;
-- standardize common engineering Skills;
-- allow repository-specific Skill extensions;
-- version Skills;
-- build and incrementally refresh Repository Intelligence;
-- separate trusted and untrusted context;
-- use dedicated Agent identities;
-- use least-privilege credentials;
-- use ephemeral development environments;
-- isolate parallel Developer Agents;
-- enforce high-risk file protections;
-- classify final diffs automatically;
-- protect governance files through ownership rules;
-- use Agent branches and pull requests;
-- make pull requests evidence-rich;
-- run deterministic gates before human review;
-- keep gate ownership separate from implementation ownership;
-- prefer actionable gate diagnostics;
-- separate fast and deep gates;
-- baseline known failures carefully;
-- track flaky tests separately;
-- establish retry budgets;
-- track correction cycles and first-pass gate success;
-- measure Reviewer findings and escaped defects;
-- avoid lines-of-code metrics;
-- classify human intervention;
-- create an escalation taxonomy and router;
-- classify task risk;
-- increase risk when the actual diff warrants it;
-- keep human approvals focused on real decisions;
-- establish API/event contract governance;
-- protect database changes;
-- provide deterministic test-data strategies;
-- make local setup reproducible;
-- expose wrapper validation commands;
-- make architecture executable;
-- standardize correlation and event metadata;
-- standardize idempotent consumer patterns;
-- enforce sensitive-data policies automatically;
-- record Harness, model, role, Instruction, and Skill versions;
-- use operational dashboards, alerts, kill switches, budgets, and concurrency limits;
-- train teams on role boundaries;
-- improve acceptance criteria;
-- improve repositories rather than only prompts;
-- treat Agent failures as architecture feedback;
-- roll out autonomy based on repository readiness;
-- test and red-team the Developer Agent role;
-- use canary repositories for Harness changes;
-- version and progressively roll out Harness updates;
-- optimize the full delivery pipeline.
+### Standardize the Developer Contract
 
----
+Publish a platform-neutral role contract that defines inputs, exclusions, tool permissions, retry policy, escalation categories, and required output. Repositories may extend the contract with local Instructions and Skills, but should not silently weaken enterprise security or approval boundaries.
 
-# Decision Points
+### Treat Execution as a Managed Workload
 
-The Developer Agent repeatedly needs to decide whether to continue, correct, retry, escalate, or stop.
+Use isolated branches or worktrees, least-privilege identities, restricted secrets, and reproducible environments. Apply concurrency limits and cost/retry budgets. Provide a way to stop an individual run or suspend autonomous execution during a security incident or tool malfunction. Preserve the link between human requester, Agent run, diff, and resulting pull request.
 
-Key questions include:
+### Route Work by Actual Risk
 
-- Is the task sufficiently defined?
-- Is the proposed change in scope?
-- Does an approved repository pattern already exist?
-- Is a new abstraction necessary?
-- Can an existing dependency solve the problem?
-- Does the change affect a public contract?
-- Is the event internal or published?
-- Is the contract change additive or breaking?
-- Does the change affect configuration as a contract?
-- Is the rule input validation or a domain invariant?
-- Is authentication sufficient, or is resource authorization required?
-- Does a security control block the implementation?
-- Is the log data necessary and safe?
-- Does the feature need a new metric?
-- Can the existing correlation mechanism be reused?
-- Is direct event publication permitted?
-- Is cross-service data access allowed?
-- Is a database migration required?
-- Is the migration safe for existing data and rolling deployment?
-- Should a generated migration be trusted?
-- Should the behavior be tested at unit or integration level?
-- Should a failing test change, or should the code change?
-- Is a failure genuinely pre-existing?
-- Should a warning be suppressed?
-- Is a build failure routine or structural?
-- Can a failed gate be corrected within scope?
-- Is the gate itself demonstrably wrong?
-- Should the Agent retry?
-- Is the retry budget exhausted?
-- Is the Agent about to modify governance?
-- Is a Steering Note change required?
-- Is a new Skill genuinely reusable?
-- Should an existing Skill change through governance?
-- Is new infrastructure required?
-- Is performance optimization actually justified?
-- Is the final diff still within scope?
-- Has the risk classification increased?
-- Has enough local verification been performed?
-- Is it accurate to claim implementation complete?
-- Is independent review required?
-- Does a specialist Reviewer need to participate?
-- Is human approval required?
-- Should the Agent stop?
+Classify both the task and its final diff. A feature originally considered low risk may introduce a database migration or public contract change. Send those changes to the relevant owner before approval. Protect governance paths and gate configuration using repository permissions or ownership rules.
 
-A practical decision tree is:
+### Make Validation Useful to Agents and Humans
 
-```mermaid
-flowchart TD
-    T[Decision] --> S{Within Scope?}
-    S -->|No| E[Escalate / Record]
-    S -->|Yes| I{Instructions Permit?}
-    I -->|No| E
-    I -->|Yes| R{High-Risk Contract/Security/Governance?}
-    R -->|Yes| A{Explicit Authority?}
-    A -->|No| E
-    A -->|Yes| P[Proceed]
-    R -->|No| P
-    P --> V[Implement + Verify]
-    V --> F{Failure?}
-    F -->|No| H[Handoff]
-    F -->|Yes| C{Failure Type}
-    C -->|Implementation| X[Correct]
-    X --> V
-    C -->|Transient| Y[Retry Within Policy]
-    Y --> V
-    C -->|Authority Conflict| E
-```
+Prefer maintained validation commands and actionable diagnostics. Rather than “architecture validation failed,” provide the violated rule, project, file, and dependency path. Run fast local checks during implementation, then deeper independent gates before merge. Track known flaky tests with an owner and expiration rather than allowing endless retries to disguise them.
 
----
+### Measure Outcomes, Not Output Volume
 
-# Exercises
+Useful signals include first-pass gate success, correction cycles, Reviewer findings, escaped defects, security and contract violations, escalation categories, and total time to validated change. Treat legitimate escalation as evidence of boundary compliance, not necessarily an Agent failure. Avoid rewarding the Agent for producing more files or suppressing more findings.
+
+### Govern Improvements to Instructions and Skills
+
+Version reusable Skills and important Instructions. Pilot new versions against representative or canary repositories; compare their effect on defect and gate outcomes before broad rollout. Let the Harness recommend changes from repeated failures, but require authorized review before those improvements become enterprise standards.
+
+### Practical Readiness Questions
+
+| Dimension | Enterprise readiness question |
+|---|---|
+| Repository | Can the Agent reproduce the build and understand module boundaries? |
+| Testing | Are critical acceptance paths and failure cases testable? |
+| Governance | Are instructions, contracts, and approval owners discoverable? |
+| Security | Are secrets, network access, file writes, and tools restricted? |
+| Operations | Are migrations, rollout behavior, and recovery practices documented? |
+| Evidence | Can a reviewer reconstruct what the Agent changed and checked? |
+
+An enterprise should expand Developer Agent autonomy only when the surrounding engineering controls provide sufficient confidence for the change class.
+
+## Decision Points
+
+Most Developer Agent decisions fall into four categories: routine implementation, evidence collection, bounded correction, and escalation. The Agent should resolve the first three within authority and stop at the fourth.
+
+| Decision | Continue autonomously when | Escalate or stop when |
+|---|---|---|
+| **Task clarity** | Acceptance criteria and repository evidence agree | Material business behavior is ambiguous |
+| **Scope** | Change is required for the assigned feature | A separate architectural refactor is needed |
+| **Existing pattern** | Current pattern complies with Instructions | Existing example conflicts with current governance |
+| **Public contract** | Contract stays unchanged or approved evolution is defined | Breaking/unapproved change is necessary |
+| **Authorization** | Existing policy and customer entitlement cover requirement | New security exception or policy is required |
+| **Persistence** | Migration is explained and deployment-compatible | Data loss or rollout safety cannot be established |
+| **Dependencies** | Approved libraries already solve the problem | New high-risk or unapproved package is needed |
+| **Testing** | Failure has a reproducible implementation cause | Test expectation conflicts with approved requirements |
+| **Gate failure** | Correctable without changing the gate or scope | Gate policy or authority must change |
+| **Retry** | Transient failure and budget remains | Repeated deterministic failure or exhausted budget |
+| **Handoff** | Required local checks are reported accurately | Required evidence is missing or material work remains |
+
+#### Worked Decision: Event Contract Pressure
+
+The fleet-booking request contains `VehicleIds`, but the published event exposes only `VehicleCount`. A downstream consumer asks for the identifiers. The Developer checks whether the current task authorizes a contract change: it does not. The Developer therefore preserves the existing event, records the requested capability as a separate contract decision, and escalates with impact on consumers and versioning options. It does not add the field first and update the baseline later.
+
+#### Worked Decision: An Unexpected Migration
+
+EF Core generates an unrelated `DropColumn` during a feature migration. The Developer inspects the current model, snapshot, branch state, and mappings. If an accidental model change caused the operation, the Agent corrects it. If the drop is a legitimate but destructive schema evolution outside the approved task, the Agent stops and routes the decision to the data or platform owner.
+
+#### Worked Decision: Test Status
+
+A focused unit-test suite passes, but the integration environment is unavailable. The Developer can state that implementation is complete **with integration verification not run**. It cannot state that “all tests passed” or that acceptance is validated. The Harness will need either an available environment or an explicit decision about the missing evidence.
+
+The recurring question is:
+
+> **Is this an implementation choice within my authority, or a decision that changes requirements, standards, contracts, security, or approval?**
+
+The answer determines whether the Developer should implement, correct, retry, document, escalate, or stop.
+
+## Exercises
+
+The following guided labs emphasize deliverables rather than abstract discussion. Use the Alpha Car Detailing sample application where available; do not invent missing repository components merely to match these examples.
+
+### Guided Exercise A — Define a Bounded Cancellation Task
+
+Design the Lead-to-Developer package for `POST /api/fleet-bookings/{bookingId}/cancel`. Include authorization for the correct corporate customer, the rule that completed bookings cannot be cancelled, outbox requirements, frozen public contracts, and excluded changes. **Deliverable:** a one-page task contract containing acceptance criteria, allowed files, selected Skills, and escalation owners.
+
+### Guided Exercise B — Review a Faulty Implementation
+
+Consider a handler that injects an Infrastructure `DbContext` directly into Application, saves a booking, and publishes `FleetBookingCreated` directly. Identify which problems are architectural, transactional, and contractual. **Deliverable:** a corrected design diagram, a list of interfaces or abstractions to inspect, and two tests that would detect the dual-write failure.
+
+### Guided Exercise C — Build the Acceptance-Test Matrix
+
+For fleet booking creation, specify unit, API, and persistence-integration tests for valid requests, unauthorized customer access, duplicate and excessive vehicles, unsupported stations, and atomic booking/outbox persistence. **Deliverable:** a test matrix that links each acceptance criterion to observable evidence rather than to a mocked method call alone.
+
+### Guided Exercise D — Diagnose an Unsafe Migration
+
+A new EF Core migration creates `FleetBookings` but also drops an unrelated `ExternalReference` column. Investigate the generated model snapshot and entity mappings, determine whether the operation belongs to the task, and describe a deployment-safe correction. **Deliverable:** a migration review record with findings, proposed action, and any required data-owner approval.
+
+### Guided Exercise E — Design the Developer Handoff
+
+Create a JSON handoff schema with task ID, worktree or commit reference, files changed, contracts changed, migration classification, commands and exit codes, tests and gate outcomes, assumptions, risks, and next workflow status. **Deliverable:** the schema and one hypothetical successful example clearly marked as illustrative.
+
+### Guided Exercise F — Preserve Independent Review
+
+The same model is used for Developer and Reviewer roles. Design separate executions so the Reviewer receives the original task, diff, verified gate results, and Developer handoff, but not the Developer's unchallenged assumptions as authoritative truth. **Deliverable:** a two-role sequence diagram and a reviewer-context checklist.
+
+### Extension Exercise Bank
+
+The following prompts provide additional practice. They are optional extensions; teams can assign only those relevant to the repository's current maturity. Each should produce an explicit artifact or decision record.
 
 1. Define the Developer Agent boundary for `POST /api/fleet-bookings/{bookingId}/cancel`.
 2. Identify scope creep in adjacent refactoring opportunities.
@@ -1490,93 +1136,98 @@ flowchart TD
 54. Assess enterprise repository readiness.
 55. Design the complete enterprise Developer Agent subsystem.
 
----
+## Interview Questions
 
-# Interview Questions
-
-## 1. What is a Developer Agent?
+### 1. What is a Developer Agent?
 
 A Developer Agent is the governed implementation role responsible for making authorized repository changes according to the Lead Agent plan, Instructions, Skills, Repository Intelligence, and acceptance criteria.
 
-## 2. Why should it not approve its own work?
+### 2. Why should it not approve its own work?
 
 Because implementation and independent judgment should remain separate. The execution context that created the solution may preserve its own assumptions and blind spots.
 
-## 3. What does “discover broadly, modify narrowly” mean?
+### 3. What does “discover broadly, modify narrowly” mean?
 
 The Agent may inspect a wide area of the repository to understand a task but should modify only the areas required by the assigned scope.
 
-## 4. What is the difference between Instructions and Skills?
+### 4. What is the difference between Instructions and Skills?
 
 Instructions define standards and constraints. Skills define reusable implementation workflows within those constraints.
 
-## 5. What happens when a Skill conflicts with an Instruction?
+### 5. What happens when a Skill conflicts with an Instruction?
 
 The Instruction takes precedence. The Skill should be adapted or a governed improvement proposed separately.
 
-## 6. What is the smallest coherent change?
+### 6. What is the smallest coherent change?
 
 The minimum complete change that satisfies the task and preserves architecture, even if it spans multiple layers.
 
-## 7. Why are public contracts special?
+### 7. Why are public contracts special?
 
 They may have external consumers and therefore require stronger compatibility and ownership controls.
 
-## 8. Why should generated migrations be inspected?
+### 8. Why should generated migrations be inspected?
 
 They can contain unrelated or unsafe operations even when generated successfully.
 
-## 9. What is the Developer Agent’s security responsibility?
+### 9. What is the Developer Agent’s security responsibility?
 
 Implement security requirements, preserve authorization boundaries, protect secrets and sensitive data, and never weaken controls to make code pass.
 
-## 10. Why does the transactional outbox matter?
+### 10. Why does the transactional outbox matter?
 
 It prevents the dual-write failure between database persistence and message publication.
 
-## 11. Why are Developer-written tests not final validation?
+### 11. Why are Developer-written tests not final validation?
 
 The Developer Agent may encode its own misunderstanding into the tests. Validator responsibility remains independent.
 
-## 12. What is failure classification?
+### 12. What is failure classification?
 
 Determining whether a failure should trigger correction, retry, evidence recording, escalation, or stopping.
 
-## 13. Why must retries be bounded?
+### 13. Why must retries be bounded?
 
 To prevent code churn, runaway cost, hidden workaround behavior, and uncontrolled scope expansion.
 
-## 14. When should the Developer Agent escalate?
+### 14. When should the Developer Agent escalate?
 
 When requirements conflict, authority is insufficient, public contracts or architecture must change, security exceptions are required, or repeated failures exceed the retry budget.
 
-## 15. Why is changing a gate to make implementation pass dangerous?
+### 15. Why is changing a gate to make implementation pass dangerous?
 
 It allows the implementation role to redefine the criteria evaluating its own work.
 
-## 16. What is implementation evidence?
+### 16. What is implementation evidence?
 
 Objective information such as files changed, tests run, build results, contract status, assumptions, risks, and failures.
 
-## 17. What is stage-accurate status reporting?
+### 17. What is stage-accurate status reporting?
 
 Reporting exactly what is complete and what remains, rather than claiming approval or production readiness prematurely.
 
-## 18. Why is capability different from authority?
+### 18. Why is capability different from authority?
 
 An Agent may technically be able to perform an operation without being organizationally permitted to do it.
 
-## 19. How can the same model act as Developer and Reviewer safely?
+### 19. How can the same model act as Developer and Reviewer safely?
 
 Use independent execution contexts and provide the Reviewer with the original task, diff, deterministic results, and handoff evidence.
 
-## 20. What is the most important architectural principle?
+### 20. What is the most important architectural principle?
 
 The Developer Agent should be powerful inside its implementation boundary and constrained outside it.
 
----
 
-# Chapter Summary
+### Scenario Questions for Senior Engineers and Architects
+
+**Scenario 1 — A passing but unsafe change.** The Developer modifies a published event and updates its contract snapshot, then reports a green test suite. What evidence is still missing? A strong answer identifies independent contract ownership, the invalidated baseline, downstream compatibility, and a required separate approval path.
+
+**Scenario 2 — Local success, uncertain production behavior.** A migration passes against an empty test database but adds a non-nullable column to a populated production table. What should the Developer do? A strong answer considers expand-and-contract rollout, backfill, old/new application overlap, locking, and operational authorization.
+
+**Scenario 3 — Correct escalation under pressure.** The business requests full request logging for audit while a Security Instruction forbids logging vehicle identifiers. What is the correct next action? A strong answer preserves the security constraint, proposes compliant audit alternatives, and requests a decision from the authorized security/business owners rather than silently choosing one requirement.
+
+## Chapter Summary
 
 The Developer Agent is the implementation role within the enterprise AI Engineering Harness.
 
@@ -1626,60 +1277,23 @@ Validator Agent
 
 That transition—from “AI writes code” to “AI performs a governed implementation role”—is the foundation for the next roles in the Harness.
 
----
-
-# Chapter 15 Cross-Reference Map
+## Chapter 15 Cross-Reference Map
 
 The Developer Agent is the implementation role that connects the repository-intelligence concepts introduced in Part II with the orchestration, validation, review, governance, and learning mechanisms developed throughout the rest of the handbook.
 
 ```mermaid
 flowchart LR
-    subgraph Context["Part II — Repository Intelligence"]
-        C5[Repository Discovery]
-        C6[Instructions]
-        C7[Skills]
-        C8[Prompts]
-        C9[Roles]
-        C10[Steering Notes]
-        C11[Knowledge Sources]
-    end
-
-    subgraph Harness["Part III — Harness Engineering"]
-        C12[Harness]
-        C13[Harness Architecture]
-        C14[Lead Agent]
-        C15[Developer Agent]
-        C16[Reviewer Agent]
-        C17[Validator Agent]
-        C18[Evaluator Agent]
-        C19[Population]
-        C20[Metrics]
-        C21[Enterprise Harness Patterns]
-    end
-
-    Context --> C14
-    C12 --> C13
-    C13 --> C14
-    C14 --> C15
-
-    C5 --> C15
-    C6 --> C15
-    C7 --> C15
-    C8 --> C15
-    C9 --> C15
-    C10 --> C15
-    C11 --> C15
-
-    C15 --> C16
-    C16 --> C17
-    C17 --> C18
-
-    C15 --> C19
-    C15 --> C20
-    C18 --> C21
+    RI[Part II: Repository Intelligence] --> D[Chapter 15: Developer Agent]
+    H[Chapters 12–13: Harness] --> D
+    L[Chapter 14: Lead Agent] -->|Bounded task| D
+    D --> G[Deterministic gates]
+    G --> R[Chapter 16: Reviewer]
+    R --> V[Chapter 17: Validator]
+    V --> E[Chapter 18: Evaluator]
+    D --> M[Later: Metrics and governed learning]
 ```
 
-## Inputs from Part II — Repository Intelligence
+### Inputs from Part II — Repository Intelligence
 
 | Chapter | Concept | How the Developer Agent Uses It |
 |---|---|---|
@@ -1691,7 +1305,7 @@ flowchart LR
 | Chapter 10 | Steering Notes | Applies temporary release priorities and constraints |
 | Chapter 11 | Knowledge Sources | Consults ADRs, specifications, schemas, and trusted engineering evidence |
 
-## Harness and Lead Agent Context
+### Harness and Lead Agent Context
 
 | Chapter | Responsibility | Connection to Developer Agent |
 |---|---|---|
@@ -1703,7 +1317,7 @@ The Lead Agent determines **what work should be performed**.
 
 The Developer Agent determines **how to implement that assigned work safely**.
 
-## Deterministic Gates and Automated Guardrails
+### Deterministic Gates and Automated Guardrails
 
 The Developer Agent performs local verification. The Harness independently evaluates machine-verifiable constraints.
 
@@ -1727,7 +1341,7 @@ Contract Compatibility
 
 Hooks can block protected-file modifications or trigger validation automatically.
 
-## Downstream Role Handoffs
+### Downstream Role Handoffs
 
 | Role | Primary Question | Developer Agent Contribution |
 |---|---|---|
@@ -1739,7 +1353,7 @@ The Developer Agent creates evidence.
 
 It does not decide that its own evidence is sufficient.
 
-## Feedback into Population, Metrics, and Enterprise Patterns
+### Feedback into Population, Metrics, and Enterprise Patterns
 
 Developer Agent executions produce:
 
@@ -1756,7 +1370,7 @@ These can support Population, Metrics, and later Enterprise Harness Patterns.
 
 They should not automatically become new enterprise standards without governance.
 
-## Forward Cross-References to Governance
+### Forward Cross-References to Governance
 
 Later governance chapters control:
 
@@ -1778,7 +1392,7 @@ governance changes
 production deployment
 ```
 
-## Forward Cross-References to the Self-Learning Harness
+### Forward Cross-References to the Self-Learning Harness
 
 Developer Agent evidence can feed controlled learning:
 
@@ -1798,7 +1412,7 @@ The Harness may learn from Developer Agent behavior.
 
 It must not silently rewrite engineering standards.
 
-## Alpha Car Detailing Cross-Reference Example
+### Alpha Car Detailing Cross-Reference Example
 
 | Concept | Chapter | Application to Fleet Booking |
 |---|---|---|
@@ -1822,11 +1436,9 @@ It must not silently rewrite engineering standards.
 
 Chapter 15 is therefore a convergence point between context, execution, and control.
 
----
+## Further Reading
 
-# Further Reading
-
-## Anthropic — Claude Code
+### Anthropic — Claude Code
 
 Study Claude Code documentation for:
 
@@ -1837,10 +1449,11 @@ Study Claude Code documentation for:
 - automated operation;
 - security controls.
 
-- [Claude Code Documentation](https://docs.anthropic.com/en/docs/claude-code/getting-started)
-- [Claude Code CLI Usage](https://docs.anthropic.com/en/docs/claude-code/cli-usage)
+- [Claude Code Documentation](https://code.claude.com/docs/en/quickstart)
+- [Claude Code Permissions](https://code.claude.com/docs/en/permissions)
+- [Project Memory and `CLAUDE.md`](https://code.claude.com/docs/en/memory)
 
-## GitHub — GitHub Copilot
+### GitHub — GitHub Copilot
 
 Useful topics include:
 
@@ -1852,8 +1465,9 @@ Useful topics include:
 
 - [GitHub Copilot Repository Custom Instructions](https://docs.github.com/en/copilot/how-tos/copilot-on-github/customize-copilot/add-custom-instructions/add-repository-instructions)
 - [GitHub Copilot Code Review](https://docs.github.com/en/copilot/how-tos/use-copilot-agents/request-a-code-review/use-code-review)
+- [GitHub Copilot Agent Skills](https://docs.github.com/en/copilot/how-tos/copilot-on-github/customize-copilot/customize-cloud-agent/add-skills)
 
-## OpenAI — Codex
+### OpenAI — Codex
 
 Useful topics include:
 
@@ -1866,8 +1480,9 @@ Useful topics include:
 
 - [Running Codex Safely at OpenAI](https://openai.com/index/running-codex-safely/)
 - [Building a Safe Codex Sandbox on Windows](https://openai.com/index/building-codex-windows-sandbox/)
+- [Codex Agent Approvals and Security](https://learn.chatgpt.com/docs/agent-approvals-security)
 
-## Microsoft — .NET Architecture Guidance
+### Microsoft — .NET Architecture Guidance
 
 Useful topics include:
 
@@ -1880,7 +1495,7 @@ Useful topics include:
 
 - [Microsoft .NET Architecture Guidance](https://learn.microsoft.com/dotnet/architecture/)
 
-## Martin Fowler — Patterns of Enterprise Application Architecture
+### Martin Fowler — Patterns of Enterprise Application Architecture
 
 Relevant concepts include:
 
@@ -1891,7 +1506,7 @@ Relevant concepts include:
 - Domain Model;
 - transaction boundaries.
 
-## Eric Evans — Domain-Driven Design
+### Eric Evans — Domain-Driven Design
 
 Useful topics include:
 
@@ -1902,7 +1517,7 @@ Useful topics include:
 - bounded contexts;
 - ubiquitous language.
 
-## Sam Newman — Building Microservices
+### Sam Newman — Building Microservices
 
 Useful topics include:
 
@@ -1912,7 +1527,7 @@ Useful topics include:
 - distributed contracts;
 - inter-service communication.
 
-## Chris Richardson — Microservices Patterns
+### Chris Richardson — Microservices Patterns
 
 Relevant topics include:
 
@@ -1923,19 +1538,19 @@ Relevant topics include:
 - event-driven communication;
 - idempotent processing.
 
-## OWASP — Application Security Guidance
+### OWASP — Application Security Guidance
 
 Use OWASP guidance when designing Developer Agent security requirements and deterministic security gates.
 
 - [OWASP Top 10](https://owasp.org/www-project-top-ten/)
 
-## OpenTelemetry
+### OpenTelemetry
 
 Use OpenTelemetry for vendor-neutral tracing, metrics, logs, and context propagation.
 
 - [OpenTelemetry Documentation](https://opentelemetry.io/docs/)
 
-## Recommended Reading Path
+### Recommended Reading Path
 
 ```text
 1. Repository Instructions
@@ -1958,7 +1573,3 @@ Use OpenTelemetry for vendor-neutral tracing, metrics, logs, and context propaga
 Platform documentation explains what an Agent **can** do.
 
 Architecture, security, testing, and governance determine what the Developer Agent **should be allowed** to do.
-
----
-
-**Chapter 15 status: Complete**

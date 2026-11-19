@@ -1,12 +1,12 @@
-# **Chapter 28 — Enterprise Workflows**
+# Chapter 28 — Enterprise Workflows
 
 **Part IV — Claude Engineering**
 
 *Enterprise AI Engineering Handbook*
 
-## **1. Story-driven Opening**
+## 1. Story-driven Opening
 
-### **From Individual Agent Capabilities to Enterprise Engineering Workflows**
+### From Individual Agent Capabilities to Enterprise Engineering Workflows
 
 The engineering team at Alpha Car Detailing had reached an important milestone in its adoption of AI-assisted software development.
 
@@ -69,7 +69,7 @@ Most importantly, who was authorized to decide that the change could proceed?
 
 These questions reveal the difference between **AI-assisted code generation** and **enterprise AI engineering**.
 
-### **1.1 The First Attempt: A Single Agent Interaction**
+### 1.1 The First Attempt: A Single Agent Interaction
 
 During an early development experiment, the Alpha Car Detailing team used a straightforward approach.
 
@@ -97,7 +97,7 @@ The prompt described what needed to be implemented. It did not establish a compl
 
 The team had treated an Agent interaction as though it were a complete delivery workflow.
 
-### **1.2 The Second Attempt: Coordinated Engineering**
+### 1.2 The Second Attempt: Coordinated Engineering
 
 For the next iteration, Alpha Car Detailing used a controlled workflow.
 
@@ -133,7 +133,7 @@ The difference was their coordination.
 
 **The organization had moved from Agent execution to workflow-controlled engineering.**
 
-### **1.3 The Engineering Workflow as a Controlled Process**
+### 1.3 The Engineering Workflow as a Controlled Process
 
 The essential distinction can be expressed as follows:
 
@@ -172,7 +172,7 @@ A completed enterprise workflow is an accountable engineering outcome supported 
 
 The remainder of this chapter develops an architecture for combining Claude Code capabilities into such workflows. Although Claude Code serves as the primary implementation environment, the workflow principles apply equally to other coding Agents and enterprise development platforms.
 
-## **2. Learning Objectives**
+## 2. Learning Objectives
 
 After completing this chapter, readers should be able to:
 
@@ -191,9 +191,9 @@ After completing this chapter, readers should be able to:
 
 By the end of the chapter, readers should understand how to assemble the capabilities presented throughout Parts II, III, and IV into a coherent enterprise engineering operating model.
 
-## **3. Background**
+## 3. Background
 
-### **3.1 Why Individual Capabilities Are Not Enough**
+### 3.1 Why Individual Capabilities Are Not Enough
 
 Earlier chapters introduced the foundational elements of enterprise AI engineering.
 
@@ -229,7 +229,7 @@ These capabilities must be connected by a process that determines when each is u
 
 That process is the enterprise engineering workflow.
 
-### **3.2 From Prompt-Centric Execution to Workflow-Centric Execution**
+### 3.2 From Prompt-Centric Execution to Workflow-Centric Execution
 
 Prompt-centric execution makes the prompt the primary container of engineering intent and process.
 
@@ -277,7 +277,7 @@ It also makes each control independently maintainable.
 
 For example, the organization can strengthen its security scanning policy without rewriting its feature-development prompts. It can update a reusable API Skill without modifying its approval architecture.
 
-### **3.3 Workflow Versus Harness**
+### 3.3 Workflow Versus Harness
 
 The terms *workflow* and *Harness* are related but are not interchangeable.
 
@@ -312,7 +312,7 @@ An organization should not build a completely independent execution system for e
 
 Instead, it should maintain a reusable orchestration foundation supporting governed workflow templates.
 
-### **3.4 The Difference Between Automation and Autonomy**
+### 3.4 The Difference Between Automation and Autonomy
 
 Automation executes predefined procedures.
 
@@ -350,7 +350,7 @@ A low-risk change may qualify for an organization-approved automated promotion p
 
 In either case, the policy must exist independently of the Agent's preference.
 
-### **3.5 Workflow Reliability as an Architectural Property**
+### 3.5 Workflow Reliability as an Architectural Property
 
 Reliable workflows require more than capable models.
 
@@ -376,7 +376,7 @@ These include:
 
 These properties should be designed into the Harness rather than left to individual prompts.
 
-### **3.6 The Practical Meaning of Enterprise Readiness**
+### 3.6 The Practical Meaning of Enterprise Readiness
 
 An engineering workflow is not enterprise-ready merely because it invokes multiple Agents.
 
@@ -398,9 +398,9 @@ The workflow may retry within policy, escalate, or terminate as blocked.
 
 It must not convert missing evidence into success.
 
-## **4. Concepts**
+## 4. Concepts
 
-### **4.1 Enterprise Workflow Definition**
+### 4.1 Enterprise Workflow Definition
 
 An enterprise engineering workflow is a governed sequence of activities, decisions, and evidence-producing operations that transforms an authorized engineering goal into a verifiable outcome.
 
@@ -422,24 +422,26 @@ These can be legitimate outcomes when the workflow's completion conditions have 
 
 A useful abstraction is:
 
-\\[ W = (G, C, P, S, A, T, E, D) \\]
+$$
+W = (G, C, P, S, A, T, E, D)
+$$
 
 Where:
 
 | Symbol  | Meaning                                             |
 | ------- | --------------------------------------------------- |
-| \\(G\\) | Goal and acceptance criteria                        |
-| \\(C\\) | Context, instructions, and engineering constraints  |
-| \\(P\\) | Execution plan and workflow policy                  |
-| \\(S\\) | State and checkpoints                               |
-| \\(A\\) | Participating Agents and accountable authorities    |
-| \\(T\\) | Tool operations and permitted transitions           |
-| \\(E\\) | Technical, review, and business evaluation evidence |
-| \\(D\\) | Final decision and output disposition               |
+| `G` | Goal and acceptance criteria                        |
+| `C` | Context, instructions, and engineering constraints  |
+| `P` | Execution plan and workflow policy                  |
+| `S` | State and checkpoints                               |
+| `A` | Participating Agents and accountable authorities    |
+| `T` | Tool operations and permitted transitions           |
+| `E` | Technical, review, and business evaluation evidence |
+| `D` | Final decision and output disposition               |
 
 This model emphasizes that workflow execution cannot be reduced to the prompt or the collection of generated files.
 
-### **4.2 Workflow Inputs**
+### 4.2 Workflow Inputs
 
 Workflow inputs must establish enough information to begin controlled execution.
 
@@ -469,7 +471,7 @@ If the goal is ambiguous or the scope does not permit a necessary change, the Le
 
 It should not silently broaden the scope to make implementation convenient.
 
-### **4.3 Workflow Outputs**
+### 4.3 Workflow Outputs
 
 A workflow output is not simply the final response produced by Claude Code.
 
@@ -495,7 +497,7 @@ An Agent may successfully implement a feature that is rejected by human review. 
 
 These are different outcomes, and the workflow record must preserve that distinction.
 
-### **4.4 Workflow Templates and Workflow Instances**
+### 4.4 Workflow Templates and Workflow Instances
 
 A **workflow template** describes the reusable process for a category of engineering work.
 
@@ -503,7 +505,7 @@ A **workflow instance** represents one execution of that template against a spec
 
 For example:
 
-```
+```text
 Workflow Template
   feature-development/v1.0
           |
@@ -525,7 +527,7 @@ This distinction enables standardization without losing task-specific traceabili
 
 A workflow instance should record the exact template version used during execution. Updating the template must not retroactively change the obligations or results of an already completed run.
 
-### **4.5 Repository Intelligence as the Context Foundation**
+### 4.5 Repository Intelligence as the Context Foundation
 
 Enterprise workflows should begin by establishing what the repository actually contains.
 
@@ -562,7 +564,7 @@ For example:
 
 Both are valuable, but they have different evidentiary status.
 
-### **4.6 CLAUDE.md and Persistent Instructions**
+### 4.6 CLAUDE.md and Persistent Instructions
 
 `CLAUDE.md` provides Claude Code with persistent project instructions.
 
@@ -591,7 +593,7 @@ Furthermore, a workflow must not permit a Developer Agent to modify `CLAUDE.md` 
 
 Changes to persistent instructions constitute governance changes and should follow their own review and approval process.
 
-### **4.7 Skills and Commands**
+### 4.7 Skills and Commands
 
 Skills and commands solve different workflow problems.
 
@@ -609,7 +611,7 @@ For example, Alpha Car Detailing might provide Skills for:
 
 A developer might initiate a feature workflow through a project command such as:
 
-```
+```text
 /workflow-feature ACD-FLEET-028
 ```
 
@@ -627,7 +629,7 @@ Task-specific intent belongs in the goal and prompt.
 
 This separation makes the system easier to maintain.
 
-### **4.8 Planning Mode and the Lead Agent**
+### 4.8 Planning Mode and the Lead Agent
 
 Planning Mode and the Lead Agent contribute to planning but are not interchangeable.
 
@@ -656,7 +658,7 @@ An AI-generated plan is a proposal until the applicable workflow policy accepts 
 
 For high-risk changes, the plan may require human approval before any code modification begins.
 
-### **4.9 Tool Calling and Execution Boundaries**
+### 4.9 Tool Calling and Execution Boundaries
 
 Claude Code interacts with a repository through tools.
 
@@ -688,7 +690,7 @@ Where possible, tool operations should execute with least-privilege credentials 
 
 For high-risk operations, the tool runner should require explicit authorization or refuse execution.
 
-### **4.10 Scratchpad and Run Workspace**
+### 4.10 Scratchpad and Run Workspace
 
 Complex engineering workflows need temporary working state.
 
@@ -728,7 +730,7 @@ Such promotion requires the appropriate review and ownership process.
 
 **Temporary state supports execution; persistent knowledge informs future execution. The two must not be silently merged.**
 
-### **4.11 Agent Roles and Handoff Contracts**
+### 4.11 Agent Roles and Handoff Contracts
 
 Enterprise workflows benefit from separating responsibilities across logical Agent roles.
 
@@ -750,17 +752,18 @@ A more sophisticated Harness may use isolated Agent workers, separate execution 
 
 The architectural requirement is that role-specific outputs remain traceable and that the relevant independence controls are enforced.
 
-#### **Handoffs must be explicit**
+#### Handoffs must be explicit
 
 A weak handoff says:
 
 > Implementation complete. Please review.
 
-A stronger handoff includes:
+A stronger review handoff, assembled by the Harness from the Developer report and independently produced gate results, includes:
 
-```
+```yaml
 handoff:
-  from: developer
+  from: harness
+  source_role: developer
   to: reviewer
   goal_id: ACD-FLEET-028
   run_id: ACD-2026-028-001
@@ -796,7 +799,7 @@ A handoff without a revision identifier can produce serious errors. The Reviewer
 
 The Harness must prevent such inconsistencies from being treated as one validated candidate.
 
-### **4.12 Deterministic Gates**
+### 4.12 Deterministic Gates
 
 A deterministic gate is an independently defined check whose outcome is determined by objective, repeatable conditions rather than by an Agent's unsupported judgment.
 
@@ -816,7 +819,7 @@ The result of a gate should contain more than a Boolean value.
 
 A useful gate record includes:
 
-```
+```yaml
 gate:
   id: booking-integration-tests
   version: "1.0"
@@ -852,7 +855,7 @@ A reliable gate must therefore define its environment and classify outcomes such
 
 The Harness should not classify an infrastructure failure as a successful validation.
 
-### **4.13 Reviewer, Validator, and Evaluator**
+### 4.13 Reviewer, Validator, and Evaluator
 
 The Reviewer, Validator, and Evaluator roles assess different dimensions of quality.
 
@@ -884,7 +887,7 @@ A positive Evaluator recommendation does not override a failed mandatory securit
 
 A favorable Reviewer report does not authorize production deployment.
 
-### **4.14 Human Approval**
+### 4.14 Human Approval
 
 Human approval is an accountable decision made at a defined workflow boundary.
 
@@ -914,7 +917,7 @@ Approval policies should be based on risk, scope, and organizational responsibil
 
 No Agent should be able to grant itself an approval reserved for a human authority.
 
-### **4.15 Metrics and Audit Evidence**
+### 4.15 Metrics and Audit Evidence
 
 Workflow metrics provide visibility into execution efficiency and quality.
 
@@ -948,13 +951,13 @@ It should also avoid using productivity metrics in ways that encourage unsafe sh
 
 For example, minimizing workflow duration is not a valid reason to omit required integration tests.
 
-### **4.16 The Workflow Completion Contract**
+### 4.16 The Workflow Completion Contract
 
 Every workflow must define completion explicitly.
 
 For a feature-development workflow, a completion contract might require:
 
-```
+```yaml
 completion:
   required:
     - implementation_committed
@@ -999,9 +1002,9 @@ An implementation may exist in all six circumstances.
 
 Only the first represents successful workflow completion.
 
-## **5. Architecture Discussion**
+## 5. Architecture Discussion
 
-### **5.1 Reference Enterprise Workflow Architecture**
+### 5.1 Reference Enterprise Workflow Architecture
 
 The recommended architecture separates engineering intent, context, orchestration, execution, validation, and governance.
 
@@ -1045,7 +1048,7 @@ Both implementations can follow the same engineering principles.
 
 The deciding factor is whether the architecture reliably enforces its defined controls.
 
-### **5.2 Control Plane and Execution Plane**
+### 5.2 Control Plane and Execution Plane
 
 A particularly important architectural distinction is the separation between the control plane and the execution plane.
 
@@ -1083,7 +1086,7 @@ The Agent may recommend that a particular gate is not applicable.
 
 The control plane must determine whether the policy permits its omission.
 
-### **5.3 Workflow Admission**
+### 5.3 Workflow Admission
 
 A workflow should pass an admission stage before execution begins.
 
@@ -1107,7 +1110,7 @@ For Alpha Car Detailing, a request to modify corporate booking authorization wit
 
 The Lead Agent can recommend options, but it should not silently establish a new enterprise-wide identity policy.
 
-### **5.4 Planning as a Controlled Checkpoint**
+### 5.4 Planning as a Controlled Checkpoint
 
 After admission, the workflow enters planning.
 
@@ -1136,7 +1139,7 @@ However, material plan changes should trigger controlled replanning.
 
 The Harness must distinguish between ordinary implementation adjustments and changes that alter scope, risk, or approval requirements.
 
-### **5.5 Execution Isolation**
+### 5.5 Execution Isolation
 
 Agent execution should occur in an isolated workspace wherever practical.
 
@@ -1154,7 +1157,7 @@ Each execution environment should be associated with:
 
 For example:
 
-```
+```text
 harness/
   runs/
     ACD-2026-028-001/
@@ -1179,7 +1182,7 @@ The workspace should not automatically become part of the application's source r
 
 Sensitive logs and transient intermediate files must be protected by appropriate access controls and retention rules.
 
-### **5.6 State Management and Checkpoints**
+### 5.6 State Management and Checkpoints
 
 Workflow state must be explicit and durable.
 
@@ -1214,7 +1217,7 @@ For instance, a deterministic test may finish successfully, but the workflow sho
 
 A practical checkpoint contains the current state, candidate revision, execution attempt, completed operations, evidence references, and next permitted action.
 
-```
+```json
 {
   "runId": "ACD-2026-028-001",
   "workflow": "feature-development/v1.0",
@@ -1239,7 +1242,7 @@ Checkpoint storage must support atomic updates or an equivalent concurrency-cont
 
 If multiple workers may update the same workflow instance, the orchestrator should use a version number, compare-and-swap operation, lease, or other appropriate concurrency control to avoid conflicting transitions.
 
-### **5.7 Artifact and Evidence Integrity**
+### 5.7 Artifact and Evidence Integrity
 
 Enterprise workflows need to know which evidence belongs to which implementation.
 
@@ -1276,7 +1279,7 @@ A mature evidence manifest should record:
 
 For regulated or high-assurance environments, the evidence store may additionally require immutability protections, cryptographic signatures, or trusted attestations.
 
-### **5.8 Failure Classification**
+### 5.8 Failure Classification
 
 Not all workflow failures should be handled in the same way.
 
@@ -1306,7 +1309,7 @@ A generic instruction to *retry until successful* is unsuitable for enterprise w
 
 Retries should be selected according to the failure classification.
 
-### **5.9 Retry and Recovery Architecture**
+### 5.9 Retry and Recovery Architecture
 
 Retry policies should define:
 
@@ -1332,7 +1335,7 @@ Otherwise, recovering a workflow after a crash could repeat the operation.
 
 **Workflow retry safety is an engineering property, not a prompt instruction.**
 
-### **5.10 Approval and Promotion Architecture**
+### 5.10 Approval and Promotion Architecture
 
 The workflow should distinguish approval from delivery.
 
@@ -1354,7 +1357,7 @@ A workflow must not treat pull-request creation, merge, and production deploymen
 
 The final output should reflect the exact stage authorized by the workflow.
 
-### **5.11 Security and Trust Boundaries**
+### 5.11 Security and Trust Boundaries
 
 An enterprise workflow processes information from sources with different levels of trust.
 
@@ -1390,7 +1393,7 @@ Production logs used during incident investigation may contain customer identifi
 
 The workflow must enforce appropriate access, redaction, retention, and disclosure policies.
 
-### **5.12 Workflow Governance**
+### 5.12 Workflow Governance
 
 Workflow governance determines who may define, modify, approve, and execute workflow policies.
 
@@ -1419,17 +1422,47 @@ This principle also applies to self-learning Harnesses.
 
 Learning from recurring validation failures may improve future engineering practices, but the learning mechanism must not automatically weaken required gates or modify protected standards without authorization.
 
-## **6. Professional Diagrams**
+## 6. Professional Diagrams
 
 The following diagrams describe the reference enterprise workflow, its execution controls, and the collaboration between its principal components.
 
 They are logical architecture diagrams. Actual implementations may use scripts, services, CI/CD pipelines, or dedicated Agent execution environments.
 
-### **6.1 End-to-End Enterprise Workflow**
+### 6.1 End-to-End Enterprise Workflow
 
-FIGURE 28.1 — REFERENCE WORKFLOW
+**Figure 28.1 — Reference Workflow**
 
-\#chatgpt-mermaid-\_r_1hme\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(237, 237, 237);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_1hme\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_1hme\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_1hme\_ .error-icon{fill:rgb(48, 48, 48);}#chatgpt-mermaid-\_r_1hme\_ .error-text{fill:rgb(237, 237, 237);stroke:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1hme\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_1hme\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_1hme\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_1hme\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_1hme\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_1hme\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_1hme\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1hme\_ .marker.cross{stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1hme\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_1hme\_ p{margin:0;}#chatgpt-mermaid-\_r_1hme\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1hme\_ .cluster-label text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1hme\_ .cluster-label span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1hme\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_1hme\_ .label text,#chatgpt-mermaid-\_r_1hme\_ span{fill:rgb(237, 237, 237);color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1hme\_ .node rect,#chatgpt-mermaid-\_r_1hme\_ .node circle,#chatgpt-mermaid-\_r_1hme\_ .node ellipse,#chatgpt-mermaid-\_r_1hme\_ .node polygon,#chatgpt-mermaid-\_r_1hme\_ .node path{fill:rgb(9, 23, 44);stroke:rgb(31, 78, 148);stroke-width:1px;}#chatgpt-mermaid-\_r_1hme\_ .rough-node .label text,#chatgpt-mermaid-\_r_1hme\_ .node .label text,#chatgpt-mermaid-\_r_1hme\_ .image-shape .label,#chatgpt-mermaid-\_r_1hme\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_1hme\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_1hme\_ .rough-node .label,#chatgpt-mermaid-\_r_1hme\_ .node .label,#chatgpt-mermaid-\_r_1hme\_ .image-shape .label,#chatgpt-mermaid-\_r_1hme\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_1hme\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_1hme\_ .root .anchor path{fill:rgb(175, 175, 175)!important;stroke-width:0;stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1hme\_ .arrowheadPath{fill:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1hme\_ .edgePath .path{stroke:rgb(175, 175, 175);stroke-width:1px;}#chatgpt-mermaid-\_r_1hme\_ .flowchart-link{stroke:rgb(175, 175, 175);fill:none;}#chatgpt-mermaid-\_r_1hme\_ .edgeLabel{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_1hme\_ .edgeLabel p{background-color:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1hme\_ .edgeLabel rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1hme\_ .labelBkg{background-color:rgba(0, 0, 0, 0.5);}#chatgpt-mermaid-\_r_1hme\_ .cluster rect{fill:rgb(48, 48, 48);stroke:rgba(255, 255, 255, 0.15);stroke-width:1px;}#chatgpt-mermaid-\_r_1hme\_ .cluster text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1hme\_ .cluster span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1hme\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(48, 48, 48);border:1px solid rgba(255, 255, 255, 0.15);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_1hme\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1hme\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_1hme\_ .icon-shape,#chatgpt-mermaid-\_r_1hme\_ .image-shape{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_1hme\_ .icon-shape p,#chatgpt-mermaid-\_r_1hme\_ .image-shape p{background-color:rgb(0, 0, 0);padding:2px;}#chatgpt-mermaid-\_r_1hme\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_1hme\_ .image-shape .label rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1hme\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_1hme\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_1hme\_ .node .neo-node{stroke:rgb(31, 78, 148);}#chatgpt-mermaid-\_r_1hme\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_1hme\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_1hme\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_1hme\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1hme\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_1hme\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_1hme\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_1hme\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1hme\_ [data-look="neo"].node .neo-line path{stroke:rgb(31, 78, 148);filter:none;}#chatgpt-mermaid-\_r_1hme\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_1hme\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1hme\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_1hme\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_1hme\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1hme\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_1hme\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1hme\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_1hme\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_1hme\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_1hme\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_1hme\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-width:1px;}#chatgpt-mermaid-\_r_1hme\_ .node rect,#chatgpt-mermaid-\_r_1hme\_ .node circle,#chatgpt-mermaid-\_r_1hme\_ .node ellipse,#chatgpt-mermaid-\_r_1hme\_ .node polygon,#chatgpt-mermaid-\_r_1hme\_ .node path{fill:rgb(0, 40, 77);stroke:rgba(255, 255, 255, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_1hme\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_1hme\_ .mermaid-decision .label-container{fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_1hme\_ .edgePaths .flowchart-link{stroke:rgb(175, 175, 175);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_1hme\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1hme\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}#chatgpt-mermaid-\_r_1hme\_ .activity rect{fill:rgb(232, 241, 251)!important;stroke:rgb(65, 108, 155)!important;color:rgb(23, 52, 84)!important;}#chatgpt-mermaid-\_r_1hme\_ .activity polygon{fill:rgb(232, 241, 251)!important;stroke:rgb(65, 108, 155)!important;color:rgb(23, 52, 84)!important;}#chatgpt-mermaid-\_r_1hme\_ .activity ellipse{fill:rgb(232, 241, 251)!important;stroke:rgb(65, 108, 155)!important;color:rgb(23, 52, 84)!important;}#chatgpt-mermaid-\_r_1hme\_ .activity circle{fill:rgb(232, 241, 251)!important;stroke:rgb(65, 108, 155)!important;color:rgb(23, 52, 84)!important;}#chatgpt-mermaid-\_r_1hme\_ .activity path{fill:rgb(232, 241, 251)!important;stroke:rgb(65, 108, 155)!important;color:rgb(23, 52, 84)!important;}#chatgpt-mermaid-\_r_1hme\_ .activity tspan{fill:rgb(23, 52, 84)!important;}#chatgpt-mermaid-\_r_1hme\_ .decision rect{fill:rgb(255, 240, 214)!important;stroke:rgb(189, 135, 48)!important;color:rgb(112, 73, 9)!important;}#chatgpt-mermaid-\_r_1hme\_ .decision polygon{fill:rgb(255, 240, 214)!important;stroke:rgb(189, 135, 48)!important;color:rgb(112, 73, 9)!important;}#chatgpt-mermaid-\_r_1hme\_ .decision ellipse{fill:rgb(255, 240, 214)!important;stroke:rgb(189, 135, 48)!important;color:rgb(112, 73, 9)!important;}#chatgpt-mermaid-\_r_1hme\_ .decision circle{fill:rgb(255, 240, 214)!important;stroke:rgb(189, 135, 48)!important;color:rgb(112, 73, 9)!important;}#chatgpt-mermaid-\_r_1hme\_ .decision path{fill:rgb(255, 240, 214)!important;stroke:rgb(189, 135, 48)!important;color:rgb(112, 73, 9)!important;}#chatgpt-mermaid-\_r_1hme\_ .decision tspan{fill:rgb(112, 73, 9)!important;}#chatgpt-mermaid-\_r_1hme\_ .terminal rect{fill:rgb(232, 243, 233)!important;stroke:rgb(67, 133, 82)!important;color:rgb(36, 88, 46)!important;}#chatgpt-mermaid-\_r_1hme\_ .terminal polygon{fill:rgb(232, 243, 233)!important;stroke:rgb(67, 133, 82)!important;color:rgb(36, 88, 46)!important;}#chatgpt-mermaid-\_r_1hme\_ .terminal ellipse{fill:rgb(232, 243, 233)!important;stroke:rgb(67, 133, 82)!important;color:rgb(36, 88, 46)!important;}#chatgpt-mermaid-\_r_1hme\_ .terminal circle{fill:rgb(232, 243, 233)!important;stroke:rgb(67, 133, 82)!important;color:rgb(36, 88, 46)!important;}#chatgpt-mermaid-\_r_1hme\_ .terminal path{fill:rgb(232, 243, 233)!important;stroke:rgb(67, 133, 82)!important;color:rgb(36, 88, 46)!important;}#chatgpt-mermaid-\_r_1hme\_ .terminal tspan{fill:rgb(36, 88, 46)!important;}#chatgpt-mermaid-\_r_1hme\_ .exception rect{fill:rgb(251, 233, 231)!important;stroke:rgb(183, 91, 82)!important;color:rgb(132, 52, 46)!important;}#chatgpt-mermaid-\_r_1hme\_ .exception polygon{fill:rgb(251, 233, 231)!important;stroke:rgb(183, 91, 82)!important;color:rgb(132, 52, 46)!important;}#chatgpt-mermaid-\_r_1hme\_ .exception ellipse{fill:rgb(251, 233, 231)!important;stroke:rgb(183, 91, 82)!important;color:rgb(132, 52, 46)!important;}#chatgpt-mermaid-\_r_1hme\_ .exception circle{fill:rgb(251, 233, 231)!important;stroke:rgb(183, 91, 82)!important;color:rgb(132, 52, 46)!important;}#chatgpt-mermaid-\_r_1hme\_ .exception path{fill:rgb(251, 233, 231)!important;stroke:rgb(183, 91, 82)!important;color:rgb(132, 52, 46)!important;}#chatgpt-mermaid-\_r_1hme\_ .exception tspan{fill:rgb(132, 52, 46)!important;}Goal / PromptWorkflow AdmissionRepository DiscoveryInstructions, Skillsand Steering NotesPlanning ModeLead AgentPlan Approved?Revise Plan or EscalateDeveloper AgentControlled Tool ExecutionDeterministic GatesMandatory Gates Pass?Classify FailureRecovery Permitted?Blocked / Failed / EscalatedReviewer AgentBlocking Findings?Validator AgentEvidence Accepted?Evaluator AgentGoal Satisfied?Human ApprovalApproved?Rejected / ReturnedPull Request / AuthorizedOutputEvidence Archiveand Workflow CompletionNoYesNoYesNoYesYesNoNoYesNoYesNoYes
+```mermaid
+flowchart TD
+    A[Authorized Goal] --> B[Workflow Admission]
+    B --> C[Repository Discovery]
+    C --> D[Instructions, Skills and Steering Notes]
+    D --> E[Planning Mode and Lead Agent]
+    E --> F{Plan approved?}
+    F -->|No| G[Revise or Escalate]
+    G --> E
+    F -->|Yes| H[Developer Agent and Controlled Tools]
+    H --> I[Deterministic Gates]
+    I --> J{Required gates pass?}
+    J -->|No| K[Classify failure and apply recovery policy]
+    K --> L{Retry authorized?}
+    L -->|Yes| H
+    L -->|No| M[Blocked, Failed or Escalated]
+    J -->|Yes| N[Reviewer Agent]
+    N --> O{Blocking findings?}
+    O -->|Yes| K
+    O -->|No| P[Validator Agent]
+    P --> Q{Evidence accepted?}
+    Q -->|No| K
+    Q -->|Yes| R[Evaluator Agent]
+    R --> S{Goal satisfied?}
+    S -->|No| K
+    S -->|Yes| T[Human Approval]
+    T --> U{Approved?}
+    U -->|No| V[Rejected or Returned]
+    U -->|Yes| W[Authorized Output]
+    W --> X[Evidence Archive and Completion]
+```
 
 The diagram emphasizes three important properties.
 
@@ -1441,21 +1474,86 @@ Third, the workflow distinguishes between successful technical execution and fin
 
 The diagram presents Reviewer, Validator, and Evaluator as sequential logical stages for clarity. A Harness may schedule certain assessments concurrently when their dependencies permit it. Regardless of scheduling, mandatory checks must be completed and accepted before an authorized promotion.
 
-### **6.2 Control Plane and Execution Plane**
+### 6.2 Control Plane and Execution Plane
 
-FIGURE 28.2 — CONTROL AND EXECUTION BOUNDARIES
+**Figure 28.2 — Control and Execution Boundaries**
 
-\#chatgpt-mermaid-\_r_1hml\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(237, 237, 237);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_1hml\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_1hml\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_1hml\_ .error-icon{fill:rgb(48, 48, 48);}#chatgpt-mermaid-\_r_1hml\_ .error-text{fill:rgb(237, 237, 237);stroke:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1hml\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_1hml\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_1hml\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_1hml\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_1hml\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_1hml\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_1hml\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1hml\_ .marker.cross{stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1hml\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_1hml\_ p{margin:0;}#chatgpt-mermaid-\_r_1hml\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1hml\_ .cluster-label text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1hml\_ .cluster-label span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1hml\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_1hml\_ .label text,#chatgpt-mermaid-\_r_1hml\_ span{fill:rgb(237, 237, 237);color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1hml\_ .node rect,#chatgpt-mermaid-\_r_1hml\_ .node circle,#chatgpt-mermaid-\_r_1hml\_ .node ellipse,#chatgpt-mermaid-\_r_1hml\_ .node polygon,#chatgpt-mermaid-\_r_1hml\_ .node path{fill:rgb(9, 23, 44);stroke:rgb(31, 78, 148);stroke-width:1px;}#chatgpt-mermaid-\_r_1hml\_ .rough-node .label text,#chatgpt-mermaid-\_r_1hml\_ .node .label text,#chatgpt-mermaid-\_r_1hml\_ .image-shape .label,#chatgpt-mermaid-\_r_1hml\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_1hml\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_1hml\_ .rough-node .label,#chatgpt-mermaid-\_r_1hml\_ .node .label,#chatgpt-mermaid-\_r_1hml\_ .image-shape .label,#chatgpt-mermaid-\_r_1hml\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_1hml\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_1hml\_ .root .anchor path{fill:rgb(175, 175, 175)!important;stroke-width:0;stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1hml\_ .arrowheadPath{fill:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1hml\_ .edgePath .path{stroke:rgb(175, 175, 175);stroke-width:1px;}#chatgpt-mermaid-\_r_1hml\_ .flowchart-link{stroke:rgb(175, 175, 175);fill:none;}#chatgpt-mermaid-\_r_1hml\_ .edgeLabel{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_1hml\_ .edgeLabel p{background-color:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1hml\_ .edgeLabel rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1hml\_ .labelBkg{background-color:rgba(0, 0, 0, 0.5);}#chatgpt-mermaid-\_r_1hml\_ .cluster rect{fill:rgb(48, 48, 48);stroke:rgba(255, 255, 255, 0.15);stroke-width:1px;}#chatgpt-mermaid-\_r_1hml\_ .cluster text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1hml\_ .cluster span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1hml\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(48, 48, 48);border:1px solid rgba(255, 255, 255, 0.15);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_1hml\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1hml\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_1hml\_ .icon-shape,#chatgpt-mermaid-\_r_1hml\_ .image-shape{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_1hml\_ .icon-shape p,#chatgpt-mermaid-\_r_1hml\_ .image-shape p{background-color:rgb(0, 0, 0);padding:2px;}#chatgpt-mermaid-\_r_1hml\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_1hml\_ .image-shape .label rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1hml\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_1hml\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_1hml\_ .node .neo-node{stroke:rgb(31, 78, 148);}#chatgpt-mermaid-\_r_1hml\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_1hml\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_1hml\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_1hml\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1hml\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_1hml\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_1hml\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_1hml\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1hml\_ [data-look="neo"].node .neo-line path{stroke:rgb(31, 78, 148);filter:none;}#chatgpt-mermaid-\_r_1hml\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_1hml\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1hml\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_1hml\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_1hml\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1hml\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_1hml\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1hml\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_1hml\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_1hml\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_1hml\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_1hml\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-width:1px;}#chatgpt-mermaid-\_r_1hml\_ .node rect,#chatgpt-mermaid-\_r_1hml\_ .node circle,#chatgpt-mermaid-\_r_1hml\_ .node ellipse,#chatgpt-mermaid-\_r_1hml\_ .node polygon,#chatgpt-mermaid-\_r_1hml\_ .node path{fill:rgb(0, 40, 77);stroke:rgba(255, 255, 255, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_1hml\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_1hml\_ .mermaid-decision .label-container{fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_1hml\_ .edgePaths .flowchart-link{stroke:rgb(175, 175, 175);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_1hml\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1hml\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}#chatgpt-mermaid-\_r_1hml\_ .control rect{fill:rgb(233, 232, 251)!important;stroke:rgb(105, 98, 166)!important;color:rgb(56, 50, 107)!important;}#chatgpt-mermaid-\_r_1hml\_ .control polygon{fill:rgb(233, 232, 251)!important;stroke:rgb(105, 98, 166)!important;color:rgb(56, 50, 107)!important;}#chatgpt-mermaid-\_r_1hml\_ .control ellipse{fill:rgb(233, 232, 251)!important;stroke:rgb(105, 98, 166)!important;color:rgb(56, 50, 107)!important;}#chatgpt-mermaid-\_r_1hml\_ .control circle{fill:rgb(233, 232, 251)!important;stroke:rgb(105, 98, 166)!important;color:rgb(56, 50, 107)!important;}#chatgpt-mermaid-\_r_1hml\_ .control path{fill:rgb(233, 232, 251)!important;stroke:rgb(105, 98, 166)!important;color:rgb(56, 50, 107)!important;}#chatgpt-mermaid-\_r_1hml\_ .control tspan{fill:rgb(56, 50, 107)!important;}#chatgpt-mermaid-\_r_1hml\_ .execution rect{fill:rgb(232, 241, 251)!important;stroke:rgb(65, 108, 155)!important;color:rgb(23, 52, 84)!important;}#chatgpt-mermaid-\_r_1hml\_ .execution polygon{fill:rgb(232, 241, 251)!important;stroke:rgb(65, 108, 155)!important;color:rgb(23, 52, 84)!important;}#chatgpt-mermaid-\_r_1hml\_ .execution ellipse{fill:rgb(232, 241, 251)!important;stroke:rgb(65, 108, 155)!important;color:rgb(23, 52, 84)!important;}#chatgpt-mermaid-\_r_1hml\_ .execution circle{fill:rgb(232, 241, 251)!important;stroke:rgb(65, 108, 155)!important;color:rgb(23, 52, 84)!important;}#chatgpt-mermaid-\_r_1hml\_ .execution path{fill:rgb(232, 241, 251)!important;stroke:rgb(65, 108, 155)!important;color:rgb(23, 52, 84)!important;}#chatgpt-mermaid-\_r_1hml\_ .execution tspan{fill:rgb(23, 52, 84)!important;}#chatgpt-mermaid-\_r_1hml\_ .assurance rect{fill:rgb(232, 243, 233)!important;stroke:rgb(67, 133, 82)!important;color:rgb(36, 88, 46)!important;}#chatgpt-mermaid-\_r_1hml\_ .assurance polygon{fill:rgb(232, 243, 233)!important;stroke:rgb(67, 133, 82)!important;color:rgb(36, 88, 46)!important;}#chatgpt-mermaid-\_r_1hml\_ .assurance ellipse{fill:rgb(232, 243, 233)!important;stroke:rgb(67, 133, 82)!important;color:rgb(36, 88, 46)!important;}#chatgpt-mermaid-\_r_1hml\_ .assurance circle{fill:rgb(232, 243, 233)!important;stroke:rgb(67, 133, 82)!important;color:rgb(36, 88, 46)!important;}#chatgpt-mermaid-\_r_1hml\_ .assurance path{fill:rgb(232, 243, 233)!important;stroke:rgb(67, 133, 82)!important;color:rgb(36, 88, 46)!important;}#chatgpt-mermaid-\_r_1hml\_ .assurance tspan{fill:rgb(36, 88, 46)!important;}Assurance and EvidenceExecution Plane — Engineering OperationsControl Plane — Authoritative DecisionsReviewer / Validator /EvaluatorDurable Evidence StoreAudit RecordsClaude CodeLead / Developer AgentsRestricted Tool RunnerIsolated Repository WorkspaceBuilds and Test ProcessesVersioned PoliciesWorkflow State MachineAuthorization and ToolPermissionsRequired Gate PolicyApproval PolicyAuthorize stageRequest operationEnforce permissions
+```mermaid
+flowchart TB
+    subgraph CP[Control Plane]
+      P[Versioned Workflow and Gate Policies]
+      S[State Machine and Checkpoints]
+      A[Authorization and Approval]
+    end
+    subgraph EP[Execution Plane]
+      C[Claude Code and Assigned Agents]
+      T[Restricted Tool Runner]
+      W[Isolated Repository Workspace]
+      G[Build and Test Processes]
+    end
+    subgraph AS[Assurance and Evidence]
+      R[Reviewer, Validator, Evaluator]
+      E[Durable Evidence Store]
+      L[Audit Records]
+    end
+    P --> S
+    A --> S
+    S -->|Authorize stage| C
+    C --> T
+    A -->|Enforce tool authority| T
+    T --> W
+    T --> G
+    W --> R
+    G --> E
+    R --> E
+    E --> S
+    S --> L
+```
 
 This architecture does not require Claude Code to be untrusted in the ordinary sense. Rather, it recognizes that an AI Agent is an execution participant and should not independently control every policy that governs its own execution.
 
 That is the same general principle used in secure deployment systems, controlled CI/CD pipelines, and privileged infrastructure automation.
 
-### **6.3 Workflow State Machine**
+### 6.3 Workflow State Machine
 
-FIGURE 28.3 — WORKFLOW STATE TRANSITIONS
+**Figure 28.3 — Workflow State Transitions**
 
-\#chatgpt-mermaid-\_r_1hms\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(237, 237, 237);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_1hms\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_1hms\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_1hms\_ .error-icon{fill:rgb(48, 48, 48);}#chatgpt-mermaid-\_r_1hms\_ .error-text{fill:rgb(237, 237, 237);stroke:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1hms\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_1hms\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_1hms\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_1hms\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_1hms\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_1hms\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_1hms\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1hms\_ .marker.cross{stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1hms\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_1hms\_ p{margin:0;}#chatgpt-mermaid-\_r_1hms\_ defs [id$="-barbEnd"]{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1hms\_ g.stateGroup text{fill:rgb(31, 78, 148);stroke:none;font-size:10px;}#chatgpt-mermaid-\_r_1hms\_ g.stateGroup text{fill:rgb(237, 237, 237);stroke:none;font-size:10px;}#chatgpt-mermaid-\_r_1hms\_ g.stateGroup .state-title{font-weight:bolder;fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1hms\_ g.stateGroup rect{fill:rgb(9, 23, 44);stroke:rgb(31, 78, 148);}#chatgpt-mermaid-\_r_1hms\_ g.stateGroup line{stroke:rgb(175, 175, 175);stroke-width:1;}#chatgpt-mermaid-\_r_1hms\_ .transition{stroke:rgb(175, 175, 175);stroke-width:1;fill:none;}#chatgpt-mermaid-\_r_1hms\_ .stateGroup .composit{fill:transparent;border-bottom:1px;}#chatgpt-mermaid-\_r_1hms\_ .stateGroup .alt-composit{fill:#e0e0e0;border-bottom:1px;}#chatgpt-mermaid-\_r_1hms\_ .state-note{stroke:rgb(58, 132, 63);fill:rgb(48, 48, 48);}#chatgpt-mermaid-\_r_1hms\_ .state-note text{fill:rgb(237, 237, 237);stroke:none;font-size:10px;}#chatgpt-mermaid-\_r_1hms\_ .stateLabel .box{stroke:none;stroke-width:0;fill:rgb(9, 23, 44);opacity:0.5;}#chatgpt-mermaid-\_r_1hms\_ .edgeLabel .label rect{fill:rgb(9, 23, 44);opacity:0.5;}#chatgpt-mermaid-\_r_1hms\_ .edgeLabel{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_1hms\_ .edgeLabel p{background-color:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1hms\_ .edgeLabel rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1hms\_ .edgeLabel .label text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1hms\_ .label div .edgeLabel{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1hms\_ .stateLabel text{fill:rgb(237, 237, 237);font-size:10px;font-weight:bold;}#chatgpt-mermaid-\_r_1hms\_ .node circle.state-start{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1hms\_ .node .fork-join{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1hms\_ .node circle.state-end{fill:rgb(31, 78, 148);stroke:transparent;stroke-width:1.5;}#chatgpt-mermaid-\_r_1hms\_ .end-state-inner{fill:transparent;stroke-width:1.5;}#chatgpt-mermaid-\_r_1hms\_ .node rect{fill:rgb(9, 23, 44);stroke:rgb(31, 78, 148);stroke-width:1px;}#chatgpt-mermaid-\_r_1hms\_ .node polygon{fill:rgb(9, 23, 44);stroke:rgb(31, 78, 148);stroke-width:1px;}#chatgpt-mermaid-\_r_1hms\_ [id$="-barbEnd"]{fill:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1hms\_ .statediagram-cluster rect{fill:rgb(9, 23, 44);stroke:rgb(31, 78, 148);stroke-width:1px;}#chatgpt-mermaid-\_r_1hms\_ .cluster-label,#chatgpt-mermaid-\_r_1hms\_ .nodeLabel{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1hms\_ .statediagram-cluster rect.outer{rx:5px;ry:5px;}#chatgpt-mermaid-\_r_1hms\_ .statediagram-state .divider{stroke:rgb(31, 78, 148);}#chatgpt-mermaid-\_r_1hms\_ .statediagram-state .title-state{rx:5px;ry:5px;}#chatgpt-mermaid-\_r_1hms\_ .statediagram-cluster.statediagram-cluster .inner{fill:transparent;}#chatgpt-mermaid-\_r_1hms\_ .statediagram-cluster.statediagram-cluster-alt .inner{fill:rgb(48, 48, 48);}#chatgpt-mermaid-\_r_1hms\_ .statediagram-cluster .inner{rx:0;ry:0;}#chatgpt-mermaid-\_r_1hms\_ .statediagram-state rect.basic{rx:5px;ry:5px;}#chatgpt-mermaid-\_r_1hms\_ .statediagram-state rect.divider{stroke-dasharray:10,10;fill:rgb(48, 48, 48);}#chatgpt-mermaid-\_r_1hms\_ .note-edge{stroke-dasharray:5;}#chatgpt-mermaid-\_r_1hms\_ .statediagram-note rect{fill:rgb(48, 48, 48);stroke:rgb(58, 132, 63);stroke-width:1px;rx:0;ry:0;}#chatgpt-mermaid-\_r_1hms\_ .statediagram-note rect{fill:rgb(48, 48, 48);stroke:rgb(58, 132, 63);stroke-width:1px;rx:0;ry:0;}#chatgpt-mermaid-\_r_1hms\_ .statediagram-note text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1hms\_ .statediagram-note .nodeLabel{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1hms\_ .statediagram .edgeLabel{color:red;}#chatgpt-mermaid-\_r_1hms\_ [id$="-dependencyStart"],#chatgpt-mermaid-\_r_1hms\_ [id$="-dependencyEnd"]{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);stroke-width:1;}#chatgpt-mermaid-\_r_1hms\_ .statediagramTitleText{text-anchor:middle;font-size:18px;fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1hms\_ [data-look="neo"].statediagram-cluster rect{fill:rgb(9, 23, 44);stroke:url(#chatgpt-mermaid-\_r_1hms\_-gradient);stroke-width:1;}#chatgpt-mermaid-\_r_1hms\_ [data-look="neo"].statediagram-cluster rect.outer{rx:5px;ry:5px;filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1hms\_ .node .neo-node{stroke:rgb(31, 78, 148);}#chatgpt-mermaid-\_r_1hms\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_1hms\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_1hms\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_1hms\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1hms\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_1hms\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_1hms\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_1hms\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1hms\_ [data-look="neo"].node .neo-line path{stroke:rgb(31, 78, 148);filter:none;}#chatgpt-mermaid-\_r_1hms\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_1hms\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1hms\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_1hms\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_1hms\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1hms\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_1hms\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1hms\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}CreatedAdmittedBlockedPlanningAwaitingPlanApprovalImplementingRejectedValidatingReviewingAssessingValidationEvaluatingAwaitingApprovalRecoveryFailedEscalatedPreparingOutputCompletedCancelledAdmission passedMissing prerequisitesPlan readyApprovedRevision requiredRejectedCandidate producedGates passedReview acceptedEvidence acceptedGoal satisfiedGate failedBlocking findingsEvidence invalidGoal not satisfiedRemediation permittedReplanning requiredBudget exhaustedHuman decision neededApprovedRejectedChanges requestedOutput verified
+```mermaid
+stateDiagram-v2
+    [*] --> Created
+    Created --> Admitted: Admission accepted
+    Created --> Blocked: Missing prerequisites
+    Admitted --> Planning
+    Planning --> AwaitingPlanApproval: Plan prepared
+    AwaitingPlanApproval --> Planning: Revision requested
+    AwaitingPlanApproval --> Implementing: Approved
+    AwaitingPlanApproval --> Rejected: Rejected
+    Implementing --> Validating: Candidate identified
+    Validating --> Reviewing: Gates passed
+    Reviewing --> AssessingValidation: Review accepted
+    AssessingValidation --> Evaluating: Evidence accepted
+    Evaluating --> AwaitingApproval: Goal satisfied
+    Validating --> Recovery: Gate failed
+    Reviewing --> Recovery: Blocking finding
+    AssessingValidation --> Recovery: Evidence invalid
+    Evaluating --> Recovery: Goal unmet
+    Recovery --> Implementing: Remediation authorized
+    Recovery --> Planning: Replan required
+    Recovery --> Failed: Attempts exhausted
+    Recovery --> Escalated: Human decision needed
+    AwaitingApproval --> PreparingOutput: Approved
+    AwaitingApproval --> Rejected: Rejected
+    AwaitingApproval --> Implementing: Change requested
+    PreparingOutput --> Completed: Output verified
+    Created --> Cancelled
+    Planning --> Cancelled
+    Implementing --> Cancelled
+    Completed --> [*]
+    Failed --> [*]
+    Rejected --> [*]
+    Cancelled --> [*]
+    Escalated --> [*]
+```
 
 The illustration is a simplified state machine. A production implementation should specify transitions for timeouts, interruptions, suspension, restoration, and every recoverable state.
 
@@ -1463,11 +1561,47 @@ A critical design rule is that a process restart must not erase workflow state.
 
 The orchestrator should reconstruct the current workflow position from durable state and revalidate the conditions required for the next transition.
 
-### **6.4 Agent Handoff and Evidence Sequence**
+### 6.4 Agent Handoff and Evidence Sequence
 
-FIGURE 28.4 — AGENT COLLABORATION
+**Figure 28.4 — Agent Collaboration**
 
-Evidence StoreEvaluator AgentValidator AgentReviewer AgentGate RunnerDeveloper AgentLead AgentHarnessEvidence StoreEvaluator AgentValidator AgentReviewer AgentGate RunnerDeveloper AgentLead AgentHarness#chatgpt-mermaid-\_r_1hn3\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(237, 237, 237);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_1hn3\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_1hn3\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_1hn3\_ .error-icon{fill:rgb(48, 48, 48);}#chatgpt-mermaid-\_r_1hn3\_ .error-text{fill:rgb(237, 237, 237);stroke:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1hn3\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_1hn3\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_1hn3\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_1hn3\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_1hn3\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_1hn3\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_1hn3\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1hn3\_ .marker.cross{stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1hn3\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_1hn3\_ p{margin:0;}#chatgpt-mermaid-\_r_1hn3\_ .actor{stroke:rgb(31, 78, 148);fill:rgb(9, 23, 44);stroke-width:1;}#chatgpt-mermaid-\_r_1hn3\_ rect.actor.outer-path[data-look="neo"]{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1hn3\_ rect.note[data-look="neo"]{stroke:rgb(58, 132, 63);fill:rgb(48, 48, 48);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1hn3\_ text.actor>tspan{fill:rgb(237, 237, 237);stroke:none;}#chatgpt-mermaid-\_r_1hn3\_ .actor-line{stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1hn3\_ .innerArc{stroke-width:1.5;stroke-dasharray:none;}#chatgpt-mermaid-\_r_1hn3\_ .messageLine0{stroke-width:1.5;stroke-dasharray:none;stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1hn3\_ .messageLine1{stroke-width:1.5;stroke-dasharray:2,2;stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1hn3\_ [id$="-arrowhead"] path{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1hn3\_ .sequenceNumber{fill:#505050;}#chatgpt-mermaid-\_r_1hn3\_ [id$="-sequencenumber"]{fill:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1hn3\_ [id$="-crosshead"] path{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1hn3\_ .messageText{fill:rgb(237, 237, 237);stroke:none;}#chatgpt-mermaid-\_r_1hn3\_ .labelBox{stroke:rgba(255, 255, 255, 0.15);fill:rgb(0, 0, 0);filter:none;}#chatgpt-mermaid-\_r_1hn3\_ .labelText,#chatgpt-mermaid-\_r_1hn3\_ .labelText>tspan{fill:rgb(237, 237, 237);stroke:none;}#chatgpt-mermaid-\_r_1hn3\_ .loopText,#chatgpt-mermaid-\_r_1hn3\_ .loopText>tspan{fill:rgb(237, 237, 237);stroke:none;}#chatgpt-mermaid-\_r_1hn3\_ .sectionTitle,#chatgpt-mermaid-\_r_1hn3\_ .sectionTitle>tspan{fill:rgb(237, 237, 237);stroke:none;}#chatgpt-mermaid-\_r_1hn3\_ .loopLine{stroke-width:2px;stroke-dasharray:2,2;stroke:rgba(255, 255, 255, 0.15);fill:rgba(255, 255, 255, 0.15);}#chatgpt-mermaid-\_r_1hn3\_ .note{stroke:rgb(58, 132, 63);fill:rgb(48, 48, 48);}#chatgpt-mermaid-\_r_1hn3\_ .noteText,#chatgpt-mermaid-\_r_1hn3\_ .noteText>tspan{fill:rgb(237, 237, 237);stroke:none;font-weight:normal;}#chatgpt-mermaid-\_r_1hn3\_ .activation0{fill:rgb(48, 48, 48);stroke:hsl(0, 0%, 8.8235294118%);}#chatgpt-mermaid-\_r_1hn3\_ .activation1{fill:rgb(48, 48, 48);stroke:hsl(0, 0%, 8.8235294118%);}#chatgpt-mermaid-\_r_1hn3\_ .activation2{fill:rgb(48, 48, 48);stroke:hsl(0, 0%, 8.8235294118%);}#chatgpt-mermaid-\_r_1hn3\_ .actorPopupMenu{position:absolute;}#chatgpt-mermaid-\_r_1hn3\_ .actorPopupMenuPanel{position:absolute;fill:rgb(9, 23, 44);box-shadow:0px 8px 16px 0px rgba(0,0,0,0.2);filter:drop-shadow(3px 5px 2px rgb(0 0 0 / 0.4));}#chatgpt-mermaid-\_r_1hn3\_ .actor-man circle,#chatgpt-mermaid-\_r_1hn3\_ line{fill:rgb(9, 23, 44);stroke-width:2px;}#chatgpt-mermaid-\_r_1hn3\_ g rect.rect{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));stroke:rgb(31, 78, 148);}#chatgpt-mermaid-\_r_1hn3\_ .node .neo-node{stroke:rgb(31, 78, 148);}#chatgpt-mermaid-\_r_1hn3\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_1hn3\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_1hn3\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_1hn3\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1hn3\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_1hn3\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_1hn3\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_1hn3\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1hn3\_ [data-look="neo"].node .neo-line path{stroke:rgb(31, 78, 148);filter:none;}#chatgpt-mermaid-\_r_1hn3\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_1hn3\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1hn3\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_1hn3\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_1hn3\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1hn3\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_1hn3\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1hn3\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}alt[Mandatory gate failed][Mandatory gates passed]Engineering LeadSubmit authorized goal1Provide context and constraints2Structured implementation plan3Record approved plan4Assign bounded implementation5Candidate revision and handoff6Record candidate identity7Execute mandatory checks8Signed or attributable results9Persist gate evidence10Return diagnostic evidence11Review candidate12Findings and recommendation13Record review14Assess deterministic evidence15Validation assessment16Record assessment17Assess goal satisfaction18Goal evaluation19Record evaluation20Request required approval21Approve or reject22Record decision23Engineering Lead
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Human as Engineering Lead
+    participant H as Harness
+    participant L as Lead Agent
+    participant D as Developer Agent
+    participant G as Gate Runner
+    participant R as Reviewer
+    participant V as Validator
+    participant E as Evaluator
+    participant Store as Evidence Store
+    Human->>H: Submit authorized goal
+    H->>L: Provide context and constraints
+    L-->>H: Structured plan
+    H->>Store: Store approved plan
+    H->>D: Assign bounded implementation
+    D-->>H: Candidate revision and handoff
+    H->>Store: Record candidate identity
+    H->>G: Execute mandatory checks
+    G-->>H: Gate results
+    H->>Store: Persist gate evidence
+    alt Gates failed
+      H->>D: Remediation task within policy
+    else Gates passed
+      H->>R: Review candidate
+      R-->>H: Findings
+      H->>V: Assess gate evidence
+      V-->>H: Validation assessment
+      H->>E: Assess business goal
+      E-->>H: Evaluation report
+      H->>Store: Record assessments
+      H->>Human: Request approval with evidence
+      Human-->>H: Decision
+      H->>Store: Record decision
+    end
+```
 
 The Evidence Store is not simply a log directory.
 
@@ -1475,19 +1609,59 @@ It is the system of record for workflow artifacts that must survive interruption
 
 Its design should reflect the organization's retention, access-control, integrity, and confidentiality requirements.
 
-### **6.5 Failure and Recovery Decision Tree**
+### 6.5 Failure and Recovery Decision Tree
 
-FIGURE 28.5 — BOUNDED RECOVERY
+**Figure 28.5 — Bounded Recovery**
 
-\#chatgpt-mermaid-\_r_1hna\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(237, 237, 237);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_1hna\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_1hna\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_1hna\_ .error-icon{fill:rgb(48, 48, 48);}#chatgpt-mermaid-\_r_1hna\_ .error-text{fill:rgb(237, 237, 237);stroke:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1hna\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_1hna\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_1hna\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_1hna\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_1hna\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_1hna\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_1hna\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1hna\_ .marker.cross{stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1hna\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_1hna\_ p{margin:0;}#chatgpt-mermaid-\_r_1hna\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1hna\_ .cluster-label text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1hna\_ .cluster-label span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1hna\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_1hna\_ .label text,#chatgpt-mermaid-\_r_1hna\_ span{fill:rgb(237, 237, 237);color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1hna\_ .node rect,#chatgpt-mermaid-\_r_1hna\_ .node circle,#chatgpt-mermaid-\_r_1hna\_ .node ellipse,#chatgpt-mermaid-\_r_1hna\_ .node polygon,#chatgpt-mermaid-\_r_1hna\_ .node path{fill:rgb(9, 23, 44);stroke:rgb(31, 78, 148);stroke-width:1px;}#chatgpt-mermaid-\_r_1hna\_ .rough-node .label text,#chatgpt-mermaid-\_r_1hna\_ .node .label text,#chatgpt-mermaid-\_r_1hna\_ .image-shape .label,#chatgpt-mermaid-\_r_1hna\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_1hna\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_1hna\_ .rough-node .label,#chatgpt-mermaid-\_r_1hna\_ .node .label,#chatgpt-mermaid-\_r_1hna\_ .image-shape .label,#chatgpt-mermaid-\_r_1hna\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_1hna\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_1hna\_ .root .anchor path{fill:rgb(175, 175, 175)!important;stroke-width:0;stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1hna\_ .arrowheadPath{fill:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1hna\_ .edgePath .path{stroke:rgb(175, 175, 175);stroke-width:1px;}#chatgpt-mermaid-\_r_1hna\_ .flowchart-link{stroke:rgb(175, 175, 175);fill:none;}#chatgpt-mermaid-\_r_1hna\_ .edgeLabel{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_1hna\_ .edgeLabel p{background-color:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1hna\_ .edgeLabel rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1hna\_ .labelBkg{background-color:rgba(0, 0, 0, 0.5);}#chatgpt-mermaid-\_r_1hna\_ .cluster rect{fill:rgb(48, 48, 48);stroke:rgba(255, 255, 255, 0.15);stroke-width:1px;}#chatgpt-mermaid-\_r_1hna\_ .cluster text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1hna\_ .cluster span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1hna\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(48, 48, 48);border:1px solid rgba(255, 255, 255, 0.15);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_1hna\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1hna\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_1hna\_ .icon-shape,#chatgpt-mermaid-\_r_1hna\_ .image-shape{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_1hna\_ .icon-shape p,#chatgpt-mermaid-\_r_1hna\_ .image-shape p{background-color:rgb(0, 0, 0);padding:2px;}#chatgpt-mermaid-\_r_1hna\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_1hna\_ .image-shape .label rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1hna\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_1hna\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_1hna\_ .node .neo-node{stroke:rgb(31, 78, 148);}#chatgpt-mermaid-\_r_1hna\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_1hna\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_1hna\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_1hna\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1hna\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_1hna\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_1hna\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_1hna\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1hna\_ [data-look="neo"].node .neo-line path{stroke:rgb(31, 78, 148);filter:none;}#chatgpt-mermaid-\_r_1hna\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_1hna\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1hna\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_1hna\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_1hna\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1hna\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_1hna\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1hna\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_1hna\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_1hna\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_1hna\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_1hna\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-width:1px;}#chatgpt-mermaid-\_r_1hna\_ .node rect,#chatgpt-mermaid-\_r_1hna\_ .node circle,#chatgpt-mermaid-\_r_1hna\_ .node ellipse,#chatgpt-mermaid-\_r_1hna\_ .node polygon,#chatgpt-mermaid-\_r_1hna\_ .node path{fill:rgb(0, 40, 77);stroke:rgba(255, 255, 255, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_1hna\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_1hna\_ .mermaid-decision .label-container{fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_1hna\_ .edgePaths .flowchart-link{stroke:rgb(175, 175, 175);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_1hna\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1hna\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}#chatgpt-mermaid-\_r_1hna\_ .failure rect{fill:rgb(251, 233, 231)!important;stroke:rgb(183, 91, 82)!important;color:rgb(132, 52, 46)!important;}#chatgpt-mermaid-\_r_1hna\_ .failure polygon{fill:rgb(251, 233, 231)!important;stroke:rgb(183, 91, 82)!important;color:rgb(132, 52, 46)!important;}#chatgpt-mermaid-\_r_1hna\_ .failure ellipse{fill:rgb(251, 233, 231)!important;stroke:rgb(183, 91, 82)!important;color:rgb(132, 52, 46)!important;}#chatgpt-mermaid-\_r_1hna\_ .failure circle{fill:rgb(251, 233, 231)!important;stroke:rgb(183, 91, 82)!important;color:rgb(132, 52, 46)!important;}#chatgpt-mermaid-\_r_1hna\_ .failure path{fill:rgb(251, 233, 231)!important;stroke:rgb(183, 91, 82)!important;color:rgb(132, 52, 46)!important;}#chatgpt-mermaid-\_r_1hna\_ .failure tspan{fill:rgb(132, 52, 46)!important;}#chatgpt-mermaid-\_r_1hna\_ .recovery rect{fill:rgb(232, 241, 251)!important;stroke:rgb(65, 108, 155)!important;color:rgb(23, 52, 84)!important;}#chatgpt-mermaid-\_r_1hna\_ .recovery polygon{fill:rgb(232, 241, 251)!important;stroke:rgb(65, 108, 155)!important;color:rgb(23, 52, 84)!important;}#chatgpt-mermaid-\_r_1hna\_ .recovery ellipse{fill:rgb(232, 241, 251)!important;stroke:rgb(65, 108, 155)!important;color:rgb(23, 52, 84)!important;}#chatgpt-mermaid-\_r_1hna\_ .recovery circle{fill:rgb(232, 241, 251)!important;stroke:rgb(65, 108, 155)!important;color:rgb(23, 52, 84)!important;}#chatgpt-mermaid-\_r_1hna\_ .recovery path{fill:rgb(232, 241, 251)!important;stroke:rgb(65, 108, 155)!important;color:rgb(23, 52, 84)!important;}#chatgpt-mermaid-\_r_1hna\_ .recovery tspan{fill:rgb(23, 52, 84)!important;}#chatgpt-mermaid-\_r_1hna\_ .decision rect{fill:rgb(255, 240, 214)!important;stroke:rgb(189, 135, 48)!important;color:rgb(112, 73, 9)!important;}#chatgpt-mermaid-\_r_1hna\_ .decision polygon{fill:rgb(255, 240, 214)!important;stroke:rgb(189, 135, 48)!important;color:rgb(112, 73, 9)!important;}#chatgpt-mermaid-\_r_1hna\_ .decision ellipse{fill:rgb(255, 240, 214)!important;stroke:rgb(189, 135, 48)!important;color:rgb(112, 73, 9)!important;}#chatgpt-mermaid-\_r_1hna\_ .decision circle{fill:rgb(255, 240, 214)!important;stroke:rgb(189, 135, 48)!important;color:rgb(112, 73, 9)!important;}#chatgpt-mermaid-\_r_1hna\_ .decision path{fill:rgb(255, 240, 214)!important;stroke:rgb(189, 135, 48)!important;color:rgb(112, 73, 9)!important;}#chatgpt-mermaid-\_r_1hna\_ .decision tspan{fill:rgb(112, 73, 9)!important;}Execution FailureFailure CategoryCapture DiagnosticsRemediation Budget Available?Developer RemediationNew Candidate andRevalidationEscalate / FailSafe to Retry?Bounded Retry with BackoffReconcile State and EvidenceBlock and EscalateStop OperationPreserve Security EvidenceAuthorized ReviewReturn to PlanningArchitecture Decision /ApprovalReassess Acceptance CriteriaRemediate or RejectCode or test defectYesNoTransient infrastructureYesNoPolicy violationArchitecture conflictBusiness mismatch
+```mermaid
+flowchart TD
+    A[Execution Failure] --> B{Failure type}
+    B -->|Implementation defect| C[Capture diagnostics]
+    C --> D{Remediation budget?}
+    D -->|Yes| E[Developer remediation]
+    E --> F[New candidate and revalidation]
+    D -->|No| G[Escalate or fail]
+    B -->|Transient infrastructure| H{Safe retry?}
+    H -->|Yes| I[Bounded retry and reconciliation]
+    H -->|No| J[Block and escalate]
+    B -->|Policy violation| K[Stop operation and preserve evidence]
+    K --> L[Authorized security or governance review]
+    B -->|Architecture conflict| M[Return to planning]
+    M --> N[Architecture decision]
+    B -->|Business mismatch| O[Reassess acceptance criteria]
+    O --> P[Remediate or reject]
+```
 
 The recovery process should be driven by failure type and policy, not by an Agent's unrestricted desire to continue.
 
-### **6.6 Workflow Evidence Lineage**
+### 6.6 Workflow Evidence Lineage
 
-FIGURE 28.6 — EVIDENCE PROVENANCE
+**Figure 28.6 — Evidence Provenance**
 
-\#chatgpt-mermaid-\_r_1hnh\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(237, 237, 237);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_1hnh\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_1hnh\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_1hnh\_ .error-icon{fill:rgb(48, 48, 48);}#chatgpt-mermaid-\_r_1hnh\_ .error-text{fill:rgb(237, 237, 237);stroke:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1hnh\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_1hnh\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_1hnh\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_1hnh\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_1hnh\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_1hnh\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_1hnh\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1hnh\_ .marker.cross{stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1hnh\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_1hnh\_ p{margin:0;}#chatgpt-mermaid-\_r_1hnh\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1hnh\_ .cluster-label text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1hnh\_ .cluster-label span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1hnh\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_1hnh\_ .label text,#chatgpt-mermaid-\_r_1hnh\_ span{fill:rgb(237, 237, 237);color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1hnh\_ .node rect,#chatgpt-mermaid-\_r_1hnh\_ .node circle,#chatgpt-mermaid-\_r_1hnh\_ .node ellipse,#chatgpt-mermaid-\_r_1hnh\_ .node polygon,#chatgpt-mermaid-\_r_1hnh\_ .node path{fill:rgb(9, 23, 44);stroke:rgb(31, 78, 148);stroke-width:1px;}#chatgpt-mermaid-\_r_1hnh\_ .rough-node .label text,#chatgpt-mermaid-\_r_1hnh\_ .node .label text,#chatgpt-mermaid-\_r_1hnh\_ .image-shape .label,#chatgpt-mermaid-\_r_1hnh\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_1hnh\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_1hnh\_ .rough-node .label,#chatgpt-mermaid-\_r_1hnh\_ .node .label,#chatgpt-mermaid-\_r_1hnh\_ .image-shape .label,#chatgpt-mermaid-\_r_1hnh\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_1hnh\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_1hnh\_ .root .anchor path{fill:rgb(175, 175, 175)!important;stroke-width:0;stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1hnh\_ .arrowheadPath{fill:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1hnh\_ .edgePath .path{stroke:rgb(175, 175, 175);stroke-width:1px;}#chatgpt-mermaid-\_r_1hnh\_ .flowchart-link{stroke:rgb(175, 175, 175);fill:none;}#chatgpt-mermaid-\_r_1hnh\_ .edgeLabel{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_1hnh\_ .edgeLabel p{background-color:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1hnh\_ .edgeLabel rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1hnh\_ .labelBkg{background-color:rgba(0, 0, 0, 0.5);}#chatgpt-mermaid-\_r_1hnh\_ .cluster rect{fill:rgb(48, 48, 48);stroke:rgba(255, 255, 255, 0.15);stroke-width:1px;}#chatgpt-mermaid-\_r_1hnh\_ .cluster text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1hnh\_ .cluster span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1hnh\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(48, 48, 48);border:1px solid rgba(255, 255, 255, 0.15);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_1hnh\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1hnh\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_1hnh\_ .icon-shape,#chatgpt-mermaid-\_r_1hnh\_ .image-shape{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_1hnh\_ .icon-shape p,#chatgpt-mermaid-\_r_1hnh\_ .image-shape p{background-color:rgb(0, 0, 0);padding:2px;}#chatgpt-mermaid-\_r_1hnh\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_1hnh\_ .image-shape .label rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1hnh\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_1hnh\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_1hnh\_ .node .neo-node{stroke:rgb(31, 78, 148);}#chatgpt-mermaid-\_r_1hnh\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_1hnh\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_1hnh\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_1hnh\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1hnh\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_1hnh\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_1hnh\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_1hnh\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1hnh\_ [data-look="neo"].node .neo-line path{stroke:rgb(31, 78, 148);filter:none;}#chatgpt-mermaid-\_r_1hnh\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_1hnh\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1hnh\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_1hnh\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_1hnh\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1hnh\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_1hnh\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1hnh\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_1hnh\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_1hnh\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_1hnh\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_1hnh\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-width:1px;}#chatgpt-mermaid-\_r_1hnh\_ .node rect,#chatgpt-mermaid-\_r_1hnh\_ .node circle,#chatgpt-mermaid-\_r_1hnh\_ .node ellipse,#chatgpt-mermaid-\_r_1hnh\_ .node polygon,#chatgpt-mermaid-\_r_1hnh\_ .node path{fill:rgb(0, 40, 77);stroke:rgba(255, 255, 255, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_1hnh\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_1hnh\_ .mermaid-decision .label-container{fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_1hnh\_ .edgePaths .flowchart-link{stroke:rgb(175, 175, 175);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_1hnh\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1hnh\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}#chatgpt-mermaid-\_r_1hnh\_ .source rect{fill:rgb(233, 232, 251)!important;stroke:rgb(105, 98, 166)!important;color:rgb(56, 50, 107)!important;}#chatgpt-mermaid-\_r_1hnh\_ .source polygon{fill:rgb(233, 232, 251)!important;stroke:rgb(105, 98, 166)!important;color:rgb(56, 50, 107)!important;}#chatgpt-mermaid-\_r_1hnh\_ .source ellipse{fill:rgb(233, 232, 251)!important;stroke:rgb(105, 98, 166)!important;color:rgb(56, 50, 107)!important;}#chatgpt-mermaid-\_r_1hnh\_ .source circle{fill:rgb(233, 232, 251)!important;stroke:rgb(105, 98, 166)!important;color:rgb(56, 50, 107)!important;}#chatgpt-mermaid-\_r_1hnh\_ .source path{fill:rgb(233, 232, 251)!important;stroke:rgb(105, 98, 166)!important;color:rgb(56, 50, 107)!important;}#chatgpt-mermaid-\_r_1hnh\_ .source tspan{fill:rgb(56, 50, 107)!important;}#chatgpt-mermaid-\_r_1hnh\_ .evidence rect{fill:rgb(232, 241, 251)!important;stroke:rgb(65, 108, 155)!important;color:rgb(23, 52, 84)!important;}#chatgpt-mermaid-\_r_1hnh\_ .evidence polygon{fill:rgb(232, 241, 251)!important;stroke:rgb(65, 108, 155)!important;color:rgb(23, 52, 84)!important;}#chatgpt-mermaid-\_r_1hnh\_ .evidence ellipse{fill:rgb(232, 241, 251)!important;stroke:rgb(65, 108, 155)!important;color:rgb(23, 52, 84)!important;}#chatgpt-mermaid-\_r_1hnh\_ .evidence circle{fill:rgb(232, 241, 251)!important;stroke:rgb(65, 108, 155)!important;color:rgb(23, 52, 84)!important;}#chatgpt-mermaid-\_r_1hnh\_ .evidence path{fill:rgb(232, 241, 251)!important;stroke:rgb(65, 108, 155)!important;color:rgb(23, 52, 84)!important;}#chatgpt-mermaid-\_r_1hnh\_ .evidence tspan{fill:rgb(23, 52, 84)!important;}#chatgpt-mermaid-\_r_1hnh\_ .outcome rect{fill:rgb(232, 243, 233)!important;stroke:rgb(67, 133, 82)!important;color:rgb(36, 88, 46)!important;}#chatgpt-mermaid-\_r_1hnh\_ .outcome polygon{fill:rgb(232, 243, 233)!important;stroke:rgb(67, 133, 82)!important;color:rgb(36, 88, 46)!important;}#chatgpt-mermaid-\_r_1hnh\_ .outcome ellipse{fill:rgb(232, 243, 233)!important;stroke:rgb(67, 133, 82)!important;color:rgb(36, 88, 46)!important;}#chatgpt-mermaid-\_r_1hnh\_ .outcome circle{fill:rgb(232, 243, 233)!important;stroke:rgb(67, 133, 82)!important;color:rgb(36, 88, 46)!important;}#chatgpt-mermaid-\_r_1hnh\_ .outcome path{fill:rgb(232, 243, 233)!important;stroke:rgb(67, 133, 82)!important;color:rgb(36, 88, 46)!important;}#chatgpt-mermaid-\_r_1hnh\_ .outcome tspan{fill:rgb(36, 88, 46)!important;}Goal and Acceptance CriteriaApproved PlanRepository Context SnapshotWorkflow and Gate PolicyVersionsCandidate Commit SHABuild EvidenceTest EvidenceSecurity EvidenceReviewer EvidenceValidator AssessmentEvaluator AssessmentHuman Approval RecordAuthorized OutputAudit Evidence Package
+```mermaid
+flowchart TD
+    G[Goal and Acceptance Criteria] --> P[Approved Plan]
+    C[Context Snapshot] --> P
+    W[Workflow Policy Version] --> P
+    P --> S[Immutable Candidate Commit]
+    S --> B[Build Evidence]
+    S --> T[Test Evidence]
+    S --> Sec[Security Evidence]
+    S --> R[Reviewer Evidence]
+    B --> V[Validator Assessment]
+    T --> V
+    Sec --> V
+    V --> E[Evaluator Assessment]
+    R --> E
+    G --> E
+    E --> A[Human Approval]
+    R --> A
+    V --> A
+    W --> A
+    A --> O[Authorized Output]
+    S --> O
+    O --> Z[Audit Evidence Archive]
+```
 
 This diagram illustrates why evidence must be associated with an immutable candidate revision.
 
@@ -1495,9 +1669,9 @@ If the implementation changes after testing or review, the workflow must determi
 
 For mandatory final checks, re-execution against the final source revision provides the strongest default assurance.
 
-## **7. Hands-on Example**
+## 7. Hands-on Example
 
-### **7.1 Scenario: Corporate Fleet Booking Workflow**
+### 7.1 Scenario: Corporate Fleet Booking Workflow
 
 This section develops a practical enterprise workflow using Alpha Car Detailing's corporate fleet booking feature.
 
@@ -1516,7 +1690,7 @@ The example uses:
 
 The examples are reference implementations. They establish engineering contracts and execution patterns rather than claiming that the complete production Harness can be implemented through a single script.
 
-### **7.2 Step 1 — Establish the Feature Goal**
+### 7.2 Step 1 — Establish the Feature Goal
 
 The first step is to convert the business request into a structured engineering goal.
 
@@ -1553,13 +1727,13 @@ For this example, assume the approved agreement defines a monthly accounting per
 
 The exact agreement rule should be represented in domain logic and tested.
 
-### **7.3 Step 2 — Define Workflow Scope**
+### 7.3 Step 2 — Define Workflow Scope
 
 The Lead Agent must identify the components that may be modified.
 
 A representative scope contract is:
 
-```
+```yaml
 goal_id: ACD-FLEET-028
 
 workflow:
@@ -1612,11 +1786,11 @@ A path list inside a YAML file does not itself prevent an Agent from writing out
 
 The protected-path policy must also address generated files, symbolic links, path traversal, and other filesystem behaviors relevant to the execution environment.
 
-### **7.4 Step 3 — Define the Workflow Template**
+### 7.4 Step 3 — Define the Workflow Template
 
 A reusable feature-development template can describe the stages and their required outputs.
 
-```
+```yaml
 workflow:
   id: feature-development
   version: "1.0"
@@ -1703,7 +1877,7 @@ stages:
       - evidence_archive
 ```
 
-This template is declarative.
+This template is declarative and represents the high-risk corporate fleet booking profile, including its mandatory plan-approval checkpoint. Lower-risk profiles may differ only when the governing policy explicitly permits it.
 
 It does not yet implement the orchestration engine, transition rules, authorization enforcement, or retry logic.
 
@@ -1711,13 +1885,13 @@ Those responsibilities belong to the Harness.
 
 A production template should also define stage timeouts, error classifications, applicable policies, input and output schemas, and evidence-validation requirements.
 
-### **7.5 Step 4 — Prepare Repository Instructions**
+### 7.5 Step 4 — Prepare Repository Instructions
 
 The Alpha Car Detailing repository should already contain the persistent instructions introduced in earlier chapters.
 
 For this workflow, the relevant `CLAUDE.md` content might include the following engineering requirements:
 
-```
+```markdown
 # Alpha Car Detailing — Engineering Instructions
 
 ## Architecture
@@ -1761,7 +1935,7 @@ These instructions should apply to the implementation process without replacing 
 
 The Developer Agent must still operate within an enforcement boundary supplied by the Harness.
 
-### **7.6 Step 5 — Select Relevant Skills**
+### 7.6 Step 5 — Select Relevant Skills
 
 The Lead Agent should identify the reusable Skills needed to complete the task.
 
@@ -1787,7 +1961,7 @@ If the `transactional-outbox` Skill changes during execution, the run should pre
 
 This makes later review and reproduction more reliable.
 
-### **7.7 Step 6 — Create an Implementation Plan**
+### 7.7 Step 6 — Create an Implementation Plan
 
 The Lead Agent examines Repository Intelligence, repository instructions, and the approved goal.
 
@@ -1841,7 +2015,7 @@ The plan should identify dependencies between tasks rather than assuming that th
 
 For example, idempotency and allowance enforcement must be designed together. Otherwise, a retried request might be prevented from creating a duplicate booking but still decrement the available allowance.
 
-### **7.8 Step 7 — Implement Within the Authorized Workspace**
+### 7.8 Step 7 — Implement Within the Authorized Workspace
 
 After plan approval, the Harness creates or assigns an isolated development workspace.
 
@@ -1860,7 +2034,7 @@ The Agent should implement bounded tasks, report material deviations, and produc
 
 A relevant domain operation might have the following conceptual contract:
 
-```
+```csharp
 public sealed record CorporateBookingRequest(
     Guid CorporateAccountId,
     Guid VehicleId,
@@ -1879,7 +2053,7 @@ It must establish the caller's authorization, resolve the active agreement, appl
 
 The following pseudocode illustrates the required transaction semantics without prescribing a particular database implementation.
 
-```
+```text
 CreateCorporateBooking(request, caller):
 
     authorize caller for corporate account
@@ -1920,13 +2094,13 @@ A suitable database design might use unique constraints and transactional condit
 
 An application-level `if` statement checking the remaining allowance is not sufficient by itself.
 
-### **7.9 Step 8 — Execute Deterministic Gates**
+### 7.9 Step 8 — Execute Deterministic Gates
 
 Once the Developer Agent produces a candidate, the Harness runs the required technical checks.
 
 A representative gate profile might contain:
 
-```
+```yaml
 gate_profile:
   id: corporate-booking-feature
   version: "1.0"
@@ -1959,7 +2133,7 @@ The gate runner should capture the command, exit code, source revision, executio
 
 For example, the build gate can be executed through a PowerShell script:
 
-```
+```powershell
 param(
     [Parameter(Mandatory)]
     [string]$SolutionPath,
@@ -2003,11 +2177,11 @@ It is not a complete production gate runner. A hardened implementation should ad
 
 The authoritative gate decision should be based on trusted execution evidence rather than an Agent-written status file.
 
-### **7.10 Step 9 — Validate Concurrency and Idempotency**
+### 7.10 Step 9 — Validate Concurrency and Idempotency
 
 Two acceptance criteria deserve particular attention because they commonly expose defects that ordinary unit tests miss.
 
-#### **Concurrent allowance enforcement**
+#### Concurrent allowance enforcement
 
 Assume a corporate agreement permits 100 bookings in its current accounting period and 99 have already been consumed.
 
@@ -2029,7 +2203,7 @@ Expected results include:
 
 The application must remain correct even when requests are processed by different application instances.
 
-#### **Idempotent request replay**
+#### Idempotent request replay
 
 A second test submits a valid booking request with an idempotency key, then repeats the same request.
 
@@ -2047,7 +2221,7 @@ This is a critical enterprise scenario because the client may not know whether t
 
 The application should provide safe replay behavior without relying on the client to guess.
 
-### **7.11 Step 10 — Perform Independent Review**
+### 7.11 Step 10 — Perform Independent Review
 
 After mandatory gates pass, the Reviewer Agent examines the implementation.
 
@@ -2075,7 +2249,7 @@ The review report should categorize findings.
 
 For example:
 
-```
+```yaml
 review:
   candidate_commit: "<immutable-candidate-commit>"
   status: changes_required
@@ -2105,7 +2279,7 @@ The workflow must maintain explicit finding dispositions.
 
 A finding cannot simply disappear from the next review report without an associated resolution, justified dismissal, or accepted exception.
 
-### **7.12 Step 11 — Assess Validation Evidence**
+### 7.12 Step 11 — Assess Validation Evidence
 
 The Validator Agent evaluates the technical evidence.
 
@@ -2121,7 +2295,7 @@ Its assessment should answer questions such as:
 
 A suitable validation assessment might be:
 
-```
+```yaml
 validation:
   candidate_commit: "<immutable-candidate-commit>"
   status: passed
@@ -2144,7 +2318,7 @@ The Validator's report is an assessment of evidence, not the source of the evide
 
 The Harness must independently enforce the mandatory gate policy, including source-revision consistency.
 
-### **7.13 Step 12 — Evaluate the Business Goal**
+### 7.13 Step 12 — Evaluate the Business Goal
 
 The Evaluator Agent assesses the implementation against the original goal.
 
@@ -2154,16 +2328,20 @@ For each acceptance criterion, the Evaluator should identify the supporting evid
 
 A representative evaluation table is:
 
-| Criterion                        | Evidence                                                  | Assessment                      |
-| -------------------------------- | --------------------------------------------------------- | ------------------------------- |
-| Corporate authorization          | Authorization integration tests and implementation review | Satisfied                       |
-| Monthly allowance                | Domain tests and agreement-period tests                   | Satisfied                       |
-| Concurrent limit enforcement     | Database concurrency tests                                | Satisfied                       |
-| Request idempotency              | Replay and conflict integration tests                     | Satisfied                       |
-| Transactional outbox             | Transactional persistence tests                           | Satisfied                       |
-| Individual booking compatibility | Existing regression suite                                 | Satisfied                       |
-| Architecture alignment           | Architecture tests and Reviewer findings                  | Satisfied                       |
-| Operational readiness            | Logging, migration, and rollout evidence                  | Satisfied within approved scope |
+| Criterion | Evidence | Illustrative assessment |
+| --- | --- | --- |
+| AC-01 — Corporate authorization | Authorization integration tests and review | Satisfied |
+| AC-02 — Monthly agreement allowance | Domain tests and agreement-period tests | Satisfied |
+| AC-03 — Concurrent allowance enforcement | Database-backed concurrency tests | Satisfied |
+| AC-04 — Idempotent request replay | Replay and conflict integration tests | Satisfied |
+| AC-05 — Correct corporate persistence | Booking persistence assertions | Satisfied |
+| AC-06 — Transactional outbox | Atomic booking-and-outbox integration tests | Satisfied |
+| AC-07 — Individual booking compatibility | Regression suite | Satisfied |
+| AC-08 — Migration compatibility | Approved migration checks | Satisfied |
+| AC-09 — Architecture alignment | Architecture tests and Reviewer assessment | Satisfied |
+| AC-10 — Workflow evidence completeness | Gate, review, evaluation, and approval manifest | Pending final approval and closure |
+
+AC-10 is a workflow-completion condition, not a business behavior that the Evaluator can declare complete before human approval. The Harness verifies that final evidence and approval records exist when closing the run. The Evaluator may assess AC-01 through AC-09 while noting AC-10 as pending.
 
 The Evaluator must also examine the coherence of the overall implementation.
 
@@ -2173,7 +2351,7 @@ The Evaluator should identify such issues rather than merely counting passed tes
 
 If the business goal is only partially achieved, the workflow should not report complete success.
 
-### **7.14 Step 13 — Obtain Human Approval**
+### 7.14 Step 13 — Obtain Human Approval
 
 The Harness prepares an approval package containing the goal, implementation summary, candidate revision, test evidence, Reviewer findings, Validator assessment, Evaluator assessment, and unresolved risks.
 
@@ -2181,7 +2359,7 @@ A human approver should be able to make a decision without reconstructing the en
 
 A representative approval record is:
 
-```
+```yaml
 approval:
   run_id: ACD-2026-028-001
   candidate_commit: "<immutable-candidate-commit>"
@@ -2206,9 +2384,9 @@ An Agent-generated YAML file claiming that approval occurred is not sufficient e
 
 The workflow should verify the approver's identity, authority, decision, and association with the correct candidate revision.
 
-### **7.15 Step 14 — Create the Authorized Output**
+### 7.15 Step 14 — Create the Authorized Output
 
-After the required approvals, the Harness may prepare a pull request.
+After the required approvals, the Harness may create or finalize the authorized pull request. Some repository policies require an earlier draft pull request for code review; in that case, approval controls promotion of the existing draft rather than the draft's initial creation.
 
 The pull request should summarize:
 
@@ -2229,7 +2407,7 @@ The pull request should reference the source revision covered by the final evide
 
 Further commits must trigger the relevant checks and approvals again according to repository policy.
 
-### **7.16 Step 15 — Close and Archive the Workflow**
+### 7.16 Step 15 — Close and Archive the Workflow
 
 Workflow closure should occur only after the completion contract has been satisfied.
 
@@ -2239,7 +2417,7 @@ It also records operational metrics.
 
 For example:
 
-```
+```json
 {
   "runId": "ACD-2026-028-001",
   "workflow": "feature-development/v1.0",
@@ -2262,11 +2440,11 @@ The archived package becomes part of the organization's engineering audit histor
 
 Useful lessons may be proposed for inclusion in persistent knowledge or Skills, but such proposals must follow the appropriate governance process.
 
-### **7.17 Applying the Workflow to Other Engineering Tasks**
+### 7.17 Applying the Workflow to Other Engineering Tasks
 
 Corporate fleet booking demonstrates a feature-development workflow. The same architectural foundation can support other engineering tasks with different entry conditions, evidence requirements, and approval policies.
 
-#### **Bug-fix workflow**
+#### Bug-fix workflow
 
 Suppose Alpha Car Detailing discovers that a cancelled corporate booking occasionally continues to count against the monthly allowance.
 
@@ -2282,7 +2460,7 @@ The Evaluator determines whether the reported defect is actually resolved and wh
 
 For low-risk bug fixes, the workflow may use a shorter planning stage. It must still preserve the required validation and approval controls.
 
-#### **Refactoring workflow**
+#### Refactoring workflow
 
 Suppose booking authorization logic has become duplicated across several application services.
 
@@ -2298,7 +2476,7 @@ The Evaluator examines whether the refactoring achieved its maintainability obje
 
 A green build alone is insufficient evidence that a refactoring is safe.
 
-#### **Security-remediation workflow**
+#### Security-remediation workflow
 
 Suppose a security assessment identifies a weakness allowing a corporate account identifier to be substituted in a booking request.
 
@@ -2314,7 +2492,7 @@ The security workflow should also determine whether the issue requires incident 
 
 A security finding should not be declared resolved solely because the vulnerable line of code was modified.
 
-#### **Architecture-change workflow**
+#### Architecture-change workflow
 
 Suppose Alpha Car Detailing plans to move corporate booking allowance management into a separate service.
 
@@ -2326,7 +2504,7 @@ The workflow should therefore emphasize architecture discovery, alternative anal
 
 The Evaluator should consider operational and architectural objectives, not only the number of completed code changes.
 
-#### **Production incident-support workflow**
+#### Production incident-support workflow
 
 Suppose the booking service begins rejecting valid corporate reservations during peak demand.
 
@@ -2342,7 +2520,7 @@ The workflow should capture the investigation timeline, supporting observations,
 
 An incident-support workflow can successfully complete with a verified diagnosis even when the eventual remediation is performed through a separate governed change process.
 
-### **7.18 Selecting the Appropriate Workflow**
+### 7.18 Selecting the Appropriate Workflow
 
 Not every engineering task requires the same amount of coordination.
 
@@ -2367,7 +2545,7 @@ The risk model may adjust the workflow.
 
 It must not allow the executing Agent to waive mandatory requirements at its own discretion.
 
-### **7.19 Hands-on Example Summary**
+### 7.19 Hands-on Example Summary
 
 The corporate fleet booking example demonstrates how enterprise AI engineering combines multiple previously introduced capabilities into one accountable process.
 
@@ -2399,11 +2577,10 @@ It is the establishment of a controlled relationship between **engineering inten
 
 That relationship is what turns individual Claude Code capabilities into a repeatable enterprise engineering workflow.
 
-**Chapter 28 status: In progress — next section: Claude Example**
 
-## **8. Claude Example**
+## 8. Claude Example
 
-### **8.1 Implementing Enterprise Workflows with Claude Code**
+### 8.1 Implementing Enterprise Workflows with Claude Code
 
 The previous section established the architecture of a controlled enterprise engineering workflow using Alpha Car Detailing's corporate fleet booking capability.
 
@@ -2421,7 +2598,7 @@ Claude Code can propose an implementation plan, modify application code, execute
 
 The objective is to combine the flexibility of an AI coding Agent with the predictability of a governed engineering process.
 
-### **8.2 Claude Code Capabilities and Their Workflow Responsibilities**
+### 8.2 Claude Code Capabilities and Their Workflow Responsibilities
 
 The following table maps Claude Code capabilities to their responsibilities within the enterprise workflow architecture.
 
@@ -2439,11 +2616,8 @@ The following table maps Claude Code capabilities to their responsibilities with
 | Non-interactive CLI      | Support Harness-driven Agent execution                        |
 | Permission configuration | Restrict or approve supported tool operations                 |
 
-These capabilities complement one another.&#x20;
+These capabilities complement one another.
 
-[image](https://www.google.com/s2/favicons?domain=https://code.claude.com\&sz=32)
-
-Claude Code Docs+2
 
 An enterprise workflow should use each capability for its intended responsibility.
 
@@ -2455,11 +2629,11 @@ Similarly, a Hook can help block prohibited commands, but sensitive operations s
 >
 > Claude Code capabilities should be composed through explicit contracts rather than assembled into an increasingly complicated prompt. Instructions guide behavior, Skills provide expertise, Agents perform work, Hooks provide event-driven controls, and the Harness owns authoritative workflow transitions.
 
-### **8.3 Reference Claude Code Project Structure**
+### 8.3 Reference Claude Code Project Structure
 
 A practical Alpha Car Detailing implementation may organize Claude Code configuration, reusable engineering assets, and Harness artifacts as follows.
 
-```
+```text
 alpha-car-detailing/
 │
 ├── CLAUDE.md
@@ -2529,7 +2703,7 @@ The illustrated structure is a recommended repository convention, not a mandator
 
 In particular, the Harness may maintain workflow execution records outside the repository to prevent temporary files, sensitive logs, and runtime artifacts from contaminating application source control.
 
-### **8.4 Define a Claude Code Workflow Skill**
+### 8.4 Define a Claude Code Workflow Skill
 
 Alpha Car Detailing can expose its feature-development procedure through a Claude Code Skill.
 
@@ -2539,7 +2713,7 @@ Consider the following illustrative file:
 
 `.claude/skills/workflow-feature/SKILL.md`
 
-```
+```markdown
 ---
 name: workflow-feature
 description: >
@@ -2587,15 +2761,12 @@ Goal reference: $ARGUMENTS
 - Handoff artifact references
 ```
 
-The `disable-model-invocation` setting is useful when a Skill should be initiated deliberately rather than selected automatically by Claude. Claude Code supports user-invoked Skills and configurable Skill invocation behavior.&#x20;
+The `disable-model-invocation` setting is useful when a Skill should be initiated deliberately rather than selected automatically by Claude. Claude Code supports user-invoked Skills and configurable Skill invocation behavior.
 
-[image](https://www.google.com/s2/favicons?domain=https://code.claude.com\&sz=32)
-
-Claude Code Docs
 
 A developer can invoke the Skill with a goal reference:
 
-```
+```text
 /workflow-feature ACD-FLEET-028
 ```
 
@@ -2607,21 +2778,18 @@ The Skill initiates the engineering interaction, but the Harness remains respons
 
 A Skill must never be given authority to waive its own required controls.
 
-### **8.5 Begin with Planning Mode**
+### 8.5 Begin with Planning Mode
 
 For the corporate fleet booking feature, implementation should begin with analysis rather than immediate source modification.
 
 Planning Mode allows Claude to explore the repository and develop an approach without directly changing application files during that planning stage.
 
-The developer may enter Planning Mode interactively or invoke Claude Code using its planning permission mode.&#x20;
+The developer may enter Planning Mode interactively or invoke Claude Code using its planning permission mode.
 
-[image](https://www.google.com/s2/favicons?domain=https://code.claude.com\&sz=32)
-
-Claude Code Docs+1
 
 A representative command is:
 
-```
+```text
 claude --permission-mode plan
 ```
 
@@ -2650,7 +2818,7 @@ It should also identify unresolved questions.
 
 If the agreement's accounting period is ambiguous, Claude should report the ambiguity instead of inventing a business rule.
 
-### **8.6 Separate Planning Output from Planning Approval**
+### 8.6 Separate Planning Output from Planning Approval
 
 Planning Mode does not automatically mean that a plan has been approved.
 
@@ -2658,7 +2826,7 @@ An enterprise Harness must preserve that distinction.
 
 Claude can propose the following plan:
 
-```
+```yaml
 plan:
   goal_id: ACD-FLEET-028
 
@@ -2711,7 +2879,7 @@ A Developer Agent should not substitute an unapproved revision of the plan merel
 
 Material changes should be returned through the planning and authorization process.
 
-### **8.7 Use Specialized Claude Subagents for Engineering Roles**
+### 8.7 Use Specialized Claude Subagents for Engineering Roles
 
 Claude Code supports specialized subagents that can operate with separate instructions and working context.
 
@@ -2725,7 +2893,7 @@ Consider a Reviewer Agent definition:
 
 `.claude/agents/reviewer.md`
 
-```
+```markdown
 ---
 name: reviewer
 description: >
@@ -2788,13 +2956,10 @@ The same approach can be applied to Lead, Developer, Validator, and Evaluator ro
 | Validator       | Read-only access to trusted gate evidence           | Cannot manufacture or override gate outcomes    |
 | Evaluator       | Read-only goal, implementation, and evidence access | Cannot bypass mandatory gates or human approval |
 
-Subagents provide useful context isolation and task delegation, but final authority remains with the Harness and authorized human decision-makers.&#x20;
+Subagents provide useful context isolation and task delegation, but final authority remains with the Harness and authorized human decision-makers.
 
-[image](https://www.google.com/s2/favicons?domain=https://code.claude.com\&sz=32)
 
-Claude Code Docs
-
-### **8.8 Execute Claude Code Through the Harness**
+### 8.8 Execute Claude Code Through the Harness
 
 Enterprise workflows should support both interactive and automated execution.
 
@@ -2806,7 +2971,7 @@ Claude Code's command-line interface supports non-interactive execution and stru
 
 A representative invocation is:
 
-```
+```powershell
 claude `
     --print `
     --permission-mode dontAsk `
@@ -2816,11 +2981,8 @@ claude `
      Report changed files, tests, and unresolved issues."
 ```
 
-In this example, `--print` requests non-interactive execution and `--output-format json` requests structured CLI output. The `dontAsk` permission mode avoids interactive permission prompts by denying operations that are not otherwise permitted. The permitted tool surface must therefore be configured appropriately.&#x20;
+In this example, `--print` requests non-interactive execution and `--output-format json` requests structured CLI output. The `dontAsk` permission mode avoids interactive permission prompts by denying operations that are not otherwise permitted. The permitted tool surface must therefore be configured appropriately.
 
-[image](https://www.google.com/s2/favicons?domain=https://code.claude.com\&sz=32)
-
-Claude Code Docs
 
 The Harness should not interpret successful process termination as proof that the engineering task succeeded.
 
@@ -2843,7 +3005,7 @@ Likewise, a structured JSON response is not automatically trustworthy evidence.
 
 The Harness must validate its schema and verify any externally relevant claims through authoritative sources.
 
-### **8.9 Configure Claude Code Permissions**
+### 8.9 Configure Claude Code Permissions
 
 Claude Code supports permission configuration that can control tool use through allow, deny, and permission-mode behavior.
 
@@ -2853,7 +3015,7 @@ A representative project configuration is:
 
 `.claude/settings.json`
 
-```
+```json
 {
   "permissions": {
     "allow": [
@@ -2870,11 +3032,8 @@ A representative project configuration is:
 }
 ```
 
-This example illustrates the principle of explicit permission configuration. Actual patterns and tool allowances should be tested against the Claude Code version deployed by the organization.&#x20;
+This example illustrates the principle of explicit permission configuration. Actual patterns and tool allowances should be tested against the Claude Code version deployed by the organization.
 
-[image](https://www.google.com/s2/favicons?domain=https://code.claude.com\&sz=32)
-
-Claude Code Docs
 
 A planning role may need only repository-reading capabilities.
 
@@ -2894,17 +3053,14 @@ The objective is not to prevent Agent autonomy entirely.
 
 It is to allow autonomy only within an explicitly defined operating boundary.
 
-### **8.10 Use Hooks for Automated Guardrails**
+### 8.10 Use Hooks for Automated Guardrails
 
 Hooks provide an event-driven mechanism for executing checks around Claude Code activity.
 
 For example, a `PreToolUse` Hook can inspect a proposed tool operation before execution, while a `PostToolUse` Hook can perform logging or checks after a tool operation.
 
-Hooks are therefore useful for consistent local controls that should not depend on the model remembering an instruction.&#x20;
+Hooks are therefore useful for consistent local controls that should not depend on the model remembering an instruction.
 
-[image](https://www.google.com/s2/favicons?domain=https://code.claude.com\&sz=32)
-
-Claude Code Docs
 
 Alpha Car Detailing might use Hooks to:
 
@@ -2921,11 +3077,11 @@ They run within the Claude Code execution environment and must be protected agai
 
 The Harness should independently verify protected artifacts and repository changes.
 
-#### **Example: Protected-file validation**
+#### Example: Protected-file validation
 
 Suppose the Developer Agent attempts to modify:
 
-```
+```text
 CLAUDE.md
 ```
 
@@ -2945,7 +3101,7 @@ For high-assurance environments, the execution account may also lack write permi
 
 A failure in one control should not necessarily remove all protection.
 
-### **8.11 Keep Deterministic Gates Outside Agent Judgment**
+### 8.11 Keep Deterministic Gates Outside Agent Judgment
 
 A recurring design mistake is to ask the Developer Agent to run tests and then accept its statement that testing succeeded.
 
@@ -2957,7 +3113,7 @@ However, authoritative validation should be performed through the configured gat
 
 For example, the Developer Agent may execute:
 
-```
+```powershell
 dotnet test tests/Booking.UnitTests --configuration Release
 ```
 
@@ -2977,13 +3133,13 @@ If a gate definition itself is defective, the issue should be escalated through 
 
 This preserves the independence of deterministic validation.
 
-### **8.12 Capture Structured Handoff Artifacts**
+### 8.12 Capture Structured Handoff Artifacts
 
 A Claude Code interaction should produce a structured handoff rather than only a conversational summary.
 
 For the Developer Agent, the handoff might contain:
 
-```
+```json
 {
   "role": "developer",
   "goalId": "ACD-FLEET-028",
@@ -3024,7 +3180,7 @@ Similarly, acceptance-criteria identifiers reported by the Agent should be treat
 
 A reliable handoff combines Agent-provided context with independently obtained execution facts.
 
-### **8.13 Manage Scratchpad and Session Context**
+### 8.13 Manage Scratchpad and Session Context
 
 Claude Code sessions can accumulate substantial context during a complex engineering task.
 
@@ -3034,7 +3190,7 @@ Not all of this information belongs in persistent repository instructions or aut
 
 A task-scoped Scratchpad can preserve useful working information:
 
-```
+```markdown
 # Run: ACD-2026-028-001
 
 ## Current Task
@@ -3075,7 +3231,7 @@ For long-running workflows, the Harness should preserve the handoff data needed 
 
 Conversation continuation can be useful, but it is not a substitute for durable workflow state.
 
-### **8.14 Recover from an Interrupted Claude Code Session**
+### 8.14 Recover from an Interrupted Claude Code Session
 
 Consider a workflow interrupted after the Developer Agent has modified source code but before mandatory tests have completed.
 
@@ -3096,7 +3252,7 @@ The Harness should determine:
 
 A recovery procedure might follow this sequence:
 
-```
+```text
 1. Load workflow manifest.
 
 2. Acquire workflow execution lease.
@@ -3130,7 +3286,7 @@ The central principle is that **session recovery is not the same as workflow rec
 
 The Agent session is one execution mechanism. The workflow is the authoritative engineering process.
 
-### **8.15 Use Claude Code for Reviewer Remediation Loops**
+### 8.15 Use Claude Code for Reviewer Remediation Loops
 
 When the Reviewer identifies defects, the Harness may start a controlled remediation iteration.
 
@@ -3138,7 +3294,7 @@ The Developer Agent should receive a precise remediation package rather than the
 
 For example:
 
-```
+```text
 Goal: ACD-FLEET-028
 Candidate: <immutable-candidate-commit>
 Attempt: 2
@@ -3177,7 +3333,7 @@ The remediation attempt should also consume a defined portion of the workflow's 
 
 If repeated attempts fail to address the underlying defect, the workflow should escalate rather than continue indefinitely.
 
-### **8.16 Use Claude Code for Validation Evidence Analysis**
+### 8.16 Use Claude Code for Validation Evidence Analysis
 
 The Validator Agent should consume evidence produced by trusted gate execution.
 
@@ -3197,7 +3353,7 @@ Furthermore, the Harness must independently enforce required gate completion.
 
 The Validator supports evidence interpretation; it does not replace the gate runner or authoritative policy checks.
 
-### **8.17 Use Claude Code for Business Evaluation**
+### 8.17 Use Claude Code for Business Evaluation
 
 The Evaluator Agent receives the approved goal, acceptance criteria, final candidate, technical evidence, and Reviewer assessment.
 
@@ -3221,7 +3377,7 @@ In that case, goal satisfaction remains unresolved.
 
 The correct response is to identify the ambiguity and request the appropriate business decision.
 
-### **8.18 Integrate Claude Code with External Enterprise Systems**
+### 8.18 Integrate Claude Code with External Enterprise Systems
 
 Large engineering organizations rarely manage all workflow information inside one repository.
 
@@ -3260,11 +3416,11 @@ Credentials should be scoped to the specific workflow and execution identity whe
 
 A general-purpose Agent credential with broad administrative privileges is inappropriate for routine software development.
 
-### **8.19 Claude Code Execution Patterns**
+### 8.19 Claude Code Execution Patterns
 
 Enterprise workflows can use several practical execution patterns.
 
-#### **Pattern A — Interactive Developer-Led Workflow**
+#### Pattern A — Interactive Developer-Led Workflow
 
 A developer launches Claude Code, explores the repository, invokes an approved Skill, and works through implementation with the Agent.
 
@@ -3272,7 +3428,7 @@ The Harness performs final validation, evidence capture, and governance checks.
 
 This pattern is useful when requirements are ambiguous or implementation involves substantial engineering judgment.
 
-#### **Pattern B — Harness-Orchestrated Workflow**
+#### Pattern B — Harness-Orchestrated Workflow
 
 The Harness receives an approved goal, initializes a workspace, invokes Claude Code for specific stages, and collects structured outputs.
 
@@ -3280,7 +3436,7 @@ The Harness manages state transitions, deterministic validation, remediation loo
 
 This pattern is suitable for repeatable engineering work with well-defined inputs and controls.
 
-#### **Pattern C — Hybrid Workflow**
+#### Pattern C — Hybrid Workflow
 
 The Harness automates discovery, implementation, testing, and evidence collection but pauses at defined decision points for human involvement.
 
@@ -3290,7 +3446,7 @@ After the decision is recorded, the Harness resumes execution.
 
 This pattern balances automation with enterprise accountability.
 
-#### **Pattern D — Specialized Multi-Agent Workflow**
+#### Pattern D — Specialized Multi-Agent Workflow
 
 Different logical roles execute in separate Claude Code sessions, subagents, or isolated workers.
 
@@ -3304,7 +3460,7 @@ Adding more Agents increases coordination overhead, execution cost, and the numb
 
 The architecture should use specialization where it produces a meaningful quality or control benefit.
 
-### **8.20 Production Considerations for Claude Code Workflows**
+### 8.20 Production Considerations for Claude Code Workflows
 
 A production enterprise implementation should account for operational limitations beyond prompt quality.
 
@@ -3333,13 +3489,36 @@ Conversely, every Agent invocation may complete successfully while the overall w
 
 That distinction should be reflected in metrics and operational reporting.
 
-### **8.21 End-to-End Claude Code Workflow Walkthrough**
+### 8.21 End-to-End Claude Code Workflow Walkthrough
 
 The complete corporate fleet booking workflow can now be summarized as an operational sequence.
 
-FIGURE 28.7 — CLAUDE CODE WITH HARNESS CONTROL
+**Figure 28.7 — Claude Code with Harness Control**
 
-\#chatgpt-mermaid-\_r_1la9\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(237, 237, 237);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_1la9\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_1la9\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_1la9\_ .error-icon{fill:rgb(48, 48, 48);}#chatgpt-mermaid-\_r_1la9\_ .error-text{fill:rgb(237, 237, 237);stroke:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1la9\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_1la9\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_1la9\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_1la9\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_1la9\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_1la9\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_1la9\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1la9\_ .marker.cross{stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1la9\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_1la9\_ p{margin:0;}#chatgpt-mermaid-\_r_1la9\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1la9\_ .cluster-label text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1la9\_ .cluster-label span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1la9\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_1la9\_ .label text,#chatgpt-mermaid-\_r_1la9\_ span{fill:rgb(237, 237, 237);color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1la9\_ .node rect,#chatgpt-mermaid-\_r_1la9\_ .node circle,#chatgpt-mermaid-\_r_1la9\_ .node ellipse,#chatgpt-mermaid-\_r_1la9\_ .node polygon,#chatgpt-mermaid-\_r_1la9\_ .node path{fill:rgb(9, 23, 44);stroke:rgb(31, 78, 148);stroke-width:1px;}#chatgpt-mermaid-\_r_1la9\_ .rough-node .label text,#chatgpt-mermaid-\_r_1la9\_ .node .label text,#chatgpt-mermaid-\_r_1la9\_ .image-shape .label,#chatgpt-mermaid-\_r_1la9\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_1la9\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_1la9\_ .rough-node .label,#chatgpt-mermaid-\_r_1la9\_ .node .label,#chatgpt-mermaid-\_r_1la9\_ .image-shape .label,#chatgpt-mermaid-\_r_1la9\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_1la9\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_1la9\_ .root .anchor path{fill:rgb(175, 175, 175)!important;stroke-width:0;stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1la9\_ .arrowheadPath{fill:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1la9\_ .edgePath .path{stroke:rgb(175, 175, 175);stroke-width:1px;}#chatgpt-mermaid-\_r_1la9\_ .flowchart-link{stroke:rgb(175, 175, 175);fill:none;}#chatgpt-mermaid-\_r_1la9\_ .edgeLabel{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_1la9\_ .edgeLabel p{background-color:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1la9\_ .edgeLabel rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1la9\_ .labelBkg{background-color:rgba(0, 0, 0, 0.5);}#chatgpt-mermaid-\_r_1la9\_ .cluster rect{fill:rgb(48, 48, 48);stroke:rgba(255, 255, 255, 0.15);stroke-width:1px;}#chatgpt-mermaid-\_r_1la9\_ .cluster text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1la9\_ .cluster span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1la9\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(48, 48, 48);border:1px solid rgba(255, 255, 255, 0.15);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_1la9\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1la9\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_1la9\_ .icon-shape,#chatgpt-mermaid-\_r_1la9\_ .image-shape{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_1la9\_ .icon-shape p,#chatgpt-mermaid-\_r_1la9\_ .image-shape p{background-color:rgb(0, 0, 0);padding:2px;}#chatgpt-mermaid-\_r_1la9\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_1la9\_ .image-shape .label rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1la9\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_1la9\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_1la9\_ .node .neo-node{stroke:rgb(31, 78, 148);}#chatgpt-mermaid-\_r_1la9\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_1la9\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_1la9\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_1la9\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1la9\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_1la9\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_1la9\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_1la9\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1la9\_ [data-look="neo"].node .neo-line path{stroke:rgb(31, 78, 148);filter:none;}#chatgpt-mermaid-\_r_1la9\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_1la9\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1la9\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_1la9\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_1la9\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1la9\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_1la9\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1la9\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_1la9\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_1la9\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_1la9\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_1la9\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-width:1px;}#chatgpt-mermaid-\_r_1la9\_ .node rect,#chatgpt-mermaid-\_r_1la9\_ .node circle,#chatgpt-mermaid-\_r_1la9\_ .node ellipse,#chatgpt-mermaid-\_r_1la9\_ .node polygon,#chatgpt-mermaid-\_r_1la9\_ .node path{fill:rgb(0, 40, 77);stroke:rgba(255, 255, 255, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_1la9\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_1la9\_ .mermaid-decision .label-container{fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_1la9\_ .edgePaths .flowchart-link{stroke:rgb(175, 175, 175);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_1la9\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1la9\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}#chatgpt-mermaid-\_r_1la9\_ .harness rect{fill:rgb(233, 232, 251)!important;stroke:rgb(105, 98, 166)!important;color:rgb(56, 50, 107)!important;}#chatgpt-mermaid-\_r_1la9\_ .harness polygon{fill:rgb(233, 232, 251)!important;stroke:rgb(105, 98, 166)!important;color:rgb(56, 50, 107)!important;}#chatgpt-mermaid-\_r_1la9\_ .harness ellipse{fill:rgb(233, 232, 251)!important;stroke:rgb(105, 98, 166)!important;color:rgb(56, 50, 107)!important;}#chatgpt-mermaid-\_r_1la9\_ .harness circle{fill:rgb(233, 232, 251)!important;stroke:rgb(105, 98, 166)!important;color:rgb(56, 50, 107)!important;}#chatgpt-mermaid-\_r_1la9\_ .harness path{fill:rgb(233, 232, 251)!important;stroke:rgb(105, 98, 166)!important;color:rgb(56, 50, 107)!important;}#chatgpt-mermaid-\_r_1la9\_ .harness tspan{fill:rgb(56, 50, 107)!important;}#chatgpt-mermaid-\_r_1la9\_ .agent rect{fill:rgb(232, 241, 251)!important;stroke:rgb(65, 108, 155)!important;color:rgb(23, 52, 84)!important;}#chatgpt-mermaid-\_r_1la9\_ .agent polygon{fill:rgb(232, 241, 251)!important;stroke:rgb(65, 108, 155)!important;color:rgb(23, 52, 84)!important;}#chatgpt-mermaid-\_r_1la9\_ .agent ellipse{fill:rgb(232, 241, 251)!important;stroke:rgb(65, 108, 155)!important;color:rgb(23, 52, 84)!important;}#chatgpt-mermaid-\_r_1la9\_ .agent circle{fill:rgb(232, 241, 251)!important;stroke:rgb(65, 108, 155)!important;color:rgb(23, 52, 84)!important;}#chatgpt-mermaid-\_r_1la9\_ .agent path{fill:rgb(232, 241, 251)!important;stroke:rgb(65, 108, 155)!important;color:rgb(23, 52, 84)!important;}#chatgpt-mermaid-\_r_1la9\_ .agent tspan{fill:rgb(23, 52, 84)!important;}#chatgpt-mermaid-\_r_1la9\_ .outcome rect{fill:rgb(232, 243, 233)!important;stroke:rgb(67, 133, 82)!important;color:rgb(36, 88, 46)!important;}#chatgpt-mermaid-\_r_1la9\_ .outcome polygon{fill:rgb(232, 243, 233)!important;stroke:rgb(67, 133, 82)!important;color:rgb(36, 88, 46)!important;}#chatgpt-mermaid-\_r_1la9\_ .outcome ellipse{fill:rgb(232, 243, 233)!important;stroke:rgb(67, 133, 82)!important;color:rgb(36, 88, 46)!important;}#chatgpt-mermaid-\_r_1la9\_ .outcome circle{fill:rgb(232, 243, 233)!important;stroke:rgb(67, 133, 82)!important;color:rgb(36, 88, 46)!important;}#chatgpt-mermaid-\_r_1la9\_ .outcome path{fill:rgb(232, 243, 233)!important;stroke:rgb(67, 133, 82)!important;color:rgb(36, 88, 46)!important;}#chatgpt-mermaid-\_r_1la9\_ .outcome tspan{fill:rgb(36, 88, 46)!important;}#chatgpt-mermaid-\_r_1la9\_ .decision rect{fill:rgb(255, 240, 214)!important;stroke:rgb(189, 135, 48)!important;color:rgb(112, 73, 9)!important;}#chatgpt-mermaid-\_r_1la9\_ .decision polygon{fill:rgb(255, 240, 214)!important;stroke:rgb(189, 135, 48)!important;color:rgb(112, 73, 9)!important;}#chatgpt-mermaid-\_r_1la9\_ .decision ellipse{fill:rgb(255, 240, 214)!important;stroke:rgb(189, 135, 48)!important;color:rgb(112, 73, 9)!important;}#chatgpt-mermaid-\_r_1la9\_ .decision circle{fill:rgb(255, 240, 214)!important;stroke:rgb(189, 135, 48)!important;color:rgb(112, 73, 9)!important;}#chatgpt-mermaid-\_r_1la9\_ .decision path{fill:rgb(255, 240, 214)!important;stroke:rgb(189, 135, 48)!important;color:rgb(112, 73, 9)!important;}#chatgpt-mermaid-\_r_1la9\_ .decision tspan{fill:rgb(112, 73, 9)!important;}Approved Engineering GoalHarness AdmissionClaude Code Planning ModeLead Agent PlanPlan AuthorizationClaude Developer ExecutionCandidate CommitHarness Deterministic GatesGates Passed?Controlled RemediationClaude ReviewerClaude ValidatorClaude EvaluatorRequired Conditions Met?Remediation or EscalationHuman ApprovalAuthorized Pull RequestEvidence ArchiveApprovedRevision requiredNoYesNoYes
+```mermaid
+flowchart TD
+    A[Approved Engineering Goal] --> B[Harness Admission]
+    B --> C[Claude Planning Mode and Lead Agent]
+    C --> D{Plan authorized?}
+    D -->|Revise| C
+    D -->|Yes| E[Claude Developer Execution]
+    E --> F[Candidate Commit]
+    F --> G[Harness Deterministic Gates]
+    G --> H{Gates passed?}
+    H -->|No| I[Controlled Remediation]
+    I --> E
+    H -->|Yes| J[Claude Reviewer]
+    J --> K[Claude Validator]
+    K --> L[Claude Evaluator]
+    L --> M{Completion conditions met?}
+    M -->|No| N[Remediate or Escalate]
+    N --> E
+    M -->|Yes| O[Human Approval]
+    O --> P[Authorized Pull Request]
+    P --> Q[Evidence Archive]
+```
+
+The simplified diagram omits the retry-budget and escalation branches for legibility; any return from assessment to implementation is conditional on the Harness recovery policy.
 
 The diagram illustrates the relationship between Claude Code and the enterprise Harness.
 
@@ -3349,7 +3528,7 @@ The Harness determines when those activities are permitted, what evidence they m
 
 The authoritative controls remain external to the Agent's own claims.
 
-### **8.22 Architectural Lessons from the Claude Implementation**
+### 8.22 Architectural Lessons from the Claude Implementation
 
 Several principles emerge from this example.
 
@@ -3373,7 +3552,7 @@ It is the one that delegates engineering work intelligently while preserving rel
 >
 > Begin with one well-defined workflow, such as feature development or bug fixing, and implement its complete lifecycle before expanding to additional workflow types. A small Harness with reliable state management, deterministic validation, and explicit approval boundaries provides a stronger foundation than a sophisticated multi-agent system whose execution cannot be audited or recovered.
 
-### **8.23 Claude Example Summary**
+### 8.23 Claude Example Summary
 
 Claude Code supplies the practical AI engineering capabilities needed to implement complex software changes.
 
@@ -3391,11 +3570,10 @@ The implementation must also satisfy the agreed business goal, preserve architec
 
 That separation is the foundation of repeatable enterprise AI engineering workflows.
 
-**Chapter 28 status: In progress — next section: GitHub Copilot Comparison**
 
-## **9. GitHub Copilot Comparison**
+## 9. GitHub Copilot Comparison
 
-### **9.1 Enterprise Workflows with GitHub Copilot**
+### 9.1 Enterprise Workflows with GitHub Copilot
 
 The enterprise workflow architecture described in this chapter is not specific to Claude Code.
 
@@ -3416,7 +3594,7 @@ GitHub Copilot can participate in this architecture without requiring the organi
 
 The primary differences concern how Agents are invoked, how repository instructions are distributed, where execution occurs, and how the workflow integrates with GitHub's development lifecycle.
 
-### **9.2 GitHub Copilot Execution Environments**
+### 9.2 GitHub Copilot Execution Environments
 
 GitHub Copilot provides several execution surfaces relevant to enterprise engineering.
 
@@ -3428,11 +3606,8 @@ GitHub Copilot provides several execution surfaces relevant to enterprise engine
 
 **GitHub Actions and GitHub automation capabilities** provide mechanisms for connecting Agent execution with repository events, scheduled work, validation pipelines, and delivery processes.
 
-These environments offer different levels of interaction and execution control.&#x20;
+These environments offer different levels of interaction and execution control.
 
-[image](https://www.google.com/s2/favicons?domain=https://docs.github.com\&sz=32)
-
-GitHub Docs+2
 
 From the perspective of enterprise workflow architecture, they represent alternative execution adapters.
 
@@ -3442,7 +3617,7 @@ For example, Alpha Car Detailing might use Copilot Agent Mode for interactive ar
 
 The enterprise workflow contract should remain consistent across those execution environments.
 
-### **9.3 Mapping Claude Code Capabilities to GitHub Copilot**
+### 9.3 Mapping Claude Code Capabilities to GitHub Copilot
 
 The following comparison identifies how the principal capabilities used in the Alpha Car Detailing workflow correspond to GitHub Copilot mechanisms.
 
@@ -3464,21 +3639,18 @@ The following comparison identifies how the principal capabilities used in the A
 | Approval                       | Harness and authorized approvers  | GitHub reviews, protected environments, and Harness approval policy                  |
 | Audit evidence                 | Harness evidence store            | GitHub artifacts, workflow records, and external evidence store                      |
 
-These are functional correspondences rather than guarantees of identical behavior. Configuration locations and feature support vary between Copilot's IDE, CLI, application, and cloud environments.&#x20;
+These are functional correspondences rather than guarantees of identical behavior. Configuration locations and feature support vary between Copilot's IDE, CLI, application, and cloud environments.
 
-[image](https://www.google.com/s2/favicons?domain=https://docs.github.com\&sz=32)
-
-GitHub Docs+1
 
 The important architectural decision is to preserve the same engineering responsibilities even when the underlying platform provides different implementation mechanisms.
 
-### **9.4 Repository Instructions**
+### 9.4 Repository Instructions
 
 Claude Code primarily uses `CLAUDE.md` to communicate persistent repository instructions.
 
 GitHub Copilot supports repository-wide instructions through:
 
-```
+```text
 .github/copilot-instructions.md
 ```
 
@@ -3486,7 +3658,7 @@ It also supports path-specific instructions and other customization mechanisms, 
 
 For Alpha Car Detailing, the corresponding Copilot instruction file might contain:
 
-```
+```markdown
 # Alpha Car Detailing — Copilot Instructions
 
 ## Architecture
@@ -3530,7 +3702,7 @@ Each platform may interpret instruction scope and precedence differently. Genera
 >
 > Repository instructions should communicate a common engineering standard across platforms. They should not become independent policy systems that gradually diverge because different AI coding tools are used by different development teams.
 
-### **9.5 Skills and Reusable Expertise**
+### 9.5 Skills and Reusable Expertise
 
 GitHub Copilot supports Agent Skills, enabling teams to package task-specific procedures, scripts, and supporting resources.
 
@@ -3545,11 +3717,8 @@ A reusable corporate booking implementation Skill might describe:
 - How to verify idempotent requests.
 - How to preserve architecture boundaries.
 
-Copilot supports repository Skill locations including `.github/skills/`, `.claude/skills/`, and `.agents/skills/` in supported environments.&#x20;
+Copilot supports repository Skill locations including `.github/skills/`, `.claude/skills/`, and `.agents/skills/` in supported environments.
 
-[image](https://www.google.com/s2/favicons?domain=https://docs.github.com\&sz=32)
-
-GitHub Docs
 
 This creates a useful portability opportunity.
 
@@ -3567,17 +3736,14 @@ A shared `SKILL.md` file does not guarantee identical execution behavior.
 
 The Harness must continue to verify outputs independently.
 
-### **9.6 Planning Mode Comparison**
+### 9.6 Planning Mode Comparison
 
 Both Claude Code and GitHub Copilot support planning-oriented interactions.
 
 In Copilot, Plan Mode can be used to investigate a task and prepare an implementation plan before modifying code.
 
-The Copilot CLI also supports workflows that move from planning into autonomous execution.&#x20;
+The Copilot CLI also supports workflows that move from planning into autonomous execution.
 
-[image](https://www.google.com/s2/favicons?domain=https://docs.github.com\&sz=32)
-
-GitHub Docs+1
 
 For Alpha Car Detailing, a Copilot planning request could be:
 
@@ -3593,7 +3759,7 @@ Likewise, an automated plan-to-execution transition must not bypass a required H
 
 For high-risk changes, the Harness should preserve the approved plan and provide authorization independently of the Agent interface.
 
-### **9.7 Specialized Agent Roles**
+### 9.7 Specialized Agent Roles
 
 GitHub Copilot supports custom agents with specialized instructions and tool configurations.
 
@@ -3601,13 +3767,13 @@ These can be used to represent the handbook's logical engineering roles.
 
 A repository may define a custom reviewer under:
 
-```
+```text
 .github/agents/reviewer.agent.md
 ```
 
 A representative definition is:
 
-```
+```markdown
 ---
 name: reviewer
 description: >
@@ -3640,11 +3806,8 @@ Return findings with severity, evidence, and
 required remediation.
 ```
 
-The exact tool identifiers and supported capabilities must be checked for the target Copilot environment. Custom agent profiles can define specialized roles and restrict available tools, but behavior varies by surface.&#x20;
+The exact tool identifiers and supported capabilities must be checked for the target Copilot environment. Custom agent profiles can define specialized roles and restrict available tools, but behavior varies by surface.
 
-[image](https://www.google.com/s2/favicons?domain=https://docs.github.com\&sz=32)
-
-GitHub Docs
 
 The logical separation between Reviewer, Validator, and Evaluator remains important.
 
@@ -3652,7 +3815,7 @@ Copilot custom agents can support those roles, but merely defining separate prof
 
 The Harness should still control evidence access, execution identity, and the conditions under which each role's assessment may be accepted.
 
-### **9.8 Copilot Agent Mode Versus Harness-Orchestrated Execution**
+### 9.8 Copilot Agent Mode Versus Harness-Orchestrated Execution
 
 Copilot Agent Mode allows an Agent to perform multi-step development tasks interactively.
 
@@ -3682,13 +3845,13 @@ Copilot Agent Mode supplies intelligent execution within the engineering process
 
 It should not be the sole authority over that process.
 
-### **9.9 Copilot CLI and Autonomous Execution**
+### 9.9 Copilot CLI and Autonomous Execution
 
 GitHub Copilot CLI provides terminal-based execution that can participate in scripted engineering workflows.
 
 For example:
 
-```
+```powershell
 copilot -p `
   "Analyze the approved corporate fleet booking task and report the relevant implementation boundaries."
 ```
@@ -3697,19 +3860,13 @@ Copilot CLI also supports autonomous continuation through Autopilot Mode.
 
 A representative command is:
 
-```
+```powershell
 copilot --autopilot `
   --max-autopilot-continues 10 `
   -p "Implement the assigned feature task within the approved repository scope."
 ```
 
-Autopilot continuation limits bound the number of automatic continuation messages, but they do not by themselves enforce business completion criteria or all Harness retry budgets. Tool permissions must be configured separately.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://docs.github.com\&sz=32)
-
-GitHub Docs
-
-For enterprise use, the Harness should record process outcomes, generated artifacts, source revisions, and relevant execution metadata.
+Autopilot continuation limits bound automatic continuation, but they do not establish business completion criteria, enforce Harness retry budgets, or independently authorize tool use. Unattended execution must use an explicitly approved permission profile and isolated environment. For enterprise use, the Harness should record process outcomes, generated artifacts, source revisions, and relevant execution metadata.
 
 It should also apply timeouts and recovery policies appropriate to the task.
 
@@ -3717,21 +3874,30 @@ A CLI execution that stops after reaching a continuation limit should be classif
 
 It should not automatically be classified as successful.
 
-### **9.10 GitHub Copilot Cloud Agent**
+### 9.10 GitHub Copilot Cloud Agent
 
 One of GitHub Copilot's distinctive integration patterns is delegated work through its cloud Agent environment.
 
 An engineering task can be assigned to Copilot, which can investigate the repository, implement changes, and prepare a pull request.
 
-This creates a workflow naturally centered on GitHub issues, branches, and pull requests.&#x20;
+This creates a workflow naturally centered on GitHub issues, branches, and pull requests.
 
-[image](https://www.google.com/s2/favicons?domain=https://docs.github.com\&sz=32)
-
-GitHub Docs
 
 For Alpha Car Detailing, the process might be:
 
-\#chatgpt-mermaid-\_r_1lhi\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(237, 237, 237);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_1lhi\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_1lhi\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_1lhi\_ .error-icon{fill:rgb(48, 48, 48);}#chatgpt-mermaid-\_r_1lhi\_ .error-text{fill:rgb(237, 237, 237);stroke:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1lhi\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_1lhi\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_1lhi\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_1lhi\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_1lhi\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_1lhi\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_1lhi\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1lhi\_ .marker.cross{stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1lhi\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_1lhi\_ p{margin:0;}#chatgpt-mermaid-\_r_1lhi\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1lhi\_ .cluster-label text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1lhi\_ .cluster-label span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1lhi\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_1lhi\_ .label text,#chatgpt-mermaid-\_r_1lhi\_ span{fill:rgb(237, 237, 237);color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1lhi\_ .node rect,#chatgpt-mermaid-\_r_1lhi\_ .node circle,#chatgpt-mermaid-\_r_1lhi\_ .node ellipse,#chatgpt-mermaid-\_r_1lhi\_ .node polygon,#chatgpt-mermaid-\_r_1lhi\_ .node path{fill:rgb(9, 23, 44);stroke:rgb(31, 78, 148);stroke-width:1px;}#chatgpt-mermaid-\_r_1lhi\_ .rough-node .label text,#chatgpt-mermaid-\_r_1lhi\_ .node .label text,#chatgpt-mermaid-\_r_1lhi\_ .image-shape .label,#chatgpt-mermaid-\_r_1lhi\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_1lhi\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_1lhi\_ .rough-node .label,#chatgpt-mermaid-\_r_1lhi\_ .node .label,#chatgpt-mermaid-\_r_1lhi\_ .image-shape .label,#chatgpt-mermaid-\_r_1lhi\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_1lhi\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_1lhi\_ .root .anchor path{fill:rgb(175, 175, 175)!important;stroke-width:0;stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1lhi\_ .arrowheadPath{fill:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1lhi\_ .edgePath .path{stroke:rgb(175, 175, 175);stroke-width:1px;}#chatgpt-mermaid-\_r_1lhi\_ .flowchart-link{stroke:rgb(175, 175, 175);fill:none;}#chatgpt-mermaid-\_r_1lhi\_ .edgeLabel{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_1lhi\_ .edgeLabel p{background-color:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1lhi\_ .edgeLabel rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1lhi\_ .labelBkg{background-color:rgba(0, 0, 0, 0.5);}#chatgpt-mermaid-\_r_1lhi\_ .cluster rect{fill:rgb(48, 48, 48);stroke:rgba(255, 255, 255, 0.15);stroke-width:1px;}#chatgpt-mermaid-\_r_1lhi\_ .cluster text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1lhi\_ .cluster span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1lhi\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(48, 48, 48);border:1px solid rgba(255, 255, 255, 0.15);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_1lhi\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1lhi\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_1lhi\_ .icon-shape,#chatgpt-mermaid-\_r_1lhi\_ .image-shape{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_1lhi\_ .icon-shape p,#chatgpt-mermaid-\_r_1lhi\_ .image-shape p{background-color:rgb(0, 0, 0);padding:2px;}#chatgpt-mermaid-\_r_1lhi\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_1lhi\_ .image-shape .label rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1lhi\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_1lhi\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_1lhi\_ .node .neo-node{stroke:rgb(31, 78, 148);}#chatgpt-mermaid-\_r_1lhi\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_1lhi\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_1lhi\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_1lhi\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1lhi\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_1lhi\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_1lhi\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_1lhi\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1lhi\_ [data-look="neo"].node .neo-line path{stroke:rgb(31, 78, 148);filter:none;}#chatgpt-mermaid-\_r_1lhi\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_1lhi\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1lhi\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_1lhi\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_1lhi\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1lhi\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_1lhi\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1lhi\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_1lhi\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_1lhi\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_1lhi\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_1lhi\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-width:1px;}#chatgpt-mermaid-\_r_1lhi\_ .node rect,#chatgpt-mermaid-\_r_1lhi\_ .node circle,#chatgpt-mermaid-\_r_1lhi\_ .node ellipse,#chatgpt-mermaid-\_r_1lhi\_ .node polygon,#chatgpt-mermaid-\_r_1lhi\_ .node path{fill:rgb(0, 40, 77);stroke:rgba(255, 255, 255, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_1lhi\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_1lhi\_ .mermaid-decision .label-container{fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_1lhi\_ .edgePaths .flowchart-link{stroke:rgb(175, 175, 175);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_1lhi\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1lhi\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}#chatgpt-mermaid-\_r_1lhi\_ .work rect{fill:rgb(232, 241, 251)!important;stroke:rgb(65, 108, 155)!important;color:rgb(23, 52, 84)!important;}#chatgpt-mermaid-\_r_1lhi\_ .work polygon{fill:rgb(232, 241, 251)!important;stroke:rgb(65, 108, 155)!important;color:rgb(23, 52, 84)!important;}#chatgpt-mermaid-\_r_1lhi\_ .work ellipse{fill:rgb(232, 241, 251)!important;stroke:rgb(65, 108, 155)!important;color:rgb(23, 52, 84)!important;}#chatgpt-mermaid-\_r_1lhi\_ .work circle{fill:rgb(232, 241, 251)!important;stroke:rgb(65, 108, 155)!important;color:rgb(23, 52, 84)!important;}#chatgpt-mermaid-\_r_1lhi\_ .work path{fill:rgb(232, 241, 251)!important;stroke:rgb(65, 108, 155)!important;color:rgb(23, 52, 84)!important;}#chatgpt-mermaid-\_r_1lhi\_ .work tspan{fill:rgb(23, 52, 84)!important;}#chatgpt-mermaid-\_r_1lhi\_ .control rect{fill:rgb(233, 232, 251)!important;stroke:rgb(105, 98, 166)!important;color:rgb(56, 50, 107)!important;}#chatgpt-mermaid-\_r_1lhi\_ .control polygon{fill:rgb(233, 232, 251)!important;stroke:rgb(105, 98, 166)!important;color:rgb(56, 50, 107)!important;}#chatgpt-mermaid-\_r_1lhi\_ .control ellipse{fill:rgb(233, 232, 251)!important;stroke:rgb(105, 98, 166)!important;color:rgb(56, 50, 107)!important;}#chatgpt-mermaid-\_r_1lhi\_ .control circle{fill:rgb(233, 232, 251)!important;stroke:rgb(105, 98, 166)!important;color:rgb(56, 50, 107)!important;}#chatgpt-mermaid-\_r_1lhi\_ .control path{fill:rgb(233, 232, 251)!important;stroke:rgb(105, 98, 166)!important;color:rgb(56, 50, 107)!important;}#chatgpt-mermaid-\_r_1lhi\_ .control tspan{fill:rgb(56, 50, 107)!important;}#chatgpt-mermaid-\_r_1lhi\_ .outcome rect{fill:rgb(232, 243, 233)!important;stroke:rgb(67, 133, 82)!important;color:rgb(36, 88, 46)!important;}#chatgpt-mermaid-\_r_1lhi\_ .outcome polygon{fill:rgb(232, 243, 233)!important;stroke:rgb(67, 133, 82)!important;color:rgb(36, 88, 46)!important;}#chatgpt-mermaid-\_r_1lhi\_ .outcome ellipse{fill:rgb(232, 243, 233)!important;stroke:rgb(67, 133, 82)!important;color:rgb(36, 88, 46)!important;}#chatgpt-mermaid-\_r_1lhi\_ .outcome circle{fill:rgb(232, 243, 233)!important;stroke:rgb(67, 133, 82)!important;color:rgb(36, 88, 46)!important;}#chatgpt-mermaid-\_r_1lhi\_ .outcome path{fill:rgb(232, 243, 233)!important;stroke:rgb(67, 133, 82)!important;color:rgb(36, 88, 46)!important;}#chatgpt-mermaid-\_r_1lhi\_ .outcome tspan{fill:rgb(36, 88, 46)!important;}Approved GitHub IssueWorkflow AdmissionDelegate to Copilot CloudAgentRepository InvestigationImplementation BranchPull RequestRequired GitHub ActionsIndependent ReviewGoal EvaluationAuthorized ApprovalMerge or Release Process
+```mermaid
+flowchart TD
+    A[Approved GitHub Issue] --> B[Workflow Admission]
+    B --> C[Delegate to Copilot Cloud Agent]
+    C --> D[Repository Investigation]
+    D --> E[Implementation Branch]
+    E --> F[Pull Request]
+    F --> G[Required CI Checks]
+    G --> H[Independent Review]
+    H --> I[Goal Evaluation]
+    I --> J[Authorized Approval]
+    J --> K[Merge or Release Process]
+```
 
 The Cloud Agent can simplify certain orchestration responsibilities because the implementation branch and pull request are already integrated into the repository platform.
 
@@ -3743,13 +3909,13 @@ The pull request is a proposed engineering output.
 
 Its readiness must be established by the relevant technical and governance controls.
 
-### **9.11 GitHub Actions as a Deterministic Gate Runner**
+### 9.11 GitHub Actions as a Deterministic Gate Runner
 
 GitHub Actions is a natural option for running deterministic validation when a repository is hosted on GitHub.
 
 For Alpha Car Detailing, a workflow can be configured to execute a .NET build and tests on pull requests.
 
-```
+```text
 name: Booking Validation
 
 on:
@@ -3812,15 +3978,12 @@ The resulting architecture separates:
 
 This is consistent with the enterprise Harness architecture developed in Part III.
 
-### **9.12 Hooks and Automated Guardrails**
+### 9.12 Hooks and Automated Guardrails
 
 GitHub Copilot also supports Hooks for executing custom checks and scripts at defined Agent lifecycle events.
 
-Hooks can support logging, tool-use inspection, and preventive guardrails in supported execution environments.&#x20;
+Hooks can support logging, tool-use inspection, and preventive guardrails in supported execution environments.
 
-[image](https://www.google.com/s2/favicons?domain=https://docs.github.com\&sz=32)
-
-GitHub Docs
 
 For example, an organization may configure a Hook to examine a proposed operation and deny actions against protected governance files.
 
@@ -3847,7 +4010,7 @@ Hooks improve consistency and provide early feedback.
 
 They must not become the exclusive mechanism protecting enterprise governance.
 
-### **9.13 Reviewing Copilot-Generated Code**
+### 9.13 Reviewing Copilot-Generated Code
 
 GitHub Copilot can participate in code review, including identifying potential defects and suggesting improvements.
 
@@ -3867,7 +4030,7 @@ If important review dimensions are not covered, additional review may be necessa
 
 Likewise, automated review feedback must not be treated as a substitute for a required human approval.
 
-### **9.14 Workflow State and Recovery**
+### 9.14 Workflow State and Recovery
 
 A GitHub-centered implementation has access to durable repository artifacts, branches, pull requests, issue discussions, and CI/CD records.
 
@@ -3885,7 +4048,7 @@ The Harness therefore needs an authoritative workflow record, even when GitHub s
 
 For Alpha Car Detailing, this record might include:
 
-```
+```yaml
 run:
   id: ACD-2026-028-001
   provider: github-copilot
@@ -3913,7 +4076,7 @@ The record should be persisted in the Harness evidence store and reconciled agai
 
 For example, an approval recorded for one commit should not automatically apply to subsequent commits if the organization's approval policy requires reapproval.
 
-### **9.15 Practical Workflow Comparison**
+### 9.15 Practical Workflow Comparison
 
 The corporate fleet booking feature can be implemented using either Claude Code or GitHub Copilot while preserving the same engineering process.
 
@@ -3938,7 +4101,7 @@ Neither platform removes the need for controlled workflow design.
 
 The relevant architectural question is how effectively the organization integrates the coding platform into its existing engineering controls.
 
-### **9.16 Choosing Between Claude Code and GitHub Copilot**
+### 9.16 Choosing Between Claude Code and GitHub Copilot
 
 Platform selection should be based on organizational requirements rather than an assumption that one tool is universally superior.
 
@@ -3967,7 +4130,7 @@ A useful evaluation framework includes:
 
 The best platform choice is the one that supports the required engineering operating model with acceptable risk, maintenance effort, and organizational fit.
 
-### **9.17 Vendor-Neutral Workflow Design**
+### 9.17 Vendor-Neutral Workflow Design
 
 A mature Harness should avoid embedding platform-specific assumptions into its core state machine.
 
@@ -3975,7 +4138,7 @@ Instead, it should define a common execution contract.
 
 For example:
 
-```
+```csharp
 public interface IAgentExecutionAdapter
 {
     Task<AgentExecutionResult> ExecuteAsync(
@@ -3986,7 +4149,7 @@ public interface IAgentExecutionAdapter
 
 An execution request might contain:
 
-```
+```csharp
 public sealed record AgentExecutionRequest(
     string RunId,
     string Role,
@@ -3999,7 +4162,7 @@ public sealed record AgentExecutionRequest(
 
 The result might contain:
 
-```
+```csharp
 public sealed record AgentExecutionResult(
     string ExecutionId,
     string Provider,
@@ -4025,7 +4188,7 @@ For example, the Developer Agent might use Claude Code while a separate Reviewer
 
 Such a design is valid if the organization can preserve evidence consistency, confidentiality, permission boundaries, and review independence.
 
-### **9.18 Architectural Considerations**
+### 9.18 Architectural Considerations
 
 Three architectural principles deserve particular emphasis when comparing Claude Code and GitHub Copilot.
 
@@ -4043,7 +4206,7 @@ Migrating an enterprise workflow from Claude Code to GitHub Copilot should prese
 
 Recreating an equivalent prompt is only one part of the migration.
 
-### **9.19 GitHub Copilot Comparison Summary**
+### 9.19 GitHub Copilot Comparison Summary
 
 GitHub Copilot provides a capable alternative execution environment for enterprise AI engineering workflows.
 
@@ -4061,11 +4224,10 @@ The enterprise Harness provides the consistent control architecture across both 
 
 **Claude Code and GitHub Copilot are alternative engineering execution environments. The governed workflow remains the authoritative system for delivering verifiable enterprise outcomes.**
 
-**Chapter 28 status: In progress — next section: Codex Comparison**
 
-## **10. Codex Comparison**
+## 10. Codex Comparison
 
-### **10.1 Enterprise Workflows with OpenAI Codex**
+### 10.1 Enterprise Workflows with OpenAI Codex
 
 OpenAI Codex provides another implementation environment for the enterprise engineering workflows described in this chapter.
 
@@ -4077,7 +4239,7 @@ For the Enterprise AI Engineering Handbook, Codex is particularly relevant becau
 
 The fundamental engineering process remains the same:
 
-```
+```text
 Goal / Prompt
       ↓
 Repository Intelligence
@@ -4107,11 +4269,8 @@ Authorized Pull Request / Output
 
 The difference lies in how Codex implements the Agent execution responsibilities within that process.
 
-Codex provides command-line, IDE, application, and programmatic integration surfaces. Its open-source agent Harness also exposes mechanisms for managing Agent sessions, tool execution, sandbox boundaries, and approval requests.&#x20;
+Codex provides command-line, IDE, application, and programmatic integration surfaces. Its open-source agent Harness also exposes mechanisms for managing Agent sessions, tool execution, sandbox boundaries, and approval requests.
 
-[image](https://www.google.com/s2/favicons?domain=https://developers.openai.com\&sz=32)
-
-OpenAI Developers
 
 These capabilities can reduce the amount of Agent-runtime infrastructure an enterprise team must develop.
 
@@ -4125,7 +4284,7 @@ The enterprise engineering Harness defines and enforces the organization's compl
 
 An organization may use the Codex Harness as a foundational execution component without delegating every enterprise control to it.
 
-### **10.2 Codex Execution Environments**
+### 10.2 Codex Execution Environments
 
 Codex supports several execution patterns that can participate in enterprise workflows.
 
@@ -4139,9 +4298,7 @@ Codex supports several execution patterns that can participate in enterprise wor
 
 **Codex Agents API** provides access to managed Agent sessions and orchestration capabilities through an API-based environment.
 
-These interfaces are not identical. Their execution environments, authentication models, available tools, and approval mechanisms differ.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://developers.openai.com\&sz=32)
+These interfaces are not identical. Their execution environments, authentication models, available tools, and approval mechanisms differ.
 
 OpenAI API+1
 
@@ -4151,7 +4308,7 @@ The enterprise workflow should not depend on which interface performed the imple
 
 The authoritative workflow record must still identify the candidate revision, required evidence, outstanding risks, and final approval status.
 
-### **10.3 Mapping Claude Code Capabilities to Codex**
+### 10.3 Mapping Claude Code Capabilities to Codex
 
 The following table compares the principal capabilities used in the corporate fleet booking workflow.
 
@@ -4183,7 +4340,7 @@ Likewise, a Codex review result does not automatically establish that every ente
 
 The Handbook's logical responsibilities should remain distinct even when Codex provides multiple supporting capabilities.
 
-### **10.4 Repository Instructions with AGENTS.md**
+### 10.4 Repository Instructions with AGENTS.md
 
 Codex uses `AGENTS.md` to communicate repository instructions and working conventions.
 
@@ -4191,7 +4348,7 @@ This serves a purpose similar to `CLAUDE.md` in the Claude-first implementation.
 
 For Alpha Car Detailing, an illustrative `AGENTS.md` might contain:
 
-```
+```markdown
 # Alpha Car Detailing — Engineering Instructions
 
 ## Architecture
@@ -4229,19 +4386,16 @@ The purpose is to communicate persistent engineering expectations without repeat
 
 Codex can use these instructions during repository work, while task-specific goals and the enterprise Harness supply the remaining execution context.
 
-OpenAI's Codex guidance also emphasizes keeping repository instructions, Skills, and prompts appropriately scoped rather than accumulating redundant instructions that consume context and create ambiguity.&#x20;
+OpenAI's Codex guidance also emphasizes keeping repository instructions, Skills, and prompts appropriately scoped rather than accumulating redundant instructions that consume context and create ambiguity.
 
-[image](https://www.google.com/s2/favicons?domain=https://developers.openai.com\&sz=32)
 
-OpenAI Developers
-
-#### **Maintaining consistent instructions across platforms**
+#### Maintaining consistent instructions across platforms
 
 Organizations that support Claude Code and Codex should avoid maintaining conflicting engineering standards.
 
 A practical arrangement might use:
 
-```
+```text
 alpha-car-detailing/
 │
 ├── CLAUDE.md
@@ -4266,7 +4420,7 @@ However, shared standards should not be changed automatically merely because an 
 
 Protected governance artifacts remain under human-controlled change management.
 
-### **10.5 Codex Skills and Reusable Engineering Practices**
+### 10.5 Codex Skills and Reusable Engineering Practices
 
 Codex supports reusable Agent Skills based on `SKILL.md` files and associated resources.
 
@@ -4274,9 +4428,7 @@ A Skill may contain instructions, scripts, references, and other supporting asse
 
 This aligns closely with the Skill architecture developed in Chapters 7 and 23.
 
-Codex Skills can package repeatable engineering practices while preserving a separation between general instructions and task-specific goals.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://developers.openai.com\&sz=32)
+Codex Skills can package repeatable engineering practices while preserving a separation between general instructions and task-specific goals.
 
 OpenAI API
 
@@ -4292,7 +4444,7 @@ For Alpha Car Detailing, the organization could define Skills for:
 
 A representative Skill structure might be:
 
-```
+```text
 .agents/
 └── skills/
     └── corporate-booking/
@@ -4306,7 +4458,7 @@ A representative Skill structure might be:
 
 An illustrative `SKILL.md` could contain:
 
-```
+```markdown
 ---
 name: corporate-booking
 description: >
@@ -4346,7 +4498,7 @@ A deterministic gate must still verify the relevant objective requirements.
 
 The Reviewer and Evaluator must still assess engineering quality and goal satisfaction.
 
-### **10.6 Planning with Codex**
+### 10.6 Planning with Codex
 
 Codex can assist with planning before implementation.
 
@@ -4372,13 +4524,13 @@ For high-risk changes, such as introducing a new distributed service or modifyin
 
 This distinction prevents the Agent's preferred implementation approach from becoming an unreviewed architecture decision.
 
-### **10.7 Using Codex CLI as an Execution Adapter**
+### 10.7 Using Codex CLI as an Execution Adapter
 
 Codex CLI can be invoked from an external Harness through its non-interactive execution command.
 
 A representative invocation is:
 
-```
+```powershell
 codex exec `
   "Analyze the approved corporate fleet booking implementation task. 
    Follow AGENTS.md and report the required code changes."
@@ -4386,11 +4538,8 @@ codex exec `
 
 For automated execution, the Harness should select an appropriate sandbox and approval profile rather than relying on unrestricted execution.
 
-Codex supports non-interactive execution and structured output mechanisms suitable for scripted workflows.&#x20;
+Codex supports non-interactive execution and structured output mechanisms suitable for scripted workflows.
 
-[image](https://www.google.com/s2/favicons?domain=https://developers.openai.com\&sz=32)
-
-OpenAI Developers
 
 The Harness should capture the process result and associate it with the run identifier, source revision, and execution attempt.
 
@@ -4402,7 +4551,7 @@ For example, an Agent may finish successfully while reporting that a required in
 
 That is a completed Agent invocation but not a completed engineering workflow.
 
-### **10.8 Codex Sandbox and Approval Policies**
+### 10.8 Codex Sandbox and Approval Policies
 
 Codex provides sandbox and approval mechanisms to constrain execution.
 
@@ -4440,7 +4589,7 @@ A secure enterprise workflow must preserve these distinctions.
 
 The Agent should not infer permission for one category of action from approval granted for another.
 
-### **10.9 Specialized Roles with Codex**
+### 10.9 Specialized Roles with Codex
 
 Codex can support specialized engineering tasks through separate Agent sessions, delegated work, or programmatic orchestration.
 
@@ -4448,7 +4597,7 @@ This allows the enterprise Harness to preserve the Lead, Developer, Reviewer, Va
 
 For example:
 
-```
+```text
 Harness
    |
    +-- Lead Agent
@@ -4479,13 +4628,11 @@ The Evaluator assesses the implementation against the original business goal.
 
 The Harness enforces the required ordering, independence, and acceptance conditions.
 
-Codex's managed Agent facilities can assist with session management, subtask delegation, and continuation, but the enterprise should not confuse those facilities with its own business approval and gate policy.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://developers.openai.com\&sz=32)
+Codex's managed Agent facilities can assist with session management, subtask delegation, and continuation, but the enterprise should not confuse those facilities with its own business approval and gate policy.
 
 OpenAI API
 
-### **10.10 Independent Review with Codex**
+### 10.10 Independent Review with Codex
 
 Codex can perform code review as a dedicated engineering task.
 
@@ -4519,13 +4666,13 @@ The deterministic gate provides objective execution evidence.
 
 Neither replaces the other.
 
-### **10.11 Deterministic Validation Remains External**
+### 10.11 Deterministic Validation Remains External
 
 Codex can execute build commands and tests during implementation.
 
 For example:
 
-```
+```powershell
 dotnet build AlphaCarDetailing.sln --configuration Release
 
 dotnet test tests/Booking.UnitTests --configuration Release
@@ -4554,25 +4701,50 @@ The Validator Agent subsequently assesses the evidence produced by the trusted g
 
 This preserves the distinction between intelligent implementation and authoritative technical validation.
 
-### **10.12 Integrating Codex with a Custom Enterprise Harness**
+### 10.12 Integrating Codex with a Custom Enterprise Harness
 
 One of Codex's important architectural characteristics is the availability of programmatic integration surfaces for building custom Agent-driven applications.
 
 OpenAI provides the Codex SDK, app-server, and managed Agents API as distinct integration options.
 
-The Codex SDK supports programmatic Agent execution. The app-server exposes a lifecycle-oriented interface with events, sessions, and approval interactions. The managed Agents API provides hosted Agent-session capabilities, including context management and recovery.&#x20;
+The Codex SDK supports programmatic Agent execution. The app-server exposes a lifecycle-oriented interface with events, sessions, and approval interactions. The managed Agents API provides hosted Agent-session capabilities, including context management and recovery.
 
-[image](https://www.google.com/s2/favicons?domain=https://developers.openai.com\&sz=32)
-
-OpenAI Developers+1
 
 This makes Codex relevant to organizations building an enterprise Harness rather than using only an interactive coding assistant.
 
 The Alpha Car Detailing Harness can treat Codex as an implementation adapter.
 
-FIGURE 28.8 — CODEX INTEGRATION WITH THE ENTERPRISE HARNESS
+**Figure 28.8 — Codex Integration with the Enterprise Harness**
 
-\#chatgpt-mermaid-\_r_1llu\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(237, 237, 237);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_1llu\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_1llu\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_1llu\_ .error-icon{fill:rgb(48, 48, 48);}#chatgpt-mermaid-\_r_1llu\_ .error-text{fill:rgb(237, 237, 237);stroke:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1llu\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_1llu\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_1llu\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_1llu\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_1llu\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_1llu\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_1llu\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1llu\_ .marker.cross{stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1llu\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_1llu\_ p{margin:0;}#chatgpt-mermaid-\_r_1llu\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1llu\_ .cluster-label text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1llu\_ .cluster-label span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1llu\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_1llu\_ .label text,#chatgpt-mermaid-\_r_1llu\_ span{fill:rgb(237, 237, 237);color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1llu\_ .node rect,#chatgpt-mermaid-\_r_1llu\_ .node circle,#chatgpt-mermaid-\_r_1llu\_ .node ellipse,#chatgpt-mermaid-\_r_1llu\_ .node polygon,#chatgpt-mermaid-\_r_1llu\_ .node path{fill:rgb(9, 23, 44);stroke:rgb(31, 78, 148);stroke-width:1px;}#chatgpt-mermaid-\_r_1llu\_ .rough-node .label text,#chatgpt-mermaid-\_r_1llu\_ .node .label text,#chatgpt-mermaid-\_r_1llu\_ .image-shape .label,#chatgpt-mermaid-\_r_1llu\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_1llu\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_1llu\_ .rough-node .label,#chatgpt-mermaid-\_r_1llu\_ .node .label,#chatgpt-mermaid-\_r_1llu\_ .image-shape .label,#chatgpt-mermaid-\_r_1llu\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_1llu\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_1llu\_ .root .anchor path{fill:rgb(175, 175, 175)!important;stroke-width:0;stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1llu\_ .arrowheadPath{fill:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1llu\_ .edgePath .path{stroke:rgb(175, 175, 175);stroke-width:1px;}#chatgpt-mermaid-\_r_1llu\_ .flowchart-link{stroke:rgb(175, 175, 175);fill:none;}#chatgpt-mermaid-\_r_1llu\_ .edgeLabel{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_1llu\_ .edgeLabel p{background-color:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1llu\_ .edgeLabel rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1llu\_ .labelBkg{background-color:rgba(0, 0, 0, 0.5);}#chatgpt-mermaid-\_r_1llu\_ .cluster rect{fill:rgb(48, 48, 48);stroke:rgba(255, 255, 255, 0.15);stroke-width:1px;}#chatgpt-mermaid-\_r_1llu\_ .cluster text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1llu\_ .cluster span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1llu\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(48, 48, 48);border:1px solid rgba(255, 255, 255, 0.15);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_1llu\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1llu\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_1llu\_ .icon-shape,#chatgpt-mermaid-\_r_1llu\_ .image-shape{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_1llu\_ .icon-shape p,#chatgpt-mermaid-\_r_1llu\_ .image-shape p{background-color:rgb(0, 0, 0);padding:2px;}#chatgpt-mermaid-\_r_1llu\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_1llu\_ .image-shape .label rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1llu\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_1llu\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_1llu\_ .node .neo-node{stroke:rgb(31, 78, 148);}#chatgpt-mermaid-\_r_1llu\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_1llu\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_1llu\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_1llu\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1llu\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_1llu\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_1llu\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_1llu\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1llu\_ [data-look="neo"].node .neo-line path{stroke:rgb(31, 78, 148);filter:none;}#chatgpt-mermaid-\_r_1llu\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_1llu\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1llu\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_1llu\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_1llu\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1llu\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_1llu\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1llu\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_1llu\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_1llu\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_1llu\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_1llu\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-width:1px;}#chatgpt-mermaid-\_r_1llu\_ .node rect,#chatgpt-mermaid-\_r_1llu\_ .node circle,#chatgpt-mermaid-\_r_1llu\_ .node ellipse,#chatgpt-mermaid-\_r_1llu\_ .node polygon,#chatgpt-mermaid-\_r_1llu\_ .node path{fill:rgb(0, 40, 77);stroke:rgba(255, 255, 255, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_1llu\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_1llu\_ .mermaid-decision .label-container{fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_1llu\_ .edgePaths .flowchart-link{stroke:rgb(175, 175, 175);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_1llu\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1llu\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}Independent AssuranceCodex ExecutionEnterprise Control PlaneCandidate RevisionDeterministic GatesReviewerValidatorEvaluatorCodex AdapterCodex CLI / SDK / app-serverAgent ExecutionIsolated WorkspaceEnterprise HarnessWorkflow State MachinePolicy and AuthorizationCheckpoint ManagementEngineering GoalHuman ApprovalAuthorized OutputEvidence Store
+```mermaid
+flowchart TD
+    A[Engineering Goal] --> B[Enterprise Harness]
+    subgraph Control[Enterprise Control Plane]
+      B --> S[Workflow State Machine]
+      S --> P[Policy and Authorization]
+      S --> K[Checkpoint Management]
+    end
+    subgraph Execute[Codex Execution]
+      AD[Codex Adapter] --> C[CLI, SDK, app-server or Agents API]
+      C --> AG[Agent Execution]
+      AG --> W[Isolated Workspace]
+    end
+    S --> AD
+    P --> AD
+    W --> R[Candidate Revision]
+    R --> G[Deterministic Gates]
+    G --> Rev[Reviewer]
+    Rev --> V[Validator]
+    V --> E[Evaluator]
+    E --> H[Human Approval]
+    H --> O[Authorized Output]
+    G --> ES[Evidence Store]
+    Rev --> ES
+    V --> ES
+    E --> ES
+    H --> ES
+    ES --> S
+```
 
 The Codex adapter is responsible for translating enterprise execution requests into supported Codex operations.
 
@@ -4582,7 +4754,7 @@ The enterprise Harness remains responsible for deciding whether the result satis
 
 For example, the adapter may return:
 
-```
+```json
 {
   "executionId": "codex-exec-002",
   "runId": "ACD-2026-028-001",
@@ -4599,7 +4771,7 @@ The Harness must still inspect the candidate revision, validate the handoff, exe
 
 This distinction prevents an execution provider's definition of success from silently replacing the organization's engineering completion criteria.
 
-### **10.13 Codex SDK Versus External Orchestration**
+### 10.13 Codex SDK Versus External Orchestration
 
 When integrating Codex programmatically, architects must decide how much responsibility to delegate to the Codex execution layer.
 
@@ -4627,7 +4799,7 @@ However, it still needs durable records of the authorized goal, source revision,
 
 **Agent-session durability and enterprise-workflow durability are different architectural responsibilities.**
 
-### **10.14 Workflow State and Recovery**
+### 10.14 Workflow State and Recovery
 
 Consider the corporate fleet booking implementation failing halfway through an Agent execution.
 
@@ -4639,7 +4811,7 @@ The correct recovery process depends on durable workflow state.
 
 A representative checkpoint might be:
 
-```
+```json
 {
   "runId": "ACD-2026-028-001",
   "provider": "codex",
@@ -4668,7 +4840,7 @@ A Codex session summary can help reconstruct context, but it should not be the s
 
 Recovery should be based on recorded execution evidence and observable system state.
 
-### **10.15 Codex for Bug Fixing and Refactoring**
+### 10.15 Codex for Bug Fixing and Refactoring
 
 Codex can participate in enterprise bug-fix and refactoring workflows using the same control architecture.
 
@@ -4696,7 +4868,7 @@ The Evaluator should assess whether duplication was meaningfully reduced without
 
 The same Agent platform can therefore support different workflows while the Harness applies task-specific acceptance and validation requirements.
 
-### **10.16 Codex for Security Remediation**
+### 10.16 Codex for Security Remediation
 
 Security remediation requires additional controls because the implementation may involve sensitive vulnerabilities, authorization boundaries, or protected infrastructure.
 
@@ -4722,7 +4894,7 @@ Correcting vulnerable code does not necessarily resolve the operational conseque
 
 Where necessary, the security workflow should escalate to the organization's incident-management process.
 
-### **10.17 Codex for Production Incident Support**
+### 10.17 Codex for Production Incident Support
 
 Codex can also assist with controlled production incident investigation.
 
@@ -4752,7 +4924,7 @@ That is not a workflow limitation.
 
 It is an intentional separation between technical recommendation and operational authority.
 
-### **10.18 Metrics and Audit Evidence**
+### 10.18 Metrics and Audit Evidence
 
 Codex execution should contribute to the same enterprise metrics and audit model used for Claude Code and GitHub Copilot.
 
@@ -4783,7 +4955,7 @@ Audit records should also preserve the Codex execution reference, source revisio
 
 Sensitive prompts, logs, and tool outputs should be handled according to the organization's data governance policy.
 
-### **10.19 Architectural Comparison: Claude Code, GitHub Copilot, and Codex**
+### 10.19 Architectural Comparison: Claude Code, GitHub Copilot, and Codex
 
 The three platforms can participate in the same logical workflow while offering different integration approaches.
 
@@ -4809,7 +4981,7 @@ For the Handbook's primary architecture, Claude Code remains the reference imple
 
 GitHub Copilot and Codex demonstrate how the same enterprise engineering principles can be applied through alternative execution environments.
 
-### **10.20 Designing a Provider-Neutral Agent Adapter**
+### 10.20 Designing a Provider-Neutral Agent Adapter
 
 A reusable enterprise Harness should interact with coding Agents through a common contract.
 
@@ -4817,7 +4989,7 @@ The contract should express engineering intent without depending on platform-spe
 
 For example:
 
-```
+```csharp
 public interface IEngineeringAgent
 {
     Task<AgentExecutionResult> ExecuteAsync(
@@ -4828,7 +5000,7 @@ public interface IEngineeringAgent
 
 The Harness might support the following adapters:
 
-```
+```text
 IEngineeringAgent
        |
        +-- ClaudeCodeAdapter
@@ -4871,7 +5043,7 @@ This design allows the organization to adopt new Agent platforms without replaci
 
 It also enables controlled comparison of different execution providers using the same acceptance criteria and validation requirements.
 
-### **10.21 Decision Points for Codex Adoption**
+### 10.21 Decision Points for Codex Adoption
 
 Architects evaluating Codex for enterprise engineering workflows should answer several questions.
 
@@ -4901,7 +5073,7 @@ Platform-specific invocation details should remain inside adapters rather than s
 
 These decisions should be documented as part of the enterprise Harness architecture.
 
-### **10.22 Codex Comparison Summary**
+### 10.22 Codex Comparison Summary
 
 OpenAI Codex provides a capable execution environment for enterprise AI engineering workflows through its CLI, IDE integrations, Agent execution capabilities, and programmatic interfaces.
 
@@ -4925,11 +5097,10 @@ The resulting architecture is not dependent on the success of one Agent session,
 
 It is designed to deliver reliable, reviewable, and verifiable engineering outcomes.
 
-**Chapter 28 status: In progress — next section: Best Practices**
 
-## **11. Best Practices**
+## 11. Best Practices
 
-### **11.1 Design Workflows Around Engineering Outcomes**
+### 11.1 Design Workflows Around Engineering Outcomes
 
 An enterprise engineering workflow should begin with a clearly defined outcome rather than a sequence of Agent instructions.
 
@@ -4953,7 +5124,7 @@ A successful Agent execution must never be interpreted automatically as successf
 
 **Best practice:** Define the goal, acceptance criteria, completion contract, and required evidence before implementation begins.
 
-### **11.2 Treat the Workflow as a Versioned Engineering Contract**
+### 11.2 Treat the Workflow as a Versioned Engineering Contract
 
 Enterprise workflows should be defined through explicit, version-controlled contracts.
 
@@ -4961,7 +5132,7 @@ A workflow template establishes its stages, required inputs, expected outputs, p
 
 For example:
 
-```
+```yaml
 workflow:
   id: feature-development
   version: "1.0"
@@ -4994,7 +5165,7 @@ A workflow that changes its obligations during execution without recording the c
 
 **Best practice:** Version workflow templates, record policy identities in each run, and require governed approval for changes that alter required controls.
 
-### **11.3 Keep Prompts Small and Responsibilities Explicit**
+### 11.3 Keep Prompts Small and Responsibilities Explicit
 
 A common mistake in AI engineering is attempting to encode the entire software delivery process inside one large prompt.
 
@@ -5025,7 +5196,7 @@ Those requirements should already exist in approved instructions and Skills.
 
 **Best practice:** Keep prompts focused on task intent and place persistent engineering requirements in authoritative, reusable artifacts.
 
-### **11.4 Establish Repository Intelligence Before Implementation**
+### 11.4 Establish Repository Intelligence Before Implementation
 
 A reliable workflow must begin with an understanding of the existing system.
 
@@ -5052,7 +5223,7 @@ Repository Intelligence should also distinguish directly observed repository fac
 
 **Best practice:** Require sufficient repository discovery before planning, and refresh affected context when implementation changes invalidate previous assumptions.
 
-### **11.5 Use Planning as an Engineering Checkpoint**
+### 11.5 Use Planning as an Engineering Checkpoint
 
 Planning Mode should not be treated merely as a convenient way to make an Agent think before coding.
 
@@ -5074,7 +5245,7 @@ Detecting this issue before implementation reduces unnecessary iteration and pre
 
 **Best practice:** Require plans to identify business invariants, architectural boundaries, implementation dependencies, validation requirements, and material risks.
 
-### **11.6 Enforce Least-Privilege Tool Execution**
+### 11.6 Enforce Least-Privilege Tool Execution
 
 Agent tool access should reflect the responsibilities of the assigned role.
 
@@ -5101,7 +5272,7 @@ An instruction telling an Agent not to perform a dangerous operation is helpful 
 
 **Best practice:** Configure tools according to role and task risk, and enforce sensitive boundaries independently of Agent instructions.
 
-### **11.7 Preserve Separation of Duties**
+### 11.7 Preserve Separation of Duties
 
 The roles introduced in Part III should retain their distinct responsibilities when assembled into an enterprise workflow.
 
@@ -5129,7 +5300,7 @@ The important requirements are traceable handoffs, appropriate independence, and
 
 **Best practice:** Separate implementation, engineering review, deterministic evidence assessment, business evaluation, and authorization into clearly defined responsibilities.
 
-### **11.8 Define Explicit Agent Handoff Contracts**
+### 11.8 Define Explicit Agent Handoff Contracts
 
 Agent handoffs should be structured engineering artifacts rather than informal conversational transitions.
 
@@ -5137,7 +5308,7 @@ A handoff should identify the task, source revision, completed work, supporting 
 
 For example, a Developer-to-Reviewer handoff should contain:
 
-```
+```yaml
 handoff:
   run_id: ACD-2026-028-001
   from: developer
@@ -5166,7 +5337,7 @@ If the candidate revision differs from the revision associated with the evidence
 
 **Best practice:** Use schema-validated handoff contracts with immutable source references and explicit unresolved findings.
 
-### **11.9 Make Deterministic Gates Independent and Mandatory**
+### 11.9 Make Deterministic Gates Independent and Mandatory
 
 Deterministic gates provide objective verification that AI-generated claims cannot replace.
 
@@ -5186,7 +5357,7 @@ If a required security check fails, the Developer Agent must remediate the probl
 
 **Best practice:** Run required gates independently, preserve authoritative results, and prohibit Agents from modifying validation policies to make their own work pass.
 
-### **11.10 Bind Validation Evidence to the Candidate Revision**
+### 11.10 Bind Validation Evidence to the Candidate Revision
 
 Validation evidence is meaningful only when it can be associated with the implementation it verifies.
 
@@ -5208,7 +5379,7 @@ That optimization should be governed by an explicit validation policy.
 
 **Best practice:** Record immutable candidate revisions in all significant evidence and revalidate affected requirements after changes.
 
-### **11.11 Use Risk-Based Validation Without Weakening Mandatory Controls**
+### 11.11 Use Risk-Based Validation Without Weakening Mandatory Controls
 
 Different engineering tasks require different validation profiles.
 
@@ -5237,7 +5408,7 @@ It should not allow the Agent to decide unilaterally that an inconvenient gate i
 
 **Best practice:** Use approved risk profiles to select the appropriate workflow and validation requirements.
 
-### **11.12 Preserve Durable Workflow State**
+### 11.12 Preserve Durable Workflow State
 
 Long-running Agent workflows must survive process failures, session interruptions, machine restarts, and infrastructure outages.
 
@@ -5263,7 +5434,7 @@ The Harness should reconstruct execution state from recorded artifacts and obser
 
 **Best practice:** Persist workflow transitions and checkpoints atomically, and design recovery around durable state rather than conversational continuity.
 
-### **11.13 Keep Scratchpad State Separate from Persistent Knowledge**
+### 11.13 Keep Scratchpad State Separate from Persistent Knowledge
 
 The Scratchpad and Run Workspace are essential to complex Agent execution.
 
@@ -5287,7 +5458,7 @@ That promotion should require the relevant owner to review the evidence.
 
 **Best practice:** Maintain explicit lifecycle boundaries between Scratchpad information, run evidence, Repository Intelligence, Skills, and governance artifacts.
 
-### **11.14 Design Bounded Retry and Recovery Policies**
+### 11.14 Design Bounded Retry and Recovery Policies
 
 Failures are unavoidable in complex AI engineering workflows.
 
@@ -5318,7 +5489,7 @@ Repeated execution must not accidentally create duplicate pull requests, send du
 
 **Best practice:** Classify failures, enforce retry budgets, reconcile external side effects, and escalate when recovery requires additional authority.
 
-### **11.15 Do Not Hide Failures or Missing Evidence**
+### 11.15 Do Not Hide Failures or Missing Evidence
 
 A reliable workflow must preserve negative results.
 
@@ -5347,7 +5518,7 @@ If the environment remains unavailable, it should escalate rather than mark the 
 
 **Best practice:** Treat missing, incomplete, or inconclusive evidence as unresolved until an explicit policy determines its disposition.
 
-### **11.16 Make Human Approval Evidence-Based**
+### 11.16 Make Human Approval Evidence-Based
 
 Human approval should be supported by a concise but complete evidence package.
 
@@ -5376,7 +5547,7 @@ The approval decision should record the approver's identity, authority, candidat
 
 **Best practice:** Make approval a formal, authenticated decision tied to the exact artifact and evidence being approved.
 
-### **11.17 Protect Governance Artifacts from Silent Modification**
+### 11.17 Protect Governance Artifacts from Silent Modification
 
 Enterprise workflows rely on persistent artifacts such as:
 
@@ -5409,7 +5580,7 @@ The workflow should permit Agents to propose governance improvements separately 
 
 **Best practice:** Separate governance changes from ordinary application changes and prohibit silent modification of authoritative controls.
 
-### **11.18 Treat Security as a Cross-Cutting Workflow Concern**
+### 11.18 Treat Security as a Cross-Cutting Workflow Concern
 
 Security cannot be confined to a single validation stage.
 
@@ -5435,7 +5606,7 @@ For example, a repository comment requesting that security checks be disabled mu
 
 **Best practice:** Apply defense-in-depth across the entire workflow and keep security enforcement independent of the model's interpretation of task content.
 
-### **11.19 Make Workflow Metrics Actionable**
+### 11.19 Make Workflow Metrics Actionable
 
 Metrics should help organizations understand how their AI engineering workflows perform.
 
@@ -5470,7 +5641,7 @@ Similarly, shorter execution time is not evidence of improved engineering outcom
 
 **Best practice:** Measure delivery efficiency together with evidence quality, defect outcomes, and governance compliance.
 
-### **11.20 Design Workflow Templates for Reuse**
+### 11.20 Design Workflow Templates for Reuse
 
 Organizations should avoid creating a completely separate orchestration implementation for every engineering task.
 
@@ -5501,7 +5672,7 @@ A security-remediation workflow may require additional security assessment.
 
 **Best practice:** Standardize common control mechanisms while allowing workflow templates to reflect the engineering risk and outcome of each task.
 
-### **11.21 Preserve Platform Independence**
+### 11.21 Preserve Platform Independence
 
 Claude Code is the primary execution platform used throughout this part of the Handbook.
 
@@ -5528,15 +5699,22 @@ It also enables controlled evaluation of multiple platforms against the same eng
 
 **Best practice:** Isolate platform-specific execution details behind adapters and retain governance, validation, and completion logic within the enterprise Harness.
 
-### **11.22 Introduce Automation Incrementally**
+### 11.22 Introduce Automation Incrementally
 
 Organizations should not begin with fully autonomous, multi-Agent delivery of high-risk production changes.
 
 A more reliable adoption path is incremental.
 
-FIGURE 28.9 — INCREMENTAL WORKFLOW MATURITY
+**Figure 28.9 — Incremental Workflow Maturity**
 
-\#chatgpt-mermaid-\_r_1lol\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(237, 237, 237);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_1lol\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_1lol\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_1lol\_ .error-icon{fill:rgb(48, 48, 48);}#chatgpt-mermaid-\_r_1lol\_ .error-text{fill:rgb(237, 237, 237);stroke:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1lol\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_1lol\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_1lol\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_1lol\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_1lol\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_1lol\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_1lol\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1lol\_ .marker.cross{stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1lol\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_1lol\_ p{margin:0;}#chatgpt-mermaid-\_r_1lol\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1lol\_ .cluster-label text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1lol\_ .cluster-label span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1lol\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_1lol\_ .label text,#chatgpt-mermaid-\_r_1lol\_ span{fill:rgb(237, 237, 237);color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1lol\_ .node rect,#chatgpt-mermaid-\_r_1lol\_ .node circle,#chatgpt-mermaid-\_r_1lol\_ .node ellipse,#chatgpt-mermaid-\_r_1lol\_ .node polygon,#chatgpt-mermaid-\_r_1lol\_ .node path{fill:rgb(9, 23, 44);stroke:rgb(31, 78, 148);stroke-width:1px;}#chatgpt-mermaid-\_r_1lol\_ .rough-node .label text,#chatgpt-mermaid-\_r_1lol\_ .node .label text,#chatgpt-mermaid-\_r_1lol\_ .image-shape .label,#chatgpt-mermaid-\_r_1lol\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_1lol\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_1lol\_ .rough-node .label,#chatgpt-mermaid-\_r_1lol\_ .node .label,#chatgpt-mermaid-\_r_1lol\_ .image-shape .label,#chatgpt-mermaid-\_r_1lol\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_1lol\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_1lol\_ .root .anchor path{fill:rgb(175, 175, 175)!important;stroke-width:0;stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1lol\_ .arrowheadPath{fill:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1lol\_ .edgePath .path{stroke:rgb(175, 175, 175);stroke-width:1px;}#chatgpt-mermaid-\_r_1lol\_ .flowchart-link{stroke:rgb(175, 175, 175);fill:none;}#chatgpt-mermaid-\_r_1lol\_ .edgeLabel{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_1lol\_ .edgeLabel p{background-color:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1lol\_ .edgeLabel rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1lol\_ .labelBkg{background-color:rgba(0, 0, 0, 0.5);}#chatgpt-mermaid-\_r_1lol\_ .cluster rect{fill:rgb(48, 48, 48);stroke:rgba(255, 255, 255, 0.15);stroke-width:1px;}#chatgpt-mermaid-\_r_1lol\_ .cluster text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1lol\_ .cluster span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1lol\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(48, 48, 48);border:1px solid rgba(255, 255, 255, 0.15);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_1lol\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1lol\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_1lol\_ .icon-shape,#chatgpt-mermaid-\_r_1lol\_ .image-shape{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_1lol\_ .icon-shape p,#chatgpt-mermaid-\_r_1lol\_ .image-shape p{background-color:rgb(0, 0, 0);padding:2px;}#chatgpt-mermaid-\_r_1lol\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_1lol\_ .image-shape .label rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1lol\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_1lol\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_1lol\_ .node .neo-node{stroke:rgb(31, 78, 148);}#chatgpt-mermaid-\_r_1lol\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_1lol\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_1lol\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_1lol\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1lol\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_1lol\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_1lol\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_1lol\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1lol\_ [data-look="neo"].node .neo-line path{stroke:rgb(31, 78, 148);filter:none;}#chatgpt-mermaid-\_r_1lol\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_1lol\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1lol\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_1lol\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_1lol\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1lol\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_1lol\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1lol\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_1lol\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_1lol\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_1lol\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_1lol\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-width:1px;}#chatgpt-mermaid-\_r_1lol\_ .node rect,#chatgpt-mermaid-\_r_1lol\_ .node circle,#chatgpt-mermaid-\_r_1lol\_ .node ellipse,#chatgpt-mermaid-\_r_1lol\_ .node polygon,#chatgpt-mermaid-\_r_1lol\_ .node path{fill:rgb(0, 40, 77);stroke:rgba(255, 255, 255, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_1lol\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_1lol\_ .mermaid-decision .label-container{fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_1lol\_ .edgePaths .flowchart-link{stroke:rgb(175, 175, 175);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_1lol\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1lol\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}#chatgpt-mermaid-\_r_1lol\_ .maturity rect{fill:rgb(232, 241, 251)!important;stroke:rgb(65, 108, 155)!important;color:rgb(23, 52, 84)!important;}#chatgpt-mermaid-\_r_1lol\_ .maturity polygon{fill:rgb(232, 241, 251)!important;stroke:rgb(65, 108, 155)!important;color:rgb(23, 52, 84)!important;}#chatgpt-mermaid-\_r_1lol\_ .maturity ellipse{fill:rgb(232, 241, 251)!important;stroke:rgb(65, 108, 155)!important;color:rgb(23, 52, 84)!important;}#chatgpt-mermaid-\_r_1lol\_ .maturity circle{fill:rgb(232, 241, 251)!important;stroke:rgb(65, 108, 155)!important;color:rgb(23, 52, 84)!important;}#chatgpt-mermaid-\_r_1lol\_ .maturity path{fill:rgb(232, 241, 251)!important;stroke:rgb(65, 108, 155)!important;color:rgb(23, 52, 84)!important;}#chatgpt-mermaid-\_r_1lol\_ .maturity tspan{fill:rgb(23, 52, 84)!important;}#chatgpt-mermaid-\_r_1lol\_ .advanced rect{fill:rgb(232, 243, 233)!important;stroke:rgb(67, 133, 82)!important;color:rgb(36, 88, 46)!important;}#chatgpt-mermaid-\_r_1lol\_ .advanced polygon{fill:rgb(232, 243, 233)!important;stroke:rgb(67, 133, 82)!important;color:rgb(36, 88, 46)!important;}#chatgpt-mermaid-\_r_1lol\_ .advanced ellipse{fill:rgb(232, 243, 233)!important;stroke:rgb(67, 133, 82)!important;color:rgb(36, 88, 46)!important;}#chatgpt-mermaid-\_r_1lol\_ .advanced circle{fill:rgb(232, 243, 233)!important;stroke:rgb(67, 133, 82)!important;color:rgb(36, 88, 46)!important;}#chatgpt-mermaid-\_r_1lol\_ .advanced path{fill:rgb(232, 243, 233)!important;stroke:rgb(67, 133, 82)!important;color:rgb(36, 88, 46)!important;}#chatgpt-mermaid-\_r_1lol\_ .advanced tspan{fill:rgb(36, 88, 46)!important;}Level 1Agent-Assisted DevelopmentLevel 2Structured Planning andInstructionsLevel 3Harness-Controlled ValidationLevel 4Independent AgentAssessmentsLevel 5Stateful, RecoverableWorkflowsLevel 6Policy-Controlled Automation
+```mermaid
+flowchart TD
+    A[Level 1: Agent-Assisted Development] --> B[Level 2: Structured Planning and Instructions]
+    B --> C[Level 3: Harness-Controlled Validation]
+    C --> D[Level 4: Independent Agent Assessments]
+    D --> E[Level 5: Stateful, Recoverable Workflows]
+    E --> F[Level 6: Policy-Controlled Automation]
+```
 
 At the first level, developers use Agents interactively while retaining conventional manual controls.
 
@@ -5558,7 +5736,7 @@ Some decisions should remain under human authority even when technical automatio
 
 **Best practice:** Increase autonomy only after the workflow demonstrates reliable validation, recovery, traceability, and policy enforcement.
 
-### **11.23 Use a Workflow Readiness Checklist**
+### 11.23 Use a Workflow Readiness Checklist
 
 Before enabling an enterprise workflow for routine use, architects should verify that its core controls are present.
 
@@ -5622,7 +5800,7 @@ The checklist is not a substitute for security review, architecture review, or c
 
 It provides a consistent basis for evaluating whether a proposed workflow is sufficiently defined to enter enterprise use.
 
-### **11.24 Best Practices Summary**
+### 11.24 Best Practices Summary
 
 Enterprise workflow reliability comes from the disciplined coordination of engineering capabilities rather than the sophistication of any individual prompt or AI Agent.
 
@@ -5656,9 +5834,8 @@ The broader principle applies to every enterprise workflow discussed in this cha
 
 **A reliable AI engineering workflow does not assume that an Agent will always succeed. It establishes the controls required to detect failure, recover safely, preserve evidence, and authorize only acceptable outcomes.**
 
-**Chapter 28 status: In progress — next section: Anti-patterns**
 
-## **12. Anti-patterns**
+## 12. Anti-patterns
 
 Enterprise AI engineering workflows introduce new opportunities for automation, but they also introduce failure modes that traditional software delivery processes may not encounter in the same form.
 
@@ -5670,7 +5847,7 @@ The following anti-patterns identify common architectural and operational mistak
 
 Each anti-pattern is illustrated using the Alpha Car Detailing system and accompanied by a recommended corrective approach.
 
-### **12.1 The Giant Prompt Anti-pattern**
+### 12.1 The Giant Prompt Anti-pattern
 
 **Problem: Attempting to implement the entire enterprise workflow through one comprehensive prompt.**
 
@@ -5688,7 +5865,7 @@ The Agent must interpret which steps are necessary, determine whether they succe
 
 As the prompt grows, maintaining consistency becomes increasingly difficult.
 
-#### **Why it fails**
+#### Why it fails
 
 A single prompt mixes instructions with different lifecycles and authority levels.
 
@@ -5696,7 +5873,7 @@ Persistent engineering standards become duplicated across task prompts. Reusable
 
 The prompt also provides no inherent protection against process interruption or evidence loss.
 
-#### **Corrective approach**
+#### Corrective approach
 
 Separate the workflow into appropriate mechanisms:
 
@@ -5712,7 +5889,7 @@ Separate the workflow into appropriate mechanisms:
 
 **Architectural principle:** A prompt should initiate and guide engineering work, not substitute for the enterprise workflow architecture.
 
-### **12.2 The Agent-as-Orchestrator-and-Auditor Anti-pattern**
+### 12.2 The Agent-as-Orchestrator-and-Auditor Anti-pattern
 
 **Problem: Allowing the same Agent to implement a change, determine whether it is correct, and authorize completion.**
 
@@ -5722,7 +5899,7 @@ No independent system verifies whether the required checks were actually perform
 
 The Agent becomes both the performer and the final authority over its own work.
 
-#### **Why it fails**
+#### Why it fails
 
 An Agent may overlook its own assumptions, misinterpret incomplete test results, or fail to identify an architectural defect.
 
@@ -5734,7 +5911,7 @@ However, the implementation may still permit two concurrent requests to observe 
 
 A meaningful concurrency test and independent review are needed to establish whether the invariant is preserved.
 
-#### **Corrective approach**
+#### Corrective approach
 
 Separate implementation from assurance and authorization.
 
@@ -5752,13 +5929,13 @@ An authorized human or established promotion policy makes the final permitted de
 
 **Architectural principle:** An Agent may assess its own work during development, but self-assessment must not replace independent controls required by the workflow.
 
-### **12.3 The Green Build Equals Success Anti-pattern**
+### 12.3 The Green Build Equals Success Anti-pattern
 
 **Problem: Treating successful compilation or passing tests as proof that the business goal has been achieved.**
 
 A Developer Agent implements corporate fleet booking and executes:
 
-```
+```powershell
 dotnet build AlphaCarDetailing.sln --configuration Release
 
 dotnet test AlphaCarDetailing.sln --configuration Release
@@ -5768,7 +5945,7 @@ Both commands succeed.
 
 The workflow immediately marks the feature complete.
 
-#### **Why it fails**
+#### Why it fails
 
 Build success establishes that the application satisfies the conditions checked by the build process.
 
@@ -5780,7 +5957,7 @@ The implementation may lack a test for concurrent booking requests. It may calcu
 
 All existing tests could pass while these defects remain undetected.
 
-#### **Corrective approach**
+#### Corrective approach
 
 Maintain separate technical validation and business evaluation stages.
 
@@ -5792,7 +5969,7 @@ The workflow advances only when the required technical and business conditions h
 
 **Architectural principle:** Deterministic validation establishes tested engineering conditions; evaluation establishes whether the intended outcome has been achieved.
 
-### **12.4 The Optional Gate Anti-pattern**
+### 12.4 The Optional Gate Anti-pattern
 
 **Problem: Allowing an Agent to decide which mandatory validation gates it needs to execute.**
 
@@ -5802,7 +5979,7 @@ During implementation, the Developer Agent determines that unit tests are suffic
 
 It then reports successful validation.
 
-#### **Why it fails**
+#### Why it fails
 
 The executing Agent is effectively redefining the organization's assurance policy.
 
@@ -5810,7 +5987,7 @@ A required check becomes optional whenever the Agent considers it unnecessary, e
 
 This is especially dangerous when the omitted checks target failure modes that are difficult to identify through ordinary code inspection.
 
-#### **Corrective approach**
+#### Corrective approach
 
 Define required gates in an approved workflow or gate policy.
 
@@ -5822,7 +5999,7 @@ Any exception must follow an explicit, authorized process.
 
 **Architectural principle:** The Agent responsible for implementation must not control the mandatory validation conditions used to accept its implementation.
 
-### **12.5 The Validation Laundering Anti-pattern**
+### 12.5 The Validation Laundering Anti-pattern
 
 **Problem: Converting incomplete, stale, or untrusted evidence into a passing validation result.**
 
@@ -5840,7 +6017,7 @@ Consider the following sequence:
 
 The recorded validation status appears successful, but the evidence does not establish that Candidate B passed the tests.
 
-#### **Why it fails**
+#### Why it fails
 
 Evidence is accepted without preserving its relationship to the implementation being evaluated.
 
@@ -5848,7 +6025,7 @@ Similar failures occur when a test process terminates unexpectedly, a report can
 
 A particularly dangerous implementation pattern is:
 
-```
+```text
 No failing tests found
         ↓
 Validation passed
@@ -5856,7 +6033,7 @@ Validation passed
 
 This inference is invalid unless the workflow has independently established that the required tests executed successfully and the results are complete.
 
-#### **Corrective approach**
+#### Corrective approach
 
 Bind evidence to immutable candidate revisions and execution attempts.
 
@@ -5868,7 +6045,7 @@ After implementation changes, affected evidence must be invalidated or re-execut
 
 **Architectural principle:** Validation evidence must be current, attributable, complete, and relevant to the exact candidate being assessed.
 
-### **12.6 The Endless Remediation Loop Anti-pattern**
+### 12.6 The Endless Remediation Loop Anti-pattern
 
 **Problem: Repeatedly invoking the Developer Agent until the implementation appears successful, without a defined recovery budget.**
 
@@ -5882,7 +6059,7 @@ The test fails again.
 
 The cycle continues indefinitely.
 
-#### **Why it fails**
+#### Why it fails
 
 An unlimited remediation loop may consume substantial computational resources without making meaningful engineering progress.
 
@@ -5892,13 +6069,13 @@ It may introduce unrelated modifications while attempting to resolve the origina
 
 Repeated failures may also indicate that the approved plan is incomplete or that the problem requires an architectural decision rather than another code change.
 
-#### **Corrective approach**
+#### Corrective approach
 
 Define bounded retry policies.
 
 For example:
 
-```
+```yaml
 recovery:
   implementation:
     max_attempts: 3
@@ -5923,7 +6100,7 @@ A missing approval should not trigger another autonomous implementation attempt.
 
 **Architectural principle:** Retry is a controlled recovery mechanism, not an unlimited opportunity for an Agent to redefine success.
 
-### **12.7 The Stateless Workflow Anti-pattern**
+### 12.7 The Stateless Workflow Anti-pattern
 
 **Problem: Depending entirely on an active Agent conversation to preserve workflow progress.**
 
@@ -5937,7 +6114,7 @@ The organization has no durable record of the approved plan, completed tasks, ca
 
 To recover, the developer starts another session and asks the Agent to continue.
 
-#### **Why it fails**
+#### Why it fails
 
 Conversational continuity is not an authoritative workflow state mechanism.
 
@@ -5945,7 +6122,7 @@ The new execution may repeat completed operations, overlook partially modified f
 
 For example, a repeated publishing operation might create a duplicate pull request.
 
-#### **Corrective approach**
+#### Corrective approach
 
 Persist workflow state independently of Agent sessions.
 
@@ -5955,7 +6132,7 @@ On restart, the Harness should reconcile recorded state with the actual reposito
 
 **Architectural principle:** Agent sessions may be temporary; enterprise workflow state must be durable.
 
-### **12.8 The Scratchpad-as-Authority Anti-pattern**
+### 12.8 The Scratchpad-as-Authority Anti-pattern
 
 **Problem: Treating temporary Agent observations as verified repository knowledge or persistent engineering policy.**
 
@@ -5969,7 +6146,7 @@ A later Agent reads the Scratchpad and treats the statement as an established ar
 
 The implementation consequently omits necessary concurrency controls.
 
-#### **Why it fails**
+#### Why it fails
 
 Scratchpad content is task-scoped working information.
 
@@ -5979,7 +6156,7 @@ Such content is useful for execution continuity but is not inherently authoritat
 
 Promoting it into persistent knowledge without verification can contaminate future engineering decisions.
 
-#### **Corrective approach**
+#### Corrective approach
 
 Classify temporary observations separately from verified findings.
 
@@ -5989,7 +6166,7 @@ Promotion into Repository Intelligence, Skills, or instructions should require t
 
 **Architectural principle:** Temporary working state must not silently become persistent knowledge.
 
-### **12.9 The Silent Governance Modification Anti-pattern**
+### 12.9 The Silent Governance Modification Anti-pattern
 
 **Problem: Allowing an Agent to change the controls that govern its own execution.**
 
@@ -6001,7 +6178,7 @@ The next validation run passes.
 
 Another variation occurs when an Agent edits `CLAUDE.md` to remove a restriction on introducing new dependencies.
 
-#### **Why it fails**
+#### Why it fails
 
 The implementation has not necessarily become compliant.
 
@@ -6009,7 +6186,7 @@ Instead, the Agent has weakened the conditions used to determine compliance.
 
 This undermines the separation between the executing system and the organization that defines engineering standards.
 
-#### **Corrective approach**
+#### Corrective approach
 
 Protect governance artifacts through repository policy, scoped permissions, and independent diff validation.
 
@@ -6023,7 +6200,7 @@ However, those changes must follow their own review and approval process.
 
 **Architectural principle:** Agents may recommend governance changes; they must not silently authorize or apply them.
 
-### **12.10 The Role-Name Illusion Anti-pattern**
+### 12.10 The Role-Name Illusion Anti-pattern
 
 **Problem: Assuming that multiple named Agents automatically provide independent assessment.**
 
@@ -6035,7 +6212,7 @@ The system appears to follow a multi-Agent architecture.
 
 In practice, the role separation is largely cosmetic.
 
-#### **Why it fails**
+#### Why it fails
 
 Independence is an engineering property, not a naming convention.
 
@@ -6045,7 +6222,7 @@ A Validator that accepts the Developer Agent's statement that tests passed is no
 
 An Evaluator that receives only a positive review summary may lack sufficient information to assess the original acceptance criteria.
 
-#### **Corrective approach**
+#### Corrective approach
 
 Define role-specific inputs, outputs, permissions, and authority boundaries.
 
@@ -6059,7 +6236,7 @@ Each role should produce an attributable report that can be independently examin
 
 **Architectural principle:** Multi-Agent reliability requires independent responsibilities and evidence, not merely multiple Agent identities.
 
-### **12.11 The Uncontrolled Handoff Anti-pattern**
+### 12.11 The Uncontrolled Handoff Anti-pattern
 
 **Problem: Transferring work between Agents without specifying the candidate revision, evidence, or unresolved obligations.**
 
@@ -6071,7 +6248,7 @@ The Reviewer receives no exact source revision, acceptance-criteria mapping, tes
 
 Meanwhile, the Developer continues modifying files.
 
-#### **Why it fails**
+#### Why it fails
 
 The receiving Agent may inspect an inconsistent workspace or evaluate a candidate that differs from the one being validated.
 
@@ -6079,7 +6256,7 @@ Important issues may be lost between stages.
 
 The workflow may produce review, validation, and evaluation reports that refer to different versions of the implementation.
 
-#### **Corrective approach**
+#### Corrective approach
 
 Use structured handoff contracts.
 
@@ -6089,7 +6266,7 @@ The Harness should validate these references before advancing.
 
 **Architectural principle:** Agent collaboration must preserve artifact identity and responsibility across every handoff.
 
-### **12.12 The Permission-by-Prompt Anti-pattern**
+### 12.12 The Permission-by-Prompt Anti-pattern
 
 **Problem: Treating natural-language instructions as sufficient security controls.**
 
@@ -6099,7 +6276,7 @@ A workflow prompt states:
 
 The Agent nevertheless executes with credentials that allow access to production systems and write access to protected files.
 
-#### **Why it fails**
+#### Why it fails
 
 A prompt does not create a technical permission boundary.
 
@@ -6109,7 +6286,7 @@ The problem is not limited to malicious behavior.
 
 An Agent attempting to solve a legitimate engineering task may unintentionally invoke a dangerous command.
 
-#### **Corrective approach**
+#### Corrective approach
 
 Use least-privilege execution identities, sandbox restrictions, filesystem permissions, network controls, protected branches, and authorized tool policies.
 
@@ -6119,7 +6296,7 @@ Sensitive actions must be protected by controls that operate independently of mo
 
 **Architectural principle:** Instructions express intended behavior; enforcement mechanisms determine permitted behavior.
 
-### **12.13 The Approval Theater Anti-pattern**
+### 12.13 The Approval Theater Anti-pattern
 
 **Problem: Including a human approval stage that does not provide meaningful decision-making authority or evidence.**
 
@@ -6131,7 +6308,7 @@ The approver has no access to the candidate revision, test results, review findi
 
 Approval becomes a procedural formality.
 
-#### **Why it fails**
+#### Why it fails
 
 A human cannot make an accountable technical decision without relevant information.
 
@@ -6139,7 +6316,7 @@ A workflow that records an approval without identifying what was approved also c
 
 If the implementation changes afterward, it may be unclear whether the approval remains applicable.
 
-#### **Corrective approach**
+#### Corrective approach
 
 Provide an evidence-based approval package tied to an immutable candidate revision.
 
@@ -6159,7 +6336,7 @@ The approval record should identify the authenticated decision-maker and the pre
 
 **Architectural principle:** Human approval must be an informed, attributable decision—not a ceremonial confirmation of Agent output.
 
-### **12.14 The Pull Request Equals Completion Anti-pattern**
+### 12.14 The Pull Request Equals Completion Anti-pattern
 
 **Problem: Treating pull-request creation as successful completion of the engineering workflow.**
 
@@ -6169,7 +6346,7 @@ The Harness immediately marks the feature complete.
 
 However, mandatory integration tests have not executed, the Reviewer has identified unresolved findings, and application-owner approval is still pending.
 
-#### **Why it fails**
+#### Why it fails
 
 A pull request is a delivery artifact.
 
@@ -6177,7 +6354,7 @@ Its existence does not prove that the implementation satisfies engineering or bu
 
 The same distinction applies to commits, generated patches, deployment packages, and successfully executed Agent commands.
 
-#### **Corrective approach**
+#### Corrective approach
 
 Define completion according to the workflow's explicit contract.
 
@@ -6187,7 +6364,7 @@ A production-ready feature workflow normally requires additional validation, rev
 
 **Architectural principle:** Workflow completion must be based on defined acceptance conditions rather than the mere existence of an output artifact.
 
-### **12.15 The One-Size-Fits-All Workflow Anti-pattern**
+### 12.15 The One-Size-Fits-All Workflow Anti-pattern
 
 **Problem: Applying the same orchestration sequence and control profile to every engineering task.**
 
@@ -6197,7 +6374,7 @@ A minor documentation correction must pass through the same planning, multi-Agen
 
 Alternatively, the organization creates a lightweight workflow and applies it even to security-sensitive architecture changes.
 
-#### **Why it fails**
+#### Why it fails
 
 An excessively heavy workflow creates unnecessary cost and delays.
 
@@ -6205,7 +6382,7 @@ An excessively lightweight workflow fails to provide the assurance required for 
 
 Both situations reduce confidence in the engineering process.
 
-#### **Corrective approach**
+#### Corrective approach
 
 Establish workflow templates based on task type, complexity, and risk.
 
@@ -6225,7 +6402,7 @@ All workflows should retain common governance principles while using controls pr
 
 **Architectural principle:** Standardize the control framework, not an inflexible sequence of activities for every task.
 
-### **12.16 The Workflow Without an Owner Anti-pattern**
+### 12.16 The Workflow Without an Owner Anti-pattern
 
 **Problem: Defining automated engineering workflows without assigning accountability for their policies and outcomes.**
 
@@ -6235,7 +6412,7 @@ However, no one is responsible for maintaining workflow templates, gate definiti
 
 When a gate becomes obsolete or an authorization conflict appears, the organization cannot identify who is authorized to resolve it.
 
-#### **Why it fails**
+#### Why it fails
 
 Automation does not eliminate organizational responsibility.
 
@@ -6243,7 +6420,7 @@ A workflow represents operationalized engineering policy.
 
 Without ownership, policy changes become inconsistent, exceptions accumulate, and important controls may remain outdated.
 
-#### **Corrective approach**
+#### Corrective approach
 
 Assign explicit ownership for workflow artifacts and operational responsibilities.
 
@@ -6261,7 +6438,7 @@ The ownership model should specify who can propose, review, approve, and deploy 
 
 **Architectural principle:** Every automated engineering control requires an accountable owner and a governed change process.
 
-### **12.17 The Metrics-Driven Shortcut Anti-pattern**
+### 12.17 The Metrics-Driven Shortcut Anti-pattern
 
 **Problem: Optimizing workflow metrics without preserving engineering quality.**
 
@@ -6271,7 +6448,7 @@ Teams begin reducing validation effort to improve reported throughput.
 
 The Harness skips expensive integration tests during final validation or suppresses review findings that would increase cycle time.
 
-#### **Why it fails**
+#### Why it fails
 
 Metrics can create incentives that conflict with engineering outcomes.
 
@@ -6281,7 +6458,7 @@ An increase in pull-request volume does not necessarily indicate more business v
 
 Similarly, a lower gate failure rate may indicate that code quality improved—or that validation became less rigorous.
 
-#### **Corrective approach**
+#### Corrective approach
 
 Evaluate efficiency alongside quality and governance indicators.
 
@@ -6300,7 +6477,7 @@ Metrics should support engineering decisions rather than become targets that enc
 
 **Architectural principle:** Optimize the complete engineering outcome, not merely the speed of Agent execution.
 
-### **12.18 The Unsafe Recovery Anti-pattern**
+### 12.18 The Unsafe Recovery Anti-pattern
 
 **Problem: Restarting failed workflows without reconciling external side effects.**
 
@@ -6310,7 +6487,7 @@ On restart, it assumes the operation failed and creates another pull request.
 
 A similar problem could occur with package publication, notification delivery, infrastructure provisioning, or deployment operations.
 
-#### **Why it fails**
+#### Why it fails
 
 The workflow assumes that an interrupted operation had no effect.
 
@@ -6318,13 +6495,13 @@ In distributed systems, an operation may have succeeded even if the caller did n
 
 Blind retries can therefore duplicate external effects.
 
-#### **Corrective approach**
+#### Corrective approach
 
 Use durable operation identifiers, idempotency keys where supported, and reconciliation before retrying.
 
 The Harness should distinguish:
 
-```
+```text
 Operation not started
 Operation completed
 Operation failed
@@ -6337,7 +6514,7 @@ For example, before creating another pull request, the Harness should search for
 
 **Architectural principle:** Recovery must reconcile real-world state before repeating operations that may have external effects.
 
-### **12.19 The Hidden Failure Anti-pattern**
+### 12.19 The Hidden Failure Anti-pattern
 
 **Problem: Suppressing, summarizing away, or overwriting failure evidence to produce a clean final report.**
 
@@ -6349,7 +6526,7 @@ The workflow summary reports only the successful attempt, with no record of earl
 
 In another case, the workflow omits an unresolved Reviewer finding because the Developer Agent considered it unimportant.
 
-#### **Why it fails**
+#### Why it fails
 
 Discarding failure history undermines traceability and hides information useful for engineering improvement.
 
@@ -6359,7 +6536,7 @@ However, retaining evidence does not mean that every transient failure must bloc
 
 The workflow should preserve the history while evaluating the final candidate against the applicable completion policy.
 
-#### **Corrective approach**
+#### Corrective approach
 
 Maintain an append-oriented execution history or an equivalent auditable event record.
 
@@ -6369,7 +6546,7 @@ Final reports should clearly distinguish resolved failures from outstanding bloc
 
 **Architectural principle:** A successful final outcome does not justify erasing the execution history that produced it.
 
-### **12.20 The Unverified Learning Anti-pattern**
+### 12.20 The Unverified Learning Anti-pattern
 
 **Problem: Allowing the Harness to modify future engineering behavior automatically based on unreviewed execution observations.**
 
@@ -6379,7 +6556,7 @@ A self-learning Harness concludes that the gate is too strict and automatically 
 
 Subsequent implementations pass, but the organization has unintentionally weakened its architectural standards.
 
-#### **Why it fails**
+#### Why it fails
 
 Operational observations do not automatically establish that existing engineering policies are wrong.
 
@@ -6387,7 +6564,7 @@ Repeated failures may indicate poor Agent instructions, inadequate Skills, incor
 
 The correct interpretation requires evidence and accountable review.
 
-#### **Corrective approach**
+#### Corrective approach
 
 Separate learning recommendations from authoritative policy changes.
 
@@ -6399,7 +6576,7 @@ Only authorized changes should be promoted into persistent engineering artifacts
 
 **Architectural principle:** A self-learning Harness may recommend improvements, but it must never silently rewrite the standards against which its own work is judged.
 
-### **12.21 Anti-pattern Summary**
+### 12.21 Anti-pattern Summary
 
 The most dangerous enterprise workflow failures often appear successful on the surface.
 
@@ -6454,11 +6631,10 @@ The governing principle is straightforward:
 
 Those responsibilities belong to the workflow architecture, its deterministic controls, and the organization's accountable decision-makers.
 
-**Chapter 28 status: In progress — next section: Architect’s Notes**
 
-## **13. Architect’s Notes**
+## 13. Architect’s Notes
 
-### **13.1 Enterprise Workflows Are an Architectural System**
+### 13.1 Enterprise Workflows Are an Architectural System
 
 Enterprise engineering workflows should be designed with the same architectural discipline applied to business applications, distributed systems, and delivery platforms.
 
@@ -6488,7 +6664,7 @@ These are architectural requirements, not prompt-writing techniques.
 >
 > Treat the enterprise Harness as a control system for software engineering work. AI Agents perform engineering activities within that system, but the Harness owns the authoritative state transitions, evidence requirements, and policy enforcement that determine whether work may proceed.
 
-### **13.2 Separate the Control Plane from the Execution Plane**
+### 13.2 Separate the Control Plane from the Execution Plane
 
 The distinction between control and execution is one of the most important architectural decisions in enterprise AI engineering.
 
@@ -6526,7 +6702,7 @@ The control plane should remain operational even if an Agent session fails.
 
 A session interruption must not result in lost approval obligations, forgotten scope restrictions, or reset retry budgets.
 
-### **13.3 Define a Single Authoritative Workflow State**
+### 13.3 Define a Single Authoritative Workflow State
 
 A mature Harness needs one authoritative representation of workflow state.
 
@@ -6542,7 +6718,7 @@ It must reflect the unresolved validation obligation.
 
 A practical state record should include:
 
-```
+```yaml
 run:
   id: ACD-2026-028-001
   workflow: feature-development/v1.0
@@ -6576,7 +6752,7 @@ Otherwise, two workers may independently advance the same workflow or overwrite 
 
 **Architectural recommendation:** Design the workflow state machine before implementing autonomous Agent orchestration.
 
-### **13.4 Model Workflow Execution as a Distributed Transaction Problem**
+### 13.4 Model Workflow Execution as a Distributed Transaction Problem
 
 Enterprise workflows resemble distributed business processes because their stages can execute across independent systems.
 
@@ -6619,7 +6795,7 @@ It means that workflow designers must recognize that multi-stage Agent execution
 
 For Alpha Car Detailing, the same engineering discipline used to implement idempotent booking creation should inform the Harness's handling of pull requests, notifications, and other external actions.
 
-### **13.5 Treat Evidence as a First-Class Architectural Artifact**
+### 13.5 Treat Evidence as a First-Class Architectural Artifact
 
 Many AI-assisted development approaches focus on generated code and conversational output.
 
@@ -6653,7 +6829,7 @@ The approval must be verified through the relevant authorization mechanism.
 
 For high-assurance workflows, evidence integrity may require artifact digests, access controls, immutable retention, or signed attestations.
 
-### **13.6 Bind Assurance to Immutable Source Revisions**
+### 13.6 Bind Assurance to Immutable Source Revisions
 
 An enterprise workflow must avoid evaluating a moving implementation target.
 
@@ -6673,7 +6849,7 @@ The architecture should therefore bind evidence to immutable source revisions.
 
 A useful evidence identity includes:
 
-```
+```text
 Run ID
    +
 Attempt ID
@@ -6697,7 +6873,7 @@ Human approval should also be tied to the approved candidate revision.
 
 Changes after approval may require renewed checks and approval according to repository policy.
 
-### **13.7 Design Agent Independence Deliberately**
+### 13.7 Design Agent Independence Deliberately
 
 The Lead, Developer, Reviewer, Validator, and Evaluator roles should not be interpreted as a requirement to deploy five separate AI models.
 
@@ -6731,35 +6907,17 @@ The objective is not to hide useful information.
 
 It is to prevent the assessed party's unsupported claims from becoming the sole basis of the assessment.
 
-### **13.8 Separate Review, Validation, and Evaluation Authority**
+### 13.8 Separate Review, Validation, and Evaluation Authority
 
 These three activities are closely related but have distinct architectural purposes.
 
-FIGURE 28.10 — THREE DIMENSIONS OF ASSURANCE
+**Figure 28.10 — Three Dimensions of Assurance**
 
-**Reviewer**
-
-Engineering quality
-
-Is the implementation correct, maintainable, secure, and architecturally sound?
-
-Output: findings and recommendation
-
-**Validator**
-
-Objective evidence
-
-Did required deterministic checks pass for the correct candidate?
-
-Output: validation assessment
-
-**Evaluator**
-
-Goal satisfaction
-
-Does the completed work meet the authorized business outcome?
-
-Output: outcome assessment
+| Role | Assurance question | Output |
+| --- | --- | --- |
+| Reviewer | Is the implementation correct, maintainable, secure, and architecturally sound? | Findings and recommendation |
+| Validator | Does trusted evidence show that mandatory deterministic checks passed for this candidate? | Validation assessment |
+| Evaluator | Does the result satisfy the authorized business goal and acceptance criteria? | Goal assessment |
 
 For the corporate fleet booking feature:
 
@@ -6779,7 +6937,7 @@ A favorable Reviewer recommendation must not substitute for business-goal evalua
 
 **Architectural recommendation:** Preserve distinct assurance contracts even when the same underlying AI platform executes the roles.
 
-### **13.9 Plan for Controlled Parallelism**
+### 13.9 Plan for Controlled Parallelism
 
 Not every workflow stage must execute sequentially.
 
@@ -6810,7 +6968,7 @@ The following principles apply:
 >
 > Parallelism is an optimization of workflow execution, not a relaxation of its control dependencies. Optimize scheduling only after the evidence and state model can support concurrent activities safely.
 
-### **13.10 Make Approval Boundaries Risk-Sensitive**
+### 13.10 Make Approval Boundaries Risk-Sensitive
 
 Human approval requirements should reflect the nature of the engineering change.
 
@@ -6848,7 +7006,7 @@ The specific approvers depend on organizational policy.
 
 The important principle is that the executing Agent cannot independently waive a required approval.
 
-### **13.11 Distinguish Workflow Completion from Deployment Completion**
+### 13.11 Distinguish Workflow Completion from Deployment Completion
 
 Enterprise AI engineering workflows often produce pull requests, patches, architecture decisions, or verified remediation packages.
 
@@ -6881,7 +7039,7 @@ Likewise, a successfully deployed artifact does not automatically prove that the
 
 That may require operational verification or post-deployment evaluation.
 
-### **13.12 Avoid Premature Harness Complexity**
+### 13.12 Avoid Premature Harness Complexity
 
 Enterprise workflow design can become unnecessarily elaborate.
 
@@ -6891,7 +7049,7 @@ This often creates more engineering risk than it removes.
 
 A simpler architecture may initially be more appropriate:
 
-```
+```text
 Goal
   ↓
 Lead Agent
@@ -6919,7 +7077,7 @@ As adoption grows, the organization can introduce additional infrastructure for 
 
 **Architectural recommendation:** Start with explicit state, reliable gates, bounded recovery, and accountable approval. Add orchestration sophistication only when actual operating requirements justify it.
 
-### **13.13 Design for Observability Before Scaling Execution**
+### 13.13 Design for Observability Before Scaling Execution
 
 As workflow concurrency increases, operational visibility becomes essential.
 
@@ -6954,7 +7112,7 @@ However, telemetry must respect data classification and retention policies.
 
 Raw Agent prompts, source excerpts, and tool outputs may contain sensitive information and should not be indiscriminately placed in centralized logs.
 
-### **13.14 Design Workflow Governance for Long-Term Evolution**
+### 13.14 Design Workflow Governance for Long-Term Evolution
 
 Enterprise workflows are not static.
 
@@ -6989,7 +7147,7 @@ The same rule applies to prompts, instructions, and workflow policies.
 
 **Learning should improve engineering knowledge without bypassing governance.**
 
-### **13.15 Reference Architecture Decision Record**
+### 13.15 Reference Architecture Decision Record
 
 For enterprise adoption, the fundamental workflow decisions should be documented in an Architecture Decision Record.
 
@@ -7025,7 +7183,7 @@ For low-risk individual development tasks, organizations may adopt a lighter wor
 
 However, mandatory enterprise boundaries should remain enforceable.
 
-### **13.16 Architectural Tradeoffs**
+### 13.16 Architectural Tradeoffs
 
 No enterprise workflow design eliminates all complexity.
 
@@ -7052,7 +7210,7 @@ A change to corporate booking authorization or production data consistency may j
 
 The Harness should support both without abandoning its underlying architectural principles.
 
-### **13.17 Architect’s Notes Summary**
+### 13.17 Architect’s Notes Summary
 
 Enterprise AI engineering workflows should be treated as reliable execution systems with explicit authority, state, evidence, and recovery models.
 
@@ -7081,9 +7239,8 @@ The broader architectural lesson extends beyond Claude Code.
 
 **An enterprise Harness should allow AI Agents to make implementation decisions within authorized boundaries while keeping policy, evidence, and final accountability under explicit organizational control.**
 
-**Chapter 28 status: In progress — next section: Enterprise Tips**
 
-## **14. Enterprise Tips**
+## 14. Enterprise Tips
 
 Enterprise AI engineering workflows must operate within real organizational environments. These environments contain multiple development teams, existing CI/CD pipelines, security policies, architecture standards, approval hierarchies, legacy systems, and operational constraints.
 
@@ -7093,7 +7250,7 @@ Enterprise adoption therefore requires more than technically correct orchestrati
 
 The following recommendations address the practical considerations involved in deploying and operating enterprise AI engineering workflows at scale.
 
-### **14.1 Establish a Standard Enterprise Workflow Catalog**
+### 14.1 Establish a Standard Enterprise Workflow Catalog
 
 Organizations should maintain an approved catalog of engineering workflows rather than allowing every development team to invent its own execution process.
 
@@ -7122,7 +7279,7 @@ However, extensions should not silently remove organization-wide controls.
 >
 > Start with a small workflow catalog that addresses the organization's most frequent engineering activities. Establish reliable feature-development and bug-fix workflows before introducing highly autonomous architecture changes or production operations.
 
-### **14.2 Provide a Shared Harness Platform**
+### 14.2 Provide a Shared Harness Platform
 
 A large organization should avoid requiring every application team to implement its own workflow orchestrator, Agent execution scripts, gate infrastructure, and evidence management.
 
@@ -7153,7 +7310,7 @@ This creates a useful division of ownership.
 
 **Platform engineering owns the execution infrastructure. Application teams own domain-specific engineering requirements. Architecture, security, and governance owners define applicable standards.**
 
-### **14.3 Adopt a Federated Governance Model**
+### 14.3 Adopt a Federated Governance Model
 
 A fully centralized workflow model can become difficult to maintain.
 
@@ -7186,7 +7343,7 @@ However, different applications may use different test frameworks or contract-va
 >
 > Centralize enforcement of mandatory controls, but delegate ownership of domain-specific implementation practices and tests to the teams that understand those systems.
 
-### **14.4 Introduce Repository Onboarding Standards**
+### 14.4 Introduce Repository Onboarding Standards
 
 A repository should not automatically become eligible for autonomous engineering workflows merely because Claude Code can access its files.
 
@@ -7221,13 +7378,13 @@ Onboarding should therefore produce a capability assessment.
 
 These levels represent an illustrative onboarding model, not a universal maturity standard.
 
-### **14.5 Package Workflow Adoption as a Repository Starter Kit**
+### 14.5 Package Workflow Adoption as a Repository Starter Kit
 
 A practical way to accelerate adoption is to provide a reusable repository integration package.
 
 For example:
 
-```
+```text
 enterprise-ai-starter-kit/
 │
 ├── instructions/
@@ -7269,7 +7426,7 @@ The starter kit should also include validation tooling that checks whether requi
 
 **Enterprise recommendation:** Treat workflow onboarding as a controlled engineering integration process, not as copying a directory of Agent prompts.
 
-### **14.6 Integrate with Existing CI/CD Rather Than Replacing It**
+### 14.6 Integrate with Existing CI/CD Rather Than Replacing It
 
 Most enterprises already have established build, test, security scanning, and deployment pipelines.
 
@@ -7298,7 +7455,7 @@ A successful pipeline for an earlier commit must not be treated as evidence for 
 
 This integration approach allows organizations to adopt AI engineering workflows without abandoning their existing delivery controls.
 
-### **14.7 Use Risk-Based Workflow Routing**
+### 14.7 Use Risk-Based Workflow Routing
 
 Not every request should enter the same workflow.
 
@@ -7325,7 +7482,7 @@ Changing production data directly requires explicit operational authority.
 
 A risk-routing policy might look like:
 
-```
+```yaml
 routing:
   low:
     workflow: standard-change
@@ -7350,7 +7507,7 @@ Risk classification should be derived from approved criteria.
 
 The Agent may recommend a risk level, but it should not be able to reduce its own classification to bypass required controls.
 
-### **14.8 Establish Clear Escalation Paths**
+### 14.8 Establish Clear Escalation Paths
 
 Enterprise workflows will encounter situations that cannot be resolved autonomously.
 
@@ -7379,7 +7536,7 @@ The escalation process should not require the human to reconstruct the entire wo
 >
 > A reliable Harness should know when to stop. The ability to recognize that an engineering decision requires human authority is an important capability of a mature automation system.
 
-### **14.9 Establish Operational Ownership of Running Workflows**
+### 14.9 Establish Operational Ownership of Running Workflows
 
 An enterprise Harness is an operational system.
 
@@ -7406,7 +7563,7 @@ Similarly, a worker crash should not cause completed evidence to disappear.
 
 Operations teams should be able to distinguish active work, recoverable interruption, blocked dependencies, and terminal failure.
 
-### **14.10 Build an Enterprise Workflow Dashboard**
+### 14.10 Build an Enterprise Workflow Dashboard
 
 As adoption expands, a centralized workflow dashboard becomes valuable.
 
@@ -7414,38 +7571,23 @@ The dashboard should provide operational visibility rather than merely display A
 
 A representative dashboard could include:
 
-**Enterprise AI Engineering — Workflow Operations**
+**Illustrative Workflow Operations Dashboard**
 
-Illustrative dashboard with fictional run data
+| Metric | Example value |
+| --- | ---: |
+| Active runs | 12 |
+| Awaiting approval | 4 |
+| Blocked | 2 |
+| Completed today | 18 |
 
-Example
+| Goal | Workflow | State |
+| --- | --- | --- |
+| ACD-FLEET-028 | Feature | Validating |
+| ACD-BOOK-104 | Bug fix | Reviewing |
+| ACD-SEC-031 | Security | Blocked |
+| ACD-ARCH-012 | Architecture | Awaiting approval |
 
-Active runs
-
-# **12**
-
-Awaiting approval
-
-# **4**
-
-Blocked
-
-# **2**
-
-Completed today
-
-# **18**
-
-Recent workflow instances
-
-| Goal          | Workflow     | State             |
-| ------------- | ------------ | ----------------- |
-| ACD-FLEET-028 | Feature      | Validating        |
-| ACD-BOOK-104  | Bug fix      | Reviewing         |
-| ACD-SEC-031   | Security     | Blocked           |
-| ACD-ARCH-012  | Architecture | Awaiting approval |
-
-Values are illustrative and do not represent actual Harness executions.
+*All values are illustrative, not actual Harness execution data.*
 
 The production dashboard should support drill-down into individual runs.
 
@@ -7455,7 +7597,7 @@ The dashboard must distinguish operational state from business completion.
 
 A workflow that has generated code but is awaiting validation should not appear as successfully completed.
 
-### **14.11 Control AI Execution Costs Without Compromising Assurance**
+### 14.11 Control AI Execution Costs Without Compromising Assurance
 
 Enterprise Agent workflows consume computational resources, model usage, CI/CD capacity, and developer attention.
 
@@ -7488,7 +7630,7 @@ The objective is to reduce waste without weakening assurance.
 
 **Enterprise recommendation:** Optimize the cost of the complete approved engineering outcome, not simply the cost of one Agent invocation.
 
-### **14.12 Protect Sensitive Enterprise Information**
+### 14.12 Protect Sensitive Enterprise Information
 
 AI engineering workflows may process confidential source code, customer information, operational logs, security findings, and internal architecture documents.
 
@@ -7516,7 +7658,7 @@ The workflow should also protect against prompt injection through untrusted issu
 
 Such content may inform the task but must not override trusted instructions or workflow policy.
 
-### **14.13 Preserve Auditability Across Tools and Platforms**
+### 14.13 Preserve Auditability Across Tools and Platforms
 
 Enterprise workflows commonly span multiple systems.
 
@@ -7528,7 +7670,7 @@ A unique run identifier should appear throughout the execution records.
 
 A practical audit manifest may include:
 
-```
+```yaml
 audit:
   run_id: ACD-2026-028-001
   goal_id: ACD-FLEET-028
@@ -7565,7 +7707,7 @@ Audit retention should follow organizational requirements.
 
 The workflow should also avoid storing unnecessary secrets or excessive confidential context merely for completeness.
 
-### **14.14 Measure Quality and Business Value**
+### 14.14 Measure Quality and Business Value
 
 Enterprise AI adoption should be evaluated using broader engineering outcomes.
 
@@ -7598,7 +7740,7 @@ For Alpha Car Detailing, reliable delivery of corporate fleet booking could redu
 
 These business outcomes are more meaningful than counting the amount of code generated.
 
-### **14.15 Introduce Workflow Automation Through Controlled Pilots**
+### 14.15 Introduce Workflow Automation Through Controlled Pilots
 
 Before expanding enterprise workflows across the organization, begin with a limited pilot.
 
@@ -7610,9 +7752,14 @@ The team can then introduce Claude Code execution through the Harness while keep
 
 A practical rollout might proceed through four stages.
 
-FIGURE 28.11 — ENTERPRISE WORKFLOW ADOPTION
+**Figure 28.11 — Enterprise Workflow Adoption**
 
-\#chatgpt-mermaid-\_r_1m0a\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(237, 237, 237);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_1m0a\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_1m0a\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_1m0a\_ .error-icon{fill:rgb(48, 48, 48);}#chatgpt-mermaid-\_r_1m0a\_ .error-text{fill:rgb(237, 237, 237);stroke:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1m0a\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_1m0a\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_1m0a\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_1m0a\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_1m0a\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_1m0a\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_1m0a\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1m0a\_ .marker.cross{stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1m0a\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_1m0a\_ p{margin:0;}#chatgpt-mermaid-\_r_1m0a\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1m0a\_ .cluster-label text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1m0a\_ .cluster-label span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1m0a\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_1m0a\_ .label text,#chatgpt-mermaid-\_r_1m0a\_ span{fill:rgb(237, 237, 237);color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1m0a\_ .node rect,#chatgpt-mermaid-\_r_1m0a\_ .node circle,#chatgpt-mermaid-\_r_1m0a\_ .node ellipse,#chatgpt-mermaid-\_r_1m0a\_ .node polygon,#chatgpt-mermaid-\_r_1m0a\_ .node path{fill:rgb(9, 23, 44);stroke:rgb(31, 78, 148);stroke-width:1px;}#chatgpt-mermaid-\_r_1m0a\_ .rough-node .label text,#chatgpt-mermaid-\_r_1m0a\_ .node .label text,#chatgpt-mermaid-\_r_1m0a\_ .image-shape .label,#chatgpt-mermaid-\_r_1m0a\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_1m0a\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_1m0a\_ .rough-node .label,#chatgpt-mermaid-\_r_1m0a\_ .node .label,#chatgpt-mermaid-\_r_1m0a\_ .image-shape .label,#chatgpt-mermaid-\_r_1m0a\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_1m0a\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_1m0a\_ .root .anchor path{fill:rgb(175, 175, 175)!important;stroke-width:0;stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1m0a\_ .arrowheadPath{fill:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1m0a\_ .edgePath .path{stroke:rgb(175, 175, 175);stroke-width:1px;}#chatgpt-mermaid-\_r_1m0a\_ .flowchart-link{stroke:rgb(175, 175, 175);fill:none;}#chatgpt-mermaid-\_r_1m0a\_ .edgeLabel{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_1m0a\_ .edgeLabel p{background-color:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1m0a\_ .edgeLabel rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1m0a\_ .labelBkg{background-color:rgba(0, 0, 0, 0.5);}#chatgpt-mermaid-\_r_1m0a\_ .cluster rect{fill:rgb(48, 48, 48);stroke:rgba(255, 255, 255, 0.15);stroke-width:1px;}#chatgpt-mermaid-\_r_1m0a\_ .cluster text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1m0a\_ .cluster span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1m0a\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(48, 48, 48);border:1px solid rgba(255, 255, 255, 0.15);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_1m0a\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1m0a\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_1m0a\_ .icon-shape,#chatgpt-mermaid-\_r_1m0a\_ .image-shape{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_1m0a\_ .icon-shape p,#chatgpt-mermaid-\_r_1m0a\_ .image-shape p{background-color:rgb(0, 0, 0);padding:2px;}#chatgpt-mermaid-\_r_1m0a\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_1m0a\_ .image-shape .label rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1m0a\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_1m0a\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_1m0a\_ .node .neo-node{stroke:rgb(31, 78, 148);}#chatgpt-mermaid-\_r_1m0a\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_1m0a\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_1m0a\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_1m0a\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1m0a\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_1m0a\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_1m0a\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_1m0a\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1m0a\_ [data-look="neo"].node .neo-line path{stroke:rgb(31, 78, 148);filter:none;}#chatgpt-mermaid-\_r_1m0a\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_1m0a\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1m0a\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_1m0a\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_1m0a\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1m0a\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_1m0a\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1m0a\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_1m0a\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_1m0a\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_1m0a\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_1m0a\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-width:1px;}#chatgpt-mermaid-\_r_1m0a\_ .node rect,#chatgpt-mermaid-\_r_1m0a\_ .node circle,#chatgpt-mermaid-\_r_1m0a\_ .node ellipse,#chatgpt-mermaid-\_r_1m0a\_ .node polygon,#chatgpt-mermaid-\_r_1m0a\_ .node path{fill:rgb(0, 40, 77);stroke:rgba(255, 255, 255, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_1m0a\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_1m0a\_ .mermaid-decision .label-container{fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_1m0a\_ .edgePaths .flowchart-link{stroke:rgb(175, 175, 175);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_1m0a\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1m0a\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}PilotOne service, limited tasksStandardizeTemplates, instructions, gatesScaleMore repositories andworkflowsOptimizeMetrics, recovery, governanceValidate basic controlsEstablish ownershipIntroduce operational supportImprove through reviewedevidence
+```mermaid
+flowchart LR
+    A[Pilot: One Service and Bounded Tasks] --> B[Standardize: Templates, Instructions and Gates]
+    B --> C[Scale: Repositories and Workflow Types]
+    C --> D[Optimize: Metrics, Recovery and Governance]
+```
 
 At each stage, the organization should evaluate whether the existing controls remain effective at the new level of adoption.
 
@@ -7622,7 +7769,7 @@ Increasing concurrency, introducing additional Agent providers, or allowing unat
 >
 > Do not measure pilot success only by whether an Agent completes a feature. Measure whether the workflow can consistently detect defects, preserve evidence, recover from interruptions, and produce an acceptable result under the defined approval policy.
 
-### **14.16 Define an Operating Model for Workflow Support**
+### 14.16 Define an Operating Model for Workflow Support
 
 Once workflows are used routinely, the organization needs a support model.
 
@@ -7654,7 +7801,7 @@ The Harness should record enough diagnostic information for the responsible team
 
 Support procedures should also define how to pause, cancel, reconcile, or restart workflows safely.
 
-### **14.17 Establish Workflow Service-Level Objectives**
+### 14.17 Establish Workflow Service-Level Objectives
 
 For frequently used workflows, organizations may benefit from operational service-level objectives.
 
@@ -7678,7 +7825,7 @@ For example, the Harness should reliably determine whether a workflow is active,
 
 This operational certainty supports both automation and human oversight.
 
-### **14.18 Prevent Uncontrolled Cross-Repository Changes**
+### 14.18 Prevent Uncontrolled Cross-Repository Changes
 
 Enterprise systems often span multiple repositories.
 
@@ -7707,7 +7854,7 @@ The overall workflow may coordinate the changes, but it should not silently expa
 
 Where different teams own the affected services, their approval requirements should remain effective.
 
-### **14.19 Treat Workflow Templates as Enterprise Intellectual Property**
+### 14.19 Treat Workflow Templates as Enterprise Intellectual Property
 
 A mature workflow catalog becomes a valuable reusable engineering asset.
 
@@ -7736,7 +7883,7 @@ However, the organization should maintain versioning, ownership, documentation, 
 
 A workflow template should be managed with the same discipline applied to other shared software components.
 
-### **14.20 Maintain a Continuous Improvement Process**
+### 14.20 Maintain a Continuous Improvement Process
 
 Enterprise workflows should evolve based on operational evidence.
 
@@ -7763,7 +7910,7 @@ This preserves the handbook's principle that a self-learning Harness recommends 
 
 A useful improvement process is:
 
-```
+```text
 Workflow Execution
         ↓
 Metrics and Evidence
@@ -7783,7 +7930,7 @@ Future Workflow Execution
 
 The improvement cycle should itself be auditable.
 
-### **14.21 Enterprise Workflow Adoption Checklist**
+### 14.21 Enterprise Workflow Adoption Checklist
 
 Before broad organizational rollout, engineering leadership should verify the following conditions.
 
@@ -7806,7 +7953,7 @@ Before broad organizational rollout, engineering leadership should verify the fo
 
 Organizations should use this checklist as a readiness assessment rather than assume that simply configuring Claude Code makes a repository enterprise-ready.
 
-### **14.22 Enterprise Tips Summary**
+### 14.22 Enterprise Tips Summary
 
 Scaling AI-assisted engineering requires an operating model that extends beyond individual Agents and development teams.
 
@@ -7824,9 +7971,8 @@ The enterprise value comes from making intelligent Agent execution repeatable an
 
 **The objective is not to deploy the largest possible collection of AI Agents. It is to establish a governed engineering capability that teams can trust, operate, measure, and improve over time.**
 
-**Chapter 28 status: In progress — next section: Decision Points**
 
-## **15. Decision Points**
+## 15. Decision Points
 
 Enterprise AI engineering workflows require architects to make deliberate choices about execution boundaries, autonomy, validation, state management, and organizational authority.
 
@@ -7840,7 +7986,7 @@ The objective is not to maximize automation. It is to select an architecture tha
 
 The following decision points establish a systematic approach to designing and governing enterprise workflows.
 
-### **15.1 Decision Point: When Should a Task Use a Governed Workflow?**
+### 15.1 Decision Point: When Should a Task Use a Governed Workflow?
 
 Not every interaction with Claude Code requires a complete enterprise workflow.
 
@@ -7868,7 +8014,7 @@ Implementing agreement-level monthly limits requires a governed development work
 
 **Decision:** Establish clear admission criteria for activities that can change trusted engineering artifacts or affect operational systems.
 
-### **15.2 Decision Point: How Much Autonomy Should the Agent Receive?**
+### 15.2 Decision Point: How Much Autonomy Should the Agent Receive?
 
 Agent autonomy should reflect task risk, available validation, and organizational confidence in the workflow.
 
@@ -7897,7 +8043,7 @@ The corporate fleet booking feature may support automated implementation after p
 
 **Decision:** Delegate execution autonomy according to an approved risk profile, not simply according to the Agent's technical capabilities.
 
-### **15.3 Decision Point: Where Should Workflow Orchestration Reside?**
+### 15.3 Decision Point: Where Should Workflow Orchestration Reside?
 
 The organization must decide whether orchestration should be handled primarily through Agent-native capabilities, external scripts, an existing CI/CD system, or a dedicated Harness service.
 
@@ -7915,7 +8061,7 @@ As the number of concurrent workflows increases, a dedicated orchestration servi
 
 **Decision:** Select the simplest orchestration architecture that can reliably enforce the required state, evidence, security, and recovery contracts.
 
-### **15.4 Decision Point: Where Should the Control Plane End and Agent Authority Begin?**
+### 15.4 Decision Point: Where Should the Control Plane End and Agent Authority Begin?
 
 An enterprise workflow needs a clear boundary between decisions delegated to Agents and decisions reserved for the Harness or authorized humans.
 
@@ -7937,7 +8083,7 @@ Agents may recommend changes to these controls, but the recommendations must fol
 
 **Decision:** Make control-plane authority explicit and enforce it outside the Agent's natural-language instructions.
 
-### **15.5 Decision Point: What Belongs in CLAUDE.md, Skills, Steering Notes, and Workflow Templates?**
+### 15.5 Decision Point: What Belongs in CLAUDE.md, Skills, Steering Notes, and Workflow Templates?
 
 These artifacts should have distinct responsibilities.
 
@@ -7970,7 +8116,7 @@ However, referencing an important requirement across multiple artifacts may be a
 
 **Decision:** Place requirements according to their authority, scope, reuse, and lifecycle rather than storing everything inside the task prompt.
 
-### **15.6 Decision Point: When Is Planning Approval Required?**
+### 15.6 Decision Point: When Is Planning Approval Required?
 
 Planning is valuable for almost every substantial engineering change, but formal plan approval should be risk-sensitive.
 
@@ -7992,7 +8138,7 @@ A practical approval policy should consider:
 
 **Decision:** Require formal planning approval when the implementation approach itself introduces material technical, business, or governance risk.
 
-### **15.7 Decision Point: What Constitutes an Acceptable Agent Handoff?**
+### 15.7 Decision Point: What Constitutes an Acceptable Agent Handoff?
 
 An Agent handoff can be conversational, file-based, or service-mediated.
 
@@ -8015,7 +8161,7 @@ It should receive the candidate revision, approved goal, changed components, and
 
 **Decision:** Use structured handoff contracts for stage boundaries that affect validation, evaluation, or authorization.
 
-### **15.8 Decision Point: Which Validation Gates Are Mandatory?**
+### 15.8 Decision Point: Which Validation Gates Are Mandatory?
 
 The selection of mandatory gates is a risk and engineering-policy decision.
 
@@ -8044,7 +8190,7 @@ However, once a gate is mandatory for a particular workflow, its execution and o
 
 **Decision:** Define versioned gate profiles according to task type, architectural impact, and risk classification.
 
-### **15.9 Decision Point: Should Validation Be Sequential or Parallel?**
+### 15.9 Decision Point: Should Validation Be Sequential or Parallel?
 
 Independent deterministic gates can often run concurrently.
 
@@ -8064,15 +8210,29 @@ For resource-intensive tests, the Harness may use separate execution environment
 
 **Decision:** Parallelize independent checks when evidence attribution, resource isolation, and synchronization conditions remain reliable.
 
-### **15.10 Decision Point: When Should a Workflow Retry, Replan, or Escalate?**
+### 15.10 Decision Point: When Should a Workflow Retry, Replan, or Escalate?
 
 Failure handling requires more than a fixed retry count.
 
 The Harness must classify the failure before selecting a response.
 
-FIGURE 28.12 — WORKFLOW FAILURE DECISION
+**Figure 28.12 — Workflow Failure Decision**
 
-\#chatgpt-mermaid-\_r_1m1r\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(237, 237, 237);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_1m1r\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_1m1r\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_1m1r\_ .error-icon{fill:rgb(48, 48, 48);}#chatgpt-mermaid-\_r_1m1r\_ .error-text{fill:rgb(237, 237, 237);stroke:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1m1r\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_1m1r\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_1m1r\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_1m1r\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_1m1r\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_1m1r\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_1m1r\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1m1r\_ .marker.cross{stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1m1r\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_1m1r\_ p{margin:0;}#chatgpt-mermaid-\_r_1m1r\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1m1r\_ .cluster-label text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1m1r\_ .cluster-label span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1m1r\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_1m1r\_ .label text,#chatgpt-mermaid-\_r_1m1r\_ span{fill:rgb(237, 237, 237);color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1m1r\_ .node rect,#chatgpt-mermaid-\_r_1m1r\_ .node circle,#chatgpt-mermaid-\_r_1m1r\_ .node ellipse,#chatgpt-mermaid-\_r_1m1r\_ .node polygon,#chatgpt-mermaid-\_r_1m1r\_ .node path{fill:rgb(9, 23, 44);stroke:rgb(31, 78, 148);stroke-width:1px;}#chatgpt-mermaid-\_r_1m1r\_ .rough-node .label text,#chatgpt-mermaid-\_r_1m1r\_ .node .label text,#chatgpt-mermaid-\_r_1m1r\_ .image-shape .label,#chatgpt-mermaid-\_r_1m1r\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_1m1r\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_1m1r\_ .rough-node .label,#chatgpt-mermaid-\_r_1m1r\_ .node .label,#chatgpt-mermaid-\_r_1m1r\_ .image-shape .label,#chatgpt-mermaid-\_r_1m1r\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_1m1r\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_1m1r\_ .root .anchor path{fill:rgb(175, 175, 175)!important;stroke-width:0;stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1m1r\_ .arrowheadPath{fill:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1m1r\_ .edgePath .path{stroke:rgb(175, 175, 175);stroke-width:1px;}#chatgpt-mermaid-\_r_1m1r\_ .flowchart-link{stroke:rgb(175, 175, 175);fill:none;}#chatgpt-mermaid-\_r_1m1r\_ .edgeLabel{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_1m1r\_ .edgeLabel p{background-color:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1m1r\_ .edgeLabel rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1m1r\_ .labelBkg{background-color:rgba(0, 0, 0, 0.5);}#chatgpt-mermaid-\_r_1m1r\_ .cluster rect{fill:rgb(48, 48, 48);stroke:rgba(255, 255, 255, 0.15);stroke-width:1px;}#chatgpt-mermaid-\_r_1m1r\_ .cluster text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1m1r\_ .cluster span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1m1r\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(48, 48, 48);border:1px solid rgba(255, 255, 255, 0.15);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_1m1r\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1m1r\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_1m1r\_ .icon-shape,#chatgpt-mermaid-\_r_1m1r\_ .image-shape{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_1m1r\_ .icon-shape p,#chatgpt-mermaid-\_r_1m1r\_ .image-shape p{background-color:rgb(0, 0, 0);padding:2px;}#chatgpt-mermaid-\_r_1m1r\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_1m1r\_ .image-shape .label rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1m1r\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_1m1r\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_1m1r\_ .node .neo-node{stroke:rgb(31, 78, 148);}#chatgpt-mermaid-\_r_1m1r\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_1m1r\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_1m1r\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_1m1r\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1m1r\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_1m1r\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_1m1r\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_1m1r\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1m1r\_ [data-look="neo"].node .neo-line path{stroke:rgb(31, 78, 148);filter:none;}#chatgpt-mermaid-\_r_1m1r\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_1m1r\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1m1r\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_1m1r\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_1m1r\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1m1r\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_1m1r\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1m1r\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_1m1r\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_1m1r\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_1m1r\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_1m1r\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-width:1px;}#chatgpt-mermaid-\_r_1m1r\_ .node rect,#chatgpt-mermaid-\_r_1m1r\_ .node circle,#chatgpt-mermaid-\_r_1m1r\_ .node ellipse,#chatgpt-mermaid-\_r_1m1r\_ .node polygon,#chatgpt-mermaid-\_r_1m1r\_ .node path{fill:rgb(0, 40, 77);stroke:rgba(255, 255, 255, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_1m1r\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_1m1r\_ .mermaid-decision .label-container{fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_1m1r\_ .edgePaths .flowchart-link{stroke:rgb(175, 175, 175);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_1m1r\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1m1r\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}#chatgpt-mermaid-\_r_1m1r\_ .action rect{fill:rgb(232, 241, 251)!important;stroke:rgb(65, 108, 155)!important;color:rgb(23, 52, 84)!important;}#chatgpt-mermaid-\_r_1m1r\_ .action polygon{fill:rgb(232, 241, 251)!important;stroke:rgb(65, 108, 155)!important;color:rgb(23, 52, 84)!important;}#chatgpt-mermaid-\_r_1m1r\_ .action ellipse{fill:rgb(232, 241, 251)!important;stroke:rgb(65, 108, 155)!important;color:rgb(23, 52, 84)!important;}#chatgpt-mermaid-\_r_1m1r\_ .action circle{fill:rgb(232, 241, 251)!important;stroke:rgb(65, 108, 155)!important;color:rgb(23, 52, 84)!important;}#chatgpt-mermaid-\_r_1m1r\_ .action path{fill:rgb(232, 241, 251)!important;stroke:rgb(65, 108, 155)!important;color:rgb(23, 52, 84)!important;}#chatgpt-mermaid-\_r_1m1r\_ .action tspan{fill:rgb(23, 52, 84)!important;}#chatgpt-mermaid-\_r_1m1r\_ .decision rect{fill:rgb(255, 240, 214)!important;stroke:rgb(189, 135, 48)!important;color:rgb(112, 73, 9)!important;}#chatgpt-mermaid-\_r_1m1r\_ .decision polygon{fill:rgb(255, 240, 214)!important;stroke:rgb(189, 135, 48)!important;color:rgb(112, 73, 9)!important;}#chatgpt-mermaid-\_r_1m1r\_ .decision ellipse{fill:rgb(255, 240, 214)!important;stroke:rgb(189, 135, 48)!important;color:rgb(112, 73, 9)!important;}#chatgpt-mermaid-\_r_1m1r\_ .decision circle{fill:rgb(255, 240, 214)!important;stroke:rgb(189, 135, 48)!important;color:rgb(112, 73, 9)!important;}#chatgpt-mermaid-\_r_1m1r\_ .decision path{fill:rgb(255, 240, 214)!important;stroke:rgb(189, 135, 48)!important;color:rgb(112, 73, 9)!important;}#chatgpt-mermaid-\_r_1m1r\_ .decision tspan{fill:rgb(112, 73, 9)!important;}#chatgpt-mermaid-\_r_1m1r\_ .escalation rect{fill:rgb(251, 233, 231)!important;stroke:rgb(183, 91, 82)!important;color:rgb(132, 52, 46)!important;}#chatgpt-mermaid-\_r_1m1r\_ .escalation polygon{fill:rgb(251, 233, 231)!important;stroke:rgb(183, 91, 82)!important;color:rgb(132, 52, 46)!important;}#chatgpt-mermaid-\_r_1m1r\_ .escalation ellipse{fill:rgb(251, 233, 231)!important;stroke:rgb(183, 91, 82)!important;color:rgb(132, 52, 46)!important;}#chatgpt-mermaid-\_r_1m1r\_ .escalation circle{fill:rgb(251, 233, 231)!important;stroke:rgb(183, 91, 82)!important;color:rgb(132, 52, 46)!important;}#chatgpt-mermaid-\_r_1m1r\_ .escalation path{fill:rgb(251, 233, 231)!important;stroke:rgb(183, 91, 82)!important;color:rgb(132, 52, 46)!important;}#chatgpt-mermaid-\_r_1m1r\_ .escalation tspan{fill:rgb(132, 52, 46)!important;}Workflow FailureFailure ClassificationAttempts Remaining?Developer RemediationEngineering EscalationRetry Safe?Bounded RetryBlock and InvestigateReturn to PlanningArchitecture DecisionStop Unauthorized OperationGovernance or SecurityEscalationRequest AuthorizedClarificationImplementation defectYesNoTransient infrastructureYesNoArchitecture conflictPolicy violationMissing business decision
+```mermaid
+flowchart TD
+    A[Workflow Failure] --> B{Failure classification}
+    B -->|Implementation defect| C{Attempts remaining?}
+    C -->|Yes| D[Developer remediation]
+    C -->|No| E[Engineering escalation]
+    B -->|Transient infrastructure| F{Retry safe?}
+    F -->|Yes| G[Bounded retry]
+    F -->|No| H[Block and investigate]
+    B -->|Architecture conflict| I[Return to planning]
+    I --> J[Architecture decision]
+    B -->|Policy violation| K[Stop unauthorized operation]
+    K --> L[Governance or security escalation]
+    B -->|Missing business decision| M[Request authorized clarification]
+```
 
 For example, a compilation failure may justify another implementation attempt.
 
@@ -8082,7 +8242,7 @@ A failed security-policy check must not trigger attempts to weaken the security 
 
 **Decision:** Use failure classification, bounded retry budgets, and explicit escalation rules rather than unrestricted Agent continuation.
 
-### **15.11 Decision Point: How Should Workflow State Be Persisted?**
+### 15.11 Decision Point: How Should Workflow State Be Persisted?
 
 The state model should reflect the required level of reliability and concurrency.
 
@@ -8105,7 +8265,7 @@ The choice should be driven by consistency, recovery, and operational requiremen
 
 **Decision:** Select durable state infrastructure according to concurrency and recovery needs, not merely implementation convenience.
 
-### **15.12 Decision Point: How Should Temporary and Persistent Information Be Separated?**
+### 15.12 Decision Point: How Should Temporary and Persistent Information Be Separated?
 
 Workflow execution produces several categories of information.
 
@@ -8131,7 +8291,7 @@ A Scratchpad should not become a trusted knowledge source simply because several
 
 **Decision:** Define information classification, retention, verification, and promotion rules for every workflow artifact category.
 
-### **15.13 Decision Point: When Is Human Approval Required?**
+### 15.13 Decision Point: When Is Human Approval Required?
 
 Approval policies should identify both the conditions requiring approval and the authority permitted to grant it.
 
@@ -8151,7 +8311,7 @@ A workflow may permit automated advancement for defined low-risk changes, but th
 
 **Decision:** Make approval requirements policy-driven, risk-sensitive, and bound to the exact candidate or operation being authorized.
 
-### **15.14 Decision Point: What Is the Workflow’s Completion Boundary?**
+### 15.14 Decision Point: What Is the Workflow’s Completion Boundary?
 
 A workflow may end with different outputs depending on its purpose.
 
@@ -8167,7 +8327,7 @@ The output should be defined before execution begins.
 
 For example:
 
-```
+```yaml
 completion:
   workflow: feature-development
 
@@ -8190,7 +8350,7 @@ These are separate engineering events.
 
 **Decision:** Define completion through observable conditions and a specific authorized output, not through the Agent's final message.
 
-### **15.15 Decision Point: Where Should Workflow Evidence Be Stored?**
+### 15.15 Decision Point: Where Should Workflow Evidence Be Stored?
 
 Evidence storage affects auditability, security, retention, and recoverability.
 
@@ -8219,7 +8379,7 @@ The evidence store should preserve references to the exact source revision and e
 
 **Decision:** Treat workflow evidence as an enterprise record with explicit integrity, access, and retention requirements.
 
-### **15.16 Decision Point: How Should Workflow Performance Be Optimized?**
+### 15.16 Decision Point: How Should Workflow Performance Be Optimized?
 
 Workflow optimization should focus on reducing unnecessary work without weakening required assurance.
 
@@ -8242,7 +8402,7 @@ The organization should measure both implementation efficiency and the quality o
 
 **Decision:** Optimize execution scheduling and resource usage while preserving mandatory validation and approval requirements.
 
-### **15.17 Decision Point: Should Multiple Agent Providers Be Supported?**
+### 15.17 Decision Point: Should Multiple Agent Providers Be Supported?
 
 The Handbook uses Claude Code as its primary execution platform.
 
@@ -8268,7 +8428,7 @@ The core workflow state machine should not depend on a particular vendor's conve
 
 **Decision:** Introduce multiple Agent providers when there is a demonstrated organizational benefit and the Harness can preserve equivalent governance controls.
 
-### **15.18 Decision Point: How Should Workflow Governance Evolve?**
+### 15.18 Decision Point: How Should Workflow Governance Evolve?
 
 Workflow templates, instructions, Skills, gate policies, and Agent role definitions will evolve as the organization gains experience.
 
@@ -8295,7 +8455,7 @@ A governed improvement process should include:
 
 **Decision:** Allow the Harness to recommend improvements while preserving human ownership of authoritative engineering standards.
 
-### **15.19 Consolidated Architecture Decision Matrix**
+### 15.19 Consolidated Architecture Decision Matrix
 
 The following matrix summarizes the principal decisions an architect should record before deploying an enterprise workflow.
 
@@ -8322,7 +8482,7 @@ These defaults are recommendations, not universal requirements.
 
 The architecture should reflect the organization's existing engineering practices, security obligations, operational maturity, and business risks.
 
-### **15.20 Applying the Decisions to Alpha Car Detailing**
+### 15.20 Applying the Decisions to Alpha Car Detailing
 
 For the corporate fleet booking feature, a reasonable reference architecture would make the following decisions.
 
@@ -8362,7 +8522,7 @@ If a protected instruction or policy must change, that modification follows a se
 
 At no point does the Developer Agent acquire authority to redefine the controls used to accept its own work.
 
-### **15.21 Decision Points Summary**
+### 15.21 Decision Points Summary
 
 Enterprise workflow architecture requires deliberate decisions about autonomy, orchestration, validation, evidence, state management, security, and governance.
 
@@ -8386,9 +8546,8 @@ The same principles apply to bug fixing, refactoring, security remediation, arch
 
 **An enterprise workflow becomes reliable when its important decisions are explicit, its controls are independently enforceable, and its outcomes can be verified without relying on the Agent's own declaration of success.**
 
-**Chapter 28 status: In progress — next section: Exercises**
 
-## **16. Exercises**
+## 16. Exercises
 
 The exercises in this section translate the enterprise workflow principles into practical architecture and implementation activities.
 
@@ -8413,7 +8572,7 @@ Unless otherwise specified, use the following environment:
 
 Readers may adapt the implementation language or infrastructure while preserving the engineering contracts.
 
-### **Exercise 16.1 — Design an Enterprise Feature-Development Workflow**
+### Exercise 16.1 — Design an Enterprise Feature-Development Workflow
 
 **Objective:** Design a complete, governed workflow for implementing corporate fleet booking.
 
@@ -8456,7 +8615,7 @@ The final approval must be associated with the exact candidate revision.
 
 **Architectural challenge:** Explain how the workflow should behave when all technical tests pass but the Evaluator identifies an unmet business requirement.
 
-### **Exercise 16.2 — Implement a Workflow Admission Policy**
+### Exercise 16.2 — Implement a Workflow Admission Policy
 
 **Objective:** Build a workflow admission mechanism that prevents unauthorized or insufficiently defined engineering tasks from entering implementation.
 
@@ -8477,7 +8636,7 @@ Before invoking Claude Code, it must determine whether the request is authorized
 
 A representative output contract is:
 
-```
+```yaml
 admission:
   goal_id: ACD-FLEET-028
   workflow: feature-development/v1.0
@@ -8513,7 +8672,7 @@ The admission mechanism must not allow an Agent to override policy results.
 
 **Architectural challenge:** Distinguish between an incomplete business requirement that requires clarification and an unauthorized operation that must be rejected.
 
-### **Exercise 16.3 — Build a Lead-to-Developer Handoff Contract**
+### Exercise 16.3 — Build a Lead-to-Developer Handoff Contract
 
 **Objective:** Establish a structured handoff between planning and implementation.
 
@@ -8550,7 +8709,7 @@ The Harness must be able to reject a handoff whose candidate or plan reference i
 
 **Architectural challenge:** Explain what should happen when the Developer discovers that a required database change falls outside the approved scope.
 
-### **Exercise 16.4 — Implement a Deterministic Gate Pipeline**
+### Exercise 16.4 — Implement a Deterministic Gate Pipeline
 
 **Objective:** Create an independently executable validation pipeline for the corporate fleet booking implementation.
 
@@ -8571,7 +8730,7 @@ The pipeline must not depend on the Developer Agent's declaration that testing s
 
 A representative gate record is:
 
-```
+```json
 {
   "gateId": "booking-integration-tests",
   "candidateCommit": "<immutable-candidate-commit>",
@@ -8604,7 +8763,7 @@ A failed mandatory gate must prevent unauthorized advancement.
 
 **Architectural challenge:** Design a mechanism that detects when the Developer modifies the implementation after the gate pipeline has completed.
 
-### **Exercise 16.5 — Implement a Durable Workflow State Machine**
+### Exercise 16.5 — Implement a Durable Workflow State Machine
 
 **Objective:** Design and implement a workflow state machine that survives Agent-session interruption and process failure.
 
@@ -8643,7 +8802,7 @@ Terminal outcomes must remain distinguishable.
 
 **Architectural challenge:** Explain how optimistic concurrency control or execution leases prevent two workers from resuming the same workflow simultaneously.
 
-### **Exercise 16.6 — Design Bounded Retry and Recovery**
+### Exercise 16.6 — Design Bounded Retry and Recovery
 
 **Objective:** Implement failure-aware recovery rather than unlimited Agent retries.
 
@@ -8687,7 +8846,7 @@ All attempts must remain traceable.
 
 **Architectural challenge:** Explain why implementation defects and infrastructure failures should not share one generic retry policy.
 
-### **Exercise 16.7 — Implement Independent Reviewer, Validator, and Evaluator Stages**
+### Exercise 16.7 — Implement Independent Reviewer, Validator, and Evaluator Stages
 
 **Objective:** Demonstrate meaningful separation of assurance responsibilities.
 
@@ -8725,7 +8884,7 @@ A blocking assessment must prevent normal advancement.
 
 **Architectural challenge:** Explain how the Harness should respond when the Reviewer recommends approval, the Validator reports success, but the Evaluator identifies an unmet acceptance criterion.
 
-### **Exercise 16.8 — Implement Human Approval and Protected Governance Boundaries**
+### Exercise 16.8 — Implement Human Approval and Protected Governance Boundaries
 
 **Objective:** Ensure that sensitive workflow decisions remain under accountable organizational control.
 
@@ -8765,7 +8924,7 @@ Protected governance modifications must require explicit authorization.
 
 **Architectural challenge:** Explain how the organization should handle an urgent security remediation that requires changing a protected security configuration.
 
-### **Exercise 16.9 — Create a Controlled Bug-Fix Workflow**
+### Exercise 16.9 — Create a Controlled Bug-Fix Workflow
 
 **Objective:** Adapt the enterprise workflow architecture to a narrower engineering task.
 
@@ -8804,7 +8963,7 @@ The final result must preserve the required review and approval conditions.
 
 **Architectural challenge:** Explain when a bug fix should remain within its existing scope and when it should be escalated into an architecture-change workflow.
 
-### **Exercise 16.10 — Design a Security-Remediation Workflow**
+### Exercise 16.10 — Design a Security-Remediation Workflow
 
 **Objective:** Apply additional controls to security-sensitive Agent execution.
 
@@ -8842,7 +9001,7 @@ Sensitive diagnostic information must remain protected.
 
 **Architectural challenge:** Explain why correcting the vulnerable source code may not be sufficient to close a production security incident.
 
-### **Exercise 16.11 — Design a Production Incident-Support Workflow**
+### Exercise 16.11 — Design a Production Incident-Support Workflow
 
 **Objective:** Build an Agent-assisted incident process that prioritizes operational safety.
 
@@ -8884,7 +9043,7 @@ The workflow must distinguish completed investigation from completed remediation
 
 **Architectural challenge:** Design the transition from an incident-support workflow into a separate, governed emergency-remediation workflow.
 
-### **Exercise 16.12 — Build a Workflow Metrics and Audit Dashboard**
+### Exercise 16.12 — Build a Workflow Metrics and Audit Dashboard
 
 **Objective:** Establish operational visibility into multiple enterprise workflow instances.
 
@@ -8925,7 +9084,7 @@ Sensitive evidence must be access-controlled.
 
 **Architectural challenge:** Explain why workflow duration and Agent token consumption should not be used as the sole measures of engineering productivity.
 
-### **Exercise 16.13 — Design a Provider-Neutral Agent Execution Adapter**
+### Exercise 16.13 — Design a Provider-Neutral Agent Execution Adapter
 
 **Objective:** Demonstrate that enterprise workflow governance can remain independent of the AI coding platform.
 
@@ -8946,7 +9105,7 @@ The organization currently uses Claude Code but wants to support GitHub Copilot 
 
 A conceptual contract is:
 
-```
+```csharp
 public interface IEngineeringAgent
 {
     Task<AgentExecutionResult> ExecuteAsync(
@@ -8973,7 +9132,7 @@ Provider execution success must remain distinct from workflow completion.
 
 **Architectural challenge:** Explain how to handle a provider that cannot enforce a permission boundary required by the enterprise workflow.
 
-### **Exercise 16.14 — Design a Governed Workflow Improvement Process**
+### Exercise 16.14 — Design a Governed Workflow Improvement Process
 
 **Objective:** Demonstrate how execution evidence can improve the Harness without permitting uncontrolled self-modification.
 
@@ -9015,7 +9174,7 @@ The original and updated Skill versions must remain traceable.
 
 **Architectural challenge:** Explain how to determine whether an apparent improvement reflects better engineering behavior rather than weaker validation.
 
-### **Exercise 16.15 — Capstone: Implement a Recoverable Enterprise Feature Workflow**
+### Exercise 16.15 — Capstone: Implement a Recoverable Enterprise Feature Workflow
 
 **Objective:** Integrate the chapter's concepts into a working Harness-controlled engineering workflow.
 
@@ -9023,13 +9182,38 @@ The capstone extends the corporate fleet booking scenario from initial goal subm
 
 The implementation should demonstrate the interaction between Claude Code, repository context, Skills, Agent roles, deterministic gates, durable workflow state, controlled recovery, and approval.
 
-#### **Required architecture**
+#### Required architecture
 
-FIGURE 28.13 — CAPSTONE WORKFLOW ARCHITECTURE
+**Figure 28.13 — Capstone Workflow Architecture**
 
-\#chatgpt-mermaid-\_r_1m3s\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(237, 237, 237);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_1m3s\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_1m3s\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_1m3s\_ .error-icon{fill:rgb(48, 48, 48);}#chatgpt-mermaid-\_r_1m3s\_ .error-text{fill:rgb(237, 237, 237);stroke:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1m3s\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_1m3s\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_1m3s\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_1m3s\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_1m3s\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_1m3s\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_1m3s\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1m3s\_ .marker.cross{stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1m3s\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_1m3s\_ p{margin:0;}#chatgpt-mermaid-\_r_1m3s\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1m3s\_ .cluster-label text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1m3s\_ .cluster-label span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1m3s\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_1m3s\_ .label text,#chatgpt-mermaid-\_r_1m3s\_ span{fill:rgb(237, 237, 237);color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1m3s\_ .node rect,#chatgpt-mermaid-\_r_1m3s\_ .node circle,#chatgpt-mermaid-\_r_1m3s\_ .node ellipse,#chatgpt-mermaid-\_r_1m3s\_ .node polygon,#chatgpt-mermaid-\_r_1m3s\_ .node path{fill:rgb(9, 23, 44);stroke:rgb(31, 78, 148);stroke-width:1px;}#chatgpt-mermaid-\_r_1m3s\_ .rough-node .label text,#chatgpt-mermaid-\_r_1m3s\_ .node .label text,#chatgpt-mermaid-\_r_1m3s\_ .image-shape .label,#chatgpt-mermaid-\_r_1m3s\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_1m3s\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_1m3s\_ .rough-node .label,#chatgpt-mermaid-\_r_1m3s\_ .node .label,#chatgpt-mermaid-\_r_1m3s\_ .image-shape .label,#chatgpt-mermaid-\_r_1m3s\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_1m3s\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_1m3s\_ .root .anchor path{fill:rgb(175, 175, 175)!important;stroke-width:0;stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1m3s\_ .arrowheadPath{fill:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1m3s\_ .edgePath .path{stroke:rgb(175, 175, 175);stroke-width:1px;}#chatgpt-mermaid-\_r_1m3s\_ .flowchart-link{stroke:rgb(175, 175, 175);fill:none;}#chatgpt-mermaid-\_r_1m3s\_ .edgeLabel{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_1m3s\_ .edgeLabel p{background-color:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1m3s\_ .edgeLabel rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1m3s\_ .labelBkg{background-color:rgba(0, 0, 0, 0.5);}#chatgpt-mermaid-\_r_1m3s\_ .cluster rect{fill:rgb(48, 48, 48);stroke:rgba(255, 255, 255, 0.15);stroke-width:1px;}#chatgpt-mermaid-\_r_1m3s\_ .cluster text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1m3s\_ .cluster span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1m3s\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(48, 48, 48);border:1px solid rgba(255, 255, 255, 0.15);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_1m3s\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1m3s\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_1m3s\_ .icon-shape,#chatgpt-mermaid-\_r_1m3s\_ .image-shape{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_1m3s\_ .icon-shape p,#chatgpt-mermaid-\_r_1m3s\_ .image-shape p{background-color:rgb(0, 0, 0);padding:2px;}#chatgpt-mermaid-\_r_1m3s\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_1m3s\_ .image-shape .label rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1m3s\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_1m3s\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_1m3s\_ .node .neo-node{stroke:rgb(31, 78, 148);}#chatgpt-mermaid-\_r_1m3s\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_1m3s\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_1m3s\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_1m3s\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1m3s\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_1m3s\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_1m3s\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_1m3s\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1m3s\_ [data-look="neo"].node .neo-line path{stroke:rgb(31, 78, 148);filter:none;}#chatgpt-mermaid-\_r_1m3s\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_1m3s\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1m3s\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_1m3s\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_1m3s\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1m3s\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_1m3s\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1m3s\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_1m3s\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_1m3s\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_1m3s\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_1m3s\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-width:1px;}#chatgpt-mermaid-\_r_1m3s\_ .node rect,#chatgpt-mermaid-\_r_1m3s\_ .node circle,#chatgpt-mermaid-\_r_1m3s\_ .node ellipse,#chatgpt-mermaid-\_r_1m3s\_ .node polygon,#chatgpt-mermaid-\_r_1m3s\_ .node path{fill:rgb(0, 40, 77);stroke:rgba(255, 255, 255, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_1m3s\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_1m3s\_ .mermaid-decision .label-container{fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_1m3s\_ .edgePaths .flowchart-link{stroke:rgb(175, 175, 175);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_1m3s\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1m3s\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}#chatgpt-mermaid-\_r_1m3s\_ .execution rect{fill:rgb(232, 241, 251)!important;stroke:rgb(65, 108, 155)!important;color:rgb(23, 52, 84)!important;}#chatgpt-mermaid-\_r_1m3s\_ .execution polygon{fill:rgb(232, 241, 251)!important;stroke:rgb(65, 108, 155)!important;color:rgb(23, 52, 84)!important;}#chatgpt-mermaid-\_r_1m3s\_ .execution ellipse{fill:rgb(232, 241, 251)!important;stroke:rgb(65, 108, 155)!important;color:rgb(23, 52, 84)!important;}#chatgpt-mermaid-\_r_1m3s\_ .execution circle{fill:rgb(232, 241, 251)!important;stroke:rgb(65, 108, 155)!important;color:rgb(23, 52, 84)!important;}#chatgpt-mermaid-\_r_1m3s\_ .execution path{fill:rgb(232, 241, 251)!important;stroke:rgb(65, 108, 155)!important;color:rgb(23, 52, 84)!important;}#chatgpt-mermaid-\_r_1m3s\_ .execution tspan{fill:rgb(23, 52, 84)!important;}#chatgpt-mermaid-\_r_1m3s\_ .control rect{fill:rgb(233, 232, 251)!important;stroke:rgb(105, 98, 166)!important;color:rgb(56, 50, 107)!important;}#chatgpt-mermaid-\_r_1m3s\_ .control polygon{fill:rgb(233, 232, 251)!important;stroke:rgb(105, 98, 166)!important;color:rgb(56, 50, 107)!important;}#chatgpt-mermaid-\_r_1m3s\_ .control ellipse{fill:rgb(233, 232, 251)!important;stroke:rgb(105, 98, 166)!important;color:rgb(56, 50, 107)!important;}#chatgpt-mermaid-\_r_1m3s\_ .control circle{fill:rgb(233, 232, 251)!important;stroke:rgb(105, 98, 166)!important;color:rgb(56, 50, 107)!important;}#chatgpt-mermaid-\_r_1m3s\_ .control path{fill:rgb(233, 232, 251)!important;stroke:rgb(105, 98, 166)!important;color:rgb(56, 50, 107)!important;}#chatgpt-mermaid-\_r_1m3s\_ .control tspan{fill:rgb(56, 50, 107)!important;}#chatgpt-mermaid-\_r_1m3s\_ .decision rect{fill:rgb(255, 240, 214)!important;stroke:rgb(189, 135, 48)!important;color:rgb(112, 73, 9)!important;}#chatgpt-mermaid-\_r_1m3s\_ .decision polygon{fill:rgb(255, 240, 214)!important;stroke:rgb(189, 135, 48)!important;color:rgb(112, 73, 9)!important;}#chatgpt-mermaid-\_r_1m3s\_ .decision ellipse{fill:rgb(255, 240, 214)!important;stroke:rgb(189, 135, 48)!important;color:rgb(112, 73, 9)!important;}#chatgpt-mermaid-\_r_1m3s\_ .decision circle{fill:rgb(255, 240, 214)!important;stroke:rgb(189, 135, 48)!important;color:rgb(112, 73, 9)!important;}#chatgpt-mermaid-\_r_1m3s\_ .decision path{fill:rgb(255, 240, 214)!important;stroke:rgb(189, 135, 48)!important;color:rgb(112, 73, 9)!important;}#chatgpt-mermaid-\_r_1m3s\_ .decision tspan{fill:rgb(112, 73, 9)!important;}#chatgpt-mermaid-\_r_1m3s\_ .result rect{fill:rgb(232, 243, 233)!important;stroke:rgb(67, 133, 82)!important;color:rgb(36, 88, 46)!important;}#chatgpt-mermaid-\_r_1m3s\_ .result polygon{fill:rgb(232, 243, 233)!important;stroke:rgb(67, 133, 82)!important;color:rgb(36, 88, 46)!important;}#chatgpt-mermaid-\_r_1m3s\_ .result ellipse{fill:rgb(232, 243, 233)!important;stroke:rgb(67, 133, 82)!important;color:rgb(36, 88, 46)!important;}#chatgpt-mermaid-\_r_1m3s\_ .result circle{fill:rgb(232, 243, 233)!important;stroke:rgb(67, 133, 82)!important;color:rgb(36, 88, 46)!important;}#chatgpt-mermaid-\_r_1m3s\_ .result path{fill:rgb(232, 243, 233)!important;stroke:rgb(67, 133, 82)!important;color:rgb(36, 88, 46)!important;}#chatgpt-mermaid-\_r_1m3s\_ .result tspan{fill:rgb(36, 88, 46)!important;}Authorized GoalHarness AdmissionRepository IntelligencePlanning and Lead AgentPlan CheckpointDeveloper AgentCandidate RevisionDeterministic GatesGate DecisionBounded RecoveryReviewerValidatorEvaluatorHuman ApprovalAuthorized OutputEvidence ArchiveDurable State StoreFailedPassed
+```mermaid
+flowchart TD
+    A[Authorized Goal] --> B[Harness Admission]
+    B --> C[Repository Intelligence]
+    C --> D[Planning and Lead Agent]
+    D --> E[Plan Checkpoint]
+    E --> F[Developer Agent]
+    F --> G[Candidate Revision]
+    G --> H[Deterministic Gates]
+    H --> I{Gate decision}
+    I -->|Failed| J[Bounded Recovery]
+    J --> F
+    I -->|Passed| K[Reviewer]
+    K --> L[Validator]
+    L --> M[Evaluator]
+    M --> N[Human Approval]
+    N --> O[Authorized Output]
+    O --> P[Evidence Archive]
+    Q[Durable State Store] -.-> B
+    Q -.-> E
+    Q -.-> F
+    Q -.-> H
+    Q -.-> J
+    Q -.-> N
+    Q -.-> P
+```
 
-#### **Implementation requirements**
+#### Implementation requirements
 
 The capstone Harness must support:
 
@@ -9064,11 +9248,11 @@ The system must also demonstrate the following failure scenarios.
 | Evidence artifact is missing     | Completion is prevented                      |
 | Goal is only partially satisfied | Evaluator reports incomplete outcome         |
 
-#### **Required deliverables**
+#### Required deliverables
 
 The completed capstone should include:
 
-```
+```text
 capstone/
 ├── workflow/
 │   ├── feature-development.yaml
@@ -9109,7 +9293,7 @@ capstone/
 
 The directory structure is illustrative. Readers may use an equivalent implementation that preserves the same responsibilities and contracts.
 
-#### **Capstone evaluation criteria**
+#### Capstone evaluation criteria
 
 | Dimension                                           | Weight   |
 | --------------------------------------------------- | -------- |
@@ -9123,7 +9307,7 @@ The directory structure is illustrative. Readers may use an equivalent implement
 
 A successful capstone demonstrates not only that Claude Code can implement the corporate fleet booking feature, but that the Harness can control, verify, recover, and authorize the entire engineering process.
 
-### **16.16 Exercise Review Questions**
+### 16.16 Exercise Review Questions
 
 After completing the exercises, readers should be able to answer the following architectural questions.
 
@@ -9140,7 +9324,7 @@ After completing the exercises, readers should be able to answer the following a
 
 These questions should be answered using the actual implementation and evidence produced during the exercises rather than through conceptual descriptions alone.
 
-### **16.17 Exercises Summary**
+### 16.17 Exercises Summary
 
 The exercises demonstrate how enterprise AI engineering moves beyond individual Agent interactions.
 
@@ -9160,9 +9344,8 @@ The essential learning outcome is the ability to design a Harness that can answe
 
 An enterprise workflow that can answer these questions reliably provides a foundation for safe, repeatable, and scalable AI-assisted software development.
 
-**Chapter 28 status: In progress — next section: Interview Questions**
 
-## **17. Interview Questions**
+## 17. Interview Questions
 
 Enterprise AI engineering requires architects and senior engineers to understand more than the capabilities of individual coding Agents. They must be able to design controlled workflows, establish responsibility boundaries, evaluate evidence, manage failures, and integrate AI-assisted development into existing enterprise engineering practices.
 
@@ -9172,9 +9355,9 @@ They are organized into foundational, architectural, implementation, governance,
 
 The suggested answers represent the engineering principles established throughout this chapter. In practice, architects should adapt these principles to the organization's architecture, risk profile, and operating model.
 
-### **17.1 Foundational Questions**
+### 17.1 Foundational Questions
 
-#### **Question 1: What is an enterprise AI engineering workflow?**
+#### Question 1: What is an enterprise AI engineering workflow?
 
 An enterprise AI engineering workflow is a governed sequence of activities, decisions, and evidence-producing operations that transforms an authorized engineering goal into a verifiable outcome.
 
@@ -9184,7 +9367,7 @@ Unlike a single Agent interaction, the workflow defines responsibility, executio
 
 For Alpha Car Detailing, implementing corporate fleet booking requires more than generating application code. The workflow must establish that contractual booking limits, authorization, idempotency, and transactional consistency satisfy the approved requirements.
 
-#### **Question 2: How does an enterprise workflow differ from a prompt?**
+#### Question 2: How does an enterprise workflow differ from a prompt?
 
 A prompt expresses task-specific intent.
 
@@ -9196,7 +9379,7 @@ The workflow determines how the repository is investigated, which instructions a
 
 Prompts are one input to workflow execution. They are not the workflow itself.
 
-#### **Question 3: What is the difference between a workflow and a Harness?**
+#### Question 3: What is the difference between a workflow and a Harness?
 
 A workflow defines what activities and decisions must occur.
 
@@ -9208,7 +9391,7 @@ The Harness manages execution, state transitions, tool invocation, evidence, ret
 
 One Harness can support multiple workflow templates, such as feature development, bug fixing, refactoring, security remediation, and incident support.
 
-#### **Question 4: Why is a single large prompt unsuitable for enterprise engineering workflows?**
+#### Question 4: Why is a single large prompt unsuitable for enterprise engineering workflows?
 
 A large prompt mixes responsibilities with different lifecycles and authority levels.
 
@@ -9218,7 +9401,7 @@ More importantly, natural-language instructions do not provide authoritative enf
 
 A better architecture distributes these responsibilities among instructions, Skills, prompts, Agent roles, and the Harness.
 
-#### **Question 5: What distinguishes Agent execution success from workflow completion?**
+#### Question 5: What distinguishes Agent execution success from workflow completion?
 
 Agent execution success means that an Agent invocation completed according to its execution contract.
 
@@ -9232,9 +9415,9 @@ It may complete its assigned implementation while the Evaluator determines that 
 
 These outcomes must remain distinct.
 
-### **17.2 Architecture and Orchestration Questions**
+### 17.2 Architecture and Orchestration Questions
 
-#### **Question 6: Why should an enterprise Harness separate the control plane from the execution plane?**
+#### Question 6: Why should an enterprise Harness separate the control plane from the execution plane?
 
 The control plane defines authorization, workflow state, validation policies, retry budgets, approval requirements, and completion conditions.
 
@@ -9244,7 +9427,7 @@ Separating these responsibilities prevents an Agent from independently changing 
 
 For example, a Developer Agent may modify authorized booking-service code but must not remove an architecture gate because the generated implementation fails it.
 
-#### **Question 7: What responsibilities belong to the Lead Agent?**
+#### Question 7: What responsibilities belong to the Lead Agent?
 
 The Lead Agent organizes the engineering work before implementation.
 
@@ -9254,7 +9437,7 @@ The Lead Agent should also identify ambiguities and architectural risks.
 
 It must not silently expand authorized scope or approve changes reserved for human authorities.
 
-#### **Question 8: How should Agent roles be separated in an enterprise workflow?**
+#### Question 8: How should Agent roles be separated in an enterprise workflow?
 
 The Lead Agent plans and coordinates the implementation approach.
 
@@ -9270,7 +9453,7 @@ Human approval provides accountable authorization.
 
 These responsibilities may be implemented through separate sessions, subagents, workers, or providers, but their authority boundaries must remain explicit.
 
-#### **Question 9: Do enterprise workflows always require multiple AI models or multiple Agent processes?**
+#### Question 9: Do enterprise workflows always require multiple AI models or multiple Agent processes?
 
 No.
 
@@ -9284,7 +9467,7 @@ For example, the Validator must inspect trusted gate evidence instead of accepti
 
 Using different models without independent evidence does not automatically create reliable assurance.
 
-#### **Question 10: What information should an Agent handoff contain?**
+#### Question 10: What information should an Agent handoff contain?
 
 An Agent handoff should identify the workflow, goal, sending and receiving roles, source revision, relevant artifacts, completed work, unresolved findings, and requested next-stage responsibility.
 
@@ -9292,7 +9475,7 @@ For example, a Developer-to-Reviewer handoff should specify the exact candidate 
 
 Structured handoffs prevent subsequent Agents from evaluating inconsistent revisions or losing important obligations.
 
-#### **Question 11: Why should Repository Intelligence precede implementation?**
+#### Question 11: Why should Repository Intelligence precede implementation?
 
 Repository Intelligence establishes the existing architecture, domain behavior, dependencies, integration patterns, and validation infrastructure.
 
@@ -9302,7 +9485,7 @@ For corporate fleet booking, discovery must identify existing booking services, 
 
 The resulting implementation should extend approved patterns rather than invent competing mechanisms.
 
-#### **Question 12: How do CLAUDE.md, Skills, Steering Notes, and workflow templates differ?**
+#### Question 12: How do CLAUDE.md, Skills, Steering Notes, and workflow templates differ?
 
 `CLAUDE.md` communicates persistent repository-wide engineering instructions.
 
@@ -9316,9 +9499,9 @@ These artifacts complement one another but should not be treated as interchangea
 
 Their separation improves consistency, maintainability, and accountability.
 
-### **17.3 Validation and Quality Questions**
+### 17.3 Validation and Quality Questions
 
-#### **Question 13: What is a deterministic gate?**
+#### Question 13: What is a deterministic gate?
 
 A deterministic gate is an independently defined technical check evaluated through objective, repeatable conditions.
 
@@ -9328,7 +9511,7 @@ Its result should come from trusted execution evidence rather than an Agent's un
 
 The gate record should identify the evaluated source revision, execution conditions, status, and supporting artifacts.
 
-#### **Question 14: Why must deterministic gates remain independent of the Developer Agent?**
+#### Question 14: Why must deterministic gates remain independent of the Developer Agent?
 
 The Developer Agent is responsible for producing the implementation.
 
@@ -9338,7 +9521,7 @@ The Developer may execute tests for feedback and remediate defects.
 
 The Harness or trusted CI/CD infrastructure should independently enforce required final validation.
 
-#### **Question 15: What is the difference between the Reviewer, Validator, and Evaluator?**
+#### Question 15: What is the difference between the Reviewer, Validator, and Evaluator?
 
 The Reviewer assesses engineering quality through source inspection and technical judgment.
 
@@ -9350,7 +9533,7 @@ For corporate fleet booking, the Reviewer may identify a possible concurrency de
 
 These assessments are complementary rather than interchangeable.
 
-#### **Question 16: Can all tests pass while the workflow still fails?**
+#### Question 16: Can all tests pass while the workflow still fails?
 
 Yes.
 
@@ -9362,7 +9545,7 @@ The Evaluator may therefore identify an unmet business requirement despite succe
 
 The workflow must preserve this distinction.
 
-#### **Question 17: Why must validation evidence be associated with an immutable source revision?**
+#### Question 17: Why must validation evidence be associated with an immutable source revision?
 
 Evidence must establish the correctness of the actual implementation being accepted.
 
@@ -9372,7 +9555,7 @@ The Harness must associate gate results with candidate revisions and determine w
 
 This prevents stale evidence from being used to authorize modified code.
 
-#### **Question 18: How should a workflow handle missing or inconclusive validation evidence?**
+#### Question 18: How should a workflow handle missing or inconclusive validation evidence?
 
 Missing evidence must not be interpreted as success.
 
@@ -9382,9 +9565,9 @@ For example, if the SQL Server integration-test environment is unavailable, the 
 
 If the environment remains unavailable, the workflow should block or escalate rather than report that corporate booking concurrency has been validated.
 
-### **17.4 State, Recovery, and Reliability Questions**
+### 17.4 State, Recovery, and Reliability Questions
 
-#### **Question 19: Why does an enterprise workflow need durable state?**
+#### Question 19: Why does an enterprise workflow need durable state?
 
 Agent sessions and execution processes may terminate unexpectedly.
 
@@ -9394,7 +9577,7 @@ Durable state allows the Harness to reconstruct the workflow after interruption.
 
 It also provides a consistent record for concurrent workers and audit activities.
 
-#### **Question 20: What information should a workflow checkpoint preserve?**
+#### Question 20: What information should a workflow checkpoint preserve?
 
 A checkpoint should include the workflow identifier, current state, execution attempt, source revision, completed operations, pending requirements, evidence references, and next permitted action.
 
@@ -9402,7 +9585,7 @@ It should also contain information needed to reconcile external side effects and
 
 The checkpoint must be stored through a reliable persistence mechanism.
 
-#### **Question 21: How should workflows distinguish implementation failures from infrastructure failures?**
+#### Question 21: How should workflows distinguish implementation failures from infrastructure failures?
 
 Implementation failures indicate that the generated software does not satisfy a required condition.
 
@@ -9416,7 +9599,7 @@ A transient runner outage may justify a bounded retry without changing source co
 
 Combining both into one generic retry process can waste resources and conceal the underlying problem.
 
-#### **Question 22: Why are indefinite retries dangerous?**
+#### Question 22: Why are indefinite retries dangerous?
 
 Indefinite retries can consume resources, repeatedly produce ineffective changes, and prevent unresolved problems from reaching responsible engineers.
 
@@ -9426,7 +9609,7 @@ A reliable workflow defines maximum attempts, failure classifications, escalatio
 
 Repeated failure may indicate that the implementation plan requires reconsideration rather than another autonomous code modification.
 
-#### **Question 23: What is the role of idempotency in workflow recovery?**
+#### Question 23: What is the role of idempotency in workflow recovery?
 
 Idempotency prevents repeated operations from producing unintended duplicate effects.
 
@@ -9436,7 +9619,7 @@ It should reconcile the external system and identify whether the original operat
 
 This principle applies to package publication, notifications, infrastructure provisioning, and other externally visible actions.
 
-#### **Question 24: How does a Scratchpad differ from durable workflow state?**
+#### Question 24: How does a Scratchpad differ from durable workflow state?
 
 The Scratchpad contains temporary task-scoped working information, such as observations, hypotheses, and unresolved questions.
 
@@ -9446,9 +9629,9 @@ A Scratchpad may assist an Agent in resuming work.
 
 It must not replace the Harness state store or become authoritative repository knowledge without verification and approval.
 
-### **17.5 Security and Governance Questions**
+### 17.5 Security and Governance Questions
 
-#### **Question 25: Why are natural-language instructions insufficient for enforcing tool permissions?**
+#### Question 25: Why are natural-language instructions insufficient for enforcing tool permissions?
 
 Instructions guide Agent behavior but do not create technical security boundaries.
 
@@ -9458,7 +9641,7 @@ Enterprise workflows should enforce permissions through sandbox restrictions, is
 
 The Agent should operate with the minimum capabilities required for its assigned responsibility.
 
-#### **Question 26: What are protected governance artifacts?**
+#### Question 26: What are protected governance artifacts?
 
 Protected governance artifacts are files or configurations that define authoritative engineering behavior.
 
@@ -9468,7 +9651,7 @@ Ordinary implementation Agents should not silently modify these artifacts.
 
 Proposed changes should follow controlled review and approval.
 
-#### **Question 27: How should an enterprise workflow handle prompt injection?**
+#### Question 27: How should an enterprise workflow handle prompt injection?
 
 The workflow should distinguish trusted instructions from untrusted task data.
 
@@ -9478,7 +9661,7 @@ Such content should not override authoritative workflow policy.
 
 The Harness must also enforce tool permissions and approval boundaries independently of the model's interpretation of untrusted information.
 
-#### **Question 28: Why is human approval still relevant when the workflow uses multiple specialized Agents?**
+#### Question 28: Why is human approval still relevant when the workflow uses multiple specialized Agents?
 
 Specialized Agents can provide technical analysis, implementation, review, validation assessment, and business evaluation.
 
@@ -9488,7 +9671,7 @@ Human approval establishes accountable responsibility for decisions reserved by 
 
 Some low-risk transitions may be automated under an approved policy, but that automation must not be confused with an Agent granting itself authority.
 
-#### **Question 29: What should an enterprise approval package contain?**
+#### Question 29: What should an enterprise approval package contain?
 
 An approval package should identify the authorized goal, approved scope, final candidate revision, implementation summary, required gate results, Reviewer findings, Validator assessment, Evaluator assessment, outstanding risks, and applicable approval policy.
 
@@ -9496,7 +9679,7 @@ The approval decision should be tied to the precise artifact being authorized.
 
 An Agent-generated statement that approval occurred is not sufficient evidence of actual authorization.
 
-#### **Question 30: How can a self-learning Harness improve workflows without compromising governance?**
+#### Question 30: How can a self-learning Harness improve workflows without compromising governance?
 
 A self-learning Harness may analyze recurring failures, review findings, validation outcomes, and execution metrics.
 
@@ -9506,9 +9689,9 @@ However, authoritative changes require appropriate review, testing, versioning, 
 
 The Harness should not silently weaken standards or modify validation gates to improve its apparent success rate.
 
-### **17.6 Platform and Integration Questions**
+### 17.6 Platform and Integration Questions
 
-#### **Question 31: How do Claude Code, GitHub Copilot, and Codex fit into the same enterprise workflow architecture?**
+#### Question 31: How do Claude Code, GitHub Copilot, and Codex fit into the same enterprise workflow architecture?
 
 Each platform can serve as an Agent execution environment.
 
@@ -9520,7 +9703,7 @@ Platform-specific adapters translate these contracts into the selected coding Ag
 
 The core governance and validation model should remain consistent.
 
-#### **Question 32: What responsibilities should an Agent execution adapter have?**
+#### Question 32: What responsibilities should an Agent execution adapter have?
 
 An adapter translates an enterprise execution request into the selected platform's invocation model.
 
@@ -9530,7 +9713,7 @@ It should report execution status, output references, relevant errors, and resou
 
 It must not independently determine whether the enterprise workflow is complete or override required gates and approval policies.
 
-#### **Question 33: When should workflow stages execute concurrently?**
+#### Question 33: When should workflow stages execute concurrently?
 
 Stages may execute concurrently when their inputs are stable and their control dependencies permit it.
 
@@ -9540,9 +9723,9 @@ However, downstream stages must wait for all required evidence.
 
 Concurrency must not permit inconsistent source revisions, conflicting workspace modifications, or premature approval.
 
-### **17.7 Scenario-Based Architecture Questions**
+### 17.7 Scenario-Based Architecture Questions
 
-#### **Question 34: Two corporate booking requests exceed the remaining monthly allowance. How should the workflow detect this defect?**
+#### Question 34: Two corporate booking requests exceed the remaining monthly allowance. How should the workflow detect this defect?
 
 The workflow should require a database-backed concurrency test that executes competing requests against the real persistence behavior.
 
@@ -9554,7 +9737,7 @@ The Reviewer may also examine whether the selected transaction and concurrency s
 
 The workflow cannot declare completion until the mandatory concurrency requirement is satisfied.
 
-#### **Question 35: The Developer Agent modifies CLAUDE.md to make its implementation acceptable. What should happen?**
+#### Question 35: The Developer Agent modifies CLAUDE.md to make its implementation acceptable. What should happen?
 
 The modification should be prevented where possible through permissions or Hooks.
 
@@ -9566,7 +9749,7 @@ If the instruction is genuinely incorrect or obsolete, the Agent may submit a pr
 
 It must not silently alter the authoritative standard as part of ordinary feature development.
 
-#### **Question 36: All deterministic gates pass, but the Evaluator reports that one business criterion is unmet. What is the correct outcome?**
+#### Question 36: All deterministic gates pass, but the Evaluator reports that one business criterion is unmet. What is the correct outcome?
 
 The workflow should not be marked complete.
 
@@ -9578,7 +9761,7 @@ After a corrected candidate is produced, relevant validation and assessment stag
 
 A passing technical gate profile cannot override an unmet mandatory acceptance criterion.
 
-#### **Question 37: A workflow crashes immediately after creating a pull request. How should recovery work?**
+#### Question 37: A workflow crashes immediately after creating a pull request. How should recovery work?
 
 The Harness should load the durable workflow state and inspect the external source-control system.
 
@@ -9590,7 +9773,7 @@ It should not automatically create a duplicate.
 
 If the outcome remains uncertain, the workflow should enter a controlled reconciliation or escalation process.
 
-#### **Question 38: A Reviewer finds a critical defect after human approval. Can the workflow proceed?**
+#### Question 38: A Reviewer finds a critical defect after human approval. Can the workflow proceed?
 
 Not automatically.
 
@@ -9602,7 +9785,7 @@ Approvals should be associated with specific candidate revisions and evidence co
 
 An earlier approval must not be treated as unlimited authorization for later changes.
 
-#### **Question 39: A production incident requires an immediate database modification. Should the Agent execute it?**
+#### Question 39: A production incident requires an immediate database modification. Should the Agent execute it?
 
 Only if an explicit operational policy authorizes that exact class of action and the required authority has approved it.
 
@@ -9612,7 +9795,7 @@ Production data modification should use appropriately restricted credentials, op
 
 The incident's urgency does not automatically grant the Agent unrestricted operational authority.
 
-#### **Question 40: An organization wants to reduce workflow duration by skipping integration tests after a successful unit-test run. Is this appropriate?**
+#### Question 40: An organization wants to reduce workflow duration by skipping integration tests after a successful unit-test run. Is this appropriate?
 
 Not when integration tests are mandatory for the workflow.
 
@@ -9624,9 +9807,9 @@ However, removing a mandatory final gate requires an authorized change to the va
 
 Efficiency improvements must preserve the assurance required by the task's risk profile.
 
-### **17.8 Advanced Architecture Discussion**
+### 17.8 Advanced Architecture Discussion
 
-#### **Question 41: How would you design an enterprise Harness capable of executing hundreds of concurrent workflows?**
+#### Question 41: How would you design an enterprise Harness capable of executing hundreds of concurrent workflows?
 
 A scalable architecture should separate durable orchestration from Agent execution workers.
 
@@ -9642,7 +9825,7 @@ Evidence should be persisted in durable storage, while structured metadata suppo
 
 Scaling should not weaken approval or validation boundaries.
 
-#### **Question 42: How would you prevent conflicting workflows from modifying the same repository?**
+#### Question 42: How would you prevent conflicting workflows from modifying the same repository?
 
 Possible controls include isolated Git worktrees, dedicated branches, concurrency limits, and repository-level coordination.
 
@@ -9656,7 +9839,7 @@ For high-risk overlapping changes, the organization may serialize execution or r
 
 The correct strategy depends on the repository's development model and the nature of the changes.
 
-#### **Question 43: How should workflow evidence be designed for audit and compliance?**
+#### Question 43: How should workflow evidence be designed for audit and compliance?
 
 Evidence should be attributable, complete, protected, and linked to the correct workflow and candidate revision.
 
@@ -9668,7 +9851,7 @@ High-assurance environments may require immutable storage, artifact digests, sig
 
 Auditability should be designed into execution rather than reconstructed after completion.
 
-#### **Question 44: How would you measure the maturity of an enterprise AI engineering workflow?**
+#### Question 44: How would you measure the maturity of an enterprise AI engineering workflow?
 
 Maturity should be evaluated across several dimensions:
 
@@ -9689,7 +9872,7 @@ An organization should not assess maturity only by the degree of Agent autonomy.
 
 A highly autonomous workflow with weak evidence controls may be less mature than a human-supervised workflow with reliable validation and accountability.
 
-#### **Question 45: What is the most important architectural principle in enterprise AI engineering workflows?**
+#### Question 45: What is the most important architectural principle in enterprise AI engineering workflows?
 
 The most important principle is the separation of intelligent execution from authoritative engineering control.
 
@@ -9701,7 +9884,7 @@ Human authorities or approved organizational policies must control decisions req
 
 This separation allows organizations to benefit from capable coding Agents without making engineering reliability dependent on any individual model response.
 
-### **17.9 Interview Questions Summary**
+### 17.9 Interview Questions Summary
 
 The questions in this section examine enterprise AI workflows from several perspectives: foundational concepts, architecture, validation, reliability, security, governance, platform integration, and practical engineering scenarios.
 
@@ -9727,9 +9910,62 @@ It is:
 
 The ability to answer that question distinguishes individual AI-assisted development proficiency from enterprise AI engineering architecture.
 
-**Chapter 28 status: In progress — next section: Chapter Summary**
 
-## **19. Further Reading**
+## 18. Chapter Summary
+
+Enterprise AI engineering is not a single prompt or an isolated coding-agent session. It is a governed engineering process that transforms an authorized goal into a demonstrable outcome by coordinating context, planning, implementation, objective verification, independent assessment, human decisions, and durable evidence.
+
+### 18.1 From Capabilities to a Controlled Workflow
+
+The chapters preceding this one introduced the building blocks of AI-assisted engineering. Repository Intelligence and Knowledge Sources help Agents understand existing systems. Instructions such as `CLAUDE.md` communicate stable engineering standards, while Skills provide reusable expertise and Steering Notes identify task-specific priorities. Planning Mode and the Lead Agent establish an actionable implementation approach; the Developer Agent performs permitted work through tools. None of these mechanisms, acting alone, guarantees acceptable delivery.
+
+An enterprise workflow supplies the missing coordination. It defines which activities must occur, their input and output contracts, the evidence required to advance, and the authority responsible for each important decision. Commands and Skill invocations can initiate activity, but the Harness—not the prompt—enforces the end-to-end process.
+
+### 18.2 The Reference Flow
+
+The reference workflow starts with an authorized goal and admission checks. Repository discovery establishes the relevant system context. Persistent instructions, Skills, and Steering Notes guide an approved plan. The Developer Agent implements a bounded change in a controlled workspace. Independent deterministic gates execute against an identified candidate revision. The Reviewer assesses engineering quality, the Validator examines required evidence, and the Evaluator assesses acceptance-criteria satisfaction. Human approval and output publication occur only when the relevant conditions are met.
+
+The order shown is logical rather than necessarily sequential. Independent tests and suitable assessments can execute in parallel when they operate against the same immutable candidate and the Harness preserves their dependencies. Each stage must produce a structured, attributable handoff.
+
+### 18.3 The Harness Owns Authoritative Control
+
+The chapter distinguished an Agent execution plane from the enterprise control plane. Claude Code may explore a repository, propose an approach, implement code, run development tests, and recommend remediation. The Harness owns workflow admission, state transitions, mandatory gate policies, retry budgets, protected-artifact boundaries, evidence retention, and approval requirements. Technical permissions and external controls must enforce these boundaries; telling the Agent to comply is not sufficient.
+
+This design is intentionally vendor-neutral. Claude Code is the primary execution environment, but GitHub Copilot or Codex may perform corresponding engineering tasks through adapter contracts without redefining enterprise governance. A provider's successful invocation does not establish business completion.
+
+### 18.4 Assurance Must Be Independent and Revision-Bound
+
+The Reviewer, Validator, and Evaluator answer different questions. The Reviewer asks whether the implementation is technically sound and maintainable. The Validator asks whether trusted technical evidence satisfies the mandatory requirements for the correct candidate revision. The Evaluator asks whether the final result meets the authorized business goal. None may waive a mandatory gate or grant an approval reserved for accountable authority.
+
+Evidence must be associated with the candidate it verifies. If implementation changes after tests, review, or approval, affected evidence may become stale. Mandatory final validation should ordinarily run against the final candidate revision. A missing test report, interrupted runner, or inconclusive result must not be converted into a passing outcome.
+
+### 18.5 State and Recovery Are Engineering Requirements
+
+Long-running workflows encounter partial failures: interrupted Agent sessions, test-runner outages, conflicting review findings, unavailable approvals, and external actions whose outcomes are uncertain. Durable state must preserve the run identifier, active stage, approved scope, candidate revision, evidence references, attempts, and next permitted action. Scratchpad notes help Agents continue their work, but they are temporary and not the authoritative workflow record.
+
+Recovery should classify the failure, apply bounded retries, reconcile any external side effects, and escalate when further execution requires a human decision. A retry should never silently reset an attempt budget, duplicate a pull request, or waive an approval. Successful recovery can coexist with recorded failed attempts; the final report should preserve meaningful execution history.
+
+### 18.6 Alpha Car Detailing Demonstrates the Difference
+
+Corporate fleet booking illustrates why generated code is only one step in a larger delivery process. The implementation must correctly authorize employees, enforce agreement-specific monthly allowances under concurrency, prevent duplicate booking and allowance consumption, persist booking events through the transactional outbox, and preserve existing individual booking behavior. Ordinary compilation and unit testing alone cannot establish every one of those conditions.
+
+The workflow therefore binds acceptance criteria to appropriate integration tests, review findings, evidence assessment, business evaluation, and accountable approval. The same control foundation adapts to bug fixing, refactoring, security remediation, architecture changes, and production incident support by changing the goal, risk profile, mandatory evidence, and approval boundaries—not by abandoning governance.
+
+### 18.7 Enterprise Readiness and Business Value
+
+Enterprise readiness is demonstrated by reliable scope enforcement, measurable validation, meaningful review separation, recoverable execution, and auditable decisions. Workflow performance should be measured through quality and outcomes as well as speed: first-pass validation, remediation effort, approval latency, recovery reliability, escaped defects, and cost per accepted change. Higher autonomy is valuable only when the surrounding controls remain effective.
+
+Improvement is also governed. The Harness may identify weaknesses in prompts, Skills, or instructions and propose changes supported by recurring execution evidence. It must not silently modify the rules against which its own results are judged. Temporary Scratchpad observations require verification before promotion to persistent knowledge.
+
+### 18.8 Final Perspective
+
+Enterprise workflows allow organizations to delegate more engineering execution without delegating away their responsibility for quality, security, and approval. The decisive question is not whether an Agent generated plausible code, but whether the organization can establish **what was authorized, what was changed, what evidence supports the result, and who was permitted to accept it**.
+
+**Claude Code provides intelligent execution; the enterprise Harness provides controlled, verifiable, recoverable engineering delivery.**
+
+---
+
+## 19. Further Reading
 
 Enterprise AI engineering workflows bring together concepts from AI-assisted development, software architecture, distributed systems, CI/CD, security engineering, and organizational governance.
 
@@ -9737,185 +9973,148 @@ The following resources provide a foundation for understanding how these discipl
 
 The references are organized around the architectural responsibilities discussed in this chapter. Claude Code remains the primary implementation platform, while GitHub Copilot, Codex, and vendor-neutral engineering resources provide complementary perspectives.
 
-### **19.1 Claude Code — Enterprise Workflow Implementation**
+### 19.1 Claude Code — Enterprise Workflow Implementation
 
 **Anthropic — Claude Code Documentation**
 
 Official documentation · Primary platform reference
 
-[Claude Code Overview](https://code.claude.com/docs/en/overview?utm_source=chatgpt.com)
+[Claude Code Overview](https://code.claude.com/docs/en/overview)
 
 The official documentation introduces Claude Code's repository exploration, file modification, command execution, and integration capabilities.
 
-Readers should use it to understand the execution environment on which the chapter's Claude-first workflow architecture is built.&#x20;
+Readers should use it to understand the execution environment on which the chapter's Claude-first workflow architecture is built.
 
-[image](https://www.google.com/s2/favicons?domain=https://code.claude.com\&sz=32)
-
-Claude Code Docs
 
 **Anthropic — Claude Code Skills**
 
-[Extend Claude with Skills](https://code.claude.com/docs/en/skills?utm_source=chatgpt.com)
+[Extend Claude with Skills](https://code.claude.com/docs/en/skills)
 
 This reference describes reusable Skills, their structure, invocation behavior, supporting files, and integration with specialized Agents.
 
-It supports the chapter's distinction between reusable engineering expertise and authoritative workflow orchestration.&#x20;
+It supports the chapter's distinction between reusable engineering expertise and authoritative workflow orchestration.
 
-[image](https://www.google.com/s2/favicons?domain=https://code.claude.com\&sz=32)
-
-Claude Code Docs
 
 **Anthropic — Claude Code Hooks**
 
-[Claude Code Hooks Reference](https://code.claude.com/docs/en/hooks?utm_source=chatgpt.com)
+[Claude Code Hooks Reference](https://code.claude.com/docs/en/hooks)
 
 The Hooks documentation explains how event-driven handlers participate in Claude Code execution, including pre-tool and post-tool activities.
 
-It is particularly relevant to automated guardrails, tool-use inspection, and local enforcement mechanisms.&#x20;
+It is particularly relevant to automated guardrails, tool-use inspection, and local enforcement mechanisms.
 
-[image](https://www.google.com/s2/favicons?domain=https://code.claude.com\&sz=32)
-
-Claude Code Docs
 
 **Anthropic — Claude Code Common Workflows**
 
-[Common Claude Code Workflows](https://code.claude.com/docs/en/common-workflows?utm_source=chatgpt.com)
+[Common Claude Code Workflows](https://code.claude.com/docs/en/common-workflows)
 
 This guide provides practical workflow techniques that can be adapted for feature development, debugging, repository exploration, and related engineering tasks.
 
 Readers should distinguish these Agent-level workflows from the broader enterprise Harness processes defined in this chapter.
 
-### **19.2 GitHub Copilot — Alternative Workflow Execution**
+### 19.2 GitHub Copilot — Alternative Workflow Execution
 
 **GitHub — Comparing Copilot Customization Features**
 
-[Comparing Copilot Customization Features](https://docs.github.com/en/copilot/concepts/customizations/comparing-customizations?utm_source=chatgpt.com)
+[Comparing Copilot Customization Features](https://docs.github.com/en/copilot/concepts/customizations/comparing-customizations)
 
 This documentation explains the responsibilities of custom instructions, Agent Skills, specialized Agents, Hooks, and tool integrations.
 
-It is useful for translating the Handbook's Claude-first workflow concepts into GitHub Copilot without collapsing distinct engineering responsibilities.&#x20;
+It is useful for translating the Handbook's Claude-first workflow concepts into GitHub Copilot without collapsing distinct engineering responsibilities.
 
-[image](https://www.google.com/s2/favicons?domain=https://docs.github.com\&sz=32)
-
-GitHub Docs
 
 **GitHub — Custom Agents**
 
-[GitHub Copilot Custom Agents](https://docs.github.com/en/copilot/concepts/customizations/custom-agents?utm_source=chatgpt.com)
+[GitHub Copilot Custom Agents](https://docs.github.com/en/copilot/concepts/customizations/custom-agents)
 
 This reference describes how specialized Agent profiles can define reusable roles, instructions, and tool restrictions.
 
-It supports the design of Reviewer and other specialized Agent responsibilities.&#x20;
+It supports the design of Reviewer and other specialized Agent responsibilities.
 
-[image](https://www.google.com/s2/favicons?domain=https://docs.github.com\&sz=32)
-
-GitHub Docs
 
 **GitHub — Repository Rulesets**
 
-[Available Rules for Repository Rulesets](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/available-rules-for-rulesets?utm_source=chatgpt.com)
+[Available Rules for Repository Rulesets](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/available-rules-for-rulesets)
 
 Repository rulesets provide mechanisms for enforcing source-control requirements independently of coding-Agent assertions.
 
-They are relevant to protected branches, required checks, and authorized promotion of workflow outputs.&#x20;
+They are relevant to protected branches, required checks, and authorized promotion of workflow outputs.
 
-[image](https://www.google.com/s2/favicons?domain=https://docs.github.com\&sz=32)
 
-GitHub Docs
-
-### **19.3 OpenAI Codex — Agent Execution and Integration**
+### 19.3 OpenAI Codex — Agent Execution and Integration
 
 **OpenAI — Iterating Development Workflows with Codex**
 
-[Iterating Development Workflows with Codex](https://developers.openai.com/cookbook/examples/codex/iterating-development-workflows-with-codex?utm_source=chatgpt.com)
+[Iterating Development Workflows with Codex](https://developers.openai.com/cookbook/examples/codex/iterating-development-workflows-with-codex)
 
 This practical resource examines how Codex can be incorporated into repeatable development processes using repository instructions, goals, plans, and phase-specific context.
 
-It provides a useful comparison with the Handbook's workflow-contract and run-workspace approach.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://developers.openai.com\&sz=32)
+It provides a useful comparison with the Handbook's workflow-contract and run-workspace approach.
 
 developers.openai.com
 
 **OpenAI — Agent Skills**
 
-[Agent Skills Documentation](https://developers.openai.com/api/docs/guides/tools-skills?utm_source=chatgpt.com)
+[Agent Skills Documentation](https://developers.openai.com/api/docs/guides/tools-skills)
 
 This documentation explains reusable Skill packages, their supporting resources, and their use within Agent execution environments.
 
-It is relevant to designing reusable engineering procedures that remain distinct from workflow authorization and validation.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://developers.openai.com\&sz=32)
+It is relevant to designing reusable engineering procedures that remain distinct from workflow authorization and validation.
 
 OpenAI API
 
 **OpenAI — Agents Developer Resources**
 
-[Agent Development Resources](https://developers.openai.com/learn/agents?utm_source=chatgpt.com)
+[Agent Development Resources](https://developers.openai.com/learn/agents)
 
 These resources cover Agent development, orchestration, handoffs, guardrails, and evaluation-related implementation techniques.
 
-They are useful when developing provider-neutral execution adapters or integrating Agent execution into an external enterprise Harness.&#x20;
+They are useful when developing provider-neutral execution adapters or integrating Agent execution into an external enterprise Harness.
 
-[image](https://www.google.com/s2/favicons?domain=https://developers.openai.com\&sz=32)
 
-OpenAI Developers
-
-### **19.4 Distributed Workflow Reliability**
+### 19.4 Distributed Workflow Reliability
 
 **Microsoft Azure Architecture Center — Saga Design Pattern**
 
-[Saga Design Pattern](https://learn.microsoft.com/en-us/azure/architecture/patterns/saga?utm_source=chatgpt.com)
+[Saga Design Pattern](https://learn.microsoft.com/en-us/azure/architecture/patterns/saga)
 
 The Saga pattern addresses coordination across distributed operations, including partial failure, compensation, and orchestration.
 
 Although an engineering Harness is not necessarily implemented as a Saga, the same reliability concerns appear when Agent workflows interact with repositories, CI/CD systems, approval services, and external tools.
 
-This resource is especially relevant to the chapter's discussion of workflow checkpoints, idempotency, reconciliation, and failure recovery.&#x20;
+This resource is especially relevant to the chapter's discussion of workflow checkpoints, idempotency, reconciliation, and failure recovery.
 
-[image](https://www.google.com/s2/favicons?domain=https://learn.microsoft.com\&sz=32)
-
-Microsoft Learn
 
 **Microsoft Azure Architecture Center — Compensating Transaction Pattern**
 
-[Compensating Transaction Pattern](https://learn.microsoft.com/en-us/azure/architecture/patterns/compensating-transaction?utm_source=chatgpt.com)
+[Compensating Transaction Pattern](https://learn.microsoft.com/en-us/azure/architecture/patterns/compensating-transaction)
 
 This pattern examines how systems handle operations that have already produced effects when a broader process subsequently fails.
 
-It is useful for reasoning about workflow recovery after pull-request creation, publication, or other externally visible actions.&#x20;
+It is useful for reasoning about workflow recovery after pull-request creation, publication, or other externally visible actions.
 
-[image](https://www.google.com/s2/favicons?domain=https://learn.microsoft.com\&sz=32)
 
-Microsoft Learn
-
-### **19.5 Observability and Engineering Performance**
+### 19.5 Observability and Engineering Performance
 
 **Google — Site Reliability Engineering: Monitoring Distributed Systems**
 
-[Monitoring Distributed Systems](https://sre.google/sre-book/monitoring-distributed-systems/?utm_source=chatgpt.com)
+[Monitoring Distributed Systems](https://sre.google/sre-book/monitoring-distributed-systems/)
 
 This chapter from Google's *Site Reliability Engineering* book explains operational monitoring, actionable alerts, useful telemetry, and the distinction between symptoms and causes.
 
-Its principles can be applied to monitoring Harness workers, failed Agent executions, stuck workflows, gate reliability, and recovery operations.&#x20;
+Its principles can be applied to monitoring Harness workers, failed Agent executions, stuck workflows, gate reliability, and recovery operations.
 
-[image](https://www.google.com/s2/favicons?domain=https://sre.google\&sz=32)
-
-sre.google
 
 **DORA — Software Delivery Performance and Improvement Guides**
 
-[DORA Guides](https://dora.dev/guides/?utm_source=chatgpt.com)
+[DORA Guides](https://dora.dev/guides/)
 
 DORA provides resources on software delivery performance, continuous improvement, value stream analysis, and generative AI adoption.
 
-These resources support the chapter's recommendation to assess AI engineering through complete delivery outcomes rather than code-generation speed alone.&#x20;
+These resources support the chapter's recommendation to assess AI engineering through complete delivery outcomes rather than code-generation speed alone.
 
-[image](https://www.google.com/s2/favicons?domain=https://dora.dev\&sz=32)
 
-DORA Guides
-
-### **19.6 Related Chapters in the Enterprise AI Engineering Handbook**
+### 19.6 Related Chapters in the Enterprise AI Engineering Handbook
 
 Chapter 28 should also be read alongside the earlier chapters that establish its underlying architecture.
 
@@ -9944,7 +10143,7 @@ Chapter 28 should also be read alongside the earlier chapters that establish its
 
 Together, these chapters describe the components assembled into the enterprise workflows presented here.
 
-### **19.7 Recommended Study Sequence**
+### 19.7 Recommended Study Sequence
 
 Readers implementing an enterprise Harness should approach the references in the following order.
 
@@ -9958,7 +10157,7 @@ Finally, study the operational monitoring and delivery-performance resources. Th
 
 Readers supporting multiple coding platforms should additionally examine the GitHub Copilot and Codex references, with particular attention to the separation between platform-specific Agent execution and vendor-neutral governance.
 
-### **19.8 Closing Perspective**
+### 19.8 Closing Perspective
 
 The references in this section reinforce a principle that runs throughout the Enterprise AI Engineering Handbook.
 
@@ -9977,5 +10176,3 @@ A successful enterprise implementation therefore does not depend on trusting one
 It depends on establishing a system in which intelligent implementation can operate within reliable engineering controls.
 
 **The purpose of an enterprise AI engineering workflow is not merely to automate software development. It is to make AI-assisted software development repeatable, verifiable, recoverable, secure, and accountable.**
-
-**Chapter 28 status: Complete**

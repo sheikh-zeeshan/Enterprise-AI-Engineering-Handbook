@@ -44,6 +44,21 @@ The Autonomous Improvement Engine is the self-learning Harness capability that t
 
 The Harness can capture verified run facts automatically under its evidence controls. Changing an active Skill, Prompt, Instruction, workflow, tool configuration, or validation strategy follows the applicable change process. Policies, permissions, and authoritative knowledge retain their designated owners and approval paths.
 
+### The autonomy boundary
+
+Autonomy should increase the speed of observation, diagnosis, proposal, and experimentation without collapsing the separation between recommendation and authority. Treat that boundary as an architectural control rather than a convention in a Prompt.
+
+| Activity | Autonomous Improvement Engine authority | Required control |
+| --- | --- | --- |
+| Capture verified run facts | May ingest automatically within approved scope | Provenance, authorization, retention, and source identity controls |
+| Correlate evidence and form hypotheses | May perform automatically | Occurrence deduplication, uncertainty recording, and access boundaries |
+| Draft a candidate revision | May prepare a proposal or isolated workspace change | Named owner, known base revision, bounded permissions, and complete diff |
+| Replay and evaluate a candidate | May execute approved tests in an isolated environment | Pinned inputs, deterministic gates, spend and time limits, and preserved raw results |
+| Change an active governed artifact | No independent authority | Applicable review, required gates, and authorized human approval of the exact revision |
+| Weaken Policy, security, permissions, or mandatory approval | No authority | Separate governance or security change process; fail closed when authorization is absent |
+
+This separation prevents a learning loop from converting confidence into privilege. A recommendation can become more persuasive as evidence improves, but it does not acquire additional release authority.
+
 ### Learning signals
 
 Each signal answers a different question. An outcome becomes useful for learning when the Engine can trace it to the change, configuration, and conditions under which it occurred.
@@ -108,6 +123,26 @@ The recommendation component reads evidence within its assigned scope, detects p
 
 Track proposal state explicitly. An observation may produce a candidate, enter validation, and move to awaiting approval. A decision may approve, reject, or defer the revision. A newer proposal can supersede an earlier one. An approved revision becomes active through the release path and can later be rolled back. Bind test results and approval to the proposal revision and base version. A material edit or changed base requires revalidation and renewed approval as applicable.
 
+### Improvement proposal contract
+
+Treat the proposal as a versioned engineering artifact, not as a chat transcript or model summary. A durable proposal contract lets deterministic services, reviewers, and future models reconstruct the same decision boundary.
+
+| Field | Purpose |
+| --- | --- |
+| Proposal identity and revision | Gives every candidate and revision a stable trace through validation, approval, activation, and rollback |
+| Hypothesis | States the specific explanation being tested and the expected mechanism of improvement |
+| Evidence and counterevidence | Links independent occurrences, clean comparisons, contradictions, unresolved questions, and source revisions |
+| Scope and eligible cohort | Defines which repositories, services, task types, artifact versions, and environments the claim applies to |
+| Base and candidate revisions | Identifies the governed starting point and the exact candidate being evaluated |
+| Confidence fields | Separates confidence in the diagnosis from confidence in the expected benefit |
+| Impact and risk | Records affected owners, workflows, gates, permissions, cost, latency, false-positive risk, and blast radius |
+| Validation plan and acceptance criteria | Pins replay cases, held-out cases, negative controls, tools, rubric, required gates, and failure criteria |
+| Decision requirements | Names the accountable owner and any reviewers or approvers required by Policy |
+| Activation and rollback set | Defines the compatible versions to activate or restore, monitoring window, rollback triggers, and recovery owner |
+| State and decision history | Preserves transitions, reasons for rejection or deferral, superseding proposals, release records, and follow-up outcomes |
+
+The proposal contract is also a defense against model replacement. A future Learning Engine can re-evaluate the evidence, but it should not need the original hidden reasoning or conversation to understand what was approved and why.
+
 ### Governance, safety, and auditability
 
 Enforce the change boundary with identities and permissions. The Engine may read approved evidence sources, write proposal artifacts, and run authorized tests with bounded permissions, execution time, and spend. Controlled merge and activation paths enforce mandatory gates independently of the Engine. The Engine must never silently modify Instructions, weaken security or validation gates, change Policies, remove approvals, or apply a low-confidence recommendation automatically.
@@ -119,6 +154,8 @@ Record source identifiers, proposal and base revisions, applicable Policy, confi
 ### Testing, activation, and rollback
 
 Pin baseline and candidate revisions, fixtures, tool versions, environment, and evaluator rubric. Replay historical omissions and successful cases, then run held-out cases and negative controls. For an event-change Skill, test an unrelated change, a deliberately incompatible payload, and a consumer missing from the graph. Compare required check coverage, compatibility detection, incorrect blocks, flakiness, runtime, and cost. Define coverage and safety requirements before measuring efficiency gains.
+
+Keep candidate-generation evidence distinct from held-out evaluation evidence. If the Learning Engine or maintainer sees the expected answer for a supposed held-out case while designing the candidate, that case is no longer a clean test of generalization. Preserve a separate evaluation set or have an independent evaluator reveal its expected outcomes only after the candidate revision is fixed. Record any contamination and downgrade the strength of the resulting claim rather than relabeling the case after the fact.
 
 Use an isolated environment for candidate execution. For an Instruction or permission change, include tests of scope, precedence, and enforcement. When the existing release process supports it, use a shadow evaluation or limited rollout to measure the candidate under representative conditions. Shadow results can inform approval while the current approved configuration continues to govern live runs.
 
@@ -294,7 +331,7 @@ Export a sanitized, read-only evidence bundle into an isolated workspace. Includ
 | Current procedure | Approved Skill text, base revision, and applicable compatibility and validation requirements |
 | Replay manifest | Baseline and candidate cases, expected results, timing budget, and criteria for deferral and rollback |
 
-The static dependency report gives reviewers a reproducible view of what Claude saw. Where standing Claude Code project guidance is useful, use the project's existing `CLAUDE.md` to describe the expected evidence references and proposal format. Enforce access with the workspace and managed tool permissions. For this drafting session, expose the bundle and approved references for reading, and withhold tools and credentials that can edit the active Skill, push changes, approve pull requests, or activate revisions. [Claude Code settings and precedence](https://code.claude.com/docs/en/settings)
+The static dependency report gives reviewers a reproducible view of what Claude saw. Where standing Claude Code project guidance is useful, use the project's existing `CLAUDE.md` to describe the expected evidence references and proposal format. Enforce access with project or managed settings and explicit permission rules rather than relying on the Prompt to constrain tools. For this drafting session, expose the bundle and approved references for reading, and withhold tools and credentials that can edit the active Skill, push changes, approve pull requests, or activate revisions. [Claude Code settings, permissions, and precedence](https://code.claude.com/docs/en/settings)
 
 ### Request an evidence-backed proposal
 
@@ -338,7 +375,7 @@ Alpha Car Detailing can prepare the same event-change Skill revision in a GitHub
 
 ### Prepare the candidate and its pull request
 
-Ask Copilot to draft a patch against the approved Skill revision. The maintainer can apply the reviewed patch to a candidate branch and open a pull request. A team that delegates patch preparation to Copilot cloud agent should review its proposed changes and confirm that the required CI workflows have run for the candidate commit. GitHub documents approval requirements for workflow runs on cloud-agent pull requests. [Review output from Copilot](https://docs.github.com/en/copilot/how-tos/use-copilot-agents/review-copilot-output)
+Ask Copilot to draft a patch against the approved Skill revision. The maintainer can apply the reviewed patch to a candidate branch and open a pull request. A team that delegates patch preparation to Copilot cloud agent should review its proposed changes and confirm that the required CI workflows have run for the candidate commit. By default, GitHub Actions workflows do not automatically run when Copilot cloud agent pushes changes to its pull request; an authorized user reviews the changes and approves the workflow run unless the organization has deliberately configured different behavior. [Review output from Copilot](https://docs.github.com/en/copilot/how-tos/use-copilot-agents/review-copilot-output)
 
 ```text
 Prepare the AIE-045 candidate against the supplied event-change Skill
@@ -361,7 +398,7 @@ The maintainer checks that the diff is limited to the proposed procedure and tha
 
 When enabled, Copilot code review can inspect the candidate diff and report concerns on the pull request. For example, it might flag wording that requires a check for every consumer of an event name, including consumers pinned to a different contract version. Treat that comment as a finding to verify against the subscription declarations and fixtures. GitHub documents that Copilot can read repository guidance and Skills from the PR head, so the maintainer independently checks that the proposed revision preserves the approved compatibility obligation and review criteria. [Using GitHub Copilot code review](https://docs.github.com/en/copilot/how-tos/use-copilot-agents/use-code-review)
 
-Require the authorized Skill owner's explicit decision through the established governance path. GitHub can be configured to let Copilot approvals count toward repository merge requirements. For this governed change, configure the applicable review path to require a human owner decision and record that decision against the tested commit. [Configuring code review by GitHub Copilot](https://docs.github.com/en/copilot/how-tos/copilot-on-github/set-up-copilot/configure-code-review)
+Require the authorized Skill owner's explicit decision through the established governance path. Copilot code review can be configured to submit approvals that count toward repository merge requirements; that review capability is distinct from the Copilot cloud agent that authored a change. For this governed change, configure the applicable review path to require a human owner decision and record that decision against the tested commit even when automated review approvals are enabled. [Configuring code review by GitHub Copilot](https://docs.github.com/en/copilot/how-tos/copilot-on-github/set-up-copilot/configure-code-review)
 
 CI runs the pinned baseline and candidate replay. The Validator Agent records whether each applicable consumer check ran, including the check that should block the incompatible payload. The Evaluator Agent records consumer behavior and the runtime difference using the same rubric as in the Claude example. If a revision follows review, attach fresh gate evidence to the new commit and obtain the applicable approval. The release record identifies the Skill version activated and the prior approved revision available for rollback.
 
@@ -384,7 +421,7 @@ Alpha Car Detailing can use Codex to prepare and replay the event-change Skill c
 
 Start from the repository commit containing the approved Skill revision. In the Codex app, a Git worktree provides a separate checkout for reviewing the candidate diff and running the approved fixtures. Record the starting commit and verify that the worktree contains the intended Skill version before asking Codex to edit it. [OpenAI guide to Codex worktrees and execution context](https://developers.openai.com/blog/mastering-codex-remote-for-engineering)
 
-Stage the sanitized run evidence, verified dependency report, and replay manifest where Codex can read them. Give the session write access to the candidate workspace and access to the approved local replay runner. Use the configured filesystem, network, and tool permissions to limit the session's reach. Keep production data and credentials for protected branches, approvals, and activation outside the replay environment. The Harness supplies historical records and the approved permissions for the exercise. [OpenAI overview of Codex execution and permission controls](https://developers.openai.com/blog/codex-as-a-platform)
+Stage the sanitized run evidence, verified dependency report, and replay manifest where Codex can read them. Give the session write access to the candidate workspace and access to the approved local replay runner. Use the configured sandbox, filesystem, network, tool, and approval boundaries to limit the session's reach. Keep production data and credentials for protected branches, approvals, and activation outside the replay environment. The Harness supplies historical records and the approved permissions for the exercise. [OpenAI overview of Codex execution and permission controls](https://developers.openai.com/blog/codex-as-a-platform)
 
 ### Prepare and replay the proposed patch
 
@@ -500,6 +537,12 @@ Trace the proposed change to the artifact that owns the gap and assess affected 
 An Engine with authority to edit active Instructions, suppress mandatory checks, expand its own tool permissions, or approve its own proposals can turn a bad inference into a persistent change. The same problem can arise through an indirect write path, such as an editable configuration that selects the active Skill revision. A confidence score supplies no release authority.
 
 Enforce the boundary at the write and activation points. Use separate identities for recommendation and release. Require independently enforced gates and explicit human approval of the tested revision. If a pull request changes after approval, evaluate the resulting commit and obtain approval under the applicable review rules. The Engine's proposal should never change Policies or remove approval requirements.
+
+### Testing on evidence used to design the candidate
+
+A candidate can appear to generalize when the same examples, expected outputs, or failure signatures were used both to design it and to judge it. Replaying PR 451 and PR 458 is useful regression evidence, but those cases are not independent proof that the revised Skill will work on a new event version.
+
+Label historical replays, development cases, and held-out evaluations separately. Freeze the candidate before revealing the held-out expectations, and use negative controls that were not selected because they already support the hypothesis. If the candidate is revised after a held-out failure is inspected, move that case into the development set and evaluate the new revision on fresh held-out evidence.
 
 ### Releasing without an audit trail or recoverable baseline
 
@@ -662,3 +705,9 @@ The Engine may detect patterns, recommend changes, and test candidates. Governed
 
 - Use Chapters 41–43 to decide whether the evidence supports changing a reusable procedure, clarifying task guidance, or proposing a standing engineering obligation. [Skill Evolution](41-skill-evolution.md) · [Prompt Evolution](42-prompt-evolution.md) · [Instruction Evolution](43-instruction-evolution.md)
 - Use Chapter 44 to identify affected consumers and owners, verify critical dependencies, and preserve provenance when recording rollout and recovery outcomes. [Knowledge Graph](44-knowledge-graph.md)
+
+### Vendor implementation references
+
+- Anthropic: [Claude Code settings, permissions, and precedence](https://code.claude.com/docs/en/settings)
+- GitHub: [Review output from Copilot](https://docs.github.com/en/copilot/how-tos/use-copilot-agents/review-copilot-output) · [Using GitHub Copilot code review](https://docs.github.com/en/copilot/how-tos/use-copilot-agents/use-code-review) · [Configuring code review by GitHub Copilot](https://docs.github.com/en/copilot/how-tos/copilot-on-github/set-up-copilot/configure-code-review)
+- OpenAI: [Mastering remote engineering work with Codex](https://developers.openai.com/blog/mastering-codex-remote-for-engineering) · [Codex as a platform](https://developers.openai.com/blog/codex-as-a-platform)

@@ -1,8 +1,8 @@
 # Chapter 19 — Population
 
-## Part III — Harness Engineering
+*Part III — Harness Engineering*
 
-### 1. Story-driven Opening
+## 1. Story-driven Opening
 
 The Alpha Car Detailing engineering team had reached an important milestone in its adoption of AI-assisted software development.
 
@@ -104,7 +104,7 @@ Engineering Goals
 │ Work Item B: Running │
 │ Work Item C: Failed  │
 │ Work Item D: Blocked │
-│ Work Item E: Complete│
+│ Work Item E: Completed│
 └──────────┬───────────┘
            │
            ▼
@@ -134,7 +134,7 @@ Population is the capability that makes that principle operational.
 
 ---
 
-# 2. Learning Objectives
+## 2. Learning Objectives
 
 After completing this chapter, you should be able to:
 
@@ -165,9 +165,9 @@ After completing this chapter, you should be able to:
 
 ---
 
-# 3. Background
+## 3. Background
 
-The handbook defines the Harness as automation around AI rather than as another AI Agent. Its responsibilities include executing AI-assisted workflows, validating results, evaluating outcomes, recording metrics, and preserving iteration history. The agreed Harness architecture also explicitly includes `Population/` as a component alongside roles, search, metrics, and knowledge. AI development handbook AI development handbook
+The Harness is automation around AI, not another AI Agent. It executes AI-assisted workflows, validates results, evaluates outcomes, records Metrics, and preserves iteration history. As established in Chapter 13, *Harness Architecture*, Population is a distinct capability alongside roles, repository search, Metrics, and knowledge management.
 
 Population exists because an enterprise Harness eventually processes **many units of work**, not merely one prompt at a time.
 
@@ -201,7 +201,7 @@ At that scale, the Harness requires a system of record.
 
 That system of record is Population.
 
-## 3.1 From Prompt Execution to Work Management
+### 3.1 From Prompt Execution to Work Management
 
 A prompt describes requested work.
 
@@ -226,11 +226,12 @@ The corresponding Population item might contain:
 | Repository | `alpha-car-detailing` |
 | Service | `BookingService` |
 | Priority | `High` |
-| Status | `Ready` |
+| Status | `Running` |
 | Attempt | `2` |
 | Maximum Attempts | `3` |
 | Assigned Role | `Developer` |
 | Assigned Worker | `worker-07` |
+| Current Execution | `EXEC-00712` |
 | Depends On | `POP-000173` |
 | Created | `2026-09-28T08:30:00Z` |
 | Last Heartbeat | `2026-09-28T08:44:12Z` |
@@ -241,7 +242,7 @@ The prompt explains what should be done.
 
 The Population record explains what is happening to that work inside the Harness.
 
-## 3.2 Population Is Not Agent Memory
+### 3.2 Population Is Not Agent Memory
 
 An AI Agent may know that it is implementing `POP-000184`.
 
@@ -265,7 +266,7 @@ Agent context ≠ Population state
 
 Population must live outside the agent execution context.
 
-## 3.3 Population Is an Operational Control Mechanism
+### 3.3 Population Is an Operational Control Mechanism
 
 Population is not merely a database table containing tasks.
 
@@ -297,9 +298,9 @@ But authoritative lifecycle transitions should be controlled by Harness policies
 
 ---
 
-# 4. Concepts
+## 4. Concepts
 
-## 4.1 What Is Population?
+### 4.1 What Is Population?
 
 **Population** is the Harness capability responsible for maintaining the authoritative collection of work items that exist within an AI engineering workflow and controlling their progression through that workflow.
 
@@ -336,7 +337,7 @@ Without these capabilities, a Harness may execute agents, but it cannot reliably
 
 ---
 
-## 4.2 Population Items
+### 4.2 Population Items
 
 A **Population item** is a discrete unit of work managed by the Harness.
 
@@ -372,7 +373,7 @@ The items form a Population.
 
 They can then be prioritized, scheduled, assigned, executed, validated, evaluated, retried, and audited independently.
 
-### Population Granularity
+#### Population Granularity
 
 Work items should be large enough to represent meaningful engineering outcomes but small enough to execute and verify independently.
 
@@ -397,7 +398,7 @@ The appropriate granularity depends on:
 
 ---
 
-## 4.3 Work Item Identity
+### 4.3 Work Item Identity
 
 Every Population item requires a **stable identity**.
 
@@ -452,7 +453,7 @@ All three executions belong to the same Population item.
 
 This separation allows the Harness to preserve logical identity while maintaining execution history.
 
-### Identity Versus Execution Identity
+#### Identity Versus Execution Identity
 
 A robust implementation commonly maintains both:
 
@@ -474,7 +475,7 @@ This becomes important for retries, observability, auditing, and Metrics.
 
 ---
 
-## 4.4 Metadata
+### 4.4 Metadata
 
 A Population item requires sufficient metadata for the Harness to make deterministic operational decisions.
 
@@ -505,7 +506,7 @@ At the same time, do not omit operational data that would be impossible to recon
 
 ---
 
-## 4.5 Status Lifecycle
+### 4.5 Status Lifecycle
 
 Population requires an explicit lifecycle.
 
@@ -555,21 +556,21 @@ The exact names are less important than their semantics.
 
 Each state must have a precise meaning.
 
-### Example State Definitions
+#### Example State Definitions
 
 | State | Meaning |
 | --- | --- |
 | `Queued` | Work exists but has not yet been evaluated for execution |
 | `Blocked` | One or more required dependencies are unsatisfied |
 | `Ready` | All execution prerequisites are satisfied |
-| `Running` | An active execution owns the work item |
+| `Running` | An authorized worker owns the implementation stage |
 | `Review` | Implementation is undergoing independent review |
-| `Validation` | Deterministic validation is executing |
-| `Evaluation` | Outcome quality is being evaluated |
+| `Validation` | Harness-controlled deterministic checks are executing |
+| `Evaluation` | Outcome quality is being assessed |
 | `Failed` | Current attempt failed but policy may permit retry |
 | `RetryPending` | Retry has been authorized but is waiting for execution |
 | `Stale` | Expected execution activity has stopped |
-| `Exhausted` | Retry policy has been consumed without success |
+| `Exhausted` | No further automatic attempt is authorized under the applicable retry policy |
 | `Completed` | Required workflow stages have completed with sufficient evidence |
 | `Cancelled` | Work was deliberately terminated |
 
@@ -579,7 +580,7 @@ It should represent what the Harness can establish from evidence.
 
 ---
 
-## 4.6 State Transitions
+### 4.6 State Transitions
 
 Population state changes should be modeled as explicit transitions.
 
@@ -605,10 +606,10 @@ Action:
     transition to Running
 ```
 
-Similarly:
+After the separate evaluation stage, the completion transition:
 
 ```text
-Validation → Completed
+Evaluation → Completed
 ```
 
 might require:
@@ -637,7 +638,7 @@ Harness controls state.
 
 ---
 
-## 4.7 Priority
+### 4.7 Priority
 
 Priority influences execution order.
 
@@ -680,7 +681,7 @@ Priority cannot override dependency correctness.
 
 ---
 
-## 4.8 Dependencies
+### 4.8 Dependencies
 
 Population items often depend on other Population items.
 
@@ -717,7 +718,7 @@ Blocked
 
 When `POP-2103` becomes `Completed`, the Harness can reevaluate the dependency graph and transition `POP-2105` from `Blocked` to `Ready`.
 
-### Dependency Rules
+#### Dependency Rules
 
 Dependency management should detect:
 
@@ -732,7 +733,7 @@ A dependency graph is executable control data, not merely descriptive metadata.
 
 ---
 
-## 4.9 Assignment
+### 4.9 Assignment
 
 Assignment determines who or what currently owns execution responsibility.
 
@@ -764,7 +765,7 @@ If an execution becomes stale and another worker takes over, the original assign
 
 ---
 
-## 4.10 Batching
+### 4.10 Batching
 
 A **batch** groups Population items for operational purposes.
 
@@ -819,7 +820,7 @@ Blocked       6
 
 ---
 
-## 4.11 Parallel Execution
+### 4.11 Parallel Execution
 
 Population enables safe parallelism because the Harness can determine which items may execute concurrently.
 
@@ -863,7 +864,7 @@ Population provides the information needed to make these decisions.
 
 ---
 
-## 4.12 Scheduling
+### 4.12 Scheduling
 
 Scheduling answers:
 
@@ -911,7 +912,7 @@ The key principle remains:
 
 ---
 
-## 4.13 Retry
+### 4.13 Retry
 
 AI-assisted engineering work can fail for transient reasons:
 
@@ -954,13 +955,13 @@ Failed
 Exhausted
 ```
 
-A retry should create a new execution attempt without creating a new logical work item.
+A retry should create a new execution attempt without creating a new logical work item. A subsequent attempt can be claimed only if its policy-adjusted attempt budget permits it.
 
 The history remains attached to the original Population identity.
 
 ---
 
-## 4.14 Exhaustion
+### 4.14 Exhaustion
 
 `Failed` and `Exhausted` are not the same state.
 
@@ -1004,7 +1005,7 @@ Without an Exhausted state, systems commonly enter infinite retry loops.
 
 ---
 
-## 4.15 Stale and Stuck Detection
+### 4.15 Stale and Stuck Detection
 
 A work item may remain `Running` even though no useful execution is occurring.
 
@@ -1037,11 +1038,11 @@ Running → Stale
 
 The stale threshold should reflect expected execution behavior rather than an arbitrary universal value.
 
-### Stale Versus Failed
+#### Stale Versus Failed
 
 A stale item is not automatically a failed item.
 
-`Stale` means the Harness can no longer establish that the assigned execution is healthy.
+`Stale` means the Harness can no longer establish that the assigned execution is healthy. A heartbeat proves liveness of its reporting component, not necessarily useful progress; a regularly heartbeating execution may still be stuck.
 
 Recovery may involve:
 
@@ -1053,11 +1054,11 @@ Stale
   └── Retry authorized → RetryPending
 ```
 
-This intermediate state prevents the Harness from immediately duplicating an execution that may still be alive.
+The recovery controller must reconcile ownership and fence or otherwise prevent writes from the former execution before reassigning work. Lease expiry alone is not proof that a disconnected worker cannot still produce side effects.
 
 ---
 
-## 4.16 Duplicate Detection
+### 4.16 Duplicate Detection
 
 Duplicate work can enter Population from:
 
@@ -1097,9 +1098,9 @@ The two concepts are related but not identical.
 
 ---
 
-## 4.17 Idempotency
+### 4.17 Idempotency
 
-An idempotent operation can be repeated without incorrectly applying its logical effect multiple times.
+An idempotent operation can be repeated without incorrectly applying its logical effect multiple times. Atomic claiming prevents simultaneous ownership of a Population item; it does not, by itself, make downstream actions idempotent. Use deduplication keys and idempotent consumers or side-effect operations at the relevant external boundaries.
 
 Suppose two workers simultaneously attempt to claim `POP-2103`.
 
@@ -1125,10 +1126,11 @@ SET
     StartedAt = @Now
 WHERE
     WorkItemId = @WorkItemId
-    AND Status = 'Ready';
+    AND Status = 'Ready'
+    AND AttemptCount < MaxAttempts;
 ```
 
-The Harness then checks the affected row count.
+This conditional update prevents simultaneous claims; production claiming also records the execution and transition atomically, as demonstrated in Section 7.9. The Harness then checks the affected row count.
 
 ```text
 Rows affected = 1
@@ -1151,7 +1153,7 @@ Idempotency must also extend to downstream actions where appropriate.
 
 ---
 
-## 4.18 Checkpointing
+### 4.18 Checkpointing
 
 Some AI engineering tasks are long-running.
 
@@ -1187,7 +1189,7 @@ A checkpoint requires durable evidence.
 
 ---
 
-## 4.19 Progress Tracking
+### 4.19 Progress Tracking
 
 Status alone does not always communicate sufficient progress.
 
@@ -1232,7 +1234,7 @@ An AI Agent estimating that it is "85% complete" is not equivalent to determinis
 
 ---
 
-## 4.20 Failure Handling
+### 4.20 Failure Handling
 
 Failure is not a single condition.
 
@@ -1261,7 +1263,7 @@ Neither scales.
 
 ---
 
-## 4.21 Reprocessing
+### 4.21 Reprocessing
 
 Reprocessing allows an existing Population item to execute again after its normal lifecycle has stopped.
 
@@ -1288,11 +1290,11 @@ NewStatus: Ready
 
 The old execution history must remain intact.
 
-Reprocessing must not erase the evidence that the item previously exhausted its retries.
+Reprocessing must not erase the evidence that the item previously exhausted its retries. If `AttemptCount` has reached `MaxAttempts`, the authorizing operation must explicitly extend or replace the permissible retry budget under policy; simply changing `Exhausted` to `Ready` would not make another attempt claimable.
 
 ---
 
-## 4.22 Persistence
+### 4.22 Persistence
 
 Population state must survive:
 
@@ -1332,7 +1334,7 @@ This separation prevents a single work-item row from becoming an overloaded hist
 
 ---
 
-## 4.23 Audit History
+### 4.23 Audit History
 
 The current state answers:
 
@@ -1357,11 +1359,14 @@ The history might show:
 | --- | --- | --- | --- |
 | 09:00 | Queued | Ready | Dependencies satisfied |
 | 09:02 | Ready | Running | Claimed by worker-03 |
-| 09:19 | Running | Validation | Implementation produced |
+| 09:19 | Running | Review | Implementation evidence captured |
+| 09:20 | Review | Validation | Review accepted |
 | 09:22 | Validation | Failed | Contract test failed |
 | 09:24 | Failed | RetryPending | Retry policy authorized |
-| 09:30 | RetryPending | Running | Claimed by worker-08 |
-| 09:51 | Running | Validation | Implementation produced |
+| 09:29 | RetryPending | Ready | Retry delay elapsed; prerequisites checked |
+| 09:30 | Ready | Running | Claimed by worker-08 |
+| 09:51 | Running | Review | Implementation evidence captured |
+| 09:53 | Review | Validation | Review accepted |
 | 09:56 | Validation | Evaluation | Gates passed |
 | 10:02 | Evaluation | Completed | Evaluation passed |
 
@@ -1379,11 +1384,11 @@ EvidenceReference
 CorrelationId
 ```
 
-A status update should never silently overwrite history.
+A status update should never silently overwrite history. Perform the state change and insertion of its transition record in the same database transaction; otherwise a crash can leave current state inconsistent with audit history.
 
 ---
 
-## 4.24 Human Intervention
+### 4.24 Human Intervention
 
 Automation must know when to stop automating.
 
@@ -1420,7 +1425,7 @@ This is better than leaving an item indefinitely in `Failed`.
 
 ---
 
-## 4.25 Population Queries
+### 4.25 Population Queries
 
 Once Population is durable and structured, it becomes queryable.
 
@@ -1471,7 +1476,7 @@ These queries become inputs to operations, dashboards, Metrics, and future Harne
 
 ---
 
-## 4.26 Population Inside the Harness
+### 4.26 Population Inside the Harness
 
 Population belongs inside the Harness control plane.
 
@@ -1509,7 +1514,7 @@ They do not directly redefine authoritative Population state.
 
 ---
 
-## 4.27 Integration with the Lead Agent
+### 4.27 Integration with the Lead Agent
 
 The Lead Agent may help create and decompose work.
 
@@ -1557,7 +1562,7 @@ Population persists.
 
 ---
 
-## 4.28 Integration with the Developer Agent
+### 4.28 Integration with the Developer Agent
 
 The Developer Agent receives an assigned Population item.
 
@@ -1597,7 +1602,7 @@ The Harness then routes the work to the appropriate next stage.
 
 ---
 
-## 4.29 Integration with the Reviewer Agent
+### 4.29 Integration with the Reviewer Agent
 
 The Reviewer Agent receives:
 
@@ -1640,7 +1645,7 @@ The Harness owns lifecycle state.
 
 ---
 
-## 4.30 Integration with the Validator Agent
+### 4.30 Integration with the Validator Agent
 
 The Validator Agent verifies objective, repeatable engineering conditions.
 
@@ -1673,7 +1678,7 @@ This prevents a Developer Agent—or any other agent—from declaring completion
 
 ---
 
-## 4.31 Integration with the Evaluator Agent
+### 4.31 Integration with the Evaluator Agent
 
 The Evaluator Agent answers a different question:
 
@@ -1711,7 +1716,7 @@ No individual agent owns the right to declare success merely because its own sta
 
 ---
 
-## 4.32 Relationship Between Population and Metrics
+### 4.32 Relationship Between Population and Metrics
 
 Population and Metrics are closely related but serve different purposes.
 
@@ -1770,7 +1775,7 @@ Chapter 20 will examine Metrics in detail.
 
 ---
 
-# 5. Architecture Discussion
+## 5. Architecture Discussion
 
 Population introduces a stateful control capability into the Harness.
 
@@ -1780,7 +1785,7 @@ The Harness can no longer be modeled simply as a script that invokes one AI Agen
 
 It becomes a work orchestration system.
 
-## 5.1 Control Plane and Execution Plane
+### 5.1 Control Plane and Execution Plane
 
 Population primarily belongs to the **control plane**.
 
@@ -1836,7 +1841,7 @@ This separation allows the Harness to recover even when execution workers disapp
 
 ---
 
-## 5.2 Population Manager
+### 5.2 Population Manager
 
 The **Population Manager** is the logical component responsible for controlled manipulation of Population state.
 
@@ -1868,7 +1873,7 @@ In an enterprise Harness it may become a dedicated service.
 
 ---
 
-## 5.3 State Machine
+### 5.3 State Machine
 
 The lifecycle should be implemented as a controlled state machine rather than arbitrary status strings.
 
@@ -1878,13 +1883,15 @@ A representative state machine is:
 stateDiagram-v2
     [*] --> Queued
 
-    Queued --> Blocked: dependencies missing
+    Queued --> Blocked: dependencies unsatisfied
     Queued --> Ready: prerequisites satisfied
+    Queued --> Cancelled: work cancelled
 
     Blocked --> Ready: dependencies satisfied
     Blocked --> Cancelled: work cancelled
 
     Ready --> Running: worker claims item
+    Ready --> Cancelled: work cancelled
 
     Running --> Review: implementation produced
     Running --> Failed: execution failure
@@ -1899,27 +1906,33 @@ stateDiagram-v2
     Evaluation --> Completed: outcome accepted
     Evaluation --> Failed: outcome insufficient
 
-    Failed --> RetryPending: retry allowed
-    Failed --> Exhausted: retry budget consumed
+    Failed --> RetryPending: retry authorized
+    Failed --> Exhausted: further automation prohibited
+    Failed --> Blocked: newly approved prerequisite
+    Failed --> Cancelled: work cancelled
 
-    RetryPending --> Ready: retry delay elapsed
+    RetryPending --> Ready: delay elapsed and prerequisites satisfied
+    RetryPending --> Blocked: prerequisite no longer satisfied
+    RetryPending --> Cancelled: work cancelled
 
-    Stale --> Running: execution recovered
-    Stale --> Failed: execution abandoned
+    Stale --> Running: same execution safely reconciled
+    Stale --> Failed: previous execution fenced/abandoned
 
-    Exhausted --> Ready: human reprocess authorization
+    Exhausted --> Ready: human authorized and budget extended
 
     Completed --> [*]
     Cancelled --> [*]
 ```
 
+`Running`, `Review`, `Validation`, and `Evaluation` describe *work-item lifecycle stages*. Individual stage invocations can have separate worker, lease, and stage-run metadata; these should not be mistaken for a new logical Population item or an automatic retry attempt.
+
 Not every organization needs every state shown here.
 
-The important requirement is explicit transition semantics.
+The important requirement is explicit transition semantics. `Stale → Running` applies only when the original execution is positively reconciled and its ownership is still valid. `Failed → Blocked` represents a controlled dependency-graph correction, not an agent updating its own status.
 
 ---
 
-## 5.4 Transition Authority
+### 5.4 Transition Authority
 
 Each transition should define its authority.
 
@@ -1950,7 +1963,7 @@ It should not silently perform arbitrary lifecycle transitions.
 
 ---
 
-## 5.5 Evidence-backed Transitions
+### 5.5 Evidence-backed Transitions
 
 A mature Population architecture records not only that a transition occurred, but also what evidence justified it.
 
@@ -1993,7 +2006,7 @@ status = "Completed"
 
 ---
 
-## 5.6 Optimistic Concurrency
+### 5.6 Optimistic Concurrency
 
 Population is highly susceptible to race conditions.
 
@@ -2010,21 +2023,21 @@ One approach is a version column:
 ```text
 WorkItemId: POP-2103
 Status: Running
-Version: 14
+RowVersion: 0x000000000000000E
 ```
 
-An update requires the expected version:
+An update compares the original SQL Server `rowversion` token:
 
 ```sql
-UPDATE PopulationItem
-SET
-    Status = @NewStatus,
-    Version = Version + 1
+UPDATE dbo.PopulationItem
+SET Status = @NewStatus,
+    UpdatedAt = SYSUTCDATETIME()
 WHERE WorkItemId = @WorkItemId
-  AND Version = @ExpectedVersion;
+  AND Status = @ExpectedStatus
+  AND RowVersion = @ExpectedRowVersion;
 ```
 
-If no row is updated, another process changed the record first.
+SQL Server updates `RowVersion` automatically; application code must not increment it as an integer. The transition policy still verifies its guards, and the state change plus audit-history insert belong in one transaction. If no row is updated, another process may have changed the item or its expected status may no longer hold.
 
 The caller reloads the item and reevaluates its operation.
 
@@ -2032,7 +2045,7 @@ This is far safer than "last writer wins."
 
 ---
 
-## 5.7 Heartbeats and Leases
+### 5.7 Heartbeats and Leases
 
 For distributed execution, assignment should often have a lease.
 
@@ -2052,11 +2065,11 @@ This provides a deterministic mechanism for stale detection.
 
 However, lease expiry alone should not automatically start duplicate execution unless the architecture guarantees the previous worker cannot continue writing.
 
-The recovery model must account for split-brain execution.
+The recovery model must account for split-brain execution. For side-effecting work, protect downstream writes with a monotonically increasing lease/fencing token or another mechanism that rejects operations from superseded executions; merely changing the Population row does not revoke a disconnected worker's ability to write.
 
 ---
 
-## 5.8 Persistence Model
+### 5.8 Persistence Model
 
 A relational conceptual schema for Alpha Car Detailing might look like:
 
@@ -2131,9 +2144,9 @@ The architectural principle is more important:
 
 ---
 
-# 6. Professional Diagrams
+## 6. Professional Diagrams
 
-## 6.1 End-to-End Population Flow
+### 6.1 End-to-End Population Flow
 
 ```mermaid
 flowchart TD
@@ -2174,7 +2187,7 @@ flowchart TD
 
 ---
 
-## 6.2 Running and Stale Recovery
+### 6.2 Running and Stale Recovery
 
 ```mermaid
 flowchart TD
@@ -2199,7 +2212,7 @@ flowchart TD
 
 ---
 
-## 6.3 Population, Agents, and Evidence
+### 6.3 Population, Agents, and Evidence
 
 ```mermaid
 flowchart LR
@@ -2233,7 +2246,7 @@ The Harness controls authoritative Population state.
 
 ---
 
-## 6.4 Population Versus Agent Context
+### 6.4 Population Versus Agent Context
 
 ```mermaid
 flowchart TB
@@ -2270,7 +2283,7 @@ The durable Population must not.
 
 ---
 
-## 6.5 Population Lifecycle Summary
+### 6.5 Population Lifecycle Summary
 
 ```text
                          ┌─────────┐
@@ -2312,9 +2325,7 @@ This lifecycle should be understood as a controlled state machine, not merely a 
 
 ---
 
-Chapter 19 status: In progress — next section: Hands-on Example
-
-# 7. Hands-on Example
+## 7. Hands-on Example
 
 The concepts introduced earlier become easier to understand when Population is treated as an operational Harness capability rather than simply as a collection of tasks.
 
@@ -2328,7 +2339,7 @@ The example focuses on the Population mechanics. The AI Agent implementations th
 
 ---
 
-## 7.1 Define the Engineering Goal
+### 7.1 Define the Engineering Goal
 
 Assume the Harness receives the following approved goal:
 
@@ -2373,7 +2384,7 @@ The Harness creates and manages the authoritative Population.
 
 ---
 
-## 7.2 Create Population Records
+### 7.2 Create Population Records
 
 A simplified Population table could begin with:
 
@@ -2390,6 +2401,7 @@ CREATE TABLE PopulationItem
 
     Repository          varchar(200)    NOT NULL,
     ServiceName         varchar(100)    NULL,
+    IdempotencyKey      varchar(300)    NULL,
 
     AttemptCount        int             NOT NULL DEFAULT 0,
     MaxAttempts         int             NOT NULL DEFAULT 3,
@@ -2406,8 +2418,16 @@ CREATE TABLE PopulationItem
 
     RequiresHumanAction bit             NOT NULL DEFAULT 0,
 
-    RowVersion          rowversion      NOT NULL
+    RowVersion          rowversion      NOT NULL,
+
+    CONSTRAINT CK_PopulationItem_Attempts
+        CHECK (AttemptCount >= 0 AND MaxAttempts > 0)
 );
+
+-- NULL is allowed for work without an external idempotency key.
+CREATE UNIQUE INDEX UX_PopulationItem_IdempotencyKey
+    ON PopulationItem(IdempotencyKey)
+    WHERE IdempotencyKey IS NOT NULL;
 ```
 
 The initial records might be:
@@ -2425,7 +2445,7 @@ Only the domain work is initially ready because the remaining work depends on ea
 
 ---
 
-## 7.3 Record Dependencies
+### 7.3 Record Dependencies
 
 Dependencies should be represented explicitly rather than embedded only in prompt text.
 
@@ -2444,9 +2464,14 @@ CREATE TABLE PopulationDependency
 
     CONSTRAINT FK_PopulationDependency_DependsOn
         FOREIGN KEY (DependsOnWorkItemId)
-        REFERENCES PopulationItem(WorkItemId)
+        REFERENCES PopulationItem(WorkItemId),
+
+    CONSTRAINT CK_PopulationDependency_NoSelfReference
+        CHECK (WorkItemId <> DependsOnWorkItemId)
 );
 ```
+
+The self-reference constraint does not detect longer cycles (`A → B → C → A`). The Population Manager must validate the entire proposed dependency graph before committing changes.
 
 The dependency graph is:
 
@@ -2469,7 +2494,7 @@ The Harness can now determine readiness rather than asking an AI Agent which tas
 
 ---
 
-## 7.4 Determine Ready Work
+### 7.4 Determine Ready Work
 
 A Population query can identify items whose dependencies have completed.
 
@@ -2504,7 +2529,7 @@ The dependency graph provides the answer.
 
 ---
 
-## 7.5 Claim Work Atomically
+### 7.5 Claim Work Atomically
 
 Suppose three Harness workers are available:
 
@@ -2537,8 +2562,11 @@ SET
     LastHeartbeatAt = SYSUTCDATETIME(),
     UpdatedAt = SYSUTCDATETIME()
 WHERE WorkItemId = @WorkItemId
-  AND Status = 'Ready';
+  AND Status = 'Ready'
+  AND AttemptCount < MaxAttempts;
 ```
+
+This is the conditional-claim predicate, not the complete durable claim workflow. The `UPDATE`, insertion of the corresponding `PopulationExecution` record, and insertion of the `PopulationTransition` audit record must commit together in a database transaction (see Section 7.9). Resource limits and leases must also be enforced by the surrounding claim policy.
 
 The worker verifies the affected row count.
 
@@ -2560,7 +2588,7 @@ This is an important Population guarantee:
 
 ---
 
-## 7.6 Create an Execution Record
+### 7.6 Create an Execution Record
 
 The logical Population item and its execution attempt should remain separate.
 
@@ -2584,7 +2612,10 @@ CREATE TABLE PopulationExecution
 
     CONSTRAINT FK_PopulationExecution_WorkItem
         FOREIGN KEY (WorkItemId)
-        REFERENCES PopulationItem(WorkItemId)
+        REFERENCES PopulationItem(WorkItemId),
+
+    CONSTRAINT UQ_PopulationExecution_WorkItemAttempt
+        UNIQUE (WorkItemId, AttemptNumber)
 );
 ```
 
@@ -2620,11 +2651,11 @@ POP-1042-01
     └── EXEC-7814  Attempt 2  Running
 ```
 
-The logical work identity never changes.
+The logical work identity never changes. Here, an attempt refers to a Harness-controlled implementation-and-verification cycle, not every internal agent correction. Review, validation, and evaluation may each have their own stage-run identifiers and evidence records within the same work-item attempt; they do not silently consume a new retry budget.
 
 ---
 
-## 7.7 Build the Agent Execution Context
+### 7.7 Build the Agent Execution Context
 
 Once the Harness has claimed the item, it prepares the Developer Agent's execution context.
 
@@ -2674,7 +2705,7 @@ That makes logs, artifacts, commits, validation results, and evaluations correla
 
 ---
 
-## 7.8 Process the Developer Result
+### 7.8 Process the Developer Result
 
 Suppose the Developer Agent completes its implementation and returns:
 
@@ -2718,7 +2749,7 @@ The distinction prevents self-approval.
 
 ---
 
-## 7.9 Record Every Transition
+### 7.9 Record Every Transition
 
 Create a transition-history table:
 
@@ -2743,6 +2774,51 @@ CREATE TABLE PopulationTransition
         REFERENCES PopulationItem(WorkItemId)
 );
 ```
+
+**Atomicity requirement:** Claiming work is not complete until the Population item, its execution row, and the transition history are committed together. For example, a claim handler should perform the following operations in one transaction:
+
+```sql
+SET XACT_ABORT ON;
+BEGIN TRANSACTION;
+
+UPDATE dbo.PopulationItem
+SET Status = 'Running',
+    AssignedRole = 'Developer',
+    AssignedWorker = @WorkerId,
+    CurrentExecutionId = @ExecutionId,
+    AttemptCount = AttemptCount + 1,
+    StartedAt = SYSUTCDATETIME(),
+    LastHeartbeatAt = SYSUTCDATETIME(),
+    UpdatedAt = SYSUTCDATETIME()
+WHERE WorkItemId = @WorkItemId
+  AND Status = 'Ready'
+  AND AttemptCount < MaxAttempts;
+
+IF @@ROWCOUNT <> 1
+BEGIN
+    ROLLBACK TRANSACTION;
+    THROW 51000, 'Population item could not be claimed.', 1;
+END;
+
+INSERT INTO dbo.PopulationExecution
+    (ExecutionId, WorkItemId, AttemptNumber, WorkerId,
+     AgentRole, StartedAt)
+SELECT @ExecutionId, WorkItemId, AttemptCount, @WorkerId,
+       'Developer', SYSUTCDATETIME()
+FROM dbo.PopulationItem
+WHERE WorkItemId = @WorkItemId;
+
+INSERT INTO dbo.PopulationTransition
+    (WorkItemId, ExecutionId, FromStatus, ToStatus,
+     TransitionReason, TransitionActor, OccurredAt)
+VALUES
+    (@WorkItemId, @ExecutionId, 'Ready', 'Running',
+     'Atomic worker claim', 'Harness', SYSUTCDATETIME());
+
+COMMIT TRANSACTION;
+```
+
+This illustrative SQL assumes that dependency, authorization, lease, and resource checks have already been incorporated into the claim policy; a production implementation must enforce required claim guards transactionally. Handle transaction exceptions by rolling back, and avoid exposing direct SQL writes to agents.
 
 The transition could be recorded as:
 
@@ -2771,7 +2847,7 @@ The resulting history is now reconstructable.
 
 ---
 
-## 7.10 Route Through Reviewer, Validator, and Evaluator
+### 7.10 Route Through Reviewer, Validator, and Evaluator
 
 The Harness continues the item through the established role pipeline.
 
@@ -2856,7 +2932,7 @@ Status: Completed
 
 ---
 
-## 7.11 Unlock Dependent Work
+### 7.11 Unlock Dependent Work
 
 Completion of `POP-1042-01` changes the dependency graph.
 
@@ -2899,7 +2975,7 @@ Population has enabled safe concurrency without asking the Lead Agent to manuall
 
 ---
 
-## 7.12 Handle a Failed Execution
+### 7.12 Handle a Failed Execution
 
 Suppose `POP-1042-03` fails because the AI provider request times out.
 
@@ -2964,7 +3040,7 @@ A worker can then claim the item again.
 
 ---
 
-## 7.13 Preserve Retry History
+### 7.13 Preserve Retry History
 
 The second attempt must not overwrite the first.
 
@@ -3003,7 +3079,7 @@ The Harness can also eventually learn that certain failure patterns are transien
 
 ---
 
-## 7.14 Handle Exhaustion
+### 7.14 Handle Exhaustion
 
 Now assume `POP-1042-04` repeatedly fails its event-contract validation.
 
@@ -3061,7 +3137,7 @@ An exhausted item has reached an automation boundary.
 
 ---
 
-## 7.15 Human-authorized Reprocessing
+### 7.15 Human-authorized Reprocessing
 
 An architect investigates `POP-1042-04` and discovers that the expected event schema referenced by the Harness was outdated.
 
@@ -3088,19 +3164,19 @@ Reason:
 Event contract reference corrected.
 ```
 
-The Population item can then transition:
+The authorization explicitly extends `MaxAttempts` from 3 to 4 (or applies an equivalently governed reprocessing budget), leaving `AttemptCount = 3` and preserving all previous executions. The Population item can then transition:
 
 ```text
 Exhausted → Ready
 ```
 
-The previous attempts remain in history.
+The next successful atomic claim creates attempt 4. The previous attempts remain in history.
 
 Reprocessing does not pretend the exhaustion never happened.
 
 ---
 
-## 7.16 Detect a Stale Execution
+### 7.16 Detect a Stale Execution
 
 Suppose `POP-1042-02` is being executed by `worker-02`.
 
@@ -3160,7 +3236,7 @@ The condition is deterministic.
 
 ---
 
-## 7.17 Recover Stale Work Safely
+### 7.17 Recover Stale Work Safely
 
 The Harness must now determine whether the old execution can still produce side effects.
 
@@ -3195,7 +3271,7 @@ This prevents immediate duplicate execution.
 
 ---
 
-## 7.18 Add Checkpointing
+### 7.18 Add Checkpointing
 
 Suppose another Population item requires updating 600 fleet-booking contract tests.
 
@@ -3238,7 +3314,14 @@ CREATE TABLE PopulationCheckpoint
     ExecutionId      varchar(50)    NOT NULL,
     CheckpointType   varchar(50)    NOT NULL,
     CheckpointData   nvarchar(max)  NOT NULL,
-    CreatedAt        datetime2      NOT NULL
+    CreatedAt        datetime2      NOT NULL,
+
+    CONSTRAINT FK_PopulationCheckpoint_Execution
+        FOREIGN KEY (ExecutionId)
+        REFERENCES PopulationExecution(ExecutionId),
+    CONSTRAINT FK_PopulationCheckpoint_WorkItem
+        FOREIGN KEY (WorkItemId)
+        REFERENCES PopulationItem(WorkItemId)
 );
 ```
 
@@ -3256,7 +3339,7 @@ The Harness may resume from the last safe checkpoint rather than trusting transi
 
 ---
 
-## 7.19 Detect Duplicate Population Items
+### 7.19 Detect Duplicate Population Items
 
 Assume a GitHub issue triggers the creation of work:
 
@@ -3280,13 +3363,15 @@ github:alpha-car-detailing:842:implement:v1
 
 The same webhook is delivered again.
 
-Before creating another Population item, the Harness checks the key.
+Before creating another Population item, the Harness may check the key:
 
 ```sql
 SELECT WorkItemId
 FROM PopulationItem
 WHERE IdempotencyKey = @IdempotencyKey;
 ```
+
+The preliminary check is not sufficient under concurrency: two processes can both observe no match. The filtered unique index defined in Section 7.2 is the authoritative safeguard. The create operation must handle a uniqueness conflict by loading and returning the existing item rather than generating a second logical identity.
 
 If an item already exists:
 
@@ -3307,7 +3392,7 @@ and hope that the agents notice they are doing the same work.
 
 ---
 
-## 7.20 Query Population Health
+### 7.20 Query Population Health
 
 After several hours, the Alpha Car Detailing Harness might contain:
 
@@ -3360,7 +3445,7 @@ The Population has become an operational view of AI engineering work.
 
 ---
 
-## 7.21 Build a Population Summary
+### 7.21 Build a Population Summary
 
 A Harness management interface could present:
 
@@ -3387,7 +3472,7 @@ It does not define Population.
 
 ---
 
-## 7.22 Add Population Events
+### 7.22 Add Population Events
 
 For larger Harness implementations, state transitions can also produce events.
 
@@ -3427,11 +3512,11 @@ These events can feed:
 - dependency reevaluation;
 - and future Harness-learning capabilities.
 
-The Population database remains authoritative for current state unless the architecture deliberately adopts event sourcing.
+The Population database remains authoritative for current state unless the architecture deliberately adopts event sourcing. If events must be delivered reliably, write an outbox record in the same transaction as the Population transition and publish it asynchronously; consumers must tolerate duplicate delivery.
 
 ---
 
-## 7.23 Separate Population State from Metrics
+### 7.23 Separate Population State from Metrics
 
 Consider:
 
@@ -3475,7 +3560,7 @@ The next chapter will build on this distinction.
 
 ---
 
-## 7.24 Complete the Goal
+### 7.24 Complete the Goal
 
 Eventually the six Population items reach:
 
@@ -3521,7 +3606,7 @@ That gives the organization something much stronger than agent confidence:
 
 ---
 
-## 7.25 What the Harness Now Knows
+### 7.25 What the Harness Now Knows
 
 At the end of the example, the Harness can answer:
 
@@ -3593,9 +3678,7 @@ Policies determine valid transitions.
 The Harness owns Population state.
 ```
 
-Chapter 19 status: In progress — next section: Claude Example
-
-# 8. Claude Example
+## 8. Claude Example
 
 Claude Code can participate effectively in a Population-managed Harness, but Claude should remain an **execution participant rather than the authoritative owner of Population state**.
 
@@ -3607,7 +3690,7 @@ The vendor-neutral principle remains:
 
 > **Claude performs assigned engineering work. The Harness determines what work exists and controls its authoritative lifecycle.**
 
-## 8.1 Claude Inside the Population Workflow
+### 8.1 Claude Inside the Population Workflow
 
 For Alpha Car Detailing, consider the Population item introduced in the hands-on example:
 
@@ -3674,7 +3757,7 @@ The Harness selects and assigns work according to its scheduling and lifecycle p
 
 ---
 
-## 8.2 Constructing the Claude Execution Request
+### 8.2 Constructing the Claude Execution Request
 
 The Harness should provide Claude with enough information to perform the assigned task without transferring lifecycle authority to Claude.
 
@@ -3739,7 +3822,7 @@ The restrictions preserve the control-plane boundary.
 
 ---
 
-## 8.3 Repository Discovery Still Applies
+### 8.3 Repository Discovery Still Applies
 
 Population management does not replace Repository Intelligence.
 
@@ -3778,7 +3861,7 @@ Determining whether `POP-1042-03` is `Ready`, `Running`, `Failed`, or `Completed
 
 ---
 
-## 8.4 Claude Produces Evidence, Not Authoritative State
+### 8.4 Claude Produces Evidence, Not Authoritative State
 
 Suppose Claude completes the implementation and reports:
 
@@ -3841,7 +3924,7 @@ the Harness should interpret that statement as an execution result, not an autho
 
 ---
 
-## 8.5 Structured Claude Output
+### 8.5 Structured Claude Output
 
 A Population-managed Harness benefits from structured execution results.
 
@@ -3876,7 +3959,7 @@ This subtle distinction protects the architecture from allowing natural-language
 
 ---
 
-## 8.6 Claude and Population State Transitions
+### 8.6 Claude and Population State Transitions
 
 Claude may be aware of the current state.
 
@@ -3913,7 +3996,7 @@ Claude should not encode the authoritative state machine in its own prompt logic
 
 ---
 
-## 8.7 Handling Claude Execution Failure
+### 8.7 Handling Claude Execution Failure
 
 Suppose Claude is processing:
 
@@ -3986,7 +4069,7 @@ This creates a much stronger recovery model than depending on conversational con
 
 ---
 
-## 8.8 Do Not Use Claude Context as Retry History
+### 8.8 Do Not Use Claude Context as Retry History
 
 A tempting implementation is to preserve a long Claude conversation and treat it as the work-item history.
 
@@ -4028,7 +4111,7 @@ The two should complement each other rather than substitute for each other.
 
 ---
 
-## 8.9 Claude and Dependency Discovery
+### 8.9 Claude and Dependency Discovery
 
 Claude may discover previously unknown dependencies while implementing work.
 
@@ -4075,7 +4158,7 @@ This preserves controlled decomposition.
 
 ---
 
-## 8.10 Claude and New Work Discovery
+### 8.10 Claude and New Work Discovery
 
 The same principle applies when Claude discovers additional work.
 
@@ -4123,7 +4206,7 @@ Population therefore helps prevent scope creep caused by otherwise useful agent 
 
 ---
 
-## 8.11 Claude and Heartbeats
+### 8.11 Claude and Heartbeats
 
 Long-running Claude executions need liveness monitoring.
 
@@ -4167,7 +4250,7 @@ The Harness needs evidence that the execution infrastructure is alive, not merel
 
 ---
 
-## 8.12 Claude and Checkpointing
+### 8.12 Claude and Checkpointing
 
 Claude may perform work that can benefit from checkpoints.
 
@@ -4228,7 +4311,7 @@ Claude does not need to reconstruct progress from memory.
 
 ---
 
-## 8.13 Claude and Stale Recovery
+### 8.13 Claude and Stale Recovery
 
 Consider this state:
 
@@ -4300,7 +4383,7 @@ This demonstrates why Population, execution identity, and checkpoint identity mu
 
 ---
 
-## 8.14 Claude and Exhaustion
+### 8.14 Claude and Exhaustion
 
 Claude can sometimes repeatedly fail for the same engineering reason.
 
@@ -4374,7 +4457,7 @@ It does not grant another retry.
 
 ---
 
-## 8.15 Claude Must Not Reset Its Own Retry Budget
+### 8.15 Claude Must Not Reset Its Own Retry Budget
 
 An especially dangerous pattern would allow an agent to reason:
 
@@ -4415,7 +4498,7 @@ The authorization itself must be auditable.
 
 ---
 
-## 8.16 Claude and Parallel Population Execution
+### 8.16 Claude and Parallel Population Execution
 
 After `POP-1042-01` completes, three work items become ready:
 
@@ -4466,7 +4549,7 @@ They belong to Harness policy.
 
 ---
 
-## 8.17 Claude Worktrees or Branch Isolation
+### 8.17 Claude Worktrees or Branch Isolation
 
 One practical approach for parallel execution is to isolate each Population item.
 
@@ -4510,7 +4593,7 @@ It does not eliminate merge conflicts, but it makes ownership and provenance exp
 
 ---
 
-## 8.18 Claude and the Reviewer Agent
+### 8.18 Claude and the Reviewer Agent
 
 After Developer Claude produces an implementation, a separate Reviewer Agent should receive the relevant evidence.
 
@@ -4565,7 +4648,7 @@ A Harness should preserve independent execution context and evidence where indep
 
 ---
 
-## 8.19 Claude and the Validator Agent
+### 8.19 Claude and the Validator Agent
 
 Claude may help interpret validation failures, but deterministic gates should remain deterministic.
 
@@ -4612,7 +4695,7 @@ It does not redefine the deterministic result.
 
 ---
 
-## 8.20 Claude and the Evaluator Agent
+### 8.20 Claude and the Evaluator Agent
 
 Claude is particularly useful for Evaluator work because evaluation may require semantic judgment.
 
@@ -4667,7 +4750,7 @@ Harness transitions.
 
 ---
 
-## 8.21 Claude and Human Intervention
+### 8.21 Claude and Human Intervention
 
 Claude can help prepare a concise diagnostic package when a Population item reaches an automation boundary.
 
@@ -4707,7 +4790,7 @@ Claude helps interpret it.
 
 ---
 
-## 8.22 Population-aware Claude Prompt Pattern
+### 8.22 Population-aware Claude Prompt Pattern
 
 A reusable Harness prompt pattern can separate **execution context** from **control authority**.
 
@@ -4781,7 +4864,7 @@ This pattern makes the separation explicit without burdening Claude with unneces
 
 ---
 
-## 8.23 A Complete Claude Population Flow
+### 8.23 A Complete Claude Population Flow
 
 The resulting Alpha Car Detailing flow can be summarized as:
 
@@ -4824,7 +4907,7 @@ The Population Manager remains outside those roles.
 
 ---
 
-## 8.24 What Claude Should Know—and What It Should Not Own
+### 8.24 What Claude Should Know—and What It Should Not Own
 
 A useful boundary is:
 
@@ -4854,9 +4937,9 @@ Giving Claude unrestricted Population authority weakens deterministic control.
 
 ---
 
-## 8.25 Claude-first, Vendor-neutral
+### 8.25 Claude-first, Vendor-neutral
 
-The handbook uses Claude-first examples because Claude is the primary platform selected for the project, while the engineering principles are intended to remain vendor-neutral. AI development handbook
+The handbook uses Claude-first examples because Claude is the primary platform selected for the project, while the engineering principles are intended to remain vendor-neutral.
 
 Nothing in the Population architecture should fundamentally depend on Claude-specific behavior.
 
@@ -4930,9 +5013,7 @@ Harness changes Population state.
 
 This keeps Claude powerful where intelligence is valuable while keeping Population deterministic where operational control is required.
 
-**Chapter 19 status: In progress — next section: GitHub Copilot Comparison**
-
-# 9. GitHub Copilot Comparison
+## 9. GitHub Copilot Comparison
 
 The Population principles described in this chapter remain unchanged when GitHub Copilot is used instead of Claude Code.
 
@@ -4976,7 +5057,7 @@ Whether the implementation is performed by Claude Code, GitHub Copilot, Codex, o
 
 ---
 
-## 9.1 Population Is Above the Copilot Layer
+### 9.1 Population Is Above the Copilot Layer
 
 A useful architectural model is:
 
@@ -5008,7 +5089,7 @@ This keeps orchestration independent of the AI platform.
 
 ---
 
-## 9.2 Supplying Population Context to Copilot
+### 9.2 Supplying Population Context to Copilot
 
 The Harness should provide Copilot with the same essential execution context supplied to any Developer Agent.
 
@@ -5072,11 +5153,11 @@ Prompt
 What this execution should accomplish
 ```
 
-This follows the handbook's established separation between Instructions, Skills, Prompts, and Harness responsibilities. AI development handbook
+This follows the handbook's established separation between Instructions, Skills, Prompts, and Harness responsibilities.
 
 ---
 
-## 9.3 Copilot Instructions Do Not Replace Population
+### 9.3 Copilot Instructions Do Not Replace Population
 
 An enterprise repository may contain instructions describing:
 
@@ -5125,7 +5206,7 @@ Population tracks work.
 
 ---
 
-## 9.4 Copilot Produces Implementation Evidence
+### 9.4 Copilot Produces Implementation Evidence
 
 Assume Copilot completes the assigned endpoint implementation.
 
@@ -5183,7 +5264,7 @@ The same completion discipline applies regardless of which coding platform gener
 
 ---
 
-## 9.5 Copilot Sessions Are Not Work-item Identity
+### 9.5 Copilot Sessions Are Not Work-item Identity
 
 A Copilot interaction, IDE session, chat, or agent execution should not become the logical identity of the work.
 
@@ -5221,7 +5302,7 @@ Changing sessions, machines, workers, branches, or AI platforms should not creat
 
 ---
 
-## 9.6 Copilot and Retry
+### 9.6 Copilot and Retry
 
 Suppose a Copilot-driven implementation fails deterministic validation:
 
@@ -5285,7 +5366,7 @@ But Copilot does not decide whether another attempt exists.
 
 ---
 
-## 9.7 Do Not Hide Retries Inside a Single Agent Interaction
+### 9.7 Do Not Hide Retries Inside a Single Agent Interaction
 
 An important design issue appears when an AI coding tool repeatedly modifies code until tests pass.
 
@@ -5336,7 +5417,7 @@ A retry is an operational Harness concept.
 
 ---
 
-## 9.8 Copilot and Discovered Dependencies
+### 9.8 Copilot and Discovered Dependencies
 
 Suppose Copilot discovers that the inspection endpoint requires an authorization capability that was omitted from the original decomposition.
 
@@ -5375,7 +5456,7 @@ Copilot should not silently change Population dependencies merely because it dis
 
 ---
 
-## 9.9 Copilot and Scope Expansion
+### 9.9 Copilot and Scope Expansion
 
 The same principle applies to additional improvements.
 
@@ -5426,7 +5507,7 @@ This protects traceability and keeps acceptance criteria meaningful.
 
 ---
 
-## 9.10 Copilot and Parallel Execution
+### 9.10 Copilot and Parallel Execution
 
 Population management also enables multiple Copilot-driven work items to execute concurrently.
 
@@ -5478,7 +5559,7 @@ The Population scheduler should understand these operational constraints.
 
 ---
 
-## 9.11 Copilot and Stale Detection
+### 9.11 Copilot and Stale Detection
 
 The Harness must not equate an assigned Copilot execution with a healthy execution.
 
@@ -5521,7 +5602,7 @@ Agent conversation activity and worker health are different signals.
 
 ---
 
-## 9.12 Copilot and Exhaustion
+### 9.12 Copilot and Exhaustion
 
 Suppose repeated Copilot executions fail the same architecture gate:
 
@@ -5563,7 +5644,7 @@ Population provides the automation boundary.
 
 ---
 
-## 9.13 Copilot and Validation
+### 9.13 Copilot and Validation
 
 GitHub Copilot can help:
 
@@ -5605,7 +5686,7 @@ The Harness decides.
 
 ---
 
-## 9.14 Copilot and Completion
+### 9.14 Copilot and Completion
 
 A Copilot-driven agent may conclude:
 
@@ -5647,7 +5728,7 @@ This prevents implementation success from being confused with workflow success.
 
 ---
 
-## 9.15 Claude and Copilot Population Comparison
+### 9.15 Claude and Copilot Population Comparison
 
 From the Population perspective, the two platforms should look deliberately similar.
 
@@ -5671,7 +5752,7 @@ The control architecture should not.
 
 ---
 
-## 9.16 Avoid Provider-specific Population State
+### 9.16 Avoid Provider-specific Population State
 
 A fragile Harness might define states such as:
 
@@ -5736,7 +5817,7 @@ The logical Population lifecycle remains consistent.
 
 ---
 
-## 9.17 Provider Switching Must Not Reset Work Identity
+### 9.17 Provider Switching Must Not Reset Work Identity
 
 Provider switching is particularly important in enterprise Harnesses that support multiple coding agents.
 
@@ -5783,7 +5864,7 @@ It is not the work identity.
 
 ---
 
-## 9.18 Population Makes Copilot Operationally Replaceable
+### 9.18 Population Makes Copilot Operationally Replaceable
 
 This architecture provides an important enterprise property: **execution portability**.
 
@@ -5854,9 +5935,7 @@ Reviewer, Validator, and Evaluator provide additional evidence.
 The Harness determines the resulting Population state.
 ```
 
-**Chapter 19 status: In progress — next section: Codex Comparison**
-
-# 10. Codex Comparison
+## 10. Codex Comparison
 
 Codex can participate in the same Population-managed Harness architecture used with Claude Code and GitHub Copilot.
 
@@ -5890,7 +5969,7 @@ The same core principle applies:
 
 ---
 
-## 10.1 Codex as a Harness Execution Target
+### 10.1 Codex as a Harness Execution Target
 
 Consider the Alpha Car Detailing Population item:
 
@@ -5973,7 +6052,7 @@ Codex is therefore an execution target behind the Harness boundary.
 
 ---
 
-## 10.2 Constructing the Codex Task
+### 10.2 Constructing the Codex Task
 
 The Harness should supply explicit work identity, execution identity, acceptance criteria, repository guidance, and authority boundaries.
 
@@ -6040,7 +6119,7 @@ The prompt provides Codex with operational context without transferring Populati
 
 ---
 
-## 10.3 Repository Instructions and Population Context
+### 10.3 Repository Instructions and Population Context
 
 Codex may receive repository-level engineering guidance such as:
 
@@ -6086,7 +6165,7 @@ Instructions and Skills do not replace Population.
 
 ---
 
-## 10.4 Codex Produces Evidence
+### 10.4 Codex Produces Evidence
 
 Suppose Codex implements the integration event and reports:
 
@@ -6141,7 +6220,7 @@ The implementation must still pass through the required workflow.
 
 ---
 
-## 10.5 Codex Should Not Be the Completion Authority
+### 10.5 Codex Should Not Be the Completion Authority
 
 A coding agent can reasonably report:
 
@@ -6183,7 +6262,7 @@ This distinction prevents implementation confidence from becoming workflow autho
 
 ---
 
-## 10.6 Codex and Deterministic Validation
+### 10.6 Codex and Deterministic Validation
 
 Codex may execute commands such as:
 
@@ -6235,7 +6314,7 @@ It does not override the gate.
 
 ---
 
-## 10.7 Returning Validation Evidence to Codex
+### 10.7 Returning Validation Evidence to Codex
 
 A retry should not force Codex to rediscover the previous failure.
 
@@ -6279,7 +6358,7 @@ This is more reliable than depending on the previous Codex session remaining ava
 
 ---
 
-## 10.8 Codex Sessions Are Disposable; Population Is Durable
+### 10.8 Codex Sessions Are Disposable; Population Is Durable
 
 An enterprise Harness should assume that any individual agent execution can disappear.
 
@@ -6325,7 +6404,7 @@ Loss of an agent session should not mean loss of work history.
 
 ---
 
-## 10.9 Codex and Retry Boundaries
+### 10.9 Codex and Retry Boundaries
 
 Codex may make multiple corrections during a single execution.
 
@@ -6380,7 +6459,7 @@ This distinction keeps retry metrics meaningful.
 
 ---
 
-## 10.10 Codex and Exhaustion
+### 10.10 Codex and Exhaustion
 
 Suppose the Population item repeatedly fails:
 
@@ -6434,7 +6513,7 @@ A human or authorized policy must decide what happens next.
 
 ---
 
-## 10.11 Codex and Root-cause Analysis
+### 10.11 Codex and Root-cause Analysis
 
 Although Codex does not control exhaustion, it can help diagnose it.
 
@@ -6471,7 +6550,7 @@ and present the full package for human intervention.
 
 ---
 
-## 10.12 Codex and Dependency Discovery
+### 10.12 Codex and Dependency Discovery
 
 Codex may discover a dependency that the Lead Agent did not identify.
 
@@ -6522,7 +6601,7 @@ Harness records dependency.
 
 ---
 
-## 10.13 Codex and New Work Discovery
+### 10.13 Codex and New Work Discovery
 
 While implementing one task, Codex may find unrelated defects.
 
@@ -6558,7 +6637,7 @@ This keeps the original Population item stable and auditable.
 
 ---
 
-## 10.14 Codex and Scope Discipline
+### 10.14 Codex and Scope Discipline
 
 A capable coding agent may see many opportunities to improve a repository.
 
@@ -6604,7 +6683,7 @@ Population therefore acts as a boundary against uncontrolled AI-driven repositor
 
 ---
 
-## 10.15 Codex and Parallel Execution
+### 10.15 Codex and Parallel Execution
 
 Suppose the Harness has:
 
@@ -6653,7 +6732,7 @@ The scheduler may therefore need execution constraints beyond dependency graphs.
 
 ---
 
-## 10.16 Resource and Repository Conflict Metadata
+### 10.16 Resource and Repository Conflict Metadata
 
 Population metadata can include execution constraints such as:
 
@@ -6688,7 +6767,7 @@ The distinction becomes increasingly important as Population size grows.
 
 ---
 
-## 10.17 Codex and Isolated Workspaces
+### 10.17 Codex and Isolated Workspaces
 
 Parallel Codex executions can be isolated using separate branches or worktrees.
 
@@ -6749,7 +6828,7 @@ This improves provenance.
 
 ---
 
-## 10.18 Codex and Stale Detection
+### 10.18 Codex and Stale Detection
 
 Consider a long-running Codex execution:
 
@@ -6798,7 +6877,7 @@ A failed or frozen process may be incapable of reporting its own condition accur
 
 ---
 
-## 10.19 Codex and Checkpoint Recovery
+### 10.19 Codex and Checkpoint Recovery
 
 Suppose `POP-6001` involves updating 500 generated contract tests.
 
@@ -6845,7 +6924,7 @@ A new Codex execution can continue from the approved checkpoint rather than atte
 
 ---
 
-## 10.20 Codex and Reviewer Independence
+### 10.20 Codex and Reviewer Independence
 
 Codex may also be used to implement the Reviewer Agent.
 
@@ -6881,7 +6960,7 @@ It should receive the implementation and review evidence required for independen
 
 ---
 
-## 10.21 Codex and Validator Boundaries
+### 10.21 Codex and Validator Boundaries
 
 Codex can help the Validator Agent orchestrate or interpret validation activities, but deterministic results remain authoritative.
 
@@ -6921,7 +7000,7 @@ It does not replace it.
 
 ---
 
-## 10.22 Codex and Evaluator Boundaries
+### 10.22 Codex and Evaluator Boundaries
 
 Codex may also perform semantic evaluation.
 
@@ -6969,7 +7048,7 @@ Population consumes evidence from both.
 
 ---
 
-## 10.23 Claude, Copilot, and Codex Through the Same Population Contract
+### 10.23 Claude, Copilot, and Codex Through the Same Population Contract
 
 The strongest Harness design does not create a fundamentally different Population architecture for each platform.
 
@@ -7036,7 +7115,7 @@ This makes the Population model portable.
 
 ---
 
-## 10.24 Comparison Across the Three Platforms
+### 10.24 Comparison Across the Three Platforms
 
 From the perspective of Population management, the desired architecture is intentionally consistent.
 
@@ -7062,7 +7141,7 @@ They should not redefine the enterprise work lifecycle.
 
 ---
 
-## 10.25 Switching from Codex to Another Agent
+### 10.25 Switching from Codex to Another Agent
 
 Suppose Codex fails twice on a difficult work item.
 
@@ -7111,7 +7190,7 @@ The third agent can receive relevant evidence from the first two attempts withou
 
 ---
 
-## 10.26 Provider Selection Can Become Scheduling Policy
+### 10.26 Provider Selection Can Become Scheduling Policy
 
 Once the Population architecture is provider-neutral, provider selection can become a separate scheduling concern.
 
@@ -7157,7 +7236,7 @@ A work item remains `Ready`, `Running`, `Failed`, or `Completed` regardless of w
 
 ---
 
-## 10.27 Why the Separation Matters
+### 10.27 Why the Separation Matters
 
 Without this separation, a Harness can gradually become coupled to one agent platform.
 
@@ -7250,9 +7329,7 @@ The execution technology may change.
 
 The work must remain traceable.
 
-**Chapter 19 status: In progress — next section: Best Practices**
-
-# 11. Best Practices
+## 11. Best Practices
 
 Population management becomes increasingly important as a Harness moves from executing a few isolated tasks to coordinating large numbers of AI-driven engineering activities.
 
@@ -7260,7 +7337,7 @@ The objective is not to create a sophisticated task-management system for its ow
 
 The following practices provide a foundation for production-grade Population management.
 
-## 11.1 Give Every Population Item a Stable Identity
+### 11.1 Give Every Population Item a Stable Identity
 
 Every Population item should have a stable identifier that remains unchanged throughout its lifecycle.
 
@@ -7309,7 +7386,7 @@ Which execution attempted the work?
 
 ---
 
-## 11.2 Keep Population State Outside Agent Context
+### 11.2 Keep Population State Outside Agent Context
 
 AI Agent context is useful for reasoning.
 
@@ -7349,7 +7426,7 @@ An agent session should be replaceable without losing the authoritative understa
 
 ---
 
-## 11.3 Use an Explicit Lifecycle
+### 11.3 Use an Explicit Lifecycle
 
 Avoid ambiguous states such as:
 
@@ -7393,7 +7470,7 @@ A lifecycle should be treated as an engineering contract rather than UI terminol
 
 ---
 
-## 11.4 Define Transition Rules Centrally
+### 11.4 Define Transition Rules Centrally
 
 Do not distribute lifecycle rules across:
 
@@ -7445,7 +7522,7 @@ Centralizing these rules reduces inconsistent state changes.
 
 ---
 
-## 11.5 Never Let Agents Directly Mutate Population State
+### 11.5 Never Let Agents Directly Mutate Population State
 
 Agents should report outcomes.
 
@@ -7482,7 +7559,7 @@ The Harness owns the resulting lifecycle transition.
 
 ---
 
-## 11.6 Make Completion Evidence-backed
+### 11.6 Make Completion Evidence-backed
 
 `Completed` should be one of the strongest states in the lifecycle.
 
@@ -7522,7 +7599,7 @@ The important requirement is that completion be policy-driven.
 
 ---
 
-## 11.7 Separate Work Identity from Execution Identity
+### 11.7 Separate Work Identity from Execution Identity
 
 A Population item describes **what must be accomplished**.
 
@@ -7552,7 +7629,7 @@ Do not overwrite previous execution records when a retry occurs.
 
 ---
 
-## 11.8 Use Atomic Work Claiming
+### 11.8 Use Atomic Work Claiming
 
 Multiple workers may discover the same `Ready` item simultaneously.
 
@@ -7589,7 +7666,7 @@ The guarantee matters more than the specific mechanism.
 
 ---
 
-## 11.9 Design for Idempotency
+### 11.9 Design for Idempotency
 
 Retries are normal in distributed systems and AI Harnesses.
 
@@ -7627,7 +7704,7 @@ A robust Harness needs both where applicable.
 
 ---
 
-## 11.10 Model Dependencies Explicitly
+### 11.10 Model Dependencies Explicitly
 
 Do not hide important dependencies inside prompts.
 
@@ -7673,7 +7750,7 @@ This is substantially safer than expecting the Lead Agent to remember execution 
 
 ---
 
-## 11.11 Distinguish Blocked from Failed
+### 11.11 Distinguish Blocked from Failed
 
 A blocked item has not necessarily failed.
 
@@ -7717,7 +7794,7 @@ Combining the two states distorts failure metrics and can trigger unnecessary re
 
 ---
 
-## 11.12 Use Finite Retry Budgets
+### 11.12 Use Finite Retry Budgets
 
 Every automatically retried Population item should have a bounded retry policy.
 
@@ -7762,7 +7839,7 @@ Worse, they can conceal structural problems.
 
 ---
 
-## 11.13 Distinguish Failed from Exhausted
+### 11.13 Distinguish Failed from Exhausted
 
 These states answer different questions.
 
@@ -7795,7 +7872,7 @@ Do not mark the first failure as exhausted unless policy explicitly allows no re
 
 ---
 
-## 11.14 Preserve Complete Retry History
+### 11.14 Preserve Complete Retry History
 
 Never implement retry as:
 
@@ -7831,7 +7908,7 @@ Chapter 20 can use this history to calculate retry and reliability metrics.
 
 ---
 
-## 11.15 Classify Failures
+### 11.15 Classify Failures
 
 Not all failures should receive the same retry treatment.
 
@@ -7858,7 +7935,7 @@ For example, retrying an ambiguous business requirement three times with the sam
 
 ---
 
-## 11.16 Detect Stale Work Explicitly
+### 11.16 Detect Stale Work Explicitly
 
 A `Running` item should not remain `Running` forever.
 
@@ -7898,7 +7975,7 @@ Without stale detection, Population accuracy degrades over time.
 
 ---
 
-## 11.17 Do Not Immediately Retry Stale Work
+### 11.17 Do Not Immediately Retry Stale Work
 
 A stale execution may still be alive.
 
@@ -7935,7 +8012,7 @@ This is especially important for:
 
 ---
 
-## 11.18 Use Checkpoints for Long-running Work
+### 11.18 Use Checkpoints for Long-running Work
 
 Large Population items may contain substantial internal progress.
 
@@ -7979,7 +8056,7 @@ Checkpoints should represent durable, recoverable progress—not merely an agent
 
 ---
 
-## 11.19 Track Factual Progress
+### 11.19 Track Factual Progress
 
 Avoid fabricated progress percentages.
 
@@ -8009,7 +8086,7 @@ In those cases, report lifecycle state and evidence rather than inventing precis
 
 ---
 
-## 11.20 Separate Assignment from Ownership
+### 11.20 Separate Assignment from Ownership
 
 A Population item may be assigned to:
 
@@ -8046,7 +8123,7 @@ Separating them makes recovery and reassignment easier.
 
 ---
 
-## 11.21 Treat Priority as Policy Input
+### 11.21 Treat Priority as Policy Input
 
 Priority should influence scheduling without bypassing dependencies or mandatory controls.
 
@@ -8089,7 +8166,7 @@ It should not silently weaken governance.
 
 ---
 
-## 11.22 Control Parallelism
+### 11.22 Control Parallelism
 
 More agents do not automatically mean more throughput.
 
@@ -8136,7 +8213,7 @@ before assigning work.
 
 ---
 
-## 11.23 Distinguish Dependency Safety from Execution Safety
+### 11.23 Distinguish Dependency Safety from Execution Safety
 
 Two work items may have no dependency relationship and still be unsafe to run simultaneously.
 
@@ -8174,7 +8251,7 @@ This distinction becomes increasingly important in large Populations.
 
 ---
 
-## 11.24 Preserve an Immutable Audit Trail
+### 11.24 Preserve an Immutable Audit Trail
 
 Every important lifecycle change should be traceable.
 
@@ -8203,7 +8280,7 @@ This is essential for troubleshooting, governance, and enterprise auditability.
 
 ---
 
-## 11.25 Record Human Intervention as First-class History
+### 11.25 Record Human Intervention as First-class History
 
 Human actions should not happen outside the Population record.
 
@@ -8245,7 +8322,7 @@ Human authority is part of the lifecycle, not an escape from it.
 
 ---
 
-## 11.26 Require Reasons for Exceptional Transitions
+### 11.26 Require Reasons for Exceptional Transitions
 
 Normal transitions can often be generated automatically.
 
@@ -8282,7 +8359,7 @@ Exceptional transitions without reasons weaken the audit trail.
 
 ---
 
-## 11.27 Prevent Silent Population Mutation
+### 11.27 Prevent Silent Population Mutation
 
 Population changes should generate observable history.
 
@@ -8314,7 +8391,7 @@ This provides a clear explanation of how the current Population state was reache
 
 ---
 
-## 11.28 Make Queries Operationally Useful
+### 11.28 Make Queries Operationally Useful
 
 Population is not valuable merely because records exist.
 
@@ -8354,7 +8431,7 @@ Design indexes and query models around real operational questions.
 
 ---
 
-## 11.29 Keep Population and Metrics Separate
+### 11.29 Keep Population and Metrics Separate
 
 Population answers:
 
@@ -8392,7 +8469,7 @@ The two capabilities serve different purposes.
 
 ---
 
-## 11.30 Keep Provider Details Out of the Core Lifecycle
+### 11.30 Keep Provider Details Out of the Core Lifecycle
 
 Avoid:
 
@@ -8429,11 +8506,11 @@ Provider:
 Codex
 ```
 
-This keeps the Population lifecycle vendor-neutral, consistent with the handbook's broader principle that the architecture should not become a tutorial for one AI platform. AI development handbook
+This keeps the Population lifecycle vendor-neutral, consistent with the handbook's broader principle that the architecture should not become a tutorial for one AI platform.
 
 ---
 
-## 11.31 Normalize Agent Execution Results
+### 11.31 Normalize Agent Execution Results
 
 Different coding platforms may return different kinds of output.
 
@@ -8471,7 +8548,7 @@ This prevents provider-specific response formats from contaminating Population s
 
 ---
 
-## 11.32 Correlate Everything
+### 11.32 Correlate Everything
 
 Use Population identifiers consistently across:
 
@@ -8534,7 +8611,7 @@ without reconstructing the story manually.
 
 ---
 
-## 11.33 Make Recovery a Designed Workflow
+### 11.33 Make Recovery a Designed Workflow
 
 Do not wait for the first production failure to decide what recovery means.
 
@@ -8574,7 +8651,7 @@ Recovery should be part of Population architecture from the beginning.
 
 ---
 
-## 11.34 Prefer Reprocessing over History Rewriting
+### 11.34 Prefer Reprocessing over History Rewriting
 
 When an exhausted or failed item needs another attempt, do not erase the old history and pretend it never failed.
 
@@ -8603,7 +8680,7 @@ The second destroys it.
 
 ---
 
-## 11.35 Use Population Granularity Deliberately
+### 11.35 Use Population Granularity Deliberately
 
 Population items should be large enough to represent meaningful engineering outcomes but small enough to:
 
@@ -8650,7 +8727,7 @@ Add integration tests for inspection workflow.
 
 ---
 
-## 11.36 Avoid Premature Scheduler Complexity
+### 11.36 Avoid Premature Scheduler Complexity
 
 An initial Harness does not need an optimization engine.
 
@@ -8680,7 +8757,7 @@ Population correctness should come before scheduling sophistication.
 
 ---
 
-## 11.37 Protect Population Operations with Authorization
+### 11.37 Protect Population Operations with Authorization
 
 Not every participant should be able to perform every Population action.
 
@@ -8704,7 +8781,7 @@ It also reduces the chance that a compromised or poorly behaving agent can manip
 
 ---
 
-## 11.38 Validate Population Invariants
+### 11.38 Validate Population Invariants
 
 The Population Manager should continuously enforce invariants such as:
 
@@ -8740,7 +8817,7 @@ Where possible, enforce them through:
 
 ---
 
-## 11.39 Test the Population State Machine
+### 11.39 Test the Population State Machine
 
 Population logic is infrastructure-critical code and should be tested accordingly.
 
@@ -8778,7 +8855,7 @@ Population correctness deserves the same rigor as any other critical distributed
 
 ---
 
-## 11.40 Design Population for Restartability
+### 11.40 Design Population for Restartability
 
 A Harness process should be able to restart and reconstruct operational state from durable data.
 
@@ -8806,7 +8883,7 @@ If the Harness can answer those questions only from in-memory structures, the Po
 
 ---
 
-## 11.41 Keep the Population Model Understandable
+### 11.41 Keep the Population Model Understandable
 
 Population management can evolve into a complex distributed system.
 
@@ -8840,7 +8917,7 @@ If these questions require understanding dozens of hidden special cases, the lif
 
 ---
 
-## 11.42 Recommended Population Baseline
+### 11.42 Recommended Population Baseline
 
 A practical first enterprise implementation should prioritize the following capabilities:
 
@@ -8894,7 +8971,7 @@ This progression keeps the design practical.
 
 ---
 
-## 11.43 Population Best-practice Checklist
+### 11.43 Population Best-practice Checklist
 
 Before treating a Harness Population implementation as production-ready, verify that the team can answer **yes** to questions such as:
 
@@ -8968,9 +9045,7 @@ Work state must not be.
 
 Population provides the deterministic operational foundation that allows intelligent agents to participate safely in an enterprise Harness.
 
-**Chapter 19 status: In progress — next section: Anti-patterns**
-
-# 12. Anti-patterns
+## 12. Anti-patterns
 
 Population exists to give the Harness deterministic control over engineering work. Most Population failures occur when that control gradually leaks into agent context, ad hoc scripts, transient worker state, or informal human processes.
 
@@ -8978,7 +9053,7 @@ These anti-patterns may appear harmless when a Harness processes only a few task
 
 The following anti-patterns should be actively identified and prevented.
 
-## 12.1 Keeping Work State Only in Agent Context
+### 12.1 Keeping Work State Only in Agent Context
 
 A common early implementation allows the AI Agent to remember what it has already done.
 
@@ -9036,7 +9111,7 @@ It must not replace it.
 
 ---
 
-## 12.2 Using No Stable Work-item Identity
+### 12.2 Using No Stable Work-item Identity
 
 Consider a Harness that tracks work only by descriptions:
 
@@ -9078,7 +9153,7 @@ Identity should not.
 
 ---
 
-## 12.3 Treating Execution Identity as Work Identity
+### 12.3 Treating Execution Identity as Work Identity
 
 Another mistake is creating a new Population item every time an execution is retried.
 
@@ -9108,7 +9183,7 @@ Mixing the two destroys meaningful retry history.
 
 ---
 
-## 12.4 Allowing Unlimited Retries
+### 12.4 Allowing Unlimited Retries
 
 A dangerous Harness policy is:
 
@@ -9171,7 +9246,7 @@ when automatic recovery has reached its boundary.
 
 ---
 
-## 12.5 Treating Failed and Exhausted as the Same State
+### 12.5 Treating Failed and Exhausted as the Same State
 
 Suppose the first attempt fails because of a provider timeout.
 
@@ -9216,7 +9291,7 @@ Combining the states makes operations and Metrics less meaningful.
 
 ---
 
-## 12.6 Losing Retry History
+### 12.6 Losing Retry History
 
 A particularly damaging implementation resets work on retry:
 
@@ -9251,7 +9326,7 @@ Retry should add history, not erase it.
 
 ---
 
-## 12.7 Allowing Agents to Mark Their Own Work Completed
+### 12.7 Allowing Agents to Mark Their Own Work Completed
 
 This is one of the most important Population anti-patterns.
 
@@ -9294,7 +9369,7 @@ That does not mean the Population item has satisfied the entire Harness lifecycl
 
 ---
 
-## 12.8 Trusting Natural-language Success as Deterministic Evidence
+### 12.8 Trusting Natural-language Success as Deterministic Evidence
 
 An AI Agent may report:
 
@@ -9335,7 +9410,7 @@ Natural-language interpretation should not replace deterministic evidence where 
 
 ---
 
-## 12.9 Allowing Silent Status Changes
+### 12.9 Allowing Silent Status Changes
 
 Consider:
 
@@ -9369,7 +9444,7 @@ There should be an explanation of how it got there.
 
 ---
 
-## 12.10 Letting Agents Rewrite the Population Graph
+### 12.10 Letting Agents Rewrite the Population Graph
 
 Suppose a Developer Agent discovers that its work depends on a new authorization capability.
 
@@ -9411,7 +9486,7 @@ The Harness governs.
 
 ---
 
-## 12.11 Ignoring Missing Dependencies
+### 12.11 Ignoring Missing Dependencies
 
 The opposite problem is failing to model dependencies at all.
 
@@ -9453,7 +9528,7 @@ It is execution control.
 
 ---
 
-## 12.12 Confusing Priority with Readiness
+### 12.12 Confusing Priority with Readiness
 
 A critical task may still be blocked.
 
@@ -9491,7 +9566,7 @@ Urgency does not remove engineering constraints.
 
 ---
 
-## 12.13 Duplicate Execution Without Atomic Claiming
+### 12.13 Duplicate Execution Without Atomic Claiming
 
 Suppose three workers query:
 
@@ -9530,7 +9605,7 @@ Checking and claiming as unrelated operations creates a race condition.
 
 ---
 
-## 12.14 Assuming Duplicate Detection Alone Provides Idempotency
+### 12.14 Assuming Duplicate Detection Alone Provides Idempotency
 
 Duplicate detection might prevent:
 
@@ -9568,7 +9643,7 @@ Both concerns must be addressed.
 
 ---
 
-## 12.15 No Stale Detection
+### 12.15 No Stale Detection
 
 Without stale detection, this item may remain forever:
 
@@ -9604,7 +9679,7 @@ Every long-running execution model needs a way to determine whether ownership re
 
 ---
 
-## 12.16 Treating Stale as Automatically Failed
+### 12.16 Treating Stale as Automatically Failed
 
 The reverse mistake is:
 
@@ -9643,7 +9718,7 @@ Retry decision
 
 ---
 
-## 12.17 No Checkpointing for Large Work
+### 12.17 No Checkpointing for Large Work
 
 Consider:
 
@@ -9669,7 +9744,7 @@ However, checkpointing should not be added blindly. A checkpoint is useful only 
 
 ---
 
-## 12.18 Fabricated Progress Percentages
+### 12.18 Fabricated Progress Percentages
 
 AI Agents can generate plausible progress descriptions:
 
@@ -9710,7 +9785,7 @@ False precision is worse than an honest lifecycle state.
 
 ---
 
-## 12.19 Overly Large Population Items
+### 12.19 Overly Large Population Items
 
 An item such as:
 
@@ -9738,7 +9813,7 @@ The Lead Agent helps propose this decomposition, while the Harness preserves the
 
 ---
 
-## 12.20 Excessively Small Population Items
+### 12.20 Excessively Small Population Items
 
 The opposite extreme is equally problematic:
 
@@ -9765,7 +9840,7 @@ Population granularity should represent meaningful independently manageable work
 
 ---
 
-## 12.21 Treating Population as a Flat Queue
+### 12.21 Treating Population as a Flat Queue
 
 A simple queue can answer:
 
@@ -9801,7 +9876,7 @@ It should not necessarily become the entire Population model.
 
 ---
 
-## 12.22 Embedding Provider-specific States
+### 12.22 Embedding Provider-specific States
 
 Avoid lifecycle states such as:
 
@@ -9835,7 +9910,7 @@ They should not normally define **what lifecycle state the work is in**.
 
 ---
 
-## 12.23 Resetting Work Identity When Changing Providers
+### 12.23 Resetting Work Identity When Changing Providers
 
 Suppose:
 
@@ -9873,7 +9948,7 @@ Changing the execution technology does not change the engineering work being att
 
 ---
 
-## 12.24 Allowing Provider-specific Semantics to Leak into Population
+### 12.24 Allowing Provider-specific Semantics to Leak into Population
 
 Suppose one provider reports:
 
@@ -9913,7 +9988,7 @@ This keeps provider APIs and response formats outside the core Population model.
 
 ---
 
-## 12.25 Mixing Population and Metrics
+### 12.25 Mixing Population and Metrics
 
 A Population record might contain:
 
@@ -9953,7 +10028,7 @@ Chapter 20 develops that distinction further.
 
 ---
 
-## 12.26 Using the Dashboard as the System of Record
+### 12.26 Using the Dashboard as the System of Record
 
 A Harness dashboard may show:
 
@@ -9991,7 +10066,7 @@ They should not silently become Population.
 
 ---
 
-## 12.27 No Audit Trail for Human Intervention
+### 12.27 No Audit Trail for Human Intervention
 
 Suppose an operator sees:
 
@@ -10020,7 +10095,7 @@ Manual does not mean unaudited.
 
 ---
 
-## 12.28 Direct Database Editing as Normal Operations
+### 12.28 Direct Database Editing as Normal Operations
 
 Administrators sometimes solve workflow problems with:
 
@@ -10056,7 +10131,7 @@ that validate policy and create history.
 
 ---
 
-## 12.29 Silent Dependency Overrides
+### 12.29 Silent Dependency Overrides
 
 Suppose:
 
@@ -10097,7 +10172,7 @@ Treat it accordingly.
 
 ---
 
-## 12.30 Scheduling Everything That Is Technically Ready
+### 12.30 Scheduling Everything That Is Technically Ready
 
 Dependency readiness does not imply execution safety.
 
@@ -10135,7 +10210,7 @@ Population readiness is one scheduling input, not necessarily the only one.
 
 ---
 
-## 12.31 Maximizing Agent Count Instead of Throughput
+### 12.31 Maximizing Agent Count Instead of Throughput
 
 An organization may assume:
 
@@ -10162,7 +10237,7 @@ Population provides the information needed to control concurrency intelligently.
 
 ---
 
-## 12.32 Letting Agents Invent Their Own Priorities
+### 12.32 Letting Agents Invent Their Own Priorities
 
 A Developer Agent may believe a discovered refactoring is more important than its assigned task.
 
@@ -10186,7 +10261,7 @@ This preserves both agent intelligence and operational control.
 
 ---
 
-## 12.33 Treating Every Failure as Retryable
+### 12.33 Treating Every Failure as Retryable
 
 Consider:
 
@@ -10232,7 +10307,7 @@ Automatic retry is a recovery mechanism, not a universal response to failure.
 
 ---
 
-## 12.34 Treating Every Failure as Non-retryable
+### 12.34 Treating Every Failure as Non-retryable
 
 The opposite policy also wastes automation capability.
 
@@ -10257,7 +10332,7 @@ The objective is controlled recovery rather than either unlimited automation or 
 
 ---
 
-## 12.35 No Correlation Across Evidence
+### 12.35 No Correlation Across Evidence
 
 Suppose the organization has:
 
@@ -10310,7 +10385,7 @@ can be reconstructed reliably.
 
 ---
 
-## 12.36 No Restart Strategy
+### 12.36 No Restart Strategy
 
 An in-memory Population may work during development:
 
@@ -10340,7 +10415,7 @@ The Harness should be able to restart and reconstruct operational state from per
 
 ---
 
-## 12.37 Hidden State in Scripts
+### 12.37 Hidden State in Scripts
 
 A Harness may begin with scripts such as:
 
@@ -10350,7 +10425,7 @@ validate.ps1
 evaluate.ps1
 ```
 
-which are part of the project's established Harness model. AI development handbook
+which are part of the project's established Harness model.
 
 The anti-pattern occurs when important state exists only inside those running processes:
 
@@ -10368,7 +10443,7 @@ They should not become the only durable repository of Population state.
 
 ---
 
-## 12.38 Reconstructing State from Logs
+### 12.38 Reconstructing State from Logs
 
 Logs are evidence.
 
@@ -10406,7 +10481,7 @@ Population tells the Harness what it currently knows to be true.
 
 ---
 
-## 12.39 No Population Invariants
+### 12.39 No Population Invariants
 
 Without explicit invariants, contradictory states can emerge.
 
@@ -10465,7 +10540,7 @@ Invalid states should be difficult or impossible to persist.
 
 ---
 
-## 12.40 Overcomplicated Population State Machines
+### 12.40 Overcomplicated Population State Machines
 
 More states do not automatically produce better governance.
 
@@ -10505,7 +10580,7 @@ The lifecycle should be expressive enough for control but simple enough to under
 
 ---
 
-## 12.41 Encoding Business Workflow Directly into Generic Population States
+### 12.41 Encoding Business Workflow Directly into Generic Population States
 
 Population should support many engineering work types.
 
@@ -10537,7 +10612,7 @@ Generic states plus structured metadata produce a more reusable Harness.
 
 ---
 
-## 12.42 Treating Population as Project Management Software
+### 12.42 Treating Population as Project Management Software
 
 Population may resemble a backlog or issue tracker, but its primary purpose inside the Harness is different.
 
@@ -10570,7 +10645,7 @@ A GitHub issue, Azure Boards item, or another external work record may cause a P
 
 ---
 
-## 12.43 Treating Population as a Prompt Queue
+### 12.43 Treating Population as a Prompt Queue
 
 Another weak design stores:
 
@@ -10612,7 +10687,7 @@ List of prompts
 
 ---
 
-## 12.44 Letting Successful Execution Hide Failed Attempts
+### 12.44 Letting Successful Execution Hide Failed Attempts
 
 Suppose:
 
@@ -10645,7 +10720,7 @@ Population history becomes an important input to later learning and Metrics capa
 
 ---
 
-## 12.45 Automatically Learning from Unverified Population History
+### 12.45 Automatically Learning from Unverified Population History
 
 Historical Population data can eventually help improve:
 
@@ -10677,7 +10752,7 @@ Learning mechanisms still require controlled interpretation and governance.
 
 ---
 
-## 12.46 The Compound Anti-pattern
+### 12.46 The Compound Anti-pattern
 
 The most dangerous Harness is not usually broken by one mistake.
 
@@ -10737,7 +10812,7 @@ At that point, the organization has AI-powered activity without dependable opera
 
 ---
 
-## 12.47 Anti-pattern Summary
+### 12.47 Anti-pattern Summary
 
 The most important Population anti-patterns can be summarized as follows:
 
@@ -10796,9 +10871,7 @@ for that work.
 
 Those responsibilities belong to the Harness and its Population capability.
 
-**Chapter 19 status: In progress — next section: Architect’s Notes**
-
-# 13. Architect’s Notes
+## 13. Architect’s Notes
 
 Population is one of the points where an AI coding Harness stops looking like a collection of prompts and agents and begins to look like an **engineered execution platform**.
 
@@ -10810,7 +10883,7 @@ Population provides that answer.
 
 The following notes highlight architectural considerations that become particularly important as the Harness moves toward enterprise-scale operation.
 
-## 13.1 Population Is a Control-plane Capability
+### 13.1 Population Is a Control-plane Capability
 
 Population should be treated as part of the Harness control plane rather than the agent execution plane.
 
@@ -10840,11 +10913,11 @@ The execution plane produces activity and evidence.
 
 The control plane determines how that activity affects authoritative work state.
 
-This separation reinforces the broader Harness architecture established earlier in the handbook, where Harness components include roles, scripts, Population, Metrics, knowledge, and supporting control mechanisms. AI development handbook
+This separation reinforces the broader Harness architecture established earlier in the handbook, where Harness components include roles, scripts, Population, Metrics, knowledge, and supporting control mechanisms.
 
 ---
 
-## 13.2 Population Is More Than a Queue
+### 13.2 Population Is More Than a Queue
 
 A queue answers:
 
@@ -10888,7 +10961,7 @@ It should not be confused with the complete Population model.
 
 ---
 
-## 13.3 Population Is Not a Backlog
+### 13.3 Population Is Not a Backlog
 
 Population can resemble an issue tracker or product backlog because both contain work items.
 
@@ -10923,7 +10996,7 @@ They solve different problems.
 
 ---
 
-## 13.4 External Work Systems Should Integrate, Not Become Population
+### 13.4 External Work Systems Should Integrate, Not Become Population
 
 Enterprise work may originate from systems such as:
 
@@ -10969,7 +11042,7 @@ Integration is therefore usually stronger than substitution.
 
 ---
 
-## 13.5 State Should Describe Operational Truth
+### 13.5 State Should Describe Operational Truth
 
 Population states should represent conditions that affect system behavior.
 
@@ -11008,7 +11081,7 @@ Good lifecycle design favors operational meaning over descriptive richness.
 
 ---
 
-## 13.6 The State Machine Is an Architectural Contract
+### 13.6 The State Machine Is an Architectural Contract
 
 Once external components depend on Population state, the lifecycle becomes a contract.
 
@@ -11040,7 +11113,7 @@ State semantics should therefore be documented and versioned with the same care 
 
 ---
 
-## 13.7 Keep State Small; Keep Evidence Rich
+### 13.7 Keep State Small; Keep Evidence Rich
 
 A useful design principle is:
 
@@ -11087,7 +11160,7 @@ This keeps the state machine manageable while retaining rich operational informa
 
 ---
 
-## 13.8 Separate Current State from Historical Truth
+### 13.8 Separate Current State from Historical Truth
 
 The current row might say:
 
@@ -11148,7 +11221,7 @@ History explains how that state was reached.
 
 ---
 
-## 13.9 Treat Transition Authority as a Security Boundary
+### 13.9 Treat Transition Authority as a Security Boundary
 
 Who may change Population state is not merely a workflow concern.
 
@@ -11197,7 +11270,7 @@ The separation protects both correctness and governance.
 
 ---
 
-## 13.10 Design for At-least-once Reality
+### 13.10 Design for At-least-once Reality
 
 Distributed execution rarely guarantees that every signal happens exactly once.
 
@@ -11231,7 +11304,7 @@ Operational correctness should not depend on perfect message delivery.
 
 ---
 
-## 13.11 Exactly-once Execution Is Usually the Wrong Abstraction
+### 13.11 Exactly-once Execution Is Usually the Wrong Abstraction
 
 It is tempting to require:
 
@@ -11263,7 +11336,7 @@ The important requirement is that each attempt is identifiable, controlled, and 
 
 ---
 
-## 13.12 Completion Should Be Monotonic by Default
+### 13.12 Completion Should Be Monotonic by Default
 
 Once an item becomes:
 
@@ -11303,7 +11376,7 @@ should be an explicit, auditable transition rather than a silent status reset.
 
 ---
 
-## 13.13 Exhaustion Is a Governance Boundary
+### 13.13 Exhaustion Is a Governance Boundary
 
 `Exhausted` should not be treated merely as:
 
@@ -11331,7 +11404,7 @@ The Harness should make exhaustion visible rather than hiding it behind perpetua
 
 ---
 
-## 13.14 Stale Is a Distributed-systems State
+### 13.14 Stale Is a Distributed-systems State
 
 `Stale` is particularly important because it represents uncertainty.
 
@@ -11369,7 +11442,7 @@ It creates a recovery boundary where ownership can be reconciled safely.
 
 ---
 
-## 13.15 Leases Are Often Better Than Permanent Ownership
+### 13.15 Leases Are Often Better Than Permanent Ownership
 
 A worker should not own a Population item indefinitely simply because it claimed it once.
 
@@ -11418,7 +11491,7 @@ This reduces the risk of permanent zombie ownership.
 
 ---
 
-## 13.16 Do Not Confuse Heartbeat with Progress
+### 13.16 Do Not Confuse Heartbeat with Progress
 
 A heartbeat says:
 
@@ -11459,7 +11532,7 @@ This distinction can support future stuck-work detection beyond simple stale det
 
 ---
 
-## 13.17 Stuck and Stale Are Related but Different
+### 13.17 Stuck and Stale Are Related but Different
 
 A stale execution has stopped producing expected liveness evidence.
 
@@ -11494,7 +11567,7 @@ The initial Population implementation does not need sophisticated stuck detectio
 
 ---
 
-## 13.18 Checkpoints Need Semantic Meaning
+### 13.18 Checkpoints Need Semantic Meaning
 
 A checkpoint should not merely say:
 
@@ -11528,7 +11601,7 @@ If the answer is no, the checkpoint is informational rather than recoverable.
 
 ---
 
-## 13.19 Dependency Graphs Need Governance
+### 13.19 Dependency Graphs Need Governance
 
 Dependencies influence scheduling and therefore require integrity.
 
@@ -11577,7 +11650,7 @@ It should not be accidental.
 
 ---
 
-## 13.20 Goal State Should Be Derived from Population Evidence
+### 13.20 Goal State Should Be Derived from Population Evidence
 
 A parent goal should not be declared complete simply because most child items finished.
 
@@ -11614,7 +11687,7 @@ This preserves the distinction between executing decomposed work and satisfying 
 
 ---
 
-## 13.21 The Lead Agent Should Propose Population, Not Own It
+### 13.21 The Lead Agent Should Propose Population, Not Own It
 
 The Lead Agent is well positioned to reason about:
 
@@ -11648,7 +11721,7 @@ The Population Manager provides operational authority.
 
 ---
 
-## 13.22 Population Provides Role Continuity
+### 13.22 Population Provides Role Continuity
 
 One Population item may move through several specialist roles:
 
@@ -11678,7 +11751,7 @@ The work survives role boundaries.
 
 ---
 
-## 13.23 Preserve Evidence Provenance
+### 13.23 Preserve Evidence Provenance
 
 Not all evidence has the same origin.
 
@@ -11724,7 +11797,7 @@ Provenance allows later consumers to distinguish deterministic results from agen
 
 ---
 
-## 13.24 Do Not Collapse Evidence into a Single Boolean
+### 13.24 Do Not Collapse Evidence into a Single Boolean
 
 A simplistic model might contain:
 
@@ -11758,7 +11831,7 @@ Preserve evidence independently and derive lifecycle decisions through policy.
 
 ---
 
-## 13.25 Population Is a Natural Audit Boundary
+### 13.25 Population Is a Natural Audit Boundary
 
 Because Population connects:
 
@@ -11805,7 +11878,7 @@ This trace is valuable for governance, troubleshooting, learning, and confidence
 
 ---
 
-## 13.26 Auditability Should Be Designed, Not Added Later
+### 13.26 Auditability Should Be Designed, Not Added Later
 
 Retrofitting auditability is difficult because missing history cannot always be reconstructed.
 
@@ -11832,7 +11905,7 @@ Storage is usually cheaper than losing operational provenance.
 
 ---
 
-## 13.27 Population Enables Reproducibility
+### 13.27 Population Enables Reproducibility
 
 Perfect reproducibility of AI reasoning is not always possible.
 
@@ -11864,7 +11937,7 @@ The goal is to reproduce the engineering context sufficiently to explain and inv
 
 ---
 
-## 13.28 Population Schema Will Evolve
+### 13.28 Population Schema Will Evolve
 
 The initial schema may contain:
 
@@ -11902,7 +11975,7 @@ Avoid building a generic workflow engine before the Harness actually requires on
 
 ---
 
-## 13.29 Avoid Building a General-purpose Workflow Platform Too Early
+### 13.29 Avoid Building a General-purpose Workflow Platform Too Early
 
 Population can tempt architects into building:
 
@@ -11936,7 +12009,7 @@ Expand when real requirements justify it.
 
 ---
 
-## 13.30 Population Persistence Is an Architectural Decision
+### 13.30 Population Persistence Is an Architectural Decision
 
 For an enterprise Harness, durable relational persistence is often a natural fit because Population has:
 
@@ -11965,7 +12038,7 @@ Technology should follow those requirements.
 
 ---
 
-## 13.31 Events Can Complement Population Persistence
+### 13.31 Events Can Complement Population Persistence
 
 Population changes may produce events such as:
 
@@ -12007,7 +12080,7 @@ rather than allowing consumers to guess current state from incomplete event deli
 
 ---
 
-## 13.32 Consider Transactional Event Publication
+### 13.32 Consider Transactional Event Publication
 
 If Population events become important, avoid:
 
@@ -12047,7 +12120,7 @@ This is especially useful when Metrics, notifications, or downstream automation 
 
 ---
 
-## 13.33 Population Should Support Observability
+### 13.33 Population Should Support Observability
 
 Population operations should produce logs and traces around:
 
@@ -12084,7 +12157,7 @@ It makes Population behavior diagnosable.
 
 ---
 
-## 13.34 Population Data Has Security Implications
+### 13.34 Population Data Has Security Implications
 
 Population records may eventually contain:
 
@@ -12118,7 +12191,7 @@ Population is operational data and should be governed accordingly.
 
 ---
 
-## 13.35 Retention Should Be Deliberate
+### 13.35 Retention Should Be Deliberate
 
 Keeping every execution artifact forever may be unnecessary or expensive.
 
@@ -12145,7 +12218,7 @@ Retention policy should reflect the purpose of each artifact.
 
 ---
 
-## 13.36 Population Enables Better Metrics, but Do Not Optimize Too Early
+### 13.36 Population Enables Better Metrics, but Do Not Optimize Too Early
 
 Once Population is reliable, Chapter 20 can derive meaningful measurements such as:
 
@@ -12172,9 +12245,9 @@ Therefore:
 
 ---
 
-## 13.37 Population Will Become Input to Learning
+### 13.37 Population Will Become Input to Learning
 
-The broader Harness architecture eventually includes learning and knowledge capabilities. The project architecture already positions Population and Metrics as core Harness components rather than isolated agent concerns. AI development handbook
+The broader Harness architecture eventually includes learning and knowledge capabilities. The project architecture already positions Population and Metrics as core Harness components rather than isolated agent concerns.
 
 Population history can later reveal patterns such as:
 
@@ -12198,7 +12271,7 @@ But learning should consume controlled evidence rather than silently rewriting P
 
 ---
 
-## 13.38 Design for Human Comprehension
+### 13.38 Design for Human Comprehension
 
 An enterprise Harness should not require its architects to reverse-engineer the Population state machine every time something goes wrong.
 
@@ -12239,7 +12312,7 @@ Good operational architecture reduces cognitive load.
 
 ---
 
-## 13.39 Prefer Explainable Scheduling
+### 13.39 Prefer Explainable Scheduling
 
 As scheduling becomes more sophisticated, the Harness should still be able to explain why an item was or was not selected.
 
@@ -12272,7 +12345,7 @@ Explainability matters when automated orchestration controls expensive or conseq
 
 ---
 
-## 13.40 The Most Important Boundary
+### 13.40 The Most Important Boundary
 
 The architecture developed throughout Chapters 14–19 can now be summarized through one boundary:
 
@@ -12360,9 +12433,7 @@ The Harness controls the transitions.
 
 That separation is what allows AI-driven engineering to scale without surrendering operational control.
 
-**Chapter 19 status: In progress — next section: Enterprise Tips**
-
-# 14. Enterprise Tips
+## 14. Enterprise Tips
 
 Population management becomes more demanding when a Harness moves beyond a single repository or small engineering team. Enterprise environments introduce multiple repositories, services, teams, agent providers, security boundaries, deployment environments, concurrent executions, and governance requirements.
 
@@ -12370,7 +12441,7 @@ At that scale, Population should be treated as a **first-class operational capab
 
 The following practices help Population remain reliable as the Harness grows.
 
-## 14.1 Start with Correctness Before Scale
+### 14.1 Start with Correctness Before Scale
 
 Do not begin by optimizing for thousands of concurrent AI Agents.
 
@@ -12410,7 +12481,7 @@ A fast Harness with unreliable Population state creates failures faster.
 
 ---
 
-## 14.2 Use a Durable Population Store
+### 14.2 Use a Durable Population Store
 
 Enterprise Population should survive:
 
@@ -12449,7 +12520,7 @@ For many enterprise Harness implementations, a relational database is a natural 
 
 ---
 
-## 14.3 Design for Multiple Harness Workers
+### 14.3 Design for Multiple Harness Workers
 
 A production Harness may eventually run:
 
@@ -12491,7 +12562,7 @@ Do not rely on workers politely avoiding each other's work.
 
 ---
 
-## 14.4 Partition Population by Meaningful Boundaries
+### 14.4 Partition Population by Meaningful Boundaries
 
 As Population grows, useful partitioning dimensions may include:
 
@@ -12537,7 +12608,7 @@ Avoid creating arbitrary partitions solely for technical convenience without con
 
 ---
 
-## 14.5 Preserve Global Identity
+### 14.5 Preserve Global Identity
 
 Even when Population is partitioned, identifiers should remain unambiguous.
 
@@ -12569,7 +12640,7 @@ The exact scheme matters less than reliable correlation across systems.
 
 ---
 
-## 14.6 Separate Logical Population from Execution Infrastructure
+### 14.6 Separate Logical Population from Execution Infrastructure
 
 Do not design Population around the current worker topology.
 
@@ -12601,7 +12672,7 @@ This allows workers to scale horizontally without changing logical work identity
 
 ---
 
-## 14.7 Make Worker Loss Routine
+### 14.7 Make Worker Loss Routine
 
 In enterprise systems, worker loss should be expected rather than exceptional.
 
@@ -12636,7 +12707,7 @@ If worker loss requires manually reconstructing state from logs, the architectur
 
 ---
 
-## 14.8 Use Leases for Distributed Ownership
+### 14.8 Use Leases for Distributed Ownership
 
 For distributed Harness workers, consider time-bound ownership.
 
@@ -12666,7 +12737,7 @@ However, lease expiration alone should not automatically permit dangerous duplic
 
 ---
 
-## 14.9 Separate Scheduling Policy from Population State
+### 14.9 Separate Scheduling Policy from Population State
 
 Population should record facts such as:
 
@@ -12707,7 +12778,7 @@ Keeping scheduling policy separate allows the organization to improve scheduling
 
 ---
 
-## 14.10 Apply Concurrency Limits at Multiple Levels
+### 14.10 Apply Concurrency Limits at Multiple Levels
 
 A single global concurrency limit may be insufficient.
 
@@ -12748,7 +12819,7 @@ Controlled concurrency often produces higher effective throughput than unrestric
 
 ---
 
-## 14.11 Model Exclusive Resources
+### 14.11 Model Exclusive Resources
 
 Some work requires exclusive access to a logical resource.
 
@@ -12777,7 +12848,7 @@ This is stronger than relying only on dependency graphs because two logically in
 
 ---
 
-## 14.12 Introduce Batches Without Losing Item Identity
+### 14.12 Introduce Batches Without Losing Item Identity
 
 Large initiatives may contain hundreds or thousands of Population items.
 
@@ -12818,7 +12889,7 @@ Batch status should be derived from its Population items.
 
 ---
 
-## 14.13 Make Large Batch Operations Restartable
+### 14.13 Make Large Batch Operations Restartable
 
 For large conversion or modernization programs, assume the Harness will restart before the batch finishes.
 
@@ -12850,7 +12921,7 @@ Restartability is especially important for multi-day Harness executions.
 
 ---
 
-## 14.14 Treat Exhausted Work as an Operational Queue
+### 14.14 Treat Exhausted Work as an Operational Queue
 
 At enterprise scale, exhausted items should not disappear into logs.
 
@@ -12887,7 +12958,7 @@ Teams can then:
 
 ---
 
-## 14.15 Create Operational Views for Stale and Stuck Work
+### 14.15 Create Operational Views for Stale and Stuck Work
 
 Enterprise operators should have direct visibility into:
 
@@ -12930,7 +13001,7 @@ Population should provide the raw facts needed to distinguish these conditions.
 
 ---
 
-## 14.16 Establish Service-level Expectations
+### 14.16 Establish Service-level Expectations
 
 Large organizations may eventually define operational expectations such as:
 
@@ -12955,7 +13026,7 @@ This distinction becomes important in Chapter 20.
 
 ---
 
-## 14.17 Protect High-risk Work with Stronger Policies
+### 14.17 Protect High-risk Work with Stronger Policies
 
 Not every Population item carries the same risk.
 
@@ -13001,7 +13072,7 @@ Population provides the context required to select the correct governance path.
 
 ---
 
-## 14.18 Use Policy Profiles Instead of Hard-coded Exceptions
+### 14.18 Use Policy Profiles Instead of Hard-coded Exceptions
 
 Avoid code such as:
 
@@ -13052,7 +13123,7 @@ This makes governance explicit and maintainable.
 
 ---
 
-## 14.19 Version Population Policies
+### 14.19 Version Population Policies
 
 Policies evolve.
 
@@ -13085,7 +13156,7 @@ Without policy versioning, historical Population behavior can become difficult t
 
 ---
 
-## 14.20 Version Prompts, Instructions, and Skills Alongside Executions
+### 14.20 Version Prompts, Instructions, and Skills Alongside Executions
 
 Population becomes much more useful when an execution can be correlated with the engineering context that shaped the AI Agent.
 
@@ -13114,7 +13185,7 @@ This supports controlled improvement of the Harness.
 
 ---
 
-## 14.21 Preserve Repository Version
+### 14.21 Preserve Repository Version
 
 Always know what repository state the execution operated against.
 
@@ -13141,7 +13212,7 @@ Repository provenance is part of reproducible engineering context.
 
 ---
 
-## 14.22 Correlate Population with Source-control Artifacts
+### 14.22 Correlate Population with Source-control Artifacts
 
 Where practical, propagate identifiers into:
 
@@ -13184,7 +13255,7 @@ However, a merged pull request should not automatically mean the Population item
 
 ---
 
-## 14.23 Correlate Population with Observability
+### 14.23 Correlate Population with Observability
 
 Include identifiers in structured logs and traces:
 
@@ -13212,7 +13283,7 @@ This is particularly valuable when hundreds of executions operate concurrently.
 
 ---
 
-## 14.24 Treat Agent-provider Outages as Infrastructure Failures
+### 14.24 Treat Agent-provider Outages as Infrastructure Failures
 
 If an AI provider becomes temporarily unavailable, avoid immediately classifying every affected Population item as an engineering failure.
 
@@ -13242,7 +13313,7 @@ Separating work failure from provider failure produces better operational decisi
 
 ---
 
-## 14.25 Support Provider Portability
+### 14.25 Support Provider Portability
 
 Enterprise organizations should avoid making Population dependent on one coding-agent provider.
 
@@ -13267,11 +13338,11 @@ Completion requirements
 
 Provider-specific metadata belongs on execution records.
 
-This supports the handbook's vendor-neutral architecture while retaining Claude-first examples. AI development handbook
+This supports the handbook's vendor-neutral architecture while retaining Claude-first examples.
 
 ---
 
-## 14.26 Do Not Reset Retry Budgets When Switching Providers
+### 14.26 Do Not Reset Retry Budgets When Switching Providers
 
 Suppose:
 
@@ -13325,7 +13396,7 @@ without explicit authorization.
 
 ---
 
-## 14.27 Introduce Cost Awareness Without Polluting Lifecycle State
+### 14.27 Introduce Cost Awareness Without Polluting Lifecycle State
 
 AI execution has operational cost.
 
@@ -13365,7 +13436,7 @@ Prefer structured metadata and policy decisions.
 
 ---
 
-## 14.28 Use Budget Limits as Guardrails
+### 14.28 Use Budget Limits as Guardrails
 
 An enterprise Harness may apply budgets at several levels:
 
@@ -13398,7 +13469,7 @@ A task can consume excessive resources even before reaching its maximum attempt 
 
 ---
 
-## 14.29 Protect Sensitive Population Data
+### 14.29 Protect Sensitive Population Data
 
 Population evidence may contain:
 
@@ -13426,7 +13497,7 @@ Do not assume that because Population is an internal Harness component all infor
 
 ---
 
-## 14.30 Minimize Agent Access
+### 14.30 Minimize Agent Access
 
 A Developer Agent generally needs:
 
@@ -13454,7 +13525,7 @@ This limits accidental scope expansion and reduces security exposure.
 
 ---
 
-## 14.31 Separate Tenant or Organizational Boundaries
+### 14.31 Separate Tenant or Organizational Boundaries
 
 If a Harness eventually supports multiple organizations or business units, Population boundaries should be explicit.
 
@@ -13481,7 +13552,7 @@ Identity and authorization should be explicit.
 
 ---
 
-## 14.32 Make Human Intervention Actionable
+### 14.32 Make Human Intervention Actionable
 
 A dashboard saying:
 
@@ -13539,7 +13610,7 @@ Population should support decisions, not merely display problems.
 
 ---
 
-## 14.33 Do Not Hide Manual Overrides
+### 14.33 Do Not Hide Manual Overrides
 
 Enterprise systems sometimes require exceptions.
 
@@ -13578,7 +13649,7 @@ It is the controlled and auditable management of exceptions.
 
 ---
 
-## 14.34 Build Operational Queries Before Fancy Dashboards
+### 14.34 Build Operational Queries Before Fancy Dashboards
 
 Before building elaborate visualization, ensure that operators can query:
 
@@ -13602,7 +13673,7 @@ Visualization should come after operational correctness.
 
 ---
 
-## 14.35 Use Population History for Incident Analysis
+### 14.35 Use Population History for Incident Analysis
 
 Suppose a problematic change reaches a downstream environment.
 
@@ -13650,7 +13721,7 @@ It becomes part of engineering governance.
 
 ---
 
-## 14.36 Use Repeated Failure as Improvement Evidence
+### 14.36 Use Repeated Failure as Improvement Evidence
 
 Suppose many Population items fail because:
 
@@ -13687,7 +13758,7 @@ This is where Population begins contributing to the learning loop of the broader
 
 ---
 
-## 14.37 Avoid Optimizing Agents from Anecdotes
+### 14.37 Avoid Optimizing Agents from Anecdotes
 
 One successful or failed execution is weak evidence for changing enterprise policy.
 
@@ -13721,7 +13792,7 @@ Use systematic evidence rather than isolated impressions.
 
 ---
 
-## 14.38 Define Archival Strategy
+### 14.38 Define Archival Strategy
 
 Completed Population will eventually become much larger than active Population.
 
@@ -13750,7 +13821,7 @@ Instead, separate operational and historical storage strategies when scale justi
 
 ---
 
-## 14.39 Preserve Enough History for Learning
+### 14.39 Preserve Enough History for Learning
 
 Archival decisions should consider future questions such as:
 
@@ -13774,7 +13845,7 @@ Balance cost, privacy, governance, and learning requirements deliberately.
 
 ---
 
-## 14.40 Test Failure Scenarios in Production-like Environments
+### 14.40 Test Failure Scenarios in Production-like Environments
 
 Population testing should include more than successful execution.
 
@@ -13816,7 +13887,7 @@ Failure testing is one of the fastest ways to expose weaknesses in Harness contr
 
 ---
 
-## 14.41 Monitor Population Invariants
+### 14.41 Monitor Population Invariants
 
 Some conditions should never occur.
 
@@ -13854,7 +13925,7 @@ This provides another deterministic guardrail around the Harness itself.
 
 ---
 
-## 14.42 Treat Population Schema Changes Carefully
+### 14.42 Treat Population Schema Changes Carefully
 
 Population becomes foundational infrastructure.
 
@@ -13882,7 +13953,7 @@ Schema and lifecycle migrations should therefore be versioned, tested, and revie
 
 ---
 
-## 14.43 Keep the Initial Enterprise Implementation Practical
+### 14.43 Keep the Initial Enterprise Implementation Practical
 
 A first production implementation does not need every capability described in this chapter.
 
@@ -13944,7 +14015,7 @@ This progression avoids turning the Harness into an unnecessarily complex distri
 
 ---
 
-## 14.44 Enterprise Population Reference Model
+### 14.44 Enterprise Population Reference Model
 
 At enterprise scale, the architecture may eventually resemble:
 
@@ -14024,7 +14095,7 @@ The responsibilities reinforce rather than replace one another.
 
 ---
 
-## 14.45 Enterprise Readiness Questions
+### 14.45 Enterprise Readiness Questions
 
 Before scaling Population broadly, enterprise architects should be able to answer:
 
@@ -14105,9 +14176,7 @@ and deterministic state.
 
 Population provides the operational foundation required to achieve that objective.
 
-**Chapter 19 status: In progress — next section: Decision Points**
-
-# 15. Decision Points
+## 15. Decision Points
 
 Population introduces architectural choices that should be made deliberately rather than emerging accidentally from implementation details.
 
@@ -14117,7 +14186,7 @@ There is rarely one correct design for every Harness. A small repository automat
 
 The following decision points help architects determine how Population should be implemented and governed.
 
-## 15.1 Where Should Population State Be Stored?
+### 15.1 Where Should Population State Be Stored?
 
 The first decision is whether Population requires durable persistence.
 
@@ -14162,7 +14231,7 @@ This supports:
 - recovery;
 - and long-running goals.
 
-### Decision Guidance
+#### Decision Guidance
 
 For the enterprise Harness developed throughout this handbook, durable Population should normally be preferred once work must survive process boundaries.
 
@@ -14172,7 +14241,7 @@ For the enterprise Harness developed throughout this handbook, durable Populatio
 
 ---
 
-## 15.2 Should Population Be a Queue or a Structured Work Model?
+### 15.2 Should Population Be a Queue or a Structured Work Model?
 
 A simple queue can support:
 
@@ -14216,7 +14285,7 @@ Population remains the authoritative work model.
 
 ---
 
-## 15.3 How Granular Should Population Items Be?
+### 15.3 How Granular Should Population Items Be?
 
 Consider the goal:
 
@@ -14224,7 +14293,7 @@ Consider the goal:
 Require vehicle inspection before detailing.
 ```
 
-### Too Coarse
+#### Too Coarse
 
 ```text
 POP-1001
@@ -14242,7 +14311,7 @@ This may combine:
 
 Failure and retry boundaries become unclear.
 
-### Too Fine
+#### Too Fine
 
 ```text
 POP-1001 Add property.
@@ -14253,7 +14322,7 @@ POP-1004 Add using statement.
 
 This creates excessive orchestration overhead.
 
-### Meaningful Granularity
+#### Meaningful Granularity
 
 ```text
 POP-1042-01  Add vehicle inspection domain behavior
@@ -14270,7 +14339,7 @@ POP-1042-06  Add integration tests
 
 ---
 
-## 15.4 Who Is Allowed to Create Population Items?
+### 15.4 Who Is Allowed to Create Population Items?
 
 Potential sources include:
 
@@ -14311,11 +14380,11 @@ The Lead Agent may propose decomposition, while the Population Manager validates
 
 ---
 
-## 15.5 Who Owns State Transitions?
+### 15.5 Who Owns State Transitions?
 
 Possible designs include:
 
-### Agent-controlled
+#### Agent-controlled
 
 ```text
 Developer Agent
@@ -14325,7 +14394,7 @@ Completed
 
 This is simple but weakens separation of duties.
 
-### Harness-controlled
+#### Harness-controlled
 
 ```text
 Agent
@@ -14347,7 +14416,7 @@ The Harness determines what that evidence means for authoritative state.
 
 ---
 
-## 15.6 How Much of the Lifecycle Should Be Explicit?
+### 15.6 How Much of the Lifecycle Should Be Explicit?
 
 A minimal lifecycle might be:
 
@@ -14384,7 +14453,7 @@ More states provide more control but also increase complexity.
 
 ---
 
-## 15.7 Should Review, Validation, and Evaluation Be Population States?
+### 15.7 Should Review, Validation, and Evaluation Be Population States?
 
 For a simple Harness, they could be represented as execution metadata.
 
@@ -14416,11 +14485,11 @@ If these stages materially affect scheduling, ownership, or completion, represen
 
 ---
 
-## 15.8 What Evidence Is Required for Completion?
+### 15.8 What Evidence Is Required for Completion?
 
 Different work types may require different completion policies.
 
-### Standard code change
+#### Standard code change
 
 ```text
 Implementation produced
@@ -14434,7 +14503,7 @@ AND
 Evaluation passed
 ```
 
-### Documentation change
+#### Documentation change
 
 ```text
 Document produced
@@ -14444,7 +14513,7 @@ AND
 Required checks passed
 ```
 
-### High-risk infrastructure change
+#### High-risk infrastructure change
 
 ```text
 Implementation produced
@@ -14466,7 +14535,7 @@ Use explicit completion policies.
 
 ---
 
-## 15.9 What Should Count as an Attempt?
+### 15.9 What Should Count as an Attempt?
 
 An agent may perform several internal iterations:
 
@@ -14517,7 +14586,7 @@ then a new Population attempt has occurred.
 
 ---
 
-## 15.10 How Many Retries Should Be Allowed?
+### 15.10 How Many Retries Should Be Allowed?
 
 There is no universal number.
 
@@ -14555,7 +14624,7 @@ It is that retry is **finite and policy-controlled**.
 
 ---
 
-## 15.11 Which Failures Are Retryable?
+### 15.11 Which Failures Are Retryable?
 
 A retry matrix can help:
 
@@ -14583,7 +14652,7 @@ Failure classification should drive recovery behavior.
 
 ---
 
-## 15.12 When Should Failed Become Exhausted?
+### 15.12 When Should Failed Become Exhausted?
 
 A simple policy is:
 
@@ -14619,7 +14688,7 @@ Therefore exhaustion represents:
 
 ---
 
-## 15.13 Should Exhausted Work Ever Automatically Retry?
+### 15.13 Should Exhausted Work Ever Automatically Retry?
 
 Normally, `Exhausted` should represent a strong automation boundary.
 
@@ -14650,7 +14719,7 @@ and that reason should be recorded.
 
 ---
 
-## 15.14 How Should Stale Work Be Detected?
+### 15.14 How Should Stale Work Be Detected?
 
 Possible signals include:
 
@@ -14680,7 +14749,7 @@ A five-minute threshold may be reasonable for one execution type and inappropria
 
 ---
 
-## 15.15 Should Stale Automatically Mean Retry?
+### 15.15 Should Stale Automatically Mean Retry?
 
 Usually not.
 
@@ -14714,7 +14783,7 @@ The more significant the external side effects, the stronger this recovery bound
 
 ---
 
-## 15.16 When Is Checkpointing Worth the Complexity?
+### 15.16 When Is Checkpointing Worth the Complexity?
 
 Checkpointing is useful when work is:
 
@@ -14748,7 +14817,7 @@ it may provide little benefit.
 
 ---
 
-## 15.17 Where Should Dependency Resolution Occur?
+### 15.17 Where Should Dependency Resolution Occur?
 
 The Lead Agent can reason about dependencies during decomposition.
 
@@ -14774,7 +14843,7 @@ This prevents runtime execution order from depending on the Lead Agent remaining
 
 ---
 
-## 15.18 What Happens When a Dependency Is Exhausted?
+### 15.18 What Happens When a Dependency Is Exhausted?
 
 Suppose:
 
@@ -14806,17 +14875,17 @@ An exhausted prerequisite should not leave dependent work in an unexplained stat
 
 ---
 
-## 15.19 Should Population Support Dynamic Dependencies?
+### 15.19 Should Population Support Dynamic Dependencies?
 
 Agents may discover dependencies during execution.
 
 There are two extremes:
 
-### Immutable dependency graph
+#### Immutable dependency graph
 
 Simple and predictable, but may not reflect newly discovered repository reality.
 
-### Freely mutable dependency graph
+#### Freely mutable dependency graph
 
 Flexible, but difficult to govern.
 
@@ -14838,7 +14907,7 @@ Dynamic discovery is supported without giving every execution unrestricted graph
 
 ---
 
-## 15.20 How Should Parallelism Be Controlled?
+### 15.20 How Should Parallelism Be Controlled?
 
 A scheduler can execute all `Ready` items, or apply constraints.
 
@@ -14874,7 +14943,7 @@ Parallelism should therefore be based on both logical readiness and execution sa
 
 ---
 
-## 15.21 Should Work Use Isolated Branches or Worktrees?
+### 15.21 Should Work Use Isolated Branches or Worktrees?
 
 For parallel code changes, isolation can reduce interference.
 
@@ -14904,7 +14973,7 @@ Population should record enough workspace metadata to maintain provenance regard
 
 ---
 
-## 15.22 Should Provider Selection Be Fixed or Dynamic?
+### 15.22 Should Provider Selection Be Fixed or Dynamic?
 
 A simple Harness may always use:
 
@@ -14937,7 +15006,7 @@ Then provider selection can evolve independently.
 
 ---
 
-## 15.23 Should Provider Switching Consume the Same Retry Budget?
+### 15.23 Should Provider Switching Consume the Same Retry Budget?
 
 Normally, yes.
 
@@ -14963,7 +15032,7 @@ If the organization intentionally grants additional attempts after provider swit
 
 ---
 
-## 15.24 Should Population Events Be Published?
+### 15.24 Should Population Events Be Published?
 
 Population events can support:
 
@@ -14994,7 +15063,7 @@ If events become operationally important, reliable publication should be designe
 
 ---
 
-## 15.25 Should Population Be Event-sourced?
+### 15.25 Should Population Be Event-sourced?
 
 Event sourcing could represent Population entirely through events:
 
@@ -15030,7 +15099,7 @@ For many Harness implementations, this provides sufficient auditability without 
 
 ---
 
-## 15.26 Where Should Audit History Live?
+### 15.26 Where Should Audit History Live?
 
 Possible approaches include:
 
@@ -15059,7 +15128,7 @@ Logs alone should not be the only mechanism if transition history is required fo
 
 ---
 
-## 15.27 How Long Should Population History Be Retained?
+### 15.27 How Long Should Population History Be Retained?
 
 Retention depends on:
 
@@ -15091,7 +15160,7 @@ Avoid using one retention policy for every Population artifact.
 
 ---
 
-## 15.28 Which Human Actions Require Authorization?
+### 15.28 Which Human Actions Require Authorization?
 
 Potential privileged actions include:
 
@@ -15123,11 +15192,11 @@ Human involvement should strengthen governance rather than bypass it.
 
 ---
 
-## 15.29 Should Completed Work Be Reopened?
+### 15.29 Should Completed Work Be Reopened?
 
 Two common approaches exist.
 
-### Reopen existing work
+#### Reopen existing work
 
 ```text
 Completed
@@ -15139,7 +15208,7 @@ Ready
 
 This preserves one logical identity but complicates lifecycle history.
 
-### Create new corrective work
+#### Create new corrective work
 
 ```text
 POP-1042-03
@@ -15159,7 +15228,7 @@ Explicit reopening can still be supported when the domain requires it.
 
 ---
 
-## 15.30 When Is Human Approval Required for Completion?
+### 15.30 When Is Human Approval Required for Completion?
 
 Not every item needs manual approval.
 
@@ -15192,7 +15261,7 @@ This allows human governance to be risk-based rather than universally manual.
 
 ---
 
-## 15.31 Should Population and Metrics Share a Data Model?
+### 15.31 Should Population and Metrics Share a Data Model?
 
 Population and Metrics are closely related but serve different purposes.
 
@@ -15234,7 +15303,7 @@ Metrics derives measurements from it.
 
 ---
 
-## 15.32 When Should Population Trigger Alerts?
+### 15.32 When Should Population Trigger Alerts?
 
 Not every failure deserves immediate notification.
 
@@ -15260,7 +15329,7 @@ The objective is to surface conditions requiring attention rather than creating 
 
 ---
 
-## 15.33 How Much Population Data Should Agents See?
+### 15.33 How Much Population Data Should Agents See?
 
 Giving agents the entire Population may create:
 
@@ -15288,7 +15357,7 @@ Context should follow role responsibility.
 
 ---
 
-## 15.34 Should Agents Be Allowed to Query Population?
+### 15.34 Should Agents Be Allowed to Query Population?
 
 Read access can be useful.
 
@@ -15321,7 +15390,7 @@ This preserves agent usefulness without surrendering lifecycle authority.
 
 ---
 
-## 15.35 How Should Population Integrate with CI/CD?
+### 15.35 How Should Population Integrate with CI/CD?
 
 Population may interact with CI/CD through:
 
@@ -15365,7 +15434,7 @@ The Harness interprets those facts within the lifecycle.
 
 ---
 
-## 15.36 What Should Happen When Population Itself Is Inconsistent?
+### 15.36 What Should Happen When Population Itself Is Inconsistent?
 
 Suppose the Harness discovers:
 
@@ -15405,7 +15474,7 @@ Population integrity problems are control-plane failures and should be treated s
 
 ---
 
-## 15.37 How Much Automation Should Recovery Have?
+### 15.37 How Much Automation Should Recovery Have?
 
 Recovery can range from:
 
@@ -15450,7 +15519,7 @@ may be unsafe.
 
 ---
 
-## 15.38 When Should the Harness Stop?
+### 15.38 When Should the Harness Stop?
 
 This is one of the most important Population decisions.
 
@@ -15478,7 +15547,7 @@ A mature Harness knows not only how to execute work but also when **not** to exe
 
 ---
 
-## 15.39 Recommended Decisions for the Alpha Car Detailing Sample
+### 15.39 Recommended Decisions for the Alpha Car Detailing Sample
 
 For the handbook's implementation, a practical starting set of decisions is:
 
@@ -15507,7 +15576,7 @@ This provides enough control for the sample Harness without requiring a general-
 
 ---
 
-## 15.40 Decision Framework
+### 15.40 Decision Framework
 
 When making a Population architecture decision, evaluate it against five questions:
 
@@ -15580,15 +15649,13 @@ It lives in the Harness-managed Population.
 
 That decision establishes the stable operational foundation on which scheduling, recovery, Metrics, governance, and future learning capabilities can be built.
 
-**Chapter 19 status: In progress — next section: Exercises**
-
-# 16. Exercises
+## 16. Exercises
 
 The following exercises reinforce the Population concepts developed throughout this chapter. They move from basic lifecycle modeling to enterprise-level scenarios involving dependencies, retries, stale executions, concurrency, auditability, and human intervention.
 
 Use the **Alpha Car Detailing** system where a concrete domain is required.
 
-## Exercise 1 — Design a Population Item
+### Exercise 1 — Design a Population Item
 
 Alpha Car Detailing requires a new feature:
 
@@ -15622,7 +15689,7 @@ Then answer:
 
 ---
 
-## Exercise 2 — Decompose a Goal into Population
+### Exercise 2 — Decompose a Goal into Population
 
 Consider this goal:
 
@@ -15673,7 +15740,7 @@ The objective is to identify **meaningful independently manageable engineering w
 
 ---
 
-## Exercise 3 — Build the Dependency Graph
+### Exercise 3 — Build the Dependency Graph
 
 Using the Population created in Exercise 2, construct a dependency graph.
 
@@ -15701,7 +15768,7 @@ Explain whether dependent items should remain blocked, be cancelled, or require 
 
 ---
 
-## Exercise 4 — Define the Population Lifecycle
+### Exercise 4 — Define the Population Lifecycle
 
 Design a state machine using the chapter's core states:
 
@@ -15750,7 +15817,7 @@ Explain why each invalid transition is dangerous.
 
 ---
 
-## Exercise 5 — Separate Work from Execution
+### Exercise 5 — Separate Work from Execution
 
 Consider:
 
@@ -15795,7 +15862,7 @@ Explain why switching from Claude to Codex must not create a new logical Populat
 
 ---
 
-## Exercise 6 — Design an Atomic Claim
+### Exercise 6 — Design an Atomic Claim
 
 Assume these workers are operating simultaneously:
 
@@ -15831,7 +15898,7 @@ Then explain what each losing worker should do after discovering that its claim 
 
 ---
 
-## Exercise 7 — Design Retry Policy
+### Exercise 7 — Design Retry Policy
 
 Define retry behavior for the following failures:
 
@@ -15859,7 +15926,7 @@ should not be a universal rule.
 
 ---
 
-## Exercise 8 — Model Exhaustion
+### Exercise 8 — Model Exhaustion
 
 Assume:
 
@@ -15899,7 +15966,7 @@ Explain why the original three failed attempts must remain in history.
 
 ---
 
-## Exercise 9 — Detect a Stale Execution
+### Exercise 9 — Detect a Stale Execution
 
 Assume:
 
@@ -15936,11 +16003,11 @@ Explain why immediately launching `EXEC-8802` could be unsafe.
 
 ---
 
-## Exercise 10 — Distinguish Stale from Stuck
+### Exercise 10 — Distinguish Stale from Stuck
 
 Consider two executions.
 
-### Execution A
+#### Execution A
 
 ```text
 LastHeartbeat:
@@ -15950,7 +16017,7 @@ LastCheckpoint:
 20 minutes ago
 ```
 
-### Execution B
+#### Execution B
 
 ```text
 LastHeartbeat:
@@ -15981,7 +16048,7 @@ Then propose what additional Population metadata would help the Harness detect b
 
 ---
 
-## Exercise 11 — Add Checkpoint Recovery
+### Exercise 11 — Add Checkpoint Recovery
 
 The Harness must convert:
 
@@ -16013,7 +16080,7 @@ The exercise is complete only if another worker can resume safely without relyin
 
 ---
 
-## Exercise 12 — Prevent Duplicate Population Creation
+### Exercise 12 — Prevent Duplicate Population Creation
 
 A GitHub issue produces this idempotency key:
 
@@ -16041,7 +16108,7 @@ Provide one example where duplicate Population creation is prevented but an exte
 
 ---
 
-## Exercise 13 — Design Completion Policy
+### Exercise 13 — Design Completion Policy
 
 Define a completion policy for:
 
@@ -16095,7 +16162,7 @@ does not change the result.
 
 ---
 
-## Exercise 14 — Handle a Discovered Dependency
+### Exercise 14 — Handle a Discovered Dependency
 
 A Developer Agent implementing:
 
@@ -16128,7 +16195,7 @@ Explain why the Developer Agent should not silently create the dependency and re
 
 ---
 
-## Exercise 15 — Design Parallel Execution
+### Exercise 15 — Design Parallel Execution
 
 Assume:
 
@@ -16175,7 +16242,7 @@ Explain why dependency independence does not necessarily imply execution indepen
 
 ---
 
-## Exercise 16 — Design the Audit Trail
+### Exercise 16 — Design the Audit Trail
 
 Given this lifecycle:
 
@@ -16225,7 +16292,7 @@ An operator should be able to reconstruct the lifecycle without reading agent co
 
 ---
 
-## Exercise 17 — Provider Switching
+### Exercise 17 — Provider Switching
 
 A Population item has this history:
 
@@ -16264,7 +16331,7 @@ Design the next execution record.
 
 ---
 
-## Exercise 18 — Recover After a Harness Restart
+### Exercise 18 — Recover After a Harness Restart
 
 Immediately before a Harness restart, Population contains:
 
@@ -16287,7 +16354,7 @@ Explain which durable information is required to reconstruct safe execution stat
 
 ---
 
-## Exercise 19 — Design Population Queries
+### Exercise 19 — Design Population Queries
 
 Write conceptual SQL queries or equivalent query logic for the following operational questions:
 
@@ -16313,7 +16380,7 @@ Then identify indexes that could improve these queries as Population grows.
 
 ---
 
-## Exercise 20 — Population vs Metrics
+### Exercise 20 — Population vs Metrics
 
 Given:
 
@@ -16352,7 +16419,7 @@ Explain why Metrics should consume Population without becoming its authoritative
 
 ---
 
-## Exercise 21 — Design Human Intervention
+### Exercise 21 — Design Human Intervention
 
 An item reaches:
 
@@ -16386,7 +16453,7 @@ Explain why agent confidence should not override deterministic validation.
 
 ---
 
-## Exercise 22 — Find the Population Anti-patterns
+### Exercise 22 — Find the Population Anti-patterns
 
 Review this hypothetical Harness:
 
@@ -16428,7 +16495,7 @@ Then redesign the architecture using the principles from this chapter.
 
 ---
 
-## Exercise 23 — Design Population Invariants
+### Exercise 23 — Design Population Invariants
 
 Define deterministic invariants for Population.
 
@@ -16467,7 +16534,7 @@ Some invariants may require more than one mechanism.
 
 ---
 
-## Exercise 24 — Design Population for Multiple Repositories
+### Exercise 24 — Design Population for Multiple Repositories
 
 Alpha Car Detailing is expanded into:
 
@@ -16496,7 +16563,7 @@ Then explain how the Harness determines when the overall goal is ready for final
 
 ---
 
-## Exercise 25 — Design a Minimal Population Manager
+### Exercise 25 — Design a Minimal Population Manager
 
 Design the public responsibilities of a `PopulationManager`.
 
@@ -16555,7 +16622,7 @@ Metrics
 
 ---
 
-## Exercise 26 — Architecture Challenge
+### Exercise 26 — Architecture Challenge
 
 Design the Population architecture for a Harness processing:
 
@@ -16618,7 +16685,7 @@ The Harness owns work state.
 
 ---
 
-## Exercise 27 — Failure Injection
+### Exercise 27 — Failure Injection
 
 Take a working Population implementation and deliberately introduce the following failures one at a time:
 
@@ -16661,7 +16728,7 @@ Any scenario requiring the operator to guess what happened identifies an area wh
 
 ---
 
-## Exercise 28 — Final Design Review
+### Exercise 28 — Final Design Review
 
 Review your Population architecture as though you were the enterprise architect approving it for production.
 
@@ -16743,15 +16810,13 @@ The provider should be replaceable.
 The Population history should remain authoritative.
 ```
 
-**Chapter 19 status: In progress — next section: Interview Questions**
-
-# 17. Interview Questions
+## 17. Interview Questions
 
 Population is an important interview topic for senior engineers and architects working with AI engineering platforms, autonomous coding systems, distributed workflow orchestration, or enterprise Harness architecture.
 
 The strongest answers should go beyond defining Population as a collection of tasks. They should explain **identity, durable state, deterministic lifecycle control, concurrency, recovery, evidence, auditability, and the separation between agent execution and Harness authority**.
 
-## 17.1 What Is Population in an AI Engineering Harness?
+### 17.1 What Is Population in an AI Engineering Harness?
 
 **Answer:**
 
@@ -16781,7 +16846,7 @@ The key principle is:
 
 ---
 
-## 17.2 Why Should Population State Not Be Stored Only in Agent Context?
+### 17.2 Why Should Population State Not Be Stored Only in Agent Context?
 
 **Answer:**
 
@@ -16815,7 +16880,7 @@ Population supports operational continuity.
 
 ---
 
-## 17.3 What Is the Difference Between a Population Item and an Execution?
+### 17.3 What Is the Difference Between a Population Item and an Execution?
 
 **Answer:**
 
@@ -16841,7 +16906,7 @@ This distinction preserves retry history and traceability.
 
 ---
 
-## 17.4 Why Is Stable Work-item Identity Important?
+### 17.4 Why Is Stable Work-item Identity Important?
 
 **Answer:**
 
@@ -16875,7 +16940,7 @@ Identity should remain stable even when the agent, worker, provider, or executio
 
 ---
 
-## 17.5 What Is the Difference Between Population and a Queue?
+### 17.5 What Is the Difference Between Population and a Queue?
 
 **Answer:**
 
@@ -16904,7 +16969,7 @@ It should not necessarily become the authoritative Population model.
 
 ---
 
-## 17.6 What Is the Difference Between Population and a Backlog?
+### 17.6 What Is the Difference Between Population and a Backlog?
 
 **Answer:**
 
@@ -16933,7 +16998,7 @@ An external backlog can create or correlate with Population items, but it does n
 
 ---
 
-## 17.7 Who Should Own Population State Transitions?
+### 17.7 Who Should Own Population State Transitions?
 
 **Answer:**
 
@@ -16969,7 +17034,7 @@ This prevents an agent from both performing work and declaring that all governan
 
 ---
 
-## 17.8 Why Should a Developer Agent Not Mark Its Own Work Completed?
+### 17.8 Why Should a Developer Agent Not Mark Its Own Work Completed?
 
 **Answer:**
 
@@ -17006,7 +17071,7 @@ This maintains separation of duties.
 
 ---
 
-## 17.9 What Is an Evidence-backed State Transition?
+### 17.9 What Is an Evidence-backed State Transition?
 
 **Answer:**
 
@@ -17032,7 +17097,7 @@ The evidence should be associated with the Population item and relevant executio
 
 ---
 
-## 17.10 Why Is Atomic Claiming Important?
+### 17.10 Why Is Atomic Claiming Important?
 
 **Answer:**
 
@@ -17060,7 +17125,7 @@ This prevents duplicate ownership and reduces duplicate work and side effects.
 
 ---
 
-## 17.11 What Is the Difference Between Duplicate Detection and Idempotency?
+### 17.11 What Is the Difference Between Duplicate Detection and Idempotency?
 
 **Answer:**
 
@@ -17089,7 +17154,7 @@ That requires idempotent execution behavior.
 
 ---
 
-## 17.12 What Is the Difference Between Failed and Exhausted?
+### 17.12 What Is the Difference Between Failed and Exhausted?
 
 **Answer:**
 
@@ -17119,7 +17184,7 @@ An exhausted item generally requires intervention or an explicit change in condi
 
 ---
 
-## 17.13 Why Should Retries Be Bounded?
+### 17.13 Why Should Retries Be Bounded?
 
 **Answer:**
 
@@ -17147,7 +17212,7 @@ Bounded retry establishes a clear automation boundary.
 
 ---
 
-## 17.14 Should Every Failure Be Retried?
+### 17.14 Should Every Failure Be Retried?
 
 **Answer:**
 
@@ -17171,7 +17236,7 @@ Retry is appropriate when another execution has a reasonable chance of succeedin
 
 ---
 
-## 17.15 What Is a Stale Population Item?
+### 17.15 What Is a Stale Population Item?
 
 **Answer:**
 
@@ -17208,7 +17273,7 @@ It should not automatically be treated as equivalent to failure.
 
 ---
 
-## 17.16 What Is the Difference Between Stale and Stuck?
+### 17.16 What Is the Difference Between Stale and Stuck?
 
 **Answer:**
 
@@ -17233,7 +17298,7 @@ Stuck is primarily a progress problem.
 
 ---
 
-## 17.17 Why Is Immediately Retrying Stale Work Dangerous?
+### 17.17 Why Is Immediately Retrying Stale Work Dangerous?
 
 **Answer:**
 
@@ -17259,7 +17324,7 @@ The Harness should first resolve ownership through mechanisms such as leases, wo
 
 ---
 
-## 17.18 What Is the Purpose of a Lease?
+### 17.18 What Is the Purpose of a Lease?
 
 **Answer:**
 
@@ -17286,7 +17351,7 @@ Leases help prevent permanent ownership by dead workers.
 
 ---
 
-## 17.19 What Is Checkpointing?
+### 17.19 What Is Checkpointing?
 
 **Answer:**
 
@@ -17308,7 +17373,7 @@ A useful checkpoint must describe recoverable state, not merely report an arbitr
 
 ---
 
-## 17.20 When Should Checkpointing Be Used?
+### 17.20 When Should Checkpointing Be Used?
 
 **Answer:**
 
@@ -17335,7 +17400,7 @@ The cost and complexity of safe checkpoint recovery should be justified by the c
 
 ---
 
-## 17.21 How Should Dependencies Affect Population State?
+### 17.21 How Should Dependencies Affect Population State?
 
 **Answer:**
 
@@ -17357,7 +17422,7 @@ If a required dependency becomes `Exhausted`, the Harness needs an explicit poli
 
 ---
 
-## 17.22 Can Independent Population Items Always Execute in Parallel?
+### 17.22 Can Independent Population Items Always Execute in Parallel?
 
 **Answer:**
 
@@ -17387,7 +17452,7 @@ before scheduling parallel work.
 
 ---
 
-## 17.23 What Is the Difference Between Assignment and Ownership?
+### 17.23 What Is the Difference Between Assignment and Ownership?
 
 **Answer:**
 
@@ -17412,7 +17477,7 @@ Separating these concepts helps with worker failure, reassignment, and retry.
 
 ---
 
-## 17.24 Why Should Priority Not Bypass Dependencies or Gates?
+### 17.24 Why Should Priority Not Bypass Dependencies or Gates?
 
 **Answer:**
 
@@ -17446,7 +17511,7 @@ Priority should influence scheduling among eligible work rather than bypassing g
 
 ---
 
-## 17.25 How Should an Agent Report a Newly Discovered Dependency?
+### 17.25 How Should an Agent Report a Newly Discovered Dependency?
 
 **Answer:**
 
@@ -17467,7 +17532,7 @@ The executing agent should not silently reshape authoritative Population.
 
 ---
 
-## 17.26 Why Should Population Be Provider-neutral?
+### 17.26 Why Should Population Be Provider-neutral?
 
 **Answer:**
 
@@ -17500,7 +17565,7 @@ This allows the same Population item to move between providers without losing id
 
 ---
 
-## 17.27 Does Switching AI Providers Reset Retry History?
+### 17.27 Does Switching AI Providers Reset Retry History?
 
 **Answer:**
 
@@ -17524,7 +17589,7 @@ If additional attempts are authorized, that should be an explicit policy decisio
 
 ---
 
-## 17.28 What Is the Difference Between Population and Metrics?
+### 17.28 What Is the Difference Between Population and Metrics?
 
 **Answer:**
 
@@ -17559,7 +17624,7 @@ Metrics should consume Population rather than replace it.
 
 ---
 
-## 17.29 Why Is Transition History Important?
+### 17.29 Why Is Transition History Important?
 
 **Answer:**
 
@@ -17604,7 +17669,7 @@ This history supports:
 
 ---
 
-## 17.30 Why Should Human Intervention Be Audited?
+### 17.30 Why Should Human Intervention Be Audited?
 
 **Answer:**
 
@@ -17634,7 +17699,7 @@ Human intervention should be explicit rather than an invisible escape from autom
 
 ---
 
-## 17.31 How Should Population Recover After a Harness Restart?
+### 17.31 How Should Population Recover After a Harness Restart?
 
 **Answer:**
 
@@ -17668,7 +17733,7 @@ Recovery should not depend on reading old agent conversations.
 
 ---
 
-## 17.32 What Population Invariants Would You Enforce?
+### 17.32 What Population Invariants Would You Enforce?
 
 **Answer:**
 
@@ -17701,7 +17766,7 @@ Invariants can be enforced through database constraints, transactions, Populatio
 
 ---
 
-## 17.33 Why Should Population Not Be Reconstructed from Logs?
+### 17.33 Why Should Population Not Be Reconstructed from Logs?
 
 **Answer:**
 
@@ -17737,7 +17802,7 @@ Population records authoritative work state.
 
 ---
 
-## 17.34 How Would You Design Population for Multiple Harness Workers?
+### 17.34 How Would You Design Population for Multiple Harness Workers?
 
 **Answer:**
 
@@ -17774,7 +17839,7 @@ Workers should coordinate through deterministic Population mechanisms rather tha
 
 ---
 
-## 17.35 What Is the Role of the Lead Agent in Population?
+### 17.35 What Is the Role of the Lead Agent in Population?
 
 **Answer:**
 
@@ -17809,7 +17874,7 @@ The Harness owns operational state.
 
 ---
 
-## 17.36 How Do the Developer, Reviewer, Validator, and Evaluator Interact with Population?
+### 17.36 How Do the Developer, Reviewer, Validator, and Evaluator Interact with Population?
 
 **Answer:**
 
@@ -17827,7 +17892,7 @@ The broader Harness architecture intentionally separates these responsibilities 
 
 ---
 
-## 17.37 What Is the Difference Between Validator Evidence and Evaluator Evidence?
+### 17.37 What Is the Difference Between Validator Evidence and Evaluator Evidence?
 
 **Answer:**
 
@@ -17862,7 +17927,7 @@ The Validator and Evaluator answer different questions.
 
 ---
 
-## 17.38 What Does `Completed` Mean in a Mature Harness?
+### 17.38 What Does `Completed` Mean in a Mature Harness?
 
 **Answer:**
 
@@ -17895,7 +17960,7 @@ Additional human approval may be required for higher-risk work.
 
 ---
 
-## 17.39 What Is the Most Dangerous Population Anti-pattern?
+### 17.39 What Is the Most Dangerous Population Anti-pattern?
 
 **Answer:**
 
@@ -17918,7 +17983,7 @@ The issue is allowing temporary reasoning context to become authoritative workfl
 
 ---
 
-## 17.40 How Would You Explain Population to an Enterprise Architect in One Minute?
+### 17.40 How Would You Explain Population to an Enterprise Architect in One Minute?
 
 **Answer:**
 
@@ -17934,7 +17999,7 @@ This allows the system to survive worker failures, agent replacement, provider s
 
 ---
 
-## 17.41 Scenario Question — The Agent Says Done but a Gate Fails
+### 17.41 Scenario Question — The Agent Says Done but a Gate Fails
 
 **Question:**
 
@@ -17985,7 +18050,7 @@ The Developer Agent cannot override the gate by asserting that the implementatio
 
 ---
 
-## 17.42 Scenario Question — Two Workers Claim the Same Work
+### 17.42 Scenario Question — Two Workers Claim the Same Work
 
 **Question:**
 
@@ -18009,7 +18074,7 @@ The other worker should observe that the item is no longer claimable and select 
 
 ---
 
-## 17.43 Scenario Question — A Worker Disappears
+### 17.43 Scenario Question — A Worker Disappears
 
 **Question:**
 
@@ -18029,7 +18094,7 @@ This prevents split-brain execution.
 
 ---
 
-## 17.44 Scenario Question — Three Providers Fail
+### 17.44 Scenario Question — Three Providers Fail
 
 **Question:**
 
@@ -18059,7 +18124,7 @@ Further execution should require an authorized reprocessing decision or policy c
 
 ---
 
-## 17.45 Scenario Question — A New Dependency Is Discovered
+### 17.45 Scenario Question — A New Dependency Is Discovered
 
 **Question:**
 
@@ -18079,7 +18144,7 @@ This prevents uncontrolled scope expansion.
 
 ---
 
-## 17.46 Scenario Question — The Harness Restarts
+### 17.46 Scenario Question — The Harness Restarts
 
 **Question:**
 
@@ -18105,7 +18170,7 @@ Recovery should determine what is safely known before new ownership is assigned.
 
 ---
 
-## 17.47 Scenario Question — All Child Items Are Completed
+### 17.47 Scenario Question — All Child Items Are Completed
 
 **Question:**
 
@@ -18133,7 +18198,7 @@ This prevents successful execution of decomposed tasks from being mistaken for s
 
 ---
 
-## 17.48 Architecture Interview Question — How Would You Scale Population?
+### 17.48 Architecture Interview Question — How Would You Scale Population?
 
 **Answer:**
 
@@ -18171,7 +18236,7 @@ Do not begin with a sophisticated distributed scheduler while basic lifecycle se
 
 ---
 
-## 17.49 Architecture Interview Question — What Would You Monitor?
+### 17.49 Architecture Interview Question — What Would You Monitor?
 
 **Answer:**
 
@@ -18206,7 +18271,7 @@ Population health and Harness performance are related but distinct concerns.
 
 ---
 
-## 17.50 Architecture Interview Question — What Makes Population Deterministic?
+### 17.50 Architecture Interview Question — What Makes Population Deterministic?
 
 **Answer:**
 
@@ -18232,7 +18297,7 @@ The operational lifecycle surrounding that reasoning remains controlled.
 
 ---
 
-## 17.51 Final Interview Question — What Principle Should an Architect Remember?
+### 17.51 Final Interview Question — What Principle Should an Architect Remember?
 
 **Answer:**
 
@@ -18279,9 +18344,7 @@ and what is allowed to happen next?"
 The Harness connects the two.
 ```
 
-**Chapter 19 status: In progress — next section: Chapter Summary**
-
-# 18. Chapter Summary
+## 18. Chapter Summary
 
 Population is the Harness capability responsible for maintaining the **authoritative operational state of engineering work**.
 
@@ -18291,20 +18354,20 @@ The central principle of this chapter is:
 
 > **Agents perform work. The Harness owns work state.**
 
-## 18.1 Population Represents Work, Not Conversations
+### 18.1 Population Represents Work, Not Conversations
 
 A Population item represents a logical unit of engineering work.
 
 For example:
 
-```text id="pop-summary-01"
+```text
 POP-1042-03
 Add vehicle inspection API endpoint
 ```
 
 Its identity remains stable even when execution changes:
 
-```text id="pop-summary-02"
+```text
 POP-1042-03
 │
 ├── EXEC-7841 → Attempt 1 → Failed
@@ -18320,13 +18383,13 @@ It is not Population identity.
 
 ---
 
-## 18.2 Population Must Be Durable
+### 18.2 Population Must Be Durable
 
 Agent context is valuable for reasoning, but it is not an appropriate system of record for operational work state.
 
 Population should survive:
 
-```text id="pop-summary-03"
+```text
 Agent termination
 Worker failure
 Harness restart
@@ -18338,7 +18401,7 @@ Provider switching
 
 A mature Harness should be able to restart and determine:
 
-```text id="pop-summary-04"
+```text
 What work exists?
 
 What is Ready?
@@ -18364,11 +18427,11 @@ without reconstructing the answers from agent conversations.
 
 ---
 
-## 18.3 Population Requires an Explicit Lifecycle
+### 18.3 Population Requires an Explicit Lifecycle
 
 This chapter developed an explicit lifecycle around states such as:
 
-```text id="pop-summary-05"
+```text
 Queued
 Blocked
 Ready
@@ -18388,7 +18451,7 @@ The exact lifecycle can evolve, but its states should have clear operational mea
 
 A simplified successful path is:
 
-```text id="pop-summary-06"
+```text
 Queued
    ↓
 Ready
@@ -18406,7 +18469,7 @@ Completed
 
 Failure and recovery may follow:
 
-```text id="pop-summary-07"
+```text
 Running
    ↓
 Failed
@@ -18418,7 +18481,7 @@ Ready
 
 while exhausted recovery reaches an automation boundary:
 
-```text id="pop-summary-08"
+```text
 Failed
    ↓
 Exhausted
@@ -18430,17 +18493,17 @@ State transitions should be controlled by Harness policy rather than invented in
 
 ---
 
-## 18.4 Population Is Evidence-backed
+### 18.4 Population Is Evidence-backed
 
 An agent reporting:
 
-```text id="pop-summary-09"
+```text
 Task completed successfully.
 ```
 
 does not automatically mean:
 
-```text id="pop-summary-10"
+```text
 Status = Completed
 ```
 
@@ -18448,7 +18511,7 @@ Implementation is only one part of the Harness lifecycle.
 
 The completed state may require:
 
-```text id="pop-summary-11"
+```text
 ImplementationProduced
 AND
 ReviewAccepted
@@ -18462,13 +18525,13 @@ RequiredEvidencePresent
 
 and, for higher-risk work:
 
-```text id="pop-summary-12"
+```text
 AND HumanApprovalReceived
 ```
 
 This preserves the separation established across the preceding Harness chapters:
 
-```text id="pop-summary-13"
+```text
 Developer implements.
 
 Reviewer reviews.
@@ -18484,7 +18547,7 @@ Harness controls state.
 
 ---
 
-## 18.5 Dependencies Determine Readiness
+### 18.5 Dependencies Determine Readiness
 
 Population is not simply a flat list of tasks.
 
@@ -18492,7 +18555,7 @@ Work may depend on other work.
 
 In the Alpha Car Detailing example:
 
-```mermaid id="pop-summary-deps"
+```mermaid
 flowchart LR
     D["Domain Behavior"] --> P["Persistence"]
     D --> A["API"]
@@ -18513,13 +18576,13 @@ Agents may discover new dependencies, but authoritative dependency changes shoul
 
 ---
 
-## 18.6 Parallelism Requires More Than Dependency Analysis
+### 18.6 Parallelism Requires More Than Dependency Analysis
 
 Two items may have no dependency relationship and still be unsafe to execute simultaneously.
 
 They may compete for:
 
-```text id="pop-summary-14"
+```text
 Database migrations
 Shared contracts
 Generated files
@@ -18530,7 +18593,7 @@ Package publishing
 
 Therefore:
 
-```text id="pop-summary-15"
+```text
 Dependency independent
     ≠
 Execution independent
@@ -18542,13 +18605,13 @@ Population provides the metadata required to make those decisions.
 
 ---
 
-## 18.7 Work Claiming Must Be Deterministic
+### 18.7 Work Claiming Must Be Deterministic
 
 When multiple Harness workers exist, more than one worker may discover the same `Ready` item.
 
 The Harness must prevent:
 
-```text id="pop-summary-16"
+```text
 Worker 1 → POP-1042-03
 Worker 2 → POP-1042-03
 Worker 3 → POP-1042-03
@@ -18562,11 +18625,11 @@ Concurrency should be resolved by the Harness, not by asking AI Agents to avoid 
 
 ---
 
-## 18.8 Retry Is a Controlled Execution Decision
+### 18.8 Retry Is a Controlled Execution Decision
 
 Retry does not mean:
 
-```text id="pop-summary-17"
+```text
 Keep asking an agent until something works.
 ```
 
@@ -18574,7 +18637,7 @@ It means launching another controlled execution against the same logical Populat
 
 For example:
 
-```text id="pop-summary-18"
+```text
 POP-4410
 
 Attempt 1 → Failed
@@ -18601,7 +18664,7 @@ They should not remove it.
 
 ---
 
-## 18.9 Failed and Exhausted Are Different
+### 18.9 Failed and Exhausted Are Different
 
 `Failed` means that an execution did not succeed.
 
@@ -18611,7 +18674,7 @@ That distinction is important.
 
 A failed item may still transition:
 
-```text id="pop-summary-19"
+```text
 Failed
    ↓
 RetryPending
@@ -18621,7 +18684,7 @@ Ready
 
 An exhausted item generally requires something new:
 
-```text id="pop-summary-20"
+```text
 Human authorization
 Requirement clarification
 Dependency correction
@@ -18634,13 +18697,13 @@ Exhaustion is therefore a governance boundary, not simply another name for failu
 
 ---
 
-## 18.10 Stale Work Requires Explicit Recovery
+### 18.10 Stale Work Requires Explicit Recovery
 
 A `Running` item can become stale when expected liveness evidence disappears.
 
 For example:
 
-```text id="pop-summary-21"
+```text
 Heartbeat interval:
 60 seconds
 
@@ -18656,7 +18719,7 @@ Stale threshold:
 
 The Harness may determine:
 
-```text id="pop-summary-22"
+```text
 Running → Stale
 ```
 
@@ -18670,13 +18733,13 @@ This helps prevent split-brain execution and duplicate side effects.
 
 ---
 
-## 18.11 Checkpoints Support Long-running Recovery
+### 18.11 Checkpoints Support Long-running Recovery
 
 Large or incremental work can benefit from checkpoints.
 
 For example:
 
-```text id="pop-summary-23"
+```text
 Files to process:
 1,000
 
@@ -18694,13 +18757,13 @@ A useful checkpoint records a **safe recovery boundary**, not merely an estimate
 
 ---
 
-## 18.12 Population Requires Audit History
+### 18.12 Population Requires Audit History
 
 Current state is not enough.
 
 An enterprise Harness should be able to reconstruct:
 
-```text id="pop-summary-24"
+```text
 Queued
   ↓
 Ready
@@ -18728,7 +18791,7 @@ Completed
 
 Transition history should capture information such as:
 
-```text id="pop-summary-25"
+```text
 WorkItemId
 ExecutionId
 FromState
@@ -18743,13 +18806,13 @@ This makes Population useful for troubleshooting, governance, Metrics, incident 
 
 ---
 
-## 18.13 Human Intervention Is Part of Population
+### 18.13 Human Intervention Is Part of Population
 
 Enterprise automation does not eliminate human decisions.
 
 Humans may need to:
 
-```text id="pop-summary-26"
+```text
 Reprocess Exhausted work
 Extend retry limits
 Cancel work
@@ -18763,7 +18826,7 @@ These actions should be first-class Population operations.
 
 For example:
 
-```text id="pop-summary-27"
+```text
 Exhausted
     ↓
 Human authorization
@@ -18773,7 +18836,7 @@ Ready
 
 should preserve:
 
-```text id="pop-summary-28"
+```text
 Who authorized it
 Why
 When
@@ -18785,13 +18848,13 @@ Manual intervention should not mean invisible intervention.
 
 ---
 
-## 18.14 Population Should Remain Provider-neutral
+### 18.14 Population Should Remain Provider-neutral
 
 Claude Code, GitHub Copilot, and Codex may all participate in Harness execution.
 
 Population should not therefore contain lifecycle states such as:
 
-```text id="pop-summary-29"
+```text
 ClaudeRunning
 CopilotFailed
 CodexCompleted
@@ -18799,7 +18862,7 @@ CodexCompleted
 
 Prefer:
 
-```text id="pop-summary-30"
+```text
 Running
 Failed
 Completed
@@ -18807,18 +18870,18 @@ Completed
 
 while recording:
 
-```text id="pop-summary-31"
+```text
 Provider:
 Claude
 ```
 
 on the execution.
 
-This keeps the core architecture independent of the current AI coding platform and aligns with the handbook's broader vendor-neutral principles. AI development handbook
+This keeps the core architecture independent of the current AI coding platform and aligns with the handbook's broader vendor-neutral principles.
 
 Provider switching then becomes:
 
-```text id="pop-summary-32"
+```text
 POP-5001
 │
 ├── Attempt 1 → Claude → Failed
@@ -18830,11 +18893,11 @@ without changing the logical work identity.
 
 ---
 
-## 18.15 Population Connects the Harness Roles
+### 18.15 Population Connects the Harness Roles
 
 Population provides continuity across the roles developed in Chapters 14–18.
 
-```mermaid id="pop-summary-roles"
+```mermaid
 flowchart TD
     G["Goal"] --> L["Lead Agent"]
     L --> P[("Population")]
@@ -18869,7 +18932,7 @@ Population preserves the durable identity and history connecting those roles.
 
 ---
 
-## 18.16 Population and Metrics Are Different
+### 18.16 Population and Metrics Are Different
 
 Population answers:
 
@@ -18881,7 +18944,7 @@ Metrics answers:
 
 Population might record:
 
-```text id="pop-summary-33"
+```text
 POP-5001
 Status: Completed
 AttemptCount: 3
@@ -18889,14 +18952,14 @@ AttemptCount: 3
 
 Metrics may derive:
 
-```text id="pop-summary-34"
+```text
 RetryCount = 2
 FirstAttemptSuccess = false
 ```
 
 Other Metrics can include:
 
-```text id="pop-summary-35"
+```text
 Throughput
 Retry rate
 Exhaustion rate
@@ -18913,11 +18976,11 @@ This distinction provides the transition into Chapter 20.
 
 ---
 
-## 18.17 Population Should Survive Everything Around It
+### 18.17 Population Should Survive Everything Around It
 
 A well-designed Harness assumes that individual execution components are replaceable.
 
-```text id="pop-summary-36"
+```text
 Agent
     → replaceable
 
@@ -18941,11 +19004,11 @@ If replacing an agent or restarting a worker causes the Harness to forget what w
 
 ---
 
-## 18.18 Population Turns Activity into Governed Execution
+### 18.18 Population Turns Activity into Governed Execution
 
 Without Population, a multi-agent Harness can produce significant activity:
 
-```text id="pop-summary-37"
+```text
 Prompts
 Agents
 Code
@@ -18957,7 +19020,7 @@ Logs
 
 while still being unable to answer:
 
-```text id="pop-summary-38"
+```text
 Which work is authoritative?
 
 Which execution owns it?
@@ -18977,7 +19040,7 @@ Population transforms that activity into controlled engineering execution.
 
 It establishes the durable relationship between:
 
-```text id="pop-summary-39"
+```text
 Goal
     ↓
 Work
@@ -18999,7 +19062,7 @@ That relationship is one of the foundations of enterprise Harness engineering.
 
 ---
 
-## 18.19 Key Takeaways
+### 18.19 Key Takeaways
 
 The essential lessons from Chapter 19 are:
 
@@ -19031,7 +19094,7 @@ The essential lessons from Chapter 19 are:
 
 Chapter 19 can therefore be reduced to one durable principle:
 
-```text id="pop-summary-40"
+```text
 Agents may change.
 
 Workers may fail.
@@ -19051,23 +19114,21 @@ And the broader Harness principle remains:
 
 Population is the durable work-state foundation that makes that architecture operational.
 
-**Chapter 19 status: In progress — next section: Further Reading**
-
-# 19. Further Reading
+## 19. Further Reading
 
 Population combines ideas from distributed systems, durable workflow execution, state machines, concurrency control, idempotency, observability, and enterprise governance. The resources below provide useful background for understanding the engineering principles behind the Population capability.
 
 These references should be treated as supporting material rather than prescriptions for how the handbook's Harness must be implemented. Population remains a Harness architectural concept; a particular workflow product or framework is only one possible implementation technology.
 
-## 19.1 Durable Execution and Workflow Orchestration
+### 19.1 Durable Execution and Workflow Orchestration
 
-Microsoft's Durable Task documentation is useful for studying durable execution, persisted workflow state, automatic recovery, distributed coordination, retries, long-running processes, and multi-agent orchestration. These concepts closely relate to Population requirements such as restartability and durable execution history. [Microsoft Learn](https://learn.microsoft.com/en-us/azure/durable-task/common/what-is-durable-task?utm_source=chatgpt.com)
+Microsoft's Durable Task documentation is useful for studying durable execution, persisted workflow state, automatic recovery, distributed coordination, retries, long-running processes, and multi-agent orchestration. These concepts closely relate to Population requirements such as restartability and durable execution history.
 
-[Microsoft — Durable Task documentation](https://learn.microsoft.com/en-us/azure/durable-task/common/?utm_source=chatgpt.com)
+[Microsoft — Durable Task documentation](https://learn.microsoft.com/en-us/azure/durable-task/common/)
 
 Particularly relevant topics include:
 
-```text id="fr-pop-01"
+```text
 Durable execution
 State persistence
 Automatic recovery
@@ -19078,27 +19139,27 @@ Long-running workflows
 Human interaction
 ```
 
-Microsoft also documents Durable Task specifically for AI-agent scenarios, including persistent state, checkpointing, recovery, and distributed coordination. [Microsoft Learn](https://learn.microsoft.com/en-us/azure/durable-task/sdks/durable-task-for-ai-agents?utm_source=chatgpt.com)
+Microsoft also documents Durable Task specifically for AI-agent scenarios, including persistent state, checkpointing, recovery, and distributed coordination.
 
-[Microsoft — Durable Task for AI Agents](https://learn.microsoft.com/en-us/azure/durable-task/sdks/durable-task-for-ai-agents?utm_source=chatgpt.com)
+[Microsoft — Durable Task for AI Agents](https://learn.microsoft.com/en-us/azure/durable-task/sdks/durable-task-for-ai-agents)
 
 The objective is not to make Population equivalent to Durable Task. Instead, these resources demonstrate how durable execution systems address many of the same distributed-systems problems that an enterprise Harness must solve.
 
 ---
 
-## 19.2 Temporal and Durable Workflow Execution
+### 19.2 Temporal and Durable Workflow Execution
 
-Temporal provides another useful reference model for durable execution. Its documentation describes workflows whose state and progress survive worker crashes, network failures, and other infrastructure interruptions. [Temporal Documentation](https://docs.temporal.io/temporal?utm_source=chatgpt.com)
+Temporal provides another useful reference model for durable execution. Its documentation describes workflows whose state and progress survive worker crashes, network failures, and other infrastructure interruptions.
 
-[Temporal — Durable Execution documentation](https://docs.temporal.io/temporal?utm_source=chatgpt.com)
+[Temporal — Durable Execution documentation](https://docs.temporal.io/temporal)
 
-Temporal's task model is also useful when considering the distinction between logical workflow state and worker execution. Its documentation describes workers processing tasks while persisted workflow history enables another worker to reconstruct state after failure. [Temporal Documentation](https://docs.temporal.io/tasks?utm_source=chatgpt.com)
+Temporal's task model is also useful when considering the distinction between logical workflow state and worker execution. Its documentation describes workers processing tasks while persisted workflow history enables another worker to reconstruct state after failure.
 
-[Temporal — Tasks and Workflow Tasks](https://docs.temporal.io/tasks?utm_source=chatgpt.com)
+[Temporal — Tasks and Workflow Tasks](https://docs.temporal.io/tasks)
 
 Relevant Population concepts include:
 
-```text id="fr-pop-02"
+```text
 Durable state
 Worker replacement
 Execution history
@@ -19113,15 +19174,15 @@ Again, the handbook does not require Temporal. It is useful because it demonstra
 
 ---
 
-## 19.3 Patterns of Distributed Systems
+### 19.3 Patterns of Distributed Systems
 
-Martin Fowler's catalog of distributed-systems patterns provides useful background for several Population mechanisms. The catalog includes patterns for heartbeats, leases, idempotent receivers, versioning, and other coordination concerns. [martinfowler.com](https://martinfowler.com/articles/patterns-of-distributed-systems/?utm_source=chatgpt.com)
+*Patterns of Distributed Systems*, by Unmesh Joshi and published on Martin Fowler's site, provides useful background for several Population mechanisms. The catalog includes patterns for heartbeats, leases, idempotent receivers, versioning, and other coordination concerns.
 
-[Martin Fowler — Patterns of Distributed Systems](https://martinfowler.com/articles/patterns-of-distributed-systems/?utm_source=chatgpt.com)
+[Martin Fowler — Patterns of Distributed Systems](https://martinfowler.com/articles/patterns-of-distributed-systems/)
 
 These concepts connect directly to Population concerns such as:
 
-```text id="fr-pop-03"
+```text
 Heartbeat
     → execution liveness
 
@@ -19139,15 +19200,15 @@ These patterns are valuable because Population is not only an AI problem. Once m
 
 ---
 
-## 19.4 Idempotent Receiver
+### 19.4 Idempotent Receiver
 
-The Idempotent Receiver pattern addresses the situation where a client retries because it cannot determine whether the original request was successfully processed. The receiver identifies previously processed requests and avoids incorrectly performing the same operation again. [martinfowler.com](https://martinfowler.com/articles/patterns-of-distributed-systems/idempotent-receiver.html?utm_source=chatgpt.com)
+The Idempotent Receiver pattern addresses the situation where a client retries because it cannot determine whether the original request was successfully processed. The receiver identifies previously processed requests and avoids incorrectly performing the same operation again.
 
-[Martin Fowler — Idempotent Receiver](https://martinfowler.com/articles/patterns-of-distributed-systems/idempotent-receiver.html?utm_source=chatgpt.com)
+[Martin Fowler — Idempotent Receiver](https://martinfowler.com/articles/patterns-of-distributed-systems/idempotent-receiver.html)
 
 This is particularly relevant to:
 
-```text id="fr-pop-04"
+```text
 Duplicate Population creation
 Duplicate execution results
 Repeated callbacks
@@ -19157,21 +19218,21 @@ External side effects
 
 It reinforces an important lesson from this chapter:
 
-> **At-least-once delivery should not become at-least-once side effects.**
+> **At-least-once delivery requires idempotent handling of side effects when duplicate application would be incorrect.**
 
 ---
 
-## 19.5 OpenTelemetry
+### 19.5 OpenTelemetry
 
 Population provides operational work state, but enterprise Harnesses also require observability.
 
-OpenTelemetry provides a vendor-neutral framework for traces, metrics, and logs. [OpenTelemetry](https://opentelemetry.io/docs/?utm_source=chatgpt.com)
+OpenTelemetry provides a vendor-neutral framework for traces, metrics, and logs.
 
-[OpenTelemetry Documentation](https://opentelemetry.io/docs/?utm_source=chatgpt.com)
+[OpenTelemetry Documentation](https://opentelemetry.io/docs/)
 
 For the Harness, identifiers such as:
 
-```text id="fr-pop-05"
+```text
 GoalId
 WorkItemId
 ExecutionId
@@ -19184,7 +19245,7 @@ can be correlated with telemetry.
 
 This enables engineers to move between:
 
-```text id="fr-pop-06"
+```text
 Population state
         ↕
 Execution traces
@@ -19196,19 +19257,19 @@ Validation activity
 External service calls
 ```
 
-OpenTelemetry's tracing model is particularly relevant for understanding operations that span multiple processes and services. [OpenTelemetry](https://opentelemetry.io/docs/specs/otel/overview/?utm_source=chatgpt.com)
+OpenTelemetry's tracing model is particularly relevant for understanding operations that span multiple processes and services.
 
-[OpenTelemetry — Specification Overview](https://opentelemetry.io/docs/specs/otel/overview/?utm_source=chatgpt.com)
+[OpenTelemetry — Specification Overview](https://opentelemetry.io/docs/specs/otel/overview/)
 
 Population should remain the authoritative work-state model, while observability explains runtime behavior around that work.
 
 ---
 
-## 19.6 Microsoft Azure Architecture Guidance
+### 19.6 Microsoft Azure Architecture Guidance
 
-For implementations using the handbook's .NET and Azure technology stack, Microsoft's architecture documentation is useful background for:
+For implementations using the handbook's .NET and Azure technology stack, Microsoft's [Azure Architecture Center — Cloud Design Patterns](https://learn.microsoft.com/en-us/azure/architecture/patterns) is useful background for:
 
-```text id="fr-pop-07"
+```text
 Distributed coordination
 Messaging
 Retry strategies
@@ -19223,7 +19284,7 @@ The concepts should be applied according to the Harness requirements rather than
 
 The architectural direction should remain:
 
-```text id="fr-pop-08"
+```text
 Population semantics
         ↓
 Architecture requirements
@@ -19233,7 +19294,7 @@ Technology selection
 
 rather than:
 
-```text id="fr-pop-09"
+```text
 Selected cloud technology
         ↓
 Population semantics
@@ -19243,13 +19304,13 @@ This distinction keeps the Harness architecture portable.
 
 ---
 
-## 19.7 Database Concurrency and Transaction Processing
+### 19.7 Database Concurrency and Transaction Processing
 
 Population relies heavily on correct concurrent state mutation.
 
 Further study should include:
 
-```text id="fr-pop-10"
+```text
 Transactions
 Optimistic concurrency
 Pessimistic locking
@@ -19262,7 +19323,7 @@ Deadlock handling
 
 These topics are particularly important when implementing operations such as:
 
-```text id="fr-pop-11"
+```text
 Ready → Running
 
 Failed → RetryPending
@@ -19272,19 +19333,21 @@ Running → Stale
 Evaluation → Completed
 ```
 
+For SQL Server, consult [Transaction Locking and Row Versioning Guide](https://learn.microsoft.com/en-us/sql/relational-databases/sql-server-transaction-locking-and-row-versioning-guide?view=sql-server-ver17) and [rowversion (Transact-SQL)](https://learn.microsoft.com/en-us/sql/t-sql/data-types/rowversion-transact-sql?view=sql-server-ver17).
+
 The important question is not merely whether the SQL statement works.
 
 It is whether the transition remains correct when several Harness workers attempt operations concurrently.
 
 ---
 
-## 19.8 State Machines
+### 19.8 State Machines
 
 Population lifecycle management is fundamentally state-machine-oriented.
 
 Further study of finite-state machines and workflow state machines can help clarify:
 
-```text id="fr-pop-12"
+```text
 Valid states
 Allowed transitions
 Transition guards
@@ -19296,7 +19359,7 @@ Recovery transitions
 
 A useful mental model is:
 
-```text id="fr-pop-13"
+```text
 Current State
     +
 Input / Evidence
@@ -19312,13 +19375,13 @@ This model helps keep state transitions deterministic even when the evidence its
 
 ---
 
-## 19.9 Transactional Outbox Pattern
+### 19.9 Transactional Outbox Pattern
 
-If Population transitions publish events, architects should study the Transactional Outbox pattern.
+If Population transitions publish events, architects should study the Transactional Outbox pattern. Microsoft's [Transactional Outbox reference architecture](https://learn.microsoft.com/en-us/azure/architecture/databases/guide/transactional-out-box-cosmos) explains the dual-write problem through an Azure example; the underlying pattern also applies to relational Population stores.
 
 The underlying problem is dual writes:
 
-```text id="fr-pop-14"
+```text
 Update Population
         +
 Publish event
@@ -19328,7 +19391,7 @@ If these operations are performed independently, one may succeed while the other
 
 A safer conceptual design is:
 
-```text id="fr-pop-15"
+```text
 Database Transaction
 ├── Population transition
 └── Outbox record
@@ -19340,7 +19403,7 @@ Asynchronous publisher
 
 This is especially relevant when Population events drive:
 
-```text id="fr-pop-16"
+```text
 Metrics
 Notifications
 Dashboards
@@ -19353,11 +19416,11 @@ The Population database can remain authoritative while events are published reli
 
 ---
 
-## 19.10 Enterprise Audit and Governance
+### 19.10 Enterprise Audit and Governance
 
 Architects designing production Harnesses should also study enterprise audit principles, particularly:
 
-```text id="fr-pop-17"
+```text
 Immutable history
 Actor identification
 Authorization
@@ -19370,7 +19433,7 @@ Data retention
 
 AI engineering increases the importance of these topics because the system may combine decisions and evidence from:
 
-```text id="fr-pop-18"
+```text
 AI Agents
 Deterministic gates
 CI/CD
@@ -19383,11 +19446,11 @@ Population provides a natural point at which these activities can be correlated.
 
 ---
 
-## 19.11 Recommended Reading Sequence
+### 19.11 Recommended Reading Sequence
 
 A useful progression after completing this chapter is:
 
-```text id="fr-pop-19"
+```text
 1. State machines
         ↓
 2. Database transactions and concurrency
@@ -19411,13 +19474,13 @@ This progression moves from local correctness toward distributed and enterprise-
 
 ---
 
-## 19.12 Continue with the Handbook
+### 19.12 Continue with the Handbook
 
 Chapter 19 established the durable operational model of Harness work.
 
 The next chapter builds directly on that foundation:
 
-```text id="fr-pop-20"
+```text
 Chapter 19 — Population
         ↓
 What work exists?
@@ -19438,7 +19501,7 @@ Metrics turns those facts into measurements.
 
 That distinction is important because unreliable Population inevitably produces unreliable Metrics.
 
-The architecture sequence established for Part III places Population and Metrics as distinct Harness components, allowing operational state and performance measurement to evolve without conflating their responsibilities. AI development handbook
+The architecture sequence established for Part III places Population and Metrics as distinct Harness components, allowing operational state and performance measurement to evolve without conflating their responsibilities.
 
 ---
 
@@ -19452,7 +19515,7 @@ The architecture sequence established for Part III places Population and Metrics
 
 Chapter 19 closes with the principle that should remain stable as the Harness evolves:
 
-```text id="fr-pop-21"
+```text
 Agents reason about the work.
 
 Workers execute the work.
@@ -19469,5 +19532,3 @@ Population preserves the authoritative history.
 
 The Harness controls the lifecycle.
 ```
-
-**Chapter 19 status: Complete**

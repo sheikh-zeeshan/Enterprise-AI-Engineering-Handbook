@@ -330,7 +330,7 @@ Without this separation, both humans and AI agents tend to convert plausible int
 Consider the following Alpha Car Detailing findings:
 
 * A folder is named `Booking`.
-* A `BookingDbContext` contains a `Reservation` table.
+* A `BookingDbContext` maps the `Reservations` table.
 * The Station Operations Service exposes `GetAvailableCapacity`.
 * A `BookingRequested` event is consumed by Station Operations.
 * An ADR states that Station Operations owns capacity allocation.
@@ -387,7 +387,7 @@ A contradiction exists when evidence sources materially disagree.
 Examples:
 
 * The README states that Booking owns station capacity, while current source code calls Station Operations.
-* The architecture diagram shows Kafka, while deployment manifests configure Azure Event Hubs.
+* The architecture diagram identifies a self-managed Kafka cluster as the broker, while deployment manifests point to Azure Event Hubs.
 * The interface name suggests SQL persistence, while runtime composition registers a Redis-backed implementation.
 * The configuration template enables a feature, while the production pipeline disables it.
 * Tests expect partial acceptance, while the current business rule document requires atomic bulk booking.
@@ -429,19 +429,19 @@ The item may matter in another task, but it should not consume the current disco
 
 ```mermaid
 flowchart TD
-    A[Repository Evidence] --> B{Direct and current?}
-    B -->|Yes| C{Supported by authoritative source?}
+    A[Repository Evidence] --> K{"Relevant to the task?"}
+    K -->|No| M[Out-of-Scope Item]
+    K -->|Yes| I{"Do sources materially disagree?"}
+    I -->|Yes| J[Contradiction]
+    I -->|No| B{"Direct and current?"}
+    B -->|Yes| C{"Supported by an authoritative source?"}
     C -->|Yes| D[Verified Fact]
-    C -->|No| E{Multiple consistent sources?}
+    C -->|No| E{"Multiple consistent sources?"}
     B -->|No| E
     E -->|Yes| F[Strong Inference]
-    E -->|No| G{Plausible but weak evidence?}
+    E -->|No| G{"Plausible but weakly supported?"}
     G -->|Yes| H[Weak Inference]
-    G -->|No| I{Sources disagree?}
-    I -->|Yes| J[Contradiction]
-    I -->|No| K{Relevant to task?}
-    K -->|Yes| L[Unknown]
-    K -->|No| M[Out-of-Scope Item]
+    G -->|No| L[Unknown]
 ```
 
 > **Common Mistake**
@@ -537,7 +537,7 @@ flowchart LR
     N -->|Unsafe| R[Stop]
 ```
 
-## 1. Establish the Task, Intended Outcome, and Discovery Scope
+### 1. Establish the Task, Intended Outcome, and Discovery Scope
 
 Discovery begins with the requested outcome, not with the repository root.
 
@@ -575,7 +575,7 @@ The initial scope is provisional. Discovery may reveal that additional component
 >
 > Write the discovery scope before running broad searches. Without a task-oriented scope, agents tend to explore whichever files are easiest to summarize rather than the evidence required to make the change safely.
 
-## 2. Identify Repository Entry Points
+### 2. Identify Repository Entry Points
 
 Repository entry points are the assets that reveal how the repository should be approached.
 
@@ -630,7 +630,7 @@ Questions include:
 * Are AI instructions hierarchical?
 * Is there a harness entry point that constrains discovery or modification?
 
-## 3. Map Directories, Solutions, Projects, Modules, and Services
+### 3. Map Directories, Solutions, Projects, Modules, and Services
 
 The next step is to build a structural inventory.
 
@@ -719,7 +719,7 @@ The inventory should distinguish source projects from:
 * Developer-only tools
 * Archived or deprecated components
 
-## 4. Identify Architectural and Ownership Boundaries
+### 4. Identify Architectural and Ownership Boundaries
 
 Structural grouping must be tested against actual boundaries.
 
@@ -747,11 +747,11 @@ A stronger boundary has several aligned characteristics:
 * Separate runtime identity
 * Defined operational responsibility
 
-In Alpha Car Detailing, Booking may own reservation lifecycle while Station Operations owns capacity calculations. Corporate Accounts may own account approval, while Identity owns authenticated user claims. Fleet may own corporate vehicle association without owning customer identity.
+In Alpha Car Detailing, Booking may own the reservation lifecycle while Station Operations owns capacity calculations. Corporate Accounts may own account approval, while Identity owns authenticated user claims. Fleet may own corporate vehicle association without owning customer identity.
 
 These distinctions determine where business rules belong.
 
-### Clean Architecture Boundaries
+#### Clean Architecture Boundaries
 
 Within each service, discovery should determine whether Clean Architecture conventions are real or nominal.
 
@@ -772,7 +772,7 @@ A repository may contain projects named `Domain`, `Application`, and `Infrastruc
 
 Architecture tests may provide stronger evidence than folder names.
 
-## 5. Trace Build, Startup, Runtime, and Deployment Paths
+### 5. Trace Build, Startup, Runtime, and Deployment Paths
 
 The build path answers how the code becomes an artifact.
 
@@ -807,7 +807,7 @@ Booking repository
     ↓
 Outbox publisher
     ↓
-BookingConfirmed integration event
+BookingConfirmedV2 integration event
 ```
 
 Then the deployment trace might continue:
@@ -837,7 +837,7 @@ The trace should include workers and background processes. Many enterprise workf
 For example:
 
 * Booking API stores a reservation and outbox record.
-* Booking Worker publishes `CorporateFleetBookingConfirmed`.
+* Booking Worker may publish a confirmation event such as `CorporateFleetBookingConfirmed`.
 * Billing consumes the event.
 * Notification consumes the event.
 * Station Operations updates projected capacity.
@@ -845,11 +845,11 @@ For example:
 
 Reading only the API source would miss most of the operational behavior.
 
-## 6. Discover Dependencies, Contracts, APIs, and Events
+### 6. Discover Dependencies, Contracts, APIs, and Events
 
 Dependencies should be examined at several levels.
 
-### Compile-Time Dependencies
+#### Compile-Time Dependencies
 
 * Project references
 * Package references
@@ -858,7 +858,7 @@ Dependencies should be examined at several levels.
 * Build-time analyzers
 * Source generators
 
-### Runtime Dependencies
+#### Runtime Dependencies
 
 * HTTP clients
 * gRPC clients
@@ -871,7 +871,7 @@ Dependencies should be examined at several levels.
 * Feature-flag services
 * Secret stores
 
-### Contract Dependencies
+#### Contract Dependencies
 
 * REST schemas
 * gRPC definitions
@@ -895,7 +895,7 @@ For each contract, determine:
 * Deployment coordination requirements
 * Deprecation process
 
-In the fleet-booking scenario, the agent must locate whether a contract already exists for:
+In the fleet-booking scenario, the agent must determine whether a contract already exists for:
 
 * Corporate account status
 * Fleet vehicle eligibility
@@ -907,7 +907,7 @@ In the fleet-booking scenario, the agent must locate whether a contract already 
 
 Creating a new contract without this inventory can produce duplication or incompatible semantics.
 
-### Event Discovery
+#### Event Discovery
 
 Event-driven systems require particular care.
 
@@ -938,7 +938,7 @@ A class named `BookingConfirmedEvent` may be:
 
 The name alone is insufficient.
 
-## 7. Examine Configuration, Data Stores, and Environment Assumptions
+### 7. Examine Configuration, Data Stores, and Environment Assumptions
 
 Configuration is architecture.
 
@@ -987,7 +987,7 @@ For each store:
 
 A direct SQL connection from Booking to Corporate Accounts may indicate an architectural violation, a temporary migration path, or an intentionally shared database. The discovery report should not guess which one.
 
-### Data Ownership Questions for Corporate Fleet Booking
+#### Data Ownership Questions for Corporate Fleet Booking
 
 * Which service owns the reservation aggregate?
 * Which service owns station capacity?
@@ -1002,7 +1002,7 @@ A direct SQL connection from Booking to Corporate Accounts may indicate an archi
 
 These are implementation-shaping questions.
 
-## 8. Inspect Test Architecture and Validation Mechanisms
+### 8. Inspect Test Architecture and Validation Mechanisms
 
 Tests are executable architecture documentation, but they must also be evaluated critically.
 
@@ -1047,7 +1047,7 @@ Ignoring these tests may cause the agent to implement a behavior that passes new
 >
 > An agent adds a handler-level unit test proving that twenty vehicle reservations are created. Existing integration tests use a station capacity semaphore and require all-or-nothing reservation under concurrency. The unit test passes, but the implementation bypasses the concurrency mechanism. Discovery failed because the agent inspected the handler but not the test architecture.
 
-## 9. Review Security, Identity, Authorization, and Secrets Handling
+### 9. Review Security, Identity, Authorization, and Secrets Handling
 
 Security discovery is mandatory whenever a change affects:
 
@@ -1104,7 +1104,7 @@ Examples include:
 
 The harness must exclude or specially handle such paths.
 
-## 10. Examine Observability, Operations, CI/CD, and Infrastructure
+### 10. Examine Observability, Operations, CI/CD, and Infrastructure
 
 A change is not production-ready merely because its source code is correct.
 
@@ -1156,7 +1156,7 @@ An agent may add a new project that is never included in the build pipeline. It 
 
 These are repository-discovery failures, not merely deployment failures.
 
-## 11. Review Architecture Documentation, Decision Records, and AI Guidance
+### 11. Review Architecture Documentation, Decision Records, and AI Guidance
 
 Documentation should be used, but not blindly trusted.
 
@@ -1209,7 +1209,7 @@ However, existing knowledge remains evidence, not unquestionable truth.
 
 Repository discovery validates and refreshes Repository Intelligence.
 
-## 12. Classify Findings
+### 12. Classify Findings
 
 Every material finding should be assigned an evidence classification.
 
@@ -1226,7 +1226,7 @@ A simple discovery ledger may contain:
 
 This ledger prevents conclusions from becoming detached from their evidence.
 
-## 13. Produce a Repository Discovery Report
+### 13. Produce a Repository Discovery Report
 
 The report converts exploration into an engineering artifact.
 
@@ -1234,7 +1234,7 @@ It should be concise enough to review and detailed enough to support implementat
 
 A professional template appears later in this chapter.
 
-## 14. Assess Discovery Confidence
+### 14. Assess Discovery Confidence
 
 Confidence must be assessed explicitly.
 
@@ -1255,7 +1255,7 @@ Confidence is not the same as certainty.
 
 A well-discovered system can still contain unknowns. The purpose is to determine whether those unknowns are acceptable for the requested change.
 
-## 15. Decide Whether Implementation May Begin
+### 15. Decide Whether Implementation May Begin
 
 The discovery process ends with a decision:
 
@@ -1281,7 +1281,7 @@ Repository discovery should be progressive.
 
 Progressive discovery expands according to task risk, architectural reach, and unresolved uncertainty.
 
-## Level 1 — Repository Orientation
+### Level 1 — Repository Orientation
 
 Purpose:
 
@@ -1305,7 +1305,7 @@ Appropriate for:
 * Initial repository entry
 * Low-risk symbol-level work
 
-## Level 2 — Task-Affected Area Discovery
+### Level 2 — Task-Affected Area Discovery
 
 Purpose:
 
@@ -1326,7 +1326,7 @@ Appropriate for:
 * Local validation changes
 * Small endpoint behavior changes with no contract impact
 
-## Level 3 — Dependency and Contract Discovery
+### Level 3 — Dependency and Contract Discovery
 
 Purpose:
 
@@ -1348,7 +1348,7 @@ Appropriate for:
 * Shared-library changes
 * Cross-module behavior
 
-## Level 4 — Runtime and Operational Discovery
+### Level 4 — Runtime and Operational Discovery
 
 Purpose:
 
@@ -1371,7 +1371,7 @@ Appropriate for:
 * Reliability-sensitive changes
 * Deployment topology changes
 
-## Level 5 — Cross-System and Enterprise Discovery
+### Level 5 — Cross-System and Enterprise Discovery
 
 Purpose:
 
@@ -1398,11 +1398,11 @@ Appropriate for:
 
 ```mermaid
 flowchart TB
-    L1[Level 1<br/>Repository Orientation]
-    L2[Level 2<br/>Task-Affected Area]
-    L3[Level 3<br/>Dependencies and Contracts]
-    L4[Level 4<br/>Runtime and Operations]
-    L5[Level 5<br/>Cross-System and Enterprise]
+    L1["Level 1<br/>Repository Orientation"]
+    L2["Level 2<br/>Task-Affected Area"]
+    L3["Level 3<br/>Dependencies and Contracts"]
+    L4["Level 4<br/>Runtime and Operations"]
+    L5["Level 5<br/>Cross-System and Enterprise"]
 
     L1 --> L2 --> L3 --> L4 --> L5
 
@@ -1503,7 +1503,7 @@ flowchart TB
 
     Gateway[API Gateway]
 
-    subgraph Core Services
+    subgraph CoreServices["Core Services"]
         Booking[Booking Service]
         Station[Station Operations Service]
         Corporate[Corporate Account Service]
@@ -1526,14 +1526,14 @@ flowchart TB
         Contracts[Shared Event Contracts]
     end
 
-    subgraph Platform Assets
+    subgraph PlatformAssets["Platform Assets"]
         K8s[Kubernetes and Helm]
         IaC[Terraform and Bicep]
         CICD[CI/CD Pipelines]
         Obs[Logs, Metrics, and Traces]
     end
 
-    subgraph Repository Intelligence
+    subgraph RepositoryIntelligence["Repository Intelligence"]
         ADR[Architecture Decisions]
         Instructions[AI Instructions]
         Skills[Reusable Skills]
@@ -1575,16 +1575,16 @@ flowchart TB
     Broker --> Notification
     Contracts --- Broker
 
-    K8s --> Core Services
+    K8s --> CoreServices
     IaC --> K8s
     CICD --> K8s
-    Core Services --> Obs
+    CoreServices --> Obs
 
-    ADR -.guides.-> Core Services
-    Instructions -.constrains.-> Harness
-    Skills -.used by.-> Harness
-    Prompts -.executed by.-> Harness
-    Harness -.validates.-> Validation
+    ADR -. guides .-> CoreServices
+    Instructions -. constrains .-> Harness
+    Skills -. used by .-> Harness
+    Prompts -. executed by .-> Harness
+    Harness -. validates .-> Validation
 ```
 
 This map communicates more than the directory structure.
@@ -1790,13 +1790,13 @@ A contradiction log should capture:
 
 Example:
 
-| Topic                  | Source A                                 | Source B                                                 | Impact                                      | Status                              |
-| ---------------------- | ---------------------------------------- | -------------------------------------------------------- | ------------------------------------------- | ----------------------------------- |
-| Capacity ownership     | ADR-014 assigns Station Operations       | `BookingCapacityCalculator` implements local calculation | Risk of duplicate business rules            | Unresolved                          |
-| Messaging platform     | Architecture diagram shows Kafka         | Production Helm values reference Event Hubs              | Contract and operational assumptions differ | Diagram likely stale                |
-| Bulk-booking atomicity | Integration test requires all-or-nothing | Product notes allow partial acceptance                   | API and transaction design blocked          | Human clarification required        |
-| Corporate approval     | README says nightly synchronization      | Runtime client calls Corporate Accounts synchronously    | Latency and failure behavior differ         | Verified runtime path; README stale |
-| Feature enablement     | Default config enables bulk booking      | Production values omit flag                              | Deployment readiness unknown                | Additional discovery required       |
+| Topic                  | Source A                                                | Source B                                                 | Impact                                      | Status                              |
+| ---------------------- | ------------------------------------------------------- | -------------------------------------------------------- | ------------------------------------------- | ----------------------------------- |
+| Capacity ownership     | ADR-014 assigns Station Operations                      | `BookingCapacityCalculator` implements local calculation | Risk of duplicate business rules            | Unresolved                          |
+| Messaging platform     | Architecture diagram shows a self-managed Kafka cluster | Production Helm values reference Event Hubs              | Contract and operational assumptions differ | Diagram likely stale                |
+| Bulk-booking atomicity | Integration test requires all-or-nothing                | Product notes allow partial acceptance                   | API and transaction design blocked          | Human clarification required        |
+| Corporate approval     | README says nightly synchronization                     | Runtime client calls Corporate Accounts synchronously    | Latency and failure behavior differ         | Verified runtime path; README stale |
+| Feature enablement     | Default config enables bulk booking                     | Production values omit flag                              | Deployment readiness unknown                | Additional discovery required       |
 
 Contradictions have different severities.
 
@@ -1904,7 +1904,7 @@ These outputs do not always require separate documents. For small tasks, several
 ## 4. Affected Components
 
 | Component | Role | Deployment Unit | Owner | Relevance |
-|---|---|---|---|---|
+| --------- | ---- | --------------- | ----- | --------- |
 
 ## 5. Topology Summary
 
@@ -1915,31 +1915,31 @@ These outputs do not always require separate documents. For small tasks, several
 
 ## 6. Runtime Flow
 
-1.
-2.
-3.
+1. [First runtime step]
+2. [Next runtime step]
+3. [Final runtime step]
 
 ## 7. Dependencies and Contracts
 
 ### APIs
 
 | Contract | Owner | Consumers | Versioning | Evidence |
-|---|---|---|---|---|
+| -------- | ----- | --------- | ---------- | -------- |
 
 ### Events
 
 | Event | Producer | Consumers | Transport | Schema | Evidence |
-|---|---|---|---|---|---|
+| ----- | -------- | --------- | --------- | ------ | -------- |
 
 ## 8. Data Ownership
 
 | Data | Authoritative Owner | Store | Readers | Writers | Evidence |
-|---|---|---|---|---|---|
+| ---- | ------------------- | ----- | ------- | ------- | -------- |
 
 ## 9. Configuration and Environments
 
 | Setting | Consumer | Source | Environment Overrides | Sensitive | Evidence |
-|---|---|---|---|---|---|
+| ------- | -------- | ------ | --------------------- | --------- | -------- |
 
 ## 10. Security
 
@@ -1954,7 +1954,7 @@ These outputs do not always require separate documents. For small tasks, several
 ## 11. Tests and Quality Gates
 
 | Behavior | Test Type | Location | Pipeline Gate | Coverage Notes |
-|---|---|---|---|---|
+| -------- | --------- | -------- | ------------- | -------------- |
 
 ## 12. Operations and Deployment
 
@@ -1968,22 +1968,22 @@ These outputs do not always require separate documents. For small tasks, several
 ## 13. Evidence Ledger
 
 | Finding | Classification | Evidence | Confidence | Impact |
-|---|---|---|---|---|
+| ------- | -------------- | -------- | ---------- | ------ |
 
 ## 14. Contradictions
 
 | Topic | Conflicting Sources | Impact | Required Resolution |
-|---|---|---|---|
+| ----- | ------------------- | ------ | ------------------- |
 
 ## 15. Unknowns
 
 | Unknown | Relevance | Blocking | Next Step |
-|---|---|---|---|
+| ------- | --------- | -------- | --------- |
 
 ## 16. Open Questions
 
 | Question | Decision Owner | Blocking | Temporary Assumption |
-|---|---|---|---|
+| -------- | -------------- | -------- | -------------------- |
 
 ## 17. Applicable Repository Guidance
 
@@ -2017,9 +2017,9 @@ Rationale:
 
 ## 20. Recommended Next Steps
 
-1.
-2.
-3.
+1. [First action]
+2. [Next action]
+3. [Final action]
 ```
 
 This template is deliberately evidence-oriented.
@@ -2597,7 +2597,7 @@ Outbox record persisted
     ↓
 API returns confirmation
     ↓
-Booking Worker publishes BookingConfirmed
+Booking Worker publishes BookingConfirmedV2
 ```
 
 This trace reveals:
@@ -2656,13 +2656,13 @@ Evidence:
 * Customer Service owns walk-in customer vehicles.
 * Booking stores a vehicle snapshot at reservation time.
 * The existing consumer endpoint accepts a vehicle identifier and retrieves details from Customer Service.
-* No bulk Fleet client exists.
+* No bulk Fleet client was found in Booking.
 * Fleet exposes a batch eligibility endpoint in its OpenAPI specification but no generated client is present in Booking.
 
 Findings:
 
 * Fleet ownership: Verified Fact.
-* Booking should use the batch eligibility endpoint: Strong Inference.
+* The batch eligibility endpoint appears to support the required operation: Strong Inference.
 * Client-generation workflow: Unknown.
 * Whether vehicle snapshots require all fleet attributes: Unknown.
 
@@ -2731,19 +2731,19 @@ This is a gap, not proof that partial success is allowed.
 Findings:
 
 * Booking API and Booking Worker use different managed identities.
-* Booking API may call Station Operations and Fleet.
+* Booking API calls Station Operations. Access to Fleet requires validation.
 * Booking Worker may publish events.
 * A new Fleet client permission may be required for the API identity.
 * Bulk booking may increase Station Operations call duration.
 * Existing tracing propagates `correlationId`.
 * A dashboard tracks single-booking latency but not batch size.
-* No feature flag exists for corporate fleet booking.
+* No active feature flag for corporate fleet booking was found in the inspected deployment configuration.
 
 Operational implications:
 
 * Add batch-size and outcome metrics.
 * Preserve correlation across item reservations.
-* Add Fleet access to the API identity.
+* Add Fleet access to the API identity if the existing permissions are insufficient.
 * Consider a feature flag for controlled rollout.
 * Define timeout and partial-failure behavior.
 * Validate API request limits.
@@ -2753,7 +2753,7 @@ Operational implications:
 Contradiction:
 
 * Product notes imply partial acceptance.
-* The architecture test fixture assumes reservation commands are atomic.
+* An existing integration test requires all-or-nothing behavior for reservation commands. Its applicability to multi-vehicle booking requires clarification.
 
 Unknowns:
 

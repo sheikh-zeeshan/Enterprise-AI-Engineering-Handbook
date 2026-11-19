@@ -1,0 +1,7 @@
+
+How the Layering Works
+
+Claude Code stacks instructions from the broadest scope to the most specific:
+1. The Global Layer (~/.claude/CLAUDE.md): If you place Andrej Karpathy's behavior principles here, they act as permanent guardrails. Every time you open Claude Code anywhere on your computer, it will naturally remember to think before coding and make surgical changes.
+2. The Project Root Layer (./CLAUDE.md): This is where you declare the actual code architecture. It outlines your standard build scripts, exact test commands, and major linting configurations so the AI can execute terminal tools correctly.
+3. The Directory Layer (./src/subdir/CLAUDE.md): If you have a monorepo or a split stack (like a React frontend and a Go backend), a markdown file in a specific subdirectory forces Claude to adapt to that environment on demand when modifying files inside it.

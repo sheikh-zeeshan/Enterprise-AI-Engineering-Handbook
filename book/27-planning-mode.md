@@ -1,12 +1,12 @@
-# **Chapter 27 — Planning Mode**
+# Chapter 27 — Planning Mode
 
 **Part IV — Claude Engineering**
 
 *Enterprise AI Engineering Handbook*
 
-## **1. Story-driven Opening**
+## 1. Story-driven Opening
 
-### **1.1 The Corporate Fleet Booking Change**
+### 1.1 The Corporate Fleet Booking Change
 
 Alpha Car Detailing operates a nationwide network of vehicle washing and detailing stations. Its enterprise booking platform supports individual customers, corporate fleets, government departments, and commercial vehicle operators.
 
@@ -38,7 +38,7 @@ These are not primarily code-generation problems.
 
 They are failures to understand the task and its operational context before execution.
 
-### **1.2 The Hidden Complexity**
+### 1.2 The Hidden Complexity
 
 The Lead Agent examines the request and identifies several unresolved engineering questions.
 
@@ -62,7 +62,7 @@ A limit based on active reservations requires different data access and transact
 
 An agent that starts coding before investigating these questions is not accelerating the full engineering lifecycle. It is moving uncertainty from the analysis phase into the implementation phase, where mistakes become more expensive.
 
-### **1.3 Introducing Planning Mode**
+### 1.3 Introducing Planning Mode
 
 The team decides that the corporate fleet booking change must go through Planning Mode before implementation.
 
@@ -92,7 +92,7 @@ At this point, the plan becomes an important coordination artifact.
 
 The human architect can verify the proposed transaction boundary, challenge assumptions about booking limits, and approve the implementation direction before the Developer Agent begins changing code.
 
-### **1.4 Why Planning Changes the Outcome**
+### 1.4 Why Planning Changes the Outcome
 
 Planning Mode does not guarantee correct implementation.
 
@@ -114,7 +114,7 @@ The distinction is central:
 
 These activities cooperate, but they must not be confused.
 
-### **1.5 The Enterprise Engineering Principle**
+### 1.5 The Enterprise Engineering Principle
 
 Traditional engineering disciplines distinguish requirements analysis, design, implementation, verification, and acceptance.
 
@@ -132,37 +132,37 @@ The resulting principle is simple:
 
 Planning is therefore not an administrative delay. For consequential changes, it is an engineering control that reduces avoidable rework and improves accountability.
 
-## **2. Learning Objectives**
+## 2. Learning Objectives
 
 After completing this chapter, the reader should be able to:
 
-1\. Explain Planning Mode as a deliberate, non-mutating phase of AI-assisted software development.
+1. Explain Planning Mode as a deliberate, non-mutating phase of AI-assisted software development.
 
-2\. Distinguish a Prompt, a Plan, and a Scratchpad by purpose, ownership, lifecycle, and authority.
+2. Distinguish a Prompt, a Plan, and a Scratchpad by purpose, ownership, lifecycle, and authority.
 
-3\. Identify when a task requires formal planning and when direct execution is proportionate to its risk.
+3. Identify when a task requires formal planning and when direct execution is proportionate to its risk.
 
-4\. Explain how Repository Discovery, applicable Instructions, Skills, Knowledge Sources, and Steering Notes influence implementation planning.
+4. Explain how Repository Discovery, applicable Instructions, Skills, Knowledge Sources, and Steering Notes influence implementation planning.
 
-5\. Determine task scope, dependencies, sequencing constraints, risks, assumptions, and acceptance criteria before execution.
+5. Determine task scope, dependencies, sequencing constraints, risks, assumptions, and acceptance criteria before execution.
 
-6\. Design plans that define measurable validation requirements rather than relying on general statements about testing.
+6. Design plans that define measurable validation requirements rather than relying on general statements about testing.
 
-7\. Explain the relationship between Planning Mode and the Lead, Developer, Reviewer, Validator, and Evaluator Agents.
+7. Explain the relationship between Planning Mode and the Lead, Developer, Reviewer, Validator, and Evaluator Agents.
 
-8\. Establish appropriate human approval boundaries for architectural, security-sensitive, or high-impact changes.
+8. Establish appropriate human approval boundaries for architectural, security-sensitive, or high-impact changes.
 
-9\. Recognize plan drift and define when implementation must pause for re-planning.
+9. Recognize plan drift and define when implementation must pause for re-planning.
 
-10\. Implement a practical Claude Code planning workflow that produces an actionable handoff without prematurely modifying source files.
+10. Implement a practical Claude Code planning workflow that produces an actionable handoff without prematurely modifying source files.
 
-11\. Integrate planning into an enterprise Harness using explicit state transitions, approval decisions, traceable artifacts, and deterministic gates.
+11. Integrate planning into an enterprise Harness using explicit state transitions, approval decisions, traceable artifacts, and deterministic gates.
 
-12\. Apply these practices to Alpha Car Detailing's corporate fleet booking capability, including booking limits, idempotency, concurrency, transactional consistency, and validation.
+12. Apply these practices to Alpha Car Detailing's corporate fleet booking capability, including booking limits, idempotency, concurrency, transactional consistency, and validation.
 
-## **3. Background**
+## 3. Background
 
-### **3.1 From Immediate Code Generation to Deliberate Engineering**
+### 3.1 From Immediate Code Generation to Deliberate Engineering
 
 Early AI-assisted development workflows often followed a simple interaction pattern.
 
@@ -190,7 +190,7 @@ The surrounding engineering decisions determine whether the feature remains corr
 
 Planning Mode exists to address this gap between syntactic code generation and engineering responsibility.
 
-### **3.2 The Cost of Premature Implementation**
+### 3.2 The Cost of Premature Implementation
 
 Premature implementation occurs when an agent starts changing the repository before establishing enough understanding to select an appropriate approach.
 
@@ -212,7 +212,7 @@ These failures are especially costly when an AI Agent can generate many files be
 
 Planning helps prevent the first implementation from becoming the default design merely because code already exists.
 
-### **3.3 Planning as an Explicit Engineering Phase**
+### 3.3 Planning as an Explicit Engineering Phase
 
 Planning Mode establishes a distinct activity with defined inputs, permitted operations, outputs, and exit conditions.
 
@@ -236,7 +236,7 @@ The critical requirement is that permissions and responsibilities remain distinc
 
 A planning session should not become an implementation session simply because the AI Agent encounters a straightforward change.
 
-### **3.4 Planning Is Not Waterfall Development**
+### 3.4 Planning Is Not Waterfall Development
 
 An explicit planning phase does not require every implementation decision to be finalized upfront.
 
@@ -260,7 +260,7 @@ Planning and adaptive development are therefore compatible.
 
 Planning establishes the initial direction. Execution supplies additional evidence. Re-planning manages material changes.
 
-### **3.5 The Relationship to Repository Intelligence**
+### 3.5 The Relationship to Repository Intelligence
 
 Planning Mode depends on the Repository Intelligence concepts introduced in Part II.
 
@@ -290,7 +290,7 @@ This is especially important for reusable Skills. A Skill may describe how to im
 
 The Skill contributes a repeatable method. It does not establish that every prerequisite is present.
 
-### **3.6 The Relationship to Harness Engineering**
+### 3.6 The Relationship to Harness Engineering
 
 Part III introduced the Harness as the orchestration and control system surrounding AI-assisted development.
 
@@ -316,9 +316,9 @@ The division can be summarized as follows:
 
 **The Lead Agent owns the coordination responsibility. Planning Mode defines how analysis is conducted. The Harness enforces the workflow.**
 
-## **4. Concepts**
+## 4. Concepts
 
-### **4.1 What Is Planning Mode?**
+### 4.1 What Is Planning Mode?
 
 Planning Mode is a deliberate operating phase in which an AI Agent investigates a requested change, evaluates available engineering evidence, and constructs an implementation approach before modifying source code or configuration.
 
@@ -343,7 +343,7 @@ A useful definition is:
 
 The transformation is important. The Prompt expresses intent; the Plan translates that intent into engineering work.
 
-### **4.2 Planning Mode Versus a Plan**
+### 4.2 Planning Mode Versus a Plan
 
 Although closely related, Planning Mode and a Plan are not interchangeable.
 
@@ -353,7 +353,7 @@ The Plan is the artifact produced by that activity.
 
 | Dimension | Planning Mode                          | Plan                                                             |
 | --------- | -------------------------------------- | ---------------------------------------------------------------- |
-| Nature    | Execution phase or operating mode      | Engineering artifact                                             |
+| Nature    | Analysis phase or operating mode      | Engineering artifact                                             |
 | Purpose   | Investigate and design an approach     | Communicate the proposed approach                                |
 | Duration  | Until planning exit conditions are met | Through execution and subsequent review                          |
 | Behavior  | Read, inspect, reason, consult         | Record decisions, tasks, dependencies, and evidence requirements |
@@ -368,7 +368,7 @@ The Plan persists as the agreed implementation reference for the relevant task o
 
 It should retain enough traceability to explain why important implementation decisions were made.
 
-### **4.3 Planning Mode Versus Prompt**
+### 4.3 Planning Mode Versus Prompt
 
 A Prompt describes the task the agent is expected to perform.
 
@@ -394,7 +394,7 @@ For example, a Plan cannot justify replacing the persistence technology solely b
 
 Such a change would require separate authorization.
 
-### **4.4 Planning Mode Versus Scratchpad**
+### 4.4 Planning Mode Versus Scratchpad
 
 The Scratchpad and Run Workspace concepts introduced earlier serve a different purpose from the Plan.
 
@@ -435,7 +435,7 @@ A Plan should not become a dumping ground for terminal output, failed experiment
 
 Conversely, important architectural decisions must not remain buried in a Scratchpad where reviewers and downstream agents may overlook them.
 
-### **4.5 Planning Mode Versus Lead Agent Responsibility**
+### 4.5 Planning Mode Versus Lead Agent Responsibility
 
 The Lead Agent is a role within the Harness architecture.
 
@@ -467,7 +467,7 @@ That removes responsibility from a named role and assigns it to a tool capabilit
 
 Modes govern how work is performed. Roles establish who is accountable for that work.
 
-### **4.6 When Planning Mode Should Be Used**
+### 4.6 When Planning Mode Should Be Used
 
 Not every change requires the same level of planning.
 
@@ -495,7 +495,7 @@ Organizations should establish their own thresholds based on system criticality 
 
 The objective is not to maximize planning. It is to ensure that consequential decisions receive sufficient investigation before implementation.
 
-### **4.7 Repository Discovery Before Planning**
+### 4.7 Repository Discovery Before Planning
 
 Repository Discovery should precede detailed implementation planning.
 
@@ -534,7 +534,7 @@ Repository evidence must be cited within the Plan using identifiable files, symb
 
 A claim such as "the existing architecture already supports idempotency" is insufficient unless the agent can identify the relevant implementation and explain its applicability.
 
-### **4.8 Applicable Instructions**
+### 4.8 Applicable Instructions
 
 Instructions constrain the planning process and subsequent implementation.
 
@@ -560,7 +560,7 @@ Similarly, a Plan cannot grant itself permission to change protected Instruction
 
 Where Instructions conflict or lack clarity, the planner should record the issue and request authorized resolution.
 
-### **4.9 Skill Selection**
+### 4.9 Skill Selection
 
 Skills supply reusable procedures for recurring engineering activities.
 
@@ -587,7 +587,7 @@ If an existing Skill assumes an architecture that differs from the repository, t
 
 A Skill is a reusable implementation method, not a substitute for architectural judgment.
 
-### **4.10 Scope Identification**
+### 4.10 Scope Identification
 
 Scope defines the boundaries of authorized change.
 
@@ -613,7 +613,7 @@ Thus, scope has at least three dimensions:
 
 These dimensions are related but not identical.
 
-### **4.11 Task Decomposition**
+### 4.11 Task Decomposition
 
 Task decomposition converts the implementation objective into smaller, ordered engineering activities.
 
@@ -639,7 +639,7 @@ The Plan should not invent arbitrary implementation sequences merely to appear c
 
 A high-quality task breakdown is detailed enough for execution without prescribing unnecessary code-level decisions.
 
-### **4.12 Dependency Analysis**
+### 4.12 Dependency Analysis
 
 Dependencies determine whether implementation tasks can safely proceed independently.
 
@@ -663,7 +663,7 @@ Integration testing may depend on a corporate policy test fixture and an appropr
 
 The Plan should identify these relationships rather than presenting tasks as an unstructured checklist.
 
-### **4.13 Risk Identification**
+### 4.13 Risk Identification
 
 Planning risk assessment focuses on conditions that could cause implementation failure, unsafe behavior, or unacceptable operational consequences.
 
@@ -685,7 +685,7 @@ Risk analysis should influence implementation priorities and validation design.
 
 It should not be a ceremonial table added after the rest of the Plan has been written.
 
-### **4.14 Assumptions and Unresolved Questions**
+### 4.14 Assumptions and Unresolved Questions
 
 An assumption is a proposition used to construct the Plan without sufficient confirming evidence.
 
@@ -721,7 +721,7 @@ Planning should distinguish between:
 
 This distinction helps prevent an AI Agent from presenting uncertainty as established architecture.
 
-### **4.15 Acceptance Criteria**
+### 4.15 Acceptance Criteria
 
 Acceptance criteria describe observable conditions that must be satisfied for the business requirement to be considered fulfilled.
 
@@ -748,7 +748,7 @@ A Plan that says only "add unit tests" is incomplete.
 
 It should identify which behavior those tests must establish and whether the evidence requires unit, integration, contract, concurrency, security, or other checks.
 
-### **4.16 Validation Strategy**
+### 4.16 Validation Strategy
 
 Validation planning determines how objective implementation conditions will be checked.
 
@@ -783,7 +783,7 @@ The Plan defines the required evidence. The Validator Agent examines evidence ge
 
 The Evaluator Agent subsequently assesses whether the implementation satisfies the goal and broader acceptance expectations.
 
-### **4.17 Human Approval**
+### 4.17 Human Approval
 
 Human approval is an explicit authorization decision, not merely an opportunity to read the Plan.
 
@@ -812,7 +812,7 @@ Approving a Plan to add a database migration does not necessarily authorize appl
 
 Separate deployment, data access, and change-management controls remain in force.
 
-### **4.18 Plan Updates and Plan Drift**
+### 4.18 Plan Updates and Plan Drift
 
 A Plan is based on the best evidence available at the time of approval.
 
@@ -838,7 +838,7 @@ When material drift occurs:
 
 This approach allows adaptive engineering without permitting uncontrolled architectural changes.
 
-### **4.19 Handoff to Execution**
+### 4.19 Handoff to Execution
 
 Planning ends with a controlled handoff.
 
@@ -856,9 +856,9 @@ Planning completion means the approach is ready for execution.
 
 It does not mean the engineering task is complete.
 
-## **5. Architecture Discussion**
+## 5. Architecture Discussion
 
-### **5.1 Planning as an Architectural Boundary**
+### 5.1 Planning as an Architectural Boundary
 
 Within an enterprise Harness, Planning Mode should be treated as a first-class workflow boundary rather than an optional conversational convention.
 
@@ -868,7 +868,7 @@ A robust Harness combines that instruction with tool restrictions, workspace iso
 
 The planning architecture should provide four guarantees.
 
-**Non-mutation:** Planning cannot alter protected repository files, production configuration, or external resources.
+**Non-mutation:** Planning cannot alter protected repository files, production configuration, or external resources; writing the proposed Plan to designated planning storage remains permitted.
 
 **Traceability:** Material findings, decisions, assumptions, and planned validation steps are recorded.
 
@@ -878,7 +878,7 @@ The planning architecture should provide four guarantees.
 
 These guarantees establish Planning Mode as an engineering control rather than a prompt-writing technique.
 
-### **5.2 Inputs to Planning**
+### 5.2 Inputs to Planning
 
 Planning should receive a defined set of inputs.
 
@@ -904,7 +904,7 @@ Likewise, a retrieved Knowledge Source may be outdated or incomplete.
 
 The planning process should establish provenance and identify conflicts before incorporating findings into its proposed approach.
 
-### **5.3 A Reference Planning Architecture**
+### 5.3 A Reference Planning Architecture
 
 A practical reference architecture contains six logical components.
 
@@ -928,11 +928,11 @@ It cannot deterministically prove that the proposed architecture is correct mere
 
 Architectural quality still requires substantive review.
 
-### **5.4 Planning Mode Inside the Harness**
+### 5.4 Planning Mode Inside the Harness
 
 A simplified Harness workflow can be modeled as:
 
-```
+```text
 Task Intake
     |
     v
@@ -973,7 +973,7 @@ An acceptance mismatch may require clarification of business requirements.
 
 The Harness coordinates these transitions while preserving evidence.
 
-### **5.5 Plan Artifact Design**
+### 5.5 Plan Artifact Design
 
 The Plan should be structured enough to support both human review and automated Harness processing.
 
@@ -1006,7 +1006,7 @@ The format is less important than maintaining an unambiguous relationship betwee
 
 For example, a Harness may store a Markdown Plan for engineers while keeping approval status and repository revision in a structured run record.
 
-### **5.6 Planning Artifact Versus Repository Knowledge**
+### 5.6 Planning Artifact Versus Repository Knowledge
 
 A Plan is task-specific.
 
@@ -1024,13 +1024,13 @@ That promotion should follow the governance process defined for the destination 
 
 The Plan itself does not silently amend repository standards.
 
-### **5.7 Approval as a State Transition**
+### 5.7 Approval as a State Transition
 
 Approval must be represented as an explicit transition in the Harness state model.
 
 A simplified state sequence is:
 
-```
+```text
 Draft
   |
   v
@@ -1055,7 +1055,7 @@ New information may require a revised Plan.
 
 The state model should account for these possibilities rather than assuming that every proposed Plan eventually becomes approved.
 
-### **5.8 Repository Baseline and Plan Freshness**
+### 5.8 Repository Baseline and Plan Freshness
 
 A Plan is created against a particular understanding of the repository.
 
@@ -1079,7 +1079,7 @@ A useful policy is:
 
 This establishes plan freshness as a measurable property.
 
-### **5.9 Security and Permissions**
+### 5.9 Security and Permissions
 
 A planning phase should follow least-privilege principles.
 
@@ -1099,7 +1099,7 @@ An attacker-controlled README, source-code comment, or retrieved document may at
 
 Planning must treat such material as evidence to evaluate, not as an authority capable of overriding Instructions.
 
-### **5.10 Failure Handling**
+### 5.10 Failure Handling
 
 A planning process may fail without producing an executable Plan.
 
@@ -1117,59 +1117,167 @@ The Harness should record the reason for the block and identify the authority re
 
 A missing decision must not become permission for the AI Agent to invent a convenient business rule.
 
-## **6. Professional Diagrams**
+## 6. Professional Diagrams
 
-### **6.1 Planning-to-Execution Flow**
+### 6.1 Planning-to-Execution Flow
 
 The following diagram illustrates the separation between task interpretation, planning, approval, and implementation.
 
-\#chatgpt-mermaid-\_r_1bok\_ :is(.node,.pele-node).success :is(rect,circle,ellipse,polygon,path):where(:not(.label \*)) {fill:#1d3827;stroke:#194b2d}#chatgpt-mermaid-\_r_1bok\_ :is(.node,.pele-node).success [fill="none"]:where(:not(.label \*)) {fill:none}#chatgpt-mermaid-\_r_1bok\_ :is(.node,.pele-node).success [stroke="none"]:where(:not(.label \*)) {stroke:none}#chatgpt-mermaid-\_r_1bok\_ :is(.node,.pele-node).success :where(text,.label,.nodeLabel) {fill:#53b559;color:#53b559}#chatgpt-mermaid-\_r_1bok\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(237, 237, 237);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_1bok\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_1bok\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_1bok\_ .error-icon{fill:rgb(48, 48, 48);}#chatgpt-mermaid-\_r_1bok\_ .error-text{fill:rgb(237, 237, 237);stroke:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1bok\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_1bok\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_1bok\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_1bok\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_1bok\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_1bok\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_1bok\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1bok\_ .marker.cross{stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1bok\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_1bok\_ p{margin:0;}#chatgpt-mermaid-\_r_1bok\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1bok\_ .cluster-label text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1bok\_ .cluster-label span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1bok\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_1bok\_ .label text,#chatgpt-mermaid-\_r_1bok\_ span{fill:rgb(237, 237, 237);color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1bok\_ .node rect,#chatgpt-mermaid-\_r_1bok\_ .node circle,#chatgpt-mermaid-\_r_1bok\_ .node ellipse,#chatgpt-mermaid-\_r_1bok\_ .node polygon,#chatgpt-mermaid-\_r_1bok\_ .node path{fill:rgb(9, 23, 44);stroke:rgb(31, 78, 148);stroke-width:1px;}#chatgpt-mermaid-\_r_1bok\_ .rough-node .label text,#chatgpt-mermaid-\_r_1bok\_ .node .label text,#chatgpt-mermaid-\_r_1bok\_ .image-shape .label,#chatgpt-mermaid-\_r_1bok\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_1bok\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_1bok\_ .rough-node .label,#chatgpt-mermaid-\_r_1bok\_ .node .label,#chatgpt-mermaid-\_r_1bok\_ .image-shape .label,#chatgpt-mermaid-\_r_1bok\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_1bok\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_1bok\_ .root .anchor path{fill:rgb(175, 175, 175)!important;stroke-width:0;stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1bok\_ .arrowheadPath{fill:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1bok\_ .edgePath .path{stroke:rgb(175, 175, 175);stroke-width:1px;}#chatgpt-mermaid-\_r_1bok\_ .flowchart-link{stroke:rgb(175, 175, 175);fill:none;}#chatgpt-mermaid-\_r_1bok\_ .edgeLabel{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_1bok\_ .edgeLabel p{background-color:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1bok\_ .edgeLabel rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1bok\_ .labelBkg{background-color:rgba(0, 0, 0, 0.5);}#chatgpt-mermaid-\_r_1bok\_ .cluster rect{fill:rgb(48, 48, 48);stroke:rgba(255, 255, 255, 0.15);stroke-width:1px;}#chatgpt-mermaid-\_r_1bok\_ .cluster text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1bok\_ .cluster span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1bok\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(48, 48, 48);border:1px solid rgba(255, 255, 255, 0.15);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_1bok\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1bok\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_1bok\_ .icon-shape,#chatgpt-mermaid-\_r_1bok\_ .image-shape{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_1bok\_ .icon-shape p,#chatgpt-mermaid-\_r_1bok\_ .image-shape p{background-color:rgb(0, 0, 0);padding:2px;}#chatgpt-mermaid-\_r_1bok\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_1bok\_ .image-shape .label rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1bok\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_1bok\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_1bok\_ .node .neo-node{stroke:rgb(31, 78, 148);}#chatgpt-mermaid-\_r_1bok\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_1bok\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_1bok\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_1bok\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1bok\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_1bok\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_1bok\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_1bok\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1bok\_ [data-look="neo"].node .neo-line path{stroke:rgb(31, 78, 148);filter:none;}#chatgpt-mermaid-\_r_1bok\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_1bok\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1bok\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_1bok\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_1bok\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1bok\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_1bok\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1bok\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_1bok\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_1bok\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_1bok\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_1bok\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-width:1px;}#chatgpt-mermaid-\_r_1bok\_ .node rect,#chatgpt-mermaid-\_r_1bok\_ .node circle,#chatgpt-mermaid-\_r_1bok\_ .node ellipse,#chatgpt-mermaid-\_r_1bok\_ .node polygon,#chatgpt-mermaid-\_r_1bok\_ .node path{fill:rgb(0, 40, 77);stroke:rgba(255, 255, 255, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_1bok\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_1bok\_ .mermaid-decision .label-container{fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_1bok\_ .edgePaths .flowchart-link{stroke:rgb(175, 175, 175);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_1bok\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1bok\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}#chatgpt-mermaid-\_r_1bok\_ .decision rect{fill:rgb(255, 242, 213)!important;stroke:rgb(169, 121, 22)!important;color:rgb(66, 46, 8)!important;}#chatgpt-mermaid-\_r_1bok\_ .decision polygon{fill:rgb(255, 242, 213)!important;stroke:rgb(169, 121, 22)!important;color:rgb(66, 46, 8)!important;}#chatgpt-mermaid-\_r_1bok\_ .decision ellipse{fill:rgb(255, 242, 213)!important;stroke:rgb(169, 121, 22)!important;color:rgb(66, 46, 8)!important;}#chatgpt-mermaid-\_r_1bok\_ .decision circle{fill:rgb(255, 242, 213)!important;stroke:rgb(169, 121, 22)!important;color:rgb(66, 46, 8)!important;}#chatgpt-mermaid-\_r_1bok\_ .decision path{fill:rgb(255, 242, 213)!important;stroke:rgb(169, 121, 22)!important;color:rgb(66, 46, 8)!important;}#chatgpt-mermaid-\_r_1bok\_ .decision tspan{fill:rgb(66, 46, 8)!important;}#chatgpt-mermaid-\_r_1bok\_ .phase rect{fill:rgb(232, 240, 255)!important;stroke:rgb(71, 117, 186)!important;color:rgb(23, 59, 114)!important;}#chatgpt-mermaid-\_r_1bok\_ .phase polygon{fill:rgb(232, 240, 255)!important;stroke:rgb(71, 117, 186)!important;color:rgb(23, 59, 114)!important;}#chatgpt-mermaid-\_r_1bok\_ .phase ellipse{fill:rgb(232, 240, 255)!important;stroke:rgb(71, 117, 186)!important;color:rgb(23, 59, 114)!important;}#chatgpt-mermaid-\_r_1bok\_ .phase circle{fill:rgb(232, 240, 255)!important;stroke:rgb(71, 117, 186)!important;color:rgb(23, 59, 114)!important;}#chatgpt-mermaid-\_r_1bok\_ .phase path{fill:rgb(232, 240, 255)!important;stroke:rgb(71, 117, 186)!important;color:rgb(23, 59, 114)!important;}#chatgpt-mermaid-\_r_1bok\_ .phase tspan{fill:rgb(23, 59, 114)!important;}#chatgpt-mermaid-\_r_1bok\_ .success rect{fill:rgb(229, 244, 234)!important;stroke:rgb(67, 140, 91)!important;color:rgb(33, 84, 53)!important;}#chatgpt-mermaid-\_r_1bok\_ .success polygon{fill:rgb(229, 244, 234)!important;stroke:rgb(67, 140, 91)!important;color:rgb(33, 84, 53)!important;}#chatgpt-mermaid-\_r_1bok\_ .success ellipse{fill:rgb(229, 244, 234)!important;stroke:rgb(67, 140, 91)!important;color:rgb(33, 84, 53)!important;}#chatgpt-mermaid-\_r_1bok\_ .success circle{fill:rgb(229, 244, 234)!important;stroke:rgb(67, 140, 91)!important;color:rgb(33, 84, 53)!important;}#chatgpt-mermaid-\_r_1bok\_ .success path{fill:rgb(229, 244, 234)!important;stroke:rgb(67, 140, 91)!important;color:rgb(33, 84, 53)!important;}#chatgpt-mermaid-\_r_1bok\_ .success tspan{fill:rgb(33, 84, 53)!important;}Planning ActivitiesIdentify ScopeDecompose TasksAnalyze DependenciesIdentify RisksRecord AssumptionsDefine Validation PlanTask PromptRepository DiscoveryApplicable InstructionsSkill and Knowledge ResolutionPlanning ModeProposed PlanReview and ApprovalDeveloper AgentExecutionReview, Validation andEvaluationRevision requiredApproved
+```mermaid
+flowchart TD
+    A["Task Prompt"] --> B["Repository Discovery"]
+    B --> C["Applicable Instructions"]
+    C --> D["Skill and Knowledge Resolution"]
+    D --> E["Planning Mode"]
+    subgraph Plan["Planning Activities"]
+        F["Identify Scope"] --> G["Decompose Tasks"]
+        G --> H["Analyze Dependencies"]
+        H --> I["Identify Risks"]
+        I --> J["Record Assumptions"]
+        J --> K["Define Validation Plan"]
+    end
+    E --> F
+    K --> L["Proposed Plan"]
+    L --> M{"Review and Approval"}
+    M -->|"Revision required"| E
+    M -->|"Approved"| N["Developer Agent"]
+    N --> O["Execution"]
+    O --> P["Review, Validation and Evaluation"]
+```
 
 The approval boundary is explicit. Reaching the end of planning does not automatically authorize implementation.
 
-### **6.2 Relationship Between Prompt, Plan, and Scratchpad**
+### 6.2 Relationship Between Prompt, Plan, and Scratchpad
 
-\#chatgpt-mermaid-\_r_1bor\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(237, 237, 237);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_1bor\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_1bor\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_1bor\_ .error-icon{fill:rgb(48, 48, 48);}#chatgpt-mermaid-\_r_1bor\_ .error-text{fill:rgb(237, 237, 237);stroke:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1bor\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_1bor\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_1bor\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_1bor\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_1bor\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_1bor\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_1bor\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1bor\_ .marker.cross{stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1bor\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_1bor\_ p{margin:0;}#chatgpt-mermaid-\_r_1bor\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1bor\_ .cluster-label text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1bor\_ .cluster-label span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1bor\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_1bor\_ .label text,#chatgpt-mermaid-\_r_1bor\_ span{fill:rgb(237, 237, 237);color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1bor\_ .node rect,#chatgpt-mermaid-\_r_1bor\_ .node circle,#chatgpt-mermaid-\_r_1bor\_ .node ellipse,#chatgpt-mermaid-\_r_1bor\_ .node polygon,#chatgpt-mermaid-\_r_1bor\_ .node path{fill:rgb(9, 23, 44);stroke:rgb(31, 78, 148);stroke-width:1px;}#chatgpt-mermaid-\_r_1bor\_ .rough-node .label text,#chatgpt-mermaid-\_r_1bor\_ .node .label text,#chatgpt-mermaid-\_r_1bor\_ .image-shape .label,#chatgpt-mermaid-\_r_1bor\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_1bor\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_1bor\_ .rough-node .label,#chatgpt-mermaid-\_r_1bor\_ .node .label,#chatgpt-mermaid-\_r_1bor\_ .image-shape .label,#chatgpt-mermaid-\_r_1bor\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_1bor\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_1bor\_ .root .anchor path{fill:rgb(175, 175, 175)!important;stroke-width:0;stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1bor\_ .arrowheadPath{fill:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1bor\_ .edgePath .path{stroke:rgb(175, 175, 175);stroke-width:1px;}#chatgpt-mermaid-\_r_1bor\_ .flowchart-link{stroke:rgb(175, 175, 175);fill:none;}#chatgpt-mermaid-\_r_1bor\_ .edgeLabel{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_1bor\_ .edgeLabel p{background-color:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1bor\_ .edgeLabel rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1bor\_ .labelBkg{background-color:rgba(0, 0, 0, 0.5);}#chatgpt-mermaid-\_r_1bor\_ .cluster rect{fill:rgb(48, 48, 48);stroke:rgba(255, 255, 255, 0.15);stroke-width:1px;}#chatgpt-mermaid-\_r_1bor\_ .cluster text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1bor\_ .cluster span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1bor\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(48, 48, 48);border:1px solid rgba(255, 255, 255, 0.15);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_1bor\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1bor\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_1bor\_ .icon-shape,#chatgpt-mermaid-\_r_1bor\_ .image-shape{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_1bor\_ .icon-shape p,#chatgpt-mermaid-\_r_1bor\_ .image-shape p{background-color:rgb(0, 0, 0);padding:2px;}#chatgpt-mermaid-\_r_1bor\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_1bor\_ .image-shape .label rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1bor\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_1bor\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_1bor\_ .node .neo-node{stroke:rgb(31, 78, 148);}#chatgpt-mermaid-\_r_1bor\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_1bor\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_1bor\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_1bor\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1bor\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_1bor\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_1bor\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_1bor\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1bor\_ [data-look="neo"].node .neo-line path{stroke:rgb(31, 78, 148);filter:none;}#chatgpt-mermaid-\_r_1bor\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_1bor\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1bor\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_1bor\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_1bor\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1bor\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_1bor\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1bor\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_1bor\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_1bor\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_1bor\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_1bor\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-width:1px;}#chatgpt-mermaid-\_r_1bor\_ .node rect,#chatgpt-mermaid-\_r_1bor\_ .node circle,#chatgpt-mermaid-\_r_1bor\_ .node ellipse,#chatgpt-mermaid-\_r_1bor\_ .node polygon,#chatgpt-mermaid-\_r_1bor\_ .node path{fill:rgb(0, 40, 77);stroke:rgba(255, 255, 255, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_1bor\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_1bor\_ .mermaid-decision .label-container{fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_1bor\_ .edgePaths .flowchart-link{stroke:rgb(175, 175, 175);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_1bor\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1bor\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}#chatgpt-mermaid-\_r_1bor\_ .intent rect{fill:rgb(232, 240, 255)!important;stroke:rgb(71, 117, 186)!important;color:rgb(23, 59, 114)!important;}#chatgpt-mermaid-\_r_1bor\_ .intent polygon{fill:rgb(232, 240, 255)!important;stroke:rgb(71, 117, 186)!important;color:rgb(23, 59, 114)!important;}#chatgpt-mermaid-\_r_1bor\_ .intent ellipse{fill:rgb(232, 240, 255)!important;stroke:rgb(71, 117, 186)!important;color:rgb(23, 59, 114)!important;}#chatgpt-mermaid-\_r_1bor\_ .intent circle{fill:rgb(232, 240, 255)!important;stroke:rgb(71, 117, 186)!important;color:rgb(23, 59, 114)!important;}#chatgpt-mermaid-\_r_1bor\_ .intent path{fill:rgb(232, 240, 255)!important;stroke:rgb(71, 117, 186)!important;color:rgb(23, 59, 114)!important;}#chatgpt-mermaid-\_r_1bor\_ .intent tspan{fill:rgb(23, 59, 114)!important;}#chatgpt-mermaid-\_r_1bor\_ .temporary rect{fill:rgb(255, 242, 213)!important;stroke:rgb(169, 121, 22)!important;color:rgb(66, 46, 8)!important;}#chatgpt-mermaid-\_r_1bor\_ .temporary polygon{fill:rgb(255, 242, 213)!important;stroke:rgb(169, 121, 22)!important;color:rgb(66, 46, 8)!important;}#chatgpt-mermaid-\_r_1bor\_ .temporary ellipse{fill:rgb(255, 242, 213)!important;stroke:rgb(169, 121, 22)!important;color:rgb(66, 46, 8)!important;}#chatgpt-mermaid-\_r_1bor\_ .temporary circle{fill:rgb(255, 242, 213)!important;stroke:rgb(169, 121, 22)!important;color:rgb(66, 46, 8)!important;}#chatgpt-mermaid-\_r_1bor\_ .temporary path{fill:rgb(255, 242, 213)!important;stroke:rgb(169, 121, 22)!important;color:rgb(66, 46, 8)!important;}#chatgpt-mermaid-\_r_1bor\_ .temporary tspan{fill:rgb(66, 46, 8)!important;}#chatgpt-mermaid-\_r_1bor\_ .evidence rect{fill:rgb(229, 244, 234)!important;stroke:rgb(67, 140, 91)!important;color:rgb(33, 84, 53)!important;}#chatgpt-mermaid-\_r_1bor\_ .evidence polygon{fill:rgb(229, 244, 234)!important;stroke:rgb(67, 140, 91)!important;color:rgb(33, 84, 53)!important;}#chatgpt-mermaid-\_r_1bor\_ .evidence ellipse{fill:rgb(229, 244, 234)!important;stroke:rgb(67, 140, 91)!important;color:rgb(33, 84, 53)!important;}#chatgpt-mermaid-\_r_1bor\_ .evidence circle{fill:rgb(229, 244, 234)!important;stroke:rgb(67, 140, 91)!important;color:rgb(33, 84, 53)!important;}#chatgpt-mermaid-\_r_1bor\_ .evidence path{fill:rgb(229, 244, 234)!important;stroke:rgb(67, 140, 91)!important;color:rgb(33, 84, 53)!important;}#chatgpt-mermaid-\_r_1bor\_ .evidence tspan{fill:rgb(33, 84, 53)!important;}PromptRequested OutcomePlanning ModeRepository EvidenceInstructions and SkillsApproved PlanImplementation ApproachDeveloper AgentExecutionScratchpadTemporary Run StateMaterial Discovery?Continue ExecutionChange AssessmentValidation EvidenceNoYes
+```mermaid
+flowchart LR
+    A["Prompt: requested outcome"] --> B["Planning Mode"]
+    C["Repository evidence"] --> B
+    D["Instructions and Skills"] --> B
+    B --> E["Approved Plan: implementation approach"]
+    E --> F["Developer Agent"]
+    F --> G["Execution"]
+    G <--> H["Scratchpad: temporary run state"]
+    G --> I{"Material discovery?"}
+    I -->|"No"| J["Continue execution"]
+    I -->|"Yes"| K["Change assessment"]
+    K --> B
+    J --> L["Validation evidence"]
+```
 
 The Scratchpad supports execution without becoming an alternative Plan.
 
 Material discoveries are assessed and, when necessary, incorporated through controlled re-planning.
 
-### **6.3 Agent Responsibility Boundaries**
+### 6.3 Agent Responsibility Boundaries
 
-\#chatgpt-mermaid-\_r_1bp2\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(237, 237, 237);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_1bp2\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_1bp2\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_1bp2\_ .error-icon{fill:rgb(48, 48, 48);}#chatgpt-mermaid-\_r_1bp2\_ .error-text{fill:rgb(237, 237, 237);stroke:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1bp2\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_1bp2\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_1bp2\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_1bp2\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_1bp2\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_1bp2\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_1bp2\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1bp2\_ .marker.cross{stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1bp2\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_1bp2\_ p{margin:0;}#chatgpt-mermaid-\_r_1bp2\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1bp2\_ .cluster-label text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1bp2\_ .cluster-label span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1bp2\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_1bp2\_ .label text,#chatgpt-mermaid-\_r_1bp2\_ span{fill:rgb(237, 237, 237);color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1bp2\_ .node rect,#chatgpt-mermaid-\_r_1bp2\_ .node circle,#chatgpt-mermaid-\_r_1bp2\_ .node ellipse,#chatgpt-mermaid-\_r_1bp2\_ .node polygon,#chatgpt-mermaid-\_r_1bp2\_ .node path{fill:rgb(9, 23, 44);stroke:rgb(31, 78, 148);stroke-width:1px;}#chatgpt-mermaid-\_r_1bp2\_ .rough-node .label text,#chatgpt-mermaid-\_r_1bp2\_ .node .label text,#chatgpt-mermaid-\_r_1bp2\_ .image-shape .label,#chatgpt-mermaid-\_r_1bp2\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_1bp2\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_1bp2\_ .rough-node .label,#chatgpt-mermaid-\_r_1bp2\_ .node .label,#chatgpt-mermaid-\_r_1bp2\_ .image-shape .label,#chatgpt-mermaid-\_r_1bp2\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_1bp2\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_1bp2\_ .root .anchor path{fill:rgb(175, 175, 175)!important;stroke-width:0;stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1bp2\_ .arrowheadPath{fill:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1bp2\_ .edgePath .path{stroke:rgb(175, 175, 175);stroke-width:1px;}#chatgpt-mermaid-\_r_1bp2\_ .flowchart-link{stroke:rgb(175, 175, 175);fill:none;}#chatgpt-mermaid-\_r_1bp2\_ .edgeLabel{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_1bp2\_ .edgeLabel p{background-color:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1bp2\_ .edgeLabel rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1bp2\_ .labelBkg{background-color:rgba(0, 0, 0, 0.5);}#chatgpt-mermaid-\_r_1bp2\_ .cluster rect{fill:rgb(48, 48, 48);stroke:rgba(255, 255, 255, 0.15);stroke-width:1px;}#chatgpt-mermaid-\_r_1bp2\_ .cluster text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1bp2\_ .cluster span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1bp2\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(48, 48, 48);border:1px solid rgba(255, 255, 255, 0.15);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_1bp2\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1bp2\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_1bp2\_ .icon-shape,#chatgpt-mermaid-\_r_1bp2\_ .image-shape{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_1bp2\_ .icon-shape p,#chatgpt-mermaid-\_r_1bp2\_ .image-shape p{background-color:rgb(0, 0, 0);padding:2px;}#chatgpt-mermaid-\_r_1bp2\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_1bp2\_ .image-shape .label rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1bp2\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_1bp2\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_1bp2\_ .node .neo-node{stroke:rgb(31, 78, 148);}#chatgpt-mermaid-\_r_1bp2\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_1bp2\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_1bp2\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_1bp2\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1bp2\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_1bp2\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_1bp2\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_1bp2\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1bp2\_ [data-look="neo"].node .neo-line path{stroke:rgb(31, 78, 148);filter:none;}#chatgpt-mermaid-\_r_1bp2\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_1bp2\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1bp2\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_1bp2\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_1bp2\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1bp2\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_1bp2\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1bp2\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_1bp2\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_1bp2\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_1bp2\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_1bp2\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-width:1px;}#chatgpt-mermaid-\_r_1bp2\_ .node rect,#chatgpt-mermaid-\_r_1bp2\_ .node circle,#chatgpt-mermaid-\_r_1bp2\_ .node ellipse,#chatgpt-mermaid-\_r_1bp2\_ .node polygon,#chatgpt-mermaid-\_r_1bp2\_ .node path{fill:rgb(0, 40, 77);stroke:rgba(255, 255, 255, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_1bp2\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_1bp2\_ .mermaid-decision .label-container{fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_1bp2\_ .edgePaths .flowchart-link{stroke:rgb(175, 175, 175);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_1bp2\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1bp2\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}Harness OrchestratorLead AgentPlanning ModePlan ApprovalDeveloper AgentReviewer AgentValidator AgentEvaluator AgentCompletion DecisionCompleteApprovedRejected or RevisedArchitectural findingsValidation failuresGoal gapsAcceptedRework required
+```mermaid
+flowchart TD
+    H["Harness Orchestrator"] --> L["Lead Agent"]
+    L --> P["Planning Mode"]
+    P --> A{"Plan Approval"}
+    A -->|"Approved"| D["Developer Agent"]
+    A -->|"Revision required"| P
+    D --> R["Reviewer Agent"]
+    D --> V["Validator Agent"]
+    R --> E["Evaluator Agent"]
+    V --> E
+    R -.->|Architectural findings| L
+    V -.->|Validation failures| D
+    E -.->|Goal gaps| L
+    E --> C{"Completion Decision"}
+    C -->|"Accepted"| X["Complete"]
+    C -->|"Rework required"| L
+```
 
 This is a logical responsibility model, not a requirement that every Harness implementation use separate model instances.
 
 The Reviewer, Validator, and Evaluator retain distinct responsibilities even when they operate within a coordinated workflow.
 
-### **6.4 Plan Lifecycle and Drift Control**
+### 6.4 Plan Lifecycle and Drift Control
 
-\#chatgpt-mermaid-\_r_1bp9\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(237, 237, 237);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_1bp9\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_1bp9\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_1bp9\_ .error-icon{fill:rgb(48, 48, 48);}#chatgpt-mermaid-\_r_1bp9\_ .error-text{fill:rgb(237, 237, 237);stroke:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1bp9\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_1bp9\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_1bp9\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_1bp9\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_1bp9\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_1bp9\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_1bp9\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1bp9\_ .marker.cross{stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1bp9\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_1bp9\_ p{margin:0;}#chatgpt-mermaid-\_r_1bp9\_ defs [id$="-barbEnd"]{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1bp9\_ g.stateGroup text{fill:rgb(31, 78, 148);stroke:none;font-size:10px;}#chatgpt-mermaid-\_r_1bp9\_ g.stateGroup text{fill:rgb(237, 237, 237);stroke:none;font-size:10px;}#chatgpt-mermaid-\_r_1bp9\_ g.stateGroup .state-title{font-weight:bolder;fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1bp9\_ g.stateGroup rect{fill:rgb(9, 23, 44);stroke:rgb(31, 78, 148);}#chatgpt-mermaid-\_r_1bp9\_ g.stateGroup line{stroke:rgb(175, 175, 175);stroke-width:1;}#chatgpt-mermaid-\_r_1bp9\_ .transition{stroke:rgb(175, 175, 175);stroke-width:1;fill:none;}#chatgpt-mermaid-\_r_1bp9\_ .stateGroup .composit{fill:transparent;border-bottom:1px;}#chatgpt-mermaid-\_r_1bp9\_ .stateGroup .alt-composit{fill:#e0e0e0;border-bottom:1px;}#chatgpt-mermaid-\_r_1bp9\_ .state-note{stroke:rgb(58, 132, 63);fill:rgb(48, 48, 48);}#chatgpt-mermaid-\_r_1bp9\_ .state-note text{fill:rgb(237, 237, 237);stroke:none;font-size:10px;}#chatgpt-mermaid-\_r_1bp9\_ .stateLabel .box{stroke:none;stroke-width:0;fill:rgb(9, 23, 44);opacity:0.5;}#chatgpt-mermaid-\_r_1bp9\_ .edgeLabel .label rect{fill:rgb(9, 23, 44);opacity:0.5;}#chatgpt-mermaid-\_r_1bp9\_ .edgeLabel{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_1bp9\_ .edgeLabel p{background-color:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1bp9\_ .edgeLabel rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1bp9\_ .edgeLabel .label text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1bp9\_ .label div .edgeLabel{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1bp9\_ .stateLabel text{fill:rgb(237, 237, 237);font-size:10px;font-weight:bold;}#chatgpt-mermaid-\_r_1bp9\_ .node circle.state-start{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1bp9\_ .node .fork-join{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1bp9\_ .node circle.state-end{fill:rgb(31, 78, 148);stroke:transparent;stroke-width:1.5;}#chatgpt-mermaid-\_r_1bp9\_ .end-state-inner{fill:transparent;stroke-width:1.5;}#chatgpt-mermaid-\_r_1bp9\_ .node rect{fill:rgb(9, 23, 44);stroke:rgb(31, 78, 148);stroke-width:1px;}#chatgpt-mermaid-\_r_1bp9\_ .node polygon{fill:rgb(9, 23, 44);stroke:rgb(31, 78, 148);stroke-width:1px;}#chatgpt-mermaid-\_r_1bp9\_ [id$="-barbEnd"]{fill:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1bp9\_ .statediagram-cluster rect{fill:rgb(9, 23, 44);stroke:rgb(31, 78, 148);stroke-width:1px;}#chatgpt-mermaid-\_r_1bp9\_ .cluster-label,#chatgpt-mermaid-\_r_1bp9\_ .nodeLabel{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1bp9\_ .statediagram-cluster rect.outer{rx:5px;ry:5px;}#chatgpt-mermaid-\_r_1bp9\_ .statediagram-state .divider{stroke:rgb(31, 78, 148);}#chatgpt-mermaid-\_r_1bp9\_ .statediagram-state .title-state{rx:5px;ry:5px;}#chatgpt-mermaid-\_r_1bp9\_ .statediagram-cluster.statediagram-cluster .inner{fill:transparent;}#chatgpt-mermaid-\_r_1bp9\_ .statediagram-cluster.statediagram-cluster-alt .inner{fill:rgb(48, 48, 48);}#chatgpt-mermaid-\_r_1bp9\_ .statediagram-cluster .inner{rx:0;ry:0;}#chatgpt-mermaid-\_r_1bp9\_ .statediagram-state rect.basic{rx:5px;ry:5px;}#chatgpt-mermaid-\_r_1bp9\_ .statediagram-state rect.divider{stroke-dasharray:10,10;fill:rgb(48, 48, 48);}#chatgpt-mermaid-\_r_1bp9\_ .note-edge{stroke-dasharray:5;}#chatgpt-mermaid-\_r_1bp9\_ .statediagram-note rect{fill:rgb(48, 48, 48);stroke:rgb(58, 132, 63);stroke-width:1px;rx:0;ry:0;}#chatgpt-mermaid-\_r_1bp9\_ .statediagram-note rect{fill:rgb(48, 48, 48);stroke:rgb(58, 132, 63);stroke-width:1px;rx:0;ry:0;}#chatgpt-mermaid-\_r_1bp9\_ .statediagram-note text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1bp9\_ .statediagram-note .nodeLabel{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1bp9\_ .statediagram .edgeLabel{color:red;}#chatgpt-mermaid-\_r_1bp9\_ [id$="-dependencyStart"],#chatgpt-mermaid-\_r_1bp9\_ [id$="-dependencyEnd"]{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);stroke-width:1;}#chatgpt-mermaid-\_r_1bp9\_ .statediagramTitleText{text-anchor:middle;font-size:18px;fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1bp9\_ [data-look="neo"].statediagram-cluster rect{fill:rgb(9, 23, 44);stroke:url(#chatgpt-mermaid-\_r_1bp9\_-gradient);stroke-width:1;}#chatgpt-mermaid-\_r_1bp9\_ [data-look="neo"].statediagram-cluster rect.outer{rx:5px;ry:5px;filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1bp9\_ .node .neo-node{stroke:rgb(31, 78, 148);}#chatgpt-mermaid-\_r_1bp9\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_1bp9\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_1bp9\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_1bp9\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1bp9\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_1bp9\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_1bp9\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_1bp9\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1bp9\_ [data-look="neo"].node .neo-line path{stroke:rgb(31, 78, 148);filter:none;}#chatgpt-mermaid-\_r_1bp9\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_1bp9\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1bp9\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_1bp9\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_1bp9\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1bp9\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_1bp9\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1bp9\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}DraftUnderReviewApprovedRejectedExecutingReassessmentDriftAssessmentVerificationCompletePlan submittedAuthorized approvalRevision requestedPlan rejectedBaseline and permissionscheckedBaseline changedMaterial deviation detectedWithin approved toleranceMaterial change requiredRevise planRevalidated and authorizedImplementation finishedRework within approvedscopeRequired checks andacceptance satisfied
+```mermaid
+stateDiagram-v2
+    [*] --> Draft
+    Draft --> UnderReview: Plan submitted
+    UnderReview --> Approved: Authorized approval
+    UnderReview --> Draft: Revision requested
+    UnderReview --> Rejected: Plan rejected
+    Approved --> Executing: Baseline and permissions checked
+    Approved --> Reassessment: Baseline changed
+    Executing --> DriftAssessment: Material deviation detected
+    DriftAssessment --> Executing: Within approved tolerance
+    DriftAssessment --> Reassessment: Material change required
+    Reassessment --> Draft: Revise plan
+    Reassessment --> Executing: Revalidated and authorized
+    Executing --> Verification: Implementation finished
+    Verification --> Executing: Rework within approved scope
+    Verification --> Complete: Checks and acceptance satisfied
+    Rejected --> [*]
+    Complete --> [*]
+```
 
 The state model distinguishes approval, execution, verification, and completion.
 
 It also identifies the point at which material drift requires new planning decisions.
 
-### **6.5 Dependency Graph for Corporate Fleet Booking**
+### 6.5 Dependency Graph for Corporate Fleet Booking
 
-\#chatgpt-mermaid-\_r_1bpg\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(237, 237, 237);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_1bpg\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_1bpg\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_1bpg\_ .error-icon{fill:rgb(48, 48, 48);}#chatgpt-mermaid-\_r_1bpg\_ .error-text{fill:rgb(237, 237, 237);stroke:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1bpg\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_1bpg\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_1bpg\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_1bpg\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_1bpg\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_1bpg\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_1bpg\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1bpg\_ .marker.cross{stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1bpg\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_1bpg\_ p{margin:0;}#chatgpt-mermaid-\_r_1bpg\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1bpg\_ .cluster-label text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1bpg\_ .cluster-label span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1bpg\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_1bpg\_ .label text,#chatgpt-mermaid-\_r_1bpg\_ span{fill:rgb(237, 237, 237);color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1bpg\_ .node rect,#chatgpt-mermaid-\_r_1bpg\_ .node circle,#chatgpt-mermaid-\_r_1bpg\_ .node ellipse,#chatgpt-mermaid-\_r_1bpg\_ .node polygon,#chatgpt-mermaid-\_r_1bpg\_ .node path{fill:rgb(9, 23, 44);stroke:rgb(31, 78, 148);stroke-width:1px;}#chatgpt-mermaid-\_r_1bpg\_ .rough-node .label text,#chatgpt-mermaid-\_r_1bpg\_ .node .label text,#chatgpt-mermaid-\_r_1bpg\_ .image-shape .label,#chatgpt-mermaid-\_r_1bpg\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_1bpg\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_1bpg\_ .rough-node .label,#chatgpt-mermaid-\_r_1bpg\_ .node .label,#chatgpt-mermaid-\_r_1bpg\_ .image-shape .label,#chatgpt-mermaid-\_r_1bpg\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_1bpg\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_1bpg\_ .root .anchor path{fill:rgb(175, 175, 175)!important;stroke-width:0;stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1bpg\_ .arrowheadPath{fill:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1bpg\_ .edgePath .path{stroke:rgb(175, 175, 175);stroke-width:1px;}#chatgpt-mermaid-\_r_1bpg\_ .flowchart-link{stroke:rgb(175, 175, 175);fill:none;}#chatgpt-mermaid-\_r_1bpg\_ .edgeLabel{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_1bpg\_ .edgeLabel p{background-color:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1bpg\_ .edgeLabel rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1bpg\_ .labelBkg{background-color:rgba(0, 0, 0, 0.5);}#chatgpt-mermaid-\_r_1bpg\_ .cluster rect{fill:rgb(48, 48, 48);stroke:rgba(255, 255, 255, 0.15);stroke-width:1px;}#chatgpt-mermaid-\_r_1bpg\_ .cluster text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1bpg\_ .cluster span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1bpg\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(48, 48, 48);border:1px solid rgba(255, 255, 255, 0.15);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_1bpg\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1bpg\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_1bpg\_ .icon-shape,#chatgpt-mermaid-\_r_1bpg\_ .image-shape{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_1bpg\_ .icon-shape p,#chatgpt-mermaid-\_r_1bpg\_ .image-shape p{background-color:rgb(0, 0, 0);padding:2px;}#chatgpt-mermaid-\_r_1bpg\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_1bpg\_ .image-shape .label rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1bpg\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_1bpg\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_1bpg\_ .node .neo-node{stroke:rgb(31, 78, 148);}#chatgpt-mermaid-\_r_1bpg\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_1bpg\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_1bpg\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_1bpg\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1bpg\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_1bpg\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_1bpg\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_1bpg\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1bpg\_ [data-look="neo"].node .neo-line path{stroke:rgb(31, 78, 148);filter:none;}#chatgpt-mermaid-\_r_1bpg\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_1bpg\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1bpg\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_1bpg\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_1bpg\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1bpg\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_1bpg\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1bpg\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_1bpg\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_1bpg\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_1bpg\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_1bpg\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-width:1px;}#chatgpt-mermaid-\_r_1bpg\_ .node rect,#chatgpt-mermaid-\_r_1bpg\_ .node circle,#chatgpt-mermaid-\_r_1bpg\_ .node ellipse,#chatgpt-mermaid-\_r_1bpg\_ .node polygon,#chatgpt-mermaid-\_r_1bpg\_ .node path{fill:rgb(0, 40, 77);stroke:rgba(255, 255, 255, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_1bpg\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_1bpg\_ .mermaid-decision .label-container{fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_1bpg\_ .edgePaths .flowchart-link{stroke:rgb(175, 175, 175);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_1bpg\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1bpg\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}Confirm Business RulesDefine API ContractDefine Capacity InvariantRepository DiscoverySelect Existing IntegrationPointsDesign Application WorkflowAtomic Booking PersistenceIdempotency IntegrationTransactional OutboxIntegrationRetry and Conflict TestsConcurrency TestsEvent Consistency TestsAPI Contract TestsAuthorization TestsValidation Gates
+```mermaid
+flowchart TD
+    A["Confirm Business Rules"] --> B["Define API Contract"]
+    A --> C["Define Capacity Invariant"]
+    D["Repository Discovery"] --> E["Select Existing Integration Points"]
+    E --> F["Design Application Workflow"]
+    B --> F
+    C --> F
+    F --> G["Atomic Booking Persistence"]
+    F --> H["Idempotency Integration"]
+    G --> I["Transactional Outbox Integration"]
+    H --> J["Retry and Conflict Tests"]
+    G --> K["Concurrency Tests"]
+    I --> L["Event Consistency Tests"]
+    B --> M["API Contract Tests"]
+    F --> N["Authorization Tests"]
+    J --> O["Validation Gates"]
+    K --> O
+    L --> O
+    M --> O
+    N --> O
+```
 
 This graph shows why task sequencing should follow real dependencies rather than an arbitrary implementation checklist.
 
 Business-rule confirmation is a prerequisite for designing the capacity invariant. Persistence design influences concurrency testing. Idempotency and transaction consistency require separate verification.
 
-### **6.6 Planning Control Boundaries**
+### 6.6 Planning Control Boundaries
 
-\#chatgpt-mermaid-\_r_1bpn\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(237, 237, 237);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_1bpn\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_1bpn\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_1bpn\_ .error-icon{fill:rgb(48, 48, 48);}#chatgpt-mermaid-\_r_1bpn\_ .error-text{fill:rgb(237, 237, 237);stroke:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1bpn\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_1bpn\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_1bpn\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_1bpn\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_1bpn\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_1bpn\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_1bpn\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1bpn\_ .marker.cross{stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1bpn\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_1bpn\_ p{margin:0;}#chatgpt-mermaid-\_r_1bpn\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1bpn\_ .cluster-label text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1bpn\_ .cluster-label span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1bpn\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_1bpn\_ .label text,#chatgpt-mermaid-\_r_1bpn\_ span{fill:rgb(237, 237, 237);color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1bpn\_ .node rect,#chatgpt-mermaid-\_r_1bpn\_ .node circle,#chatgpt-mermaid-\_r_1bpn\_ .node ellipse,#chatgpt-mermaid-\_r_1bpn\_ .node polygon,#chatgpt-mermaid-\_r_1bpn\_ .node path{fill:rgb(9, 23, 44);stroke:rgb(31, 78, 148);stroke-width:1px;}#chatgpt-mermaid-\_r_1bpn\_ .rough-node .label text,#chatgpt-mermaid-\_r_1bpn\_ .node .label text,#chatgpt-mermaid-\_r_1bpn\_ .image-shape .label,#chatgpt-mermaid-\_r_1bpn\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_1bpn\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_1bpn\_ .rough-node .label,#chatgpt-mermaid-\_r_1bpn\_ .node .label,#chatgpt-mermaid-\_r_1bpn\_ .image-shape .label,#chatgpt-mermaid-\_r_1bpn\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_1bpn\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_1bpn\_ .root .anchor path{fill:rgb(175, 175, 175)!important;stroke-width:0;stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1bpn\_ .arrowheadPath{fill:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1bpn\_ .edgePath .path{stroke:rgb(175, 175, 175);stroke-width:1px;}#chatgpt-mermaid-\_r_1bpn\_ .flowchart-link{stroke:rgb(175, 175, 175);fill:none;}#chatgpt-mermaid-\_r_1bpn\_ .edgeLabel{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_1bpn\_ .edgeLabel p{background-color:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1bpn\_ .edgeLabel rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1bpn\_ .labelBkg{background-color:rgba(0, 0, 0, 0.5);}#chatgpt-mermaid-\_r_1bpn\_ .cluster rect{fill:rgb(48, 48, 48);stroke:rgba(255, 255, 255, 0.15);stroke-width:1px;}#chatgpt-mermaid-\_r_1bpn\_ .cluster text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1bpn\_ .cluster span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1bpn\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(48, 48, 48);border:1px solid rgba(255, 255, 255, 0.15);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_1bpn\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1bpn\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_1bpn\_ .icon-shape,#chatgpt-mermaid-\_r_1bpn\_ .image-shape{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_1bpn\_ .icon-shape p,#chatgpt-mermaid-\_r_1bpn\_ .image-shape p{background-color:rgb(0, 0, 0);padding:2px;}#chatgpt-mermaid-\_r_1bpn\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_1bpn\_ .image-shape .label rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1bpn\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_1bpn\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_1bpn\_ .node .neo-node{stroke:rgb(31, 78, 148);}#chatgpt-mermaid-\_r_1bpn\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_1bpn\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_1bpn\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_1bpn\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1bpn\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_1bpn\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_1bpn\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_1bpn\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1bpn\_ [data-look="neo"].node .neo-line path{stroke:rgb(31, 78, 148);filter:none;}#chatgpt-mermaid-\_r_1bpn\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_1bpn\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1bpn\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_1bpn\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_1bpn\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1bpn\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_1bpn\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1bpn\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_1bpn\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_1bpn\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_1bpn\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_1bpn\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-width:1px;}#chatgpt-mermaid-\_r_1bpn\_ .node rect,#chatgpt-mermaid-\_r_1bpn\_ .node circle,#chatgpt-mermaid-\_r_1bpn\_ .node ellipse,#chatgpt-mermaid-\_r_1bpn\_ .node polygon,#chatgpt-mermaid-\_r_1bpn\_ .node path{fill:rgb(0, 40, 77);stroke:rgba(255, 255, 255, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_1bpn\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_1bpn\_ .mermaid-decision .label-container{fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_1bpn\_ .edgePaths .flowchart-link{stroke:rgb(175, 175, 175);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_1bpn\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1bpn\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}#chatgpt-mermaid-\_r_1bpn\_ .planning rect{fill:rgb(232, 240, 255)!important;stroke:rgb(71, 117, 186)!important;color:rgb(23, 59, 114)!important;}#chatgpt-mermaid-\_r_1bpn\_ .planning polygon{fill:rgb(232, 240, 255)!important;stroke:rgb(71, 117, 186)!important;color:rgb(23, 59, 114)!important;}#chatgpt-mermaid-\_r_1bpn\_ .planning ellipse{fill:rgb(232, 240, 255)!important;stroke:rgb(71, 117, 186)!important;color:rgb(23, 59, 114)!important;}#chatgpt-mermaid-\_r_1bpn\_ .planning circle{fill:rgb(232, 240, 255)!important;stroke:rgb(71, 117, 186)!important;color:rgb(23, 59, 114)!important;}#chatgpt-mermaid-\_r_1bpn\_ .planning path{fill:rgb(232, 240, 255)!important;stroke:rgb(71, 117, 186)!important;color:rgb(23, 59, 114)!important;}#chatgpt-mermaid-\_r_1bpn\_ .planning tspan{fill:rgb(23, 59, 114)!important;}#chatgpt-mermaid-\_r_1bpn\_ .control rect{fill:rgb(255, 242, 213)!important;stroke:rgb(169, 121, 22)!important;color:rgb(66, 46, 8)!important;}#chatgpt-mermaid-\_r_1bpn\_ .control polygon{fill:rgb(255, 242, 213)!important;stroke:rgb(169, 121, 22)!important;color:rgb(66, 46, 8)!important;}#chatgpt-mermaid-\_r_1bpn\_ .control ellipse{fill:rgb(255, 242, 213)!important;stroke:rgb(169, 121, 22)!important;color:rgb(66, 46, 8)!important;}#chatgpt-mermaid-\_r_1bpn\_ .control circle{fill:rgb(255, 242, 213)!important;stroke:rgb(169, 121, 22)!important;color:rgb(66, 46, 8)!important;}#chatgpt-mermaid-\_r_1bpn\_ .control path{fill:rgb(255, 242, 213)!important;stroke:rgb(169, 121, 22)!important;color:rgb(66, 46, 8)!important;}#chatgpt-mermaid-\_r_1bpn\_ .control tspan{fill:rgb(66, 46, 8)!important;}#chatgpt-mermaid-\_r_1bpn\_ .execution rect{fill:rgb(229, 244, 234)!important;stroke:rgb(67, 140, 91)!important;color:rgb(33, 84, 53)!important;}#chatgpt-mermaid-\_r_1bpn\_ .execution polygon{fill:rgb(229, 244, 234)!important;stroke:rgb(67, 140, 91)!important;color:rgb(33, 84, 53)!important;}#chatgpt-mermaid-\_r_1bpn\_ .execution ellipse{fill:rgb(229, 244, 234)!important;stroke:rgb(67, 140, 91)!important;color:rgb(33, 84, 53)!important;}#chatgpt-mermaid-\_r_1bpn\_ .execution circle{fill:rgb(229, 244, 234)!important;stroke:rgb(67, 140, 91)!important;color:rgb(33, 84, 53)!important;}#chatgpt-mermaid-\_r_1bpn\_ .execution path{fill:rgb(229, 244, 234)!important;stroke:rgb(67, 140, 91)!important;color:rgb(33, 84, 53)!important;}#chatgpt-mermaid-\_r_1bpn\_ .execution tspan{fill:rgb(33, 84, 53)!important;}Execution BoundaryAuthorization BoundaryPlanning BoundaryModify SourceRun ValidationProduce EvidencePlan Quality GateHuman ApprovalExecution AuthorizationRead RepositoryInspect InstructionsAnalyze ContractsProduce Proposed Plan
+```mermaid
+flowchart LR
+    subgraph ReadOnly["Planning Boundary"]
+        A["Read Repository"] --> B["Inspect Instructions"]
+        B --> C["Analyze Contracts"]
+        C --> D["Produce Proposed Plan"]
+    end
+    subgraph Approval["Authorization Boundary"]
+        E["Plan Quality Gate"] --> F["Human Approval"]
+        F --> G["Execution Authorization"]
+    end
+    subgraph Execution["Execution Boundary"]
+        H["Modify Source"] --> I["Run Validation"]
+        I --> J["Produce Evidence"]
+    end
+    D --> E
+    G --> H
+```
 
 The architectural value is not simply that planning happens before execution.
 
 It is that the transition between the two is controlled, reviewable, and enforceable.
 
-## **7. Hands-on Example**
+## 7. Hands-on Example
 
-### **7.1 Scenario: Planning Corporate Fleet Booking**
+### 7.1 Scenario: Planning Corporate Fleet Booking
 
 The Alpha Car Detailing engineering team receives a change request to extend the existing booking capability.
 
@@ -1177,17 +1285,17 @@ The proposed operation must accept multiple vehicles associated with a corporate
 
 The architecture already includes a booking domain and several shared enterprise capabilities, but the planner must verify how those capabilities are implemented in the current repository.
 
-The objective of this exercise is to produce an approved implementation approach without modifying source files.
+The objective of this exercise is to produce a reviewable implementation approach without modifying source files; approval is a separate decision.
 
 The exercise assumes the companion repository contains the relevant Alpha Car Detailing application or that the reader has a working branch containing the booking capability.
 
 Any example paths or component names that are not verified against the reader's checkout must be treated as illustrative.
 
-### **7.2 Establish the Task**
+### 7.2 Establish the Task
 
 The engineering request is recorded as a task-specific Prompt.
 
-```
+```text
 Goal:
 Implement corporate fleet booking for Alpha Car Detailing.
 
@@ -1215,13 +1323,13 @@ The instruction not to introduce CQRS reflects the companion implementation's in
 
 The Plan should work with the architecture that currently exists, rather than using the task as an opportunity for unrelated restructuring.
 
-### **7.3 Inspect the Repository Baseline**
+### 7.3 Inspect the Repository Baseline
 
 Before designing the implementation, the planning agent should identify the exact repository revision.
 
 For a local Git checkout, a human or an approved read-only discovery tool can obtain the current revision using:
 
-```
+```powershell
 git rev-parse HEAD
 git status --short
 ```
@@ -1248,7 +1356,7 @@ Useful questions include:
 
 The purpose is to collect evidence, not to execute implementation commands.
 
-### **7.4 Build the Repository Evidence Register**
+### 7.4 Build the Repository Evidence Register
 
 The planning agent should produce a small evidence register.
 
@@ -1270,7 +1378,7 @@ Inventing file names to make the Plan appear complete would undermine the purpos
 
 Where a component cannot be found, the planner should say so explicitly.
 
-### **7.5 Resolve the Booking-Limit Definition**
+### 7.5 Resolve the Booking-Limit Definition
 
 The most significant business ambiguity is the meaning of a corporate booking limit.
 
@@ -1302,7 +1410,7 @@ With that rule confirmed, the planner can define the invariant:
 
 The Plan must require enforcement under concurrency, not merely sequential validation.
 
-### **7.6 Evaluate Persistence and Concurrency Options**
+### 7.6 Evaluate Persistence and Concurrency Options
 
 The planner should investigate how the existing persistence architecture can enforce the invariant.
 
@@ -1320,7 +1428,7 @@ The architect must evaluate the tradeoff.
 
 The Plan should record the chosen invariant, the existing persistence mechanisms, the proposed enforcement boundary, and the required concurrency tests.
 
-### **7.7 Plan Idempotency Behavior**
+### 7.7 Plan Idempotency Behavior
 
 Idempotency protects against duplicate processing of logically equivalent retries.
 
@@ -1340,7 +1448,7 @@ The key's scope, retention policy, persistence strategy, and relationship to the
 
 The planner should prefer an existing idempotency implementation when suitable.
 
-### **7.8 Plan Transactional Event Consistency**
+### 7.8 Plan Transactional Event Consistency
 
 If the booking workflow emits an integration event, the Plan must preserve consistency between committed booking data and the corresponding event record.
 
@@ -1354,7 +1462,7 @@ Downstream consumers should remain idempotent because outbox delivery may be rep
 
 This responsibility belongs to implementation and subsequent validation, but the requirement must appear in the Plan before coding starts.
 
-### **7.9 Proposed Implementation Tasks**
+### 7.9 Proposed Implementation Tasks
 
 A concrete execution Plan might contain the following sequence.
 
@@ -1375,7 +1483,7 @@ Every task is intended to produce an observable implementation result or decisio
 
 The sequence should be revised if repository evidence establishes different prerequisites.
 
-### **7.10 Define the Validation Matrix**
+### 7.10 Define the Validation Matrix
 
 The Plan should map acceptance criteria to actual verification techniques.
 
@@ -1398,7 +1506,7 @@ The integration tests must create actual contention against the persistence mech
 
 The test environment must also avoid replacing database behavior with an in-memory abstraction that lacks the relevant transaction and isolation semantics.
 
-### **7.11 Define Approval Requirements**
+### 7.11 Define Approval Requirements
 
 Before implementation begins, the Plan should identify required approval decisions.
 
@@ -1414,7 +1522,7 @@ The approval record should identify the approved Plan revision and repository ba
 
 Approval should not be inferred from silence or from the mere existence of the Plan.
 
-### **7.12 Planning Deliverable**
+### 7.12 Planning Deliverable
 
 At the end of the exercise, the expected deliverable is a structured Plan with:
 
@@ -1432,27 +1540,82 @@ At the end of the exercise, the expected deliverable is a structured Plan with:
 
 No production code should have been changed.
 
-The exercise is complete when the Plan is sufficiently supported, reviewable, and ready for authorization.
+The planning exercise is complete when the proposed Plan is sufficiently supported and reviewable, or when any unresolved blockers are explicitly documented; authorization remains a separate decision.
 
 The corporate fleet booking feature itself remains unimplemented.
 
 That distinction is essential.
 
-## **8. Claude Example**
+### 7.13 Worked Plan Artifact (Illustrative)
 
-### **8.1 Planning Mode in Claude Code**
+A practical planning exercise should finish with an artifact that another agent can inspect, rather than relying on the original conversation. The following compact YAML representation shows how the corporate fleet booking Plan might be captured by a Harness. It is **not** evidence of an actual repository inspection or a granted approval: the source references and repository revision must be populated from a real planning run.
+
+```yaml
+plan_id: PLAN-ACD-FLEET-001
+revision: 1
+status: proposed
+repository:
+  baseline: "<verified-commit-sha>"
+  working_tree: "<verified-working-tree-state>"
+objective: >-
+  Support multi-vehicle corporate bookings without exceeding
+  approved capacity or duplicating reservations on retry.
+repository_evidence:
+  - "<verified API endpoint and symbol>"
+  - "<verified transaction implementation and tests>"
+scope:
+  included:
+    - fleet-booking contract and application behavior
+    - atomic capacity enforcement and idempotency
+    - outbox consistency and relevant tests
+  excluded:
+    - unrelated booking refactors
+    - replacement of the messaging platform
+blocking_decisions:
+  - owner: corporate_business_owner
+    question: "What reservations count against the contractual limit?"
+    status: unresolved
+architecture_decisions:
+  - concern: atomic_capacity_enforcement
+    status: proposed_pending_repository_review
+    evidence: "<verified persistence implementation>"
+tasks:
+  - id: T1
+    action: confirm_limit_semantics
+    blocking: true
+  - id: T2
+    action: define_contract_and_transaction_boundary
+    depends_on: [T1]
+  - id: T3
+    action: implement_booking_idempotency_and_outbox
+    depends_on: [T2]
+validation:
+  - criterion: AC-03
+    evidence: parallel_request_database_integration_test
+  - criterion: AC-04
+    evidence: idempotent_retry_integration_test
+  - criterion: AC-06
+    evidence: transactional_outbox_rollback_test
+approval:
+  state: pending
+  required_roles: [business_owner, architect]
+execution:
+  authorized: false
+```
+
+The unresolved business decision prevents approval of the capacity design. A conforming Harness should report the Plan as **blocked for execution** until that decision, the relevant repository evidence, and the required approvals are available. When the Plan is approved, its revision and baseline should be retained with the execution handoff. A mutable YAML status field alone is not trustworthy approval evidence; the Harness must associate authorization with an authenticated, access-controlled decision record.
+
+## 8. Claude Example
+
+### 8.1 Planning Mode in Claude Code
 
 Claude Code provides a Plan permission mode intended for investigating a task and proposing an approach before making implementation changes.
 
-In the Claude Code terminal interface, developers can enter Plan Mode using `/plan` or cycle permission modes using `Shift+Tab`. A session can also be started with the `plan` permission mode. Exact interface behavior should be checked against the installed version and environment.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://support.claude.com\&sz=32)
-
-Claude Help Center+1
+In the Claude Code terminal interface, developers can enter Plan Mode using `/plan` or cycle permission modes using `Shift+Tab`. A session can also be started with the `plan` permission mode. Exact interface behavior should be checked against the installed version and the [Claude Code permissions documentation](https://code.claude.com/docs/en/permissions).
 
 For a typical local session:
 
-```
+```powershell
 cd C:\ZeeWork\Enterprise-AI-Engineering-Handbook\alpha-car-detailing
 
 claude --permission-mode plan
@@ -1466,11 +1629,11 @@ The essential requirement is that the agent remains in a planning-only permissio
 
 For stricter enterprise environments, the Harness should additionally enforce read-only filesystem access, prohibit mutating external tools, and restrict available commands.
 
-### **8.2 Planning Prompt**
+### 8.2 Planning Prompt
 
 The following Prompt provides Claude with the goal and expected planning output.
 
-```
+```text
 We need to implement corporate fleet booking in
 Alpha Car Detailing.
 
@@ -1510,7 +1673,7 @@ This Prompt provides the task-specific operating instructions.
 
 It does not replace repository Instructions or organizational policy.
 
-### **8.3 Expected Planning Behavior**
+### 8.3 Expected Planning Behavior
 
 Claude should first inspect the relevant context.
 
@@ -1520,7 +1683,7 @@ It should then distinguish verified findings from assumptions.
 
 For example:
 
-```
+```text
 Confirmed:
 - The current booking workflow has been identified.
 - The existing API contract has been inspected.
@@ -1543,11 +1706,11 @@ These are examples of the reporting structure, not claims about the current repo
 
 A planning agent should avoid statements such as "the transactional outbox is already available" unless it has inspected evidence supporting that conclusion.
 
-### **8.4 Proposed Plan Format**
+### 8.4 Proposed Plan Format
 
 For the corporate fleet booking task, a practical Claude-generated Plan could use the following structure.
 
-```
+```markdown
 # Corporate Fleet Booking — Implementation Plan
 
 ## Goal
@@ -1602,7 +1765,7 @@ A Plan should be concise enough to review but detailed enough to execute.
 
 A collection of vague tasks such as "update backend," "add tests," and "verify functionality" does not satisfy the standard.
 
-### **8.5 Review the Plan Before Execution**
+### 8.5 Review the Plan Before Execution
 
 Once Claude proposes the Plan, the engineer should review its architectural and operational implications.
 
@@ -1620,7 +1783,7 @@ It should not begin editing code merely because the reviewer asked a technical q
 
 The Plan remains in review until an authorized decision permits execution.
 
-### **8.6 Transition from Planning to Execution**
+### 8.6 Transition from Planning to Execution
 
 After approval, Claude can transition to an execution-capable permission mode through the supported interface.
 
@@ -1634,7 +1797,7 @@ The Developer Agent then receives the approved Plan and begins implementation wi
 
 The implementation should preserve traceability between planned tasks, actual changes, and verification evidence.
 
-### **8.7 Handling New Evidence During Execution**
+### 8.7 Handling New Evidence During Execution
 
 Suppose the Developer Agent discovers that the existing booking persistence abstraction cannot enforce the required global corporate capacity invariant.
 
@@ -1644,7 +1807,7 @@ If it requires a materially different persistence model or transaction boundary,
 
 The agent should record:
 
-```
+```text
 Plan deviation:
 The approved capacity enforcement approach cannot
 guarantee the required invariant using the existing
@@ -1669,7 +1832,7 @@ This is not a failure of Planning Mode.
 
 It is the intended mechanism for incorporating new evidence without losing control of the implementation.
 
-### **8.8 Claude Code and Enterprise Planning Controls**
+### 8.8 Claude Code and Enterprise Planning Controls
 
 Claude Code's built-in planning experience is valuable for interactive engineering work, but an enterprise Harness should not depend exclusively on a model's verbal commitment to remain read-only.
 
@@ -1683,23 +1846,17 @@ An enterprise planning environment should permit only the discovery capabilities
 
 The more consequential the repository or environment, the more important it becomes to enforce those restrictions outside the agent's natural-language context.
 
-Chapter 27 status: In progress — next section: GitHub Copilot Comparison
+## 9. GitHub Copilot Comparison
 
-## **9. GitHub Copilot Comparison**
-
-### **9.1 Planning Mode in GitHub Copilot**
+### 9.1 Planning Mode in GitHub Copilot
 
 GitHub Copilot supports a planning-first development workflow that separates implementation design from code modification.
 
 Like Claude Code, GitHub Copilot can investigate an existing repository, identify relevant components, decompose a requested change into implementation tasks, and produce a Plan for review before execution begins.
 
-GitHub Copilot provides a dedicated **Plan agent** in supported development environments. The agent uses read-oriented codebase investigation to prepare an implementation approach, identify ambiguities, and present proposed steps. After reviewing the Plan, the developer can initiate implementation through an execution-capable agent.
+In supported Visual Studio Code workflows, GitHub Copilot provides a dedicated **Plan agent**. The agent uses read-oriented codebase investigation to prepare an implementation approach, identify ambiguities, and present proposed steps. After reviewing the Plan, the developer can initiate implementation through an execution-capable agent.
 
-The precise interface and available controls vary across IDEs and Copilot environments.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://docs.github.com\&sz=32)
-
-GitHub Docs+1
+The precise interface and available controls vary across IDEs and Copilot environments; see the [VS Code planning documentation](https://code.visualstudio.com/docs/agents/run/planning).
 
 The underlying engineering principle remains the same:
 
@@ -1713,7 +1870,7 @@ Both platforms must account for corporate capacity limits, transaction consisten
 
 A change in coding platform does not change the business invariants that the implementation must preserve.
 
-### **9.2 Using the GitHub Copilot Plan Agent**
+### 9.2 Using the GitHub Copilot Plan Agent
 
 In Visual Studio Code, a developer can select the Plan agent from the Copilot agent selector or invoke the dedicated planning workflow using `/plan`.
 
@@ -1728,15 +1885,11 @@ A typical workflow consists of:
 7. Approving the Plan for execution when appropriate.
 8. Transitioning to an implementation-capable agent.
 
-The Plan agent is intended to investigate and propose changes rather than directly modify implementation files. GitHub's documented workflow supports reviewing and refining the Plan before beginning implementation.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://docs.github.com\&sz=32)
-
-GitHub Docs+1
+The Plan agent is intended to investigate and propose changes rather than directly modify implementation files. GitHub's documented workflow supports reviewing and refining the Plan before beginning implementation.
 
 For example, the developer might submit:
 
-```
+```text
 /plan Implement corporate fleet booking for
 Alpha Car Detailing.
 
@@ -1765,17 +1918,13 @@ As with Claude Code, merely selecting a planning capability does not guarantee t
 
 The quality of the result depends on available evidence, applicable Instructions, the agent's reasoning, and the developer's review.
 
-### **9.3 Planning Versus Agent Mode in GitHub Copilot**
+### 9.3 Planning Versus Agent Mode in GitHub Copilot
 
 GitHub Copilot distinguishes planning from execution-oriented agent behavior.
 
 The Plan agent focuses on analyzing the request and preparing the approach.
 
-Agent mode can make code changes, use development tools, execute permitted commands, and iterate on implementation results.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://docs.github.com\&sz=32)
-
-GitHub Docs+1
+Agent mode can make code changes, use development tools, execute permitted commands, and iterate on implementation results.
 
 This distinction closely parallels the separation established for Claude Code earlier in this chapter.
 
@@ -1798,13 +1947,13 @@ For example, an interactive transition from Plan to Agent mode does not necessar
 
 The Harness must enforce that requirement separately.
 
-### **9.4 Repository Instructions and Planning Context**
+### 9.4 Repository Instructions and Planning Context
 
 GitHub Copilot supports repository-specific customization, including instruction files that guide agent behavior.
 
 For example, a repository may contain:
 
-```
+```text
 .github/
     copilot-instructions.md
 ```
@@ -1827,7 +1976,7 @@ This illustrates a vendor-neutral rule:
 
 **Planning determines an implementation approach within established engineering constraints. It does not create authority to override those constraints.**
 
-### **9.5 The Corporate Fleet Booking Example in Copilot**
+### 9.5 The Corporate Fleet Booking Example in Copilot
 
 The same corporate fleet booking requirement can be used to evaluate whether Copilot produces an adequate Plan.
 
@@ -1856,15 +2005,11 @@ Those implementation components may be necessary, but they do not demonstrate th
 
 The expected planning quality should be identical whether the agent operates through Claude Code or Copilot.
 
-### **9.6 Reviewing and Refining the Copilot Plan**
+### 9.6 Reviewing and Refining the Copilot Plan
 
 GitHub Copilot allows developers to review and refine a proposed Plan before beginning implementation.
 
-In supported VS Code workflows, the developer can initiate implementation or open the Plan for further editing and discussion. The VS Code documentation also describes planning workflows that support explicit review and implementation decisions.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://docs.github.com\&sz=32)
-
-GitHub Docs+1
+In supported VS Code workflows, the developer can initiate implementation or open the Plan for further editing and discussion. The VS Code documentation also describes planning workflows that support explicit review and implementation decisions.
 
 For Alpha Car Detailing, the architect might challenge the proposed design:
 
@@ -1882,7 +2027,7 @@ A Plan may contain every required section and still propose an unsafe design.
 
 Document completeness can be checked mechanically. Architectural correctness requires additional reasoning, evidence, and review.
 
-### **9.7 Comparison with Claude Code**
+### 9.7 Comparison with Claude Code
 
 Claude Code and GitHub Copilot provide different interaction models and customization surfaces, but both can support deliberate planning before implementation.
 
@@ -1905,13 +2050,13 @@ Neither platform should be treated as providing complete enterprise governance s
 
 The enterprise Harness remains responsible for enforcing the organization's approval, validation, auditability, and execution policies.
 
-### **9.8 Planning Artifacts and Portability**
+### 9.8 Planning Artifacts and Portability
 
 One advantage of representing the approved Plan as a structured Markdown artifact is that it can be reviewed independently of the tool that produced it.
 
 For example, a planning document might be stored at an illustrative run-workspace location:
 
-```
+```text
 harness/
     runs/
         fleet-booking-001/
@@ -1923,6 +2068,8 @@ harness/
 This structure represents a possible Harness implementation, not a required GitHub Copilot repository layout.
 
 The Plan should contain sufficient information for a Developer Agent using another platform to execute it without reconstructing all design decisions.
+
+In supported VS Code Plan-agent workflows, the session Plan may reside in session memory that does not survive the conversation. For governed work, explicitly preserve the approved Plan in the Harness run record rather than relying solely on the IDE session. See the [VS Code planning documentation](https://code.visualstudio.com/docs/agents/run/planning).
 
 A Claude-based Lead Agent might produce the Plan, while a Copilot-based Developer Agent performs implementation.
 
@@ -1940,7 +2087,7 @@ Where possible, implementation tasks should describe engineering outcomes and co
 
 This supports the handbook's central vendor-neutral architecture.
 
-### **9.9 Copilot Planning Inside the Enterprise Harness**
+### 9.9 Copilot Planning Inside the Enterprise Harness
 
 GitHub Copilot's Plan agent can support interactive planning, but an enterprise Harness may require additional capabilities.
 
@@ -1948,7 +2095,24 @@ These include a stable Plan identifier, repository baseline tracking, immutable 
 
 The organization's Harness might implement the following logical sequence:
 
-\#chatgpt-mermaid-\_r_1bt6\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(237, 237, 237);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_1bt6\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_1bt6\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_1bt6\_ .error-icon{fill:rgb(48, 48, 48);}#chatgpt-mermaid-\_r_1bt6\_ .error-text{fill:rgb(237, 237, 237);stroke:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1bt6\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_1bt6\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_1bt6\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_1bt6\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_1bt6\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_1bt6\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_1bt6\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1bt6\_ .marker.cross{stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1bt6\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_1bt6\_ p{margin:0;}#chatgpt-mermaid-\_r_1bt6\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1bt6\_ .cluster-label text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1bt6\_ .cluster-label span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1bt6\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_1bt6\_ .label text,#chatgpt-mermaid-\_r_1bt6\_ span{fill:rgb(237, 237, 237);color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1bt6\_ .node rect,#chatgpt-mermaid-\_r_1bt6\_ .node circle,#chatgpt-mermaid-\_r_1bt6\_ .node ellipse,#chatgpt-mermaid-\_r_1bt6\_ .node polygon,#chatgpt-mermaid-\_r_1bt6\_ .node path{fill:rgb(9, 23, 44);stroke:rgb(31, 78, 148);stroke-width:1px;}#chatgpt-mermaid-\_r_1bt6\_ .rough-node .label text,#chatgpt-mermaid-\_r_1bt6\_ .node .label text,#chatgpt-mermaid-\_r_1bt6\_ .image-shape .label,#chatgpt-mermaid-\_r_1bt6\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_1bt6\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_1bt6\_ .rough-node .label,#chatgpt-mermaid-\_r_1bt6\_ .node .label,#chatgpt-mermaid-\_r_1bt6\_ .image-shape .label,#chatgpt-mermaid-\_r_1bt6\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_1bt6\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_1bt6\_ .root .anchor path{fill:rgb(175, 175, 175)!important;stroke-width:0;stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1bt6\_ .arrowheadPath{fill:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1bt6\_ .edgePath .path{stroke:rgb(175, 175, 175);stroke-width:1px;}#chatgpt-mermaid-\_r_1bt6\_ .flowchart-link{stroke:rgb(175, 175, 175);fill:none;}#chatgpt-mermaid-\_r_1bt6\_ .edgeLabel{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_1bt6\_ .edgeLabel p{background-color:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1bt6\_ .edgeLabel rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1bt6\_ .labelBkg{background-color:rgba(0, 0, 0, 0.5);}#chatgpt-mermaid-\_r_1bt6\_ .cluster rect{fill:rgb(48, 48, 48);stroke:rgba(255, 255, 255, 0.15);stroke-width:1px;}#chatgpt-mermaid-\_r_1bt6\_ .cluster text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1bt6\_ .cluster span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1bt6\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(48, 48, 48);border:1px solid rgba(255, 255, 255, 0.15);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_1bt6\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1bt6\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_1bt6\_ .icon-shape,#chatgpt-mermaid-\_r_1bt6\_ .image-shape{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_1bt6\_ .icon-shape p,#chatgpt-mermaid-\_r_1bt6\_ .image-shape p{background-color:rgb(0, 0, 0);padding:2px;}#chatgpt-mermaid-\_r_1bt6\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_1bt6\_ .image-shape .label rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1bt6\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_1bt6\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_1bt6\_ .node .neo-node{stroke:rgb(31, 78, 148);}#chatgpt-mermaid-\_r_1bt6\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_1bt6\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_1bt6\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_1bt6\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1bt6\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_1bt6\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_1bt6\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_1bt6\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1bt6\_ [data-look="neo"].node .neo-line path{stroke:rgb(31, 78, 148);filter:none;}#chatgpt-mermaid-\_r_1bt6\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_1bt6\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1bt6\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_1bt6\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_1bt6\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1bt6\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_1bt6\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1bt6\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_1bt6\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_1bt6\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_1bt6\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_1bt6\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-width:1px;}#chatgpt-mermaid-\_r_1bt6\_ .node rect,#chatgpt-mermaid-\_r_1bt6\_ .node circle,#chatgpt-mermaid-\_r_1bt6\_ .node ellipse,#chatgpt-mermaid-\_r_1bt6\_ .node polygon,#chatgpt-mermaid-\_r_1bt6\_ .node path{fill:rgb(0, 40, 77);stroke:rgba(255, 255, 255, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_1bt6\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_1bt6\_ .mermaid-decision .label-container{fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_1bt6\_ .edgePaths .flowchart-link{stroke:rgb(175, 175, 175);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_1bt6\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1bt6\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}Engineering PromptRepository DiscoveryApplicable InstructionsCopilot Plan AgentProposed PlanPlan Quality GateApproval Required?Human ReviewApproved?Execution AuthorizationDeveloper AgentImplementationIndependent ValidationOutcome EvaluationYesNoYesNo
+```mermaid
+flowchart TD
+    A["Engineering Prompt"] --> B["Repository Discovery"]
+    B --> C["Applicable Instructions"]
+    C --> D["Copilot Plan Agent"]
+    D --> E["Proposed Plan"]
+    E --> F["Plan Quality Gate"]
+    F --> G{"Approval Required?"}
+    G -->|"Yes"| H["Human Review"]
+    H --> I{"Approved?"}
+    I -->|"No"| D
+    I -->|"Yes"| J["Execution Authorization"]
+    G -->|"No"| J
+    J --> K["Developer Agent"]
+    K --> L["Implementation"]
+    L --> M["Independent Validation"]
+    M --> N["Outcome Evaluation"]
+```
 
 The Copilot Plan agent is one implementation of the planning capability.
 
@@ -1958,7 +2122,7 @@ The Harness can maintain responsibility for coordinating the process, preserving
 
 This also allows an organization to use different coding platforms without replacing the governance architecture.
 
-### **9.10 Planning Versus Developer Task Tracking**
+### 9.10 Planning Versus Developer Task Tracking
 
 GitHub Copilot's agent workflows can also use task lists and intermediate execution planning to manage complex implementation work.
 
@@ -1982,7 +2146,7 @@ However, if Copilot discovers that the approved concurrency strategy cannot work
 
 The distinction preserves flexibility without sacrificing governance.
 
-### **9.11 Enterprise Considerations**
+### 9.11 Enterprise Considerations
 
 GitHub Copilot's integration with development environments can make planning accessible within an engineer's normal workflow.
 
@@ -2002,7 +2166,7 @@ These concerns apply equally to Claude Code and other AI coding platforms.
 
 An organization may use Copilot for the planning interface while relying on its Harness to enforce workflow state, approval records, and deterministic validation.
 
-### **9.12 Architectural Interpretation**
+### 9.12 Architectural Interpretation
 
 The significance of GitHub Copilot's planning support is not that it introduces a fundamentally different engineering method from Claude Code.
 
@@ -2036,21 +2200,15 @@ The central conclusion is that GitHub Copilot and Claude Code offer different pr
 
 **Planning is an architectural responsibility. The AI coding platform is an implementation choice.**
 
-Chapter 27 status: In progress — next section: Codex Comparison
+## 10. Codex Comparison
 
-## **10. Codex Comparison**
-
-### **10.1 Planning Mode in OpenAI Codex**
+### 10.1 Planning Mode in OpenAI Codex
 
 OpenAI Codex supports planning-first software development through a dedicated Plan Mode and repository-based planning conventions.
 
 Like Claude Code and GitHub Copilot, Codex can investigate an existing codebase, interpret requirements, identify dependencies, and propose an implementation approach before modifying application code.
 
-Codex provides an interactive planning experience in which the agent can gather context, ask clarifying questions, examine alternatives, and produce a proposed implementation plan. Supported interfaces allow developers to enter Plan Mode using `/plan` or the appropriate mode-selection control.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://learn.chatgpt.com\&sz=32)
-
-ChatGPT Learn+1
+Codex provides an interactive planning experience in which the agent can gather context, ask clarifying questions, examine alternatives, and produce a proposed implementation plan. Supported interfaces allow developers to enter Plan Mode using `/plan` or the appropriate mode-selection control.
 
 Codex also supports longer-running execution plans through repository conventions such as `PLANS.md`, which can define how complex work should be decomposed, documented, implemented, and verified.
 
@@ -2069,7 +2227,7 @@ The same engineering principle applies:
 
 > Planning determines how a change should be implemented. Execution performs the authorized change. Validation and evaluation establish whether the resulting system satisfies its engineering and business obligations.
 
-### **10.2 Starting a Planning Session in Codex**
+### 10.2 Starting a Planning Session in Codex
 
 Codex can operate through several development environments, including a command-line interface, IDE integrations, and supported desktop experiences.
 
@@ -2077,7 +2235,7 @@ For an engineer working with the Alpha Car Detailing repository, the command-lin
 
 From the repository's application directory:
 
-```
+```powershell
 cd C:\ZeeWork\Enterprise-AI-Engineering-Handbook\alpha-car-detailing
 
 codex
@@ -2085,25 +2243,21 @@ codex
 
 Within an interactive session, the developer can select Plan Mode using:
 
-```
+```text
 /plan
 ```
 
 The developer can then submit the planning request.
 
-In supported Codex interfaces, Plan Mode establishes a conversational planning phase that remains distinct from ordinary implementation execution.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://learn.chatgpt.com\&sz=32)
-
-ChatGPT Learn+1
+In supported Codex interfaces, Plan Mode establishes a conversational planning phase that remains distinct from ordinary implementation execution.
 
 For enterprise use, a planning-only mode should be reinforced by actual permissions and workspace restrictions. A natural-language instruction not to modify code should not be treated as a complete security boundary.
 
-### **10.3 Corporate Fleet Booking Planning Prompt**
+### 10.3 Corporate Fleet Booking Planning Prompt
 
 The following Prompt is suitable for a Codex planning session.
 
-```
+```text
 We need to implement corporate fleet booking
 in Alpha Car Detailing.
 
@@ -2153,15 +2307,11 @@ This request separates the desired outcome from the implementation approach.
 
 It also makes clear that the planning agent must examine the existing architecture rather than immediately generating new endpoints, services, or persistence abstractions.
 
-### **10.4 Codex Plan Mode Versus Execution**
+### 10.4 Codex Plan Mode Versus Execution
 
 Codex distinguishes its conversational Plan Mode from implementation-oriented operation.
 
-Its documented Plan Mode emphasizes investigation, clarification, and producing a sufficiently detailed proposed Plan for subsequent execution. The planning instructions also distinguish this mode from the separate progress-tracking mechanism used during implementation.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://github.com\&sz=32)
-
-GitHub
+Its documented Plan Mode emphasizes investigation, clarification, and producing a sufficiently detailed proposed Plan for subsequent execution. The planning instructions also distinguish this mode from the separate progress-tracking mechanism used during implementation.
 
 That separation aligns with the role boundaries established in Part III of the handbook.
 
@@ -2192,21 +2342,17 @@ The Scratchpad captures temporary discoveries, experiments, and observations.
 
 These artifacts should remain separate even when the same Codex session participates in more than one phase.
 
-### **10.5 Repository Instructions Through AGENTS.md**
+### 10.5 Repository Instructions Through AGENTS.md
 
 Codex recognizes `AGENTS.md` as a repository Instruction mechanism.
 
 Such files can communicate architectural boundaries, coding conventions, testing expectations, and other engineering requirements.
 
-Instructions can be scoped to directories, allowing teams to establish general repository guidance and more specific requirements for individual components.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://github.com\&sz=32)
-
-GitHub
+Instructions can be scoped to directories, allowing teams to establish general repository guidance and more specific requirements for individual components.
 
 An illustrative Alpha Car Detailing structure might be:
 
-```
+```text
 alpha-car-detailing/
 │
 ├── AGENTS.md
@@ -2228,7 +2374,7 @@ This structure is illustrative and must be reconciled with the actual companion 
 
 The root `AGENTS.md` might establish requirements such as:
 
-```
+```markdown
 # Alpha Car Detailing — Engineering Instructions
 
 ## Architecture
@@ -2273,17 +2419,13 @@ The Plan reconciles both with actual repository evidence.
 
 A Plan proposing direct SQL Server operations inside an API controller would conflict with the illustrative architecture Instructions and should be revised.
 
-### **10.6 Using PLANS.md for Complex Engineering Work**
+### 10.6 Using PLANS.md for Complex Engineering Work
 
 Codex supports a repository-based approach to substantial implementation tasks through execution-plan conventions.
 
 OpenAI's published guidance describes using `PLANS.md` to define the structure and requirements of an executable implementation plan, sometimes called an *ExecPlan*.
 
-Such plans can act as living engineering documents, recording objectives, implementation progress, discoveries, decisions, and validation evidence over longer development activities.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://github.com\&sz=32)
-
-GitHub
+Such plans can act as living engineering documents, recording objectives, implementation progress, discoveries, decisions, and validation evidence over longer development activities.
 
 This approach is particularly relevant for enterprise work that cannot be completed safely in one isolated coding step.
 
@@ -2301,7 +2443,7 @@ An organization may use the Codex `PLANS.md` convention while retaining those lo
 
 For example:
 
-```
+```text
 alpha-car-detailing/
 │
 ├── AGENTS.md
@@ -2335,7 +2477,7 @@ Nor should a team automatically introduce all these files into an existing repos
 
 The appropriate structure depends on current repository conventions, operational needs, and governance requirements.
 
-### **10.7 Planning an Executable Sequence**
+### 10.7 Planning an Executable Sequence
 
 A central characteristic of a useful Codex Plan is that another engineer or agent should be able to implement it without reconstructing essential decisions.
 
@@ -2370,7 +2512,7 @@ A Plan that attempts to prescribe every trivial implementation detail risks beco
 
 A Plan that omits transaction consistency, idempotency, and concurrency decisions is too weak.
 
-### **10.8 Plan Revisions During Codex Execution**
+### 10.8 Plan Revisions During Codex Execution
 
 Codex execution-plan guidance supports maintaining planning artifacts as work progresses.
 
@@ -2398,7 +2540,7 @@ The approval requirement belongs to the enterprise Harness and governance policy
 
 It must remain effective regardless of the planning conventions used by Codex.
 
-### **10.9 Comparing Claude Code, GitHub Copilot, and Codex**
+### 10.9 Comparing Claude Code, GitHub Copilot, and Codex
 
 All three platforms can support the separation of planning and implementation, but their interfaces and repository customization mechanisms differ.
 
@@ -2422,13 +2564,34 @@ A Plan must be grounded in repository evidence, respect applicable Instructions,
 
 No platform-specific planning interface removes that responsibility.
 
-### **10.10 Codex Inside the Enterprise Harness**
+### 10.10 Codex Inside the Enterprise Harness
 
 Codex can be integrated into the enterprise planning architecture as a planning-capable agent.
 
 The Harness remains responsible for enforcing the lifecycle.
 
-\#chatgpt-mermaid-\_r_1c04\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(237, 237, 237);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_1c04\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_1c04\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_1c04\_ .error-icon{fill:rgb(48, 48, 48);}#chatgpt-mermaid-\_r_1c04\_ .error-text{fill:rgb(237, 237, 237);stroke:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1c04\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_1c04\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_1c04\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_1c04\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_1c04\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_1c04\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_1c04\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1c04\_ .marker.cross{stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1c04\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_1c04\_ p{margin:0;}#chatgpt-mermaid-\_r_1c04\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1c04\_ .cluster-label text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1c04\_ .cluster-label span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1c04\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_1c04\_ .label text,#chatgpt-mermaid-\_r_1c04\_ span{fill:rgb(237, 237, 237);color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1c04\_ .node rect,#chatgpt-mermaid-\_r_1c04\_ .node circle,#chatgpt-mermaid-\_r_1c04\_ .node ellipse,#chatgpt-mermaid-\_r_1c04\_ .node polygon,#chatgpt-mermaid-\_r_1c04\_ .node path{fill:rgb(9, 23, 44);stroke:rgb(31, 78, 148);stroke-width:1px;}#chatgpt-mermaid-\_r_1c04\_ .rough-node .label text,#chatgpt-mermaid-\_r_1c04\_ .node .label text,#chatgpt-mermaid-\_r_1c04\_ .image-shape .label,#chatgpt-mermaid-\_r_1c04\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_1c04\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_1c04\_ .rough-node .label,#chatgpt-mermaid-\_r_1c04\_ .node .label,#chatgpt-mermaid-\_r_1c04\_ .image-shape .label,#chatgpt-mermaid-\_r_1c04\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_1c04\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_1c04\_ .root .anchor path{fill:rgb(175, 175, 175)!important;stroke-width:0;stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1c04\_ .arrowheadPath{fill:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1c04\_ .edgePath .path{stroke:rgb(175, 175, 175);stroke-width:1px;}#chatgpt-mermaid-\_r_1c04\_ .flowchart-link{stroke:rgb(175, 175, 175);fill:none;}#chatgpt-mermaid-\_r_1c04\_ .edgeLabel{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_1c04\_ .edgeLabel p{background-color:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1c04\_ .edgeLabel rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1c04\_ .labelBkg{background-color:rgba(0, 0, 0, 0.5);}#chatgpt-mermaid-\_r_1c04\_ .cluster rect{fill:rgb(48, 48, 48);stroke:rgba(255, 255, 255, 0.15);stroke-width:1px;}#chatgpt-mermaid-\_r_1c04\_ .cluster text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1c04\_ .cluster span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1c04\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(48, 48, 48);border:1px solid rgba(255, 255, 255, 0.15);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_1c04\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1c04\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_1c04\_ .icon-shape,#chatgpt-mermaid-\_r_1c04\_ .image-shape{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_1c04\_ .icon-shape p,#chatgpt-mermaid-\_r_1c04\_ .image-shape p{background-color:rgb(0, 0, 0);padding:2px;}#chatgpt-mermaid-\_r_1c04\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_1c04\_ .image-shape .label rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1c04\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_1c04\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_1c04\_ .node .neo-node{stroke:rgb(31, 78, 148);}#chatgpt-mermaid-\_r_1c04\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_1c04\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_1c04\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_1c04\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1c04\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_1c04\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_1c04\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_1c04\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1c04\_ [data-look="neo"].node .neo-line path{stroke:rgb(31, 78, 148);filter:none;}#chatgpt-mermaid-\_r_1c04\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_1c04\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1c04\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_1c04\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_1c04\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1c04\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_1c04\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1c04\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_1c04\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_1c04\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_1c04\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_1c04\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-width:1px;}#chatgpt-mermaid-\_r_1c04\_ .node rect,#chatgpt-mermaid-\_r_1c04\_ .node circle,#chatgpt-mermaid-\_r_1c04\_ .node ellipse,#chatgpt-mermaid-\_r_1c04\_ .node polygon,#chatgpt-mermaid-\_r_1c04\_ .node path{fill:rgb(0, 40, 77);stroke:rgba(255, 255, 255, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_1c04\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_1c04\_ .mermaid-decision .label-container{fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_1c04\_ .edgePaths .flowchart-link{stroke:rgb(175, 175, 175);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_1c04\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1c04\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}Task PromptHarness Task IntakeRead-Only RepositoryDiscoveryApplicable Instructions andSkillsCodex Planning SessionProposed Engineering PlanPlan Quality GatePlan Ready?Approval Required?Human ReviewApproved?Execution AuthorizationDeveloper AgentImplementationReviewer and ValidatorEvaluatorCompletion DecisionNoYesYesRevisionApprovedNo
+```mermaid
+flowchart TD
+    A["Task Prompt"] --> B["Harness Task Intake"]
+    B --> C["Read-Only Repository Discovery"]
+    C --> D["Applicable Instructions and Skills"]
+    D --> E["Codex Planning Session"]
+    E --> F["Proposed Engineering Plan"]
+    F --> G["Plan Quality Gate"]
+    G --> H{"Plan Ready?"}
+    H -->|"No"| E
+    H -->|"Yes"| I{"Approval Required?"}
+    I -->|"Yes"| J["Human Review"]
+    J --> K{"Approved?"}
+    K -->|"Revision"| E
+    K -->|"Approved"| L["Execution Authorization"]
+    I -->|"No"| L
+    L --> M["Developer Agent"]
+    M --> N["Implementation"]
+    N --> O["Reviewer and Validator"]
+    O --> P["Evaluator"]
+    P --> Q["Completion Decision"]
+```
 
 The diagram illustrates a logical architecture.
 
@@ -2453,13 +2616,9 @@ To support such workflows, the Harness should establish a consistent representat
 
 The AI platform may change. The engineering contract should remain stable.
 
-### **10.11 Security and Permission Boundaries**
+### 10.11 Security and Permission Boundaries
 
-Codex provides execution permissions and sandbox controls that can help restrict the actions available to an agent. These controls should be configured according to the organization's security requirements.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://learn.chatgpt.com\&sz=32)
-
-ChatGPT Learn
+Codex provides execution permissions and sandbox controls that can help restrict the actions available to an agent. These controls should be configured according to the organization's security requirements.
 
 Planning is not inherently harmless merely because it does not intentionally modify code.
 
@@ -2479,7 +2638,7 @@ A proposed Plan must not become an implicit grant of permission to modify source
 
 Those permissions must be supplied through the authorized workflow.
 
-### **10.12 The Value of Codex Execution Plans**
+### 10.12 The Value of Codex Execution Plans
 
 Codex's execution-plan conventions highlight an important engineering requirement: complex work needs continuity beyond a single model interaction.
 
@@ -2509,7 +2668,7 @@ This is where the handbook's separation of Plan, Scratchpad, Harness Memory, and
 
 Each artifact has a different lifecycle and authority.
 
-### **10.13 Architectural Interpretation**
+### 10.13 Architectural Interpretation
 
 Codex demonstrates that planning can be both an interactive activity and a durable engineering practice.
 
@@ -2543,9 +2702,7 @@ Their interaction models differ, but the architectural responsibilities are shar
 
 This makes Planning Mode a durable part of Enterprise AI Engineering rather than a feature tied to one vendor.
 
-Chapter 27 status: In progress — next section: Best Practices
-
-## **11. Best Practices**
+## 11. Best Practices
 
 Planning Mode delivers the greatest value when it is treated as a disciplined engineering activity rather than a mechanism for generating lengthy implementation descriptions.
 
@@ -2555,7 +2712,7 @@ In enterprise environments, planning quality is determined not by the amount of 
 
 The following practices establish a reliable foundation for Planning Mode in Claude Code and other AI coding platforms.
 
-### **11.1 Plan According to Task Complexity and Risk**
+### 11.1 Plan According to Task Complexity and Risk
 
 Planning effort should be proportional to the complexity, uncertainty, and potential impact of the requested change.
 
@@ -2582,7 +2739,7 @@ For Alpha Car Detailing, adding corporate fleet booking requires formal planning
 
 The goal is proportionate control, not maximum documentation.
 
-### **11.2 Establish the Repository Baseline Before Planning**
+### 11.2 Establish the Repository Baseline Before Planning
 
 A Plan must be associated with the repository state used to create it.
 
@@ -2594,7 +2751,7 @@ Where appropriate, the Harness should create an immutable or isolated repository
 
 For example:
 
-```
+```powershell
 git rev-parse HEAD
 git status --short
 ```
@@ -2609,7 +2766,7 @@ A Plan based on an outdated booking service implementation may prescribe changes
 
 **Best practice:** Treat repository freshness as a planning prerequisite rather than assuming the codebase remains unchanged between planning and execution.
 
-### **11.3 Perform Repository Discovery Before Selecting the Implementation Approach**
+### 11.3 Perform Repository Discovery Before Selecting the Implementation Approach
 
 The planning agent should investigate existing implementation patterns before designing new components.
 
@@ -2629,7 +2786,7 @@ The agent does not need to read every file in the repository. It should follow d
 
 **Best practice:** Prefer targeted, evidence-driven discovery over broad repository exploration without a defined purpose.
 
-### **11.4 Resolve Applicable Instructions Before Planning Implementation Tasks**
+### 11.4 Resolve Applicable Instructions Before Planning Implementation Tasks
 
 Instructions establish engineering constraints that the Plan must respect.
 
@@ -2649,7 +2806,7 @@ Where Instructions conflict, the planner should expose the conflict and seek an 
 
 **Best practice:** Make instruction compliance an explicit planning condition and retain relevant references in the Plan.
 
-### **11.5 Distinguish Confirmed Evidence from Assumptions**
+### 11.5 Distinguish Confirmed Evidence from Assumptions
 
 One of the most important practices in AI-assisted planning is separating facts from hypotheses.
 
@@ -2673,7 +2830,7 @@ For Alpha Car Detailing, an incorrect assumption about corporate booking-limit s
 
 **Best practice:** Never convert an unverified assumption into an implementation requirement without the necessary confirmation.
 
-### **11.6 Identify Both In-Scope and Out-of-Scope Work**
+### 11.6 Identify Both In-Scope and Out-of-Scope Work
 
 A Plan should establish explicit modification boundaries.
 
@@ -2693,13 +2850,13 @@ Those improvements may be legitimate, but they should be raised separately inste
 
 **Best practice:** Make scope boundaries explicit enough that the Developer Agent and Reviewer Agent can recognize unauthorized change expansion.
 
-### **11.7 Decompose Work into Verifiable Engineering Tasks**
+### 11.7 Decompose Work into Verifiable Engineering Tasks
 
 Implementation tasks should be actionable and associated with clear completion conditions.
 
 Avoid vague steps such as:
 
-```
+```text
 1. Update the backend.
 2. Implement business logic.
 3. Add tests.
@@ -2712,7 +2869,7 @@ A more useful decomposition identifies the actual engineering outcomes.
 
 For example:
 
-```
+```text
 1. Confirm corporate booking-limit semantics.
 2. Define or extend the fleet booking API contract.
 3. Integrate the booking workflow with corporate policy.
@@ -2732,7 +2889,7 @@ An integration test cannot provide meaningful concurrency evidence until the tra
 
 **Best practice:** Define tasks in terms of deliverables, dependencies, and verification obligations rather than arbitrary coding activities.
 
-### **11.8 Design Validation Before Implementation**
+### 11.8 Design Validation Before Implementation
 
 Validation should be planned alongside the implementation approach, not added after code generation.
 
@@ -2754,7 +2911,7 @@ The Evaluator Agent assesses whether the implementation satisfies the intended o
 
 **Best practice:** Do not approve a consequential implementation Plan that lacks a credible strategy for verifying its most important invariants.
 
-### **11.9 Define Negative, Boundary, and Concurrency Scenarios**
+### 11.9 Define Negative, Boundary, and Concurrency Scenarios
 
 A Plan should not focus exclusively on successful user journeys.
 
@@ -2776,7 +2933,7 @@ These scenarios should be linked to the applicable acceptance criteria and syste
 
 **Best practice:** Plan tests for how the system must behave when conditions are unfavorable, not only when everything succeeds.
 
-### **11.10 Make Dependencies and Blocking Decisions Visible**
+### 11.10 Make Dependencies and Blocking Decisions Visible
 
 A dependency should be recorded when it influences implementation order, technical feasibility, or authorization.
 
@@ -2792,7 +2949,7 @@ However, it should not make an irreversible design choice based on an unresolved
 
 **Best practice:** Identify blocking decisions explicitly and distinguish them from questions that can safely be resolved during execution.
 
-### **11.11 Keep the Plan Concise but Executable**
+### 11.11 Keep the Plan Concise but Executable
 
 Overly detailed Plans can become difficult to review and maintain.
 
@@ -2812,7 +2969,7 @@ An effective Plan should allow a competent engineer or AI Agent to understand th
 
 **Best practice:** Optimize for clarity, executability, and reviewability rather than document length.
 
-### **11.12 Keep Planning Artifacts Separate from Scratchpad Observations**
+### 11.12 Keep Planning Artifacts Separate from Scratchpad Observations
 
 The Plan and Scratchpad must have distinct purposes.
 
@@ -2832,7 +2989,7 @@ The agent should not continuously rewrite the approved Plan to include every int
 
 **Best practice:** Preserve the Plan as the implementation contract and the Scratchpad as temporary working state.
 
-### **11.13 Define Human Approval Boundaries Before Execution**
+### 11.13 Define Human Approval Boundaries Before Execution
 
 Human approval should be determined by risk and organizational policy.
 
@@ -2850,7 +3007,7 @@ An agent should not infer approval merely because a human reviewed the Plan or b
 
 **Best practice:** Treat approval as an explicit, recorded authorization event rather than conversational acknowledgment.
 
-### **11.14 Detect and Manage Plan Drift**
+### 11.14 Detect and Manage Plan Drift
 
 The implementation may reveal information that was unavailable during planning.
 
@@ -2877,7 +3034,7 @@ A practical drift assessment should answer:
 
 **Best practice:** Treat the initial Plan as revisable, but require controlled revision for material changes.
 
-### **11.15 Enforce Planning as a Non-Mutating Phase**
+### 11.15 Enforce Planning as a Non-Mutating Phase
 
 Planning should not modify production code, configuration, database schemas, or infrastructure.
 
@@ -2897,7 +3054,7 @@ If a proposed investigation requires a mutating action, that operation should be
 
 **Best practice:** Enforce the distinction between planning and execution through permissions, not merely through the agent's stated intentions.
 
-### **11.16 Preserve Plan Provenance and Version History**
+### 11.16 Preserve Plan Provenance and Version History
 
 A Plan should be traceable to its originating task and repository baseline.
 
@@ -2922,7 +3079,7 @@ For example, if a later defect is traced to a booking-limit assumption, the orga
 
 **Best practice:** Maintain traceability from the original requirement through planning decisions, implementation changes, validation evidence, and acceptance.
 
-### **11.17 Validate Plan Quality Before Approval**
+### 11.17 Validate Plan Quality Before Approval
 
 A Plan should pass a basic quality assessment before being submitted for architectural or business approval.
 
@@ -2955,7 +3112,7 @@ The Plan Quality Gate should not claim architectural correctness solely because 
 
 **Best practice:** Combine deterministic completeness checks with substantive engineering review.
 
-### **11.18 Design Plans for Multi-Agent Handoff**
+### 11.18 Design Plans for Multi-Agent Handoff
 
 An enterprise Harness may use different agents for planning, implementation, review, validation, and evaluation.
 
@@ -2975,7 +3132,7 @@ This requires traceability between requirements, planned tasks, implementation a
 
 **Best practice:** Write Plans as durable engineering handoff artifacts, not as conversational notes understood only by the originating agent.
 
-### **11.19 Avoid Treating Planning as Completion**
+### 11.19 Avoid Treating Planning as Completion
 
 Planning completion and task completion are separate states.
 
@@ -2989,7 +3146,7 @@ The Harness should report these states distinctly.
 
 For example:
 
-```
+```text
 Planning Status:
 Approved
 
@@ -3012,7 +3169,7 @@ An agent must not claim that corporate fleet booking has been delivered merely b
 
 **Best practice:** Preserve explicit lifecycle states for planning, execution, validation, evaluation, and final acceptance.
 
-### **11.20 Use Planning Outcomes to Improve Engineering Practices**
+### 11.20 Use Planning Outcomes to Improve Engineering Practices
 
 Completed planning activities can provide valuable information about recurring engineering difficulties.
 
@@ -3032,7 +3189,7 @@ The Harness may identify improvement opportunities, but it must not silently cha
 
 **Best practice:** Use recurring planning findings as evidence for governed improvement, not as permission for uncontrolled standard evolution.
 
-### **11.21 Recommended Planning Review Checklist**
+### 11.21 Recommended Planning Review Checklist
 
 Before authorizing implementation, an architect or technical lead should be able to answer the following questions:
 
@@ -3057,7 +3214,7 @@ If material conditions remain unresolved, the Plan should be revised or marked a
 
 A partially complete Plan may still be useful, but it should not be represented as ready for execution when essential decisions are missing.
 
-### **11.22 Applying the Practices to Alpha Car Detailing**
+### 11.22 Applying the Practices to Alpha Car Detailing
 
 For the corporate fleet booking feature, these practices produce an identifiable engineering outcome before implementation begins.
 
@@ -3095,9 +3252,7 @@ A successful Planning Mode does not attempt to predict every implementation deta
 
 It establishes enough understanding and control for implementation to proceed responsibly.
 
-Chapter 27 status: In progress — next section: Anti-patterns
-
-## **12. Anti-patterns**
+## 12. Anti-patterns
 
 Planning Mode introduces a deliberate boundary between understanding a task and executing it. That boundary is valuable only when the planning process produces reliable engineering decisions and those decisions influence subsequent implementation.
 
@@ -3107,7 +3262,7 @@ In enterprise AI-assisted development, planning failures are particularly conseq
 
 The following anti-patterns illustrate common failures, their consequences, and the engineering practices needed to prevent them.
 
-### **12.1 Coding Before Understanding Scope**
+### 12.1 Coding Before Understanding Scope
 
 One of the most common anti-patterns occurs when an AI Agent begins modifying the repository immediately after receiving a Prompt.
 
@@ -3139,7 +3294,7 @@ For consequential changes, the Plan should explicitly identify affected componen
 
 > **Common Mistake:** Treating rapid code generation as evidence of engineering progress. Code created before the problem is sufficiently understood may increase rework rather than reduce delivery time.
 
-### **12.2 Over-planning Trivial Changes**
+### 12.2 Over-planning Trivial Changes
 
 The opposite failure occurs when an agent applies extensive planning procedures to every task regardless of complexity.
 
@@ -3169,7 +3324,7 @@ Reserve formal planning and approval for tasks involving significant uncertainty
 
 Planning depth should be proportional to the consequences of an incorrect implementation.
 
-### **12.3 Producing a Plan Without Repository Evidence**
+### 12.3 Producing a Plan Without Repository Evidence
 
 A planning agent may generate a convincing implementation approach based on familiar architecture patterns without examining the actual repository.
 
@@ -3195,7 +3350,7 @@ Where evidence cannot be obtained, the agent should record the limitation instea
 
 A technically sophisticated Plan is not necessarily an evidence-based Plan.
 
-### **12.4 Ignoring Applicable Instructions**
+### 12.4 Ignoring Applicable Instructions
 
 An AI Agent may identify an implementation approach that appears efficient but conflicts with established repository Instructions.
 
@@ -3221,13 +3376,13 @@ When Instructions conflict or are unclear, the agent must expose the conflict an
 
 Planning Mode cannot override Instructions simply by documenting a different preference.
 
-### **12.5 Creating Plans Without a Validation Strategy**
+### 12.5 Creating Plans Without a Validation Strategy
 
 A Plan may describe implementation tasks in considerable detail while providing little explanation of how correctness will be established.
 
 For example:
 
-```
+```text
 1. Add corporate fleet booking endpoint.
 2. Implement corporate booking service.
 3. Update database.
@@ -3259,7 +3414,7 @@ A successful unit test of a capacity calculation is not sufficient evidence.
 
 > **Architect's Note:** A Plan without a credible validation strategy is an implementation proposal, not a complete engineering Plan.
 
-### **12.6 Ignoring Dependencies and Implementation Order**
+### 12.6 Ignoring Dependencies and Implementation Order
 
 A weak Plan may identify the correct tasks but place them in an arbitrary sequence.
 
@@ -3287,7 +3442,7 @@ Where parallel work is appropriate, the Plan should define stable contracts and 
 
 Parallelism should not be introduced at the expense of architectural consistency.
 
-### **12.7 Hiding Assumptions Inside the Plan**
+### 12.7 Hiding Assumptions Inside the Plan
 
 An AI Agent may present inferred behavior as if it were a confirmed business requirement.
 
@@ -3315,7 +3470,7 @@ When an assumption affects data integrity, authorization, contractual obligation
 
 Planning quality depends partly on how clearly uncertainty is exposed.
 
-### **12.8 Mixing Scratchpad Observations into the Approved Plan**
+### 12.8 Mixing Scratchpad Observations into the Approved Plan
 
 During implementation, an agent accumulates temporary observations.
 
@@ -3345,7 +3500,7 @@ Revise the Plan when a material finding changes the approved approach.
 
 Such revisions should be explicit, traceable, and approved where required.
 
-### **12.9 Treating the Plan as Authoritative Repository Knowledge**
+### 12.9 Treating the Plan as Authoritative Repository Knowledge
 
 A task-specific Plan may contain decisions that are correct for one implementation but inappropriate as permanent architectural standards.
 
@@ -3369,7 +3524,7 @@ Promotion from task-specific findings to authoritative repository knowledge must
 
 A Plan may inform future decisions, but it does not automatically establish enterprise standards.
 
-### **12.10 Treating the Initial Plan as Immutable**
+### 12.10 Treating the Initial Plan as Immutable
 
 Some workflows assume that an approved Plan must be followed exactly even when execution reveals new evidence.
 
@@ -3395,7 +3550,7 @@ Required reviewers should approve material changes before execution resumes.
 
 An approved Plan is a controlled engineering agreement, not an immutable prediction.
 
-### **12.11 Allowing Uncontrolled Plan Drift**
+### 12.11 Allowing Uncontrolled Plan Drift
 
 The opposite anti-pattern occurs when the Developer Agent changes the implementation approach without recording or authorizing the deviation.
 
@@ -3423,13 +3578,13 @@ Minor implementation adjustments may remain within delegated authority.
 
 Material deviations require controlled Plan revision and appropriate reapproval.
 
-### **12.12 Creating Plans That Cannot Be Executed**
+### 12.12 Creating Plans That Cannot Be Executed
 
 A Plan may contain broad recommendations without actionable engineering tasks.
 
 For example:
 
-```
+```text
 Improve the corporate booking architecture.
 
 Ensure scalability and reliability.
@@ -3459,7 +3614,7 @@ A competent engineer or AI Agent should be able to use the Plan without needing 
 
 The Plan should be sufficiently specific for execution while avoiding unnecessary code-level prescription.
 
-### **12.13 Creating Plans That Cannot Be Verified**
+### 12.13 Creating Plans That Cannot Be Verified
 
 A Plan may contain implementation steps but define acceptance in subjective terms.
 
@@ -3485,7 +3640,7 @@ Where non-functional requirements such as latency or throughput matter, establis
 
 Do not invent performance targets without evidence of business or operational requirements.
 
-### **12.14 Using Planning Mode to Make Unauthorized Changes**
+### 12.14 Using Planning Mode to Make Unauthorized Changes
 
 An agent may interpret planning as permission to perform preparatory implementation work.
 
@@ -3511,7 +3666,7 @@ The Harness should enforce permissions rather than relying exclusively on the ag
 
 Planning Mode must not modify production code or configuration.
 
-### **12.15 Skipping Human Approval Where Required**
+### 12.15 Skipping Human Approval Where Required
 
 A Plan may be complete, technically sound, and supported by repository evidence while still requiring human authorization.
 
@@ -3537,13 +3692,13 @@ The Harness should block execution when mandatory approval is absent.
 
 An interactive tool action that begins implementation should not be treated as equivalent to organizational approval.
 
-### **12.16 Confusing Plan Completion with Feature Completion**
+### 12.16 Confusing Plan Completion with Feature Completion
 
 A planning agent may produce a detailed implementation document and report the overall engineering task as complete.
 
 For example:
 
-```
+```text
 Corporate fleet booking completed successfully.
 
 Implementation plan generated.
@@ -3565,7 +3720,7 @@ Downstream teams may act on an inaccurate status.
 
 Maintain explicit lifecycle states.
 
-```
+```text
 Planning:
 Complete
 
@@ -3589,7 +3744,7 @@ Planning completion establishes readiness for implementation.
 
 Feature completion requires implementation, required validation, evaluation, and applicable acceptance decisions.
 
-### **12.17 Excessive Planning Detail Without Decision Value**
+### 12.17 Excessive Planning Detail Without Decision Value
 
 An agent may generate a large Plan containing extensive descriptions of common architecture patterns, generic best practices, or speculative implementation details.
 
@@ -3617,7 +3772,7 @@ Avoid repeating general engineering guidance already established in repository I
 
 A concise, evidence-based Plan is often more useful than a long speculative document.
 
-### **12.18 Failing to Revalidate the Plan Against Repository Changes**
+### 12.18 Failing to Revalidate the Plan Against Repository Changes
 
 A Plan may be approved against one repository revision while implementation begins against another.
 
@@ -3643,7 +3798,7 @@ Require re-planning when material assumptions are invalidated.
 
 A change in commit identifier does not always require complete reapproval, but relevant changes must be evaluated.
 
-### **12.19 Failing to Consider Operational and Security Risks**
+### 12.19 Failing to Consider Operational and Security Risks
 
 A Plan may focus exclusively on functional implementation.
 
@@ -3665,7 +3820,7 @@ The depth of analysis should reflect the actual risks.
 
 Not every change requires a complete threat model or operational redesign, but consequential risks should not be ignored.
 
-### **12.20 Treating Agent-Generated Plans as Automatically Correct**
+### 12.20 Treating Agent-Generated Plans as Automatically Correct
 
 A detailed AI-generated Plan can create an impression of technical authority.
 
@@ -3691,7 +3846,7 @@ The Plan Quality Gate may verify document completeness, but it cannot substitute
 
 The AI Agent proposes the approach. The organization's authorized engineering process determines whether the approach is acceptable.
 
-### **12.21 Anti-pattern Summary**
+### 12.21 Anti-pattern Summary
 
 The following table consolidates the principal planning failures and their corrective practices.
 
@@ -3718,7 +3873,7 @@ The following table consolidates the principal planning failures and their corre
 | Ignoring operational risks            | Reliability and security exposure      | Include relevant operational analysis  |
 | Blind acceptance of AI Plans          | Unreviewed technical decisions         | Apply independent engineering judgment |
 
-### **12.22 Applying Anti-pattern Awareness to the Harness**
+### 12.22 Applying Anti-pattern Awareness to the Harness
 
 In a mature Harness, avoiding anti-patterns should not depend entirely on individual agent behavior.
 
@@ -3742,7 +3897,22 @@ These responsibilities should not be collapsed into one automated completeness c
 
 A practical planning-control model is:
 
-\#chatgpt-mermaid-\_r_1c30\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(237, 237, 237);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_1c30\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_1c30\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_1c30\_ .error-icon{fill:rgb(48, 48, 48);}#chatgpt-mermaid-\_r_1c30\_ .error-text{fill:rgb(237, 237, 237);stroke:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1c30\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_1c30\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_1c30\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_1c30\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_1c30\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_1c30\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_1c30\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1c30\_ .marker.cross{stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1c30\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_1c30\_ p{margin:0;}#chatgpt-mermaid-\_r_1c30\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1c30\_ .cluster-label text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1c30\_ .cluster-label span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1c30\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_1c30\_ .label text,#chatgpt-mermaid-\_r_1c30\_ span{fill:rgb(237, 237, 237);color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1c30\_ .node rect,#chatgpt-mermaid-\_r_1c30\_ .node circle,#chatgpt-mermaid-\_r_1c30\_ .node ellipse,#chatgpt-mermaid-\_r_1c30\_ .node polygon,#chatgpt-mermaid-\_r_1c30\_ .node path{fill:rgb(9, 23, 44);stroke:rgb(31, 78, 148);stroke-width:1px;}#chatgpt-mermaid-\_r_1c30\_ .rough-node .label text,#chatgpt-mermaid-\_r_1c30\_ .node .label text,#chatgpt-mermaid-\_r_1c30\_ .image-shape .label,#chatgpt-mermaid-\_r_1c30\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_1c30\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_1c30\_ .rough-node .label,#chatgpt-mermaid-\_r_1c30\_ .node .label,#chatgpt-mermaid-\_r_1c30\_ .image-shape .label,#chatgpt-mermaid-\_r_1c30\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_1c30\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_1c30\_ .root .anchor path{fill:rgb(175, 175, 175)!important;stroke-width:0;stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1c30\_ .arrowheadPath{fill:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1c30\_ .edgePath .path{stroke:rgb(175, 175, 175);stroke-width:1px;}#chatgpt-mermaid-\_r_1c30\_ .flowchart-link{stroke:rgb(175, 175, 175);fill:none;}#chatgpt-mermaid-\_r_1c30\_ .edgeLabel{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_1c30\_ .edgeLabel p{background-color:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1c30\_ .edgeLabel rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1c30\_ .labelBkg{background-color:rgba(0, 0, 0, 0.5);}#chatgpt-mermaid-\_r_1c30\_ .cluster rect{fill:rgb(48, 48, 48);stroke:rgba(255, 255, 255, 0.15);stroke-width:1px;}#chatgpt-mermaid-\_r_1c30\_ .cluster text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1c30\_ .cluster span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1c30\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(48, 48, 48);border:1px solid rgba(255, 255, 255, 0.15);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_1c30\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1c30\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_1c30\_ .icon-shape,#chatgpt-mermaid-\_r_1c30\_ .image-shape{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_1c30\_ .icon-shape p,#chatgpt-mermaid-\_r_1c30\_ .image-shape p{background-color:rgb(0, 0, 0);padding:2px;}#chatgpt-mermaid-\_r_1c30\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_1c30\_ .image-shape .label rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1c30\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_1c30\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_1c30\_ .node .neo-node{stroke:rgb(31, 78, 148);}#chatgpt-mermaid-\_r_1c30\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_1c30\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_1c30\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_1c30\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1c30\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_1c30\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_1c30\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_1c30\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1c30\_ [data-look="neo"].node .neo-line path{stroke:rgb(31, 78, 148);filter:none;}#chatgpt-mermaid-\_r_1c30\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_1c30\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1c30\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_1c30\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_1c30\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1c30\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_1c30\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1c30\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_1c30\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_1c30\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_1c30\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_1c30\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-width:1px;}#chatgpt-mermaid-\_r_1c30\_ .node rect,#chatgpt-mermaid-\_r_1c30\_ .node circle,#chatgpt-mermaid-\_r_1c30\_ .node ellipse,#chatgpt-mermaid-\_r_1c30\_ .node polygon,#chatgpt-mermaid-\_r_1c30\_ .node path{fill:rgb(0, 40, 77);stroke:rgba(255, 255, 255, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_1c30\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_1c30\_ .mermaid-decision .label-container{fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_1c30\_ .edgePaths .flowchart-link{stroke:rgb(175, 175, 175);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_1c30\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1c30\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}#chatgpt-mermaid-\_r_1c30\_ .decision rect{fill:rgb(255, 242, 213)!important;stroke:rgb(169, 121, 22)!important;color:rgb(66, 46, 8)!important;}#chatgpt-mermaid-\_r_1c30\_ .decision polygon{fill:rgb(255, 242, 213)!important;stroke:rgb(169, 121, 22)!important;color:rgb(66, 46, 8)!important;}#chatgpt-mermaid-\_r_1c30\_ .decision ellipse{fill:rgb(255, 242, 213)!important;stroke:rgb(169, 121, 22)!important;color:rgb(66, 46, 8)!important;}#chatgpt-mermaid-\_r_1c30\_ .decision circle{fill:rgb(255, 242, 213)!important;stroke:rgb(169, 121, 22)!important;color:rgb(66, 46, 8)!important;}#chatgpt-mermaid-\_r_1c30\_ .decision path{fill:rgb(255, 242, 213)!important;stroke:rgb(169, 121, 22)!important;color:rgb(66, 46, 8)!important;}#chatgpt-mermaid-\_r_1c30\_ .decision tspan{fill:rgb(66, 46, 8)!important;}#chatgpt-mermaid-\_r_1c30\_ .approved rect{fill:rgb(229, 244, 234)!important;stroke:rgb(67, 140, 91)!important;color:rgb(33, 84, 53)!important;}#chatgpt-mermaid-\_r_1c30\_ .approved polygon{fill:rgb(229, 244, 234)!important;stroke:rgb(67, 140, 91)!important;color:rgb(33, 84, 53)!important;}#chatgpt-mermaid-\_r_1c30\_ .approved ellipse{fill:rgb(229, 244, 234)!important;stroke:rgb(67, 140, 91)!important;color:rgb(33, 84, 53)!important;}#chatgpt-mermaid-\_r_1c30\_ .approved circle{fill:rgb(229, 244, 234)!important;stroke:rgb(67, 140, 91)!important;color:rgb(33, 84, 53)!important;}#chatgpt-mermaid-\_r_1c30\_ .approved path{fill:rgb(229, 244, 234)!important;stroke:rgb(67, 140, 91)!important;color:rgb(33, 84, 53)!important;}#chatgpt-mermaid-\_r_1c30\_ .approved tspan{fill:rgb(33, 84, 53)!important;}Proposed PlanDeterministic CompletenessGateRequired Fields Present?Return for RevisionEvidence and ArchitectureReviewMaterial Issues?Approval Policy CheckApproval Satisfied?Await Authorized DecisionApproved PlanExecution HandoffNoYesYesNoNoYes
+```mermaid
+flowchart TD
+    A["Proposed Plan"] --> B["Deterministic Completeness Gate"]
+    B --> C{"Required Fields Present?"}
+    C -->|"No"| D["Return for Revision"]
+    D --> A
+    C -->|"Yes"| E["Evidence and Architecture Review"]
+    E --> F{"Material Issues?"}
+    F -->|"Yes"| D
+    F -->|"No"| G["Approval Policy Check"]
+    G --> H{"Approval Satisfied?"}
+    H -->|"No"| I["Await Authorized Decision"]
+    I --> G
+    H -->|"Yes"| J["Approved Plan"]
+    J --> K["Execution Handoff"]
+```
 
 This model establishes multiple levels of assurance.
 
@@ -3754,7 +3924,7 @@ The approval policy check verifies authorization.
 
 Execution begins only after the applicable conditions are satisfied.
 
-### **12.23 The Underlying Engineering Lesson**
+### 12.23 The Underlying Engineering Lesson
 
 The most damaging planning anti-pattern is not necessarily the absence of a Plan.
 
@@ -3782,9 +3952,7 @@ It reduces the likelihood that avoidable mistakes become embedded in implementat
 
 **The purpose of Planning Mode is not to make an AI Agent appear prepared. It is to establish sufficient engineering understanding for responsible execution.**
 
-Chapter 27 status: In progress — next section: Architect’s Notes
-
-## **13. Architect’s Notes**
+## 13. Architect’s Notes
 
 Planning Mode should be understood as an architectural control within the enterprise AI engineering lifecycle, not merely as a feature of an AI coding platform.
 
@@ -3792,7 +3960,7 @@ Claude Code, GitHub Copilot, and Codex provide mechanisms for investigating task
 
 The architect's primary concern is not whether an agent can produce a detailed implementation Plan. It is whether the planning process consistently produces sound engineering decisions and whether those decisions remain traceable and enforceable throughout execution.
 
-### **13.1 Planning Is an Architectural Control, Not Just an Agent Capability**
+### 13.1 Planning Is an Architectural Control, Not Just an Agent Capability
 
 An AI Agent can be instructed to inspect a repository and produce a Plan. That capability alone does not establish a reliable planning architecture.
 
@@ -3829,7 +3997,7 @@ The contract should remain independent of the planning agent's interface.
 >
 > Standardize what a valid engineering Plan must contain before standardizing how agents generate Plans. The enterprise should own the planning contract; the AI coding platform should implement it.
 
-### **13.2 Separate Planning Authority from Execution Authority**
+### 13.2 Separate Planning Authority from Execution Authority
 
 One of the most important architectural decisions is determining what authority an agent possesses during planning.
 
@@ -3866,7 +4034,7 @@ The Harness must separately determine whether the agent has permission to perfor
 
 This prevents architectural analysis from becoming an implicit mechanism for privilege escalation.
 
-### **13.3 Treat the Plan as a Versioned Engineering Agreement**
+### 13.3 Treat the Plan as a Versioned Engineering Agreement
 
 An approved Plan should be treated as a versioned agreement about the intended implementation approach.
 
@@ -3880,7 +4048,7 @@ If execution reveals that the selected approach cannot satisfy the required inva
 
 A practical Plan identity may be represented as:
 
-```
+```text
 Task ID: ACD-FLEET-001
 Plan ID: PLAN-ACD-FLEET-001
 Plan Revision: 3
@@ -3899,7 +4067,7 @@ Without versioning, a Plan may be modified after approval without making it clea
 >
 > Approval should bind to a specific Plan revision and relevant repository baseline. An approval record that cannot identify what was approved provides weak governance evidence.
 
-### **13.4 Architectural Decisions Require Rationale**
+### 13.4 Architectural Decisions Require Rationale
 
 A Plan should not simply list the implementation technology selected by the AI Agent.
 
@@ -3926,7 +4094,7 @@ The level of analysis should reflect the materiality of the decision.
 
 A minor internal refactoring does not require the same architectural justification as a change to distributed transaction behavior.
 
-### **13.5 Protect Business Invariants from Implementation Convenience**
+### 13.5 Protect Business Invariants from Implementation Convenience
 
 An AI Agent may favor implementation approaches that are familiar, concise, or easy to generate.
 
@@ -3956,7 +4124,7 @@ These responsibilities may interact, but they solve different problems.
 >
 > Express critical business invariants before selecting implementation mechanisms. An AI-generated architecture should be evaluated by the guarantees it provides, not by how familiar or concise its code appears.
 
-### **13.6 Plan the Consistency Boundary Before the Component Structure**
+### 13.6 Plan the Consistency Boundary Before the Component Structure
 
 AI coding agents are often effective at proposing class structures, interfaces, controllers, and service methods.
 
@@ -3978,7 +4146,7 @@ These decisions should precede detailed class design.
 
 A component diagram that looks clean but ignores transaction boundaries is not sufficient architecture.
 
-### **13.7 Design Planning Around Existing Architecture, Not Idealized Architecture**
+### 13.7 Design Planning Around Existing Architecture, Not Idealized Architecture
 
 A planning agent may recommend a theoretically attractive architecture that requires substantial changes to the existing codebase.
 
@@ -3996,7 +4164,7 @@ If a larger architectural improvement is warranted, it should be presented as a 
 
 This approach avoids converting every feature request into an uncontrolled modernization initiative.
 
-### **13.8 Plan for Compatibility and Evolution**
+### 13.8 Plan for Compatibility and Evolution
 
 Enterprise applications rarely operate in isolation.
 
@@ -4016,7 +4184,7 @@ Where a breaking change is unavoidable, it should be explicitly approved and acc
 
 The planning agent should not assume that modifying one repository means the impact is confined to that repository.
 
-### **13.9 Design for Failure Before Designing for Success**
+### 13.9 Design for Failure Before Designing for Success
 
 A Plan that describes only successful execution is incomplete for consequential enterprise changes.
 
@@ -4040,7 +4208,7 @@ Existing transaction, idempotency, retry, and outbox capabilities may address se
 
 The architectural task is to determine whether those mechanisms provide the required guarantees in the actual system.
 
-### **13.10 Distinguish Deterministic Gates from Architectural Judgment**
+### 13.10 Distinguish Deterministic Gates from Architectural Judgment
 
 The Harness should use deterministic gates wherever objective conditions can be checked automatically.
 
@@ -4065,7 +4233,7 @@ These mechanisms should reinforce one another without being treated as interchan
 
 The Plan should identify which evidence each mechanism will require.
 
-### **13.11 Do Not Confuse Planning with the Reviewer Agent**
+### 13.11 Do Not Confuse Planning with the Reviewer Agent
 
 Planning involves evaluating possible approaches before implementation.
 
@@ -4091,7 +4259,7 @@ Planning does not eliminate independent review.
 
 Nor should the planning agent approve its own implementation simply because its original design was followed.
 
-### **13.12 Define the Materiality Threshold for Plan Drift**
+### 13.12 Define the Materiality Threshold for Plan Drift
 
 Not every implementation difference should trigger formal reapproval.
 
@@ -4119,7 +4287,7 @@ The organization's governance policy should determine which changes require appr
 
 The important principle is that agents should have enough discretion to implement efficiently without being permitted to redefine the approved engineering outcome.
 
-### **13.13 Account for Concurrent Agents and Shared Repositories**
+### 13.13 Account for Concurrent Agents and Shared Repositories
 
 Multi-agent workflows introduce additional planning concerns.
 
@@ -4141,7 +4309,7 @@ Competing changes to a shared transaction boundary may require sequential design
 
 Concurrency among agents should be treated as an engineering coordination problem, not merely a productivity opportunity.
 
-### **13.14 Separate Plan Storage from Authoritative Knowledge**
+### 13.14 Separate Plan Storage from Authoritative Knowledge
 
 The approved Plan should be durable enough to support execution and auditability, but it should not automatically become permanent repository guidance.
 
@@ -4176,7 +4344,7 @@ The Harness may recommend a new Instruction or Skill based on repeated planning 
 
 It must not silently change established standards.
 
-### **13.15 Planning Quality Should Be Measured by Outcomes**
+### 13.15 Planning Quality Should Be Measured by Outcomes
 
 The number of Plans produced is not a meaningful measure of engineering effectiveness.
 
@@ -4209,7 +4377,7 @@ A low drift rate may indicate strong planning or an unwillingness to report devi
 
 Metrics should encourage reliable engineering outcomes rather than incentivize agents to conceal uncertainty.
 
-### **13.16 Planning Must Remain Portable Across AI Platforms**
+### 13.16 Planning Must Remain Portable Across AI Platforms
 
 The handbook uses Claude Code as the primary practical implementation, but the planning architecture should remain vendor-neutral.
 
@@ -4237,7 +4405,7 @@ Each platform adapter should implement the required behavior using its supported
 
 This reduces vendor lock-in and allows the organization to replace or combine AI Agents without redesigning its governance model.
 
-### **13.17 Planning Should Produce a Decision, Not Merely a Document**
+### 13.17 Planning Should Produce a Decision, Not Merely a Document
 
 A Plan is useful because it enables an engineering decision.
 
@@ -4262,7 +4430,7 @@ For Alpha Car Detailing, uncertainty about the contractual meaning of booking li
 
 The planner should expose that condition rather than inventing a rule to complete the document.
 
-### **13.18 Architect’s Decision Framework**
+### 13.18 Architect’s Decision Framework
 
 Before approving a Plan for a consequential enterprise change, the architect should evaluate five dimensions.
 
@@ -4294,7 +4462,7 @@ Another design may align with architecture standards but fail to guarantee corre
 
 Architectural approval should consider the complete engineering obligation.
 
-### **13.19 The Long-Term Architectural Role of Planning Mode**
+### 13.19 The Long-Term Architectural Role of Planning Mode
 
 As enterprise Harnesses evolve, planning may become increasingly automated.
 
@@ -4328,7 +4496,7 @@ A well-designed Planning Mode contributes directly to answering all three.
 >
 > The most effective architecture separates the agent's ability to propose a solution from its authority to implement that solution, while preserving controlled adaptation when new evidence emerges.
 
-### **13.20 Architectural Conclusion**
+### 13.20 Architectural Conclusion
 
 Planning Mode provides the bridge between task intent and authorized implementation.
 
@@ -4344,9 +4512,7 @@ It is a stronger engineering foundation for implementation, review, validation, 
 
 **An enterprise architect should judge Planning Mode by whether it converts uncertain requirements into an evidence-based, authorized, and verifiable implementation approach.**
 
-Chapter 27 status: In progress — next section: Enterprise Tips
-
-## **14. Enterprise Tips**
+## 14. Enterprise Tips
 
 Planning Mode becomes particularly valuable when AI-assisted development moves beyond individual engineers and becomes part of a standardized enterprise delivery process.
 
@@ -4356,7 +4522,7 @@ The objective is to establish consistent engineering expectations without creati
 
 The following enterprise practices focus on operationalizing Planning Mode within the Harness while preserving the separation between planning, execution, validation, evaluation, and governance.
 
-### **14.1 Establish an Organization-Wide Planning Policy**
+### 14.1 Establish an Organization-Wide Planning Policy
 
 Organizations should define when formal planning is required, which information the Plan must contain, and which decisions require human approval.
 
@@ -4387,7 +4553,7 @@ A production incident may require accelerated planning and approval, but urgency
 >
 > Establish one organizational planning policy with risk-based profiles rather than creating a different approval process for every repository. Teams should be able to adopt common controls while applying additional requirements to critical systems.
 
-### **14.2 Standardize the Plan Artifact**
+### 14.2 Standardize the Plan Artifact
 
 A common Plan structure improves consistency across development teams and AI coding platforms.
 
@@ -4395,7 +4561,7 @@ The organization should define a reusable Plan template containing the informati
 
 An illustrative template location is:
 
-```
+```text
 harness/
     templates/
         implementation-plan.md
@@ -4403,7 +4569,7 @@ harness/
 
 The template might require:
 
-```
+```markdown
 # Implementation Plan
 
 ## Task Identity
@@ -4432,7 +4598,7 @@ A small change may require short responses to many sections, while a significant
 
 The objective is consistency of engineering obligations, not uniform document length.
 
-### **14.3 Implement Planning as a Harness State**
+### 14.3 Implement Planning as a Harness State
 
 In an enterprise Harness, Planning Mode should be represented explicitly in the task lifecycle.
 
@@ -4440,7 +4606,26 @@ The Harness should know whether a task is awaiting investigation, under planning
 
 A representative lifecycle is:
 
-\#chatgpt-mermaid-\_r_1c5h\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(237, 237, 237);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_1c5h\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_1c5h\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_1c5h\_ .error-icon{fill:rgb(48, 48, 48);}#chatgpt-mermaid-\_r_1c5h\_ .error-text{fill:rgb(237, 237, 237);stroke:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1c5h\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_1c5h\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_1c5h\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_1c5h\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_1c5h\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_1c5h\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_1c5h\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1c5h\_ .marker.cross{stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1c5h\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_1c5h\_ p{margin:0;}#chatgpt-mermaid-\_r_1c5h\_ defs [id$="-barbEnd"]{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1c5h\_ g.stateGroup text{fill:rgb(31, 78, 148);stroke:none;font-size:10px;}#chatgpt-mermaid-\_r_1c5h\_ g.stateGroup text{fill:rgb(237, 237, 237);stroke:none;font-size:10px;}#chatgpt-mermaid-\_r_1c5h\_ g.stateGroup .state-title{font-weight:bolder;fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1c5h\_ g.stateGroup rect{fill:rgb(9, 23, 44);stroke:rgb(31, 78, 148);}#chatgpt-mermaid-\_r_1c5h\_ g.stateGroup line{stroke:rgb(175, 175, 175);stroke-width:1;}#chatgpt-mermaid-\_r_1c5h\_ .transition{stroke:rgb(175, 175, 175);stroke-width:1;fill:none;}#chatgpt-mermaid-\_r_1c5h\_ .stateGroup .composit{fill:transparent;border-bottom:1px;}#chatgpt-mermaid-\_r_1c5h\_ .stateGroup .alt-composit{fill:#e0e0e0;border-bottom:1px;}#chatgpt-mermaid-\_r_1c5h\_ .state-note{stroke:rgb(58, 132, 63);fill:rgb(48, 48, 48);}#chatgpt-mermaid-\_r_1c5h\_ .state-note text{fill:rgb(237, 237, 237);stroke:none;font-size:10px;}#chatgpt-mermaid-\_r_1c5h\_ .stateLabel .box{stroke:none;stroke-width:0;fill:rgb(9, 23, 44);opacity:0.5;}#chatgpt-mermaid-\_r_1c5h\_ .edgeLabel .label rect{fill:rgb(9, 23, 44);opacity:0.5;}#chatgpt-mermaid-\_r_1c5h\_ .edgeLabel{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_1c5h\_ .edgeLabel p{background-color:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1c5h\_ .edgeLabel rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1c5h\_ .edgeLabel .label text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1c5h\_ .label div .edgeLabel{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1c5h\_ .stateLabel text{fill:rgb(237, 237, 237);font-size:10px;font-weight:bold;}#chatgpt-mermaid-\_r_1c5h\_ .node circle.state-start{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1c5h\_ .node .fork-join{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1c5h\_ .node circle.state-end{fill:rgb(31, 78, 148);stroke:transparent;stroke-width:1.5;}#chatgpt-mermaid-\_r_1c5h\_ .end-state-inner{fill:transparent;stroke-width:1.5;}#chatgpt-mermaid-\_r_1c5h\_ .node rect{fill:rgb(9, 23, 44);stroke:rgb(31, 78, 148);stroke-width:1px;}#chatgpt-mermaid-\_r_1c5h\_ .node polygon{fill:rgb(9, 23, 44);stroke:rgb(31, 78, 148);stroke-width:1px;}#chatgpt-mermaid-\_r_1c5h\_ [id$="-barbEnd"]{fill:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1c5h\_ .statediagram-cluster rect{fill:rgb(9, 23, 44);stroke:rgb(31, 78, 148);stroke-width:1px;}#chatgpt-mermaid-\_r_1c5h\_ .cluster-label,#chatgpt-mermaid-\_r_1c5h\_ .nodeLabel{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1c5h\_ .statediagram-cluster rect.outer{rx:5px;ry:5px;}#chatgpt-mermaid-\_r_1c5h\_ .statediagram-state .divider{stroke:rgb(31, 78, 148);}#chatgpt-mermaid-\_r_1c5h\_ .statediagram-state .title-state{rx:5px;ry:5px;}#chatgpt-mermaid-\_r_1c5h\_ .statediagram-cluster.statediagram-cluster .inner{fill:transparent;}#chatgpt-mermaid-\_r_1c5h\_ .statediagram-cluster.statediagram-cluster-alt .inner{fill:rgb(48, 48, 48);}#chatgpt-mermaid-\_r_1c5h\_ .statediagram-cluster .inner{rx:0;ry:0;}#chatgpt-mermaid-\_r_1c5h\_ .statediagram-state rect.basic{rx:5px;ry:5px;}#chatgpt-mermaid-\_r_1c5h\_ .statediagram-state rect.divider{stroke-dasharray:10,10;fill:rgb(48, 48, 48);}#chatgpt-mermaid-\_r_1c5h\_ .note-edge{stroke-dasharray:5;}#chatgpt-mermaid-\_r_1c5h\_ .statediagram-note rect{fill:rgb(48, 48, 48);stroke:rgb(58, 132, 63);stroke-width:1px;rx:0;ry:0;}#chatgpt-mermaid-\_r_1c5h\_ .statediagram-note rect{fill:rgb(48, 48, 48);stroke:rgb(58, 132, 63);stroke-width:1px;rx:0;ry:0;}#chatgpt-mermaid-\_r_1c5h\_ .statediagram-note text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1c5h\_ .statediagram-note .nodeLabel{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1c5h\_ .statediagram .edgeLabel{color:red;}#chatgpt-mermaid-\_r_1c5h\_ [id$="-dependencyStart"],#chatgpt-mermaid-\_r_1c5h\_ [id$="-dependencyEnd"]{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);stroke-width:1;}#chatgpt-mermaid-\_r_1c5h\_ .statediagramTitleText{text-anchor:middle;font-size:18px;fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1c5h\_ [data-look="neo"].statediagram-cluster rect{fill:rgb(9, 23, 44);stroke:url(#chatgpt-mermaid-\_r_1c5h\_-gradient);stroke-width:1;}#chatgpt-mermaid-\_r_1c5h\_ [data-look="neo"].statediagram-cluster rect.outer{rx:5px;ry:5px;filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1c5h\_ .node .neo-node{stroke:rgb(31, 78, 148);}#chatgpt-mermaid-\_r_1c5h\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_1c5h\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_1c5h\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_1c5h\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1c5h\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_1c5h\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_1c5h\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_1c5h\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1c5h\_ [data-look="neo"].node .neo-line path{stroke:rgb(31, 78, 148);filter:none;}#chatgpt-mermaid-\_r_1c5h\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_1c5h\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1c5h\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_1c5h\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_1c5h\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1c5h\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_1c5h\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1c5h\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}ReceivedDiscoveringPlanningPlanReviewBlockedApprovedExecutingReplanningValidatingEvaluatingCompletedRevision requiredUnresolved prerequisiteRequired approvals satisfiedPrerequisite resolvedExecution authorizedMaterial driftRevised planImplementation readyRework requiredRequired gates passedAcceptedCorrection required
+```mermaid
+stateDiagram-v2
+    [*] --> Received
+    Received --> Discovering
+    Discovering --> Planning
+    Planning --> PlanReview
+    PlanReview --> Planning: Revision required
+    PlanReview --> Blocked: Unresolved prerequisite
+    PlanReview --> Approved: Required approvals satisfied
+    Blocked --> Planning: Prerequisite resolved
+    Approved --> Executing: Execution authorized
+    Executing --> Replanning: Material drift
+    Replanning --> PlanReview: Revised plan
+    Executing --> Validating: Implementation ready
+    Validating --> Executing: Rework required
+    Validating --> Evaluating: Required gates passed
+    Evaluating --> Completed: Accepted
+    Evaluating --> Executing: Correction required
+    Completed --> [*]
+```
 
 The implementation should enforce valid transitions.
 
@@ -4450,7 +4635,7 @@ The Harness must record why a transition was permitted and which authorization c
 
 This is especially important for unattended agent execution.
 
-### **14.4 Keep Planning Workspaces Isolated**
+### 14.4 Keep Planning Workspaces Isolated
 
 Enterprise planning environments should operate with the minimum permissions needed to investigate the requested change.
 
@@ -4462,7 +4647,7 @@ A robust implementation may provide a read-only repository snapshot and a separa
 
 For example:
 
-```
+```text
 harness/
     runs/
         corporate-fleet-booking-001/
@@ -4483,7 +4668,7 @@ Build commands may generate files. Package-management commands may modify lockfi
 
 The enterprise should define an explicit allowlist of permitted planning operations.
 
-### **14.5 Use a Deterministic Plan Quality Gate**
+### 14.5 Use a Deterministic Plan Quality Gate
 
 The Harness should verify basic structural requirements before routing a Plan for approval.
 
@@ -4509,7 +4694,7 @@ Such a defect requires substantive architectural review.
 
 The enterprise should distinguish between *structural completeness* and *engineering adequacy*.
 
-### **14.6 Centralize Approval Policies Without Centralizing Every Decision**
+### 14.6 Centralize Approval Policies Without Centralizing Every Decision
 
 Approval responsibilities should reflect the organizational ownership of systems and risks.
 
@@ -4531,7 +4716,7 @@ The Harness should record the decision, approver authority, Plan revision, and o
 
 It should also prevent an AI Agent from approving its own material changes.
 
-### **14.7 Establish a Clear Handoff Contract Between Agents**
+### 14.7 Establish a Clear Handoff Contract Between Agents
 
 An enterprise Harness may coordinate several specialized roles.
 
@@ -4563,7 +4748,7 @@ Where the Harness supports automated enforcement, it should compare implementati
 >
 > Design the Plan as a platform-independent handoff artifact. The Lead Agent may use Claude Code while the Developer Agent uses another supported coding agent, provided the approved engineering contract and governance controls remain intact.
 
-### **14.8 Integrate Planning with Pull Request Governance**
+### 14.8 Integrate Planning with Pull Request Governance
 
 Planning should connect naturally with existing pull request processes.
 
@@ -4575,7 +4760,7 @@ The pull request should also reference relevant validation evidence.
 
 A practical relationship is:
 
-```
+```text
 Engineering Task
       |
       v
@@ -4605,7 +4790,7 @@ The pull request records the actual proposed implementation and its evidence.
 
 If significant differences exist, reviewers should be able to see how those differences were assessed.
 
-### **14.9 Use Planning to Coordinate Parallel Agent Work**
+### 14.9 Use Planning to Coordinate Parallel Agent Work
 
 Multi-agent implementation can improve throughput when tasks are genuinely independent.
 
@@ -4630,7 +4815,7 @@ A task should not be assigned to multiple Developer Agents merely because parall
 
 Concurrency among agents requires the same discipline as concurrency within distributed software systems: defined ownership, coordination, and conflict handling.
 
-### **14.10 Define Plan Freshness and Revalidation Policies**
+### 14.10 Define Plan Freshness and Revalidation Policies
 
 Enterprise repositories change continuously.
 
@@ -4656,7 +4841,7 @@ However, it should not assume that every commit change invalidates the entire Pl
 
 The purpose is to identify material changes, not to create unnecessary reapproval cycles.
 
-### **14.11 Preserve an Auditable Planning History**
+### 14.11 Preserve an Auditable Planning History
 
 An enterprise Harness should preserve enough evidence to reconstruct significant planning decisions.
 
@@ -4666,7 +4851,7 @@ An audit record should identify the original requirement, the repository baselin
 
 A representative record might contain:
 
-```
+```yaml
 task_id: ACD-FLEET-001
 plan_id: PLAN-ACD-FLEET-001
 plan_revision: 3
@@ -4697,7 +4882,7 @@ A plain editable YAML file alone is not sufficient evidence of trustworthy autho
 
 The Harness may store signed or access-controlled approval records in a dedicated system while presenting a readable representation to engineers.
 
-### **14.12 Protect Sensitive Information During Planning**
+### 14.12 Protect Sensitive Information During Planning
 
 Repository discovery can expose configuration details, architecture documents, service endpoints, and other sensitive information.
 
@@ -4715,7 +4900,7 @@ The Harness should also apply retention and access policies to planning artifact
 
 A temporary Scratchpad should not become an uncontrolled storage location for sensitive information.
 
-### **14.13 Plan Production Changes Separately from Development Changes**
+### 14.13 Plan Production Changes Separately from Development Changes
 
 A Plan authorizing source-code implementation should not automatically authorize production deployment.
 
@@ -4739,7 +4924,7 @@ The organization should distinguish:
 
 These decisions may be combined under an approved organizational process, but they should never be assumed to be identical.
 
-### **14.14 Plan Rollback and Recovery for High-Impact Changes**
+### 14.14 Plan Rollback and Recovery for High-Impact Changes
 
 For changes with operational consequences, Planning Mode should consider rollback and recovery requirements before implementation.
 
@@ -4765,7 +4950,7 @@ However, when a change can affect production data integrity or availability, rec
 >
 > For high-impact changes, require the Plan to explain not only how the feature will be implemented but also how the organization will detect problems, contain failures, and restore acceptable operation.
 
-### **14.15 Use Planning Metrics Carefully**
+### 14.15 Use Planning Metrics Carefully
 
 Enterprise engineering leaders may want to measure the effectiveness of AI-assisted planning.
 
@@ -4785,7 +4970,7 @@ A better objective is to reduce preventable implementation rework while preservi
 
 Planning metrics should support improvement rather than become incentives for superficial compliance.
 
-### **14.16 Build a Governed Library of Planning Patterns**
+### 14.16 Build a Governed Library of Planning Patterns
 
 Enterprise teams often encounter recurring categories of engineering work.
 
@@ -4805,7 +4990,7 @@ However, they should guide investigation rather than dictate a universal archite
 
 A reusable pattern must remain subordinate to the actual repository evidence and applicable Instructions.
 
-### **14.17 Use Planning Findings to Improve Repository Intelligence**
+### 14.17 Use Planning Findings to Improve Repository Intelligence
 
 Repeated planning difficulties may indicate gaps in the organization's engineering knowledge.
 
@@ -4832,7 +5017,7 @@ The Harness must not silently revise those artifacts based on unreviewed observa
 
 This preserves the distinction between temporary experience and approved organizational knowledge.
 
-### **14.18 Support Planning Across Multiple Repositories**
+### 14.18 Support Planning Across Multiple Repositories
 
 Large enterprise systems frequently span multiple repositories.
 
@@ -4852,7 +5037,7 @@ The Harness should not grant write access to every related repository simply bec
 
 Each repository modification must remain within authorized scope.
 
-### **14.19 Provide a Standard Escalation Process**
+### 14.19 Provide a Standard Escalation Process
 
 An AI Agent may encounter a problem that cannot be resolved within its delegated authority.
 
@@ -4877,13 +5062,13 @@ The agent should not resolve an organizational authority problem by making an un
 
 A clearly blocked Plan is preferable to unauthorized execution.
 
-### **14.20 Establish Operational Readiness Criteria for Execution**
+### 14.20 Establish Operational Readiness Criteria for Execution
 
 Before the Harness transitions from planning to execution, it should verify that the necessary conditions have been met.
 
 A representative execution-readiness policy is:
 
-```
+```text
 Execution may begin only when:
 
 1. The engineering goal is defined.
@@ -4906,11 +5091,37 @@ For high-impact changes, additional security, operational, or compliance require
 
 The objective is to create a reliable transition into execution without imposing unnecessary ceremony.
 
-### **14.21 Enterprise Planning Reference Model**
+### 14.21 Enterprise Planning Reference Model
 
 The following architecture illustrates how planning can operate as an enterprise capability across repositories and AI coding platforms.
 
-\#chatgpt-mermaid-\_r_1c69\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(237, 237, 237);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_1c69\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_1c69\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_1c69\_ .error-icon{fill:rgb(48, 48, 48);}#chatgpt-mermaid-\_r_1c69\_ .error-text{fill:rgb(237, 237, 237);stroke:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1c69\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_1c69\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_1c69\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_1c69\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_1c69\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_1c69\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_1c69\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1c69\_ .marker.cross{stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1c69\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_1c69\_ p{margin:0;}#chatgpt-mermaid-\_r_1c69\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1c69\_ .cluster-label text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1c69\_ .cluster-label span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1c69\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_1c69\_ .label text,#chatgpt-mermaid-\_r_1c69\_ span{fill:rgb(237, 237, 237);color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1c69\_ .node rect,#chatgpt-mermaid-\_r_1c69\_ .node circle,#chatgpt-mermaid-\_r_1c69\_ .node ellipse,#chatgpt-mermaid-\_r_1c69\_ .node polygon,#chatgpt-mermaid-\_r_1c69\_ .node path{fill:rgb(9, 23, 44);stroke:rgb(31, 78, 148);stroke-width:1px;}#chatgpt-mermaid-\_r_1c69\_ .rough-node .label text,#chatgpt-mermaid-\_r_1c69\_ .node .label text,#chatgpt-mermaid-\_r_1c69\_ .image-shape .label,#chatgpt-mermaid-\_r_1c69\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_1c69\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_1c69\_ .rough-node .label,#chatgpt-mermaid-\_r_1c69\_ .node .label,#chatgpt-mermaid-\_r_1c69\_ .image-shape .label,#chatgpt-mermaid-\_r_1c69\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_1c69\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_1c69\_ .root .anchor path{fill:rgb(175, 175, 175)!important;stroke-width:0;stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1c69\_ .arrowheadPath{fill:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1c69\_ .edgePath .path{stroke:rgb(175, 175, 175);stroke-width:1px;}#chatgpt-mermaid-\_r_1c69\_ .flowchart-link{stroke:rgb(175, 175, 175);fill:none;}#chatgpt-mermaid-\_r_1c69\_ .edgeLabel{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_1c69\_ .edgeLabel p{background-color:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1c69\_ .edgeLabel rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1c69\_ .labelBkg{background-color:rgba(0, 0, 0, 0.5);}#chatgpt-mermaid-\_r_1c69\_ .cluster rect{fill:rgb(48, 48, 48);stroke:rgba(255, 255, 255, 0.15);stroke-width:1px;}#chatgpt-mermaid-\_r_1c69\_ .cluster text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1c69\_ .cluster span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1c69\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(48, 48, 48);border:1px solid rgba(255, 255, 255, 0.15);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_1c69\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1c69\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_1c69\_ .icon-shape,#chatgpt-mermaid-\_r_1c69\_ .image-shape{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_1c69\_ .icon-shape p,#chatgpt-mermaid-\_r_1c69\_ .image-shape p{background-color:rgb(0, 0, 0);padding:2px;}#chatgpt-mermaid-\_r_1c69\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_1c69\_ .image-shape .label rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1c69\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_1c69\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_1c69\_ .node .neo-node{stroke:rgb(31, 78, 148);}#chatgpt-mermaid-\_r_1c69\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_1c69\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_1c69\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_1c69\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1c69\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_1c69\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_1c69\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_1c69\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1c69\_ [data-look="neo"].node .neo-line path{stroke:rgb(31, 78, 148);filter:none;}#chatgpt-mermaid-\_r_1c69\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_1c69\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1c69\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_1c69\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_1c69\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1c69\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_1c69\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1c69\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_1c69\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_1c69\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_1c69\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_1c69\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-width:1px;}#chatgpt-mermaid-\_r_1c69\_ .node rect,#chatgpt-mermaid-\_r_1c69\_ .node circle,#chatgpt-mermaid-\_r_1c69\_ .node ellipse,#chatgpt-mermaid-\_r_1c69\_ .node polygon,#chatgpt-mermaid-\_r_1c69\_ .node path{fill:rgb(0, 40, 77);stroke:rgba(255, 255, 255, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_1c69\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_1c69\_ .mermaid-decision .label-container{fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_1c69\_ .edgePaths .flowchart-link{stroke:rgb(175, 175, 175);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_1c69\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1c69\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}#chatgpt-mermaid-\_r_1c69\_ .planning rect{fill:rgb(232, 240, 255)!important;stroke:rgb(71, 117, 186)!important;color:rgb(23, 59, 114)!important;}#chatgpt-mermaid-\_r_1c69\_ .planning polygon{fill:rgb(232, 240, 255)!important;stroke:rgb(71, 117, 186)!important;color:rgb(23, 59, 114)!important;}#chatgpt-mermaid-\_r_1c69\_ .planning ellipse{fill:rgb(232, 240, 255)!important;stroke:rgb(71, 117, 186)!important;color:rgb(23, 59, 114)!important;}#chatgpt-mermaid-\_r_1c69\_ .planning circle{fill:rgb(232, 240, 255)!important;stroke:rgb(71, 117, 186)!important;color:rgb(23, 59, 114)!important;}#chatgpt-mermaid-\_r_1c69\_ .planning path{fill:rgb(232, 240, 255)!important;stroke:rgb(71, 117, 186)!important;color:rgb(23, 59, 114)!important;}#chatgpt-mermaid-\_r_1c69\_ .planning tspan{fill:rgb(23, 59, 114)!important;}#chatgpt-mermaid-\_r_1c69\_ .control rect{fill:rgb(255, 242, 213)!important;stroke:rgb(169, 121, 22)!important;color:rgb(66, 46, 8)!important;}#chatgpt-mermaid-\_r_1c69\_ .control polygon{fill:rgb(255, 242, 213)!important;stroke:rgb(169, 121, 22)!important;color:rgb(66, 46, 8)!important;}#chatgpt-mermaid-\_r_1c69\_ .control ellipse{fill:rgb(255, 242, 213)!important;stroke:rgb(169, 121, 22)!important;color:rgb(66, 46, 8)!important;}#chatgpt-mermaid-\_r_1c69\_ .control circle{fill:rgb(255, 242, 213)!important;stroke:rgb(169, 121, 22)!important;color:rgb(66, 46, 8)!important;}#chatgpt-mermaid-\_r_1c69\_ .control path{fill:rgb(255, 242, 213)!important;stroke:rgb(169, 121, 22)!important;color:rgb(66, 46, 8)!important;}#chatgpt-mermaid-\_r_1c69\_ .control tspan{fill:rgb(66, 46, 8)!important;}#chatgpt-mermaid-\_r_1c69\_ .execution rect{fill:rgb(229, 244, 234)!important;stroke:rgb(67, 140, 91)!important;color:rgb(33, 84, 53)!important;}#chatgpt-mermaid-\_r_1c69\_ .execution polygon{fill:rgb(229, 244, 234)!important;stroke:rgb(67, 140, 91)!important;color:rgb(33, 84, 53)!important;}#chatgpt-mermaid-\_r_1c69\_ .execution ellipse{fill:rgb(229, 244, 234)!important;stroke:rgb(67, 140, 91)!important;color:rgb(33, 84, 53)!important;}#chatgpt-mermaid-\_r_1c69\_ .execution circle{fill:rgb(229, 244, 234)!important;stroke:rgb(67, 140, 91)!important;color:rgb(33, 84, 53)!important;}#chatgpt-mermaid-\_r_1c69\_ .execution path{fill:rgb(229, 244, 234)!important;stroke:rgb(67, 140, 91)!important;color:rgb(33, 84, 53)!important;}#chatgpt-mermaid-\_r_1c69\_ .execution tspan{fill:rgb(33, 84, 53)!important;}Engineering RequestHarness Task IntakeRisk ClassificationRepository DiscoveryRepository InstructionsPlanning ContextSkills and Knowledge SourcesBusiness ConstraintsPlanning AgentProposed PlanDeterministic Plan GateArchitectural ReviewApproval GatewayAuthorized?Execution HandoffDeveloper AgentImplementationReviewer AgentValidator AgentEvaluator AgentCompletion DecisionRun Evidence and MetricsGoverned ImprovementProposalsRevisionYes
+```mermaid
+flowchart TD
+    A["Engineering Request"] --> B["Harness Task Intake"]
+    B --> C["Risk Classification"]
+    C --> D["Repository Discovery"]
+    E["Repository Instructions"] --> F["Planning Context"]
+    G["Skills and Knowledge Sources"] --> F
+    H["Business Constraints"] --> F
+    D --> F
+    F --> I["Planning Agent"]
+    I --> J["Proposed Plan"]
+    J --> K["Deterministic Plan Gate"]
+    K --> L["Architectural Review"]
+    L --> M["Approval Gateway"]
+    M --> N{"Authorized?"}
+    N -->|"Revision"| I
+    N -->|"Yes"| O["Execution Handoff"]
+    O --> P["Developer Agent"]
+    P --> Q["Implementation"]
+    Q --> R["Reviewer Agent"]
+    Q --> S["Validator Agent"]
+    R --> T["Evaluator Agent"]
+    S --> T
+    T --> U["Completion Decision"]
+    U --> V["Run Evidence and Metrics"]
+    V --> W["Governed Improvement Proposals"]
+```
 
 The diagram separates three architectural concerns.
 
@@ -4926,7 +5137,7 @@ The planning agent may be Claude Code, GitHub Copilot, Codex, or another support
 
 The engineering responsibilities remain consistent.
 
-### **14.22 Enterprise Adoption Strategy**
+### 14.22 Enterprise Adoption Strategy
 
 Organizations should introduce governed Planning Mode incrementally.
 
@@ -4954,7 +5165,7 @@ The organization should prioritize reliability over reaching a particular maturi
 
 A well-governed, straightforward planning workflow may be more valuable than an elaborate autonomous planning system with unclear authority boundaries.
 
-### **14.23 Enterprise Planning Readiness Checklist**
+### 14.23 Enterprise Planning Readiness Checklist
 
 Before rolling out Planning Mode across enterprise teams, engineering leadership should evaluate whether the operating model is adequately defined.
 
@@ -4981,7 +5192,7 @@ Not every organization requires full automation of every capability before intro
 
 However, these concerns should be understood and addressed proportionately as AI-assisted development scales.
 
-### **14.24 Enterprise Conclusion**
+### 14.24 Enterprise Conclusion
 
 Planning Mode should become a predictable part of enterprise AI-assisted delivery rather than an optional behavior selected independently by each developer or AI Agent.
 
@@ -5003,9 +5214,7 @@ It requires a system that determines when implementation is ready to begin, what
 
 **At enterprise scale, Planning Mode is most effective when it combines the adaptability of AI-assisted investigation with the discipline of established software architecture and delivery governance.**
 
-Chapter 27 status: In progress — next section: Decision Points
-
-## **15. Decision Points**
+## 15. Decision Points
 
 Planning Mode introduces a structured decision-making process between understanding an engineering requirement and authorizing its implementation.
 
@@ -5017,7 +5226,7 @@ The challenge is determining which decisions should be made during planning, wha
 
 The following decision points provide a practical framework for architects, technical leads, and enterprise teams.
 
-### **15.1 Decision Point: Is Formal Planning Required?**
+### 15.1 Decision Point: Is Formal Planning Required?
 
 The first decision is whether the task requires an explicit Planning Mode or can proceed through a lightweight development workflow.
 
@@ -5043,7 +5252,7 @@ For Alpha Car Detailing, corporate fleet booking requires formal planning becaus
 
 **Decision:** Require formal Planning Mode when the potential consequences of an incorrect implementation justify explicit analysis and review.
 
-### **15.2 Decision Point: Is the Requirement Sufficiently Understood?**
+### 15.2 Decision Point: Is the Requirement Sufficiently Understood?
 
 A Prompt may express the desired outcome without defining all the business rules necessary for implementation.
 
@@ -5073,7 +5282,7 @@ However, implementation tasks dependent on unresolved business semantics should 
 
 **Decision:** Do not authorize implementation of behavior whose essential business meaning remains unresolved.
 
-### **15.3 Decision Point: Is Repository Discovery Sufficient?**
+### 15.3 Decision Point: Is Repository Discovery Sufficient?
 
 Planning requires an understanding of the existing system.
 
@@ -5103,7 +5312,7 @@ The actual implementation must be inspected.
 
 **Decision:** Approve the proposed approach only when material architectural claims are supported by sufficient repository evidence.
 
-### **15.4 Decision Point: Should Existing Capabilities Be Reused or New Components Introduced?**
+### 15.4 Decision Point: Should Existing Capabilities Be Reused or New Components Introduced?
 
 AI coding agents can generate new abstractions quickly.
 
@@ -5135,7 +5344,7 @@ For example, an existing idempotency mechanism should be reused only after verif
 
 **Decision:** Prefer compatible existing capabilities, but do not force reuse when evidence shows they cannot satisfy the required engineering guarantees.
 
-### **15.5 Decision Point: What Must Be Included in the Implementation Scope?**
+### 15.5 Decision Point: What Must Be Included in the Implementation Scope?
 
 The planner must define the boundary between necessary change and unrelated improvement.
 
@@ -5161,7 +5370,7 @@ For example, a database migration may be necessary for capacity enforcement, but
 
 **Decision:** Include only work that is necessary, justified by dependencies, or separately authorized.
 
-### **15.6 Decision Point: What Level of Task Decomposition Is Appropriate?**
+### 15.6 Decision Point: What Level of Task Decomposition Is Appropriate?
 
 The Plan must be sufficiently detailed to guide implementation without attempting to prescribe every line of code.
 
@@ -5183,7 +5392,7 @@ The Plan should be explicit about architectural decisions while leaving routine 
 
 **Decision:** Decompose work until significant tasks are independently understandable and verifiable, without unnecessary code-level prescription.
 
-### **15.7 Decision Point: Which Dependencies Block Execution?**
+### 15.7 Decision Point: Which Dependencies Block Execution?
 
 Not every unresolved issue must prevent all implementation work.
 
@@ -5208,7 +5417,7 @@ The Harness should permit independent work only when doing so does not violate t
 
 **Decision:** Block tasks whose correctness depends on unresolved material prerequisites, while permitting authorized independent work where appropriate.
 
-### **15.8 Decision Point: Which Concurrency Strategy Is Appropriate?**
+### 15.8 Decision Point: Which Concurrency Strategy Is Appropriate?
 
 Corporate fleet booking introduces a particularly important architectural decision.
 
@@ -5234,7 +5443,7 @@ The selected mechanism must preserve the business invariant under the actual per
 
 **Decision:** Select the concurrency strategy based on demonstrated correctness, architectural compatibility, and operational tradeoffs.
 
-### **15.9 Decision Point: How Should Idempotency Be Handled?**
+### 15.9 Decision Point: How Should Idempotency Be Handled?
 
 Idempotency must be planned independently of concurrency control.
 
@@ -5260,7 +5469,7 @@ The implementation must ensure that the idempotency guarantee is meaningful unde
 
 **Decision:** Reuse an existing suitable idempotency mechanism or explicitly justify the required extension, with corresponding deterministic tests.
 
-### **15.10 Decision Point: What Consistency Guarantees Are Required?**
+### 15.10 Decision Point: What Consistency Guarantees Are Required?
 
 The planning agent must identify which operations belong to the same consistency boundary.
 
@@ -5278,7 +5487,7 @@ Consumers must therefore preserve their required idempotency semantics.
 
 **Decision:** Establish transactional and asynchronous consistency requirements before designing component-level implementation details.
 
-### **15.11 Decision Point: What Validation Evidence Is Required?**
+### 15.11 Decision Point: What Validation Evidence Is Required?
 
 The Plan must determine how the completed implementation will be verified.
 
@@ -5306,7 +5515,7 @@ During planning, no implementation success should be claimed.
 
 **Decision:** Do not authorize consequential implementation without an adequate strategy for producing objective evidence of correctness.
 
-### **15.12 Decision Point: Is Human Approval Required?**
+### 15.12 Decision Point: Is Human Approval Required?
 
 Approval requirements should follow organizational policy and the materiality of the change.
 
@@ -5333,7 +5542,7 @@ Approval of the implementation Plan should not automatically authorize productio
 
 **Decision:** Require explicit, recorded approval whenever established policy assigns the decision to a human authority.
 
-### **15.13 Decision Point: Is the Plan Ready for Execution?**
+### 15.13 Decision Point: Is the Plan Ready for Execution?
 
 A Plan should not enter execution merely because the planning agent has finished writing it.
 
@@ -5362,7 +5571,7 @@ A Plan can be useful while incomplete, but it must not be mislabeled as executio
 
 **Decision:** Transition to execution only when the Plan meets the applicable readiness and authorization conditions.
 
-### **15.14 Decision Point: When Must Execution Return to Planning?**
+### 15.14 Decision Point: When Must Execution Return to Planning?
 
 New evidence may emerge during implementation.
 
@@ -5389,7 +5598,7 @@ Re-planning should preserve the original task goal unless an authorized requirem
 
 **Decision:** Return to Planning Mode when new evidence materially changes the approved implementation approach, scope, or verification obligations.
 
-### **15.15 Decision Point: Should Planning Findings Become Permanent Knowledge?**
+### 15.15 Decision Point: Should Planning Findings Become Permanent Knowledge?
 
 Planning may uncover reusable engineering insights.
 
@@ -5415,7 +5624,7 @@ The Harness may recommend changes, but it should not silently modify standards.
 
 **Decision:** Promote planning findings into permanent knowledge only through the governance process appropriate to the destination artifact.
 
-### **15.16 Decision Point: How Much Planning Should Be Automated?**
+### 15.16 Decision Point: How Much Planning Should Be Automated?
 
 Organizations must determine which planning decisions can be automated and which require human judgment.
 
@@ -5443,7 +5652,7 @@ It is to automate repetitive analysis and objective checks while preserving acco
 
 **Decision:** Automate what can be verified reliably, assist what requires engineering reasoning, and preserve human authority where organizational policy requires it.
 
-### **15.17 Consolidated Planning Decision Matrix**
+### 15.17 Consolidated Planning Decision Matrix
 
 The following matrix summarizes the main decisions that should be resolved before and during enterprise planning.
 
@@ -5464,11 +5673,42 @@ The following matrix summarizes the main decisions that should be resolved befor
 | Does new evidence require re-planning?      | Developer and Lead Agents                  | Controlled drift response                    |
 | Should findings become permanent knowledge? | Designated knowledge owner                 | Governed knowledge promotion                 |
 
-### **15.18 Reference Decision Flow**
+### 15.18 Reference Decision Flow
 
 The decision-making process can be represented as a series of controlled transitions.
 
-\#chatgpt-mermaid-\_r_1c7i\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(237, 237, 237);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_1c7i\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_1c7i\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_1c7i\_ .error-icon{fill:rgb(48, 48, 48);}#chatgpt-mermaid-\_r_1c7i\_ .error-text{fill:rgb(237, 237, 237);stroke:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1c7i\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_1c7i\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_1c7i\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_1c7i\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_1c7i\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_1c7i\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_1c7i\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1c7i\_ .marker.cross{stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1c7i\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_1c7i\_ p{margin:0;}#chatgpt-mermaid-\_r_1c7i\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1c7i\_ .cluster-label text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1c7i\_ .cluster-label span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1c7i\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_1c7i\_ .label text,#chatgpt-mermaid-\_r_1c7i\_ span{fill:rgb(237, 237, 237);color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1c7i\_ .node rect,#chatgpt-mermaid-\_r_1c7i\_ .node circle,#chatgpt-mermaid-\_r_1c7i\_ .node ellipse,#chatgpt-mermaid-\_r_1c7i\_ .node polygon,#chatgpt-mermaid-\_r_1c7i\_ .node path{fill:rgb(9, 23, 44);stroke:rgb(31, 78, 148);stroke-width:1px;}#chatgpt-mermaid-\_r_1c7i\_ .rough-node .label text,#chatgpt-mermaid-\_r_1c7i\_ .node .label text,#chatgpt-mermaid-\_r_1c7i\_ .image-shape .label,#chatgpt-mermaid-\_r_1c7i\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_1c7i\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_1c7i\_ .rough-node .label,#chatgpt-mermaid-\_r_1c7i\_ .node .label,#chatgpt-mermaid-\_r_1c7i\_ .image-shape .label,#chatgpt-mermaid-\_r_1c7i\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_1c7i\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_1c7i\_ .root .anchor path{fill:rgb(175, 175, 175)!important;stroke-width:0;stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1c7i\_ .arrowheadPath{fill:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1c7i\_ .edgePath .path{stroke:rgb(175, 175, 175);stroke-width:1px;}#chatgpt-mermaid-\_r_1c7i\_ .flowchart-link{stroke:rgb(175, 175, 175);fill:none;}#chatgpt-mermaid-\_r_1c7i\_ .edgeLabel{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_1c7i\_ .edgeLabel p{background-color:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1c7i\_ .edgeLabel rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1c7i\_ .labelBkg{background-color:rgba(0, 0, 0, 0.5);}#chatgpt-mermaid-\_r_1c7i\_ .cluster rect{fill:rgb(48, 48, 48);stroke:rgba(255, 255, 255, 0.15);stroke-width:1px;}#chatgpt-mermaid-\_r_1c7i\_ .cluster text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1c7i\_ .cluster span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1c7i\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(48, 48, 48);border:1px solid rgba(255, 255, 255, 0.15);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_1c7i\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1c7i\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_1c7i\_ .icon-shape,#chatgpt-mermaid-\_r_1c7i\_ .image-shape{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_1c7i\_ .icon-shape p,#chatgpt-mermaid-\_r_1c7i\_ .image-shape p{background-color:rgb(0, 0, 0);padding:2px;}#chatgpt-mermaid-\_r_1c7i\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_1c7i\_ .image-shape .label rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1c7i\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_1c7i\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_1c7i\_ .node .neo-node{stroke:rgb(31, 78, 148);}#chatgpt-mermaid-\_r_1c7i\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_1c7i\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_1c7i\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_1c7i\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1c7i\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_1c7i\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_1c7i\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_1c7i\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1c7i\_ [data-look="neo"].node .neo-line path{stroke:rgb(31, 78, 148);filter:none;}#chatgpt-mermaid-\_r_1c7i\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_1c7i\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1c7i\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_1c7i\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_1c7i\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1c7i\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_1c7i\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1c7i\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_1c7i\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_1c7i\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_1c7i\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_1c7i\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-width:1px;}#chatgpt-mermaid-\_r_1c7i\_ .node rect,#chatgpt-mermaid-\_r_1c7i\_ .node circle,#chatgpt-mermaid-\_r_1c7i\_ .node ellipse,#chatgpt-mermaid-\_r_1c7i\_ .node polygon,#chatgpt-mermaid-\_r_1c7i\_ .node path{fill:rgb(0, 40, 77);stroke:rgba(255, 255, 255, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_1c7i\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_1c7i\_ .mermaid-decision .label-container{fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_1c7i\_ .edgePaths .flowchart-link{stroke:rgb(175, 175, 175);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_1c7i\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1c7i\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}#chatgpt-mermaid-\_r_1c7i\_ .decision rect{fill:rgb(255, 242, 213)!important;stroke:rgb(169, 121, 22)!important;color:rgb(66, 46, 8)!important;}#chatgpt-mermaid-\_r_1c7i\_ .decision polygon{fill:rgb(255, 242, 213)!important;stroke:rgb(169, 121, 22)!important;color:rgb(66, 46, 8)!important;}#chatgpt-mermaid-\_r_1c7i\_ .decision ellipse{fill:rgb(255, 242, 213)!important;stroke:rgb(169, 121, 22)!important;color:rgb(66, 46, 8)!important;}#chatgpt-mermaid-\_r_1c7i\_ .decision circle{fill:rgb(255, 242, 213)!important;stroke:rgb(169, 121, 22)!important;color:rgb(66, 46, 8)!important;}#chatgpt-mermaid-\_r_1c7i\_ .decision path{fill:rgb(255, 242, 213)!important;stroke:rgb(169, 121, 22)!important;color:rgb(66, 46, 8)!important;}#chatgpt-mermaid-\_r_1c7i\_ .decision tspan{fill:rgb(66, 46, 8)!important;}#chatgpt-mermaid-\_r_1c7i\_ .planning rect{fill:rgb(232, 240, 255)!important;stroke:rgb(71, 117, 186)!important;color:rgb(23, 59, 114)!important;}#chatgpt-mermaid-\_r_1c7i\_ .planning polygon{fill:rgb(232, 240, 255)!important;stroke:rgb(71, 117, 186)!important;color:rgb(23, 59, 114)!important;}#chatgpt-mermaid-\_r_1c7i\_ .planning ellipse{fill:rgb(232, 240, 255)!important;stroke:rgb(71, 117, 186)!important;color:rgb(23, 59, 114)!important;}#chatgpt-mermaid-\_r_1c7i\_ .planning circle{fill:rgb(232, 240, 255)!important;stroke:rgb(71, 117, 186)!important;color:rgb(23, 59, 114)!important;}#chatgpt-mermaid-\_r_1c7i\_ .planning path{fill:rgb(232, 240, 255)!important;stroke:rgb(71, 117, 186)!important;color:rgb(23, 59, 114)!important;}#chatgpt-mermaid-\_r_1c7i\_ .planning tspan{fill:rgb(23, 59, 114)!important;}#chatgpt-mermaid-\_r_1c7i\_ .execution rect{fill:rgb(229, 244, 234)!important;stroke:rgb(67, 140, 91)!important;color:rgb(33, 84, 53)!important;}#chatgpt-mermaid-\_r_1c7i\_ .execution polygon{fill:rgb(229, 244, 234)!important;stroke:rgb(67, 140, 91)!important;color:rgb(33, 84, 53)!important;}#chatgpt-mermaid-\_r_1c7i\_ .execution ellipse{fill:rgb(229, 244, 234)!important;stroke:rgb(67, 140, 91)!important;color:rgb(33, 84, 53)!important;}#chatgpt-mermaid-\_r_1c7i\_ .execution circle{fill:rgb(229, 244, 234)!important;stroke:rgb(67, 140, 91)!important;color:rgb(33, 84, 53)!important;}#chatgpt-mermaid-\_r_1c7i\_ .execution path{fill:rgb(229, 244, 234)!important;stroke:rgb(67, 140, 91)!important;color:rgb(33, 84, 53)!important;}#chatgpt-mermaid-\_r_1c7i\_ .execution tspan{fill:rgb(33, 84, 53)!important;}Engineering PromptFormal Planning Required?Lightweight InvestigationRepository DiscoveryAuthorized ExecutionWorkflowRequirements and EvidenceSufficient?Clarify or InvestigateDefine Scope and ArchitectureIdentify Dependencies andRisksDefine Acceptance andValidationBlocking Issues?Resolve DependenciesProposed PlanPlan Quality GatePlan Adequate?Approval Required?Authorized ReviewApproved?Execution HandoffDeveloper AgentMaterial Plan Drift?Impact AssessmentContinue ImplementationValidation and EvaluationNoYesNoYesYesNoNoYesYesNoYesNoYesNo
+```mermaid
+flowchart TD
+    A["Engineering Prompt"] --> B{"Formal Planning Required?"}
+    B -->|"No"| C["Lightweight Investigation"]
+    B -->|"Yes"| D["Repository Discovery"]
+    C --> E["Authorized Execution Workflow"]
+    D --> F{"Requirements and Evidence Sufficient?"}
+    F -->|"No"| G["Clarify or Investigate"]
+    G --> D
+    F -->|"Yes"| H["Define Scope and Architecture"]
+    H --> I["Identify Dependencies and Risks"]
+    I --> J["Define Acceptance and Validation"]
+    J --> K{"Blocking Issues?"}
+    K -->|"Yes"| L["Resolve Dependencies"]
+    L --> H
+    K -->|"No"| M["Proposed Plan"]
+    M --> N["Plan Quality Gate"]
+    N --> O{"Plan Adequate?"}
+    O -->|"No"| H
+    O -->|"Yes"| P{"Approval Required?"}
+    P -->|"Yes"| Q["Authorized Review"]
+    Q --> R{"Approved?"}
+    R -->|"No"| H
+    R -->|"Yes"| S["Execution Handoff"]
+    P -->|"No"| S
+    S --> T["Developer Agent"]
+    T --> U{"Material Plan Drift?"}
+    U -->|"Yes"| V["Impact Assessment"]
+    V --> H
+    U -->|"No"| W["Continue Implementation"]
+    W --> X["Validation and Evaluation"]
+```
 
 The diagram illustrates the intended lifecycle rather than prescribing a specific Harness implementation.
 
@@ -5476,7 +5716,7 @@ A lightweight task must still comply with applicable Instructions, permissions, 
 
 Likewise, an execution task that encounters material drift must return to an appropriate planning and authorization state before the revised work proceeds.
 
-### **15.19 Applying the Decision Framework to Corporate Fleet Booking**
+### 15.19 Applying the Decision Framework to Corporate Fleet Booking
 
 The Alpha Car Detailing corporate fleet booking requirement demonstrates how the decisions work together.
 
@@ -5504,7 +5744,7 @@ Each decision preserves a distinct responsibility.
 
 No single agent or operating mode replaces the entire engineering process.
 
-### **15.20 Decision Points Conclusion**
+### 15.20 Decision Points Conclusion
 
 Planning Mode is effective when significant engineering decisions are made deliberately and at the appropriate level of authority.
 
@@ -5534,9 +5774,7 @@ The central decision is not whether the AI Agent has finished planning.
 
 **It is whether the organization has sufficient engineering evidence and authority to permit implementation to begin.**
 
-Chapter 27 status: In progress — next section: Exercises
-
-## **16. Exercises**
+## 16. Exercises
 
 The exercises in this section reinforce the engineering principles introduced throughout Chapter 27. They are designed for software architects, senior developers, technical leads, and engineers responsible for implementing AI-assisted development workflows in enterprise environments.
 
@@ -5546,7 +5784,7 @@ The exercises use Alpha Car Detailing's corporate fleet booking capability as th
 
 The objective is not to generate production code. It is to develop the ability to produce, review, and govern implementation Plans that are evidence-based, executable, and verifiable.
 
-### **16.1 Exercise 1 — Create a Planning-Only Prompt**
+### 16.1 Exercise 1 — Create a Planning-Only Prompt
 
 **Objective:** Construct a task-specific Prompt that instructs an AI Agent to investigate a feature without beginning implementation.
 
@@ -5580,7 +5818,7 @@ The Prompt must also establish that completion of planning does not constitute c
 
 What could go wrong if the Prompt asks Claude to both investigate and implement the feature without an explicit planning boundary?
 
-### **16.2 Exercise 2 — Conduct Evidence-Based Repository Discovery**
+### 16.2 Exercise 2 — Conduct Evidence-Based Repository Discovery
 
 **Objective:** Identify the existing repository components relevant to corporate fleet booking.
 
@@ -5626,7 +5864,7 @@ The exercise must not modify application code.
 
 How would the proposed architecture change if the repository already contains an idempotency mechanism but no transactional outbox?
 
-### **16.3 Exercise 3 — Distinguish Prompt, Plan, and Scratchpad**
+### 16.3 Exercise 3 — Distinguish Prompt, Plan, and Scratchpad
 
 **Objective:** Classify engineering information according to its purpose and authority.
 
@@ -5671,7 +5909,7 @@ The classification must preserve the distinction:
 
 Under what circumstances should a temporary Scratchpad finding trigger a formal Plan revision?
 
-### **16.4 Exercise 4 — Define Scope and Exclusions**
+### 16.4 Exercise 4 — Define Scope and Exclusions
 
 **Objective:** Establish controlled implementation boundaries.
 
@@ -5715,7 +5953,7 @@ The scope must support the business goal without introducing unrelated architect
 
 How should the planning agent respond when a technically beneficial refactoring is outside the authorized task scope?
 
-### **16.5 Exercise 5 — Resolve Ambiguous Business Requirements**
+### 16.5 Exercise 5 — Resolve Ambiguous Business Requirements
 
 **Objective:** Identify and manage assumptions that materially influence implementation.
 
@@ -5764,7 +6002,7 @@ The deliverable must distinguish technical recommendations from business decisio
 
 Why should an AI Agent not independently decide how cancelled bookings affect contractual capacity?
 
-### **16.6 Exercise 6 — Decompose the Feature into Executable Tasks**
+### 16.6 Exercise 6 — Decompose the Feature into Executable Tasks
 
 **Objective:** Transform a business requirement into an implementation sequence.
 
@@ -5802,7 +6040,7 @@ The sequence must reflect actual engineering dependencies.
 
 What risks arise when an AI Agent parallelizes implementation tasks that depend on the same unresolved architectural decision?
 
-### **16.7 Exercise 7 — Design a Concurrency-Safe Booking Plan**
+### 16.7 Exercise 7 — Design a Concurrency-Safe Booking Plan
 
 **Objective:** Evaluate architectural alternatives for enforcing corporate booking limits.
 
@@ -5844,7 +6082,7 @@ The validation strategy must test actual competing transactions rather than only
 
 Why does idempotency alone fail to prevent two distinct requests from exceeding a corporate booking limit?
 
-### **16.8 Exercise 8 — Build an Acceptance Criteria and Validation Matrix**
+### 16.8 Exercise 8 — Build an Acceptance Criteria and Validation Matrix
 
 **Objective:** Define verification requirements before implementation begins.
 
@@ -5883,7 +6121,7 @@ The exercise must distinguish planned validation from actual test execution.
 
 Why can a successful build and passing unit tests still be insufficient evidence for approving corporate fleet booking?
 
-### **16.9 Exercise 9 — Evaluate and Revise an Incomplete Plan**
+### 16.9 Exercise 9 — Evaluate and Revise an Incomplete Plan
 
 **Objective:** Perform an architectural review of an AI-generated Plan.
 
@@ -5891,7 +6129,7 @@ Why can a successful build and passing unit tests still be insufficient evidence
 
 Claude Code produces the following implementation Plan:
 
-```
+```text
 1. Create CorporateFleetBookingController.
 2. Create CorporateFleetBookingService.
 3. Add a database table for corporate bookings.
@@ -5925,7 +6163,7 @@ It must include explicit approval and execution-handoff conditions.
 
 Why might this Plan produce a functioning demonstration while still being unsuitable for enterprise deployment?
 
-### **16.10 Exercise 10 — Design a Controlled Plan Drift Scenario**
+### 16.10 Exercise 10 — Design a Controlled Plan Drift Scenario
 
 **Objective:** Establish a process for responding to new evidence discovered during execution.
 
@@ -5973,7 +6211,7 @@ The exercise must preserve traceability and prevent unauthorized architectural e
 
 How should the Harness distinguish harmless implementation adjustments from changes requiring formal reapproval?
 
-### **16.11 Exercise 11 — Design a Plan Quality Gate**
+### 16.11 Exercise 11 — Design a Plan Quality Gate
 
 **Objective:** Implement the concept of deterministic planning completeness checks.
 
@@ -5997,7 +6235,7 @@ A proposed Plan schema and gate specification.
 
 An illustrative validation result might be:
 
-```
+```json
 {
   "planId": "PLAN-ACD-FLEET-001",
   "status": "failed",
@@ -6036,7 +6274,7 @@ It must not claim that the Plan's architectural design is correct merely because
 
 Which planning defects are best detected through deterministic validation, and which require independent architectural judgment?
 
-### **16.12 Exercise 12 — Design a Planning-to-Execution Handoff**
+### 16.12 Exercise 12 — Design a Planning-to-Execution Handoff
 
 **Objective:** Define the information required when the Lead Agent transfers an approved Plan to the Developer Agent.
 
@@ -6070,7 +6308,7 @@ The handoff must not grant permissions beyond those authorized by the Harness.
 
 What information is lost when the Lead Agent merely tells the Developer Agent to "implement the feature according to the Plan" without providing a stable planning artifact?
 
-### **16.13 Exercise 13 — Compare Planning Across Claude Code, GitHub Copilot, and Codex**
+### 16.13 Exercise 13 — Compare Planning Across Claude Code, GitHub Copilot, and Codex
 
 **Objective:** Distinguish vendor-specific planning mechanisms from vendor-neutral engineering requirements.
 
@@ -6110,7 +6348,7 @@ The proposed design must not depend on a specific chat interface or vendor-speci
 
 Why should an enterprise standardize planning obligations rather than require every AI coding platform to provide an identical user interface?
 
-### **16.14 Exercise 14 — Design Planning Mode Inside the Harness**
+### 16.14 Exercise 14 — Design Planning Mode Inside the Harness
 
 **Objective:** Extend the Harness architecture to support governed Planning Mode.
 
@@ -6136,7 +6374,18 @@ An architecture diagram, state-transition model, and responsibility matrix.
 
 Use the following flow as a starting point:
 
-\#chatgpt-mermaid-\_r_1c8o\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(237, 237, 237);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_1c8o\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_1c8o\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_1c8o\_ .error-icon{fill:rgb(48, 48, 48);}#chatgpt-mermaid-\_r_1c8o\_ .error-text{fill:rgb(237, 237, 237);stroke:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1c8o\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_1c8o\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_1c8o\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_1c8o\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_1c8o\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_1c8o\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_1c8o\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1c8o\_ .marker.cross{stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1c8o\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_1c8o\_ p{margin:0;}#chatgpt-mermaid-\_r_1c8o\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1c8o\_ .cluster-label text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1c8o\_ .cluster-label span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1c8o\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_1c8o\_ .label text,#chatgpt-mermaid-\_r_1c8o\_ span{fill:rgb(237, 237, 237);color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1c8o\_ .node rect,#chatgpt-mermaid-\_r_1c8o\_ .node circle,#chatgpt-mermaid-\_r_1c8o\_ .node ellipse,#chatgpt-mermaid-\_r_1c8o\_ .node polygon,#chatgpt-mermaid-\_r_1c8o\_ .node path{fill:rgb(9, 23, 44);stroke:rgb(31, 78, 148);stroke-width:1px;}#chatgpt-mermaid-\_r_1c8o\_ .rough-node .label text,#chatgpt-mermaid-\_r_1c8o\_ .node .label text,#chatgpt-mermaid-\_r_1c8o\_ .image-shape .label,#chatgpt-mermaid-\_r_1c8o\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_1c8o\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_1c8o\_ .rough-node .label,#chatgpt-mermaid-\_r_1c8o\_ .node .label,#chatgpt-mermaid-\_r_1c8o\_ .image-shape .label,#chatgpt-mermaid-\_r_1c8o\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_1c8o\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_1c8o\_ .root .anchor path{fill:rgb(175, 175, 175)!important;stroke-width:0;stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1c8o\_ .arrowheadPath{fill:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1c8o\_ .edgePath .path{stroke:rgb(175, 175, 175);stroke-width:1px;}#chatgpt-mermaid-\_r_1c8o\_ .flowchart-link{stroke:rgb(175, 175, 175);fill:none;}#chatgpt-mermaid-\_r_1c8o\_ .edgeLabel{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_1c8o\_ .edgeLabel p{background-color:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1c8o\_ .edgeLabel rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1c8o\_ .labelBkg{background-color:rgba(0, 0, 0, 0.5);}#chatgpt-mermaid-\_r_1c8o\_ .cluster rect{fill:rgb(48, 48, 48);stroke:rgba(255, 255, 255, 0.15);stroke-width:1px;}#chatgpt-mermaid-\_r_1c8o\_ .cluster text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1c8o\_ .cluster span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1c8o\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(48, 48, 48);border:1px solid rgba(255, 255, 255, 0.15);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_1c8o\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1c8o\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_1c8o\_ .icon-shape,#chatgpt-mermaid-\_r_1c8o\_ .image-shape{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_1c8o\_ .icon-shape p,#chatgpt-mermaid-\_r_1c8o\_ .image-shape p{background-color:rgb(0, 0, 0);padding:2px;}#chatgpt-mermaid-\_r_1c8o\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_1c8o\_ .image-shape .label rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1c8o\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_1c8o\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_1c8o\_ .node .neo-node{stroke:rgb(31, 78, 148);}#chatgpt-mermaid-\_r_1c8o\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_1c8o\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_1c8o\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_1c8o\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1c8o\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_1c8o\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_1c8o\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_1c8o\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1c8o\_ [data-look="neo"].node .neo-line path{stroke:rgb(31, 78, 148);filter:none;}#chatgpt-mermaid-\_r_1c8o\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_1c8o\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1c8o\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_1c8o\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_1c8o\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1c8o\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_1c8o\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1c8o\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_1c8o\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_1c8o\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_1c8o\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_1c8o\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-width:1px;}#chatgpt-mermaid-\_r_1c8o\_ .node rect,#chatgpt-mermaid-\_r_1c8o\_ .node circle,#chatgpt-mermaid-\_r_1c8o\_ .node ellipse,#chatgpt-mermaid-\_r_1c8o\_ .node polygon,#chatgpt-mermaid-\_r_1c8o\_ .node path{fill:rgb(0, 40, 77);stroke:rgba(255, 255, 255, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_1c8o\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_1c8o\_ .mermaid-decision .label-container{fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_1c8o\_ .edgePaths .flowchart-link{stroke:rgb(175, 175, 175);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_1c8o\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1c8o\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}PromptRepository DiscoveryInstructions and SkillsPlanning ModeProposed PlanPlan Quality GateReview and ApprovalDeveloper AgentExecutionReview, Validation andEvaluation
+```mermaid
+flowchart TD
+    A["Prompt"] --> B["Repository Discovery"]
+    B --> C["Instructions and Skills"]
+    C --> D["Planning Mode"]
+    D --> E["Proposed Plan"]
+    E --> F["Plan Quality Gate"]
+    F --> G["Review and Approval"]
+    G --> H["Developer Agent"]
+    H --> I["Execution"]
+    I --> J["Review, Validation and Evaluation"]
+```
 
 The implementation should expand this simplified flow to include rejection, blocked states, material Plan drift, and re-planning.
 
@@ -6148,7 +6397,7 @@ The architecture must preserve the separation between planning, implementation, 
 
 Why should Planning Mode be represented as a Harness workflow capability rather than as another permanent agent role?
 
-### **16.15 Exercise 15 — Capstone: Produce an Enterprise-Ready Corporate Fleet Booking Plan**
+### 16.15 Exercise 15 — Capstone: Produce an Enterprise-Ready Corporate Fleet Booking Plan
 
 **Objective:** Combine all chapter concepts into a complete planning deliverable suitable for architectural review and execution authorization.
 
@@ -6221,7 +6470,7 @@ The completed Plan must satisfy the following conditions:
 
 If blocking decisions remain unresolved, the capstone should report the Plan as blocked or awaiting approval rather than incorrectly declaring it execution-ready.
 
-### **16.16 Exercise Assessment Framework**
+### 16.16 Exercise Assessment Framework
 
 The exercises should be assessed primarily on engineering reasoning and evidence quality, not document length.
 
@@ -6245,7 +6494,7 @@ An elegant but unsupported architecture should not receive a strong assessment.
 
 Likewise, a Plan with excellent repository discovery but no credible concurrency testing should be considered incomplete for the corporate fleet booking scenario.
 
-### **16.17 Recommended Peer Review Activity**
+### 16.17 Recommended Peer Review Activity
 
 After completing the capstone, exchange Plans between two engineers or teams.
 
@@ -6267,7 +6516,7 @@ Second, architectural quality benefits from review rather than relying exclusive
 
 Third, revisions should preserve the relationship between the original requirement, the proposed approach, and the resulting decisions.
 
-### **16.18 Exercise Outcomes**
+### 16.18 Exercise Outcomes
 
 The exercises progress through four levels of engineering responsibility.
 
@@ -6288,9 +6537,7 @@ Planning Mode is therefore not simply a prerequisite to generating code.
 
 It is a practical engineering discipline for ensuring that code generation begins with sufficient understanding, appropriate authority, and measurable expectations.
 
-Chapter 27 status: In progress — next section: Interview Questions
-
-## **17. Interview Questions**
+## 17. Interview Questions
 
 Planning Mode is an important competency for architects, senior developers, technical leads, and engineers responsible for designing enterprise AI-assisted development workflows.
 
@@ -6302,7 +6549,7 @@ They are suitable for technical interviews, architecture discussions, internal e
 
 Each question includes the key elements expected in a strong professional answer.
 
-### **17.1 What Is Planning Mode in AI-Assisted Software Development?**
+### 17.1 What Is Planning Mode in AI-Assisted Software Development?
 
 **Question**
 
@@ -6322,7 +6569,7 @@ Planning Mode reduces the risk of premature implementation, duplicated architect
 
 It does not guarantee implementation correctness and must not be treated as evidence that the feature has been delivered.
 
-### **17.2 What Is the Difference Between a Prompt, a Plan, and a Scratchpad?**
+### 17.2 What Is the Difference Between a Prompt, a Plan, and a Scratchpad?
 
 **Question**
 
@@ -6348,7 +6595,7 @@ The Scratchpad must not become authoritative architectural knowledge.
 
 Material Scratchpad findings may require controlled Plan revisions, but they should not silently alter approved decisions.
 
-### **17.3 When Should an AI Agent Enter Planning Mode?**
+### 17.3 When Should an AI Agent Enter Planning Mode?
 
 **Question**
 
@@ -6366,7 +6613,7 @@ For Alpha Car Detailing, corporate fleet booking requires formal planning becaus
 
 The goal is not to maximize planning activity but to establish sufficient understanding before implementation.
 
-### **17.4 How Does Planning Mode Differ from the Lead Agent?**
+### 17.4 How Does Planning Mode Differ from the Lead Agent?
 
 **Question**
 
@@ -6388,7 +6635,7 @@ A Developer Agent or Architect Agent may also use planning capabilities when app
 
 Modes determine how work is performed. Roles determine responsibility and accountability.
 
-### **17.5 Why Must Repository Discovery Precede Detailed Planning?**
+### 17.5 Why Must Repository Discovery Precede Detailed Planning?
 
 **Question**
 
@@ -6406,7 +6653,7 @@ A strong Plan should reference actual files, interfaces, tests, and approved arc
 
 Where repository evidence is unavailable, the agent should identify the limitation rather than inventing implementation details.
 
-### **17.6 How Should Applicable Instructions Influence Planning?**
+### 17.6 How Should Applicable Instructions Influence Planning?
 
 **Question**
 
@@ -6426,7 +6673,7 @@ Planning Mode does not permit an agent to override persistent engineering standa
 
 A Plan is subordinate to applicable Instructions and authorized task constraints.
 
-### **17.7 What Role Do Skills Play During Planning?**
+### 17.7 What Role Do Skills Play During Planning?
 
 **Question**
 
@@ -6448,7 +6695,7 @@ A Skill may describe a reusable implementation pattern, but it does not establis
 
 The Plan should identify selected Skills and their intended use without performing unauthorized source modifications.
 
-### **17.8 How Do You Define Implementation Scope During Planning?**
+### 17.8 How Do You Define Implementation Scope During Planning?
 
 **Question**
 
@@ -6468,7 +6715,7 @@ A corporate fleet booking change may modify one booking service while depending 
 
 A strong Plan defines in-scope and out-of-scope work and prevents unrelated architectural changes from being introduced without authorization.
 
-### **17.9 How Should an AI Agent Handle Ambiguous Business Requirements?**
+### 17.9 How Should an AI Agent Handle Ambiguous Business Requirements?
 
 **Question**
 
@@ -6488,7 +6735,7 @@ Material assumptions must be documented and resolved by the appropriate authorit
 
 Tasks dependent on unresolved business decisions should remain blocked.
 
-### **17.10 What Makes an Implementation Plan Executable?**
+### 17.10 What Makes an Implementation Plan Executable?
 
 **Question**
 
@@ -6506,7 +6753,7 @@ An executable Plan should be understandable by another competent engineer or AI 
 
 It should provide enough direction for implementation while leaving routine code-level choices to the Developer Agent.
 
-### **17.11 How Should a Plan Address Technical Dependencies?**
+### 17.11 How Should a Plan Address Technical Dependencies?
 
 **Question**
 
@@ -6526,7 +6773,7 @@ A Plan that ignores dependencies may cause agents to implement incompatible comp
 
 The planning process should identify hard dependencies, soft dependencies, and external prerequisites.
 
-### **17.12 How Would You Plan Concurrency-Safe Corporate Booking?**
+### 17.12 How Would You Plan Concurrency-Safe Corporate Booking?
 
 **Question**
 
@@ -6548,7 +6795,7 @@ The validation strategy should include a concurrent integration test that verifi
 
 The agent should not select a mechanism solely because it is easy to generate.
 
-### **17.13 What Is the Difference Between Idempotency and Concurrency Control?**
+### 17.13 What Is the Difference Between Idempotency and Concurrency Control?
 
 **Question**
 
@@ -6568,7 +6815,7 @@ Therefore, the Plan must address retry safety and capacity enforcement independe
 
 It must also consider atomicity between idempotency records and booking persistence where required.
 
-### **17.14 Why Should Transaction Boundaries Be Established During Planning?**
+### 17.14 Why Should Transaction Boundaries Be Established During Planning?
 
 **Question**
 
@@ -6586,7 +6833,7 @@ Planning should establish the required consistency guarantees before selecting i
 
 The specific mechanism should be compatible with the existing architecture and verified through appropriate integration tests.
 
-### **17.15 How Should Planning Address Transactional Outbox Integration?**
+### 17.15 How Should Planning Address Transactional Outbox Integration?
 
 **Question**
 
@@ -6604,7 +6851,7 @@ The agent should not introduce a competing event-publication mechanism without a
 
 The Plan should identify suitable transaction, rollback, event-delivery, and retry tests.
 
-### **17.16 How Do Acceptance Criteria Differ from Implementation Tasks?**
+### 17.16 How Do Acceptance Criteria Differ from Implementation Tasks?
 
 **Question**
 
@@ -6626,7 +6873,7 @@ The distinction matters because completing a task does not necessarily prove the
 
 Acceptance criteria should be established before implementation and mapped to appropriate verification evidence.
 
-### **17.17 What Is the Difference Between Planning, Validation, and Evaluation?**
+### 17.17 What Is the Difference Between Planning, Validation, and Evaluation?
 
 **Question**
 
@@ -6648,7 +6895,7 @@ The Evaluator Agent assesses whether the demonstrated behavior satisfies the bus
 
 Planning, validation, and evaluation are complementary activities with distinct responsibilities.
 
-### **17.18 What Is a Plan Quality Gate?**
+### 17.18 What Is a Plan Quality Gate?
 
 **Question**
 
@@ -6670,7 +6917,7 @@ Substantive architectural assessment requires evidence-based technical judgment.
 
 The Plan Quality Gate should therefore complement architectural review rather than replace it.
 
-### **17.19 How Should Human Approval Be Integrated into Planning?**
+### 17.19 How Should Human Approval Be Integrated into Planning?
 
 **Question**
 
@@ -6690,7 +6937,7 @@ An AI Agent must not approve its own material changes unless explicitly operatin
 
 An interactive transition from Plan Mode to execution mode does not inherently satisfy organizational approval requirements.
 
-### **17.20 What Is Plan Drift?**
+### 17.20 What Is Plan Drift?
 
 **Question**
 
@@ -6710,7 +6957,7 @@ The Developer Agent should document the discovery, assess the impact, and escala
 
 The Lead Agent coordinates revised planning, while the Harness enforces required authorization before affected execution resumes.
 
-### **17.21 Should an Approved Plan Be Immutable?**
+### 17.21 Should an Approved Plan Be Immutable?
 
 **Question**
 
@@ -6730,7 +6977,7 @@ Material changes should trigger impact assessment and an updated Plan.
 
 The goal is to preserve accountability without preventing responsible adaptation.
 
-### **17.22 How Do You Prevent Planning from Modifying the Repository?**
+### 17.22 How Do You Prevent Planning from Modifying the Repository?
 
 **Question**
 
@@ -6750,7 +6997,7 @@ The Harness should establish separate planning and execution permissions.
 
 This is particularly important for unattended AI Agents and repositories containing sensitive systems or infrastructure configuration.
 
-### **17.23 How Should Planning Work When Multiple Agents Are Involved?**
+### 17.23 How Should Planning Work When Multiple Agents Are Involved?
 
 **Question**
 
@@ -6772,7 +7019,7 @@ Parallel execution should not be introduced merely because multiple agents are a
 
 The architecture must ensure that their work remains compatible and authorized.
 
-### **17.24 How Should Planning Handle Changes Across Multiple Repositories?**
+### 17.24 How Should Planning Handle Changes Across Multiple Repositories?
 
 **Question**
 
@@ -6792,7 +7039,7 @@ Modification permissions must remain scoped to authorized changes.
 
 Validation should include relevant cross-repository contract and integration checks.
 
-### **17.25 How Would You Compare Planning in Claude Code, GitHub Copilot, and Codex?**
+### 17.25 How Would You Compare Planning in Claude Code, GitHub Copilot, and Codex?
 
 **Question**
 
@@ -6810,7 +7057,7 @@ Every Plan should identify the goal, repository evidence, applicable Instruction
 
 The Harness should standardize these obligations independently of the chosen coding platform.
 
-### **17.26 How Should a Plan Be Handed Off to the Developer Agent?**
+### 17.26 How Should a Plan Be Handed Off to the Developer Agent?
 
 **Question**
 
@@ -6826,7 +7073,7 @@ The handoff must preserve traceability between planned work and actual changes.
 
 It must not independently grant permissions beyond those authorized by the Harness.
 
-### **17.27 How Can You Determine Whether a Plan Is Ready for Execution?**
+### 17.27 How Can You Determine Whether a Plan Is Ready for Execution?
 
 **Question**
 
@@ -6846,7 +7093,7 @@ The Developer Agent must have the appropriate permissions.
 
 If essential conditions remain unresolved, the task should remain in planning, review, or blocked status.
 
-### **17.28 How Should Planning Findings Influence Harness Memory?**
+### 17.28 How Should Planning Findings Influence Harness Memory?
 
 **Question**
 
@@ -6866,7 +7113,7 @@ Such recommendations must follow the relevant governance process.
 
 The Harness should not silently change established engineering standards based on individual planning outcomes.
 
-### **17.29 How Would You Measure Planning Effectiveness?**
+### 17.29 How Would You Measure Planning Effectiveness?
 
 **Question**
 
@@ -6884,7 +7131,7 @@ A low number of reported deviations may indicate strong planning or inadequate r
 
 The organization should evaluate planning by its contribution to engineering quality, delivery reliability, and reduced preventable rework rather than by Plan length or production speed alone.
 
-### **17.30 Scenario-Based Architecture Question**
+### 17.30 Scenario-Based Architecture Question
 
 **Question**
 
@@ -6921,7 +7168,7 @@ The Plan also lacks explicit acceptance criteria, dependency analysis, scope exc
 
 A revised Plan should investigate the existing architecture, establish business invariants, justify persistence decisions, define required validation evidence, and obtain appropriate approval before execution.
 
-### **17.31 Scenario-Based Governance Question**
+### 17.31 Scenario-Based Governance Question
 
 **Question**
 
@@ -6951,7 +7198,7 @@ The agent may continue independent work only if permitted by the Harness and the
 
 The discovery demonstrates why Planning Mode must support controlled revision rather than unrestricted implementation changes.
 
-### **17.32 Scenario-Based Harness Design Question**
+### 17.32 Scenario-Based Harness Design Question
 
 **Question**
 
@@ -6979,7 +7226,7 @@ The workflow should record state transitions, approval decisions, and relevant e
 
 A strong design must prevent the planning agent from granting its own execution permissions.
 
-### **17.33 Scenario-Based Validation Question**
+### 17.33 Scenario-Based Validation Question
 
 **Question**
 
@@ -7007,7 +7254,7 @@ The Evaluator Agent should not treat the business goal as satisfied when a criti
 
 The task should remain pending validation or be classified according to the organization's defined incomplete-evidence status.
 
-### **17.34 Scenario-Based Planning Efficiency Question**
+### 17.34 Scenario-Based Planning Efficiency Question
 
 **Question**
 
@@ -7029,7 +7276,7 @@ Consequential architectural or security changes should receive stronger review.
 
 The objective is consistent engineering assurance, not uniform planning ceremony.
 
-### **17.35 Scenario-Based Repository Intelligence Question**
+### 17.35 Scenario-Based Repository Intelligence Question
 
 **Question**
 
@@ -7051,7 +7298,7 @@ Persistent architecture standards should be established through approved Instruc
 
 The agent must not promote historical planning decisions into repository-wide authority without appropriate review.
 
-### **17.36 Interview Assessment Guidance**
+### 17.36 Interview Assessment Guidance
 
 Interviewers should evaluate more than terminology.
 
@@ -7076,7 +7323,7 @@ They also recognize that formal planning is not equally necessary for every task
 
 The engineering objective is to achieve the right level of understanding and control for the consequences of the work.
 
-### **17.37 Suggested Interview Evaluation Matrix**
+### 17.37 Suggested Interview Evaluation Matrix
 
 | Competency           | Foundational                      | Proficient                                           | Advanced                                                  |
 | -------------------- | --------------------------------- | ---------------------------------------------------- | --------------------------------------------------------- |
@@ -7092,7 +7339,7 @@ The matrix is an assessment aid rather than a formal certification standard.
 
 A candidate for a senior architectural role should demonstrate advanced reasoning in architecture, verification, and governance, even when specific AI coding platform details are unfamiliar.
 
-### **17.38 Interview Questions Conclusion**
+### 17.38 Interview Questions Conclusion
 
 Planning Mode sits at the intersection of requirements analysis, repository understanding, architectural decision-making, implementation coordination, and governance.
 
@@ -7114,9 +7361,7 @@ Planning creates the opportunity to address these concerns before they become im
 
 **The defining competency is not how quickly an engineer can move from Prompt to code, but how reliably that engineer can determine when the proposed implementation is ready to begin.**
 
-Chapter 27 status: In progress — next section: Chapter Summary
-
-## **18. Chapter Summary**
+## 18. Chapter Summary
 
 Planning Mode establishes a deliberate boundary between understanding an engineering task and executing its implementation.
 
@@ -7130,7 +7375,7 @@ The fundamental principle is:
 
 > **Planning separates understanding from execution. The agent determines scope, dependencies, risks, implementation steps, and validation requirements before modifying the repository.**
 
-### **18.1 Planning Mode Transforms Intent into an Implementation Approach**
+### 18.1 Planning Mode Transforms Intent into an Implementation Approach
 
 A Prompt expresses what needs to be accomplished.
 
@@ -7152,7 +7397,7 @@ A Prompt does not replace architectural analysis. A Plan does not become authori
 
 Maintaining these distinctions supports traceability, reviewability, and controlled execution.
 
-### **18.2 Repository Evidence Is the Foundation of Reliable Planning**
+### 18.2 Repository Evidence Is the Foundation of Reliable Planning
 
 An implementation Plan should be based on the actual repository rather than the agent's assumptions about how an application is likely to be structured.
 
@@ -7172,7 +7417,7 @@ When important information is missing, the correct response is to document the u
 
 A plausible architecture is not necessarily the architecture implemented in the repository.
 
-### **18.3 Planning Must Remain Separate from Execution**
+### 18.3 Planning Must Remain Separate from Execution
 
 Planning Mode is a non-mutating engineering phase.
 
@@ -7190,7 +7435,7 @@ Planning completion means that an approach is ready for execution.
 
 It does not mean the requested feature has been implemented.
 
-### **18.4 Planning Is a Capability, Not an Agent Role**
+### 18.4 Planning Is a Capability, Not an Agent Role
 
 The chapter distinguished Planning Mode from the Lead Agent's responsibilities.
 
@@ -7212,7 +7457,7 @@ These responsibilities are complementary.
 
 Planning does not replace development, review, validation, evaluation, or human approval.
 
-### **18.5 An Executable Plan Requires More Than a Task List**
+### 18.5 An Executable Plan Requires More Than a Task List
 
 A useful Plan must establish how the work can be performed and verified.
 
@@ -7240,7 +7485,7 @@ However, it should not prescribe unnecessary code-level details or become a coll
 
 Planning quality is measured by engineering clarity and decision value, not document length.
 
-### **18.6 Alpha Car Detailing Demonstrates the Importance of Planning**
+### 18.6 Alpha Car Detailing Demonstrates the Importance of Planning
 
 The corporate fleet booking scenario illustrated why apparently straightforward requirements may conceal significant architectural complexity.
 
@@ -7264,7 +7509,7 @@ The Plan should identify existing repository capabilities that can satisfy these
 
 This example reinforces the importance of planning around business invariants and transaction boundaries rather than beginning with class structures and endpoints.
 
-### **18.7 Validation Must Be Designed Before Implementation**
+### 18.7 Validation Must Be Designed Before Implementation
 
 Planning should establish how the completed change will be verified.
 
@@ -7286,7 +7531,7 @@ The Validator Agent verifies the actual evidence.
 
 The Evaluator Agent assesses whether the implementation fulfills the intended outcome.
 
-### **18.8 Plans Must Be Adaptable but Governed**
+### 18.8 Plans Must Be Adaptable but Governed
 
 A Plan is based on the best available evidence at the time of planning.
 
@@ -7308,7 +7553,7 @@ The principle is not to follow the initial Plan regardless of evidence.
 
 It is to preserve controlled engineering decision-making as evidence changes.
 
-### **18.9 Human Approval Is an Explicit Authority Boundary**
+### 18.9 Human Approval Is an Explicit Authority Boundary
 
 A technically complete Plan is not necessarily authorized for execution.
 
@@ -7328,7 +7573,7 @@ Similarly, approval of implementation does not automatically authorize productio
 
 The Harness should distinguish planning approval, implementation authorization, merge approval, and operational deployment controls according to organizational policy.
 
-### **18.10 Planning Should Be Proportional to Risk**
+### 18.10 Planning Should Be Proportional to Risk
 
 Formal planning is valuable, but excessive planning can reduce engineering efficiency.
 
@@ -7342,7 +7587,7 @@ The objective is neither to eliminate planning nor to require elaborate document
 
 It is to apply sufficient engineering discipline to the risks involved.
 
-### **18.11 Planning Mode Must Be Vendor-Neutral in Principle**
+### 18.11 Planning Mode Must Be Vendor-Neutral in Principle
 
 The chapter examined Planning Mode through Claude Code, GitHub Copilot, and OpenAI Codex.
 
@@ -7360,7 +7605,7 @@ The enterprise should standardize the planning contract rather than depend on on
 
 This enables different agents to participate in the same Harness architecture without changing the organization's engineering responsibilities.
 
-### **18.12 Planning Mode Is a First-Class Harness Capability**
+### 18.12 Planning Mode Is a First-Class Harness Capability
 
 Within the enterprise Harness, planning should be represented as an explicit workflow capability.
 
@@ -7370,7 +7615,26 @@ It also manages Plan freshness, material drift, and re-planning.
 
 A reference lifecycle is:
 
-\#chatgpt-mermaid-\_r_1cb1\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(237, 237, 237);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_1cb1\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_1cb1\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_1cb1\_ .error-icon{fill:rgb(48, 48, 48);}#chatgpt-mermaid-\_r_1cb1\_ .error-text{fill:rgb(237, 237, 237);stroke:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1cb1\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_1cb1\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_1cb1\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_1cb1\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_1cb1\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_1cb1\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_1cb1\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1cb1\_ .marker.cross{stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1cb1\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_1cb1\_ p{margin:0;}#chatgpt-mermaid-\_r_1cb1\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1cb1\_ .cluster-label text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1cb1\_ .cluster-label span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1cb1\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_1cb1\_ .label text,#chatgpt-mermaid-\_r_1cb1\_ span{fill:rgb(237, 237, 237);color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1cb1\_ .node rect,#chatgpt-mermaid-\_r_1cb1\_ .node circle,#chatgpt-mermaid-\_r_1cb1\_ .node ellipse,#chatgpt-mermaid-\_r_1cb1\_ .node polygon,#chatgpt-mermaid-\_r_1cb1\_ .node path{fill:rgb(9, 23, 44);stroke:rgb(31, 78, 148);stroke-width:1px;}#chatgpt-mermaid-\_r_1cb1\_ .rough-node .label text,#chatgpt-mermaid-\_r_1cb1\_ .node .label text,#chatgpt-mermaid-\_r_1cb1\_ .image-shape .label,#chatgpt-mermaid-\_r_1cb1\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_1cb1\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_1cb1\_ .rough-node .label,#chatgpt-mermaid-\_r_1cb1\_ .node .label,#chatgpt-mermaid-\_r_1cb1\_ .image-shape .label,#chatgpt-mermaid-\_r_1cb1\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_1cb1\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_1cb1\_ .root .anchor path{fill:rgb(175, 175, 175)!important;stroke-width:0;stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1cb1\_ .arrowheadPath{fill:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1cb1\_ .edgePath .path{stroke:rgb(175, 175, 175);stroke-width:1px;}#chatgpt-mermaid-\_r_1cb1\_ .flowchart-link{stroke:rgb(175, 175, 175);fill:none;}#chatgpt-mermaid-\_r_1cb1\_ .edgeLabel{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_1cb1\_ .edgeLabel p{background-color:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1cb1\_ .edgeLabel rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1cb1\_ .labelBkg{background-color:rgba(0, 0, 0, 0.5);}#chatgpt-mermaid-\_r_1cb1\_ .cluster rect{fill:rgb(48, 48, 48);stroke:rgba(255, 255, 255, 0.15);stroke-width:1px;}#chatgpt-mermaid-\_r_1cb1\_ .cluster text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1cb1\_ .cluster span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1cb1\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(48, 48, 48);border:1px solid rgba(255, 255, 255, 0.15);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_1cb1\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_1cb1\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_1cb1\_ .icon-shape,#chatgpt-mermaid-\_r_1cb1\_ .image-shape{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_1cb1\_ .icon-shape p,#chatgpt-mermaid-\_r_1cb1\_ .image-shape p{background-color:rgb(0, 0, 0);padding:2px;}#chatgpt-mermaid-\_r_1cb1\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_1cb1\_ .image-shape .label rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_1cb1\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_1cb1\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_1cb1\_ .node .neo-node{stroke:rgb(31, 78, 148);}#chatgpt-mermaid-\_r_1cb1\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_1cb1\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_1cb1\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_1cb1\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1cb1\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_1cb1\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_1cb1\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_1cb1\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1cb1\_ [data-look="neo"].node .neo-line path{stroke:rgb(31, 78, 148);filter:none;}#chatgpt-mermaid-\_r_1cb1\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_1cb1\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1cb1\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_1cb1\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_1cb1\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1cb1\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_1cb1\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1cb1\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_1cb1\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_1cb1\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_1cb1\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_1cb1\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-width:1px;}#chatgpt-mermaid-\_r_1cb1\_ .node rect,#chatgpt-mermaid-\_r_1cb1\_ .node circle,#chatgpt-mermaid-\_r_1cb1\_ .node ellipse,#chatgpt-mermaid-\_r_1cb1\_ .node polygon,#chatgpt-mermaid-\_r_1cb1\_ .node path{fill:rgb(0, 40, 77);stroke:rgba(255, 255, 255, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_1cb1\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_1cb1\_ .mermaid-decision .label-container{fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_1cb1\_ .edgePaths .flowchart-link{stroke:rgb(175, 175, 175);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_1cb1\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_1cb1\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}PromptRepository DiscoveryApplicable Instructions andSkillsPlanning ModeScope, Tasks, Dependencies,Risks, AssumptionsAcceptance Criteria andValidation PlanProposed PlanPlan Quality GateReview and ApprovalExecution HandoffDeveloper AgentExecutionMaterial Plan Drift?Reviewer and ValidatorEvaluatorCompletion DecisionRevision RequiredApprovedYesNo
+```mermaid
+flowchart TD
+    A["Prompt"] --> B["Repository Discovery"]
+    B --> C["Applicable Instructions and Skills"]
+    C --> D["Planning Mode"]
+    D --> E["Scope, Tasks, Dependencies, Risks, Assumptions"]
+    E --> F["Acceptance Criteria and Validation Plan"]
+    F --> G["Proposed Plan"]
+    G --> H["Plan Quality Gate"]
+    H --> I{"Review and Approval"}
+    I -->|"Revision Required"| D
+    I -->|"Approved"| J["Execution Handoff"]
+    J --> K["Developer Agent"]
+    K --> L["Execution"]
+    L --> M{"Material Plan Drift?"}
+    M -->|"Yes"| D
+    M -->|"No"| N["Reviewer and Validator"]
+    N --> O["Evaluator"]
+    O --> P["Completion Decision"]
+```
 
 The workflow separates analysis, authorization, implementation, and assurance.
 
@@ -7378,7 +7642,7 @@ It also allows execution to return to planning when significant new evidence eme
 
 The Harness should enforce these transitions rather than relying entirely on the conversational behavior of the AI Agent.
 
-### **18.13 Key Architectural Takeaways**
+### 18.13 Key Architectural Takeaways
 
 Several principles define a mature Planning Mode implementation.
 
@@ -7398,7 +7662,7 @@ Seventh, the Plan must support controlled revision when material evidence change
 
 Finally, the approved Plan must provide a reliable handoff from the Lead Agent to the Developer Agent without replacing the distinct responsibilities of review, validation, and evaluation.
 
-### **18.14 Final Perspective**
+### 18.14 Final Perspective
 
 The most significant benefit of Planning Mode is not the production of a planning document.
 
@@ -7436,10 +7700,7 @@ In enterprise AI engineering, the ability to generate code is important. The abi
 
 **The purpose of Planning Mode is to ensure that implementation speed never becomes a substitute for engineering understanding.**
 
-Chapter 27 status: In progress — next section: Further Reading
-
-
-## **19. Further Reading**
+## 19. Further Reading
 
 Planning Mode draws on several established areas of software engineering, including requirements analysis, software architecture, repository comprehension, risk management, iterative development, and verification.
 
@@ -7449,19 +7710,15 @@ What changes with AI-assisted development is the speed at which implementation c
 
 The following resources provide additional depth for engineers and architects who want to develop reliable planning-first workflows.
 
-### **19.1 Claude Code — Planning and Permission Modes**
+### 19.1 Claude Code — Planning and Permission Modes
 
 **Source:** Anthropic, Claude Code Documentation and Help Center
 
-**Reference:** [Claude Code — Permissions](https://code.claude.com/docs/en/permissions?utm_source=chatgpt.com) and [Claude Code User FAQ](https://support.claude.com/en/articles/14554922-claude-code-user-faq?utm_source=chatgpt.com)
+**Reference:** [Claude Code — Permissions](https://code.claude.com/docs/en/permissions) and [Claude Code User FAQ](https://support.claude.com/en/articles/14554922-claude-code-user-faq)
 
 Claude Code's permission model provides the practical foundation for separating planning from implementation.
 
-The documentation explains permission modes, including the read-oriented Plan Mode, and the mechanisms available for controlling tool execution and repository modifications.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://support.claude.com\&sz=32)
-
-Claude Help Center
+The documentation explains permission modes, including the read-oriented Plan Mode, and the mechanisms available for controlling tool execution and repository modifications.
 
 The material is particularly relevant to the chapter's distinction between a natural-language instruction to avoid edits and a technically enforced planning boundary.
 
@@ -7473,11 +7730,11 @@ Use the documentation to configure a planning session that can investigate corpo
 
 The important outcome is an evidence-based Plan produced before implementation begins.
 
-### **19.2 Claude Code — Memory and Repository Instructions**
+### 19.2 Claude Code — Memory and Repository Instructions
 
 **Source:** Anthropic, Claude Code Documentation
 
-**Reference:** [Claude Code — Memory and Instructions](https://code.claude.com/docs/en/memory?utm_source=chatgpt.com)
+**Reference:** [Claude Code — Memory and Instructions](https://code.claude.com/docs/en/memory)
 
 Repository Instructions are an essential input to Planning Mode.
 
@@ -7493,19 +7750,15 @@ Review how the companion application's Clean Architecture conventions, testing r
 
 The Plan must respect applicable Instructions rather than replacing them with task-specific preferences.
 
-### **19.3 Visual Studio Code — Planning with Agents**
+### 19.3 Visual Studio Code — Planning with Agents
 
 **Source:** Microsoft, Visual Studio Code Documentation
 
-**Reference:** [Plan Work with Agents in VS Code](https://code.visualstudio.com/docs/agents/run/planning?utm_source=chatgpt.com)
+**Reference:** [Plan Work with Agents in VS Code](https://code.visualstudio.com/docs/agents/run/planning)
 
 The Visual Studio Code documentation describes planning-first agent workflows, including defining a task, investigating the codebase, resolving questions, reviewing a proposed approach, and transitioning to implementation.
 
-It also explains when explicit planning is useful and when a small, well-defined change may proceed without an elaborate Plan.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://code.visualstudio.com\&sz=32)
-
-code.visualstudio.com
+It also explains when explicit planning is useful and when a small, well-defined change may proceed without an elaborate Plan.
 
 This material provides a practical comparison with Claude Code's planning capabilities.
 
@@ -7519,19 +7772,15 @@ Compare how the agents identify affected components, assumptions, dependencies, 
 
 The comparison should focus on engineering completeness rather than interface differences.
 
-### **19.4 GitHub Copilot — Repository Custom Instructions**
+### 19.4 GitHub Copilot — Repository Custom Instructions
 
 **Source:** GitHub Documentation
 
-**Reference:** [Custom Instructions for GitHub Copilot](https://docs.github.com/en/copilot/concepts/prompting-and-context/custom-instructions?utm_source=chatgpt.com)
+**Reference:** [Custom Instructions for GitHub Copilot](https://docs.github.com/en/copilot/concepts/prompting-and-context/custom-instructions)
 
 GitHub Copilot supports persistent Instructions that can guide coding agents in repository-specific tasks.
 
-The documentation explains repository-wide guidance, path-specific Instructions, and agent-related instruction mechanisms. Support varies by environment and workflow.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://docs.github.com\&sz=32)
-
-GitHub Docs
+The documentation explains repository-wide guidance, path-specific Instructions, and agent-related instruction mechanisms. Support varies by environment and workflow.
 
 This resource reinforces the distinction between Instructions and Plans.
 
@@ -7545,19 +7794,15 @@ Compare how the same Clean Architecture and validation requirements could be exp
 
 The objective is to preserve architectural consistency even when different AI coding platforms participate in development.
 
-### **19.5 OpenAI Codex — Plan Mode**
+### 19.5 OpenAI Codex — Plan Mode
 
 **Source:** OpenAI, Codex
 
-**Reference:** [Codex — Conversational Plan Mode](https://github.com/openai/codex/blob/main/codex-rs/collaboration-mode-templates/templates/plan.md?utm_source=chatgpt.com)
+**Reference:** [Codex — Conversational Plan Mode](https://github.com/openai/codex/blob/main/codex-rs/collaboration-mode-templates/templates/plan.md)
 
 Codex's planning guidance distinguishes planning from implementation and describes how an agent can investigate requirements, resolve ambiguities, and produce an actionable proposed Plan.
 
-It also distinguishes conversational Plan Mode from execution-progress tracking.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://github.com\&sz=32)
-
-GitHub
+It also distinguishes conversational Plan Mode from execution-progress tracking.
 
 This distinction closely aligns with the handbook's treatment of the Plan and Scratchpad as separate artifacts.
 
@@ -7569,21 +7814,17 @@ Evaluate whether Codex can produce a corporate fleet booking Plan containing the
 
 The engineering contract should remain consistent even when the planning implementation differs.
 
-### **19.6 OpenAI — Using PLANS.md for Multi-Hour Problem Solving**
+### 19.6 OpenAI — Using PLANS.md for Multi-Hour Problem Solving
 
 **Source:** OpenAI Cookbook
 
-**Reference:** [Using PLANS.md for Multi-Hour Problem Solving](https://developers.openai.com/cookbook/articles/codex_exec_plans?utm_source=chatgpt.com)
+**Reference:** [Using PLANS.md for Multi-Hour Problem Solving](https://developers.openai.com/cookbook/articles/codex_exec_plans)
 
 This resource describes a structured approach to long-running implementation through execution plans.
 
 It discusses maintaining a durable Plan that identifies intended changes, implementation steps, validation expectations, and recovery considerations.
 
-The guidance illustrates how planning can preserve continuity when a complex task spans multiple execution activities or sessions. The original article is archived, so its implementation details should be treated as historical guidance rather than a definitive description of current Codex behavior.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://developers.openai.com\&sz=32)
-
-developers.openai.com
+The guidance illustrates how planning can preserve continuity when a complex task spans multiple execution activities or sessions. This is an illustrative planning convention, not a mandatory configuration for every Codex repository; verify product-specific behavior against current documentation.
 
 For the enterprise Harness, the important distinction is that an execution plan can evolve without allowing its approved architectural decisions to change silently.
 
@@ -7593,21 +7834,17 @@ Consider how corporate fleet booking could be divided into milestones covering A
 
 Each milestone should have an identifiable outcome and verification requirement.
 
-### **19.7 OpenAI — Iterating Development Workflows with Codex**
+### 19.7 OpenAI — Iterating Development Workflows with Codex
 
 **Source:** OpenAI Cookbook
 
-**Reference:** [Iterating Development Workflows with Codex](https://developers.openai.com/cookbook/examples/codex/iterating-development-workflows-with-codex?utm_source=chatgpt.com)
+**Reference:** [Iterating Development Workflows with Codex](https://developers.openai.com/cookbook/examples/codex/iterating-development-workflows-with-codex)
 
 This resource explores repository-based conventions for organizing goals, Instructions, implementation phases, and execution evidence.
 
 It demonstrates how artifacts such as `AGENTS.md`, `PLANS.md`, and separate workflow records can support iterative development.
 
-The example conventions are optional and should be adapted to the target repository rather than treated as mandatory Codex files.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://developers.openai.com\&sz=32)
-
-developers.openai.com
+The example conventions are optional and should be adapted to the target repository rather than treated as mandatory Codex files.
 
 The resource is especially relevant to the handbook's distinction between permanent Instructions, task-specific Plans, temporary run context, and observed execution evidence.
 
@@ -7615,19 +7852,15 @@ The resource is especially relevant to the handbook's distinction between perman
 
 Use the ideas to evaluate how the corporate fleet booking Plan could remain available to the Developer, Reviewer, Validator, and Evaluator Agents without turning the Plan into an unstructured execution log.
 
-### **19.8 Microsoft Azure Well-Architected Framework — Architecture Decision Records**
+### 19.8 Microsoft Azure Well-Architected Framework — Architecture Decision Records
 
 **Source:** Microsoft Learn
 
-**Reference:** [Maintain an Architecture Decision Record](https://learn.microsoft.com/en-us/azure/well-architected/architect-role/architecture-decision-record?utm_source=chatgpt.com)
+**Reference:** [Maintain an Architecture Decision Record](https://learn.microsoft.com/en-us/azure/well-architected/architect-role/architecture-decision-record)
 
 Architecture Decision Records provide a disciplined way to capture significant architectural choices, their context, alternatives, rationale, and consequences.
 
-Microsoft's guidance emphasizes documenting decisions that affect system structure, important quality attributes, or choices that are difficult to reverse. It also recommends preserving decision history when an earlier decision is superseded.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://learn.microsoft.com\&sz=32)
-
-Microsoft Learn
+Microsoft's guidance emphasizes documenting decisions that affect system structure, important quality attributes, or choices that are difficult to reverse. It also recommends preserving decision history when an earlier decision is superseded.
 
 This practice complements Planning Mode.
 
@@ -7643,11 +7876,11 @@ If corporate fleet booking requires a significant change to transaction coordina
 
 Record the alternatives, rationale, tradeoffs, and consequences.
 
-### **19.9 Martin Fowler — Evolutionary Architecture**
+### 19.9 Martin Fowler — Evolutionary Architecture
 
 **Source:** Martin Fowler and contributors
 
-**Reference:** [Evolutionary Architecture](https://martinfowler.com/articles/evo-architecture.html?utm_source=chatgpt.com)
+**Reference:** [Evolutionary Architecture](https://martinfowler.com/articles/evo-architecture.html)
 
 Evolutionary architecture emphasizes designing systems that can adapt as requirements and evidence change.
 
@@ -7663,11 +7896,11 @@ Consider how the corporate fleet booking Plan should respond if implementation r
 
 The appropriate response is to reassess the design and revise the Plan through the required approval process rather than forcing the original approach to remain unchanged.
 
-### **19.10 Software Engineering at Google**
+### 19.10 Software Engineering at Google
 
 **Source:** Titus Winters, Tom Manshreck, and Hyrum Wright, *Software Engineering at Google*, O'Reilly Media, 2020
 
-**Reference:** [Software Engineering at Google — Online Book](https://abseil.io/resources/swe-book?utm_source=chatgpt.com)
+**Reference:** [Software Engineering at Google — Online Book](https://abseil.io/resources/swe-book)
 
 This book examines software engineering as a long-term organizational discipline rather than merely a code-production activity.
 
@@ -7679,7 +7912,7 @@ Planning Mode fits into this broader perspective by ensuring that implementation
 
 Consider how the corporate fleet booking Plan can minimize unnecessary complexity while preserving architectural consistency and adequate regression protection.
 
-### **19.11 Fundamentals of Software Architecture**
+### 19.11 Fundamentals of Software Architecture
 
 **Source:** Mark Richards and Neal Ford, *Fundamentals of Software Architecture: An Engineering Approach*, O'Reilly Media, 2020
 
@@ -7697,7 +7930,7 @@ Evaluate alternative approaches to corporate capacity enforcement.
 
 Explain why the selected mechanism fits the existing architecture and business invariants instead of choosing it merely because the AI Agent can generate it efficiently.
 
-### **19.12 Designing Data-Intensive Applications**
+### 19.12 Designing Data-Intensive Applications
 
 **Source:** Martin Kleppmann, *Designing Data-Intensive Applications*, O'Reilly Media, 2017
 
@@ -7715,7 +7948,7 @@ Use the concepts to assess whether a proposed booking-limit enforcement strategy
 
 Also examine how event processing and retries influence consistency across system boundaries.
 
-### **19.13 Release It!**
+### 19.13 Release It!
 
 **Source:** Michael T. Nygard, *Release It!*, Second Edition, Pragmatic Bookshelf, 2018
 
@@ -7733,7 +7966,7 @@ Identify how corporate fleet booking should behave when account policy services 
 
 Use those failure scenarios to strengthen the Plan's risk assessment and validation strategy.
 
-### **19.14 Accelerate**
+### 19.14 Accelerate
 
 **Source:** Nicole Forsgren, Jez Humble, and Gene Kim, *Accelerate: The Science of Lean Software and DevOps*, IT Revolution, 2018
 
@@ -7751,7 +7984,7 @@ Evaluate whether formal planning reduces missed dependencies and post-implementa
 
 Avoid assessing planning success solely through document length, planning duration, or number of Plans generated.
 
-### **19.15 Recommended Reading Sequence**
+### 19.15 Recommended Reading Sequence
 
 The following sequence helps connect platform-specific planning capabilities with the broader engineering principles required for an enterprise Harness.
 
@@ -7775,7 +8008,7 @@ Reliability literature helps identify technical failure conditions.
 
 Software delivery research provides context for evaluating whether planning improves organizational outcomes.
 
-### **19.16 Further Reading in the Enterprise AI Engineering Handbook**
+### 19.16 Further Reading in the Enterprise AI Engineering Handbook
 
 Chapter 27 builds on several earlier chapters and prepares the reader for the next stage of Claude Engineering.
 
@@ -7806,7 +8039,7 @@ These chapters establish the architectural context required to understand Planni
 
 The next chapter, **Chapter 28 — Enterprise Workflows**, extends these principles into coordinated development workflows in which planning, implementation, review, validation, evaluation, and approval operate together.
 
-### **19.17 Final Reading Perspective**
+### 19.17 Final Reading Perspective
 
 The resources in this section reinforce a common engineering principle: reliable software development requires explicit reasoning about goals, constraints, dependencies, risks, and verification.
 
@@ -7826,4 +8059,3 @@ A mature enterprise Harness should therefore make planning a governed capability
 
 Together, these responsibilities form the foundation of disciplined enterprise AI-assisted software engineering.
 
-**Chapter 27 status: Complete**

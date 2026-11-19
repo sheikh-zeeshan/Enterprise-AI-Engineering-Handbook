@@ -4,7 +4,7 @@
 
 The corporate fleet booking initiative had reached a decisive stage.
 
-Alpha Car Detailing already supported individual customers who could book vehicle washing and detailing appointments at stations across the country. The next business objective was more demanding: corporate customers needed to register fleets, define approved vehicles, assign authorized drivers, negotiate service plans, schedule recurring bookings, and receive consolidated invoices.
+Alpha Car Detailing already supported individual customers who could book vehicle washing and detailing appointments at stations across the country. The next business objective was more demanding: corporate customers needed to register fleets, define approved vehicles, assign authorized drivers, use negotiated service plans, and schedule recurring bookings. Consolidated monthly invoicing was part of the longer-term roadmap, but not the current implementation scope.
 
 The product owner prepared a prompt describing the requested capability. Repository instructions already defined the architectural standards. Existing skills described how to add application commands, domain behavior, API endpoints, integration events, transactional outbox records, persistence mappings, tests, and observability.
 
@@ -62,7 +62,7 @@ That difference is the purpose of roles.
 
 Roles do not merely give agents descriptive titles. They define who performs the work, from which perspective, with what authority, within which boundaries, using which inputs, and producing which outputs. In an enterprise AI workflow, roles create accountable separation between planning, implementation, review, validation, evaluation, security assessment, and approval.
 
-The principles in this chapter follow the handbook’s established distinction among Instructions, Skills, Prompts, Roles, Steering Notes, and Harnesses. Instructions define persistent standards, Skills define reusable procedures, Prompts define the current task, Roles define responsibility and authority, Steering Notes provide current mission context, and the Harness coordinates execution and evidence collection.
+The distinctions established in the preceding chapters remain intact: Instructions set persistent standards, Skills supply reusable procedures, Prompts define the current task, Roles assign responsibility and authority, Steering Notes provide current mission context, and the Harness coordinates execution and evidence collection.
 
 ---
 
@@ -206,7 +206,7 @@ It is not governed enterprise engineering.
 
 ## Concepts
 
-## What Is a Role?
+### What Is a Role?
 
 A Role is a defined assignment of responsibility, perspective, authority, boundaries, inputs, and expected outputs given to an AI Agent within an engineering workflow.
 
@@ -302,11 +302,11 @@ The Reviewer Agent may not:
 
 This definition describes an operational role rather than a label.
 
-## Why Role Separation Matters
+### Why Role Separation Matters
 
 Role separation improves AI-assisted engineering in five major ways.
 
-### Independent Perspective
+#### Independent Perspective
 
 Different roles examine the same change from different viewpoints.
 
@@ -332,13 +332,13 @@ The Security Reviewer asks:
 
 These questions overlap, but they are not identical.
 
-### Reduced Self-Approval
+#### Reduced Self-Approval
 
 An agent is naturally influenced by its earlier reasoning. When the same agent proposes a design, implements it, and reviews it, its review may repeat the assumptions that produced the defect.
 
 Role separation reduces this problem by requiring a new perspective and a distinct output.
 
-### Clear Authority
+#### Clear Authority
 
 Enterprise work contains decisions that should not be made implicitly.
 
@@ -356,7 +356,7 @@ Examples include:
 
 A role definition states which decisions the agent may make and which decisions require escalation.
 
-### Traceable Evidence
+#### Traceable Evidence
 
 Each role produces evidence appropriate to its responsibility.
 
@@ -372,7 +372,7 @@ For example:
 
 This creates an auditable workflow.
 
-### Controlled Collaboration
+#### Controlled Collaboration
 
 Multiple AI Agents can generate noise if they are simply asked to “work together.”
 
@@ -389,7 +389,7 @@ Roles provide that structure.
 
 ---
 
-## Roles Versus Instructions
+### Roles Versus Instructions
 
 Instructions define persistent standards and constraints.
 
@@ -428,7 +428,7 @@ The instructions remain authoritative regardless of which role is active.
 
 A Role must not restate the entire instruction set. It should reference the authoritative instructions and explain how the role uses them.
 
-### Example
+#### Example
 
 Instruction:
 
@@ -460,7 +460,7 @@ The instruction is shared. The responsibilities differ.
 
 ---
 
-## Roles Versus Skills
+### Roles Versus Skills
 
 Skills define reusable procedures.
 
@@ -496,7 +496,7 @@ An Architect Agent may approve the use of a new or exceptional skill.
 | Are reusable across roles          | May invoke multiple skills            |
 | Do not own decisions by themselves | May own specific decisions            |
 
-### Example
+#### Example
 
 The `add-integration-event` skill might require:
 
@@ -521,7 +521,7 @@ The Skill defines the procedure. The Roles define participation and authority.
 
 ---
 
-## Roles Versus Prompts
+### Roles Versus Prompts
 
 Prompts define the current task.
 
@@ -538,7 +538,7 @@ Corporate account administrators must be able to:
 - assign authorized drivers;
 - create one-time and recurring bookings;
 - select services from the corporate service plan;
-- receive consolidated monthly billing.
+- provide booking records for consolidated monthly billing in a later phase.
 
 The change must preserve tenant isolation, use the transactional outbox,
 include automated tests, and expose operational telemetry.
@@ -546,7 +546,7 @@ include automated tests, and expose operational telemetry.
 
 The same prompt may be interpreted differently by each role.
 
-### Lead Agent
+#### Lead Agent
 
 * Clarifies scope.
 * Identifies affected components.
@@ -554,34 +554,34 @@ The same prompt may be interpreted differently by each role.
 * Assigns responsibilities.
 * Tracks risks and dependencies.
 
-### Architect Agent
+#### Architect Agent
 
 * Determines service ownership.
 * Defines aggregate boundaries.
 * Reviews tenancy and consistency requirements.
 * Approves or rejects architectural changes.
 
-### Developer Agent
+#### Developer Agent
 
 * Implements the approved plan.
 * Applies repository skills.
 * Produces code and tests.
 
-### Reviewer Agent
+#### Reviewer Agent
 
 * Examines correctness and maintainability.
 * Reports defects and architectural deviations.
 
-### Validator Agent
+#### Validator Agent
 
 * Runs builds, tests, migrations, analyzers, and repository checks.
 * Reports actual results.
 
-### Security Reviewer
+#### Security Reviewer
 
 * Assesses authorization, tenant isolation, data exposure, and abuse scenarios.
 
-### Evaluator Agent
+#### Evaluator Agent
 
 * Compares the final result with the prompt’s acceptance criteria.
 
@@ -589,7 +589,7 @@ The prompt is the shared task specification. The roles determine how different a
 
 ---
 
-## Roles Versus Steering Notes
+### Roles Versus Steering Notes
 
 Steering Notes provide temporary mission context.
 
@@ -646,7 +646,7 @@ That would violate role governance unless explicitly approved through the organi
 
 ---
 
-## Role Responsibilities
+### Role Responsibilities
 
 Responsibilities define the work a role is expected to perform.
 
@@ -686,7 +686,7 @@ exposure, injection risk, secret handling, audit logging, and abuse scenarios
 introduced or modified by the change.
 ```
 
-### Responsibility Categories
+#### Responsibility Categories
 
 A role definition may include several responsibility categories.
 
@@ -709,13 +709,13 @@ For example, both the Reviewer Agent and Security Reviewer may inspect authoriza
 
 ---
 
-## Role Perspective
+### Role Perspective
 
 Perspective defines the viewpoint from which a role reasons.
 
 This is one of the most important differences between meaningful roles and decorative titles.
 
-### Developer Perspective
+#### Developer Perspective
 
 The Developer Agent reasons from the perspective of implementation feasibility:
 
@@ -725,7 +725,7 @@ The Developer Agent reasons from the perspective of implementation feasibility:
 * How should the code be tested?
 * How can the change be implemented safely?
 
-### Reviewer Perspective
+#### Reviewer Perspective
 
 The Reviewer Agent reasons from the perspective of defect discovery:
 
@@ -735,7 +735,7 @@ The Reviewer Agent reasons from the perspective of defect discovery:
 * Which tests fail to prove the behavior?
 * Which changes increase maintenance risk?
 
-### Architect Perspective
+#### Architect Perspective
 
 The Architect Agent reasons from the perspective of system coherence:
 
@@ -745,7 +745,7 @@ The Architect Agent reasons from the perspective of system coherence:
 * Is the event contract stable?
 * Does the change preserve long-term architectural direction?
 
-### Security Reviewer Perspective
+#### Security Reviewer Perspective
 
 The Security Reviewer reasons from the perspective of misuse and compromise:
 
@@ -756,7 +756,7 @@ The Security Reviewer reasons from the perspective of misuse and compromise:
 * Is the audit trail sufficient?
 * Can the control be bypassed through another interface?
 
-### Validator Perspective
+#### Validator Perspective
 
 The Validator Agent reasons from executable evidence:
 
@@ -767,7 +767,7 @@ The Validator Agent reasons from executable evidence:
 * Did analyzers report violations?
 * Did required repository checks execute?
 
-### Evaluator Perspective
+#### Evaluator Perspective
 
 The Evaluator Agent reasons from outcome satisfaction:
 
@@ -781,7 +781,7 @@ Explicit perspective reduces the likelihood that every agent produces the same g
 
 ---
 
-## Role Authority
+### Role Authority
 
 Authority defines the decisions and actions a role is permitted to perform.
 
@@ -816,7 +816,7 @@ A role may lack authority to:
 * approve its own findings
 * waive compliance requirements
 
-### Authority Levels
+#### Authority Levels
 
 Organizations may define authority levels such as:
 
@@ -831,7 +831,7 @@ Organizations may define authority levels such as:
 
 This model can be adapted to organizational needs.
 
-### Example Authority Assignment
+#### Example Authority Assignment
 
 | Role              | Typical Authority                                       |
 | ----------------- | ------------------------------------------------------- |
@@ -850,13 +850,13 @@ This model can be adapted to organizational needs.
 
 ---
 
-## Role Boundaries
+### Role Boundaries
 
 Boundaries define what a role must not do.
 
 A boundary is not merely an absence of responsibility. It is an explicit prohibition designed to preserve workflow integrity.
 
-### Developer Agent Boundaries
+#### Developer Agent Boundaries
 
 The Developer Agent should not:
 
@@ -868,7 +868,7 @@ The Developer Agent should not:
 * Declare security approval.
 * Merge or deploy unless explicitly authorized.
 
-### Reviewer Agent Boundaries
+#### Reviewer Agent Boundaries
 
 The Reviewer Agent should not:
 
@@ -879,7 +879,7 @@ The Reviewer Agent should not:
 * Redefine the prompt to make the implementation appear complete.
 * approve security or architecture exceptions outside its authority.
 
-### Validator Agent Boundaries
+#### Validator Agent Boundaries
 
 The Validator Agent should not:
 
@@ -889,7 +889,7 @@ The Validator Agent should not:
 * interpret business acceptance criteria beyond its assigned validation rules.
 * approve release readiness.
 
-### Evaluator Agent Boundaries
+#### Evaluator Agent Boundaries
 
 The Evaluator Agent should not:
 
@@ -900,7 +900,7 @@ The Evaluator Agent should not:
 * rewrite the prompt after implementation.
 * approve unresolved high-risk findings.
 
-### Lead Agent Boundaries
+#### Lead Agent Boundaries
 
 The Lead Agent should not:
 
@@ -915,7 +915,7 @@ Boundaries make role separation enforceable.
 
 ---
 
-## Role Inputs
+### Role Inputs
 
 Inputs define the evidence and context a role may use.
 
@@ -947,7 +947,6 @@ inputs:
   implementation_plan: artifacts/fleet-booking-plan.md
   repository_instructions:
     - CLAUDE.md
-    - .github/copilot-instructions.md
   skills:
     - skills/add-application-command.md
     - skills/add-domain-behavior.md
@@ -956,7 +955,9 @@ inputs:
     - skills/add-transactional-outbox.md
   allowed_paths:
     - src/Booking/**
-    - tests/Booking/**
+    - tests/Booking.UnitTests/**
+    - tests/Booking.IntegrationTests/**
+    - tests/ArchitectureTests/**
   protected_paths:
     - src/Invoicing/**
     - contracts/public/**
@@ -980,7 +981,7 @@ Explicit inputs reduce accidental scope expansion and improve reproducibility.
 
 ---
 
-## Role Outputs
+### Role Outputs
 
 Outputs define what a role must produce before its work is considered complete.
 
@@ -993,7 +994,7 @@ A useful output is:
 * Machine-readable where appropriate
 * Suitable for the next role
 
-### Example Lead Agent Output
+#### Example Lead Agent Output
 
 ```yaml
 status: ready_for_implementation
@@ -1009,12 +1010,12 @@ work_items:
     owner_role: security-reviewer
     description: Assess tenant isolation and fleet authorization
 risks:
-  - Public integration event may require schema approval
+  - A new public integration event would require separate approval
 escalations:
-  - Confirm whether recurring bookings belong to Booking Service
+  - Confirm the ownership of recurring-booking schedule generation
 ```
 
-### Example Reviewer Output
+#### Example Reviewer Output
 
 ```yaml
 status: changes_required
@@ -1028,7 +1029,7 @@ findings:
     required_action: Enforce tenant scope in query and repository method
 ```
 
-### Example Validator Output
+#### Example Validator Output
 
 ```yaml
 status: failed
@@ -1047,7 +1048,7 @@ checks:
     reason: Test database unavailable
 ```
 
-### Example Evaluator Output
+#### Example Evaluator Output
 
 ```yaml
 status: acceptance_failed
@@ -1076,7 +1077,7 @@ The structure prevents vague statements such as:
 
 ---
 
-## Role Handoffs
+### Role Handoffs
 
 A handoff transfers responsibility, context, evidence, and unresolved issues from one role to another.
 
@@ -1090,13 +1091,13 @@ A reliable handoff answers:
 * What action is expected next?
 * What authority does the receiving role have?
 
-### Weak Handoff
+#### Weak Handoff
 
 ```text
 The plan is ready. Please implement it.
 ```
 
-### Strong Handoff
+#### Strong Handoff
 
 ```yaml
 from_role: architect
@@ -1108,15 +1109,15 @@ approved_decisions:
   - Recurring schedule generation is application-layer orchestration.
 constraints:
   - Do not modify the Invoicing Service.
-  - Publish FleetBookingCreated through the transactional outbox.
+  - Persist BookingCreated through the transactional outbox without changing its contract.
   - Preserve the existing BookingCreated contract.
 open_questions:
-  - Monthly invoice aggregation remains deferred.
+  - Monthly invoice aggregation remains outside this iteration.
 required_next_action:
   - Implement FB-02 through FB-07 using the approved skills.
 ```
 
-### Handoff Completion Criteria
+#### Handoff Completion Criteria
 
 A role should not begin work merely because a previous agent stopped responding. The Harness should verify that required handoff artifacts exist.
 
@@ -1140,13 +1141,13 @@ Missing handoffs should result in a workflow error, not an assumed success.
 
 ---
 
-## Role Collaboration
+### Role Collaboration
 
 Role collaboration occurs when multiple roles contribute to the same engineering outcome without losing responsibility boundaries.
 
 Collaboration may be:
 
-### Sequential
+#### Sequential
 
 One role completes work before the next begins.
 
@@ -1154,7 +1155,7 @@ One role completes work before the next begins.
 Architect → Developer → Reviewer → Validator → Evaluator
 ```
 
-### Parallel
+#### Parallel
 
 Independent roles examine the same change simultaneously.
 
@@ -1164,7 +1165,7 @@ Developer Complete ─┼→ Security Reviewer
                     └→ Validator
 ```
 
-### Iterative
+#### Iterative
 
 Findings return the work to an earlier role.
 
@@ -1178,7 +1179,7 @@ Developer
 Reviewer
 ```
 
-### Consultative
+#### Consultative
 
 One role requests a bounded opinion from another.
 
@@ -1186,7 +1187,7 @@ One role requests a bounded opinion from another.
 Developer → Architect Consultation → Developer
 ```
 
-### Gated
+#### Gated
 
 A role must pass before the workflow may proceed.
 
@@ -1209,7 +1210,7 @@ A statement such as “the agents jointly own quality” is too vague. Quality e
 
 ---
 
-## Conflict Resolution
+### Conflict Resolution
 
 AI roles may reach different conclusions.
 
@@ -1223,24 +1224,22 @@ Examples include:
 
 Conflict is not a failure of the role model. It is evidence that different perspectives are working.
 
-### Evidence Hierarchy
+#### Decision Precedence and Evidence
 
-Organizations should define how evidence is prioritized.
+Not all disagreements can be settled by ranking documents in a single list. Normative authority determines which decisions are permitted; empirical evidence determines what actually happened. A passing build cannot waive a security policy, and an architectural preference cannot turn a failed test into a passing one.
 
-A typical hierarchy is:
+| Question | Governing source |
+|---|---|
+| Is the change legally or contractually permitted? | Applicable law, regulation, and contractual obligations |
+| Is the change authorized by the organization? | Approved security, governance, and risk policies |
+| Is the solution architecturally permitted? | Approved architecture decisions and repository instructions |
+| Does the delivery satisfy the requested outcome? | Approved scope and acceptance criteria |
+| Did an executable check pass? | Immutable command results, logs, and test artifacts |
+| What defects or risks were identified? | Evidence-linked review, security, and evaluation findings |
 
-1. Laws, regulations, and formal compliance requirements
-2. Enterprise security and governance policies
-3. Approved architecture decisions
-4. Repository instructions
-5. Task acceptance criteria
-6. Executable validation evidence
-7. Role findings
-8. Agent assumptions and recommendations
+When authoritative sources conflict, the responsible human owner must resolve the conflict. Agent assumptions and confidence claims cannot override either formal authority or observed evidence.
 
-An agent’s confidence should never outrank executable evidence or formal policy.
-
-### Conflict Resolution Rules
+#### Conflict Resolution Rules
 
 A practical conflict policy may state:
 
@@ -1252,7 +1251,7 @@ A practical conflict policy may state:
 * Conflicts outside agent authority must be escalated.
 * The Lead Agent consolidates disagreement but does not invent authority to resolve it.
 
-### Example Conflict Record
+#### Example Conflict Record
 
 ```yaml
 conflict_id: CON-004
@@ -1279,7 +1278,7 @@ The conflict is preserved rather than hidden.
 
 ---
 
-## Escalation
+### Escalation
 
 Escalation transfers a decision to a higher authority when a role reaches the limit of its authority, evidence, or confidence.
 
@@ -1298,7 +1297,7 @@ A role should escalate when:
 * Residual risk requires human acceptance.
 * Roles cannot resolve a conflict through evidence.
 
-### Escalation Record
+#### Escalation Record
 
 ```yaml
 escalation_id: ESC-007
@@ -1315,7 +1314,7 @@ human_owner: Application Security Lead
 workflow_effect: blocked
 ```
 
-### Escalation Is Not Failure
+#### Escalation Is Not Failure
 
 A well-designed AI Agent should not attempt to answer every question.
 
@@ -1327,7 +1326,7 @@ Recognizing that a decision exceeds its authority is a sign of correct role beha
 
 ---
 
-## Human Approval
+### Human Approval
 
 Human approval remains mandatory for decisions that carry substantial organizational risk.
 
@@ -1349,7 +1348,7 @@ Typical human-owned decisions include:
 
 Human approval should not be represented as a generic final step. It should be attached to specific decision categories.
 
-### Approval Matrix
+#### Approval Matrix
 
 | Decision                      |                      Agent Recommendation |                   Human Approval |
 | ----------------------------- | ----------------------------------------: | -------------------------------: |
@@ -1381,7 +1380,7 @@ A chat message saying “looks fine” is weak governance evidence.
 
 ---
 
-## Role Ownership
+### Role Ownership
 
 Every role definition should have an accountable human owner.
 
@@ -1412,7 +1411,7 @@ Role ownership should not be assigned only to the AI platform team. The people a
 
 ---
 
-## Role Versioning
+### Role Versioning
 
 Role definitions evolve.
 
@@ -1440,7 +1439,7 @@ changes:
   - Prohibited direct modification of reviewed files
 ```
 
-### Versioning Guidance
+#### Versioning Guidance
 
 Use a major version when:
 
@@ -1467,7 +1466,7 @@ The Harness should record the role version used in every run.
 
 ---
 
-## Role Governance
+### Role Governance
 
 Role governance ensures that roles remain authorized, tested, traceable, and aligned with enterprise policy.
 
@@ -1485,7 +1484,7 @@ A governance process should define:
 * How unsafe behavior is investigated
 * How roles are retired
 
-### Governance Questions
+#### Governance Questions
 
 Before introducing a new role, ask:
 
@@ -1504,13 +1503,13 @@ A role should not be created simply because an additional agent is available.
 
 ---
 
-## Role Testing
+### Role Testing
 
 Roles must be tested as governed engineering assets.
 
 Testing a role means verifying that it behaves correctly across representative and adversarial scenarios.
 
-### Responsibility Tests
+#### Responsibility Tests
 
 Does the role perform all required responsibilities?
 
@@ -1520,7 +1519,7 @@ Example:
 * Does the Evaluator Agent assess every acceptance criterion?
 * Does the Security Reviewer test cross-tenant access?
 
-### Boundary Tests
+#### Boundary Tests
 
 Does the role refuse prohibited actions?
 
@@ -1530,7 +1529,7 @@ Example:
 * Does the Validator Agent refuse to mark failed tests as passed?
 * Does the Developer Agent escalate a public contract change?
 
-### Authority Tests
+#### Authority Tests
 
 Does the role remain within delegated authority?
 
@@ -1539,7 +1538,7 @@ Example:
 * Does the Architect Agent recommend rather than self-approve a breaking public event change when human approval is required?
 * Does the Lead Agent block rather than bypass a critical security gate?
 
-### Output Tests
+#### Output Tests
 
 Does the role produce the required structured output?
 
@@ -1550,7 +1549,7 @@ Example:
 * Are unresolved risks included?
 * Is the role version recorded?
 
-### Adversarial Tests
+#### Adversarial Tests
 
 Can the role resist unsafe or conflicting instructions?
 
@@ -1571,7 +1570,7 @@ escalation:
   - Human waiver required if governance permits one
 ```
 
-### Regression Tests
+#### Regression Tests
 
 When a role definition changes, previously successful tests should be rerun.
 
@@ -1592,253 +1591,9 @@ Role testing may be implemented through:
 
 ---
 
-## Multi-Agent Workflows
-
-A multi-agent workflow coordinates several role-bound agents toward one engineering outcome.
-
-The value does not come from the number of agents. It comes from separation of concerns, explicit evidence, and controlled authority.
-
-### Alpha Car Detailing Fleet Booking Workflow
-
-The corporate fleet booking change may use the following workflow:
-
-1. Lead Agent interprets the task.
-2. Lead Agent performs or requests repository discovery.
-3. Architect Agent reviews service and aggregate boundaries.
-4. Lead Agent creates an approved work plan.
-5. Developer Agent implements the solution.
-6. Reviewer Agent performs an independent code review.
-7. Security Reviewer assesses tenant isolation and authorization.
-8. Validator Agent executes builds, tests, migrations, and analyzers.
-9. Developer Agent remediates confirmed findings.
-10. Reviewer, Security Reviewer, and Validator reassess the changes.
-11. Evaluator Agent checks all acceptance criteria.
-12. Lead Agent prepares the pull request package.
-13. Human approvers resolve escalated decisions.
-14. Authorized humans merge or deploy.
-
-### Workflow State Model
-
-```mermaid
-stateDiagram-v2
-    [*] --> Discovery
-    Discovery --> ArchitectureReview
-    ArchitectureReview --> Planning: Approved
-    ArchitectureReview --> Escalated: Decision required
-
-    Planning --> Implementation
-    Implementation --> IndependentReview
-
-    IndependentReview --> Remediation: Findings
-    IndependentReview --> SecurityReview: No blocking findings
-
-    Remediation --> IndependentReview
-
-    SecurityReview --> Remediation: Security findings
-    SecurityReview --> Validation: Passed
-
-    Validation --> Remediation: Failed
-    Validation --> Evaluation: Passed
-
-    Evaluation --> Remediation: Criteria unmet
-    Evaluation --> PullRequestPreparation: Criteria satisfied
-
-    PullRequestPreparation --> HumanApproval
-    HumanApproval --> Completed: Approved
-    HumanApproval --> Escalated: Rejected or deferred
-
-    Escalated --> Planning: Decision resolved
-    Completed --> [*]
-```
-
-The workflow may be optimized, but required independence and gates must remain intact.
-
-### Parallel Review Pattern
-
-Some activities can run in parallel after implementation.
-
-```mermaid
-flowchart TD
-    A[Developer Agent Completes Implementation] --> B[Reviewer Agent]
-    A --> C[Security Reviewer]
-    A --> D[Validator Agent]
-
-    B --> E[Consolidated Findings]
-    C --> E
-    D --> E
-
-    E --> F{Blocking Findings?}
-    F -->|Yes| G[Developer Remediation]
-    G --> B
-    G --> C
-    G --> D
-
-    F -->|No| H[Evaluator Agent]
-    H --> I[Lead Agent Prepares Pull Request]
-```
-
-Parallel execution reduces cycle time but creates a coordination requirement. The Lead Agent or Harness must consolidate results without suppressing disagreement.
-
----
-
-## Roles Inside an AI Harness
-
-An AI Harness coordinates AI Agents, repository tools, validation commands, evidence, workflow state, and governance controls.
-
-The Harness may:
-
-* Load the correct role definition
-* Load repository instructions
-* Load the current prompt
-* Load relevant Steering Notes
-* Select approved skills
-* Restrict accessible paths and tools
-* Execute the AI Agent
-* Capture outputs
-* Validate output schemas
-* Route artifacts to the next role
-* Run deterministic checks
-* Enforce approval gates
-* Record metrics
-* Retain audit history
-* Escalate blocked decisions
-
-The Harness does not replace role definitions.
-
-The Harness answers:
-
-> “How is the workflow executed and controlled?”
-
-The Role answers:
-
-> “What responsibility, perspective, authority, and output does this agent have?”
-
-### Harness Architecture
-
-```mermaid
-flowchart TB
-    U[Human Request] --> P[Task Prompt]
-    P --> H[AI Harness]
-
-    I[Repository Instructions] --> H
-    S[Skills] --> H
-    N[Steering Notes] --> H
-    K[Knowledge Sources] --> H
-    R[Role Definitions] --> H
-
-    H --> L[Lead Agent]
-    L --> A[Architect Agent]
-    A --> D[Developer Agent]
-
-    D --> RV[Reviewer Agent]
-    D --> SR[Security Reviewer]
-    D --> V[Validator Agent]
-
-    RV --> H
-    SR --> H
-    V --> H
-
-    H --> E[Evaluator Agent]
-    E --> PR[Pull Request Package]
-
-    PR --> HA[Human Approval]
-    HA -->|Approved| C[Merge or Release]
-    HA -->|Rejected| H
-    HA -->|More evidence required| H
-
-    H --> M[(Run History and Metrics)]
-```
-
-### Example Harness Directory
-
-```text
-harness/
-├── roles/
-│   ├── lead-agent.md
-│   ├── architect-agent.md
-│   ├── developer-agent.md
-│   ├── reviewer-agent.md
-│   ├── validator-agent.md
-│   ├── evaluator-agent.md
-│   └── security-reviewer.md
-├── prompts/
-│   ├── lead.md
-│   ├── implement.md
-│   ├── review.md
-│   ├── validate.md
-│   └── evaluate.md
-├── schemas/
-│   ├── plan.schema.json
-│   ├── review-report.schema.json
-│   ├── validation-report.schema.json
-│   └── evaluation-report.schema.json
-├── scripts/
-│   ├── lead.ps1
-│   ├── validate.ps1
-│   └── evaluate.ps1
-├── policies/
-│   ├── approval-policy.yaml
-│   ├── escalation-policy.yaml
-│   └── protected-paths.yaml
-└── runs/
-    └── 2026-07-24-fleet-booking/
-        ├── manifest.json
-        ├── plan.md
-        ├── implementation-summary.md
-        ├── review-report.json
-        ├── security-report.json
-        ├── validation-report.json
-        ├── evaluation-report.json
-        └── approval-record.yaml
-```
-
-### Harness Enforcement
-
-A mature Harness should enforce constraints rather than merely describe them.
-
-Examples include:
-
-* Developer Agent receives write access only to approved paths.
-* Reviewer Agent receives read-only repository access.
-* Validator Agent may execute approved commands but cannot modify source files.
-* Evaluator Agent receives final artifacts but cannot redefine acceptance criteria.
-* Security Reviewer can block according to policy but cannot accept residual risk.
-* Public contract changes automatically require architect and human approval.
-* Missing validation evidence prevents completion.
-* Every output records role name, role version, model, inputs, timestamp, and run identifier.
-
-### Example Run Manifest
-
-```yaml
-run_id: fleet-booking-2026-07-24-001
-task: Add corporate fleet booking
-repository_commit: 84d3c1a
-roles:
-  - name: lead-agent
-    version: 1.4.0
-  - name: architect-agent
-    version: 2.1.0
-  - name: developer-agent
-    version: 3.0.2
-  - name: reviewer-agent
-    version: 2.3.0
-  - name: validator-agent
-    version: 1.8.1
-  - name: evaluator-agent
-    version: 1.5.0
-  - name: security-reviewer
-    version: 2.0.0
-human_approval_required:
-  - public-event-schema-change
-  - database-migration
-status: in_progress
-```
-
----
-
 ## Architecture Discussion
 
-## Role Architecture for Alpha Car Detailing
+### Role Architecture for Alpha Car Detailing
 
 The corporate fleet booking capability affects several architectural concerns:
 
@@ -1856,7 +1611,7 @@ The corporate fleet booking capability affects several architectural concerns:
 
 No single role should own every decision.
 
-### Lead Agent
+#### Lead Agent
 
 The Lead Agent coordinates the workflow.
 
@@ -1889,7 +1644,7 @@ It should not:
 * accept human-owned risk
 * merge or deploy without authorization
 
-### Architect Agent
+#### Architect Agent
 
 The Architect Agent evaluates structural decisions.
 
@@ -1913,7 +1668,7 @@ Its output should distinguish:
 * Human approval requirements
 * Deferred decisions
 
-### Developer Agent
+#### Developer Agent
 
 The Developer Agent implements the approved plan.
 
@@ -1940,7 +1695,7 @@ impact: Cannot preserve atomic vehicle authorization and booking creation
 recommendation: Return to Architect Agent for boundary review
 ```
 
-### Reviewer Agent
+#### Reviewer Agent
 
 The Reviewer Agent independently assesses the implementation.
 
@@ -1963,7 +1718,7 @@ For fleet booking, it should inspect:
 
 It should produce findings, not conceal them through direct edits.
 
-### Validator Agent
+#### Validator Agent
 
 The Validator Agent executes objective checks.
 
@@ -1986,7 +1741,7 @@ For fleet booking, validation may include:
 
 The Validator Agent reports evidence. It does not reinterpret failure to help the workflow complete.
 
-### Evaluator Agent
+#### Evaluator Agent
 
 The Evaluator Agent assesses the requested outcome.
 
@@ -2004,9 +1759,9 @@ It should evaluate criteria such as:
 * Required documentation is updated.
 * No unresolved blocking findings remain.
 
-The Evaluator Agent may fail the task even when all code compiles.
+The Evaluator Agent may fail the task even when all code compiles. An `accepted_with_deferred_work` result is legitimate only when the deferred items were excluded from the approved acceptance criteria or were formally re-scoped by an authorized human.
 
-### Security Reviewer
+#### Security Reviewer
 
 The Security Reviewer examines threats and controls.
 
@@ -2030,7 +1785,7 @@ The Security Reviewer may recommend rejection or escalation. It should not accep
 
 ---
 
-## Authority and Responsibility Matrix
+### Authority and Responsibility Matrix
 
 A Responsibility Assignment Matrix can clarify which role owns, contributes to, reviews, or approves each activity.
 
@@ -2060,11 +1815,11 @@ The matrix should reflect actual governance. It should not be copied mechanicall
 
 ---
 
-## Separation of Evaluation and Validation
+### Separation of Evaluation and Validation
 
 Validation and evaluation are frequently confused.
 
-### Validation
+#### Validation
 
 Validation asks:
 
@@ -2079,7 +1834,7 @@ Examples:
 * Did the container image build?
 * Did the architecture tests pass?
 
-### Evaluation
+#### Evaluation
 
 Evaluation asks:
 
@@ -2106,7 +1861,7 @@ Both roles are necessary.
 
 ---
 
-## Separation of Review and Security Review
+### Separation of Review and Security Review
 
 General code review and security review also overlap without being interchangeable.
 
@@ -2135,7 +1890,7 @@ A general reviewer may discover a security issue. A security reviewer may discov
 
 ---
 
-## Role-Based Workflow for Corporate Fleet Booking
+### Role-Based Workflow for Corporate Fleet Booking
 
 ```mermaid
 sequenceDiagram
@@ -2187,9 +1942,253 @@ This sequence separates creation, review, evidence, evaluation, and approval.
 
 ---
 
+### Multi-Agent Workflows
+
+A multi-agent workflow coordinates several role-bound agents toward one engineering outcome.
+
+The value does not come from the number of agents. It comes from separation of concerns, explicit evidence, and controlled authority.
+
+#### Alpha Car Detailing Fleet Booking Workflow
+
+The corporate fleet booking change may use the following workflow:
+
+1. Lead Agent interprets the task.
+2. Lead Agent performs or requests repository discovery.
+3. Architect Agent reviews service and aggregate boundaries.
+4. Lead Agent creates an approved work plan.
+5. Developer Agent implements the solution.
+6. Reviewer Agent performs an independent code review.
+7. Security Reviewer assesses tenant isolation and authorization.
+8. Validator Agent executes builds, tests, migrations, and analyzers.
+9. Developer Agent remediates confirmed findings.
+10. Reviewer, Security Reviewer, and Validator reassess the changes.
+11. Evaluator Agent checks all acceptance criteria.
+12. Lead Agent prepares the pull request package.
+13. Human approvers resolve escalated decisions.
+14. Authorized humans merge or deploy.
+
+#### Workflow State Model
+
+```mermaid
+stateDiagram-v2
+    [*] --> Discovery
+    Discovery --> ArchitectureReview
+    ArchitectureReview --> Planning: Approved
+    ArchitectureReview --> Escalated: Decision required
+
+    Planning --> Implementation
+    Implementation --> IndependentReview
+
+    IndependentReview --> Remediation: Findings
+    IndependentReview --> SecurityReview: No blocking findings
+
+    Remediation --> IndependentReview
+
+    SecurityReview --> Remediation: Security findings
+    SecurityReview --> Validation: Passed
+
+    Validation --> Remediation: Failed
+    Validation --> Evaluation: Passed
+
+    Evaluation --> Remediation: Criteria unmet
+    Evaluation --> PullRequestPreparation: Criteria satisfied
+
+    PullRequestPreparation --> HumanApproval
+    HumanApproval --> Completed: Approved
+    HumanApproval --> Escalated: Rejected or deferred
+
+    Escalated --> Planning: Decision resolved
+    Completed --> [*]
+```
+
+The workflow may be optimized, but required independence and gates must remain intact.
+
+#### Parallel Review Pattern
+
+Some activities can run in parallel after implementation.
+
+```mermaid
+flowchart TD
+    A[Developer Agent Completes Implementation] --> B[Reviewer Agent]
+    A --> C[Security Reviewer]
+    A --> D[Validator Agent]
+
+    B --> E[Consolidated Findings]
+    C --> E
+    D --> E
+
+    E --> F{Blocking Findings?}
+    F -->|Yes| G[Developer Remediation]
+    G --> B
+    G --> C
+    G --> D
+
+    F -->|No| H[Evaluator Agent]
+    H --> I[Lead Agent Prepares Pull Request]
+```
+
+Parallel execution reduces cycle time but creates a coordination requirement. The Lead Agent or Harness must consolidate results without suppressing disagreement.
+
+---
+
+### Roles Inside an AI Harness
+
+An AI Harness coordinates AI Agents, repository tools, validation commands, evidence, workflow state, and governance controls.
+
+The Harness may:
+
+* Load the correct role definition
+* Load repository instructions
+* Load the current prompt
+* Load relevant Steering Notes
+* Select approved skills
+* Restrict accessible paths and tools
+* Execute the AI Agent
+* Capture outputs
+* Validate output schemas
+* Route artifacts to the next role
+* Run deterministic checks
+* Enforce approval gates
+* Record metrics
+* Retain audit history
+* Escalate blocked decisions
+
+The Harness does not replace role definitions.
+
+The Harness answers:
+
+> “How is the workflow executed and controlled?”
+
+The Role answers:
+
+> “What responsibility, perspective, authority, and output does this agent have?”
+
+#### Harness Architecture
+
+```mermaid
+flowchart TB
+    U[Human Request] --> P[Task Prompt]
+    P --> H[AI Harness]
+
+    I[Repository Instructions] --> H
+    S[Skills] --> H
+    N[Steering Notes] --> H
+    K[Knowledge Sources] --> H
+    R[Role Definitions] --> H
+
+    H --> L[Lead Agent]
+    L --> A[Architect Agent]
+    A --> D[Developer Agent]
+
+    D --> RV[Reviewer Agent]
+    D --> SR[Security Reviewer]
+    D --> V[Validator Agent]
+
+    RV --> H
+    SR --> H
+    V --> H
+
+    H --> E[Evaluator Agent]
+    E --> PR[Pull Request Package]
+
+    PR --> HA[Human Approval]
+    HA -->|Approved| C[Merge or Release]
+    HA -->|Rejected| H
+    HA -->|More evidence required| H
+
+    H --> M[(Run History and Metrics)]
+```
+
+#### Example Harness Directory
+
+```text
+harness/
+├── roles/
+│   ├── lead-agent.md
+│   ├── architect-agent.md
+│   ├── developer-agent.md
+│   ├── reviewer-agent.md
+│   ├── validator-agent.md
+│   ├── evaluator-agent.md
+│   └── security-reviewer.md
+├── prompts/
+│   ├── lead.md
+│   ├── implement.md
+│   ├── review.md
+│   ├── validate.md
+│   └── evaluate.md
+├── schemas/
+│   ├── plan.schema.json
+│   ├── review-report.schema.json
+│   ├── validation-report.schema.json
+│   └── evaluation-report.schema.json
+├── scripts/
+│   ├── lead.ps1
+│   ├── validate.ps1
+│   └── evaluate.ps1
+├── policies/
+│   ├── approval-policy.yaml
+│   ├── escalation-policy.yaml
+│   └── protected-paths.yaml
+└── runs/
+    └── 2026-07-24-fleet-booking/
+        ├── manifest.json
+        ├── plan.md
+        ├── implementation-summary.md
+        ├── review-report.json
+        ├── security-report.json
+        ├── validation-report.json
+        ├── evaluation-report.json
+        └── approval-record.yaml
+```
+
+#### Harness Enforcement
+
+A mature Harness should enforce constraints rather than merely describe them.
+
+Examples include:
+
+* Developer Agent receives write access only to approved paths.
+* Reviewer Agent receives read-only repository access.
+* Validator Agent may execute approved commands but cannot modify source files.
+* Evaluator Agent receives final artifacts but cannot redefine acceptance criteria.
+* Security Reviewer can block according to policy but cannot accept residual risk.
+* Public contract changes automatically require architect and human approval.
+* Missing validation evidence prevents completion.
+* Every output records role name, role version, model, inputs, timestamp, and run identifier.
+
+#### Example Run Manifest
+
+```yaml
+run_id: fleet-booking-2026-07-24-001
+task: Add corporate fleet booking
+repository_commit: 84d3c1a
+roles:
+  - name: lead-agent
+    version: 1.4.0
+  - name: architect-agent
+    version: 2.1.0
+  - name: developer-agent
+    version: 3.0.2
+  - name: reviewer-agent
+    version: 2.3.0
+  - name: validator-agent
+    version: 1.8.1
+  - name: evaluator-agent
+    version: 1.5.0
+  - name: security-reviewer
+    version: 2.0.0
+human_approval_required:
+  - public-event-schema-change
+  - database-migration
+status: in_progress
+```
+
+---
+
 ## Professional Diagrams
 
-## Role Interaction Model
+### Role Interaction Model
 
 ```mermaid
 flowchart LR
@@ -2231,7 +2230,7 @@ flowchart LR
 
 ---
 
-## Responsibility, Authority, and Evidence Model
+### Responsibility, Authority, and Evidence Model
 
 ```mermaid
 flowchart TB
@@ -2260,7 +2259,7 @@ flowchart TB
 
 ---
 
-## Role Separation and Human Control
+### Role Separation and Human Control
 
 ```mermaid
 flowchart TD
@@ -2286,7 +2285,7 @@ flowchart TD
 
 ---
 
-## Role Output Flow
+### Role Output Flow
 
 ```mermaid
 flowchart LR
@@ -2320,7 +2319,9 @@ This section defines a practical role-based workflow for implementing corporate 
 
 The objective is not to create a large autonomous system immediately. The objective is to establish a controlled workflow in which each AI Agent has a clear responsibility, limited authority, defined inputs, and a reviewable output.
 
-The example assumes the following repository structure:
+The repository layout, identifiers, test counts, review findings, and run reports in this walkthrough are illustrative. They are not verified outputs from an executed Alpha Car Detailing build. The snippets demonstrate roles and handoffs; the application types are abbreviated to focus on responsibilities rather than provide a standalone compilable solution.
+
+The example assumes the following repository structure. Source paths such as `src/Booking/**` are relative to the `alpha-car-detailing/` application workspace; paths under `harness/` and `prompts/` are resolved from the handbook repository root. A real Harness must normalize these roots before enforcing path restrictions.
 
 ```text
 Enterprise-AI-Engineering-Handbook/
@@ -2361,7 +2362,7 @@ Human approval remains outside the AI role set.
 
 ---
 
-## Define the Task Prompt
+### Define the Task Prompt
 
 The task prompt establishes the requested engineering outcome.
 
@@ -2449,7 +2450,7 @@ This prompt defines the task. It does not define how each role participates.
 
 ---
 
-## Define the Lead Agent Role
+### Define the Lead Agent Role
 
 Create:
 
@@ -2532,7 +2533,7 @@ The Lead Agent coordinates the workflow but does not own every technical decisio
 
 ---
 
-## Define the Architect Agent Role
+### Define the Architect Agent Role
 
 Create:
 
@@ -2597,7 +2598,7 @@ The Architect Agent must not:
 
 ---
 
-## Define the Developer Agent Role
+### Define the Developer Agent Role
 
 Create:
 
@@ -2669,7 +2670,7 @@ The Developer Agent must not:
 
 ---
 
-## Define the Reviewer Agent Role
+### Define the Reviewer Agent Role
 
 Create:
 
@@ -2740,7 +2741,7 @@ The Reviewer Agent must not:
 
 ---
 
-## Define the Validator Agent Role
+### Define the Validator Agent Role
 
 Create:
 
@@ -2808,7 +2809,7 @@ The Validator Agent must not:
 
 ---
 
-## Define the Evaluator Agent Role
+### Define the Evaluator Agent Role
 
 Create:
 
@@ -2874,7 +2875,7 @@ The Evaluator Agent must not:
 
 ---
 
-## Define the Security Reviewer Role
+### Define the Security Reviewer Role
 
 Create:
 
@@ -2942,7 +2943,7 @@ The Security Reviewer must not:
 
 ---
 
-## Create the Architecture Assessment
+### Create the Architecture Assessment
 
 The Lead Agent sends the prompt and repository evidence to the Architect Agent.
 
@@ -2990,7 +2991,7 @@ The aggregate contains:
 - Authorized driver assignments
 - Audit information
 
-`FleetVehicle` is an entity within the `CorporateFleet` aggregate.
+`FleetVehicle` is an entity within the `CorporateFleet` aggregate. The persistence model must also enforce the business invariant that a vehicle cannot be active in multiple corporate accounts; an aggregate-local duplicate check is insufficient across fleets.
 
 A generated service appointment remains represented by the existing
 `Booking` aggregate.
@@ -3003,7 +3004,7 @@ The schedule does not contain generated bookings as child entities.
 The application layer creates individual Booking aggregates according to
 the recurrence policy.
 
-This avoids an unbounded aggregate.
+This avoids an unbounded aggregate. Generation must be idempotent so that job retries or overlapping scheduler runs cannot create duplicate bookings. Recurrence rules must also define time-zone and daylight-saving behavior.
 
 ## Authorization
 
@@ -3058,7 +3059,7 @@ This artifact becomes an authoritative input to implementation.
 
 ---
 
-## Create the Lead Agent Work Plan
+### Create the Lead Agent Work Plan
 
 The Lead Agent converts the approved architecture into bounded work items.
 
@@ -3157,7 +3158,7 @@ The plan defines ownership and dependencies without dictating every implementati
 
 ---
 
-## Example Domain Implementation
+### Example Domain Implementation
 
 The Developer Agent may introduce a `CorporateFleet` aggregate.
 
@@ -3284,20 +3285,19 @@ The implementation should be evaluated against the architecture assessment rathe
 
 ---
 
-## Example Application Command
+### Example Application Command
 
 ```csharp
 public sealed record CreateFleetBookingCommand(
     Guid CorporateFleetId,
     Guid FleetVehicleId,
-    Guid? CorporateDriverId,
     Guid StationId,
     DateTimeOffset AppointmentStartUtc,
     IReadOnlyCollection<Guid> ServiceIds)
     : ICommand<CreateFleetBookingResult>;
 ```
 
-The command handler must not trust the corporate account ID from the request body. It should use authenticated tenant context.
+The command handler must not trust tenant or driver identifiers from the request body. It derives tenant and actor identity from the authenticated context. In production, the tenant provider must itself be bound to a verified corporate membership, not merely a client-selected tenant claim.
 
 ```csharp
 public sealed class CreateFleetBookingCommandHandler
@@ -3335,6 +3335,12 @@ public sealed class CreateFleetBookingCommandHandler
     {
         var corporateAccountId =
             CorporateAccountId.From(_currentTenant.TenantId);
+
+        if (!_currentUser.IsMemberOf(corporateAccountId))
+        {
+            return Result.Failure<CreateFleetBookingResult>(
+                FleetBookingErrors.UserNotAuthorized);
+        }
 
         var fleet = await _fleetRepository.GetAsync(
             CorporateFleetId.From(command.CorporateFleetId),
@@ -3406,11 +3412,11 @@ public sealed class CreateFleetBookingCommandHandler
 }
 ```
 
-The Developer Agent should explain how the existing unit-of-work and outbox behavior guarantee that domain events are persisted atomically.
+This sample assumes that `ICurrentUser.IsMemberOf` checks verified tenant membership and that the existing unit of work atomically stores the booking and outbox record. Neither property follows merely from these interfaces; both require implementation and integration tests. Global vehicle ownership, concurrent registrations, recurrence idempotency, daylight-saving transitions, and schedule retry semantics also require explicit database constraints or workflow-level checks. The Developer Agent must document these assumptions rather than treating the snippet as proof of production readiness.
 
 ---
 
-## Example Reviewer Finding
+### Example Reviewer Finding
 
 The Reviewer Agent inspects the command handler and repository implementation.
 
@@ -3461,7 +3467,7 @@ The Reviewer Agent should not directly edit the repository and then report no fi
 
 ---
 
-## Example Security Finding
+### Example Security Finding
 
 The Security Reviewer may expand the same defect into an abuse scenario:
 
@@ -3500,7 +3506,7 @@ The security report expresses impact in threat terms rather than only code-quali
 
 ---
 
-## Example Validator Report
+### Example Validator Report
 
 The Validator Agent runs the approved commands.
 
@@ -3582,7 +3588,7 @@ The Validator Agent reports failure even though most checks passed.
 
 ---
 
-## Example Remediation Handoff
+### Example Remediation Handoff
 
 The Lead Agent consolidates the review, security, and validation results.
 
@@ -3619,7 +3625,7 @@ The handoff preserves the original findings and prevents the Developer Agent fro
 
 ---
 
-## Example Corrected Repository Query
+### Example Corrected Repository Query
 
 ```csharp
 public Task<CorporateFleet?> GetAsync(
@@ -3638,7 +3644,7 @@ public Task<CorporateFleet?> GetAsync(
 }
 ```
 
-The Developer Agent then records:
+The Developer Agent should record the intended remediation and the actual files changed. The following illustrates the report after the corrections are implemented:
 
 ```yaml
 remediations:
@@ -3660,9 +3666,9 @@ The Reviewer, Security Reviewer, and Validator then reassess the corrected imple
 
 ---
 
-## Example Acceptance Evaluation
+### Example Acceptance Evaluation
 
-After all required reviews and validation checks pass, the Evaluator Agent assesses each criterion.
+After all required reviews and validation checks pass, the Evaluator Agent assesses each criterion. The illustrative report below assumes that monthly invoicing and production-scale load testing were explicitly excluded from this iteration’s approved scope; migration approval is still pending and therefore the change is not ready to merge.
 
 ```yaml
 role: evaluator-agent
@@ -3718,10 +3724,10 @@ criteria:
       - CorporatePlanAuthorizationTests
 
   - id: AC-07
-    description: Events use the transactional outbox
+    description: The existing BookingCreated contract is preserved and outbox-persisted
     result: passed
     evidence:
-      - Booking domain event
+      - BookingCreated contract comparison
       - OutboxSaveChangesInterceptor
       - OutboxIntegrationTests
 
@@ -3755,11 +3761,11 @@ human_approval_required:
   - Review and approve database migration
 ```
 
-The evaluator does not merge the change. It determines whether the requested outcome is supported by evidence.
+The evaluator does not merge the change or grant migration approval. Its status is a technical acceptance assessment, not authorization to merge; pending human approvals remain binding.
 
 ---
 
-## Example Pull Request Package
+### Example Pull Request Package
 
 The Lead Agent prepares a pull request description.
 
@@ -3829,107 +3835,83 @@ This package gives human reviewers a structured summary without hiding the evide
 
 ---
 
-## Minimal PowerShell Harness Flow
+### Minimal PowerShell Gate Example
 
-A simple harness can orchestrate role prompts and deterministic validation.
+The Harness should treat role invocations, independent reviews, and executable validation as separate stages. A production orchestrator must supply the complete input package to each role, enforce tool permissions, check process exit codes, and retain versioned artifacts. Merely piping the output of one AI command into another does not establish those controls.
+
+The following example illustrates a **fail-closed readiness gate** after the roles have produced their reports. It does not execute AI Agents, prove the authenticity of the reports, or replace a CI policy engine. The Harness must generate and protect validation evidence independently of the Developer Agent.
 
 ```powershell
 param(
     [Parameter(Mandatory = $true)]
-    [string]$TaskPrompt,
-
-    [Parameter(Mandatory = $true)]
     [string]$RunId
 )
 
-$ErrorActionPreference = "Stop"
+$ErrorActionPreference = 'Stop'
+$runDirectory = Join-Path 'harness/runs' $RunId
 
-$RunDirectory = Join-Path "harness/runs" $RunId
-
-New-Item -ItemType Directory -Force -Path $RunDirectory | Out-Null
-
-function Invoke-Role {
-    param(
-        [Parameter(Mandatory = $true)]
-        [string]$RoleFile,
-
-        [Parameter(Mandatory = $true)]
-        [string]$InputFile,
-
-        [Parameter(Mandatory = $true)]
-        [string]$OutputFile
-    )
-
-    $role = Get-Content $RoleFile -Raw
-    $input = Get-Content $InputFile -Raw
-
-    $combinedPrompt = @"
-$role
-
-# Assigned Input
-
-$input
-"@
-
-    # Replace this command with the approved AI coding platform invocation.
-    $combinedPrompt |
-        claude --print |
-        Set-Content -Path $OutputFile
+function Read-Report([string]$name) {
+    $path = Join-Path $runDirectory $name
+    if (-not (Test-Path -LiteralPath $path)) {
+        throw "Missing required report: $name"
+    }
+    Get-Content -LiteralPath $path -Raw | ConvertFrom-Json
 }
 
-Invoke-Role `
-    -RoleFile "harness/roles/lead-agent.md" `
-    -InputFile $TaskPrompt `
-    -OutputFile "$RunDirectory/lead-plan.md"
+$review = Read-Report 'review-report.json'
+$security = Read-Report 'security-report.json'
+$validation = Read-Report 'validation-report.json'
+$evaluation = Read-Report 'evaluation-report.json'
 
-Invoke-Role `
-    -RoleFile "harness/roles/architect-agent.md" `
-    -InputFile "$RunDirectory/lead-plan.md" `
-    -OutputFile "$RunDirectory/architecture-assessment.md"
+$blockingSeverities = @('critical', 'high')
+foreach ($report in @($review, $security)) {
+    $openBlockers = @($report.findings | Where-Object {
+        $_.severity -in $blockingSeverities -and $_.status -ne 'resolved'
+    })
+    if ($openBlockers.Count -gt 0) {
+        throw 'Unresolved blocking review or security findings.'
+    }
+}
 
-Invoke-Role `
-    -RoleFile "harness/roles/developer-agent.md" `
-    -InputFile "$RunDirectory/architecture-assessment.md" `
-    -OutputFile "$RunDirectory/implementation-summary.md"
+if ($review.status -ne 'approved' -or $security.status -ne 'passed') {
+    throw 'Independent review or security approval is incomplete.'
+}
 
-Invoke-Role `
-    -RoleFile "harness/roles/reviewer-agent.md" `
-    -InputFile "$RunDirectory/implementation-summary.md" `
-    -OutputFile "$RunDirectory/review-report.md"
+$requiredChecks = @(
+    'dotnet-restore', 'dotnet-build', 'unit-tests',
+    'integration-tests', 'architecture-tests',
+    'migration-apply', 'migration-rollback', 'event-serialization',
+    'formatting', 'static-analysis'
+)
 
-Invoke-Role `
-    -RoleFile "harness/roles/security-reviewer.md" `
-    -InputFile "$RunDirectory/implementation-summary.md" `
-    -OutputFile "$RunDirectory/security-report.md"
+foreach ($name in $requiredChecks) {
+    $matching = @($validation.checks | Where-Object { $_.name -eq $name })
+    if ($matching.Count -ne 1 -or $matching[0].result -ne 'passed') {
+        throw "Required validation check is missing or not passed: $name"
+    }
+}
 
-& "harness/scripts/validate.ps1" `
-    -RunId $RunId `
-    -OutputPath "$RunDirectory/validation-report.json"
+if ($validation.status -ne 'passed') {
+    throw 'Validation has not passed.'
+}
 
-Invoke-Role `
-    -RoleFile "harness/roles/evaluator-agent.md" `
-    -InputFile $TaskPrompt `
-    -OutputFile "$RunDirectory/evaluation-report.md"
+if ($evaluation.status -notin @('accepted', 'accepted_with_deferred_work')) {
+    throw 'Acceptance evaluation has not passed.'
+}
+
+if (@($evaluation.human_approval_required).Count -gt 0) {
+    Write-Output 'Technical gates passed; awaiting required human decisions.'
+    exit 2
+}
+
+Write-Output 'Technical gates passed; ready for the governed pull request process.'
 ```
 
-This script demonstrates sequencing, but a production Harness requires stronger controls.
-
-It should also:
-
-* Build role-specific input packages.
-* Validate output schemas.
-* Restrict tool and file access.
-* inspect exit codes.
-* Stop on required gate failure.
-* Route remediation loops.
-* record model and role versions.
-* preserve the Git commit used by each role.
-* distinguish generated claims from deterministic evidence.
-* require explicit human approval for protected actions.
+In a real implementation, all statuses should be validated against versioned JSON schemas; the originating run, source commit, and evidence provenance should be checked; and required human approval should be resolved through an authenticated approval system. A human-owned exception must be represented explicitly rather than changing a failed check to `passed`.
 
 ---
 
-## Role Output Schema
+### Role Output Schema
 
 Structured role outputs improve automation.
 
@@ -3965,7 +3947,7 @@ This does not prove that the findings are correct, but it ensures that the role 
 
 ---
 
-## Role Gate Policy
+### Role Gate Policy
 
 A simple gate policy may be stored in:
 
@@ -4031,7 +4013,7 @@ Claude Code can be used as the primary platform for the role-based workflow beca
 
 The enterprise principles remain independent of Claude.
 
-## Claude Repository Instructions
+### Claude Repository Instructions
 
 The Alpha Car Detailing repository may include a `CLAUDE.md` file containing persistent standards.
 
@@ -4073,7 +4055,7 @@ The repository instructions apply to every role.
 
 ---
 
-## Claude Lead Agent Invocation
+### Claude Lead Agent Invocation
 
 A Lead Agent prompt may be constructed as:
 
@@ -4115,7 +4097,7 @@ The final prohibitions are important. Without them, Claude may attempt to be hel
 
 ---
 
-## Claude Architect Agent Invocation
+### Claude Architect Agent Invocation
 
 ```text
 Read:
@@ -4159,7 +4141,7 @@ harness/runs/fleet-booking-001/architecture-assessment.md
 
 ---
 
-## Claude Developer Agent Invocation
+### Claude Developer Agent Invocation
 
 ```text
 Read:
@@ -4210,7 +4192,7 @@ Claude can perform the implementation, but the prompt explicitly prevents it fro
 
 ---
 
-## Claude Reviewer Agent Invocation
+### Claude Reviewer Agent Invocation
 
 The Reviewer Agent should receive a fresh context where practical.
 
@@ -4264,7 +4246,7 @@ A fresh context reduces contamination from the Developer Agent’s earlier reaso
 
 ---
 
-## Claude Security Reviewer Invocation
+### Claude Security Reviewer Invocation
 
 ```text
 Read:
@@ -4310,61 +4292,67 @@ Produce a structured security report with:
 
 ---
 
-## Claude Validator Agent Invocation
+### Claude Validator Agent Invocation
 
-Deterministic validation should preferably be executed by scripts rather than delegated entirely to a language model.
+Deterministic validation should be executed by trusted scripts or CI rather than delegated entirely to a language model. Claude may help select checks, explain failures, and organize the report, but it must not decide that a failed command succeeded.
 
-Claude may coordinate or interpret the script output, but the command execution and exit codes should remain authoritative.
+The following PowerShell sketch demonstrates exit-code capture for a small subset of validation. It intentionally marks all other required checks as `not_run`, so a downstream gate cannot mistake partial validation for completion.
 
 ```powershell
 $checks = @(
-    @{
-        Name = "restore"
-        Command = "dotnet restore AlphaCarDetailing.sln"
-    },
-    @{
-        Name = "build"
-        Command = "dotnet build AlphaCarDetailing.sln --no-restore"
-    },
-    @{
-        Name = "unit-tests"
-        Command = "dotnet test tests/Booking.UnitTests --no-build"
-    },
-    @{
-        Name = "integration-tests"
-        Command = "dotnet test tests/Booking.IntegrationTests --no-build"
-    },
-    @{
-        Name = "architecture-tests"
-        Command = "dotnet test tests/ArchitectureTests --no-build"
-    }
+    @{ Name = 'dotnet-restore'; Args = @('restore', 'AlphaCarDetailing.sln') },
+    @{ Name = 'dotnet-build'; Args = @('build', 'AlphaCarDetailing.sln', '--no-restore') },
+    @{ Name = 'unit-tests'; Args = @('test', 'tests/Booking.UnitTests/Booking.UnitTests.csproj', '--no-build') },
+    @{ Name = 'integration-tests'; Args = @('test', 'tests/Booking.IntegrationTests/Booking.IntegrationTests.csproj', '--no-build') },
+    @{ Name = 'architecture-tests'; Args = @('test', 'tests/ArchitectureTests/ArchitectureTests.csproj', '--no-build') }
 )
 
-$results = foreach ($check in $checks) {
-    Invoke-Expression $check.Command
+$results = @(foreach ($check in $checks) {
+    & dotnet @($check.Args)
     $exitCode = $LASTEXITCODE
-
     [PSCustomObject]@{
-        Name = $check.Name
-        Command = $check.Command
-        Result = if ($exitCode -eq 0) { "passed" } else { "failed" }
-        ExitCode = $exitCode
+        name = $check.Name
+        command = 'dotnet ' + ($check.Args -join ' ')
+        result = if ($exitCode -eq 0) { 'passed' } else { 'failed' }
+        exitCode = $exitCode
+    }
+    if ($exitCode -ne 0) { break }
+})
+
+foreach ($name in @('migration-apply', 'migration-rollback', 'event-serialization', 'formatting', 'static-analysis')) {
+    $results += [PSCustomObject]@{
+        name = $name
+        result = 'not_run'
+        reason = 'Separate controlled check required'
     }
 }
 
-$results | ConvertTo-Json -Depth 10 |
-    Set-Content "harness/runs/fleet-booking-001/validation-report.json"
-
-if ($results.Result -contains "failed") {
-    exit 1
+$status = if (@($results | Where-Object { $_.result -eq 'failed' }).Count -gt 0) {
+    'failed'
+} elseif (@($results | Where-Object { $_.result -ne 'passed' }).Count -gt 0) {
+    'incomplete'
+} else {
+    'passed'
 }
+
+$report = [PSCustomObject]@{
+    status = $status
+    checks = @($results)
+}
+
+$runDirectory = 'harness/runs/fleet-booking-001'
+New-Item -ItemType Directory -Force -Path $runDirectory | Out-Null
+$report | ConvertTo-Json -Depth 10 |
+    Set-Content (Join-Path $runDirectory 'validation-report.json')
+
+if ($status -ne 'passed') { exit 1 }
 ```
 
-Claude can then act as the Validator Agent to organize the evidence, provided it may not alter the underlying results.
+This is a teaching sketch, not the complete required validation suite. Production scripts must run migrations only against designated disposable environments, capture full logs and test-result files, run the additional required checks, validate the report schema, and produce tamper-evident evidence tied to the repository commit.
 
 ---
 
-## Claude Evaluator Agent Invocation
+### Claude Evaluator Agent Invocation
 
 ```text
 Read:
@@ -4403,7 +4391,7 @@ Produce the final evaluation report.
 
 ---
 
-## Claude Commands and Role Entry Points
+### Claude Commands and Role Entry Points
 
 A repository may create role-oriented Claude commands.
 
@@ -4438,11 +4426,26 @@ Do not modify files.
 Produce a structured review report and save it under the active harness run.
 ```
 
-Commands provide convenient entry points. They do not replace the governed role definitions.
+Commands provide convenient entry points. They do not replace governed role definitions or tool-level restrictions. In current Claude Code releases, reusable skills under `.claude/skills/<name>/SKILL.md` are the recommended mechanism; `.claude/commands/` remains a compatibility path.
 
 ---
 
-## Claude Role Isolation
+### Claude Code Subagents and Governed Roles
+
+Claude Code also supports custom subagents defined under `.claude/agents/`. A subagent may have a separate context and configured tool access, making it a more natural runtime adapter for independent review than asking an implementation session to change its persona.
+
+```text
+.claude/agents/
+├── architect.md
+├── developer.md
+├── reviewer.md
+├── validator.md
+└── security-reviewer.md
+```
+
+The subagent definition can reference the canonical role in `harness/roles/`. The Harness must still verify the effective tool permissions, input package, role version, and output artifact. A role file alone is not an operating-system permission boundary.
+
+### Claude Role Isolation
 
 Claude-first workflows should consider three levels of role isolation.
 
@@ -4499,7 +4502,7 @@ The important distinction is not whether Copilot supports a feature with the sam
 * Deterministic validation
 * Human approval
 
-## Repository Instructions
+### Repository Instructions
 
 GitHub Copilot repositories commonly use:
 
@@ -4528,7 +4531,7 @@ The instruction file defines standards. It should not contain every task or role
 
 ---
 
-## Prompt Files
+### Prompt Files
 
 The repository may maintain reusable prompt files under:
 
@@ -4566,7 +4569,22 @@ This creates role-oriented invocation without redefining the role in every promp
 
 ---
 
-## Interactive Copilot Workflow
+### Copilot Custom Agents
+
+Where supported, GitHub Copilot custom agent profiles can be stored under `.github/agents/`, in addition to the reusable prompt files in `.github/prompts/`.
+
+```text
+.github/
+├── copilot-instructions.md
+├── prompts/
+│   └── code-review.prompt.md
+└── agents/
+    └── reviewer.agent.md
+```
+
+A custom agent profile can describe specialist behavior and available tools. Its role-specific instructions should align with the canonical governed role; tool permissions and approval gates must be verified for the actual Copilot execution surface. The availability and enforcement of agent controls depend on the product surface and configuration.
+
+### Interactive Copilot Workflow
 
 A developer may use Copilot Chat to execute individual role activities:
 
@@ -4587,7 +4605,7 @@ This can be appropriate before introducing a full Harness.
 
 ---
 
-## Copilot Reviewer Independence
+### Copilot Reviewer Independence
 
 A review performed in the same conversation immediately after implementation may inherit the implementation’s assumptions.
 
@@ -4622,7 +4640,7 @@ Do not modify the code.
 
 ---
 
-## Copilot and Deterministic Validation
+### Copilot and Deterministic Validation
 
 Copilot may suggest commands or help interpret output, but validation evidence should come from:
 
@@ -4641,7 +4659,7 @@ The Harness or CI system should preserve actual output.
 
 ---
 
-## Copilot Pull Request Review
+### Copilot Pull Request Review
 
 Copilot can assist with pull request summaries and code review, but organizations should still define:
 
@@ -4656,12 +4674,12 @@ The presence of an automated pull request review does not remove the need for ro
 
 ---
 
-## Claude and Copilot Role Comparison
+### Claude and Copilot Role Comparison
 
 | Concern                        | Claude Code                            | GitHub Copilot                         |
 | ------------------------------ | -------------------------------------- | -------------------------------------- |
 | Persistent repository guidance | `CLAUDE.md`                            | `.github/copilot-instructions.md`      |
-| Reusable role prompts          | Claude commands or Harness files       | Prompt files and chat entry points     |
+| Reusable role entry points    | Skills, subagents, or Harness adapters | Prompt files, custom agents, or Harness adapters |
 | Repository modification        | Agent-driven repository workflow       | Interactive or agent-oriented workflow |
 | Separate role sessions         | New Claude sessions or Harness workers | Separate chat or agent sessions        |
 | Deterministic validation       | Shell or Harness scripts               | Terminal, CI, or workflow scripts      |
@@ -4679,7 +4697,7 @@ OpenAI Codex can also participate in role-based software engineering workflows.
 
 As with Claude and Copilot, the central concern is not the platform name. It is whether the implementation preserves responsibility separation, evidence, authority, and governance.
 
-## Repository Guidance
+### Repository Guidance
 
 A repository may use an `AGENTS.md` file to provide persistent instructions for Codex-compatible workflows.
 
@@ -4708,7 +4726,7 @@ The same vendor-neutral role files under `harness/roles/` can be used.
 
 ---
 
-## Codex Developer Task
+### Codex Developer Task
 
 A Codex implementation task may include:
 
@@ -4751,7 +4769,7 @@ The role boundary should remain explicit even when Codex is capable of planning,
 
 ---
 
-## Codex Review Task
+### Codex Review Task
 
 A separate Codex execution may perform review:
 
@@ -4790,7 +4808,7 @@ The review should run with read-only repository permissions where possible.
 
 ---
 
-## Codex in Automated Harnesses
+### Codex in Automated Harnesses
 
 Codex can be called by a Harness as one execution engine among several.
 
@@ -4838,7 +4856,7 @@ An AI Agent may summarize the results, but it should not replace them.
 
 ---
 
-## Cross-Platform Role Portability
+### Cross-Platform Role Portability
 
 The most maintainable approach is to separate role definitions from platform-specific invocation.
 
@@ -4880,7 +4898,7 @@ This separation protects the organization from unnecessary platform lock-in.
 
 ---
 
-## Platform Comparison
+### Platform Comparison
 
 | Capability                   | Claude Code                      | GitHub Copilot                    | OpenAI Codex                       |
 | ---------------------------- | -------------------------------- | --------------------------------- | ---------------------------------- |
@@ -5081,6 +5099,7 @@ Useful states include:
 * `changes_required`
 * `insufficient_evidence`
 * `not_run`
+* `incomplete`
 * `skipped`
 * `escalated`
 * `approved_with_constraints`
@@ -5285,7 +5304,7 @@ Specific approval makes accountability clear.
 
 ## Anti-patterns
 
-## One Agent Performing Every Role
+### One Agent Performing Every Role
 
 This is the most common role anti-pattern.
 
@@ -5313,7 +5332,7 @@ It is weak because:
 
 A single engine may technically execute several roles, but each role should use a distinct context, input package, permission set, and output.
 
-## Unclear Authority
+### Unclear Authority
 
 A role is told to “make the final decision” without defining which decisions it may make.
 
@@ -5329,7 +5348,7 @@ Authority must be defined by decision category.
 
 A Reviewer Agent may reject a change because of unresolved blocking defects. That does not mean it may approve a compliance waiver.
 
-## Overlapping Responsibilities
+### Overlapping Responsibilities
 
 Several agents are asked to “review everything.”
 
@@ -5351,7 +5370,7 @@ For example:
 * Validator Agent: executable evidence
 * Evaluator Agent: acceptance outcomes
 
-## Missing Handoffs
+### Missing Handoffs
 
 The Developer Agent completes implementation, but the Reviewer Agent receives only a short summary.
 
@@ -5368,7 +5387,7 @@ The reviewer cannot perform a reliable review.
 
 Every handoff should include the evidence needed by the next role.
 
-## Reviewer Modifying Its Own Findings
+### Reviewer Modifying Its Own Findings
 
 The Reviewer Agent identifies a defect, edits the code, and then reports that the review passed.
 
@@ -5386,7 +5405,7 @@ Reviewer verifies
 
 The original finding remains in the record.
 
-## Validator Approving Failed Tests
+### Validator Approving Failed Tests
 
 A Validator Agent runs 200 tests. Two fail.
 
@@ -5402,7 +5421,7 @@ Validation status should follow gate policy, not informal percentages.
 
 A mandatory test failure means validation failed or requires formal exception handling.
 
-## Evaluator Checking Only Code Generation
+### Evaluator Checking Only Code Generation
 
 The Evaluator Agent checks whether the expected classes and endpoints exist.
 
@@ -5421,7 +5440,7 @@ This turns evaluation into file inspection.
 
 The Evaluator Agent must assess the complete requested outcome.
 
-## Missing Escalation Rules
+### Missing Escalation Rules
 
 Agents encounter conflicting instructions or uncertain architecture but continue by making assumptions.
 
@@ -5429,7 +5448,7 @@ This creates hidden decisions.
 
 Role definitions should identify escalation conditions and expected escalation outputs.
 
-## Allowing Agents to Approve High-Risk Changes
+### Allowing Agents to Approve High-Risk Changes
 
 An AI Agent may provide useful analysis, but some decisions should remain human-owned.
 
@@ -5444,7 +5463,7 @@ High-risk examples include:
 
 The AI Agent may recommend. It should not receive implied authority through vague wording.
 
-## Treating Role Names as Substitutes for Responsibilities
+### Treating Role Names as Substitutes for Responsibilities
 
 The prompt says:
 
@@ -5458,7 +5477,7 @@ The role names become decorative personas.
 
 A valid role definition must describe observable behavior.
 
-## Role Inflation
+### Role Inflation
 
 The workflow creates agents such as:
 
@@ -5472,7 +5491,7 @@ The roles do not add distinct authority or evidence.
 
 This increases cost and coordination complexity without improving quality.
 
-## Permanent Role Rules Hidden in Task Prompts
+### Permanent Role Rules Hidden in Task Prompts
 
 A critical boundary such as:
 
@@ -5486,7 +5505,7 @@ Future prompts omit it.
 
 Permanent role behavior belongs in the versioned role definition or Harness policy.
 
-## Silent Role Switching
+### Silent Role Switching
 
 The Developer Agent encounters an architecture question and starts acting as the Architect Agent without recording the transition.
 
@@ -5494,7 +5513,7 @@ The same session then approves its own design.
 
 Role switching should be explicit, logged, and subject to authority rules.
 
-## Treating Agent Confidence as Approval Evidence
+### Treating Agent Confidence as Approval Evidence
 
 The role reports:
 
@@ -5511,7 +5530,7 @@ Confidence is not:
 
 Confidence may be included as metadata, but it cannot replace evidence or authority.
 
-## Reviewer Agreement Bias
+### Reviewer Agreement Bias
 
 The Reviewer Agent receives the Developer Agent’s explanation first and is asked to confirm it.
 
@@ -5528,7 +5547,7 @@ Provide the reviewer with primary artifacts first:
 
 The implementation summary can be supplementary.
 
-## Unbounded Lead Agent
+### Unbounded Lead Agent
 
 The Lead Agent is allowed to override every role to keep delivery moving.
 
@@ -5536,7 +5555,7 @@ This makes all other roles advisory.
 
 The Lead Agent should coordinate workflow, not become an unlimited approval authority.
 
-## Role Output as Unstructured Conversation
+### Role Output as Unstructured Conversation
 
 Review findings, validation results, and approvals exist only in chat history.
 
@@ -5552,7 +5571,7 @@ This makes them difficult to:
 
 Important outputs should be stored as structured artifacts.
 
-## Human Approval Without Context
+### Human Approval Without Context
 
 A human is asked:
 
@@ -5583,7 +5602,7 @@ Human approval is meaningful only when informed.
 
 A role is not only a way to improve prompt quality.
 
-It is a control boundary.
+It defines a control boundary; effective enforcement requires the Harness or execution environment to implement that boundary.
 
 It limits:
 
@@ -6268,6 +6287,16 @@ The following subjects provide useful foundations for deeper study:
 * AI auditability
 * Adversarial prompt testing
 
+### Platform Documentation
+
+The platform adapters in this chapter should be checked against official documentation before implementation because file conventions, permissions, and execution surfaces evolve.
+
+- [Anthropic — Claude Code power-user guidance on skills and subagents](https://support.claude.com/en/articles/14554000-claude-code-power-user-tips)
+- [Anthropic — Steering Claude Code with skills, hooks, and subagents](https://claude.com/resources/articles/steering-claude-code-skills-hooks-rules-subagents-and-more)
+- [GitHub — Copilot customization cheat sheet](https://docs.github.com/en/copilot/reference/customization-cheat-sheet)
+- [GitHub — Prompt files for GitHub Copilot](https://docs.github.com/en/copilot/concepts/prompting-and-context/prompt-files)
+- [OpenAI — Custom code review rules for Codex](https://developers.openai.com/blog/custom-code-review-rules-for-codex)
+
 ### Repository Assets to Study
 
 Readers should examine how the following assets work together:
@@ -6275,7 +6304,11 @@ Readers should examine how the following assets work together:
 ```text
 CLAUDE.md
 AGENTS.md
+.claude/agents/
+.claude/skills/
 .github/copilot-instructions.md
+.github/agents/
+.github/prompts/
 prompts/
 skills/
 harness/roles/
@@ -6296,5 +6329,3 @@ Each asset answers a different engineering question:
 | Steering Notes    | What current priorities and temporary constraints apply? |
 | Knowledge Sources | What evidence and domain context are authoritative?      |
 | Harness           | How is execution coordinated, controlled, and recorded?  |
-
-Chapter 9 status: Complete

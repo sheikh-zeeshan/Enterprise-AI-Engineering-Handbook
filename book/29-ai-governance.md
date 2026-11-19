@@ -1,12 +1,12 @@
-# **Chapter 29 — AI Governance**
+# Chapter 29 — AI Governance
 
 **Part V — Enterprise AI Governance**
 
 *Enterprise AI Engineering Handbook*
 
-## **1. Story-driven Opening**
+## 1. Story-driven Opening
 
-### **When an AI Agent Makes the Right Technical Change but the Wrong Enterprise Decision**
+### When an AI Agent Makes the Right Technical Change but the Wrong Enterprise Decision
 
 The engineering team at Alpha Car Detailing was preparing a significant enhancement to its Corporate Fleet Booking service.
 
@@ -52,7 +52,7 @@ The difference was fundamental.
 
 The Harness had demonstrated that the implementation could work. It had not demonstrated that every underlying decision was authorized.
 
-### **The Governance Gap**
+### The Governance Gap
 
 The incident exposed several weaknesses in Alpha Car Detailing's initial AI Engineering operating model.
 
@@ -78,7 +78,7 @@ Nor was it to introduce manual approval for every generated line of code.
 
 Instead, the organization needed to distinguish between decisions that could be delegated to automated engineering systems and decisions that required explicitly authorized human judgment.
 
-### **From Technical Validation to Enterprise Authorization**
+### From Technical Validation to Enterprise Authorization
 
 The engineering leadership team introduced a governance framework built around six expectations.
 
@@ -112,7 +112,7 @@ The revised operating model established a clear distinction:
 
 This distinction provides the foundation for governing AI-assisted software development at scale.
 
-## **2. Learning Objectives**
+## 2. Learning Objectives
 
 After completing this chapter, the reader should be able to:
 
@@ -129,9 +129,9 @@ After completing this chapter, the reader should be able to:
 11. Apply governance policies to Alpha Car Detailing scenarios involving corporate booking authorization, API contracts, database migrations, new Skills, production deployment, and privileged tools.
 12. Design a governance operating model that remains applicable as coding agents, orchestration tools, and AI platforms evolve.
 
-## **3. Background**
+## 3. Background
 
-### **3.1 Why AI-Assisted Engineering Requires Explicit Governance**
+### 3.1 Why AI-Assisted Engineering Requires Explicit Governance
 
 Enterprise software engineering has always required governance.
 
@@ -169,7 +169,7 @@ A self-improvement mechanism may identify a beneficial modification to a Skill, 
 
 Governance must therefore control not only the final engineering artifacts but also the authority exercised during their creation.
 
-### **3.2 Technical Capability Is Not Organizational Authority**
+### 3.2 Technical Capability Is Not Organizational Authority
 
 A central governance mistake is treating capability as permission.
 
@@ -206,7 +206,7 @@ A Prompt stating that deployment is approved does not prove that an authorized r
 
 Authorization must be established through a trusted mechanism whose identity and scope can be verified independently of the Agent's generated text.
 
-### **3.3 Governance Is Broader Than Security**
+### 3.3 Governance Is Broader Than Security
 
 Security is a major component of AI Governance, but it does not cover the entire discipline.
 
@@ -244,7 +244,7 @@ These dimensions are related, but they should not be collapsed into a single app
 
 Effective governance assigns clear decision-making responsibilities while reusing a shared technical enforcement and evidence infrastructure.
 
-### **3.4 AI Governance Is Not the Same as AI Safety Evaluation**
+### 3.4 AI Governance Is Not the Same as AI Safety Evaluation
 
 A model can be evaluated for harmful behavior, instruction-following reliability, prompt-injection susceptibility, or the quality of its generated outputs.
 
@@ -262,7 +262,7 @@ Enterprise governance establishes who may deploy and operate that system, under 
 
 These are complementary responsibilities.
 
-### **3.5 Governance Across the AI Engineering Lifecycle**
+### 3.5 Governance Across the AI Engineering Lifecycle
 
 Governance begins before the Developer Agent generates code.
 
@@ -297,7 +297,7 @@ A production deployment may require a separate release approval even when the im
 
 The objective is proportional control.
 
-### **3.6 Relationship to Earlier Handbook Concepts**
+### 3.6 Relationship to Earlier Handbook Concepts
 
 The governance model builds upon the engineering components introduced throughout the handbook.
 
@@ -337,7 +337,7 @@ A Harness may identify recurring review findings and propose a new Skill. That p
 
 It becomes a governed Skill only after the appropriate review, approval, versioning, and publication process.
 
-### **3.7 The Enterprise Governance Design Objective**
+### 3.7 The Enterprise Governance Design Objective
 
 The purpose of AI Governance is not to slow AI-assisted development until it resembles a completely manual process.
 
@@ -361,9 +361,9 @@ An effective governance architecture should achieve four outcomes:
 
 These outcomes become the foundation for the governance principles and architecture developed in the following sections.
 
-## **4. Concepts**
+## 4. Concepts
 
-### **4.1 Defining AI Governance**
+### 4.1 Defining AI Governance
 
 AI Governance is the system of organizational responsibilities, policies, decision rights, technical controls, and evidence mechanisms used to direct and oversee the use of AI within an enterprise.
 
@@ -391,7 +391,7 @@ An approval without supporting evidence may become a formality.
 
 An audit trail without trustworthy identity and change information may be insufficient to establish accountability.
 
-### **4.2 Foundational Governance Principles**
+### 4.2 Foundational Governance Principles
 
 Enterprise AI Governance should be grounded in principles that remain valid regardless of the AI provider or coding platform.
 
@@ -416,7 +416,7 @@ For example, strict separation of duties may add delays to small changes. Extens
 
 Governance architecture must resolve these tensions deliberately rather than allowing individual Agents to make unrestricted trade-offs.
 
-### **4.3 Ownership, Responsibility, Accountability, and Authority**
+### 4.3 Ownership, Responsibility, Accountability, and Authority
 
 These terms are related but should not be used interchangeably.
 
@@ -442,7 +442,7 @@ These responsibilities are related but distinct.
 
 An Agent can be assigned an execution responsibility without becoming the accountable organizational authority.
 
-#### **Governance ownership matrix**
+#### Governance ownership matrix
 
 | Asset or decision       | Accountable organizational owner          | AI Agent involvement              | Required control                 |
 | ----------------------- | ----------------------------------------- | --------------------------------- | -------------------------------- |
@@ -465,7 +465,7 @@ However, the consolidation should be explicit and must preserve any mandatory in
 
 A person should not automatically gain permission to override every control merely because they are responsible for several engineering activities.
 
-### **4.4 Authority Boundaries for AI Agents**
+### 4.4 Authority Boundaries for AI Agents
 
 An Agent authority boundary defines what an Agent may do independently, what it may propose, what requires approval, and what is prohibited.
 
@@ -508,7 +508,7 @@ The authority boundary must be enforced outside the Agent's own reasoning.
 
 Otherwise, the same system that is expected to obey a restriction may also be capable of disregarding it.
 
-### **4.5 Risk Classification**
+### 4.5 Risk Classification
 
 Risk classification determines the level of governance scrutiny applied to a proposed activity.
 
@@ -542,19 +542,19 @@ If an R1 refactoring unexpectedly requires modifying authentication middleware, 
 
 A Harness should not continue under the old classification simply because the task began as low risk.
 
-#### **Risk dimensions and escalation**
+#### Risk dimensions and escalation
 
 A risk decision can be represented as:
 
-\\[ R = f(I, E, S, P, C) \\]
+\[ R = f(I, E, S, P, C) \]
 
 Where:
 
-- \\(I\\) represents potential business impact.
-- \\(E\\) represents exposure to sensitive systems or data.
-- \\(S\\) represents scope and propagation.
-- \\(P\\) represents privilege or security significance.
-- \\(C\\) represents the strength of compensating controls and recoverability.
+- \(I\) represents potential business impact.
+- \(E\) represents exposure to sensitive systems or data.
+- \(S\) represents scope and propagation.
+- \(P\) represents privilege or security significance.
+- \(C\) represents the strength of compensating controls and recoverability.
 
 This expression describes the inputs to a policy decision, not a universal numerical formula.
 
@@ -566,7 +566,7 @@ For example:
 
 A weighted average must not allow a critical security condition to be canceled by favorable scores in unrelated categories.
 
-### **4.6 Human Approval and Meaningful Human Oversight**
+### 4.6 Human Approval and Meaningful Human Oversight
 
 Human approval is not merely a button in a workflow.
 
@@ -594,7 +594,7 @@ A production deployment approval should be tied to the deployment artifact, targ
 
 An approval record may contain:
 
-```
+```json
 {
   "approvalId": "APR-2026-0142",
   "changeId": "ACD-CORP-218",
@@ -620,7 +620,7 @@ A production implementation should derive the identity and decision from the org
 
 The Harness must not construct a fabricated approval based on an Agent's statement that approval has been received.
 
-#### **Approval and consent are different concerns**
+#### Approval and consent are different concerns
 
 An Agent requesting tool permission through an interactive interface may receive consent to execute a command.
 
@@ -630,7 +630,7 @@ Allowing an AI Agent to execute a shell command is different from approving a pr
 
 The governance system must distinguish operational tool consent from business, security, architecture, and release authorization.
 
-### **4.7 Instructions Governance**
+### 4.7 Instructions Governance
 
 Instructions define persistent engineering expectations for AI-assisted development.
 
@@ -647,7 +647,7 @@ A modification to an Instruction may have broader consequences than a modificati
 
 For that reason, Instructions should be treated as governed engineering assets.
 
-#### **Ownership and change management**
+#### Ownership and change management
 
 Each governed Instruction should have:
 
@@ -674,7 +674,7 @@ The permitted response is to produce a proposed change with supporting evidence.
 
 The Agent should not directly alter the effective standard merely to complete its current task.
 
-#### **The self-modification problem**
+#### The self-modification problem
 
 Suppose a Developer Agent encounters a validation failure caused by a required architecture check.
 
@@ -690,7 +690,7 @@ Protected Instructions should be versioned, reviewed, and activated only through
 
 The Harness should record the effective Instruction version used for each execution.
 
-### **4.8 Skills Governance**
+### 4.8 Skills Governance
 
 A Skill represents a reusable engineering workflow.
 
@@ -728,7 +728,7 @@ The effective permissions should remain constrained by the current task, Role, a
 
 A Skill that requires privileged operations must declare that requirement so the Harness can reject unauthorized use or route the operation through an approved workflow.
 
-### **4.9 Prompt Governance**
+### 4.9 Prompt Governance
 
 Prompts communicate task-specific requests, but they should not be treated as unrestricted authority.
 
@@ -756,7 +756,7 @@ Prompt-injection defenses must combine careful context handling with external au
 
 No Prompt or model-level instruction hierarchy should be considered a replacement for operating-system, identity, network, or platform security controls.
 
-### **4.10 Role Governance**
+### 4.10 Role Governance
 
 Roles define differentiated responsibilities within the AI Engineering Harness.
 
@@ -791,7 +791,7 @@ A Security Reviewer Agent can identify security concerns and recommend whether a
 
 The formal approval of a high-risk security decision remains with the authorized organizational authority.
 
-### **4.11 Harness Governance**
+### 4.11 Harness Governance
 
 The Harness controls how AI-assisted engineering work is executed.
 
@@ -829,7 +829,7 @@ A practical distinction is between two categories of Harness configuration.
 
 Control configuration must not be freely modifiable by the Agents whose behavior it restricts.
 
-### **4.12 Tool Permissions Governance**
+### 4.12 Tool Permissions Governance
 
 Tool access determines what an AI Agent can actually do.
 
@@ -850,7 +850,7 @@ Tool output should also be treated as evidence of an operation, not as proof tha
 
 An Agent can execute an authorized diagnostic command without receiving authority to perform remediation.
 
-### **4.13 Security, Privacy, and Data Handling**
+### 4.13 Security, Privacy, and Data Handling
 
 AI-assisted engineering often requires access to source code, configuration, logs, documentation, and operational context.
 
@@ -868,7 +868,7 @@ It may not need a real employee's name, email address, or entire booking history
 
 A well-designed workflow should prefer sanitized examples, synthetic data, and minimum necessary context.
 
-#### **Data handling controls**
+#### Data handling controls
 
 The governance model should address:
 
@@ -894,7 +894,7 @@ Recording every raw Prompt, tool response, and environment variable indefinitely
 
 Governance should preserve necessary evidence without indiscriminately collecting sensitive content.
 
-### **4.14 Audit Trails and Traceability**
+### 4.14 Audit Trails and Traceability
 
 An audit trail records events relevant to engineering execution and governance decisions.
 
@@ -924,7 +924,7 @@ Records should distinguish observed facts from Agent-generated interpretations.
 
 For example:
 
-```
+```text
 Observed:
 Integration tests: 184 passed, 2 failed.
 
@@ -944,7 +944,7 @@ Similarly, an Agent should not be permitted to delete or rewrite authoritative e
 
 High-value audit records should be maintained in a controlled system with appropriate access restrictions, retention settings, integrity protections, and independent administration.
 
-### **4.15 Change Approval and Exceptions**
+### 4.15 Change Approval and Exceptions
 
 Governance must distinguish ordinary engineering approvals from exceptions to established standards.
 
@@ -968,7 +968,7 @@ Exceptions should not become an informal mechanism for systematically ignoring s
 
 Recurring exceptions are often evidence that either the implementation practices need improvement or the underlying policy requires formal reassessment.
 
-### **4.16 Model and Provider Governance**
+### 4.16 Model and Provider Governance
 
 Model and provider governance addresses the suitability of the AI systems used by the enterprise.
 
@@ -997,7 +997,7 @@ Those differences affect implementation.
 
 They should not change the underlying requirement that privileged actions remain controlled, policy modifications are governed, and consequential organizational decisions have authorized owners.
 
-### **4.17 Governance Metrics and Reviews**
+### 4.17 Governance Metrics and Reviews
 
 Governance effectiveness must be measured.
 
@@ -1034,9 +1034,9 @@ Governance reviews should therefore combine quantitative evidence with targeted 
 
 The organization should review policies periodically, after material incidents, after significant platform changes, and when changes in the business risk profile warrant reassessment.
 
-## **5. Architecture Discussion**
+## 5. Architecture Discussion
 
-### **5.1 Governance as an Enterprise Control Plane**
+### 5.1 Governance as an Enterprise Control Plane
 
 The governance architecture should be designed as a control plane surrounding the AI Engineering Harness.
 
@@ -1059,7 +1059,7 @@ A more defensible architecture separates:
 
 These functions may be implemented with different technologies, but their responsibilities should remain conceptually distinct.
 
-### **5.2 The Business-to-Evidence Governance Pipeline**
+### 5.2 The Business-to-Evidence Governance Pipeline
 
 The enterprise governance workflow begins with an authorized business goal and ends with an accountable engineering outcome supported by evidence.
 
@@ -1125,7 +1125,7 @@ The governance system preserves evidence and makes it available for subsequent a
 
 Lessons and suggested improvements may inform future revisions of Instructions, Skills, and policies through controlled processes.
 
-### **5.3 Policy Decision and Policy Enforcement**
+### 5.3 Policy Decision and Policy Enforcement
 
 A robust architecture distinguishes the decision about whether an operation is allowed from the mechanism that prevents an unauthorized operation.
 
@@ -1147,7 +1147,7 @@ Its effectiveness must not depend solely on the Agent voluntarily observing a te
 
 A simplified policy evaluation request might be:
 
-```
+```json
 {
   "principal": {
     "type": "WorkloadIdentity",
@@ -1169,7 +1169,7 @@ A simplified policy evaluation request might be:
 
 The resulting decision would be:
 
-```
+```json
 {
   "decision": "Deny",
   "reasonCode": "PRODUCTION_APPROVAL_REQUIRED",
@@ -1186,7 +1186,7 @@ A privileged execution gateway should also validate the actual requested operati
 
 If the policy service becomes unavailable, privileged actions should fail closed unless a separately authorized emergency process applies.
 
-### **5.4 Governance at Multiple Architectural Layers**
+### 5.4 Governance at Multiple Architectural Layers
 
 A common design error is placing all governance logic in the system Prompt.
 
@@ -1218,7 +1218,7 @@ A human approval cannot compensate for a workflow that permits subsequent unauth
 
 Governance architecture must combine these layers into a coherent system.
 
-### **5.5 Governance of Shared Engineering Assets**
+### 5.5 Governance of Shared Engineering Assets
 
 Shared engineering assets require special consideration because their effects propagate beyond one task.
 
@@ -1245,7 +1245,7 @@ This model should apply to critical shared Instructions, Skills, Role definition
 
 For high-assurance environments, the organization may also require signed artifacts, trusted registries, and restrictions on unreviewed dependency updates.
 
-### **5.6 Governance of Database and Contract Changes**
+### 5.6 Governance of Database and Contract Changes
 
 Database and integration contracts require coordinated governance because their effects extend beyond the generating Agent's immediate repository.
 
@@ -1275,7 +1275,7 @@ The contract owner and applicable data or security authorities remain responsibl
 
 Governance should preserve these distinctions while providing a common evidence package for the decision.
 
-### **5.7 Production Deployment Boundaries**
+### 5.7 Production Deployment Boundaries
 
 Production deployment deserves a separate authorization boundary.
 
@@ -1302,7 +1302,7 @@ A more controlled design delegates deployment to a protected pipeline or release
 
 The Agent may initiate a request through the authorized workflow, but the deployment system verifies the required approvals and conditions independently.
 
-### **5.8 Governance of Adaptive and Self-Learning Systems**
+### 5.8 Governance of Adaptive and Self-Learning Systems
 
 A self-learning Harness introduces an additional governance concern: the system may recommend changes to the very mechanisms that influence its future behavior.
 
@@ -1334,7 +1334,7 @@ Disabling authorization testing would improve the superficial success rate while
 
 Governance should ensure that improvement objectives cannot be optimized by silently redefining success.
 
-### **5.9 Architecture Failure Modes**
+### 5.9 Architecture Failure Modes
 
 An enterprise governance design should explicitly consider what happens when its controls fail.
 
@@ -1359,15 +1359,29 @@ However, the unavailability of the approval verification service should prevent 
 
 The correct failure behavior should be specified at the control boundary rather than improvised by the executing Agent.
 
-## **6. Professional Diagrams**
+## 6. Professional Diagrams
 
 The following diagrams describe the logical governance architecture. Their components represent responsibilities rather than a requirement to deploy each function as a separate service.
 
-### **6.1 Enterprise AI Governance Reference Model**
+### 6.1 Enterprise AI Governance Reference Model
 
 This model illustrates the relationship between the authorized business goal, AI Engineering Harness, engineering controls, approval authorities, and audit evidence.
 
-\#chatgpt-mermaid-\_r_2eu\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(237, 237, 237);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_2eu\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_2eu\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_2eu\_ .error-icon{fill:rgb(48, 48, 48);}#chatgpt-mermaid-\_r_2eu\_ .error-text{fill:rgb(237, 237, 237);stroke:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2eu\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_2eu\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_2eu\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_2eu\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_2eu\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_2eu\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_2eu\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_2eu\_ .marker.cross{stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_2eu\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_2eu\_ p{margin:0;}#chatgpt-mermaid-\_r_2eu\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2eu\_ .cluster-label text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2eu\_ .cluster-label span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2eu\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_2eu\_ .label text,#chatgpt-mermaid-\_r_2eu\_ span{fill:rgb(237, 237, 237);color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2eu\_ .node rect,#chatgpt-mermaid-\_r_2eu\_ .node circle,#chatgpt-mermaid-\_r_2eu\_ .node ellipse,#chatgpt-mermaid-\_r_2eu\_ .node polygon,#chatgpt-mermaid-\_r_2eu\_ .node path{fill:rgb(9, 23, 44);stroke:rgb(31, 78, 148);stroke-width:1px;}#chatgpt-mermaid-\_r_2eu\_ .rough-node .label text,#chatgpt-mermaid-\_r_2eu\_ .node .label text,#chatgpt-mermaid-\_r_2eu\_ .image-shape .label,#chatgpt-mermaid-\_r_2eu\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_2eu\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_2eu\_ .rough-node .label,#chatgpt-mermaid-\_r_2eu\_ .node .label,#chatgpt-mermaid-\_r_2eu\_ .image-shape .label,#chatgpt-mermaid-\_r_2eu\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_2eu\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_2eu\_ .root .anchor path{fill:rgb(175, 175, 175)!important;stroke-width:0;stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_2eu\_ .arrowheadPath{fill:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_2eu\_ .edgePath .path{stroke:rgb(175, 175, 175);stroke-width:1px;}#chatgpt-mermaid-\_r_2eu\_ .flowchart-link{stroke:rgb(175, 175, 175);fill:none;}#chatgpt-mermaid-\_r_2eu\_ .edgeLabel{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_2eu\_ .edgeLabel p{background-color:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_2eu\_ .edgeLabel rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_2eu\_ .labelBkg{background-color:rgba(0, 0, 0, 0.5);}#chatgpt-mermaid-\_r_2eu\_ .cluster rect{fill:rgb(48, 48, 48);stroke:rgba(255, 255, 255, 0.15);stroke-width:1px;}#chatgpt-mermaid-\_r_2eu\_ .cluster text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2eu\_ .cluster span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2eu\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(48, 48, 48);border:1px solid rgba(255, 255, 255, 0.15);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_2eu\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2eu\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_2eu\_ .icon-shape,#chatgpt-mermaid-\_r_2eu\_ .image-shape{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_2eu\_ .icon-shape p,#chatgpt-mermaid-\_r_2eu\_ .image-shape p{background-color:rgb(0, 0, 0);padding:2px;}#chatgpt-mermaid-\_r_2eu\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_2eu\_ .image-shape .label rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_2eu\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_2eu\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_2eu\_ .node .neo-node{stroke:rgb(31, 78, 148);}#chatgpt-mermaid-\_r_2eu\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_2eu\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_2eu\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_2eu\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_2eu\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_2eu\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_2eu\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_2eu\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_2eu\_ [data-look="neo"].node .neo-line path{stroke:rgb(31, 78, 148);filter:none;}#chatgpt-mermaid-\_r_2eu\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_2eu\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_2eu\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_2eu\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_2eu\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_2eu\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_2eu\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_2eu\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_2eu\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_2eu\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_2eu\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_2eu\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-width:1px;}#chatgpt-mermaid-\_r_2eu\_ .node rect,#chatgpt-mermaid-\_r_2eu\_ .node circle,#chatgpt-mermaid-\_r_2eu\_ .node ellipse,#chatgpt-mermaid-\_r_2eu\_ .node polygon,#chatgpt-mermaid-\_r_2eu\_ .node path{fill:rgb(0, 40, 77);stroke:rgba(255, 255, 255, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_2eu\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_2eu\_ .mermaid-decision .label-container{fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_2eu\_ .edgePaths .flowchart-link{stroke:rgb(175, 175, 175);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_2eu\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_2eu\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}Authorized Business GoalAI Engineering HarnessAgents and Approved ToolsPolicies, Instructions andControlsValidation, Review andEvaluationRisk-Based AuthorizationAuthorized Human ApprovalDelegated AuthorityApproved EngineeringOutcomeAudit EvidenceHigh-RiskDelegated ScopeEnforced Throughout ExecutionControls Tool AccessGovernance Review
+```mermaid
+flowchart TD
+    BG["Authorized Business Goal"] --> H["AI Engineering Harness"]
+    H --> AG["Agents and Approved Tools"]
+    AG --> V["Validation, Review and Evaluation"]
+    V --> R{"Risk-Based Authorization"}
+    R -->|"Human approval required"| HA["Authorized Human Approval"]
+    R -->|"Within delegated authority"| DA["Delegated Authority"]
+    HA --> O["Approved Engineering Outcome"]
+    DA --> O
+    O --> E["Audit Evidence"]
+    PC["Policies, Instructions and Controls"] -.->|"Enforce throughout execution"| H
+    PC -.->|"Control tool access"| AG
+    E -.->|"Inform governance review"| PC
+```
 
 The diagram establishes an important architectural distinction.
 
@@ -1377,13 +1391,33 @@ Policies are not applied only after an Agent has already exercised its privilege
 
 Likewise, the approved engineering outcome is not necessarily a production deployment. It may be an accepted pull request, an approved design, a versioned Skill, or a release artifact awaiting a separate deployment authorization.
 
-### **6.2 Governance Control Plane and Execution Plane**
+### 6.2 Governance Control Plane and Execution Plane
 
 The execution plane performs engineering work.
 
 The governance control plane defines and enforces the conditions under which that work is permitted.
 
-\#chatgpt-mermaid-\_r_2f5\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(237, 237, 237);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_2f5\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_2f5\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_2f5\_ .error-icon{fill:rgb(48, 48, 48);}#chatgpt-mermaid-\_r_2f5\_ .error-text{fill:rgb(237, 237, 237);stroke:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2f5\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_2f5\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_2f5\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_2f5\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_2f5\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_2f5\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_2f5\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_2f5\_ .marker.cross{stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_2f5\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_2f5\_ p{margin:0;}#chatgpt-mermaid-\_r_2f5\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2f5\_ .cluster-label text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2f5\_ .cluster-label span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2f5\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_2f5\_ .label text,#chatgpt-mermaid-\_r_2f5\_ span{fill:rgb(237, 237, 237);color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2f5\_ .node rect,#chatgpt-mermaid-\_r_2f5\_ .node circle,#chatgpt-mermaid-\_r_2f5\_ .node ellipse,#chatgpt-mermaid-\_r_2f5\_ .node polygon,#chatgpt-mermaid-\_r_2f5\_ .node path{fill:rgb(9, 23, 44);stroke:rgb(31, 78, 148);stroke-width:1px;}#chatgpt-mermaid-\_r_2f5\_ .rough-node .label text,#chatgpt-mermaid-\_r_2f5\_ .node .label text,#chatgpt-mermaid-\_r_2f5\_ .image-shape .label,#chatgpt-mermaid-\_r_2f5\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_2f5\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_2f5\_ .rough-node .label,#chatgpt-mermaid-\_r_2f5\_ .node .label,#chatgpt-mermaid-\_r_2f5\_ .image-shape .label,#chatgpt-mermaid-\_r_2f5\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_2f5\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_2f5\_ .root .anchor path{fill:rgb(175, 175, 175)!important;stroke-width:0;stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_2f5\_ .arrowheadPath{fill:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_2f5\_ .edgePath .path{stroke:rgb(175, 175, 175);stroke-width:1px;}#chatgpt-mermaid-\_r_2f5\_ .flowchart-link{stroke:rgb(175, 175, 175);fill:none;}#chatgpt-mermaid-\_r_2f5\_ .edgeLabel{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_2f5\_ .edgeLabel p{background-color:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_2f5\_ .edgeLabel rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_2f5\_ .labelBkg{background-color:rgba(0, 0, 0, 0.5);}#chatgpt-mermaid-\_r_2f5\_ .cluster rect{fill:rgb(48, 48, 48);stroke:rgba(255, 255, 255, 0.15);stroke-width:1px;}#chatgpt-mermaid-\_r_2f5\_ .cluster text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2f5\_ .cluster span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2f5\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(48, 48, 48);border:1px solid rgba(255, 255, 255, 0.15);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_2f5\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2f5\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_2f5\_ .icon-shape,#chatgpt-mermaid-\_r_2f5\_ .image-shape{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_2f5\_ .icon-shape p,#chatgpt-mermaid-\_r_2f5\_ .image-shape p{background-color:rgb(0, 0, 0);padding:2px;}#chatgpt-mermaid-\_r_2f5\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_2f5\_ .image-shape .label rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_2f5\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_2f5\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_2f5\_ .node .neo-node{stroke:rgb(31, 78, 148);}#chatgpt-mermaid-\_r_2f5\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_2f5\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_2f5\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_2f5\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_2f5\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_2f5\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_2f5\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_2f5\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_2f5\_ [data-look="neo"].node .neo-line path{stroke:rgb(31, 78, 148);filter:none;}#chatgpt-mermaid-\_r_2f5\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_2f5\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_2f5\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_2f5\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_2f5\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_2f5\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_2f5\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_2f5\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_2f5\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_2f5\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_2f5\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_2f5\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-width:1px;}#chatgpt-mermaid-\_r_2f5\_ .node rect,#chatgpt-mermaid-\_r_2f5\_ .node circle,#chatgpt-mermaid-\_r_2f5\_ .node ellipse,#chatgpt-mermaid-\_r_2f5\_ .node polygon,#chatgpt-mermaid-\_r_2f5\_ .node path{fill:rgb(0, 40, 77);stroke:rgba(255, 255, 255, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_2f5\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_2f5\_ .mermaid-decision .label-container{fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_2f5\_ .edgePaths .flowchart-link{stroke:rgb(175, 175, 175);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_2f5\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_2f5\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}AI Engineering Execution PlaneGovernance Control PlaneTask IntakeHarnessAgent RolesTool Enforcement GatewayApproved ToolsEngineering GatesPolicy OwnersPolicy RepositoryPolicy Decision ServiceHuman Approval ServiceAudit and Evidence ServiceAdmission CheckAuthorization DecisionEvidenceExecution EventsApproval Evidence
+```mermaid
+flowchart TB
+    subgraph CP["Governance Control Plane"]
+        PO["Policy Owners"] --> PR["Approved Policy Repository"]
+        PR --> PDP["Policy Decision Service"]
+        AP["Human Approval Service"] --> PDP
+        AU["Audit and Evidence Service"]
+    end
+    subgraph EP["AI Engineering Execution Plane"]
+        IN["Authorized Task Intake"] --> HR["Harness"]
+        HR --> AR["Agent Roles"]
+        AR --> PEP["Tool Enforcement Gateway"]
+        PEP --> TL["Approved Tools"]
+        TL --> GV["Engineering Gates"]
+    end
+    IN -.->|"Admission check"| PDP
+    PEP <-->|"Authorization decision"| PDP
+    HR -->|"Execution events"| AU
+    GV -->|"Gate evidence"| AU
+    AP -->|"Approval evidence"| AU
+```
 
 The policy repository contains approved control definitions.
 
@@ -1399,9 +1433,23 @@ The model can be implemented using existing enterprise services rather than intr
 
 For example, identity management, repository protection, CI/CD environment controls, and centralized audit infrastructure may already provide much of the required functionality.
 
-### **6.3 Risk-Based Approval Decision Flow**
+### 6.3 Risk-Based Approval Decision Flow
 
-\#chatgpt-mermaid-\_r_2fc\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(237, 237, 237);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_2fc\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_2fc\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_2fc\_ .error-icon{fill:rgb(48, 48, 48);}#chatgpt-mermaid-\_r_2fc\_ .error-text{fill:rgb(237, 237, 237);stroke:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2fc\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_2fc\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_2fc\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_2fc\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_2fc\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_2fc\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_2fc\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_2fc\_ .marker.cross{stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_2fc\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_2fc\_ p{margin:0;}#chatgpt-mermaid-\_r_2fc\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2fc\_ .cluster-label text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2fc\_ .cluster-label span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2fc\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_2fc\_ .label text,#chatgpt-mermaid-\_r_2fc\_ span{fill:rgb(237, 237, 237);color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2fc\_ .node rect,#chatgpt-mermaid-\_r_2fc\_ .node circle,#chatgpt-mermaid-\_r_2fc\_ .node ellipse,#chatgpt-mermaid-\_r_2fc\_ .node polygon,#chatgpt-mermaid-\_r_2fc\_ .node path{fill:rgb(9, 23, 44);stroke:rgb(31, 78, 148);stroke-width:1px;}#chatgpt-mermaid-\_r_2fc\_ .rough-node .label text,#chatgpt-mermaid-\_r_2fc\_ .node .label text,#chatgpt-mermaid-\_r_2fc\_ .image-shape .label,#chatgpt-mermaid-\_r_2fc\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_2fc\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_2fc\_ .rough-node .label,#chatgpt-mermaid-\_r_2fc\_ .node .label,#chatgpt-mermaid-\_r_2fc\_ .image-shape .label,#chatgpt-mermaid-\_r_2fc\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_2fc\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_2fc\_ .root .anchor path{fill:rgb(175, 175, 175)!important;stroke-width:0;stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_2fc\_ .arrowheadPath{fill:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_2fc\_ .edgePath .path{stroke:rgb(175, 175, 175);stroke-width:1px;}#chatgpt-mermaid-\_r_2fc\_ .flowchart-link{stroke:rgb(175, 175, 175);fill:none;}#chatgpt-mermaid-\_r_2fc\_ .edgeLabel{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_2fc\_ .edgeLabel p{background-color:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_2fc\_ .edgeLabel rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_2fc\_ .labelBkg{background-color:rgba(0, 0, 0, 0.5);}#chatgpt-mermaid-\_r_2fc\_ .cluster rect{fill:rgb(48, 48, 48);stroke:rgba(255, 255, 255, 0.15);stroke-width:1px;}#chatgpt-mermaid-\_r_2fc\_ .cluster text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2fc\_ .cluster span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2fc\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(48, 48, 48);border:1px solid rgba(255, 255, 255, 0.15);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_2fc\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2fc\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_2fc\_ .icon-shape,#chatgpt-mermaid-\_r_2fc\_ .image-shape{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_2fc\_ .icon-shape p,#chatgpt-mermaid-\_r_2fc\_ .image-shape p{background-color:rgb(0, 0, 0);padding:2px;}#chatgpt-mermaid-\_r_2fc\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_2fc\_ .image-shape .label rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_2fc\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_2fc\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_2fc\_ .node .neo-node{stroke:rgb(31, 78, 148);}#chatgpt-mermaid-\_r_2fc\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_2fc\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_2fc\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_2fc\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_2fc\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_2fc\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_2fc\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_2fc\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_2fc\_ [data-look="neo"].node .neo-line path{stroke:rgb(31, 78, 148);filter:none;}#chatgpt-mermaid-\_r_2fc\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_2fc\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_2fc\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_2fc\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_2fc\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_2fc\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_2fc\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_2fc\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_2fc\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_2fc\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_2fc\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_2fc\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-width:1px;}#chatgpt-mermaid-\_r_2fc\_ .node rect,#chatgpt-mermaid-\_r_2fc\_ .node circle,#chatgpt-mermaid-\_r_2fc\_ .node ellipse,#chatgpt-mermaid-\_r_2fc\_ .node polygon,#chatgpt-mermaid-\_r_2fc\_ .node path{fill:rgb(0, 40, 77);stroke:rgba(255, 255, 255, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_2fc\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_2fc\_ .mermaid-decision .label-container{fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_2fc\_ .edgePaths .flowchart-link{stroke:rgb(175, 175, 175);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_2fc\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_2fc\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}Proposed Engineering ChangeClassify Risk and ImpactWithin Approved Scope?Reject or Request RescopingExecute Required GatesRequired Gates Passed?Block and RemediateAdditional Approval Required?Obtain Verified HumanApprovalApproved for Exact Artifact?Authorized Next ActionReject or ReworkNoYesNoYesNo: Delegated AuthorityYesYesNo
+```mermaid
+flowchart TD
+    T["Proposed Engineering Change"] --> C["Classify Risk and Impact"]
+    C --> B{"Within Approved Scope?"}
+    B -->|"No"| D["Reject or Request Rescoping"]
+    B -->|"Yes"| G["Execute Required Gates"]
+    G --> P{"All Mandatory Gates Passed?"}
+    P -->|"No"| F["Block and Remediate"]
+    P -->|"Yes"| R{"Additional Approval Required?"}
+    R -->|"No, delegated authority"| O["Authorized Next Action"]
+    R -->|"Yes"| H["Obtain Verified Human Approval"]
+    H --> A{"Approved for Exact Artifact?"}
+    A -->|"Yes"| O
+    A -->|"No"| X["Reject or Rework"]
+```
 
 The process deliberately separates passing engineering gates from receiving organizational approval.
 
@@ -1409,9 +1457,20 @@ A successful build is evidence of technical correctness within the checks perfor
 
 It is not evidence that a high-risk change has received authorization.
 
-### **6.4 Governance of Instructions and Skills**
+### 6.4 Governance of Instructions and Skills
 
-\#chatgpt-mermaid-\_r_2fj\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(237, 237, 237);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_2fj\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_2fj\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_2fj\_ .error-icon{fill:rgb(48, 48, 48);}#chatgpt-mermaid-\_r_2fj\_ .error-text{fill:rgb(237, 237, 237);stroke:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2fj\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_2fj\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_2fj\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_2fj\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_2fj\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_2fj\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_2fj\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_2fj\_ .marker.cross{stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_2fj\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_2fj\_ p{margin:0;}#chatgpt-mermaid-\_r_2fj\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2fj\_ .cluster-label text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2fj\_ .cluster-label span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2fj\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_2fj\_ .label text,#chatgpt-mermaid-\_r_2fj\_ span{fill:rgb(237, 237, 237);color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2fj\_ .node rect,#chatgpt-mermaid-\_r_2fj\_ .node circle,#chatgpt-mermaid-\_r_2fj\_ .node ellipse,#chatgpt-mermaid-\_r_2fj\_ .node polygon,#chatgpt-mermaid-\_r_2fj\_ .node path{fill:rgb(9, 23, 44);stroke:rgb(31, 78, 148);stroke-width:1px;}#chatgpt-mermaid-\_r_2fj\_ .rough-node .label text,#chatgpt-mermaid-\_r_2fj\_ .node .label text,#chatgpt-mermaid-\_r_2fj\_ .image-shape .label,#chatgpt-mermaid-\_r_2fj\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_2fj\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_2fj\_ .rough-node .label,#chatgpt-mermaid-\_r_2fj\_ .node .label,#chatgpt-mermaid-\_r_2fj\_ .image-shape .label,#chatgpt-mermaid-\_r_2fj\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_2fj\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_2fj\_ .root .anchor path{fill:rgb(175, 175, 175)!important;stroke-width:0;stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_2fj\_ .arrowheadPath{fill:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_2fj\_ .edgePath .path{stroke:rgb(175, 175, 175);stroke-width:1px;}#chatgpt-mermaid-\_r_2fj\_ .flowchart-link{stroke:rgb(175, 175, 175);fill:none;}#chatgpt-mermaid-\_r_2fj\_ .edgeLabel{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_2fj\_ .edgeLabel p{background-color:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_2fj\_ .edgeLabel rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_2fj\_ .labelBkg{background-color:rgba(0, 0, 0, 0.5);}#chatgpt-mermaid-\_r_2fj\_ .cluster rect{fill:rgb(48, 48, 48);stroke:rgba(255, 255, 255, 0.15);stroke-width:1px;}#chatgpt-mermaid-\_r_2fj\_ .cluster text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2fj\_ .cluster span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2fj\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(48, 48, 48);border:1px solid rgba(255, 255, 255, 0.15);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_2fj\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2fj\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_2fj\_ .icon-shape,#chatgpt-mermaid-\_r_2fj\_ .image-shape{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_2fj\_ .icon-shape p,#chatgpt-mermaid-\_r_2fj\_ .image-shape p{background-color:rgb(0, 0, 0);padding:2px;}#chatgpt-mermaid-\_r_2fj\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_2fj\_ .image-shape .label rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_2fj\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_2fj\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_2fj\_ .node .neo-node{stroke:rgb(31, 78, 148);}#chatgpt-mermaid-\_r_2fj\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_2fj\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_2fj\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_2fj\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_2fj\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_2fj\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_2fj\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_2fj\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_2fj\_ [data-look="neo"].node .neo-line path{stroke:rgb(31, 78, 148);filter:none;}#chatgpt-mermaid-\_r_2fj\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_2fj\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_2fj\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_2fj\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_2fj\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_2fj\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_2fj\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_2fj\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_2fj\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_2fj\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_2fj\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_2fj\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-width:1px;}#chatgpt-mermaid-\_r_2fj\_ .node rect,#chatgpt-mermaid-\_r_2fj\_ .node circle,#chatgpt-mermaid-\_r_2fj\_ .node ellipse,#chatgpt-mermaid-\_r_2fj\_ .node polygon,#chatgpt-mermaid-\_r_2fj\_ .node path{fill:rgb(0, 40, 77);stroke:rgba(255, 255, 255, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_2fj\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_2fj\_ .mermaid-decision .label-container{fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_2fj\_ .edgePaths .flowchart-link{stroke:rgb(175, 175, 175);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_2fj\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_2fj\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}Existing Governed AssetProposed ModificationImpact and Risk AssessmentAutomated Tests and SecurityChecksOwner and Required ReviewsApproved?Versioned PublicationControlled ConsumptionReject or ReviseYesNoFeedback and Findings
+```mermaid
+flowchart LR
+    I["Existing Governed Asset"] --> P["Proposed Modification"]
+    P --> AS["Impact and Risk Assessment"]
+    AS --> T["Automated Tests and Security Checks"]
+    T --> RV["Owner and Required Reviews"]
+    RV --> G{"Approved?"}
+    G -->|"Yes"| PUB["Versioned Publication"]
+    G -->|"No"| REJ["Reject or Revise"]
+    PUB --> CON["Controlled Consumption"]
+    CON -.->|"Findings and feedback"| P
+```
 
 This model supports ongoing evolution without allowing self-learning components to silently redefine enterprise standards.
 
@@ -1419,9 +1478,29 @@ An Agent may create a proposal.
 
 The asset owner and applicable authorities determine whether the proposal becomes an approved standard.
 
-### **6.5 Governance Traceability Model**
+### 6.5 Governance Traceability Model
 
-\#chatgpt-mermaid-\_r_2fq\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(237, 237, 237);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_2fq\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_2fq\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_2fq\_ .error-icon{fill:rgb(48, 48, 48);}#chatgpt-mermaid-\_r_2fq\_ .error-text{fill:rgb(237, 237, 237);stroke:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2fq\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_2fq\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_2fq\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_2fq\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_2fq\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_2fq\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_2fq\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_2fq\_ .marker.cross{stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_2fq\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_2fq\_ p{margin:0;}#chatgpt-mermaid-\_r_2fq\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2fq\_ .cluster-label text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2fq\_ .cluster-label span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2fq\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_2fq\_ .label text,#chatgpt-mermaid-\_r_2fq\_ span{fill:rgb(237, 237, 237);color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2fq\_ .node rect,#chatgpt-mermaid-\_r_2fq\_ .node circle,#chatgpt-mermaid-\_r_2fq\_ .node ellipse,#chatgpt-mermaid-\_r_2fq\_ .node polygon,#chatgpt-mermaid-\_r_2fq\_ .node path{fill:rgb(9, 23, 44);stroke:rgb(31, 78, 148);stroke-width:1px;}#chatgpt-mermaid-\_r_2fq\_ .rough-node .label text,#chatgpt-mermaid-\_r_2fq\_ .node .label text,#chatgpt-mermaid-\_r_2fq\_ .image-shape .label,#chatgpt-mermaid-\_r_2fq\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_2fq\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_2fq\_ .rough-node .label,#chatgpt-mermaid-\_r_2fq\_ .node .label,#chatgpt-mermaid-\_r_2fq\_ .image-shape .label,#chatgpt-mermaid-\_r_2fq\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_2fq\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_2fq\_ .root .anchor path{fill:rgb(175, 175, 175)!important;stroke-width:0;stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_2fq\_ .arrowheadPath{fill:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_2fq\_ .edgePath .path{stroke:rgb(175, 175, 175);stroke-width:1px;}#chatgpt-mermaid-\_r_2fq\_ .flowchart-link{stroke:rgb(175, 175, 175);fill:none;}#chatgpt-mermaid-\_r_2fq\_ .edgeLabel{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_2fq\_ .edgeLabel p{background-color:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_2fq\_ .edgeLabel rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_2fq\_ .labelBkg{background-color:rgba(0, 0, 0, 0.5);}#chatgpt-mermaid-\_r_2fq\_ .cluster rect{fill:rgb(48, 48, 48);stroke:rgba(255, 255, 255, 0.15);stroke-width:1px;}#chatgpt-mermaid-\_r_2fq\_ .cluster text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2fq\_ .cluster span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2fq\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(48, 48, 48);border:1px solid rgba(255, 255, 255, 0.15);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_2fq\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2fq\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_2fq\_ .icon-shape,#chatgpt-mermaid-\_r_2fq\_ .image-shape{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_2fq\_ .icon-shape p,#chatgpt-mermaid-\_r_2fq\_ .image-shape p{background-color:rgb(0, 0, 0);padding:2px;}#chatgpt-mermaid-\_r_2fq\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_2fq\_ .image-shape .label rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_2fq\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_2fq\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_2fq\_ .node .neo-node{stroke:rgb(31, 78, 148);}#chatgpt-mermaid-\_r_2fq\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_2fq\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_2fq\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_2fq\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_2fq\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_2fq\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_2fq\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_2fq\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_2fq\_ [data-look="neo"].node .neo-line path{stroke:rgb(31, 78, 148);filter:none;}#chatgpt-mermaid-\_r_2fq\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_2fq\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_2fq\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_2fq\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_2fq\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_2fq\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_2fq\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_2fq\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_2fq\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_2fq\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_2fq\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_2fq\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-width:1px;}#chatgpt-mermaid-\_r_2fq\_ .node rect,#chatgpt-mermaid-\_r_2fq\_ .node circle,#chatgpt-mermaid-\_r_2fq\_ .node ellipse,#chatgpt-mermaid-\_r_2fq\_ .node polygon,#chatgpt-mermaid-\_r_2fq\_ .node path{fill:rgb(0, 40, 77);stroke:rgba(255, 255, 255, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_2fq\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_2fq\_ .mermaid-decision .label-container{fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_2fq\_ .edgePaths .flowchart-link{stroke:rgb(175, 175, 175);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_2fq\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_2fq\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}Business GoalAuthorized Work ItemHarness ExecutionChange Set / CommitValidation EvidenceReview FindingsOutcome EvaluationRisk DecisionApproval RecordRelease or Accepted ArtifactAudit Record
+```mermaid
+flowchart TD
+    GO["Business Goal"] --> WI["Authorized Work Item"]
+    WI --> EX["Harness Execution"]
+    EX --> CH["Change Set and Commit"]
+    CH --> VA["Validation Evidence"]
+    CH --> RE["Review Findings"]
+    CH --> EV["Outcome Evaluation"]
+    VA --> RK["Risk Decision"]
+    RE --> RK
+    EV --> RK
+    RK --> AP["Approval Record"]
+    AP --> RL["Release or Accepted Artifact"]
+    EX -.-> AT["Audit Record"]
+    VA -.-> AT
+    RE -.-> AT
+    EV -.-> AT
+    RK -.-> AT
+    AP -.-> AT
+    RL -.-> AT
+```
 
 Each relationship should be supported by durable identifiers.
 
@@ -1437,17 +1516,28 @@ An approval identifier establishes which decision authorized the resulting actio
 
 These relationships allow an engineering or audit team to reconstruct how a change moved from its original objective to its final approved state.
 
-### **6.6 Separation of Duties in the Harness**
+### 6.6 Separation of Duties in the Harness
 
-\#chatgpt-mermaid-\_r_2g1\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(237, 237, 237);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_2g1\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_2g1\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_2g1\_ .error-icon{fill:rgb(48, 48, 48);}#chatgpt-mermaid-\_r_2g1\_ .error-text{fill:rgb(237, 237, 237);stroke:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2g1\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_2g1\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_2g1\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_2g1\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_2g1\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_2g1\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_2g1\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_2g1\_ .marker.cross{stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_2g1\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_2g1\_ p{margin:0;}#chatgpt-mermaid-\_r_2g1\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2g1\_ .cluster-label text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2g1\_ .cluster-label span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2g1\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_2g1\_ .label text,#chatgpt-mermaid-\_r_2g1\_ span{fill:rgb(237, 237, 237);color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2g1\_ .node rect,#chatgpt-mermaid-\_r_2g1\_ .node circle,#chatgpt-mermaid-\_r_2g1\_ .node ellipse,#chatgpt-mermaid-\_r_2g1\_ .node polygon,#chatgpt-mermaid-\_r_2g1\_ .node path{fill:rgb(9, 23, 44);stroke:rgb(31, 78, 148);stroke-width:1px;}#chatgpt-mermaid-\_r_2g1\_ .rough-node .label text,#chatgpt-mermaid-\_r_2g1\_ .node .label text,#chatgpt-mermaid-\_r_2g1\_ .image-shape .label,#chatgpt-mermaid-\_r_2g1\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_2g1\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_2g1\_ .rough-node .label,#chatgpt-mermaid-\_r_2g1\_ .node .label,#chatgpt-mermaid-\_r_2g1\_ .image-shape .label,#chatgpt-mermaid-\_r_2g1\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_2g1\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_2g1\_ .root .anchor path{fill:rgb(175, 175, 175)!important;stroke-width:0;stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_2g1\_ .arrowheadPath{fill:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_2g1\_ .edgePath .path{stroke:rgb(175, 175, 175);stroke-width:1px;}#chatgpt-mermaid-\_r_2g1\_ .flowchart-link{stroke:rgb(175, 175, 175);fill:none;}#chatgpt-mermaid-\_r_2g1\_ .edgeLabel{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_2g1\_ .edgeLabel p{background-color:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_2g1\_ .edgeLabel rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_2g1\_ .labelBkg{background-color:rgba(0, 0, 0, 0.5);}#chatgpt-mermaid-\_r_2g1\_ .cluster rect{fill:rgb(48, 48, 48);stroke:rgba(255, 255, 255, 0.15);stroke-width:1px;}#chatgpt-mermaid-\_r_2g1\_ .cluster text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2g1\_ .cluster span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2g1\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(48, 48, 48);border:1px solid rgba(255, 255, 255, 0.15);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_2g1\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2g1\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_2g1\_ .icon-shape,#chatgpt-mermaid-\_r_2g1\_ .image-shape{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_2g1\_ .icon-shape p,#chatgpt-mermaid-\_r_2g1\_ .image-shape p{background-color:rgb(0, 0, 0);padding:2px;}#chatgpt-mermaid-\_r_2g1\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_2g1\_ .image-shape .label rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_2g1\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_2g1\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_2g1\_ .node .neo-node{stroke:rgb(31, 78, 148);}#chatgpt-mermaid-\_r_2g1\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_2g1\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_2g1\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_2g1\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_2g1\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_2g1\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_2g1\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_2g1\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_2g1\_ [data-look="neo"].node .neo-line path{stroke:rgb(31, 78, 148);filter:none;}#chatgpt-mermaid-\_r_2g1\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_2g1\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_2g1\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_2g1\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_2g1\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_2g1\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_2g1\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_2g1\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_2g1\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_2g1\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_2g1\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_2g1\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-width:1px;}#chatgpt-mermaid-\_r_2g1\_ .node rect,#chatgpt-mermaid-\_r_2g1\_ .node circle,#chatgpt-mermaid-\_r_2g1\_ .node ellipse,#chatgpt-mermaid-\_r_2g1\_ .node polygon,#chatgpt-mermaid-\_r_2g1\_ .node path{fill:rgb(0, 40, 77);stroke:rgba(255, 255, 255, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_2g1\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_2g1\_ .mermaid-decision .label-container{fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_2g1\_ .edgePaths .flowchart-link{stroke:rgb(175, 175, 175);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_2g1\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_2g1\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}Lead AgentPlanning and CoordinationDeveloper AgentImplementationReviewer AgentQuality and ArchitectureValidator AgentDeterministic EvidenceEvaluator AgentGoal SatisfactionGovernance DecisionAuthorized HumanEngineering OutcomeApproval RequiredWithin Delegated AuthorityAuthorized
+```mermaid
+flowchart TD
+    L["Lead Agent: Planning and Coordination"] --> D["Developer Agent: Implementation"]
+    D --> R["Reviewer Agent: Quality and Architecture"]
+    D --> V["Validator Agent: Deterministic Evidence"]
+    R --> E["Evaluator Agent: Goal Satisfaction"]
+    V --> E
+    E --> G{"Governance Decision"}
+    G -->|"Approval required"| H["Authorized Human"]
+    G -->|"Delegated authority"| O["Engineering Outcome"]
+    H -->|"Authorized"| O
+```
 
 Role separation provides differentiated engineering assessments, but it does not by itself establish independent organizational authority.
 
 The governance process must ensure that protected approvals, permissions, and controls are not managed exclusively by the Agents subject to those controls.
 
-## **7. Hands-on Example**
+## 7. Hands-on Example
 
-### **7.1 Scenario: Governing a Corporate Fleet Booking Enhancement**
+### 7.1 Scenario: Governing a Corporate Fleet Booking Enhancement
 
 Alpha Car Detailing is implementing delegated booking authority for corporate fleet customers.
 
@@ -1481,13 +1571,13 @@ The goal of this exercise is not to recreate the full application implementation
 
 It is to build the governance artifacts and workflow required to control the change.
 
-### **7.2 Establishing the Governance Repository Structure**
+### 7.2 Establishing the Governance Repository Structure
 
 A practical governance implementation should keep authoritative policy definitions separate from execution-specific scratchpad data.
 
 For the Alpha Car Detailing sample, a possible structure is:
 
-```
+```text
 alpha-car-detailing/
 │
 ├── CLAUDE.md
@@ -1543,7 +1633,7 @@ Trusted enforcement services establish whether a specific operation is authorize
 
 Both are necessary.
 
-### **7.3 Define the Agent Authority Policy**
+### 7.3 Define the Agent Authority Policy
 
 The first governance artifact establishes the default authority of the AI Agents.
 
@@ -1551,7 +1641,7 @@ Create:
 
 `governance/policies/agent-authority.yaml`
 
-```
+```yaml
 apiVersion: governance.alphacar/v1
 kind: AgentAuthorityPolicy
 
@@ -1579,9 +1669,9 @@ roles:
       - pull-request.create
 
     proposalOnly:
-      - instructions.modify
-      - skills.publish
-      - architecture-policy.modify
+      - instructions.change.propose
+      - skills.publication.propose
+      - architecture-policy.change.propose
 
   ReviewerAgent:
     allowed:
@@ -1628,13 +1718,13 @@ A production deployment service must not accept an Agent-generated assertion as 
 
 The authorization must be verified independently.
 
-### **7.4 Define Risk Classification Policy**
+### 7.4 Define Risk Classification Policy
 
 Create:
 
 `governance/policies/risk-classification.yaml`
 
-```
+```yaml
 apiVersion: governance.alphacar/v1
 kind: RiskClassificationPolicy
 
@@ -1698,13 +1788,13 @@ A policy engine should evaluate these conditions against trusted facts about the
 
 Where automated classification is uncertain, the workflow should route the decision for authorized review.
 
-### **7.5 Define the Approval Policy**
+### 7.5 Define the Approval Policy
 
 Create:
 
 `governance/policies/approval-policy.yaml`
 
-```
+```yaml
 apiVersion: governance.alphacar/v1
 kind: ApprovalPolicy
 
@@ -1727,6 +1817,7 @@ riskApprovals:
 
   R4:
     requiredApproverRoles:
+      - ServiceOwner
       - SecurityArchitect
       - ReleaseAuthority
 
@@ -1758,17 +1849,17 @@ They do not waive standard repository review, change ownership, or other mandato
 
 Required approver roles should be mapped to authorized enterprise identities.
 
-The policy engine must also define how multiple matching conditions combine. For this example, all unique applicable requirements are accumulated.
+The policy engine must also define how multiple matching conditions combine. For this example, all unique applicable requirements are accumulated; the R4 baseline also retains the R3 service and security approvals. The YAML is a domain-specific policy example, not a ready-to-deploy policy-engine specification.
 
 A database change classified as R3 would therefore require the R3 approvers and the Database Owner.
 
-### **7.6 Protect Governed Instructions and Skills**
+### 7.6 Protect Governed Instructions and Skills
 
 Create:
 
 `governance/policies/protected-assets.yaml`
 
-```
+```yaml
 apiVersion: governance.alphacar/v1
 kind: ProtectedAssetPolicy
 
@@ -1809,7 +1900,7 @@ Otherwise, a malicious or malfunctioning Agent could weaken the policy by modify
 
 Where the hosting platform supports it, repository administration, required reviews, and security-sensitive policy configuration should be controlled by identities separate from the ordinary AI execution identity.
 
-### **7.7 Create a Governance Assessment for the Booking Change**
+### 7.7 Create a Governance Assessment for the Booking Change
 
 Before implementation proceeds to approval, the Harness should produce a structured risk assessment.
 
@@ -1817,7 +1908,7 @@ An illustrative record is:
 
 `governance-assessment-ACD-CORP-218.json`
 
-```
+```json
 {
   "changeId": "ACD-CORP-218",
   "businessGoal": "Enable delegated corporate fleet bookings",
@@ -1859,7 +1950,7 @@ The Harness should update the assessment using actual validation results and ver
 
 If additional risk factors are discovered during implementation, the assessment must be revised and the approval requirements recalculated.
 
-### **7.8 Add Deterministic Governance Gates**
+### 7.8 Add Deterministic Governance Gates
 
 Governance checks should be incorporated into the existing deterministic gate pipeline.
 
@@ -1886,13 +1977,13 @@ An approval gate checks whether an organizational decision has been validly auth
 
 Both may be necessary for the same change.
 
-#### **Example governance gate implementation**
+#### Example governance gate implementation
 
 The following .NET example illustrates a narrow, deterministic approval requirement evaluator.
 
 It consumes structured facts and returns a decision. It is not a complete authorization or identity-verification system.
 
-```
+```csharp
 public enum RiskLevel
 {
     R1 = 1,
@@ -1918,7 +2009,7 @@ public static class GovernancePolicyEvaluator
         var required = new HashSet<string>(
             StringComparer.OrdinalIgnoreCase);
 
-        if (facts.RiskLevel == RiskLevel.R3)
+        if (facts.RiskLevel >= RiskLevel.R3)
         {
             required.Add("ServiceOwner");
             required.Add("SecurityArchitect");
@@ -1926,7 +2017,6 @@ public static class GovernancePolicyEvaluator
 
         if (facts.RiskLevel == RiskLevel.R4)
         {
-            required.Add("SecurityArchitect");
             required.Add("ReleaseAuthority");
         }
 
@@ -1950,7 +2040,7 @@ public static class GovernancePolicyEvaluator
 }
 ```
 
-The evaluator expresses the example approval rules in application code.
+The evaluator expresses the example approval rules in application code. R4 retains the applicable R3 baseline approvals, and special conditions add their own approver roles without duplication.
 
 In the complete implementation, the rules should be loaded from an approved, versioned policy source or generated from that source using a controlled process.
 
@@ -1960,7 +2050,7 @@ It should not trust arbitrary strings provided by an Agent.
 
 A minimal interface is:
 
-```
+```csharp
 public interface IApprovalVerifier
 {
     Task<ApprovalVerificationResult> VerifyAsync(
@@ -1984,7 +2074,7 @@ It must also reject revoked or superseded approvals.
 
 The Harness should consume the resulting verification decision rather than manufacturing approval evidence internally.
 
-### **7.9 Apply Governance to a Change in&#x20;**`CLAUDE.md`
+### 7.9 Apply Governance to a Change in `CLAUDE.md`
 
 During the delegated booking implementation, suppose the Developer Agent encounters an architecture constraint.
 
@@ -2009,7 +2099,7 @@ The governance system should distinguish the following operations.
 
 An Agent-generated proposal might contain:
 
-```
+```markdown
 # Proposed Instruction Change
 
 Change ID: ACD-ARCH-041
@@ -2045,7 +2135,7 @@ The proposal must remain separate from the effective Instruction until authoriza
 
 This preserves the distinction between an Agent's engineering recommendation and the enterprise's authority to change its standards.
 
-### **7.10 Govern a New AI Skill**
+### 7.10 Govern a New AI Skill
 
 The team also proposes a new Skill called `create-corporate-booking-api`.
 
@@ -2078,7 +2168,7 @@ Later improvements follow the same controlled process.
 
 This creates a pathway for learning and automation without silently changing future engineering behavior.
 
-### **7.11 Govern Production Tool Access**
+### 7.11 Govern Production Tool Access
 
 The corporate booking implementation is complete and has passed the required engineering checks.
 
@@ -2105,13 +2195,13 @@ This approach separates engineering execution from privileged production authori
 
 It also provides a consistent mechanism for deployments initiated by humans or AI-assisted workflows.
 
-### **7.12 Generate the Audit Evidence Package**
+### 7.12 Generate the Audit Evidence Package
 
 The governance process should produce an evidence package linking the change to its authorized outcome.
 
 A conceptual structure is:
 
-```
+```text
 Governance Evidence Package
 │
 ├── Change Identity
@@ -2157,7 +2247,7 @@ Similarly, an approval summary is not a substitute for a verified record from th
 
 Sensitive evidence should be stored in the appropriate controlled repository or audit platform, not indiscriminately included in source control.
 
-### **7.13 Expected Outcome and Acceptance Criteria**
+### 7.13 Expected Outcome and Acceptance Criteria
 
 At the conclusion of the exercise, the delegated booking change should demonstrate both engineering correctness and governance compliance.
 
@@ -2179,9 +2269,9 @@ The purpose is not to maximize the number of governance records.
 
 It is to establish reliable, proportionate, and demonstrable control over AI-assisted engineering outcomes.
 
-## **8. Claude Example**
+## 8. Claude Example
 
-### **8.1 Implementing Governance with Claude Code**
+### 8.1 Implementing Governance with Claude Code
 
 Claude Code serves as the primary AI-assisted engineering platform in the Alpha Car Detailing example.
 
@@ -2201,13 +2291,13 @@ For the delegated corporate booking scenario, the implementation should establis
 
 This separation ensures that an Agent cannot convert a natural-language instruction into permission to perform an unauthorized enterprise operation.
 
-### **8.2 Governance Instructions in&#x20;**`CLAUDE.md`
+### 8.2 Governance Instructions in `CLAUDE.md`
 
 The repository's `CLAUDE.md` should communicate the governance expectations that matter during ordinary engineering execution.
 
 For example:
 
-```
+```markdown
 # Alpha Car Detailing — Engineering Governance
 
 ## Engineering Authority
@@ -2277,13 +2367,13 @@ An Agent that can modify files or invoke shell commands may encounter situations
 
 Critical restrictions must therefore be reinforced through repository protections, permission boundaries, trusted approval services, and external enforcement mechanisms.
 
-### **8.3 Governance-Aware Task Execution**
+### 8.3 Governance-Aware Task Execution
 
 A governance-aware Prompt for Claude Code should state the business objective while explicitly requiring the Agent to respect the established authority boundaries.
 
 For example:
 
-```
+```text
 Implement delegated corporate booking permissions
 for Alpha Car Detailing.
 
@@ -2322,7 +2412,7 @@ It does not replace the governance policies already established by the organizat
 
 The Harness should independently determine which files and tools Claude Code may access, which risk conditions apply, and whether the requested actions are permitted.
 
-### **8.4 Using Hooks as Additional Governance Guardrails**
+### 8.4 Using Hooks as Additional Governance Guardrails
 
 Claude Code supports hooks that can execute configured operations at supported lifecycle events.
 
@@ -2356,7 +2446,7 @@ Hooks can improve early detection and developer feedback.
 
 They should complement, not replace, those independent controls.
 
-### **8.5 Claude Code and Protected Instructions**
+### 8.5 Claude Code and Protected Instructions
 
 Because Claude Code commonly uses `CLAUDE.md` as repository context, governance of this file deserves particular attention.
 
@@ -2378,7 +2468,7 @@ The effective version should remain unchanged until the designated owner authori
 
 In a protected repository, this separation should be reinforced through code ownership rules, branch protections, and required checks.
 
-### **8.6 Claude Code and Production Access**
+### 8.6 Claude Code and Production Access
 
 Claude Code may interact with command-line tools and development services where those capabilities are enabled.
 
@@ -2399,7 +2489,7 @@ A production deployment should be executed through a separate trusted service th
 
 This separation remains necessary even when Claude Code can automate substantial parts of the release preparation process.
 
-### **8.7 Governance Evidence from Claude Code Runs**
+### 8.7 Governance Evidence from Claude Code Runs
 
 The Harness should collect useful metadata from Claude Code executions.
 
@@ -2425,7 +2515,7 @@ Relevant facts should be verified against source control, CI/CD systems, identit
 
 Sensitive execution content should be redacted or restricted according to the organization's data-handling policies.
 
-### **8.8 Governance Responsibilities That Remain Outside Claude Code**
+### 8.8 Governance Responsibilities That Remain Outside Claude Code
 
 Even when Claude Code is deeply integrated with the engineering workflow, several responsibilities remain organizational concerns.
 
@@ -2437,9 +2527,9 @@ It should not become the authority that validates its own entitlement to make th
 
 The correct architectural objective is to make Claude Code a highly capable participant in a governed engineering system—not to make the coding platform itself the enterprise governance system.
 
-## **9. GitHub Copilot Comparison**
+## 9. GitHub Copilot Comparison
 
-### **9.1 Governance Principles Remain the Same**
+### 9.1 Governance Principles Remain the Same
 
 GitHub Copilot offers AI-assisted engineering capabilities through development environments and GitHub-integrated workflows.
 
@@ -2453,7 +2543,7 @@ A Copilot-supported implementation still requires authorized business goals, con
 
 The enterprise should evaluate the effective capabilities and permissions of the specific Copilot environment rather than assuming that all Copilot interaction modes share the same execution authority.
 
-### **9.2 Repository Instructions and Governance**
+### 9.2 Repository Instructions and Governance
 
 GitHub Copilot supports repository instruction mechanisms, including `.github/copilot-instructions.md` in relevant workflows.
 
@@ -2467,7 +2557,7 @@ Consequently, repository Instructions should have designated owners, version his
 
 Where repository protection mechanisms are available, the organization should use them to ensure that AI-generated changes cannot silently activate revised engineering standards.
 
-### **9.3 GitHub as a Governance Enforcement Environment**
+### 9.3 GitHub as a Governance Enforcement Environment
 
 When AI-assisted engineering is integrated with GitHub, several established repository and delivery controls can support governance.
 
@@ -2485,7 +2575,7 @@ Similarly, mandatory CI checks can prevent an unauthorized merge even when the A
 
 Repository controls should be configured so that the automation identity cannot simply disable the requirements it must satisfy.
 
-### **9.4 Governance Risks in Automated Pull Request Workflows**
+### 9.4 Governance Risks in Automated Pull Request Workflows
 
 AI-assisted pull request creation introduces a potential concentration of responsibility if the same automated identity can:
 
@@ -2508,7 +2598,7 @@ High-risk code changes should not be accepted solely because another automated p
 
 Automated review evidence can inform human decision-making, but it should not be misrepresented as an authorized human approval.
 
-### **9.5 GitHub Copilot Governance Comparison**
+### 9.5 GitHub Copilot Governance Comparison
 
 | Governance concern      | Claude-first implementation                         | GitHub Copilot implementation                                     |
 | ----------------------- | --------------------------------------------------- | ----------------------------------------------------------------- |
@@ -2524,7 +2614,7 @@ Automated review evidence can inform human decision-making, but it should not be
 
 The precise product configuration may differ, but the organizational accountability model should remain consistent.
 
-### **9.6 Architectural Interpretation**
+### 9.6 Architectural Interpretation
 
 GitHub-integrated workflows can provide strong repository and delivery enforcement mechanisms when properly configured.
 
@@ -2536,9 +2626,9 @@ A secure and well-controlled GitHub repository is an important component of gove
 
 It is not a substitute for business accountability, data governance, model governance, or enterprise risk management.
 
-## **10. Codex Comparison**
+## 10. Codex Comparison
 
-### **10.1 Codex Within Enterprise Governance**
+### 10.1 Codex Within Enterprise Governance
 
 OpenAI Codex can participate in software engineering tasks such as understanding repositories, proposing changes, executing supported development workflows, and preparing implementation artifacts.
 
@@ -2552,7 +2642,7 @@ Who authorized the task? Which repository may be accessed? What operations are p
 
 The answers must be established by the enterprise rather than inferred from the Agent's capabilities.
 
-### **10.2 Repository Guidance and Policy Integrity**
+### 10.2 Repository Guidance and Policy Integrity
 
 Codex workflows may use `AGENTS.md` and related repository context to communicate engineering guidance.
 
@@ -2566,7 +2656,7 @@ The enterprise should ensure that updates to authoritative guidance cannot bypas
 
 An Agent-generated proposal to modify `AGENTS.md` should not automatically become an approved change to organizational standards.
 
-### **10.3 Sandbox and Tool Permission Boundaries**
+### 10.3 Sandbox and Tool Permission Boundaries
 
 Codex environments may provide sandboxing, execution restrictions, and approval mechanisms appropriate to their supported deployment configurations.
 
@@ -2582,7 +2672,7 @@ The enterprise should avoid giving general engineering execution identities broa
 
 Protected operations should remain subject to independently enforced permission and approval checks.
 
-### **10.4 Codex and Governance Evidence**
+### 10.4 Codex and Governance Evidence
 
 Codex-generated changes should participate in the same traceability process as changes generated by other AI Agents.
 
@@ -2596,7 +2686,7 @@ The organization should avoid tying its entire audit model to a proprietary Agen
 
 A portable evidence schema allows the same governance system to assess work produced by Claude Code, GitHub Copilot, Codex, or another engineering Agent.
 
-### **10.5 Cross-Platform Governance Portability**
+### 10.5 Cross-Platform Governance Portability
 
 The following table summarizes the governance design at the architectural level.
 
@@ -2615,7 +2705,7 @@ This comparison is conceptual rather than a claim that the platforms expose iden
 
 The enterprise should verify product-specific capabilities when designing or deploying its controls.
 
-### **10.6 Avoiding Vendor-Specific Governance Lock-In**
+### 10.6 Avoiding Vendor-Specific Governance Lock-In
 
 A governance architecture becomes difficult to maintain when organizational policy is embedded exclusively in one provider's configuration system.
 
@@ -2643,9 +2733,7 @@ The resulting objective is not identical behavior across every AI engineering pl
 
 It is consistent organizational control over engineering actions regardless of which platform performs them.
 
-**Chapter 29 status: In progress — next section: Best Practices**
-
-## **11. Best Practices**
+## 11. Best Practices
 
 Enterprise AI Governance is most effective when governance requirements are embedded into everyday engineering workflows rather than imposed as a separate administrative process.
 
@@ -2657,7 +2745,7 @@ However, the same Harness must recognize when an activity crosses an authority b
 
 The following practices establish a foundation for operating AI-assisted engineering systems safely and efficiently at enterprise scale.
 
-### **11.1 Establish Explicit Ownership for Every Governed Asset**
+### 11.1 Establish Explicit Ownership for Every Governed Asset
 
 Every important AI Engineering asset should have an identifiable organizational owner.
 
@@ -2694,7 +2782,7 @@ For Alpha Car Detailing, the ownership registry should identify who can approve 
 
 Without this mapping, a technically complete implementation may become blocked because no authorized decision-maker has been defined.
 
-### **11.2 Separate Agent Execution Authority from Enterprise Decision Authority**
+### 11.2 Separate Agent Execution Authority from Enterprise Decision Authority
 
 AI Agents should be permitted to perform engineering activities within established boundaries.
 
@@ -2731,7 +2819,7 @@ An Agent should not be able to expand its own authority by editing its Role defi
 >
 > Separation of Agent Roles is not equivalent to separation of enterprise authority. A Developer Agent and Reviewer Agent may be separate execution components, but both may operate under the same organizational workload identity. Effective governance requires independent protection of critical decisions, permissions, and approval mechanisms.
 
-### **11.3 Apply Least Privilege to Every Agent and Tool**
+### 11.3 Apply Least Privilege to Every Agent and Tool
 
 Least privilege should be a default architectural property of the AI Engineering Harness.
 
@@ -2762,7 +2850,7 @@ The Agent should not receive the credential simply because it initiated the requ
 
 **Best practice:** Enforce permissions through trusted identity, resource, and execution controls. Treat natural-language restrictions as supplementary guidance rather than the primary authorization mechanism.
 
-### **11.4 Use Risk-Based Governance Rather Than Universal Approval**
+### 11.4 Use Risk-Based Governance Rather Than Universal Approval
 
 Not every AI-generated change requires the same level of oversight.
 
@@ -2795,7 +2883,7 @@ If the Developer Agent discovers that an apparently low-risk feature requires mo
 
 The Agent should not continue using the original classification after the scope materially changes.
 
-### **11.5 Make Governance Controls Executable**
+### 11.5 Make Governance Controls Executable
 
 Governance documentation establishes expectations.
 
@@ -2832,7 +2920,7 @@ A single control mechanism should not be expected to solve every governance prob
 
 **Best practice:** For each mandatory policy, identify the enforcing system, the accountable owner, the evidence produced, and the expected failure behavior.
 
-### **11.6 Protect the Governance System from Self-Modification**
+### 11.6 Protect the Governance System from Self-Modification
 
 AI-assisted engineering systems may be able to modify their own operational context.
 
@@ -2852,7 +2940,17 @@ The governance system must distinguish improvement recommendations from authoriz
 
 A recommended lifecycle is:
 
-\#chatgpt-mermaid-\_r_2jh\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(237, 237, 237);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_2jh\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_2jh\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_2jh\_ .error-icon{fill:rgb(48, 48, 48);}#chatgpt-mermaid-\_r_2jh\_ .error-text{fill:rgb(237, 237, 237);stroke:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2jh\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_2jh\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_2jh\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_2jh\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_2jh\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_2jh\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_2jh\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_2jh\_ .marker.cross{stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_2jh\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_2jh\_ p{margin:0;}#chatgpt-mermaid-\_r_2jh\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2jh\_ .cluster-label text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2jh\_ .cluster-label span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2jh\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_2jh\_ .label text,#chatgpt-mermaid-\_r_2jh\_ span{fill:rgb(237, 237, 237);color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2jh\_ .node rect,#chatgpt-mermaid-\_r_2jh\_ .node circle,#chatgpt-mermaid-\_r_2jh\_ .node ellipse,#chatgpt-mermaid-\_r_2jh\_ .node polygon,#chatgpt-mermaid-\_r_2jh\_ .node path{fill:rgb(9, 23, 44);stroke:rgb(31, 78, 148);stroke-width:1px;}#chatgpt-mermaid-\_r_2jh\_ .rough-node .label text,#chatgpt-mermaid-\_r_2jh\_ .node .label text,#chatgpt-mermaid-\_r_2jh\_ .image-shape .label,#chatgpt-mermaid-\_r_2jh\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_2jh\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_2jh\_ .rough-node .label,#chatgpt-mermaid-\_r_2jh\_ .node .label,#chatgpt-mermaid-\_r_2jh\_ .image-shape .label,#chatgpt-mermaid-\_r_2jh\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_2jh\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_2jh\_ .root .anchor path{fill:rgb(175, 175, 175)!important;stroke-width:0;stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_2jh\_ .arrowheadPath{fill:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_2jh\_ .edgePath .path{stroke:rgb(175, 175, 175);stroke-width:1px;}#chatgpt-mermaid-\_r_2jh\_ .flowchart-link{stroke:rgb(175, 175, 175);fill:none;}#chatgpt-mermaid-\_r_2jh\_ .edgeLabel{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_2jh\_ .edgeLabel p{background-color:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_2jh\_ .edgeLabel rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_2jh\_ .labelBkg{background-color:rgba(0, 0, 0, 0.5);}#chatgpt-mermaid-\_r_2jh\_ .cluster rect{fill:rgb(48, 48, 48);stroke:rgba(255, 255, 255, 0.15);stroke-width:1px;}#chatgpt-mermaid-\_r_2jh\_ .cluster text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2jh\_ .cluster span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2jh\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(48, 48, 48);border:1px solid rgba(255, 255, 255, 0.15);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_2jh\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2jh\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_2jh\_ .icon-shape,#chatgpt-mermaid-\_r_2jh\_ .image-shape{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_2jh\_ .icon-shape p,#chatgpt-mermaid-\_r_2jh\_ .image-shape p{background-color:rgb(0, 0, 0);padding:2px;}#chatgpt-mermaid-\_r_2jh\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_2jh\_ .image-shape .label rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_2jh\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_2jh\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_2jh\_ .node .neo-node{stroke:rgb(31, 78, 148);}#chatgpt-mermaid-\_r_2jh\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_2jh\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_2jh\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_2jh\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_2jh\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_2jh\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_2jh\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_2jh\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_2jh\_ [data-look="neo"].node .neo-line path{stroke:rgb(31, 78, 148);filter:none;}#chatgpt-mermaid-\_r_2jh\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_2jh\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_2jh\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_2jh\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_2jh\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_2jh\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_2jh\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_2jh\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_2jh\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_2jh\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_2jh\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_2jh\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-width:1px;}#chatgpt-mermaid-\_r_2jh\_ .node rect,#chatgpt-mermaid-\_r_2jh\_ .node circle,#chatgpt-mermaid-\_r_2jh\_ .node ellipse,#chatgpt-mermaid-\_r_2jh\_ .node polygon,#chatgpt-mermaid-\_r_2jh\_ .node path{fill:rgb(0, 40, 77);stroke:rgba(255, 255, 255, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_2jh\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_2jh\_ .mermaid-decision .label-container{fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_2jh\_ .edgePaths .flowchart-link{stroke:rgb(175, 175, 175);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_2jh\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_2jh\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}Observed Engineering ProblemAgent Improvement ProposalImpact and Risk AssessmentIndependent TestingAuthorized Owner ReviewApproved?Versioned PublicationControlled AdoptionReject or ReviseYesNo
+```mermaid
+flowchart TD
+    O["Observed Engineering Problem"] --> P["Agent Improvement Proposal"]
+    P --> I["Impact and Risk Assessment"]
+    I --> T["Independent Testing"]
+    T --> R["Authorized Owner Review"]
+    R --> A{"Approved?"}
+    A -->|"Yes"| V["Versioned Publication"]
+    A -->|"No"| X["Reject or Revise"]
+    V --> C["Controlled Adoption"]
+```
 
 Agents may automate observation, proposal generation, impact analysis, and testing.
 
@@ -2862,7 +2960,7 @@ The effective governance standards should not be silently rewritten during an or
 
 For the Alpha Car Detailing sample, this principle applies particularly to `CLAUDE.md`, shared Skills, mandatory gates, security policy configurations, and Harness permission definitions.
 
-### **11.7 Keep Instructions, Skills, and Policies Versioned**
+### 11.7 Keep Instructions, Skills, and Policies Versioned
 
 Governance decisions must be understood in the context of the standards applicable when the work was performed.
 
@@ -2894,7 +2992,7 @@ Where an artifact changes during execution, the system should determine whether 
 
 **Best practice:** Treat shared AI Engineering assets with the same discipline applied to production dependencies and infrastructure configuration.
 
-### **11.8 Preserve Separation Between Validation, Review, Evaluation, and Approval**
+### 11.8 Preserve Separation Between Validation, Review, Evaluation, and Approval
 
 A mature Harness separates multiple forms of assessment because each answers a different question.
 
@@ -2929,7 +3027,7 @@ The Harness should preserve their results independently.
 
 A final authorization decision should consider the applicable evidence without allowing one favorable result to erase an unrelated blocking condition.
 
-### **11.9 Bind Approvals to Specific Artifacts and Actions**
+### 11.9 Bind Approvals to Specific Artifacts and Actions
 
 Human approval must have a defined scope.
 
@@ -2941,7 +3039,7 @@ Approval records should therefore be connected to the specific action or artifac
 
 For example, a production deployment approval may include:
 
-```
+```json
 {
   "changeId": "ACD-CORP-218",
   "decision": "Approved",
@@ -2963,7 +3061,7 @@ This protects the enterprise against a time-of-check/time-of-use problem in whic
 
 **Best practice:** Use artifact-bound, environment-specific, verifiable approvals rather than general statements that a task has been approved.
 
-### **11.10 Treat External and Repository Content as Untrusted Until Appropriate**
+### 11.10 Treat External and Repository Content as Untrusted Until Appropriate
 
 AI Agents consume substantial amounts of contextual information.
 
@@ -2993,7 +3091,7 @@ Controls should include appropriate context isolation, data handling, permission
 
 An Agent's interpretation of source content must not become a substitute for trusted authorization.
 
-### **11.11 Minimize Sensitive Data Exposure**
+### 11.11 Minimize Sensitive Data Exposure
 
 AI Agents should receive the information necessary to complete their tasks, not unrestricted access to every dataset available in the enterprise.
 
@@ -3017,7 +3115,7 @@ Retention and deletion requirements should be applied according to the data clas
 
 **Best practice:** Collect the minimum information required for engineering execution and governance evidence, and protect that information throughout its lifecycle.
 
-### **11.12 Design Auditability Before Production Adoption**
+### 11.12 Design Auditability Before Production Adoption
 
 Audit trails should not be added as an afterthought.
 
@@ -3029,7 +3127,7 @@ Every governed execution should have a correlation identifier that connects the 
 
 For Alpha Car Detailing, a traceability chain might be:
 
-```
+```text
 Business Goal
    ACD-CORP-218
        |
@@ -3072,7 +3170,7 @@ Not every internal reasoning step or temporary file needs permanent preservation
 
 The enterprise should identify the evidence required for accountability while respecting privacy and data minimization.
 
-### **11.13 Establish a Formal Exception Process**
+### 11.13 Establish a Formal Exception Process
 
 Enterprise architecture and security standards cannot anticipate every legitimate engineering circumstance.
 
@@ -3111,7 +3209,7 @@ Certain obligations may not be waivable through an internal exception process, p
 
 Exceptions should therefore be evaluated against applicable authority boundaries before approval.
 
-### **11.14 Govern Model and Provider Changes**
+### 11.14 Govern Model and Provider Changes
 
 Model selection can materially affect engineering outcomes.
 
@@ -3143,7 +3241,7 @@ The objective is not to prohibit model upgrades.
 
 It is to prevent material changes to the engineering execution environment from occurring without appropriate assessment.
 
-### **11.15 Measure Governance Effectiveness, Not Just Compliance Activity**
+### 11.15 Measure Governance Effectiveness, Not Just Compliance Activity
 
 Governance metrics should reveal whether controls are effective and proportionate.
 
@@ -3184,7 +3282,7 @@ Likewise, a reduction in validation failures is beneficial only if the required 
 >
 > Establish governance metrics at the same time as the Harness metrics architecture. Connect them to existing execution, validation, review, and deployment evidence rather than building a separate manual reporting process.
 
-### **11.16 Review Governance Policies Periodically**
+### 11.16 Review Governance Policies Periodically
 
 Governance standards must evolve as the enterprise's systems, risks, and AI capabilities change.
 
@@ -3215,7 +3313,7 @@ Those updates must still follow the authorized policy change process.
 
 A mature governance system should evolve through evidence-based decisions rather than informal adjustments made during Agent execution.
 
-### **11.17 Integrate Governance into Existing Enterprise Processes**
+### 11.17 Integrate Governance into Existing Enterprise Processes
 
 Organizations should avoid creating a completely separate approval and control ecosystem solely because AI Agents are involved.
 
@@ -3237,7 +3335,7 @@ Integration also improves accountability.
 
 Business owners, security authorities, and release managers can continue exercising their recognized responsibilities without relying on unfamiliar Agent-specific approval mechanisms.
 
-### **11.18 Design for Controlled Failure and Recovery**
+### 11.18 Design for Controlled Failure and Recovery
 
 The governance system must define what happens when controls cannot make a reliable decision.
 
@@ -3253,7 +3351,16 @@ Failure handling should be proportional to the operation.
 
 A useful decision model is:
 
-\#chatgpt-mermaid-\_r_2k1\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(237, 237, 237);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_2k1\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_2k1\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_2k1\_ .error-icon{fill:rgb(48, 48, 48);}#chatgpt-mermaid-\_r_2k1\_ .error-text{fill:rgb(237, 237, 237);stroke:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2k1\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_2k1\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_2k1\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_2k1\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_2k1\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_2k1\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_2k1\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_2k1\_ .marker.cross{stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_2k1\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_2k1\_ p{margin:0;}#chatgpt-mermaid-\_r_2k1\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2k1\_ .cluster-label text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2k1\_ .cluster-label span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2k1\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_2k1\_ .label text,#chatgpt-mermaid-\_r_2k1\_ span{fill:rgb(237, 237, 237);color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2k1\_ .node rect,#chatgpt-mermaid-\_r_2k1\_ .node circle,#chatgpt-mermaid-\_r_2k1\_ .node ellipse,#chatgpt-mermaid-\_r_2k1\_ .node polygon,#chatgpt-mermaid-\_r_2k1\_ .node path{fill:rgb(9, 23, 44);stroke:rgb(31, 78, 148);stroke-width:1px;}#chatgpt-mermaid-\_r_2k1\_ .rough-node .label text,#chatgpt-mermaid-\_r_2k1\_ .node .label text,#chatgpt-mermaid-\_r_2k1\_ .image-shape .label,#chatgpt-mermaid-\_r_2k1\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_2k1\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_2k1\_ .rough-node .label,#chatgpt-mermaid-\_r_2k1\_ .node .label,#chatgpt-mermaid-\_r_2k1\_ .image-shape .label,#chatgpt-mermaid-\_r_2k1\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_2k1\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_2k1\_ .root .anchor path{fill:rgb(175, 175, 175)!important;stroke-width:0;stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_2k1\_ .arrowheadPath{fill:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_2k1\_ .edgePath .path{stroke:rgb(175, 175, 175);stroke-width:1px;}#chatgpt-mermaid-\_r_2k1\_ .flowchart-link{stroke:rgb(175, 175, 175);fill:none;}#chatgpt-mermaid-\_r_2k1\_ .edgeLabel{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_2k1\_ .edgeLabel p{background-color:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_2k1\_ .edgeLabel rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_2k1\_ .labelBkg{background-color:rgba(0, 0, 0, 0.5);}#chatgpt-mermaid-\_r_2k1\_ .cluster rect{fill:rgb(48, 48, 48);stroke:rgba(255, 255, 255, 0.15);stroke-width:1px;}#chatgpt-mermaid-\_r_2k1\_ .cluster text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2k1\_ .cluster span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2k1\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(48, 48, 48);border:1px solid rgba(255, 255, 255, 0.15);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_2k1\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2k1\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_2k1\_ .icon-shape,#chatgpt-mermaid-\_r_2k1\_ .image-shape{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_2k1\_ .icon-shape p,#chatgpt-mermaid-\_r_2k1\_ .image-shape p{background-color:rgb(0, 0, 0);padding:2px;}#chatgpt-mermaid-\_r_2k1\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_2k1\_ .image-shape .label rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_2k1\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_2k1\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_2k1\_ .node .neo-node{stroke:rgb(31, 78, 148);}#chatgpt-mermaid-\_r_2k1\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_2k1\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_2k1\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_2k1\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_2k1\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_2k1\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_2k1\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_2k1\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_2k1\_ [data-look="neo"].node .neo-line path{stroke:rgb(31, 78, 148);filter:none;}#chatgpt-mermaid-\_r_2k1\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_2k1\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_2k1\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_2k1\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_2k1\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_2k1\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_2k1\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_2k1\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_2k1\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_2k1\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_2k1\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_2k1\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-width:1px;}#chatgpt-mermaid-\_r_2k1\_ .node rect,#chatgpt-mermaid-\_r_2k1\_ .node circle,#chatgpt-mermaid-\_r_2k1\_ .node ellipse,#chatgpt-mermaid-\_r_2k1\_ .node polygon,#chatgpt-mermaid-\_r_2k1\_ .node path{fill:rgb(0, 40, 77);stroke:rgba(255, 255, 255, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_2k1\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_2k1\_ .mermaid-decision .label-container{fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_2k1\_ .edgePaths .flowchart-link{stroke:rgb(175, 175, 175);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_2k1\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_2k1\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}Requested Agent OperationCan Authorization Be Verified?Operation RiskProceed Within ApprovedScopeBlock Privileged OperationContinue Isolated Work OnlyRecord Failure and EscalateYesNoHigh or CriticalLow or Moderate
+```mermaid
+flowchart TD
+    OP["Requested Agent Operation"] --> CK{"Can Authorization Be Verified?"}
+    CK -->|"Yes, within permitted scope"| AL["Proceed Under Approved Policy"]
+    CK -->|"No"| RS{"Operation Risk"}
+    RS -->|"High or Critical"| BL["Block Privileged Operation"]
+    RS -->|"Low or Moderate"| IS["Continue Isolated Work Only If Preauthorized"]
+    BL --> ER["Record Failure and Escalate"]
+    IS --> ER
+```
 
 This diagram illustrates a fallback strategy, not an automatic rule that all low-risk operations are permitted when governance services fail.
 
@@ -3263,7 +3370,7 @@ The system must never allow an unavailable approval service to become a path to 
 
 Recovery procedures should also preserve the evidence of failed authorization attempts and interrupted activities.
 
-### **11.19 Make Governance Responsibilities Visible to Engineering Teams**
+### 11.19 Make Governance Responsibilities Visible to Engineering Teams
 
 Governance becomes more effective when engineers understand the boundaries under which AI Agents operate.
 
@@ -3273,7 +3380,7 @@ The Harness should make relevant requirements visible at appropriate workflow st
 
 For example, after planning the Corporate Booking delegation feature, the Lead Agent may produce a concise governance summary:
 
-```
+```text
 Governance Assessment
 ---------------------
 
@@ -3319,7 +3426,7 @@ The risk classification and requirements should ultimately be confirmed through 
 
 Clear governance feedback also helps reduce unnecessary approval requests and prevents engineers from discovering critical restrictions only at release time.
 
-### **11.20 Adopt Governance Incrementally Without Weakening Core Boundaries**
+### 11.20 Adopt Governance Incrementally Without Weakening Core Boundaries
 
 A complete enterprise governance platform does not need to be implemented in a single release.
 
@@ -3349,45 +3456,41 @@ An organization should not enable production-capable Agent execution before it h
 
 The maturity of the governance system must match the autonomy and consequence of the activities being delegated.
 
-### **11.21 Governance Best Practices Checklist**
+### 11.21 Governance Best Practices Checklist
 
 The following checklist can be used by an architecture team when assessing an enterprise AI Engineering Harness.
 
 **Architecture governance assessment**
 
-0 of 12 verified
+- [ ] **Ownership** — Governed Instructions, Skills, Roles, and policies have accountable owners.
 
-**Ownership** — Governed Instructions, Skills, Roles, and policies have accountable owners.
+- [ ] **Authority** — Agent permissions and organizational decision rights are explicitly separated.
 
-**Authority** — Agent permissions and organizational decision rights are explicitly separated.
+- [ ] **Risk** — Engineering changes receive risk classifications that can be reassessed.
 
-**Risk** — Engineering changes receive risk classifications that can be reassessed.
+- [ ] **Approvals** — High-risk activities require independently verified authorization.
 
-**Approvals** — High-risk activities require independently verified authorization.
+- [ ] **Permissions** — Tool access is restricted to approved operations, resources, and environments.
 
-**Permissions** — Tool access is restricted to approved operations, resources, and environments.
+- [ ] **Policy integrity** — Agents cannot silently modify or activate protected governance assets.
 
-**Policy integrity** — Agents cannot silently modify or activate protected governance assets.
+- [ ] **Assessment** — Validation, review, evaluation, and governance decisions remain distinct.
 
-**Assessment** — Validation, review, evaluation, and governance decisions remain distinct.
+- [ ] **Evidence** — Material actions and decisions are traceable to authoritative records.
 
-**Evidence** — Material actions and decisions are traceable to authoritative records.
+- [ ] **Privacy** — Sensitive data is minimized, protected, and retained appropriately.
 
-**Privacy** — Sensitive data is minimized, protected, and retained appropriately.
+- [ ] **Exceptions** — Deviations follow an authorized, documented, and time-bound process.
 
-**Exceptions** — Deviations follow an authorized, documented, and time-bound process.
+- [ ] **Portability** — Governance requirements are not dependent on one AI platform.
 
-**Portability** — Governance requirements are not dependent on one AI platform.
-
-**Assurance** — Governance effectiveness is measured and reviewed periodically.
-
-Reset Copy checklist
+- [ ] **Assurance** — Governance effectiveness is measured and reviewed periodically.
 
 An organization should be able to demonstrate each applicable control through configuration, execution evidence, or an established governance procedure.
 
 A control should not be considered implemented merely because it is mentioned in a policy document.
 
-### **11.22 The Governing Principle: Autonomy Within Authority**
+### 11.22 The Governing Principle: Autonomy Within Authority
 
 The most important best practice is to distinguish autonomy from authority.
 
@@ -3419,9 +3522,7 @@ As AI Engineering systems become more capable, this distinction becomes increasi
 
 The enterprise should automate execution wherever it can establish trustworthy boundaries, but retain human decision authority wherever business responsibility, significant risk acceptance, or organizational policy requires it.
 
-**Chapter 29 status: In progress — next section: Anti-patterns**
-
-## **12. Anti-patterns**
+## 12. Anti-patterns
 
 AI Governance failures rarely begin with an explicit decision to abandon organizational control. More often, they emerge when engineering teams introduce powerful automation without adjusting the ownership, authorization, and accountability mechanisms surrounding it.
 
@@ -3431,7 +3532,7 @@ The most dangerous governance failures occur when technical capability is mistak
 
 The following anti-patterns describe common architectural and operational failures in enterprise AI-assisted engineering.
 
-### **12.1 Governance by Documentation Only**
+### 12.1 Governance by Documentation Only
 
 **The anti-pattern**
 
@@ -3469,7 +3570,7 @@ Each mandatory policy should have an identified enforcement point and a correspo
 >
 > A governance policy is not fully implemented merely because an Agent has been instructed to follow it. Critical restrictions must be enforced at boundaries the Agent cannot independently override.
 
-### **12.2 No Clear Ownership**
+### 12.2 No Clear Ownership
 
 **The anti-pattern**
 
@@ -3499,7 +3600,7 @@ Establish an ownership registry identifying the accountable owner, maintenance r
 
 Ownership must survive changes in personnel and organizational structure.
 
-### **12.3 Unlimited Agent Authority**
+### 12.3 Unlimited Agent Authority
 
 **The anti-pattern**
 
@@ -3529,7 +3630,7 @@ Apply least privilege, task-scoped identities, resource restrictions, temporary 
 
 Do not expose production credentials to ordinary development workflows.
 
-### **12.4 Excessive Human Approval for Low-Risk Work**
+### 12.4 Excessive Human Approval for Low-Risk Work
 
 **The anti-pattern**
 
@@ -3565,7 +3666,7 @@ Reserve specialized human approval for decisions where its value is meaningful.
 
 **Important distinction:** Risk-based approval does not mean eliminating all human review. It means applying review obligations appropriate to the change and the organization's existing engineering policy.
 
-### **12.5 No Human Approval for High-Risk Work**
+### 12.5 No Human Approval for High-Risk Work
 
 **The anti-pattern**
 
@@ -3599,7 +3700,7 @@ Bind approvals to the relevant change, artifact, target environment, and authori
 
 The Harness should not infer approval from favorable Agent assessments.
 
-### **12.6 Agents Approving Their Own High-Risk Changes**
+### 12.6 Agents Approving Their Own High-Risk Changes
 
 **The anti-pattern**
 
@@ -3633,7 +3734,7 @@ Approval decisions must originate from trusted mechanisms representing authorize
 
 The Agent should be able to request and consume approvals, not fabricate or grant them.
 
-### **12.7 Missing or Untrustworthy Audit Trails**
+### 12.7 Missing or Untrustworthy Audit Trails
 
 **The anti-pattern**
 
@@ -3667,7 +3768,7 @@ Connect business goals, executions, source changes, validation results, approval
 
 Protect authoritative evidence from unauthorized modification and establish appropriate retention policies.
 
-### **12.8 Uncontrolled Tool Permissions**
+### 12.8 Uncontrolled Tool Permissions
 
 **The anti-pattern**
 
@@ -3697,7 +3798,7 @@ Introduce governed tool access with identity verification, permitted operations,
 
 Use restricted credentials and independently enforced controls at sensitive execution boundaries.
 
-### **12.9 Silent Policy and Instruction Changes**
+### 12.9 Silent Policy and Instruction Changes
 
 **The anti-pattern**
 
@@ -3731,7 +3832,7 @@ Agents may recommend changes to governed assets, but activation requires the aut
 
 Protected assets should be enforced through source control and publication mechanisms, not solely through Agent Instructions.
 
-### **12.10 No Formal Exception Process**
+### 12.10 No Formal Exception Process
 
 **The anti-pattern**
 
@@ -3765,7 +3866,7 @@ Agents may prepare exception proposals but must not approve them.
 
 An internal exception process must not be used to waive obligations that the organization lacks authority to waive.
 
-### **12.11 Governance Rules Embedded Only in Vendor-Specific Configuration**
+### 12.11 Governance Rules Embedded Only in Vendor-Specific Configuration
 
 **The anti-pattern**
 
@@ -3799,7 +3900,7 @@ Use platform-specific adapters to integrate Claude Code, GitHub Copilot, Codex, 
 
 Vendor-specific features should implement governance requirements rather than define the organization's ultimate accountability model.
 
-### **12.12 Treating a Passing Gate as Permission to Proceed**
+### 12.12 Treating a Passing Gate as Permission to Proceed
 
 **The anti-pattern**
 
@@ -3829,7 +3930,7 @@ Define explicit decision boundaries between technical validation and governance 
 
 Use the outputs of deterministic gates as evidence for the applicable decision, not as unrestricted permission to proceed.
 
-### **12.13 Suppressing Failures or Uncertainty**
+### 12.13 Suppressing Failures or Uncertainty
 
 **The anti-pattern**
 
@@ -3861,7 +3962,7 @@ Agent interpretations may accompany the results, but they must not alter the aut
 
 Any change to a mandatory gate's blocking behavior must follow the applicable governance process.
 
-### **12.14 Promoting Assumptions into Governed Knowledge**
+### 12.14 Promoting Assumptions into Governed Knowledge
 
 **The anti-pattern**
 
@@ -3895,7 +3996,7 @@ Learning components may generate proposed improvements with supporting evidence.
 
 Designated owners must approve changes before they become governed engineering knowledge.
 
-### **12.15 Uncontrolled Risk Downgrading**
+### 12.15 Uncontrolled Risk Downgrading
 
 **The anti-pattern**
 
@@ -3925,7 +4026,7 @@ Require authorized review for material downgrades and reclassify tasks when new 
 
 Critical escalation conditions should not be overridden by a favorable aggregate score.
 
-### **12.16 Approval Without Meaningful Review**
+### 12.16 Approval Without Meaningful Review
 
 **The anti-pattern**
 
@@ -3945,7 +4046,7 @@ Excessive approval volume, vague change descriptions, and missing evidence can t
 
 A security architect receives a notification:
 
-```
+```text
 Change ACD-CORP-218
 
 Status: All AI checks completed.
@@ -3965,7 +4066,7 @@ For security-sensitive changes, include the affected trust boundaries, authoriza
 
 Approvals should be attributable, scoped, and reviewable.
 
-### **12.17 Using Shared or Unattributable Execution Identities**
+### 12.17 Using Shared or Unattributable Execution Identities
 
 **The anti-pattern**
 
@@ -3995,7 +4096,7 @@ Correlate each privileged operation with the authorized task and execution recor
 
 For shared infrastructure services, preserve sufficient attribution to identify the originating workflow and approved action.
 
-### **12.18 Collecting Excessive Sensitive Data for Auditability**
+### 12.18 Collecting Excessive Sensitive Data for Auditability
 
 **The anti-pattern**
 
@@ -4025,7 +4126,7 @@ Limit access and apply appropriate retention and deletion policies.
 
 Auditability should strengthen accountability without unnecessarily expanding sensitive data exposure.
 
-### **12.19 No Governance Metrics or Periodic Review**
+### 12.19 No Governance Metrics or Periodic Review
 
 **The anti-pattern**
 
@@ -4057,7 +4158,7 @@ Assess control effectiveness, approval quality, exceptions, Agent permission usa
 
 Governance changes should be supported by evidence and processed through the authorized change mechanism.
 
-### **12.20 Measuring Compliance Instead of Governance Effectiveness**
+### 12.20 Measuring Compliance Instead of Governance Effectiveness
 
 **The anti-pattern**
 
@@ -4089,7 +4190,7 @@ Examples include the proportion of high-risk operations with valid pre-execution
 
 Metrics should be examined for opportunities to manipulate or misinterpret them.
 
-### **12.21 Governance Bypass Through Emergency Procedures**
+### 12.21 Governance Bypass Through Emergency Procedures
 
 **The anti-pattern**
 
@@ -4119,7 +4220,7 @@ The organization should record the emergency justification, authorized decision,
 
 Where feasible, emergency workflows should retain essential safety checks rather than disabling every control.
 
-### **12.22 Treating Governance as a Final Release Gate Only**
+### 12.22 Treating Governance as a Final Release Gate Only
 
 **The anti-pattern**
 
@@ -4153,7 +4254,7 @@ Establish authorization and access restrictions at task intake, enforce permissi
 
 Governance is a continuous control function, not merely a release checklist.
 
-### **12.23 Anti-pattern Summary**
+### 12.23 Anti-pattern Summary
 
 The following table consolidates the principal anti-patterns and their architectural corrections.
 
@@ -4182,7 +4283,7 @@ The following table consolidates the principal anti-patterns and their architect
 | Uncontrolled emergency access     | Exceptional authority becomes permanent        | Time-bound privileged access       |
 | Release-only governance           | Risks are discovered too late                  | Lifecycle governance               |
 
-### **12.24 Architectural Consequences of Governance Anti-patterns**
+### 12.24 Architectural Consequences of Governance Anti-patterns
 
 These anti-patterns are not isolated implementation defects. They reveal failures in the relationship between autonomy, authority, enforcement, and accountability.
 
@@ -4206,13 +4307,24 @@ The architecture must establish independent control boundaries.
 
 A useful diagnostic model is:
 
-\#chatgpt-mermaid-\_r_2mn\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(237, 237, 237);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_2mn\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_2mn\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_2mn\_ .error-icon{fill:rgb(48, 48, 48);}#chatgpt-mermaid-\_r_2mn\_ .error-text{fill:rgb(237, 237, 237);stroke:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2mn\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_2mn\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_2mn\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_2mn\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_2mn\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_2mn\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_2mn\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_2mn\_ .marker.cross{stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_2mn\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_2mn\_ p{margin:0;}#chatgpt-mermaid-\_r_2mn\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2mn\_ .cluster-label text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2mn\_ .cluster-label span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2mn\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_2mn\_ .label text,#chatgpt-mermaid-\_r_2mn\_ span{fill:rgb(237, 237, 237);color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2mn\_ .node rect,#chatgpt-mermaid-\_r_2mn\_ .node circle,#chatgpt-mermaid-\_r_2mn\_ .node ellipse,#chatgpt-mermaid-\_r_2mn\_ .node polygon,#chatgpt-mermaid-\_r_2mn\_ .node path{fill:rgb(9, 23, 44);stroke:rgb(31, 78, 148);stroke-width:1px;}#chatgpt-mermaid-\_r_2mn\_ .rough-node .label text,#chatgpt-mermaid-\_r_2mn\_ .node .label text,#chatgpt-mermaid-\_r_2mn\_ .image-shape .label,#chatgpt-mermaid-\_r_2mn\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_2mn\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_2mn\_ .rough-node .label,#chatgpt-mermaid-\_r_2mn\_ .node .label,#chatgpt-mermaid-\_r_2mn\_ .image-shape .label,#chatgpt-mermaid-\_r_2mn\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_2mn\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_2mn\_ .root .anchor path{fill:rgb(175, 175, 175)!important;stroke-width:0;stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_2mn\_ .arrowheadPath{fill:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_2mn\_ .edgePath .path{stroke:rgb(175, 175, 175);stroke-width:1px;}#chatgpt-mermaid-\_r_2mn\_ .flowchart-link{stroke:rgb(175, 175, 175);fill:none;}#chatgpt-mermaid-\_r_2mn\_ .edgeLabel{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_2mn\_ .edgeLabel p{background-color:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_2mn\_ .edgeLabel rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_2mn\_ .labelBkg{background-color:rgba(0, 0, 0, 0.5);}#chatgpt-mermaid-\_r_2mn\_ .cluster rect{fill:rgb(48, 48, 48);stroke:rgba(255, 255, 255, 0.15);stroke-width:1px;}#chatgpt-mermaid-\_r_2mn\_ .cluster text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2mn\_ .cluster span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2mn\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(48, 48, 48);border:1px solid rgba(255, 255, 255, 0.15);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_2mn\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2mn\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_2mn\_ .icon-shape,#chatgpt-mermaid-\_r_2mn\_ .image-shape{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_2mn\_ .icon-shape p,#chatgpt-mermaid-\_r_2mn\_ .image-shape p{background-color:rgb(0, 0, 0);padding:2px;}#chatgpt-mermaid-\_r_2mn\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_2mn\_ .image-shape .label rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_2mn\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_2mn\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_2mn\_ .node .neo-node{stroke:rgb(31, 78, 148);}#chatgpt-mermaid-\_r_2mn\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_2mn\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_2mn\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_2mn\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_2mn\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_2mn\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_2mn\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_2mn\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_2mn\_ [data-look="neo"].node .neo-line path{stroke:rgb(31, 78, 148);filter:none;}#chatgpt-mermaid-\_r_2mn\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_2mn\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_2mn\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_2mn\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_2mn\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_2mn\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_2mn\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_2mn\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_2mn\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_2mn\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_2mn\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_2mn\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-width:1px;}#chatgpt-mermaid-\_r_2mn\_ .node rect,#chatgpt-mermaid-\_r_2mn\_ .node circle,#chatgpt-mermaid-\_r_2mn\_ .node ellipse,#chatgpt-mermaid-\_r_2mn\_ .node polygon,#chatgpt-mermaid-\_r_2mn\_ .node path{fill:rgb(0, 40, 77);stroke:rgba(255, 255, 255, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_2mn\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_2mn\_ .mermaid-decision .label-container{fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_2mn\_ .edgePaths .flowchart-link{stroke:rgb(175, 175, 175);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_2mn\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_2mn\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}Increasing Agent AutonomyAuthority Explicitly Bounded?Controlled ExecutionUnmanaged OperationalExposureIndependent Enforcement?Governed EngineeringWorkflowPolicy Bypass RiskAccountable Approval andEvidence?Auditable, AuthorizedOutcomeAccountability GapYesNoYesNoYesNo
+```mermaid
+flowchart TD
+    A["Increasing Agent Autonomy"] --> B{"Authority Explicitly Bounded?"}
+    B -->|"No"| D["Unmanaged Operational Exposure"]
+    B -->|"Yes"| C["Controlled Execution"]
+    C --> E{"Independent Enforcement?"}
+    E -->|"No"| G["Policy Bypass Risk"]
+    E -->|"Yes"| F["Governed Engineering Workflow"]
+    F --> H{"Accountable Approval and Evidence?"}
+    H -->|"No"| J["Accountability Gap"]
+    H -->|"Yes"| I["Auditable, Authorized Outcome"]
+```
 
 This model demonstrates why governance requires more than correct Agent behavior.
 
 Even a highly capable Agent cannot replace the organizational mechanisms responsible for defining authority, enforcing restrictions, and accepting consequential risks.
 
-### **12.25 The Fundamental Governance Anti-pattern**
+### 12.25 The Fundamental Governance Anti-pattern
 
 The most significant anti-pattern is allowing the AI Engineering system to become the final authority over its own operation.
 
@@ -4246,9 +4358,7 @@ The architectural objective is not to limit AI capability unnecessarily.
 
 It is to ensure that growing AI capability operates within a governance system whose authority remains independent, enforceable, and accountable.
 
-**Chapter 29 status: In progress — next section: Architect’s Notes**
-
-## **13. Architect’s Notes**
+## 13. Architect’s Notes
 
 AI Governance introduces a fundamental architectural responsibility: ensuring that autonomous engineering capabilities operate within authority boundaries established and controlled by the enterprise.
 
@@ -4260,7 +4370,7 @@ As its capabilities expand, however, the Harness also becomes a potential concen
 
 The architectural objective is to preserve the benefits of automation without allowing the Harness to become the authority over its own constraints.
 
-### **13.1 Treat Governance as an Architectural Capability**
+### 13.1 Treat Governance as an Architectural Capability
 
 Governance should not be regarded as documentation added after the Harness is operational.
 
@@ -4284,7 +4394,7 @@ For example, an Agent may request permission to deploy a new Corporate Booking s
 
 The execution system must not become the sole judge of whether its own privileged operation is permitted.
 
-### **13.2 Separate the Governance Control Plane from the Execution Plane**
+### 13.2 Separate the Governance Control Plane from the Execution Plane
 
 One of the most important architectural decisions is separating governance control from engineering execution.
 
@@ -4298,7 +4408,24 @@ It may contain policy definitions, ownership records, approval services, identit
 
 Enforcement points connect the two planes.
 
-\#chatgpt-mermaid-\_r_2o2\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(237, 237, 237);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_2o2\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_2o2\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_2o2\_ .error-icon{fill:rgb(48, 48, 48);}#chatgpt-mermaid-\_r_2o2\_ .error-text{fill:rgb(237, 237, 237);stroke:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2o2\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_2o2\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_2o2\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_2o2\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_2o2\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_2o2\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_2o2\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_2o2\_ .marker.cross{stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_2o2\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_2o2\_ p{margin:0;}#chatgpt-mermaid-\_r_2o2\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2o2\_ .cluster-label text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2o2\_ .cluster-label span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2o2\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_2o2\_ .label text,#chatgpt-mermaid-\_r_2o2\_ span{fill:rgb(237, 237, 237);color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2o2\_ .node rect,#chatgpt-mermaid-\_r_2o2\_ .node circle,#chatgpt-mermaid-\_r_2o2\_ .node ellipse,#chatgpt-mermaid-\_r_2o2\_ .node polygon,#chatgpt-mermaid-\_r_2o2\_ .node path{fill:rgb(9, 23, 44);stroke:rgb(31, 78, 148);stroke-width:1px;}#chatgpt-mermaid-\_r_2o2\_ .rough-node .label text,#chatgpt-mermaid-\_r_2o2\_ .node .label text,#chatgpt-mermaid-\_r_2o2\_ .image-shape .label,#chatgpt-mermaid-\_r_2o2\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_2o2\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_2o2\_ .rough-node .label,#chatgpt-mermaid-\_r_2o2\_ .node .label,#chatgpt-mermaid-\_r_2o2\_ .image-shape .label,#chatgpt-mermaid-\_r_2o2\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_2o2\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_2o2\_ .root .anchor path{fill:rgb(175, 175, 175)!important;stroke-width:0;stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_2o2\_ .arrowheadPath{fill:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_2o2\_ .edgePath .path{stroke:rgb(175, 175, 175);stroke-width:1px;}#chatgpt-mermaid-\_r_2o2\_ .flowchart-link{stroke:rgb(175, 175, 175);fill:none;}#chatgpt-mermaid-\_r_2o2\_ .edgeLabel{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_2o2\_ .edgeLabel p{background-color:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_2o2\_ .edgeLabel rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_2o2\_ .labelBkg{background-color:rgba(0, 0, 0, 0.5);}#chatgpt-mermaid-\_r_2o2\_ .cluster rect{fill:rgb(48, 48, 48);stroke:rgba(255, 255, 255, 0.15);stroke-width:1px;}#chatgpt-mermaid-\_r_2o2\_ .cluster text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2o2\_ .cluster span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2o2\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(48, 48, 48);border:1px solid rgba(255, 255, 255, 0.15);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_2o2\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2o2\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_2o2\_ .icon-shape,#chatgpt-mermaid-\_r_2o2\_ .image-shape{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_2o2\_ .icon-shape p,#chatgpt-mermaid-\_r_2o2\_ .image-shape p{background-color:rgb(0, 0, 0);padding:2px;}#chatgpt-mermaid-\_r_2o2\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_2o2\_ .image-shape .label rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_2o2\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_2o2\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_2o2\_ .node .neo-node{stroke:rgb(31, 78, 148);}#chatgpt-mermaid-\_r_2o2\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_2o2\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_2o2\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_2o2\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_2o2\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_2o2\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_2o2\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_2o2\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_2o2\_ [data-look="neo"].node .neo-line path{stroke:rgb(31, 78, 148);filter:none;}#chatgpt-mermaid-\_r_2o2\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_2o2\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_2o2\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_2o2\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_2o2\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_2o2\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_2o2\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_2o2\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_2o2\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_2o2\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_2o2\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_2o2\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-width:1px;}#chatgpt-mermaid-\_r_2o2\_ .node rect,#chatgpt-mermaid-\_r_2o2\_ .node circle,#chatgpt-mermaid-\_r_2o2\_ .node ellipse,#chatgpt-mermaid-\_r_2o2\_ .node polygon,#chatgpt-mermaid-\_r_2o2\_ .node path{fill:rgb(0, 40, 77);stroke:rgba(255, 255, 255, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_2o2\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_2o2\_ .mermaid-decision .label-container{fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_2o2\_ .edgePaths .flowchart-link{stroke:rgb(175, 175, 175);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_2o2\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_2o2\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}Engineering Execution PlaneGovernance Control PlaneAuthorized TaskAI Engineering HarnessAgents and SkillsControlled Tool GatewayEngineering OperationsApproved PoliciesOrganizational OwnershipPolicy DecisionHuman AuthorizationIndependent Evidence StoreEnforce AuthorizationRequest Decision
+```mermaid
+flowchart TB
+    subgraph GCP["Governance Control Plane"]
+        POL["Approved Policies"] --> DEC["Policy Decision"]
+        OWN["Organizational Ownership"] --> DEC
+        APR["Human Authorization"] --> DEC
+    end
+    subgraph ECP["Engineering Execution Plane"]
+        TASK["Authorized Task"] --> HAR["AI Engineering Harness"]
+        HAR --> AG["Agents and Skills"]
+        AG --> TOOL["Controlled Tool Gateway"]
+        TOOL --> EXEC["Engineering Operations"]
+    end
+    DEC -->|"Enforce authorization"| TOOL
+    HAR -.->|"Request decision"| DEC
+    EXEC --> EV["Independent Evidence Store"]
+    APR --> EV
+```
 
 The separation provides several benefits.
 
@@ -4314,7 +4441,7 @@ For Alpha Car Detailing, the Developer Agent may prepare a production database m
 
 **Architect's Note:** The governance control plane must be protected against the execution plane. Logical separation is insufficient if both planes use the same unrestricted credentials or the execution identity can modify the policy service and its configuration.
 
-### **13.3 Design for Authority Isolation, Not Merely Role Separation**
+### 13.3 Design for Authority Isolation, Not Merely Role Separation
 
 Agent Role separation is an engineering design technique.
 
@@ -4352,7 +4479,7 @@ An Evaluator Agent should not have the ability to create a trusted business appr
 
 The architecture should explicitly test these restrictions.
 
-### **13.4 Design the Harness Around Denied Operations**
+### 13.4 Design the Harness Around Denied Operations
 
 Architecture reviews often focus on what a system is intended to do.
 
@@ -4381,7 +4508,7 @@ It should also be represented in security tests.
 
 A system that correctly performs authorized operations but cannot reliably reject unauthorized ones is not sufficiently governed.
 
-### **13.5 Recognize the Limits of Deterministic Governance Gates**
+### 13.5 Recognize the Limits of Deterministic Governance Gates
 
 Deterministic gates provide powerful, repeatable assurance.
 
@@ -4411,7 +4538,7 @@ The former is often desirable.
 
 The latter requires explicit organizational authorization and may remain reserved for humans.
 
-### **13.6 Model Approval as a Governed Capability**
+### 13.6 Model Approval as a Governed Capability
 
 Approval should not be implemented as a generic Boolean field such as `IsApproved = true`.
 
@@ -4425,7 +4552,7 @@ Likewise, a database owner's approval of a migration script does not substitute 
 
 A conceptual approval model is:
 
-\\[ Approval = (Identity, Authority, Action, Scope, Artifact, Conditions, Validity) \\]
+\[ Approval = (Identity, Authority, Action, Scope, Artifact, Conditions, Validity) \]
 
 This formulation emphasizes that approval is a bounded authorization rather than an unrestricted statement of agreement.
 
@@ -4439,7 +4566,7 @@ If an approved implementation is modified, the relevant approval may no longer a
 
 The system must determine which changes invalidate authorization and enforce reapproval where necessary.
 
-### **13.7 Protect Against Time-of-Check and Time-of-Use Failures**
+### 13.7 Protect Against Time-of-Check and Time-of-Use Failures
 
 A subtle governance risk appears when the system checks an artifact or permission at one point but executes a different artifact or operation later.
 
@@ -4465,7 +4592,7 @@ A general approval to perform deployment preparation should not be reusable to m
 
 **Architect's Note:** The stronger the automation, the more important it becomes to bind approvals to concrete artifacts and operations. Automation can otherwise move faster than the human decision boundaries intended to govern it.
 
-### **13.8 Treat Instructions and Skills as Part of the Engineering Supply Chain**
+### 13.8 Treat Instructions and Skills as Part of the Engineering Supply Chain
 
 Traditional software supply chain security focuses on dependencies, build tools, artifacts, and deployment infrastructure.
 
@@ -4499,7 +4626,7 @@ This becomes particularly important when a defect is discovered in a shared Skil
 
 Alpha Car Detailing should be able to determine which services were generated or modified using the affected Skill and whether those implementations require reassessment.
 
-### **13.9 Keep Scratchpad State Separate from Governed Knowledge**
+### 13.9 Keep Scratchpad State Separate from Governed Knowledge
 
 Agents require temporary working state.
 
@@ -4531,7 +4658,7 @@ Publication should occur only through the approved knowledge or asset governance
 
 The governing principle is that repeated observations and Agent confidence do not themselves establish organizational authority.
 
-### **13.10 Define Policy Precedence and Conflict Resolution**
+### 13.10 Define Policy Precedence and Conflict Resolution
 
 An enterprise Harness may encounter several sources of guidance.
 
@@ -4549,7 +4676,7 @@ The governance architecture must define how such conflicts are handled.
 
 A practical precedence model is:
 
-```
+```text
 Mandatory Legal and Contractual Obligations
                  ↓
 Enterprise Security and Governance Policies
@@ -4573,7 +4700,7 @@ Lower-authority context must not be permitted to override mandatory organization
 
 Where a genuine conflict exists, the Harness should report it and request the appropriate decision rather than silently selecting whichever instruction makes task completion easier.
 
-### **13.11 Design Governance for Multi-Agent Workflows**
+### 13.11 Design Governance for Multi-Agent Workflows
 
 Multi-agent execution introduces risks that do not always appear in single-Agent workflows.
 
@@ -4607,7 +4734,7 @@ Reviewer findings, validation reports, evaluation results, approval references, 
 
 A coordinated multi-agent process should not collapse these distinct sources into an unsupported final assertion.
 
-### **13.12 Make Governance Enforcement Independent of Model Reliability**
+### 13.12 Make Governance Enforcement Independent of Model Reliability
 
 The enterprise should not rely on a model's general instruction-following accuracy as the primary protection against unauthorized operations.
 
@@ -4629,7 +4756,7 @@ It also supports meaningful comparison between AI engineering platforms.
 
 The organization can assess models for task performance without redefining the authority boundaries every time a model is replaced.
 
-### **13.13 Treat Governance Availability as an Operational Requirement**
+### 13.13 Treat Governance Availability as an Operational Requirement
 
 A governance control plane becomes part of the enterprise's engineering delivery infrastructure.
 
@@ -4655,7 +4782,7 @@ Architects should define service availability targets, recovery procedures, moni
 
 The system should also preserve enough evidence to reconstruct interrupted operations safely.
 
-### **13.14 Evaluate Governance Through Threat Modeling**
+### 13.14 Evaluate Governance Through Threat Modeling
 
 AI Governance should be included in enterprise threat modeling.
 
@@ -4683,7 +4810,7 @@ Where this is possible, the governance architecture may lack sufficient independ
 
 Threat modeling should be repeated when the Harness gains new capabilities, particularly production tool access, autonomous deployment, external retrieval, or adaptive self-modification.
 
-### **13.15 Avoid Centralizing Every Decision in One Governance Service**
+### 13.15 Avoid Centralizing Every Decision in One Governance Service
 
 A central governance control plane can improve consistency, but excessive centralization may create operational bottlenecks and single points of failure.
 
@@ -4705,7 +4832,7 @@ This avoids both extremes: fragmented governance with inconsistent controls and 
 
 The preferred design is logically consistent governance with appropriately distributed enforcement.
 
-### **13.16 Design a Portable Governance Contract**
+### 13.16 Design a Portable Governance Contract
 
 Enterprise AI Engineering should not depend on a single coding agent or model provider.
 
@@ -4713,7 +4840,7 @@ A portable governance contract allows the Harness to communicate with enterprise
 
 A conceptual authorization request may contain:
 
-```
+```json
 {
   "executionId": "RUN-2026-1041",
   "changeId": "ACD-CORP-218",
@@ -4738,7 +4865,7 @@ Platform-specific adapters can translate tool requests into the enterprise's sta
 
 This separation reduces governance lock-in and improves audit consistency.
 
-### **13.17 Governance Is an Architectural Quality Attribute**
+### 13.17 Governance Is an Architectural Quality Attribute
 
 Governance should influence architecture evaluation alongside security, reliability, maintainability, scalability, and observability.
 
@@ -4763,7 +4890,7 @@ These attributes should be included in architecture reviews and acceptance crite
 
 A governance architecture should also be evaluated against realistic failure scenarios rather than only successful workflow demonstrations.
 
-### **13.18 Architectural Decision Records for Governance**
+### 13.18 Architectural Decision Records for Governance
 
 Significant governance choices should be documented through Architecture Decision Records or an equivalent decision-management process.
 
@@ -4796,7 +4923,7 @@ This decision is intentionally platform-neutral.
 
 The same governance boundary can be maintained when the underlying Agent technology changes.
 
-### **13.19 Architect’s Review Questions**
+### 13.19 Architect’s Review Questions
 
 Before approving an enterprise AI Engineering Harness for broader adoption, an architect should be able to answer the following questions.
 
@@ -4821,7 +4948,7 @@ These questions should be tested through demonstrations and evidence where pract
 
 A positive answer based only on an Instruction or verbal assurance should not be considered equivalent to a verified architectural control.
 
-### **13.20 Final Architect’s Perspective**
+### 13.20 Final Architect’s Perspective
 
 The long-term architectural challenge of enterprise AI Engineering is not simply increasing the number of tasks Agents can perform.
 
@@ -4853,9 +4980,7 @@ It is a system whose capabilities can be trusted because its authority is clearl
 
 **The defining principle for architects is that AI autonomy may expand, but enterprise authority must remain deliberate, verifiable, and governed.**
 
-**Chapter 29 status: In progress — next section: Enterprise Tips**
-
-## **14. Enterprise Tips**
+## 14. Enterprise Tips
 
 Enterprise AI Governance becomes sustainable when it is integrated into the organization's engineering operating model rather than managed as a separate collection of policies, approval forms, and administrative procedures.
 
@@ -4867,7 +4992,7 @@ The implementation mechanisms may differ, but ownership, accountability, securit
 
 The following enterprise practices focus on adopting, operating, and improving AI Governance across multiple engineering teams.
 
-### **14.1 Establish an Enterprise AI Engineering Governance Operating Model**
+### 14.1 Establish an Enterprise AI Engineering Governance Operating Model
 
 Organizations should define how AI Engineering Governance responsibilities are distributed across existing business and technology functions.
 
@@ -4896,7 +5021,7 @@ A dedicated AI Governance Board may be useful for cross-functional standards, ma
 
 **Enterprise Tip:** Begin with a responsibility matrix that identifies the accountable owner for each major governance decision. Establish additional committees only where existing organizational authority is insufficient.
 
-### **14.2 Develop a Minimum Enterprise Governance Baseline**
+### 14.2 Develop a Minimum Enterprise Governance Baseline
 
 Before expanding AI-assisted development across repositories, define a minimum set of mandatory controls.
 
@@ -4921,7 +5046,7 @@ For example, Alpha Car Detailing's Corporate Booking service may require stronge
 
 The enterprise baseline should establish consistency without forcing identical controls onto systems with different risks.
 
-### **14.3 Adopt a Federated Governance Model**
+### 14.3 Adopt a Federated Governance Model
 
 Large enterprises often operate numerous repositories, services, and engineering teams.
 
@@ -4945,13 +5070,29 @@ The Database Owner would retain authority over production database schema decisi
 
 This model permits local engineering autonomy without creating separate enterprise policies for every repository.
 
-\#chatgpt-mermaid-\_r_2tg\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(237, 237, 237);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_2tg\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_2tg\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_2tg\_ .error-icon{fill:rgb(48, 48, 48);}#chatgpt-mermaid-\_r_2tg\_ .error-text{fill:rgb(237, 237, 237);stroke:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2tg\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_2tg\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_2tg\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_2tg\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_2tg\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_2tg\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_2tg\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_2tg\_ .marker.cross{stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_2tg\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_2tg\_ p{margin:0;}#chatgpt-mermaid-\_r_2tg\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2tg\_ .cluster-label text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2tg\_ .cluster-label span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2tg\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_2tg\_ .label text,#chatgpt-mermaid-\_r_2tg\_ span{fill:rgb(237, 237, 237);color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2tg\_ .node rect,#chatgpt-mermaid-\_r_2tg\_ .node circle,#chatgpt-mermaid-\_r_2tg\_ .node ellipse,#chatgpt-mermaid-\_r_2tg\_ .node polygon,#chatgpt-mermaid-\_r_2tg\_ .node path{fill:rgb(9, 23, 44);stroke:rgb(31, 78, 148);stroke-width:1px;}#chatgpt-mermaid-\_r_2tg\_ .rough-node .label text,#chatgpt-mermaid-\_r_2tg\_ .node .label text,#chatgpt-mermaid-\_r_2tg\_ .image-shape .label,#chatgpt-mermaid-\_r_2tg\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_2tg\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_2tg\_ .rough-node .label,#chatgpt-mermaid-\_r_2tg\_ .node .label,#chatgpt-mermaid-\_r_2tg\_ .image-shape .label,#chatgpt-mermaid-\_r_2tg\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_2tg\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_2tg\_ .root .anchor path{fill:rgb(175, 175, 175)!important;stroke-width:0;stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_2tg\_ .arrowheadPath{fill:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_2tg\_ .edgePath .path{stroke:rgb(175, 175, 175);stroke-width:1px;}#chatgpt-mermaid-\_r_2tg\_ .flowchart-link{stroke:rgb(175, 175, 175);fill:none;}#chatgpt-mermaid-\_r_2tg\_ .edgeLabel{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_2tg\_ .edgeLabel p{background-color:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_2tg\_ .edgeLabel rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_2tg\_ .labelBkg{background-color:rgba(0, 0, 0, 0.5);}#chatgpt-mermaid-\_r_2tg\_ .cluster rect{fill:rgb(48, 48, 48);stroke:rgba(255, 255, 255, 0.15);stroke-width:1px;}#chatgpt-mermaid-\_r_2tg\_ .cluster text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2tg\_ .cluster span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2tg\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(48, 48, 48);border:1px solid rgba(255, 255, 255, 0.15);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_2tg\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2tg\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_2tg\_ .icon-shape,#chatgpt-mermaid-\_r_2tg\_ .image-shape{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_2tg\_ .icon-shape p,#chatgpt-mermaid-\_r_2tg\_ .image-shape p{background-color:rgb(0, 0, 0);padding:2px;}#chatgpt-mermaid-\_r_2tg\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_2tg\_ .image-shape .label rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_2tg\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_2tg\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_2tg\_ .node .neo-node{stroke:rgb(31, 78, 148);}#chatgpt-mermaid-\_r_2tg\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_2tg\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_2tg\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_2tg\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_2tg\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_2tg\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_2tg\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_2tg\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_2tg\_ [data-look="neo"].node .neo-line path{stroke:rgb(31, 78, 148);filter:none;}#chatgpt-mermaid-\_r_2tg\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_2tg\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_2tg\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_2tg\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_2tg\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_2tg\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_2tg\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_2tg\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_2tg\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_2tg\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_2tg\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_2tg\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-width:1px;}#chatgpt-mermaid-\_r_2tg\_ .node rect,#chatgpt-mermaid-\_r_2tg\_ .node circle,#chatgpt-mermaid-\_r_2tg\_ .node ellipse,#chatgpt-mermaid-\_r_2tg\_ .node polygon,#chatgpt-mermaid-\_r_2tg\_ .node path{fill:rgb(0, 40, 77);stroke:rgba(255, 255, 255, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_2tg\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_2tg\_ .mermaid-decision .label-container{fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_2tg\_ .edgePaths .flowchart-link{stroke:rgb(175, 175, 175);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_2tg\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_2tg\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}Enterprise AI GovernanceShared Policies and ControlsApproved AI Platform andHarnessCorporate Booking TeamBilling TeamFleet Management TeamService-Specific ControlsService-Specific ControlsService-Specific ControlsEnterprise Assurance
+```mermaid
+flowchart TD
+    EG["Enterprise AI Governance"] --> SP["Shared Policies and Controls"]
+    EG --> PA["Approved AI Platform and Harness"]
+    SP --> CB["Corporate Booking Team"]
+    SP --> BL["Billing Team"]
+    SP --> FM["Fleet Management Team"]
+    PA --> CB
+    PA --> BL
+    PA --> FM
+    CB --> L1["Service-Specific Controls"]
+    BL --> L2["Service-Specific Controls"]
+    FM --> L3["Service-Specific Controls"]
+    L1 --> AS["Enterprise Assurance"]
+    L2 --> AS
+    L3 --> AS
+```
 
 Federation should not permit local teams to weaken mandatory enterprise requirements without authorization.
 
 Local flexibility operates within the centrally governed baseline.
 
-### **14.4 Introduce Governance at Repository Onboarding**
+### 14.4 Introduce Governance at Repository Onboarding
 
 Governance requirements should be established when a repository is onboarded into the AI Engineering Harness.
 
@@ -4979,7 +5120,7 @@ For Alpha Car Detailing, onboarding the Corporate Booking repository would ident
 
 A development task affecting those areas can then trigger the appropriate checks and approvals.
 
-### **14.5 Use Policy-as-Code Where Decisions Are Objective**
+### 14.5 Use Policy-as-Code Where Decisions Are Objective
 
 Many governance requirements can be represented as version-controlled, machine-evaluable policies.
 
@@ -4999,7 +5140,7 @@ The most effective design automates objective enforcement while retaining human 
 
 **Enterprise Tip:** Treat governance policy files like production code. Require code review, tests, versioning, protected publication, and rollback procedures.
 
-### **14.6 Build Shared Governance Services Rather Than Duplicating Controls**
+### 14.6 Build Shared Governance Services Rather Than Duplicating Controls
 
 As enterprise adoption expands, each engineering team should not need to implement its own authorization verification or governance evidence system.
 
@@ -5024,7 +5165,7 @@ They should be designed to work with multiple AI engineering platforms.
 
 Shared services can improve consistency, but they also become important enterprise dependencies. Their availability, security, access controls, and failure behavior require appropriate architecture and operational oversight.
 
-### **14.7 Maintain a Registry of Approved Models and Providers**
+### 14.7 Maintain a Registry of Approved Models and Providers
 
 Enterprises should not allow unrestricted model selection for sensitive engineering tasks without evaluating data-handling and operational requirements.
 
@@ -5047,7 +5188,7 @@ A model that is approved for general source-code generation should not automatic
 
 Model and provider changes should follow a defined assessment and authorization process.
 
-### **14.8 Govern Production Access Through Existing Enterprise Identity Systems**
+### 14.8 Govern Production Access Through Existing Enterprise Identity Systems
 
 AI Agents should not receive special exemptions from established identity and access management controls.
 
@@ -5069,7 +5210,7 @@ This arrangement avoids sharing production administrator credentials with genera
 
 It also allows human-initiated and AI-initiated deployments to follow consistent operational controls.
 
-### **14.9 Standardize Governance Evidence Across Teams**
+### 14.9 Standardize Governance Evidence Across Teams
 
 Governance reporting becomes difficult when each repository produces a different evidence structure.
 
@@ -5104,7 +5245,7 @@ Evidence collection should be automated wherever practical.
 
 The objective is not to generate large reports, but to make consequential decisions reconstructable.
 
-### **14.10 Establish Governance Service-Level Objectives**
+### 14.10 Establish Governance Service-Level Objectives
 
 Governance infrastructure affects engineering delivery.
 
@@ -5128,7 +5269,7 @@ Service-level objectives must also avoid incentivizing unsafe shortcuts.
 
 A governance service should not approve requests automatically merely to achieve a low decision latency.
 
-### **14.11 Build a Controlled Emergency Change Process**
+### 14.11 Build a Controlled Emergency Change Process
 
 Enterprises need procedures for urgent incidents and exceptional operational conditions.
 
@@ -5148,7 +5289,7 @@ Temporary privileges should expire or be revoked when the emergency ends.
 
 **Enterprise Tip:** Emergency authorization should be faster and narrower than the ordinary process, not broader and less accountable.
 
-### **14.12 Integrate Governance with Existing Change Management**
+### 14.12 Integrate Governance with Existing Change Management
 
 AI Engineering Governance should extend existing enterprise change management rather than create an unrelated delivery bureaucracy.
 
@@ -5166,7 +5307,7 @@ This approach reduces duplication and preserves recognizable organizational acco
 
 It also allows the same governance principles to apply to changes implemented by human developers and AI Agents.
 
-### **14.13 Distinguish AI-Specific Governance from General Engineering Governance**
+### 14.13 Distinguish AI-Specific Governance from General Engineering Governance
 
 Not every control required by AI-assisted development is unique to AI.
 
@@ -5184,7 +5325,7 @@ This distinction prevents the organization from rebuilding mature controls unnec
 
 It also ensures that AI-specific risks are not overlooked simply because ordinary software delivery governance already exists.
 
-### **14.14 Establish AI Engineering Governance Champions**
+### 14.14 Establish AI Engineering Governance Champions
 
 A centralized governance function may define enterprise policies, but adoption depends on engineering teams understanding how to apply them.
 
@@ -5200,7 +5341,7 @@ For Alpha Car Detailing, governance champions in the Corporate Booking, Billing,
 
 They can also identify repetitive approval steps that may be candidates for safe automation.
 
-### **14.15 Make Governance Reviews Evidence-Driven**
+### 14.15 Make Governance Reviews Evidence-Driven
 
 Governance review meetings should focus on evidence and material decisions rather than simply confirming that policies exist.
 
@@ -5229,7 +5370,7 @@ The organization may then simplify the workflow without weakening mandatory prot
 
 The purpose of governance review is continuous assurance and improvement, not merely administrative reporting.
 
-### **14.16 Measure Governance and Engineering Productivity Together**
+### 14.16 Measure Governance and Engineering Productivity Together
 
 Enterprise AI Engineering must balance speed, quality, security, and accountability.
 
@@ -5258,7 +5399,7 @@ Teams should not be rewarded solely for generating more code, completing more Ag
 
 The organization should assess whether AI-assisted engineering delivers reliable outcomes within acceptable risk boundaries.
 
-### **14.17 Define a Governance Maturity Roadmap**
+### 14.17 Define a Governance Maturity Roadmap
 
 Enterprise AI Governance should evolve as AI Engineering adoption expands.
 
@@ -5278,7 +5419,7 @@ A team should not receive unrestricted production access simply because its gove
 
 Autonomy should expand only when the corresponding authorization and enforcement controls are sufficiently reliable.
 
-### **14.18 Prepare for Multi-Provider and Multi-Agent Operations**
+### 14.18 Prepare for Multi-Provider and Multi-Agent Operations
 
 Enterprises may use several AI coding platforms simultaneously.
 
@@ -5296,7 +5437,7 @@ If a platform cannot provide adequate control over a privileged operation, that 
 
 A vendor-neutral governance architecture enables platform choice without fragmenting organizational accountability.
 
-### **14.19 Establish a Governance Incident Response Playbook**
+### 14.19 Establish a Governance Incident Response Playbook
 
 An AI Engineering incident may involve more than defective generated code.
 
@@ -5323,7 +5464,7 @@ An unauthorized `CLAUDE.md` change may require reviewing downstream implementati
 
 This reinforces the importance of versioned assets and execution traceability.
 
-### **14.20 Establish Governance Acceptance Criteria for Harness Adoption**
+### 14.20 Establish Governance Acceptance Criteria for Harness Adoption
 
 Before a Harness is approved for enterprise-wide use, the architecture and governance authorities should require demonstrable evidence that essential controls operate as intended.
 
@@ -5352,11 +5493,47 @@ The enterprise should also verify that a deployment without required approval fa
 
 Similarly, it should verify that an Agent cannot bypass protected repository controls or alter authoritative validation evidence.
 
-### **14.21 Enterprise Governance Implementation Blueprint**
+### 14.21 Enterprise Governance Implementation Blueprint
 
 For organizations implementing the governance capabilities discussed throughout this chapter, the following architecture provides a useful deployment model.
 
-\#chatgpt-mermaid-\_r_2tn\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(237, 237, 237);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_2tn\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_2tn\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_2tn\_ .error-icon{fill:rgb(48, 48, 48);}#chatgpt-mermaid-\_r_2tn\_ .error-text{fill:rgb(237, 237, 237);stroke:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2tn\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_2tn\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_2tn\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_2tn\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_2tn\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_2tn\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_2tn\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_2tn\_ .marker.cross{stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_2tn\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_2tn\_ p{margin:0;}#chatgpt-mermaid-\_r_2tn\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2tn\_ .cluster-label text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2tn\_ .cluster-label span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2tn\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_2tn\_ .label text,#chatgpt-mermaid-\_r_2tn\_ span{fill:rgb(237, 237, 237);color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2tn\_ .node rect,#chatgpt-mermaid-\_r_2tn\_ .node circle,#chatgpt-mermaid-\_r_2tn\_ .node ellipse,#chatgpt-mermaid-\_r_2tn\_ .node polygon,#chatgpt-mermaid-\_r_2tn\_ .node path{fill:rgb(9, 23, 44);stroke:rgb(31, 78, 148);stroke-width:1px;}#chatgpt-mermaid-\_r_2tn\_ .rough-node .label text,#chatgpt-mermaid-\_r_2tn\_ .node .label text,#chatgpt-mermaid-\_r_2tn\_ .image-shape .label,#chatgpt-mermaid-\_r_2tn\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_2tn\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_2tn\_ .rough-node .label,#chatgpt-mermaid-\_r_2tn\_ .node .label,#chatgpt-mermaid-\_r_2tn\_ .image-shape .label,#chatgpt-mermaid-\_r_2tn\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_2tn\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_2tn\_ .root .anchor path{fill:rgb(175, 175, 175)!important;stroke-width:0;stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_2tn\_ .arrowheadPath{fill:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_2tn\_ .edgePath .path{stroke:rgb(175, 175, 175);stroke-width:1px;}#chatgpt-mermaid-\_r_2tn\_ .flowchart-link{stroke:rgb(175, 175, 175);fill:none;}#chatgpt-mermaid-\_r_2tn\_ .edgeLabel{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_2tn\_ .edgeLabel p{background-color:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_2tn\_ .edgeLabel rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_2tn\_ .labelBkg{background-color:rgba(0, 0, 0, 0.5);}#chatgpt-mermaid-\_r_2tn\_ .cluster rect{fill:rgb(48, 48, 48);stroke:rgba(255, 255, 255, 0.15);stroke-width:1px;}#chatgpt-mermaid-\_r_2tn\_ .cluster text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2tn\_ .cluster span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2tn\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(48, 48, 48);border:1px solid rgba(255, 255, 255, 0.15);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_2tn\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2tn\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_2tn\_ .icon-shape,#chatgpt-mermaid-\_r_2tn\_ .image-shape{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_2tn\_ .icon-shape p,#chatgpt-mermaid-\_r_2tn\_ .image-shape p{background-color:rgb(0, 0, 0);padding:2px;}#chatgpt-mermaid-\_r_2tn\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_2tn\_ .image-shape .label rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_2tn\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_2tn\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_2tn\_ .node .neo-node{stroke:rgb(31, 78, 148);}#chatgpt-mermaid-\_r_2tn\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_2tn\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_2tn\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_2tn\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_2tn\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_2tn\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_2tn\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_2tn\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_2tn\_ [data-look="neo"].node .neo-line path{stroke:rgb(31, 78, 148);filter:none;}#chatgpt-mermaid-\_r_2tn\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_2tn\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_2tn\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_2tn\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_2tn\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_2tn\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_2tn\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_2tn\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_2tn\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_2tn\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_2tn\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_2tn\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-width:1px;}#chatgpt-mermaid-\_r_2tn\_ .node rect,#chatgpt-mermaid-\_r_2tn\_ .node circle,#chatgpt-mermaid-\_r_2tn\_ .node ellipse,#chatgpt-mermaid-\_r_2tn\_ .node polygon,#chatgpt-mermaid-\_r_2tn\_ .node path{fill:rgb(0, 40, 77);stroke:rgba(255, 255, 255, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_2tn\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_2tn\_ .mermaid-decision .label-container{fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_2tn\_ .edgePaths .flowchart-link{stroke:rgb(175, 175, 175);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_2tn\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_2tn\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}Engineering DeliveryAI Engineering PlatformShared Governance ServicesEnterprise GovernanceProtected RepositoriesDeterministic Validation GatesProtected Release PipelineProduction SystemsAI Engineering HarnessSpecialized AgentsApproved Skills andInstructionsControlled Tool GatewayGoverned Asset RegistryPolicy Decision ServiceApproval VerificationAudit and Evidence PlatformPolicy and Standards OwnersRisk and ComplianceAuthorized Human Approvers
+```mermaid
+flowchart TB
+    subgraph ORG["Enterprise Governance"]
+        POL["Policy and Standards Owners"]
+        RISK["Risk and Compliance"]
+        HUM["Authorized Human Approvers"]
+    end
+    subgraph SHARED["Shared Governance Services"]
+        REG["Governed Asset Registry"]
+        PDP["Policy Decision Service"]
+        APR["Approval Verification"]
+        AUD["Audit and Evidence Platform"]
+    end
+    subgraph AI["AI Engineering Platform"]
+        H["AI Engineering Harness"] --> AG["Specialized Agents"]
+        SK["Approved Skills and Instructions"] --> AG
+        AG --> TG["Controlled Tool Gateway"]
+    end
+    subgraph DELIVERY["Engineering Delivery"]
+        REPO["Protected Repositories"] --> CI["Deterministic Validation Gates"]
+        CI --> REL["Protected Release Pipeline"]
+        REL --> PROD["Production Systems"]
+    end
+    POL --> REG
+    POL --> PDP
+    RISK --> PDP
+    HUM --> APR
+    REG --> SK
+    PDP --> TG
+    APR --> REL
+    TG --> REPO
+    H -.-> AUD
+    TG -.-> AUD
+    CI -.-> AUD
+    APR -.-> AUD
+    REL -.-> AUD
+```
 
 The model deliberately reuses the organization's existing repositories, validation infrastructure, identity systems, and release controls.
 
@@ -5368,7 +5545,7 @@ The Harness remains responsible for coordinated engineering execution.
 
 Human authorities remain accountable for designated enterprise decisions.
 
-### **14.22 Final Enterprise Recommendation**
+### 14.22 Final Enterprise Recommendation
 
 Enterprises should not evaluate AI Governance solely by asking whether their Agents follow documented Instructions.
 
@@ -5388,9 +5565,228 @@ They should not lead to unrestricted authority over production systems, security
 
 **Enterprise AI Governance succeeds when organizations can scale AI-assisted engineering while retaining clear ownership, enforceable boundaries, meaningful human accountability, and verifiable evidence of every consequential decision.**
 
-**Chapter 29 status: In progress — next section: Decision Points**
+## 15. Decision Points
 
-## **16. Exercises**
+AI Governance architecture requires deliberate decisions about ownership, autonomy, enforcement, risk acceptance, and evidence. No single implementation fits every enterprise or workload. The decisions below are intended to be recorded through the organization's approved architecture and governance processes, with rationale, affected systems, and responsible authorities.
+
+For Alpha Car Detailing, the objective is to enable the Harness to perform routine engineering work independently while retaining accountable human authority over security-sensitive business behavior, privileged operations, protected engineering assets, and production releases.
+
+### 15.1 Who Owns AI Engineering Governance?
+
+An enterprise may centralize governance in a platform or security function, distribute it to service teams, or adopt a federated model. Centralization can improve consistency but may create a bottleneck. Complete decentralization provides flexibility but can fragment standards and weaken enterprise-wide assurance.
+
+A federated model generally fits Alpha Car Detailing: enterprise security and architecture owners define mandatory policies; platform engineering operates the Harness and common enforcement services; and the Corporate Booking, Billing, and Fleet Management teams own domain-specific engineering decisions within those boundaries. A named organizational authority remains accountable for each protected approval.
+
+**Decision:** Adopt federated governance with a published ownership and escalation matrix. Delegated operational responsibility must not be mistaken for authority to waive enterprise policy.
+
+### 15.2 Which Agent Activities May Be Autonomous?
+
+Not all autonomy carries equal risk. Generating tests in an isolated branch differs materially from changing production permissions. An authority matrix should distinguish autonomous execution, proposal-only activities, human-gated operations, and prohibited behavior.
+
+| Activity | Illustrative treatment | Control boundary |
+|---|---|---|
+| Generate tests and refactor approved application files | Autonomous | Scoped workspace and repository permissions |
+| Propose modifications to `CLAUDE.md` or shared Skills | Proposal-only | Protected publication process |
+| Change a published API contract | Human-gated as required by risk | Contract-owner review and required checks |
+| Execute a production migration | Human-gated | Protected release and database identity |
+| Falsify evidence or bypass a mandatory approval | Prohibited | Independent enforcement and audit controls |
+
+**Decision:** Permit substantial engineering autonomy inside approved scope. Do not grant the executing Agent authority to modify the rules that determine whether its own work is acceptable.
+
+### 15.3 How Should Engineering Risk Be Classified?
+
+A risk decision should consider business consequences, security and privacy exposure, privilege changes, contract compatibility, operational reach, and recoverability. Code size and perceived task complexity are poor substitutes for impact.
+
+A hybrid approach combines trusted, deterministic minimum-risk rules with human judgment for uncertain or exceptional cases. Changes to authorization behavior must not be downgraded simply because the Lead Agent labels them as refactoring. A change originally classified R1 must be reassessed if it later touches authentication middleware, tenant isolation, or production access.
+
+**Decision:** Use policy-defined risk floors, accumulate applicable conditions, and escalate uncertainty. Record both the classification and the facts supporting it.
+
+### 15.4 Which Decisions Require Human Approval?
+
+Human approval should be attached to an actual organizational responsibility. A Product Owner may authorize new business behavior; a Security Architect may accept a security design; a Database Owner may approve migration requirements; and a Release Authority may authorize deployment. Their decisions are not interchangeable.
+
+For the Corporate Booking delegation change, approval requirements should follow the actual risk and affected assets. Successful tests and an Evaluator Agent's favorable assessment support the decision but do not replace it. Low-risk work can operate under existing delegated authority and standard review policies rather than requiring multiple specialized approvals.
+
+**Decision:** Publish an approval matrix keyed by risk, operation, and protected asset. Verify every reserved decision through a trusted approval source.
+
+### 15.5 Where Should Policies Be Enforced?
+
+Repository Instructions and Agent Prompts are useful behavioral guidance, but they cannot alone protect production resources. Enforcement should occur at the technical boundary most capable of stopping the prohibited action.
+
+| Requirement | Preferred enforcement |
+|---|---|
+| Protected Instruction cannot be merged without review | Branch protections, required checks, and code ownership |
+| Privileged database modification requires authorization | Database privileges and controlled operation gateway |
+| Production deployment requires approved artifact | Protected release platform with artifact-digest verification |
+| Required security validation cannot be disabled | Protected CI configuration and mandatory checks |
+| Shared Skill cannot be published without approval | Governed registry and publication identity |
+
+**Decision:** Use defense in depth, but rely on independent identity, repository, resource, and release controls for consequential authorization.
+
+### 15.6 May Agents Modify Their Own Instructions and Skills?
+
+A learning component may observe that a Skill is producing repeated defects or that an Instruction creates unnecessary friction. Such observations are useful proposals, not authorization to alter an approved standard.
+
+The enterprise should distinguish routine operational tuning from changes that affect authoritative behavior. Where a low-risk, non-authoritative optimization is preapproved and technically constrained, automatic adjustment may be appropriate. Effective `CLAUDE.md` content, shared Skills, mandatory gates, Role permissions, and governance policies require governed publication.
+
+**Decision:** Default to proposal-only authority for protected engineering assets. Maintain separate privileges for producing proposals and activating approved revisions.
+
+### 15.7 How Should Tool Permissions Be Granted?
+
+Persistent, broadly privileged credentials are convenient but expose unrelated systems and weaken attribution. More defensible alternatives include scoped workload identities, isolated execution, temporary access, and a privileged tool gateway that checks task, operation, resource, and approval context.
+
+A Developer Agent diagnosing a booking issue may need read-only development logs. That need does not justify production administrator privileges. A permitted diagnostic command also does not grant permission to perform remediation.
+
+**Decision:** Use least privilege and task-scoped access. Route high-impact operations through independently authorized services; keep the privileged credential outside ordinary Agent workspaces.
+
+### 15.8 How Should Production Deployment Be Authorized?
+
+Engineering acceptance and production release are distinct stages. A pull request may be approved for merge without authorization to deploy to production. Similarly, a database migration may be technically valid without an approved maintenance window.
+
+The Harness should assemble a release request containing the exact artifact digest, validation evidence, change identifier, target environment, required approvals, and recovery plan. A protected release service must independently verify those claims using trusted records and its own deployment identity.
+
+**Decision:** Do not grant ordinary Developer or Reviewer Agents reusable production deployment credentials. Bind production authorization to the actual artifact, environment, and action.
+
+### 15.9 How Should Database and Contract Changes Be Governed?
+
+Schema and contract changes propagate beyond the immediate implementation. A new corporate booking event field may be backward compatible yet carry employee information that should not reach every subscriber. A valid migration may still require data-owner review or a controlled deployment window.
+
+The Validator Agent should verify objective schema and compatibility requirements; the Reviewer Agent should examine architecture and design; and relevant organizational owners should authorize consequential contract, data, and operational decisions.
+
+**Decision:** Base contract and migration governance on consumer impact, data classification, reversibility, and production risk—not merely on whether a generated schema compiles.
+
+### 15.10 How Much Evidence Should Be Preserved?
+
+Preserving every Prompt, tool result, or environment variable indefinitely can create unnecessary privacy and security exposure. Preserving only a final success label prevents meaningful audit reconstruction. The correct design distinguishes authoritative records from useful but temporary working material.
+
+A governance evidence package should connect the authorized goal and execution ID to the code or artifact digest, effective Instructions and Skills, policy versions, required checks, review and evaluation evidence, approval decisions, and release outcome. Sensitive raw content should be redacted, restricted, or omitted when it is unnecessary for accountability.
+
+**Decision:** Adopt a structured, risk-proportionate evidence schema with controlled storage, integrity protection, retention, and deletion policies.
+
+### 15.11 How Should Exceptions Be Approved?
+
+Exceptions should authorize a precisely defined deviation, not permanently weaken a standard. A migration that cannot meet normal zero-downtime requirements may justify an approved maintenance window; it does not justify removing the migration gate for every future release.
+
+Exception records should identify the affected requirement, justification, risk, scope, compensating controls, approving authority, expiration, and remediation. Some legal or contractual obligations cannot be waived through an internal exception process.
+
+**Decision:** Establish an independently approved, time-bound exception process. Treat repeat or overdue exceptions as signals for governance review.
+
+### 15.12 Which Models and Providers Are Approved?
+
+Model selection affects data processing, reliability, tool use, evidence availability, cost, and operational continuity. A model permitted to work with internal application source code may not be approved to process sensitive customer records or use privileged production tools.
+
+A model/provider registry should record approved use cases, relevant data classifications, version restrictions, security assessment, retention obligations, tool capabilities, and any fallback arrangements. Upgrades that materially change behavior or risk should be evaluated before adoption.
+
+**Decision:** Govern intended uses rather than granting blanket provider approval. Keep enterprise policy independent of Claude Code, GitHub Copilot, Codex, or a particular model version.
+
+### 15.13 Should Governance Be Implemented Entirely Inside the Harness?
+
+Putting every policy decision inside the Harness simplifies integration but creates a conflict if the same Agent-controlled system can change and enforce its own authority. The Harness may orchestrate requests and provide context; critical policy decisions, identity checks, privileged enforcement, and protected approvals should remain outside its ordinary execution privileges.
+
+This does not require a new service for every control. Existing source control, CI/CD, identity, cloud, approval, and audit platforms may implement the required boundaries.
+
+**Decision:** Keep governance coordination in the Harness where useful, but externalize critical authority and enforce restrictions at independently governed resource boundaries.
+
+### 15.14 What Happens if Governance Infrastructure Fails?
+
+Authorization uncertainty must not become permission. If the approval service cannot verify a production deployment decision, the deployment should be blocked or suspended. A noncritical metrics dashboard failure may permit isolated development to continue under previously approved technical restrictions.
+
+The behavior of policy services, tool gateways, approval verification, and audit storage should be specified per risk level. The system must distinguish an explicit denial, an unavailable decision service, and incomplete evidence; all should remain visible in execution records.
+
+**Decision:** Fail closed for protected privileged operations. Allow limited continuation only where preauthorized and independently enforceable.
+
+### 15.15 Which Metrics Demonstrate Effective Governance?
+
+An approval count is not evidence of meaningful human review, and a high Agent completion rate may reflect weakened checks. Governance metrics should examine valid approval coverage, unauthorized tool attempts, control bypass incidents, evidence completeness, risk reclassification, exception aging, and approval turnaround by risk level.
+
+Evaluate control effectiveness and engineering efficiency together. A faster approval process is beneficial only when reviewers still receive enough evidence and authority remains verifiable.
+
+**Decision:** Establish balanced metrics sourced from authoritative systems and subject them to periodic review. Do not optimize a single measure in isolation.
+
+### 15.16 How Much Authority May a Self-Learning Harness Receive?
+
+An adaptive Harness may optimize test selection, analyze review findings, and propose better Skills. It should not silently lower the standard that those changes must satisfy. In particular, repeated security test failures are evidence for investigation, not justification to disable the tests.
+
+Separate observation, proposal generation, independent testing, authorized publication, and controlled adoption. Automatic changes may be allowed for narrowly scoped, non-authoritative optimizations if they cannot alter protected controls.
+
+**Decision:** Permit learning and recommendations broadly within approved scope, but reserve activation of governed knowledge and standards for the designated authorities.
+
+### 15.17 What Must Be Demonstrated Before Production Adoption?
+
+A production-capable Harness requires more than a successful demonstration of code generation. An enterprise readiness review should verify ownership, identity isolation, protected assets, mandatory checks, approval verification, artifact integrity, data handling, evidence traceability, and explicit failure behavior.
+
+Negative tests are indispensable. The review should demonstrate that an unapproved deployment fails, that a protected Instruction cannot be silently activated, and that an Agent cannot alter authoritative validation results or gain unrelated privileges.
+
+**Decision:** Increase operational autonomy only when the corresponding controls have been demonstrated under both normal and adversarial conditions.
+
+### 15.18 Who Accepts Residual Risk?
+
+No test suite removes every uncertainty. The Evaluator Agent may judge that the delegated booking feature satisfies its acceptance criteria while identifying an unresolved operational or contractual concern. The enterprise must assign that residual risk to a person or function authorized to accept it.
+
+The approval must identify what risk is accepted, the supporting evidence, scope, conditions, and duration. Agent confidence or a favorable score cannot substitute for organizational risk acceptance.
+
+**Decision:** Record residual-risk acceptance through an authorized human decision; preserve the rationale and relevant evidence.
+
+### 15.19 How Should Governance Decisions Be Recorded?
+
+Significant choices about production access, shared asset ownership, model approval, exception handling, and audit retention should be durable. Architecture Decision Records and controlled policy records are preferable to untraceable statements in chat or execution logs.
+
+For example, Alpha Car Detailing may record a decision that Agents can prepare production deployment requests but cannot hold administrator credentials. The record should state the context, alternatives, selected approach, authority, rationale, consequences, and required checks.
+
+**Decision:** Use versioned governance decision records and link them to policy changes, affected systems, and execution evidence.
+
+### 15.20 Consolidated Decision Matrix
+
+| Decision area | Preferred direction | Architectural rationale |
+|---|---|---|
+| Governance ownership | Federated accountability | Enterprise consistency without routine centralized bottlenecks |
+| Agent authority | Scoped and risk-based | Controlled autonomy |
+| Classification | Policy-defined floors plus human judgment | Avoids self-serving downgrades |
+| High-risk approval | Verified human decisions | Maintains organizational authority |
+| Enforcement | Trusted technical boundaries | Prevents bypass through prompts or Role changes |
+| Instructions and Skills | Governed versioned publication | Protects reusable engineering standards |
+| Tools and credentials | Least privilege and gateways | Limits operational exposure |
+| Production release | Protected identity and artifact-bound approval | Separates engineering from release authority |
+| Data and contracts | Impact-based owner review | Protects consumers and sensitive information |
+| Evidence | Structured, proportionate traceability | Balances auditability with minimization |
+| Exceptions | Authorized, scoped, and time-bound | Prevents informal bypass |
+| Model/provider choice | Approved intended-use registry | Supports safe portability |
+| Service failure | Fail closed for privileged operations | Prevents authorization through uncertainty |
+| Self-learning | Proposal-first for governed changes | Prevents self-modification of standards |
+| Governance metrics | Balanced effectiveness and efficiency | Avoids superficial compliance |
+
+### 15.21 Applying the Decisions to Alpha Car Detailing
+
+The Product Owner authorizes delegated corporate booking permissions. The Harness identifies affected APIs, tenant authorization, event contracts, and database changes. Trusted policy evaluation sets the minimum risk classification and required assurance controls. The Developer Agent implements within an isolated workspace; the Reviewer, Validator, and Evaluator Agents produce separate assessments.
+
+Before a protected progression, the governance service verifies the required Service Owner, Security Architect, Database Owner, and any other applicable approvals. Proposed changes to `CLAUDE.md` or shared Skills remain pending until independently reviewed and published. A protected deployment workflow then verifies the exact artifact, target environment, required checks, and release authorization. Correlation identifiers connect the resulting release to the original goal and supporting evidence.
+
+```mermaid
+flowchart TD
+    BG["Authorized Corporate Booking Goal"] --> RC["Trusted Risk Classification"]
+    RC --> LE["Lead Agent"]
+    LE --> DE["Developer Agent"]
+    DE --> VA["Validator Agent"]
+    DE --> RV["Reviewer Agent"]
+    VA --> EV["Evaluator Agent"]
+    RV --> EV
+    EV --> GD{"Governance Requirements Met?"}
+    GD -->|"No"| BLOCK["Block, Remediate or Escalate"]
+    GD -->|"Yes"| AP["Verified Human Approvals"]
+    AP -->|"Authorized"| REL["Protected Release Workflow"]
+    AP -->|"Not authorized"| BLOCK
+    REL --> AUD["Traceable Audit Evidence"]
+```
+
+This R3 scenario requires additional human review. Lower-risk work may use preapproved delegated authority, but production release remains subject to its independent deployment policies.
+
+### 15.22 Final Decision Principle
+
+An enterprise should delegate engineering execution according to proven capability and bounded risk while retaining authority for the decisions that assign responsibility, accept material risk, change mandatory standards, or grant privileged access. When these decisions are explicit, enforceable, and auditable, the Harness can become more autonomous without becoming the arbiter of its own governance.
+
+**AI Engineering may automate implementation and assessment; enterprise governance remains responsible for authorization and accountability.**
+
+## 16. Exercises
 
 The exercises in this chapter translate AI Governance principles into practical engineering and architectural decisions.
 
@@ -5402,7 +5798,7 @@ The objective is not merely to produce governance documentation. Readers should 
 
 Where possible, exercises should be implemented using the existing Alpha Car Detailing repository and Harness rather than an isolated demonstration application.
 
-### **Exercise 16.1 — Define an Enterprise AI Governance Model**
+### Exercise 16.1 — Define an Enterprise AI Governance Model
 
 **Objective**
 
@@ -5446,7 +5842,7 @@ The operating model supports multiple engineering teams without duplicating all 
 
 Explain whether a centralized, decentralized, or federated governance model is most appropriate for Alpha Car Detailing. Justify the decision in terms of consistency, scalability, autonomy, and accountability.
 
-### **Exercise 16.2 — Design an Agent Authority Matrix**
+### Exercise 16.2 — Design an Agent Authority Matrix
 
 **Objective**
 
@@ -5475,7 +5871,7 @@ An Agent authority matrix and an associated machine-readable policy.
 
 Example:
 
-```
+```yaml
 apiVersion: governance.alphacar/v1
 kind: AgentAuthorityPolicy
 
@@ -5526,7 +5922,7 @@ Unauthorized operations are rejected even when the Agent's Prompt explicitly req
 
 Determine whether distinct Agent Roles require separate workload identities or whether a shared execution infrastructure with independently enforced per-operation authorization can provide sufficient isolation.
 
-### **Exercise 16.3 — Implement Risk-Based Change Classification**
+### Exercise 16.3 — Implement Risk-Based Change Classification
 
 **Objective**
 
@@ -5579,7 +5975,7 @@ Unknown or inconclusive material risk conditions are escalated for review.
 
 Explain why a purely numerical weighted-average risk score may be insufficient for certain critical security conditions.
 
-### **Exercise 16.4 — Implement a Governance Gate in the Harness**
+### Exercise 16.4 — Implement a Governance Gate in the Harness
 
 **Objective**
 
@@ -5624,7 +6020,7 @@ Gate failures remain visible in the authoritative execution evidence.
 
 Determine which checks belong inside the Harness and which must also be enforced through source control and CI/CD infrastructure.
 
-### **Exercise 16.5 — Design a Human Approval Workflow**
+### Exercise 16.5 — Design a Human Approval Workflow
 
 **Objective**
 
@@ -5673,7 +6069,7 @@ Approval decisions remain attributable to authorized identities.
 
 Explain why an interactive tool permission confirmation is not necessarily equivalent to enterprise approval for a high-risk business or production decision.
 
-### **Exercise 16.6 — Govern a New Shared AI Skill**
+### Exercise 16.6 — Govern a New Shared AI Skill
 
 **Objective**
 
@@ -5722,7 +6118,7 @@ A compromised Skill version can be revoked and its affected consumers identified
 
 Determine which Skill changes require renewed security review and which may proceed through a lighter engineering approval process.
 
-### **Exercise 16.7 — Govern Changes to&#x20;**`CLAUDE.md`
+### Exercise 16.7 — Govern Changes to `CLAUDE.md`
 
 **Objective**
 
@@ -5767,7 +6163,7 @@ The Harness records the Instruction version used during execution.
 
 Explain how governance should respond if an existing Instruction conflicts with a mandatory enterprise security policy.
 
-### **Exercise 16.8 — Design a Governed Production Deployment**
+### Exercise 16.8 — Design a Governed Production Deployment
 
 **Objective**
 
@@ -5816,7 +6212,7 @@ Deployment activities are attributable to authorized identities and execution re
 
 Evaluate the trade-offs between allowing Agents to initiate deployment requests and giving Agents direct access to production deployment tools.
 
-### **Exercise 16.9 — Implement Governance Traceability**
+### Exercise 16.9 — Implement Governance Traceability
 
 **Objective**
 
@@ -5864,7 +6260,7 @@ Material evidence cannot be modified by an ordinary execution identity.
 
 Determine which evidence must be retained in a controlled audit system and which temporary execution artifacts may be removed after the run.
 
-### **Exercise 16.10 — Design a Governance Exception Process**
+### Exercise 16.10 — Design a Governance Exception Process
 
 **Objective**
 
@@ -5913,7 +6309,7 @@ The organization can identify unresolved exceptions.
 
 Explain how to distinguish an authorized temporary exception from an unauthorized permanent weakening of an enterprise standard.
 
-### **Exercise 16.11 — Threat Model the AI Engineering Harness**
+### Exercise 16.11 — Threat Model the AI Engineering Harness
 
 **Objective**
 
@@ -5958,7 +6354,7 @@ The model identifies residual risks and their accountable owners.
 
 Explain why separating Developer and Reviewer Agent Prompts is insufficient to establish a strong security boundary when both share unrestricted credentials.
 
-### **Exercise 16.12 — Design Governance for Multiple AI Coding Platforms**
+### Exercise 16.12 — Design Governance for Multiple AI Coding Platforms
 
 **Objective**
 
@@ -6005,7 +6401,7 @@ Platform-specific limitations are explicitly documented.
 
 Explain why a portable governance contract is more valuable than attempting to make every AI coding platform expose identical execution behavior.
 
-### **Exercise 16.13 — Build a Governance Metrics Dashboard**
+### Exercise 16.13 — Build a Governance Metrics Dashboard
 
 **Objective**
 
@@ -6055,7 +6451,7 @@ The dashboard allows governance findings to be connected to specific executions 
 
 Explain how reducing approval turnaround time could become a misleading success metric if approval quality is not assessed.
 
-### **Exercise 16.14 — Implement Governance Failure Handling**
+### Exercise 16.14 — Implement Governance Failure Handling
 
 **Objective**
 
@@ -6100,7 +6496,7 @@ An interrupted run can be resumed or safely reinitiated without losing essential
 
 Explain why failing closed is appropriate for privileged authorization while certain isolated development activities may continue under previously approved restrictions.
 
-### **Exercise 16.15 — Capstone: Govern an End-to-End AI-Assisted Engineering Change**
+### Exercise 16.15 — Capstone: Govern an End-to-End AI-Assisted Engineering Change
 
 **Objective**
 
@@ -6141,7 +6537,24 @@ The Harness must complete the authorized engineering work while preventing unaut
 
 **Expected architecture**
 
-\#chatgpt-mermaid-\_r_2un\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(237, 237, 237);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_2un\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_2un\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_2un\_ .error-icon{fill:rgb(48, 48, 48);}#chatgpt-mermaid-\_r_2un\_ .error-text{fill:rgb(237, 237, 237);stroke:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2un\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_2un\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_2un\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_2un\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_2un\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_2un\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_2un\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_2un\_ .marker.cross{stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_2un\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_2un\_ p{margin:0;}#chatgpt-mermaid-\_r_2un\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2un\_ .cluster-label text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2un\_ .cluster-label span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2un\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_2un\_ .label text,#chatgpt-mermaid-\_r_2un\_ span{fill:rgb(237, 237, 237);color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2un\_ .node rect,#chatgpt-mermaid-\_r_2un\_ .node circle,#chatgpt-mermaid-\_r_2un\_ .node ellipse,#chatgpt-mermaid-\_r_2un\_ .node polygon,#chatgpt-mermaid-\_r_2un\_ .node path{fill:rgb(9, 23, 44);stroke:rgb(31, 78, 148);stroke-width:1px;}#chatgpt-mermaid-\_r_2un\_ .rough-node .label text,#chatgpt-mermaid-\_r_2un\_ .node .label text,#chatgpt-mermaid-\_r_2un\_ .image-shape .label,#chatgpt-mermaid-\_r_2un\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_2un\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_2un\_ .rough-node .label,#chatgpt-mermaid-\_r_2un\_ .node .label,#chatgpt-mermaid-\_r_2un\_ .image-shape .label,#chatgpt-mermaid-\_r_2un\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_2un\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_2un\_ .root .anchor path{fill:rgb(175, 175, 175)!important;stroke-width:0;stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_2un\_ .arrowheadPath{fill:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_2un\_ .edgePath .path{stroke:rgb(175, 175, 175);stroke-width:1px;}#chatgpt-mermaid-\_r_2un\_ .flowchart-link{stroke:rgb(175, 175, 175);fill:none;}#chatgpt-mermaid-\_r_2un\_ .edgeLabel{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_2un\_ .edgeLabel p{background-color:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_2un\_ .edgeLabel rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_2un\_ .labelBkg{background-color:rgba(0, 0, 0, 0.5);}#chatgpt-mermaid-\_r_2un\_ .cluster rect{fill:rgb(48, 48, 48);stroke:rgba(255, 255, 255, 0.15);stroke-width:1px;}#chatgpt-mermaid-\_r_2un\_ .cluster text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2un\_ .cluster span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2un\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(48, 48, 48);border:1px solid rgba(255, 255, 255, 0.15);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_2un\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_2un\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_2un\_ .icon-shape,#chatgpt-mermaid-\_r_2un\_ .image-shape{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_2un\_ .icon-shape p,#chatgpt-mermaid-\_r_2un\_ .image-shape p{background-color:rgb(0, 0, 0);padding:2px;}#chatgpt-mermaid-\_r_2un\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_2un\_ .image-shape .label rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_2un\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_2un\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_2un\_ .node .neo-node{stroke:rgb(31, 78, 148);}#chatgpt-mermaid-\_r_2un\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_2un\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_2un\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_2un\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_2un\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_2un\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_2un\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_2un\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_2un\_ [data-look="neo"].node .neo-line path{stroke:rgb(31, 78, 148);filter:none;}#chatgpt-mermaid-\_r_2un\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_2un\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_2un\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_2un\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_2un\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_2un\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_2un\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_2un\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_2un\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_2un\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_2un\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_2un\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-width:1px;}#chatgpt-mermaid-\_r_2un\_ .node rect,#chatgpt-mermaid-\_r_2un\_ .node circle,#chatgpt-mermaid-\_r_2un\_ .node ellipse,#chatgpt-mermaid-\_r_2un\_ .node polygon,#chatgpt-mermaid-\_r_2un\_ .node path{fill:rgb(0, 40, 77);stroke:rgba(255, 255, 255, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_2un\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_2un\_ .mermaid-decision .label-container{fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_2un\_ .edgePaths .flowchart-link{stroke:rgb(175, 175, 175);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_2un\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_2un\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}Authorized Business GoalRisk ClassificationLead AgentDeveloper AgentReviewer AgentValidator AgentEvaluator AgentGovernance AssessmentHuman Approval Required?Trusted Approval VerificationDelegated AuthorizationProtected Release WorkflowGovernance EvidenceBlock or RemediateYesNoValidMissing or Invalid
+```mermaid
+flowchart TD
+    BG["Authorized Business Goal"] --> RC["Risk Classification"]
+    RC --> LE["Lead Agent"]
+    LE --> DE["Developer Agent"]
+    DE --> RV["Reviewer Agent"]
+    DE --> VA["Validator Agent"]
+    RV --> EV["Evaluator Agent"]
+    VA --> EV
+    EV --> GOV["Governance Assessment"]
+    GOV --> HU{"Additional Human Approval Required?"}
+    HU -->|"Yes"| AP["Trusted Approval Verification"]
+    HU -->|"No, approved delegated scope"| DL["Delegated Authorization"]
+    AP -->|"Valid"| REL["Protected Release Workflow"]
+    AP -->|"Missing or Invalid"| STOP["Block or Remediate"]
+    DL --> REL
+    REL -->|"Verify deployment-specific authorization"| AUD["Governance Evidence"]
+```
 
 The protected release workflow must still verify any deployment-specific authorization. A delegated decision for an earlier engineering stage is not automatically permission to deploy.
 
@@ -6170,7 +6583,7 @@ The completed capstone should produce a governance-aware Harness workflow, docum
 
 It should also include an architecture review explaining which governance responsibilities remain outside the Harness and why.
 
-### **16.16 Exercise Evaluation Rubric**
+### 16.16 Exercise Evaluation Rubric
 
 The following rubric can be used by technical leads, architects, or reviewers to evaluate the completed exercises.
 
@@ -6190,7 +6603,7 @@ It should prove that unauthorized operations are prevented, protected decisions 
 
 A solution that scores well in documentation but fails to enforce critical authority boundaries should not be considered production-ready.
 
-### **16.17 Reflection and Architectural Discussion**
+### 16.17 Reflection and Architectural Discussion
 
 After completing the exercises, consider the following questions.
 
@@ -6207,7 +6620,7 @@ After completing the exercises, consider the following questions.
 
 These questions should be discussed in the context of actual enterprise delivery constraints rather than answered exclusively through theoretical policy definitions.
 
-### **16.18 Completion Criteria**
+### 16.18 Completion Criteria
 
 The exercises collectively establish the practical foundation for enterprise-governed AI Engineering.
 
@@ -6221,9 +6634,7 @@ The essential outcome is not the number of governance artifacts produced.
 
 It is the ability to demonstrate that **engineering autonomy remains bounded by enforceable policies, independently verified approvals, and accountable enterprise decision-making**.
 
-**Chapter 29 status: In progress — next section: Interview Questions**
-
-## **17. Interview Questions**
+## 17. Interview Questions
 
 Enterprise AI Governance requires more than familiarity with AI coding tools or organizational policy documents. Architects and engineering leaders must understand how to translate governance principles into enforceable authority boundaries, accountable decision-making, and evidence-driven engineering workflows.
 
@@ -6235,9 +6646,9 @@ The questions progress from foundational governance concepts to architecture des
 
 Each question includes an expected answer and, where appropriate, the architectural considerations that distinguish a strong enterprise-level response.
 
-### **17.1 Foundations of AI Governance**
+### 17.1 Foundations of AI Governance
 
-#### **Question 1: What is AI Governance in enterprise software engineering?**
+#### Question 1: What is AI Governance in enterprise software engineering?
 
 **Expected answer**
 
@@ -6249,7 +6660,7 @@ AI Governance extends existing software engineering governance to address the ca
 
 Its purpose is to enable controlled autonomy while preserving organizational authority.
 
-#### **Question 2: Why is AI Governance necessary when an organization already has code reviews, security scanning, and CI/CD pipelines?**
+#### Question 2: Why is AI Governance necessary when an organization already has code reviews, security scanning, and CI/CD pipelines?
 
 **Expected answer**
 
@@ -6263,7 +6674,7 @@ AI Governance therefore addresses Agent authority, tool permissions, model and p
 
 It should extend existing engineering controls rather than unnecessarily replace them.
 
-#### **Question 3: What is the difference between AI Governance and AI Engineering?**
+#### Question 3: What is the difference between AI Governance and AI Engineering?
 
 **Expected answer**
 
@@ -6279,7 +6690,7 @@ AI Governance answers whether the work is authorized, which constraints apply, a
 
 The two disciplines are complementary.
 
-#### **Question 4: What is the difference between Agent autonomy and Agent authority?**
+#### Question 4: What is the difference between Agent autonomy and Agent authority?
 
 **Expected answer**
 
@@ -6293,7 +6704,7 @@ A highly autonomous Agent can therefore operate within narrow authority boundari
 
 This distinction allows enterprises to increase automation without surrendering control over organizational decisions.
 
-#### **Question 5: Why must humans remain accountable for enterprise AI Engineering decisions?**
+#### Question 5: Why must humans remain accountable for enterprise AI Engineering decisions?
 
 **Expected answer**
 
@@ -6307,9 +6718,9 @@ An Agent cannot become the accountable business owner or security approval autho
 
 Meaningful human oversight is required where enterprise policy reserves the decision for authorized individuals.
 
-### **17.2 Ownership and Organizational Accountability**
+### 17.2 Ownership and Organizational Accountability
 
-#### **Question 6: How do ownership, responsibility, accountability, and authority differ?**
+#### Question 6: How do ownership, responsibility, accountability, and authority differ?
 
 **Expected answer**
 
@@ -6331,7 +6742,7 @@ The designated release authority may authorize production deployment.
 
 These responsibilities should be explicitly assigned rather than assumed to belong to the same actor.
 
-#### **Question 7: Who should own repository Instructions such as&#x20;**`CLAUDE.md`**?**
+#### Question 7: Who should own repository Instructions such as `CLAUDE.md`?
 
 **Expected answer**
 
@@ -6345,7 +6756,7 @@ AI Agents may read and propose changes to Instructions, but they should not sile
 
 Ownership should be supported by version control, protected review, and publication mechanisms.
 
-#### **Question 8: Who should own reusable AI Skills?**
+#### Question 8: Who should own reusable AI Skills?
 
 **Expected answer**
 
@@ -6357,7 +6768,7 @@ Skills with broad reuse or privileged behavior may require additional architectu
 
 An Agent that generates a Skill should not automatically become authorized to publish it as an enterprise standard.
 
-#### **Question 9: What governance operating model would you recommend for a large enterprise?**
+#### Question 9: What governance operating model would you recommend for a large enterprise?
 
 **Expected answer**
 
@@ -6371,9 +6782,9 @@ Security, architecture, business, data, and release authorities retain their des
 
 This balances organizational consistency with engineering autonomy and avoids routing every low-risk change through a central approval body.
 
-### **17.3 Agent Authority and Security Boundaries**
+### 17.3 Agent Authority and Security Boundaries
 
-#### **Question 10: How would you define authority boundaries for different Agent Roles?**
+#### Question 10: How would you define authority boundaries for different Agent Roles?
 
 **Expected answer**
 
@@ -6393,7 +6804,7 @@ None of these responsibilities automatically grants authority to approve high-ri
 
 The policy should classify operations as autonomous, proposal-only, human-gated, or prohibited and enforce those restrictions through trusted technical controls.
 
-#### **Question 11: Why is separating Developer and Reviewer Agents insufficient for governance?**
+#### Question 11: Why is separating Developer and Reviewer Agents insufficient for governance?
 
 **Expected answer**
 
@@ -6405,7 +6816,7 @@ If either Agent can disable tests, change policies, or approve its own operation
 
 Effective separation of duties requires independently enforced permissions, protected evidence, and external authorization for consequential decisions.
 
-#### **Question 12: What is the principle of least privilege in an AI Engineering Harness?**
+#### Question 12: What is the principle of least privilege in an AI Engineering Harness?
 
 **Expected answer**
 
@@ -6419,7 +6830,7 @@ High-risk operations should be performed through protected services using scoped
 
 Natural-language Instructions should reinforce these restrictions but should not serve as the sole enforcement mechanism.
 
-#### **Question 13: How should the Harness handle an Agent requesting an unauthorized tool operation?**
+#### Question 13: How should the Harness handle an Agent requesting an unauthorized tool operation?
 
 **Expected answer**
 
@@ -6433,7 +6844,7 @@ Where appropriate, the Agent may be informed that approval or rescoping is requi
 
 It must not gain authorization merely by rephrasing the request or invoking a different tool that provides equivalent access.
 
-#### **Question 14: What is the difference between a tool permission prompt and enterprise approval?**
+#### Question 14: What is the difference between a tool permission prompt and enterprise approval?
 
 **Expected answer**
 
@@ -6445,9 +6856,9 @@ A user allowing an Agent to execute a command does not necessarily authorize a p
 
 High-risk enterprise approvals should be verified through trusted mechanisms connected to the actual decision authority.
 
-### **17.4 Risk Classification and Human Approval**
+### 17.4 Risk Classification and Human Approval
 
-#### **Question 15: How should an enterprise classify AI-assisted engineering changes by risk?**
+#### Question 15: How should an enterprise classify AI-assisted engineering changes by risk?
 
 **Expected answer**
 
@@ -6461,7 +6872,7 @@ For example, authorization behavior changes may require at least high-risk class
 
 The classification should be reassessed when implementation scope changes.
 
-#### **Question 16: Why should an Agent not be permitted to downgrade its own risk classification?**
+#### Question 16: Why should an Agent not be permitted to downgrade its own risk classification?
 
 **Expected answer**
 
@@ -6475,7 +6886,7 @@ Mandatory risk conditions should therefore be enforced through trusted policies 
 
 Material downgrades should require appropriate review rather than relying exclusively on the executing Agent's judgment.
 
-#### **Question 17: Which AI Engineering changes should require human approval?**
+#### Question 17: Which AI Engineering changes should require human approval?
 
 **Expected answer**
 
@@ -6489,7 +6900,7 @@ Low-risk work may proceed under established delegated authority and standard rep
 
 The objective is meaningful human oversight, not universal manual intervention.
 
-#### **Question 18: What makes a human approval meaningful and verifiable?**
+#### Question 18: What makes a human approval meaningful and verifiable?
 
 **Expected answer**
 
@@ -6501,7 +6912,7 @@ A statement in an Agent report that approval was received is not sufficient.
 
 The Harness or protected execution service should verify the approval against an authoritative system.
 
-#### **Question 19: Why should approvals be bound to artifact digests?**
+#### Question 19: Why should approvals be bound to artifact digests?
 
 **Expected answer**
 
@@ -6515,7 +6926,7 @@ Binding approval to a verified artifact allows the release system to reject mate
 
 The same principle applies to the deployment target, action, and approval validity period.
 
-#### **Question 20: How would you prevent excessive human approvals from slowing engineering delivery?**
+#### Question 20: How would you prevent excessive human approvals from slowing engineering delivery?
 
 **Expected answer**
 
@@ -6529,9 +6940,9 @@ Monitor approval turnaround time and assess whether specialized approvals corres
 
 Avoid removing required high-risk approval merely to improve delivery metrics.
 
-### **17.5 Instructions, Skills, and Harness Governance**
+### 17.5 Instructions, Skills, and Harness Governance
 
-#### **Question 21: Why are Instructions and Skills considered governed engineering assets?**
+#### Question 21: Why are Instructions and Skills considered governed engineering assets?
 
 **Expected answer**
 
@@ -6545,7 +6956,7 @@ A defect or unauthorized modification may therefore have a broad propagation eff
 
 These assets require ownership, review, versioning, integrity protection, controlled publication, and traceability to consuming executions.
 
-#### **Question 22: How should an Agent propose a change to&#x20;**`CLAUDE.md`**?**
+#### Question 22: How should an Agent propose a change to `CLAUDE.md`?
 
 **Expected answer**
 
@@ -6557,7 +6968,7 @@ The designated owner and any applicable security or architecture authority shoul
 
 Only an authorized publication workflow should activate the approved revision.
 
-#### **Question 23: How would you prevent a Harness from disabling its own mandatory validation gates?**
+#### Question 23: How would you prevent a Harness from disabling its own mandatory validation gates?
 
 **Expected answer**
 
@@ -6569,7 +6980,7 @@ The Agent may propose a change to a gate but should not be able to activate it w
 
 The final protected workflow should verify required checks independently of Agent-generated summaries.
 
-#### **Question 24: What governance risks arise from a self-learning Harness?**
+#### Question 24: What governance risks arise from a self-learning Harness?
 
 **Expected answer**
 
@@ -6583,7 +6994,7 @@ A governed design separates observation, recommendation, testing, and authorized
 
 Improvements to shared Instructions, Skills, security policies, or mandatory gates require the applicable ownership and approval process.
 
-#### **Question 25: How do scratchpad files differ from governed knowledge?**
+#### Question 25: How do scratchpad files differ from governed knowledge?
 
 **Expected answer**
 
@@ -6597,9 +7008,9 @@ The Harness may derive proposed knowledge from scratchpad observations, but prom
 
 Temporary Agent conclusions must not silently become enterprise standards.
 
-### **17.6 Governance Architecture and Enforcement**
+### 17.6 Governance Architecture and Enforcement
 
-#### **Question 26: What is the difference between the governance control plane and the AI Engineering execution plane?**
+#### Question 26: What is the difference between the governance control plane and the AI Engineering execution plane?
 
 **Expected answer**
 
@@ -6615,7 +7026,7 @@ Enforcement mechanisms connect the two.
 
 Critical policy and approval authority must remain protected from ordinary execution identities.
 
-#### **Question 27: What are Policy Decision Points and Policy Enforcement Points?**
+#### Question 27: What are Policy Decision Points and Policy Enforcement Points?
 
 **Expected answer**
 
@@ -6629,7 +7040,7 @@ A controlled database operation service or identity boundary prevents execution 
 
 The decision and enforcement components may use different technologies, but their responsibilities should remain distinct.
 
-#### **Question 28: Why should governance enforcement not rely entirely on Prompts?**
+#### Question 28: Why should governance enforcement not rely entirely on Prompts?
 
 **Expected answer**
 
@@ -6641,7 +7052,7 @@ Critical governance boundaries should be implemented using trusted mechanisms su
 
 Prompts should support compliance with those boundaries rather than replace them.
 
-#### **Question 29: How would you design governance for multiple AI coding platforms?**
+#### Question 29: How would you design governance for multiple AI coding platforms?
 
 **Expected answer**
 
@@ -6655,7 +7066,7 @@ Where a platform cannot meet the enforcement requirements for a particular activ
 
 The goal is consistent organizational control, not identical internal platform behavior.
 
-#### **Question 30: What should happen when the governance policy service is unavailable?**
+#### Question 30: What should happen when the governance policy service is unavailable?
 
 **Expected answer**
 
@@ -6669,9 +7080,9 @@ The Harness should distinguish denial, service unavailability, and inconclusive 
 
 Critical governance service failures should be recorded and escalated.
 
-### **17.7 Security, Privacy, and Auditability**
+### 17.7 Security, Privacy, and Auditability
 
-#### **Question 31: What security risks are introduced by AI Agent tool execution?**
+#### Question 31: What security risks are introduced by AI Agent tool execution?
 
 **Expected answer**
 
@@ -6681,7 +7092,7 @@ Risks include excessive permissions, credential exposure, unauthorized modificat
 
 Mitigations include least-privilege identities, sandboxing, restricted tools, resource-scoped permissions, privileged gateways, and independent approval for protected actions.
 
-#### **Question 32: How should an enterprise defend against prompt injection in AI Engineering workflows?**
+#### Question 32: How should an enterprise defend against prompt injection in AI Engineering workflows?
 
 **Expected answer**
 
@@ -6693,7 +7104,7 @@ Defenses should include careful context handling, tool restrictions, permission 
 
 No single Prompt instruction should be treated as a complete prompt-injection defense.
 
-#### **Question 33: How should sensitive customer information be handled during Agent execution?**
+#### Question 33: How should sensitive customer information be handled during Agent execution?
 
 **Expected answer**
 
@@ -6705,7 +7116,7 @@ For Alpha Car Detailing, a booking defect may be reproduced using synthetic corp
 
 Logs, scratchpads, tool outputs, and audit evidence should all be considered potential locations of sensitive data exposure.
 
-#### **Question 34: What information should a governance audit trail contain?**
+#### Question 34: What information should a governance audit trail contain?
 
 **Expected answer**
 
@@ -6717,7 +7128,7 @@ Authoritative evidence should be distinguishable from Agent-generated summaries.
 
 Integrity and access controls should prevent ordinary Agent identities from modifying critical audit records.
 
-#### **Question 35: How does traceability differ from audit logging?**
+#### Question 35: How does traceability differ from audit logging?
 
 **Expected answer**
 
@@ -6731,9 +7142,9 @@ Traceability identifies which change the tests assessed, which artifact version 
 
 A mature governance system requires both where appropriate.
 
-### **17.8 Change Management and Exceptions**
+### 17.8 Change Management and Exceptions
 
-#### **Question 36: How should governance handle API and event contract changes?**
+#### Question 36: How should governance handle API and event contract changes?
 
 **Expected answer**
 
@@ -6745,7 +7156,7 @@ For a published event, compatibility checks alone may be insufficient if new inf
 
 The relevant contract owner and applicable data or security authorities should approve changes according to enterprise policy.
 
-#### **Question 37: How should database migrations be governed?**
+#### Question 37: How should database migrations be governed?
 
 **Expected answer**
 
@@ -6755,7 +7166,7 @@ Higher-risk migrations may require Database Owner approval, maintenance planning
 
 The Developer Agent may generate migration code, but production execution must follow the organization's approved release and database governance process.
 
-#### **Question 38: What is the difference between approval and a governance exception?**
+#### Question 38: What is the difference between approval and a governance exception?
 
 **Expected answer**
 
@@ -6769,7 +7180,7 @@ An Agent may prepare an exception request but cannot grant the exception to itse
 
 Certain legal or contractual obligations may not be waivable through an internal exception process.
 
-#### **Question 39: How should emergency changes be governed?**
+#### Question 39: How should emergency changes be governed?
 
 **Expected answer**
 
@@ -6781,9 +7192,9 @@ Essential evidence should be retained, and the organization should conduct retro
 
 Emergency access should not become a permanent bypass of normal security or release controls.
 
-### **17.9 Governance Metrics and Continuous Assurance**
+### 17.9 Governance Metrics and Continuous Assurance
 
-#### **Question 40: Which metrics would you use to evaluate AI Governance effectiveness?**
+#### Question 40: Which metrics would you use to evaluate AI Governance effectiveness?
 
 **Expected answer**
 
@@ -6795,7 +7206,7 @@ A high approval count does not necessarily demonstrate meaningful governance.
 
 Metrics should be interpreted together and supported by authoritative evidence.
 
-#### **Question 41: How can governance metrics create undesirable incentives?**
+#### Question 41: How can governance metrics create undesirable incentives?
 
 **Expected answer**
 
@@ -6809,7 +7220,7 @@ A reduction in detected security issues may reflect weaker scanning rather than 
 
 Governance measurement should therefore include control integrity and independent outcome assessment.
 
-#### **Question 42: How should an enterprise continuously improve its AI Governance model?**
+#### Question 42: How should an enterprise continuously improve its AI Governance model?
 
 **Expected answer**
 
@@ -6821,9 +7232,9 @@ Changes to authoritative Instructions, Skills, policies, and enforcement mechani
 
 Continuous improvement must not permit the Harness to silently redefine the standards against which it is evaluated.
 
-### **17.10 Scenario-Based Architecture Questions**
+### 17.10 Scenario-Based Architecture Questions
 
-#### **Question 43: The Developer Agent changes corporate booking authorization and all tests pass. Can the Harness automatically deploy?**
+#### Question 43: The Developer Agent changes corporate booking authorization and all tests pass. Can the Harness automatically deploy?
 
 **Expected answer**
 
@@ -6837,7 +7248,7 @@ The protected release workflow must independently verify the approved artifact a
 
 Successful testing is engineering evidence, not unrestricted production authority.
 
-#### **Question 44: An Agent modifies&#x20;**`CLAUDE.md`**&#x20;to resolve an architecture validation failure. How should the system respond?**
+#### Question 44: An Agent modifies `CLAUDE.md` to resolve an architecture validation failure. How should the system respond?
 
 **Expected answer**
 
@@ -6849,7 +7260,7 @@ The Harness should preserve the attempted change as a proposal if appropriate, r
 
 The original architecture gate should remain effective until a revised standard is formally approved and published.
 
-#### **Question 45: The Harness discovers that a shared Skill generates an insecure authorization pattern across several services. What should happen?**
+#### Question 45: The Harness discovers that a shared Skill generates an insecure authorization pattern across several services. What should happen?
 
 **Expected answer**
 
@@ -6863,7 +7274,7 @@ A corrected Skill should undergo testing, review, approval, and controlled publi
 
 The learning component may assist with detection and remediation proposals, but it should not silently publish the replacement.
 
-#### **Question 46: A security approval was granted, but the Agent changed the code afterward. Is the original approval still valid?**
+#### Question 46: A security approval was granted, but the Agent changed the code afterward. Is the original approval still valid?
 
 **Expected answer**
 
@@ -6875,7 +7286,7 @@ The system should reassess the change and obtain renewed authorization where req
 
 The deployment platform should verify the actual release artifact against the authorized artifact.
 
-#### **Question 47: An Agent needs production database access to diagnose an issue. How should the request be handled?**
+#### Question 47: An Agent needs production database access to diagnose an issue. How should the request be handled?
 
 **Expected answer**
 
@@ -6889,7 +7300,7 @@ The Agent should not receive unrestricted database administrator credentials.
 
 Access and resulting operations should be recorded.
 
-#### **Question 48: Two Agents disagree about whether an API change is compliant. Who makes the final decision?**
+#### Question 48: Two Agents disagree about whether an API change is compliant. Who makes the final decision?
 
 **Expected answer**
 
@@ -6905,7 +7316,7 @@ If it concerns contractual acceptance, the authorized business or contract owner
 
 The Lead Agent should coordinate resolution rather than simply selecting the more favorable Agent opinion.
 
-#### **Question 49: An AI-generated production fix is urgent, but the approval service is unavailable. What should the Harness do?**
+#### Question 49: An AI-generated production fix is urgent, but the approval service is unavailable. What should the Harness do?
 
 **Expected answer**
 
@@ -6919,7 +7330,7 @@ That process should maintain appropriate identity, scope, and audit requirements
 
 Without a valid authorized pathway, protected production execution should remain blocked.
 
-#### **Question 50: An organization is adopting Claude Code today but expects to support other AI platforms later. How should governance be designed?**
+#### Question 50: An organization is adopting Claude Code today but expects to support other AI platforms later. How should governance be designed?
 
 **Expected answer**
 
@@ -6933,9 +7344,9 @@ When GitHub Copilot, Codex, or another platform is introduced, integrate it with
 
 Any platform unable to satisfy required controls should be restricted from the corresponding high-risk activities.
 
-### **17.11 Advanced Architecture and Leadership Questions**
+### 17.11 Advanced Architecture and Leadership Questions
 
-#### **Question 51: Can an enterprise operate a highly autonomous AI Engineering Harness without continuous human supervision?**
+#### Question 51: Can an enterprise operate a highly autonomous AI Engineering Harness without continuous human supervision?
 
 **Expected answer**
 
@@ -6949,7 +7360,7 @@ The objective is not continuous human supervision of every operation.
 
 It is independent enforcement of authority boundaries and meaningful human involvement where required.
 
-#### **Question 52: What is the most significant architectural risk of an adaptive Harness?**
+#### Question 52: What is the most significant architectural risk of an adaptive Harness?
 
 **Expected answer**
 
@@ -6961,7 +7372,7 @@ This creates a conflict between performance optimization and governance integrit
 
 The architecture should separate observation and recommendation from authorization and activation of governed changes.
 
-#### **Question 53: How would you prove that an AI Engineering Harness is governed rather than merely instructed?**
+#### Question 53: How would you prove that an AI Engineering Harness is governed rather than merely instructed?
 
 **Expected answer**
 
@@ -6973,7 +7384,7 @@ Also demonstrate that material actions and decisions are traceable to authoritat
 
 Documentation alone does not establish that the controls operate.
 
-#### **Question 54: How should architects evaluate governance trade-offs between productivity and control?**
+#### Question 54: How should architects evaluate governance trade-offs between productivity and control?
 
 **Expected answer**
 
@@ -6987,7 +7398,7 @@ Governance metrics should measure both engineering efficiency and control effect
 
 The objective is proportionate assurance rather than maximum restriction.
 
-#### **Question 55: What is the fundamental architectural principle of enterprise AI Governance?**
+#### Question 55: What is the fundamental architectural principle of enterprise AI Governance?
 
 **Expected answer**
 
@@ -6997,7 +7408,7 @@ The enterprise retains ownership of policies, approval boundaries, privileged pe
 
 The architecture must make those boundaries enforceable independently of Agent-generated instructions or assessments.
 
-### **17.12 Practical Interview Exercise: Architecture Review**
+### 17.12 Practical Interview Exercise: Architecture Review
 
 A senior architecture interview may require the candidate to evaluate an existing AI Engineering system rather than explain governance concepts individually.
 
@@ -7038,7 +7449,7 @@ The candidate should propose an architecture with dedicated execution identities
 
 The revised architecture should permit substantial autonomous development while preventing Agents from granting themselves additional authority.
 
-### **17.13 Interview Evaluation Guidance**
+### 17.13 Interview Evaluation Guidance
 
 The purpose of these questions is to assess architectural judgment, not memorization of product-specific commands or governance terminology.
 
@@ -7061,7 +7472,7 @@ These mechanisms can support governance, but they do not replace independently e
 
 For senior architects and engineering leaders, the strongest responses connect governance principles to concrete architecture decisions and explain why those boundaries remain necessary as Agent capabilities increase.
 
-### **17.14 Closing Perspective**
+### 17.14 Closing Perspective
 
 The central question in enterprise AI Engineering is no longer whether AI Agents can generate useful software.
 
@@ -7079,9 +7490,7 @@ The defining capability of a mature enterprise AI Engineering organization is th
 
 It is the ability to combine **highly automated engineering execution with enforceable governance, independent authorization, and enduring human accountability**.
 
-**Chapter 29 status: In progress — next section: Chapter Summary**
-
-## **18. Chapter Summary**
+## 18. Chapter Summary
 
 Enterprise AI Governance establishes the organizational and technical boundaries within which AI-assisted software engineering can operate responsibly.
 
@@ -7097,7 +7506,7 @@ The central principle of this chapter is therefore:
 
 **AI Agents may perform engineering work, but they must not become the final authority for enterprise decisions. Humans and organizational governance remain accountable.**
 
-### **18.1 Governance Extends Beyond Technical Correctness**
+### 18.1 Governance Extends Beyond Technical Correctness
 
 The chapter established that technical correctness and enterprise authorization are distinct concerns.
 
@@ -7121,7 +7530,7 @@ A favorable Evaluator assessment does not authorize a production deployment.
 
 An enterprise-grade Harness must preserve these distinctions rather than collapsing all assessments into a single success status.
 
-### **18.2 Ownership and Accountability Must Remain Explicit**
+### 18.2 Ownership and Accountability Must Remain Explicit
 
 Effective governance begins with clear organizational ownership.
 
@@ -7141,7 +7550,7 @@ Similarly, an Agent may recommend an architectural improvement without becoming 
 
 The organization should establish explicit responsibility and approval matrices so that consequential decisions are attributable to authorized individuals and functions.
 
-### **18.3 Agent Autonomy Must Operate Within Defined Authority Boundaries**
+### 18.3 Agent Autonomy Must Operate Within Defined Authority Boundaries
 
 Autonomy and authority are not equivalent.
 
@@ -7164,7 +7573,7 @@ Instructions and Prompts communicate expectations, but they cannot replace ident
 
 The effective authority of an Agent should remain constrained by its Role, task scope, enterprise policies, and enforced permissions.
 
-### **18.4 Governance Must Be Proportional to Risk**
+### 18.4 Governance Must Be Proportional to Risk
 
 Not every engineering change requires the same level of oversight.
 
@@ -7182,7 +7591,7 @@ Agents should not be allowed to downgrade their own risk classification to avoid
 
 A proportionate governance model enables low-risk work to proceed efficiently while reserving stronger controls for consequential decisions.
 
-### **18.5 Human Approval Must Be Meaningful and Verifiable**
+### 18.5 Human Approval Must Be Meaningful and Verifiable
 
 Human oversight should not become an administrative formality.
 
@@ -7200,7 +7609,7 @@ Approval to merge a pull request does not necessarily authorize deployment to pr
 
 The governance architecture must ensure that protected operations occur only when the applicable authorization can be established independently.
 
-### **18.6 Instructions, Skills, and Harness Configurations Are Governed Assets**
+### 18.6 Instructions, Skills, and Harness Configurations Are Governed Assets
 
 AI Engineering introduces reusable assets that influence how future software is generated and evaluated.
 
@@ -7226,7 +7635,7 @@ This principle becomes especially important in self-learning Harnesses.
 
 Learning components may observe recurring patterns and propose improvements, but they must not transform temporary observations or assumptions into governed knowledge without review.
 
-### **18.7 Governance Requires Independent Technical Enforcement**
+### 18.7 Governance Requires Independent Technical Enforcement
 
 The chapter introduced the distinction between the governance control plane and the engineering execution plane.
 
@@ -7248,7 +7657,7 @@ Mandatory validation gates should remain protected from unauthorized modificatio
 
 The system being governed must not possess unrestricted authority to change or bypass the controls governing it.
 
-### **18.8 Security, Privacy, and Data Governance Apply Throughout Execution**
+### 18.8 Security, Privacy, and Data Governance Apply Throughout Execution
 
 AI Agents may consume source code, customer information, operational logs, configuration files, technical documentation, and external knowledge sources.
 
@@ -7264,7 +7673,7 @@ Governance must also address model and provider suitability.
 
 An approved AI platform should be used only for workloads and information categories consistent with the organization's policies and contractual requirements.
 
-### **18.9 Audit Trails Must Support End-to-End Traceability**
+### 18.9 Audit Trails Must Support End-to-End Traceability
 
 Enterprise governance requires more than a final statement that an Agent run succeeded.
 
@@ -7272,7 +7681,20 @@ The organization should be able to reconstruct the path from an authorized busin
 
 A complete traceability model connects:
 
-\#chatgpt-mermaid-\_r_310\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(237, 237, 237);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_310\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_310\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_310\_ .error-icon{fill:rgb(48, 48, 48);}#chatgpt-mermaid-\_r_310\_ .error-text{fill:rgb(237, 237, 237);stroke:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_310\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_310\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_310\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_310\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_310\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_310\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_310\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_310\_ .marker.cross{stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_310\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_310\_ p{margin:0;}#chatgpt-mermaid-\_r_310\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_310\_ .cluster-label text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_310\_ .cluster-label span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_310\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_310\_ .label text,#chatgpt-mermaid-\_r_310\_ span{fill:rgb(237, 237, 237);color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_310\_ .node rect,#chatgpt-mermaid-\_r_310\_ .node circle,#chatgpt-mermaid-\_r_310\_ .node ellipse,#chatgpt-mermaid-\_r_310\_ .node polygon,#chatgpt-mermaid-\_r_310\_ .node path{fill:rgb(9, 23, 44);stroke:rgb(31, 78, 148);stroke-width:1px;}#chatgpt-mermaid-\_r_310\_ .rough-node .label text,#chatgpt-mermaid-\_r_310\_ .node .label text,#chatgpt-mermaid-\_r_310\_ .image-shape .label,#chatgpt-mermaid-\_r_310\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_310\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_310\_ .rough-node .label,#chatgpt-mermaid-\_r_310\_ .node .label,#chatgpt-mermaid-\_r_310\_ .image-shape .label,#chatgpt-mermaid-\_r_310\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_310\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_310\_ .root .anchor path{fill:rgb(175, 175, 175)!important;stroke-width:0;stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_310\_ .arrowheadPath{fill:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_310\_ .edgePath .path{stroke:rgb(175, 175, 175);stroke-width:1px;}#chatgpt-mermaid-\_r_310\_ .flowchart-link{stroke:rgb(175, 175, 175);fill:none;}#chatgpt-mermaid-\_r_310\_ .edgeLabel{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_310\_ .edgeLabel p{background-color:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_310\_ .edgeLabel rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_310\_ .labelBkg{background-color:rgba(0, 0, 0, 0.5);}#chatgpt-mermaid-\_r_310\_ .cluster rect{fill:rgb(48, 48, 48);stroke:rgba(255, 255, 255, 0.15);stroke-width:1px;}#chatgpt-mermaid-\_r_310\_ .cluster text{fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_310\_ .cluster span{color:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_310\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(48, 48, 48);border:1px solid rgba(255, 255, 255, 0.15);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_310\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(237, 237, 237);}#chatgpt-mermaid-\_r_310\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_310\_ .icon-shape,#chatgpt-mermaid-\_r_310\_ .image-shape{background-color:rgb(0, 0, 0);text-align:center;}#chatgpt-mermaid-\_r_310\_ .icon-shape p,#chatgpt-mermaid-\_r_310\_ .image-shape p{background-color:rgb(0, 0, 0);padding:2px;}#chatgpt-mermaid-\_r_310\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_310\_ .image-shape .label rect{opacity:0.5;background-color:rgb(0, 0, 0);fill:rgb(0, 0, 0);}#chatgpt-mermaid-\_r_310\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_310\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_310\_ .node .neo-node{stroke:rgb(31, 78, 148);}#chatgpt-mermaid-\_r_310\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_310\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_310\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_310\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_310\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_310\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_310\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_310\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_310\_ [data-look="neo"].node .neo-line path{stroke:rgb(31, 78, 148);filter:none;}#chatgpt-mermaid-\_r_310\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_310\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_310\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_310\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_310\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_310\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_310\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_310\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_310\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_310\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_310\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_310\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-width:1px;}#chatgpt-mermaid-\_r_310\_ .node rect,#chatgpt-mermaid-\_r_310\_ .node circle,#chatgpt-mermaid-\_r_310\_ .node ellipse,#chatgpt-mermaid-\_r_310\_ .node polygon,#chatgpt-mermaid-\_r_310\_ .node path{fill:rgb(0, 40, 77);stroke:rgba(255, 255, 255, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_310\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_310\_ .mermaid-decision .label-container{fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_310\_ .edgePaths .flowchart-link{stroke:rgb(175, 175, 175);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_310\_ .marker{fill:rgb(175, 175, 175);stroke:rgb(175, 175, 175);}#chatgpt-mermaid-\_r_310\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}Authorized Business GoalAI Engineering HarnessAgents and Approved ToolsPolicies, Instructions andControlsValidation, Review andEvaluationRisk-Based AuthorizationVerified Human ApprovalDelegated AuthorityApproved EngineeringOutcomeAudit EvidenceApproval RequiredWithin Approved Boundaries
+```mermaid
+flowchart TD
+    BG["Authorized Business Goal"] --> H["AI Engineering Harness"]
+    H --> A["Agents and Approved Tools"]
+    A --> V["Validation, Review and Evaluation"]
+    V --> R{"Risk-Based Authorization"}
+    R -->|"Human approval required"| HU["Verified Human Approval"]
+    R -->|"Delegated authority"| DA["Delegated Authority"]
+    HU --> O["Approved Engineering Outcome"]
+    DA --> O
+    O --> E["Audit Evidence"]
+    P["Policies, Instructions and Controls"] -.-> H
+    P -.-> A
+```
 
 This logical model should be supported by durable identifiers, policy versions, artifact digests, validation evidence, approval records, and release outcomes.
 
@@ -7280,7 +7702,7 @@ Authoritative system results must remain distinguishable from Agent-generated in
 
 Audit evidence should be protected against unauthorized alteration while respecting privacy, data minimization, and retention requirements.
 
-### **18.10 Exceptions Must Be Governed Rather Than Hidden**
+### 18.10 Exceptions Must Be Governed Rather Than Hidden
 
 Enterprise engineering standards cannot anticipate every circumstance.
 
@@ -7296,7 +7718,7 @@ They must not approve their own deviations.
 
 Recurring exceptions should also inform periodic governance reviews because they may reveal weaknesses in implementation practices or outdated standards.
 
-### **18.11 Governance Must Remain Vendor-Neutral**
+### 18.11 Governance Must Remain Vendor-Neutral
 
 Claude Code, GitHub Copilot, Codex, and future AI coding platforms may differ in repository guidance, tool invocation, execution environments, permissions, and integration mechanisms.
 
@@ -7310,7 +7732,7 @@ A portable governance architecture separates enterprise policies from platform a
 
 This allows organizations to adopt new models and coding agents without redesigning their fundamental accountability model.
 
-### **18.12 Governance Effectiveness Must Be Measured and Reviewed**
+### 18.12 Governance Effectiveness Must Be Measured and Reviewed
 
 A large policy library does not necessarily indicate mature governance.
 
@@ -7328,7 +7750,7 @@ Reduced security findings are not necessarily evidence of improved security if s
 
 The governance model should evolve through periodic, evidence-driven review and authorized policy changes.
 
-### **18.13 Lessons from Alpha Car Detailing**
+### 18.13 Lessons from Alpha Car Detailing
 
 The Corporate Fleet Booking scenario demonstrated the practical importance of these governance principles.
 
@@ -7354,7 +7776,7 @@ It could not replace the organizational authorities responsible for those decisi
 
 The scenario illustrates a fundamental distinction: an implementation can be technically successful without being authorized for enterprise use.
 
-### **18.14 Essential Principles to Retain**
+### 18.14 Essential Principles to Retain
 
 The chapter established several principles that should guide the design and operation of enterprise AI Engineering systems.
 
@@ -7374,7 +7796,7 @@ The chapter established several principles that should guide the design and oper
 
 **Finally, the governance system must remain independent of the Agents it governs.** Agents must not acquire unrestricted authority to modify policies, conceal failures, grant privileges, or approve their own high-risk actions.
 
-### **18.15 Closing Perspective**
+### 18.15 Closing Perspective
 
 The evolution from AI-assisted coding to autonomous AI Engineering changes the responsibilities of software architects and engineering leaders.
 
@@ -7406,9 +7828,7 @@ The result is a governance model that supports increased engineering autonomy wi
 
 This principle provides the foundation for the remainder of Part V, where security, human approval, audit trails, policies, compliance, and governance-related productivity measurement can be examined in greater depth.
 
-**Chapter 29 status: In progress — next section: Further Reading**
-
-## **19. Further Reading**
+## 19. Further Reading
 
 Enterprise AI Governance draws upon several established disciplines, including AI risk management, software architecture governance, cybersecurity, secure software development, identity and access management, organizational accountability, and regulatory compliance.
 
@@ -7418,21 +7838,17 @@ The following references provide a foundation for architects and engineering lea
 
 The resources are organized by their relevance to the governance architecture developed throughout this chapter. They include internationally recognized standards, public frameworks, security guidance, and implementation documentation.
 
-### **19.1 AI Governance and Risk Management Frameworks**
+### 19.1 AI Governance and Risk Management Frameworks
 
 **1. NIST — Artificial Intelligence Risk Management Framework (AI RMF 1.0)**
 
 National Institute of Standards and Technology, 2023.
 
-Official reference: [NIST AI Risk Management Framework](https://www.nist.gov/itl/ai-risk-management-framework?utm_source=chatgpt.com)
+Official reference: [NIST AI Risk Management Framework](https://www.nist.gov/itl/ai-risk-management-framework)
 
 The NIST AI Risk Management Framework provides a voluntary, structured approach to identifying, assessing, managing, and monitoring risks associated with AI systems.
 
-Its four core functions—Govern, Map, Measure, and Manage—provide a useful foundation for enterprise governance programs.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://www.nist.gov\&sz=32)
-
-NIST
+Its four core functions—Govern, Map, Measure, and Manage—provide a useful foundation for enterprise governance programs.
 
 For AI Engineering architects, the framework is particularly relevant to establishing organizational accountability, identifying risk contexts, measuring system behavior, and managing risks throughout the AI lifecycle.
 
@@ -7442,15 +7858,11 @@ For AI Engineering architects, the framework is particularly relevant to establi
 
 National Institute of Standards and Technology, 2024.
 
-Official reference: [NIST Generative AI Profile](https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-generative-artificial-intelligence?utm_source=chatgpt.com)
+Official reference: [NIST Generative AI Profile](https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-generative-artificial-intelligence)
 
 This publication extends the AI RMF with considerations specific to generative AI systems.
 
-It helps organizations identify and manage risks arising from generative AI development and use.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://www.nist.gov\&sz=32)
-
-NIST
+It helps organizations identify and manage risks arising from generative AI development and use.
 
 For enterprise AI Engineering, it provides useful context for model evaluation, generated output reliability, data governance, security, and human oversight.
 
@@ -7460,15 +7872,11 @@ For enterprise AI Engineering, it provides useful context for model evaluation, 
 
 International Organization for Standardization and International Electrotechnical Commission, 2023.
 
-Official reference: [ISO/IEC 42001](https://www.iso.org/standard/42001?utm_source=chatgpt.com)
+Official reference: [ISO/IEC 42001](https://www.iso.org/standard/42001)
 
 ISO/IEC 42001 specifies requirements for establishing, implementing, maintaining, and continually improving an Artificial Intelligence Management System.
 
-It provides an organizational management framework for responsible AI use, including policies, objectives, responsibilities, and continuous improvement.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://www.iso.org\&sz=32)
-
-AI management systems
+It provides an organizational management framework for responsible AI use, including policies, objectives, responsibilities, and continuous improvement.
 
 For engineering leadership, the standard is relevant to establishing an enterprise AI governance operating model rather than governing individual Prompts or Agent executions in isolation.
 
@@ -7478,33 +7886,25 @@ For engineering leadership, the standard is relevant to establishing an enterpri
 
 International Organization for Standardization and International Electrotechnical Commission, 2023.
 
-Official reference: [ISO/IEC 23894](https://www.iso.org/standard/77304.html?utm_source=chatgpt.com)
+Official reference: [ISO/IEC 23894](https://www.iso.org/standard/77304.html)
 
-ISO/IEC 23894 provides guidance on managing risks associated with AI systems and integrating AI-specific risk management into organizational processes.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://www.iso.org\&sz=32)
-
-AI — Guidance on risk management
+ISO/IEC 23894 provides guidance on managing risks associated with AI systems and integrating AI-specific risk management into organizational processes.
 
 The guidance is useful when developing risk classification, escalation, and treatment procedures for increasingly autonomous engineering activities.
 
 **Application to Alpha Car Detailing:** Apply its risk management approach to classify AI-assisted changes, assess tool-access risks, evaluate model changes, and document residual risks.
 
-### **19.2 Secure Software Engineering and Enterprise Controls**
+### 19.2 Secure Software Engineering and Enterprise Controls
 
 **5. NIST SP 800-218 — Secure Software Development Framework (SSDF), Version 1.1**
 
 National Institute of Standards and Technology, 2022.
 
-Official reference: [NIST Secure Software Development Framework](https://csrc.nist.gov/pubs/sp/800/218/final?utm_source=chatgpt.com)
+Official reference: [NIST Secure Software Development Framework](https://csrc.nist.gov/pubs/sp/800/218/final)
 
 The SSDF provides a common set of secure software development practices that can be incorporated into different software development lifecycles.
 
-Its recommendations support reducing vulnerabilities, protecting software development activities, and responding to vulnerabilities that are discovered.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://csrc.nist.gov\&sz=32)
-
-CSRC
+Its recommendations support reducing vulnerabilities, protecting software development activities, and responding to vulnerabilities that are discovered.
 
 For AI Engineering, the SSDF reinforces the principle that AI-generated software must remain subject to secure development requirements.
 
@@ -7514,33 +7914,25 @@ For AI Engineering, the SSDF reinforces the principle that AI-generated software
 
 National Institute of Standards and Technology.
 
-Official reference: [NIST SP 800-53](https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final?utm_source=chatgpt.com)
+Official reference: [NIST SP 800-53](https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final)
 
-NIST SP 800-53 provides a comprehensive catalog of security and privacy controls covering areas such as access control, identification and authentication, audit and accountability, configuration management, risk assessment, and system integrity.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://csrc.nist.gov\&sz=32)
-
-CSRC
+NIST SP 800-53 provides a comprehensive catalog of security and privacy controls covering areas such as access control, identification and authentication, audit and accountability, configuration management, risk assessment, and system integrity.
 
 These control families are directly relevant to the technical enforcement mechanisms required for an enterprise AI Engineering Harness.
 
 **Application to Alpha Car Detailing:** Map Agent permissions, protected Harness configuration, production access, audit evidence, and governance enforcement to the organization's selected security control baseline.
 
-The control catalog should be tailored to organizational risk rather than adopted mechanically in its entirety.
+The control catalog should be tailored to organizational risk rather than adopted mechanically in its entirety. Architects should consult the current NIST release and errata when selecting controls.
 
 **7. OWASP — Top 10 for Large Language Model Applications**
 
 OWASP Generative AI Security Project.
 
-Official reference: [OWASP LLM Application Security](https://genai.owasp.org/llm-top-10/?utm_source=chatgpt.com)
+Official reference: [OWASP LLM Application Security](https://genai.owasp.org/llm-top-10/)
 
 The OWASP guidance identifies important security risks affecting LLM-based applications, including prompt injection, sensitive information disclosure, supply chain weaknesses, and excessive agency.
 
-These risks are especially relevant to AI Agents that consume untrusted repository content and invoke external tools.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://genai.owasp.org\&sz=32)
-
-OWASP Gen AI Security Project
+These risks are especially relevant to AI Agents that consume untrusted repository content and invoke external tools.
 
 **Application to Alpha Car Detailing:** Use the guidance to threat-model the Harness, restrict tool execution, protect sensitive engineering data, and validate how Agents handle untrusted content.
 
@@ -7548,31 +7940,23 @@ OWASP Gen AI Security Project
 
 OWASP Generative AI Security Project, 2025.
 
-Official reference: [OWASP GenAI Security Project](https://genai.owasp.org/?utm_source=chatgpt.com)
+Official reference: [OWASP Top 10 for Agentic Applications](https://genai.owasp.org/2025/12/09/owasp-top-10-for-agentic-applications-the-benchmark-for-agentic-security-in-the-age-of-autonomous-ai/)
 
 This guidance focuses on security risks associated with autonomous and tool-using AI systems.
 
-It provides a useful complement to general LLM application security guidance because an Agent's ability to act can amplify the consequences of an incorrect or manipulated output.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://genai.owasp.org\&sz=32)
-
-OWASP Gen AI Security Project
+It provides a useful complement to general LLM application security guidance because an Agent's ability to act can amplify the consequences of an incorrect or manipulated output.
 
 **Application to Alpha Car Detailing:** Assess multi-agent trust boundaries, tool permissions, delegated authority, and the potential consequences of Agent-driven operations.
 
-### **19.3 Repository Governance and Release Authorization**
+### 19.3 Repository Governance and Release Authorization
 
 **9. GitHub Documentation — About Protected Branches**
 
 GitHub.
 
-Official reference: [Protected Branches](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches?utm_source=chatgpt.com)
+Official reference: [Protected Branches](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches)
 
-GitHub branch protection supports controls such as required reviews, required status checks, and restrictions on changes to protected branches.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://docs.github.com\&sz=32)
-
-GitHub Docs
+GitHub branch protection supports controls such as required reviews, required status checks, and restrictions on changes to protected branches.
 
 These mechanisms illustrate how enterprise governance requirements can be enforced outside an AI Agent's natural-language Instructions.
 
@@ -7582,15 +7966,11 @@ These mechanisms illustrate how enterprise governance requirements can be enforc
 
 GitHub.
 
-Official reference: [About Code Owners](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners?utm_source=chatgpt.com)
+Official reference: [About Code Owners](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners)
 
 Code ownership provides a practical way to associate repository paths with designated reviewers.
 
-When combined with the appropriate repository protection settings, it can require owner review before protected changes are merged.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://docs.github.com\&sz=32)
-
-GitHub Docs
+When combined with the appropriate repository protection settings, it can require owner review before protected changes are merged.
 
 **Application to Alpha Car Detailing:** Assign designated owners to Instructions, shared Skills, architecture-sensitive components, and governance configurations.
 
@@ -7600,33 +7980,25 @@ Repository ownership should support the enterprise approval model rather than be
 
 GitHub.
 
-Official reference: [Deployments and Environments](https://docs.github.com/en/actions/reference/workflows-and-actions/deployments-and-environments?utm_source=chatgpt.com)
+Official reference: [Deployments and Environments](https://docs.github.com/en/actions/reference/workflows-and-actions/deployments-and-environments)
 
-Protected deployment environments can enforce conditions such as required reviewers and other deployment protection requirements, subject to platform configuration and availability.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://docs.github.com\&sz=32)
-
-GitHub Docs
+Protected deployment environments can enforce conditions such as required reviewers and other deployment protection requirements, subject to platform configuration and availability.
 
 This provides an implementation reference for separating ordinary engineering execution from production deployment authorization.
 
 **Application to Alpha Car Detailing:** Route production deployments through protected workflows that verify applicable release conditions before executing privileged operations.
 
-### **19.4 Legal and Regulatory Governance**
+### 19.4 Legal and Regulatory Governance
 
 **12. European Union — Artificial Intelligence Act**
 
 European Union.
 
-Official reference: [EU AI Act Implementation Timeline](https://ai-act-service-desk.ec.europa.eu/en/ai-act/eu-ai-act-implementation-timeline?utm_source=chatgpt.com)
+Official reference: [EU AI Act Implementation Timeline](https://ai-act-service-desk.ec.europa.eu/en/ai-act/timeline/timeline-implementation-eu-ai-act)
 
 The EU AI Act establishes a regulatory framework for artificial intelligence, including obligations that apply according to the system's role, use, and risk classification.
 
-Its requirements and application dates are phased, and organizations must assess which provisions apply to their particular AI activities.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://ai-act-service-desk.ec.europa.eu\&sz=32)
-
-AI Act Service Desk
+Its requirements and application dates are phased, and organizations must assess which provisions apply to their particular AI activities.
 
 For enterprise architects, the legislation illustrates why organizational AI Governance cannot be limited to software correctness or internal engineering standards.
 
@@ -7636,7 +8008,7 @@ The use of an AI coding agent does not, by itself, establish that the resulting 
 
 Regulatory applicability requires a separate assessment.
 
-### **19.5 Recommended Reading by Architectural Responsibility**
+### 19.5 Recommended Reading by Architectural Responsibility
 
 The references above serve different purposes. Architects should select them according to the governance capability being designed.
 
@@ -7665,7 +8037,7 @@ Repository documentation explains how particular controls can be implemented.
 
 An effective enterprise AI Engineering governance model draws upon all of these disciplines while preserving clear boundaries between their responsibilities.
 
-### **19.6 Applying the References to the Handbook’s Architecture**
+### 19.6 Applying the References to the Handbook’s Architecture
 
 The Enterprise AI Engineering Handbook organizes AI-assisted software development around several complementary capabilities.
 
@@ -7699,7 +8071,7 @@ Repository and deployment documentation illustrates practical enforcement mechan
 
 The enterprise should integrate these references into its existing architecture and delivery practices rather than creating an isolated governance framework disconnected from operational systems.
 
-### **19.7 Final Reading Perspective**
+### 19.7 Final Reading Perspective
 
 The literature on AI Governance spans organizational management, risk assessment, cybersecurity, regulation, and software engineering.
 
@@ -7716,5 +8088,3 @@ The lasting architectural principle is that AI Governance should not depend on t
 It should depend on organizational ownership, independently enforced controls, verifiable authorization, and accountable human decisions.
 
 **AI Agents can accelerate enterprise software engineering. Governance ensures that this acceleration remains aligned with the enterprise's responsibilities, standards, and acceptable risks.**
-
-**Chapter 29 status: Complete**

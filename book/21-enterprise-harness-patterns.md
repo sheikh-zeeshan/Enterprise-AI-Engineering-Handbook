@@ -2,19 +2,13 @@
 
 > **Part III — Harness Engineering**
 
-Enterprise AI Engineering reaches a different level of difficulty when a Harness stops serving one repository, one team, or one workflow.
-
-A Harness that works well for a single service may become fragile when twenty services depend on it. A workflow that is clear for one Developer Agent may become unpredictable when several agents operate in parallel. Validation that is inexpensive for one repository may become operationally expensive when repeated across an entire portfolio.
-
-The solution is not to build a larger orchestration script.
+Enterprise AI Engineering reaches a different level of difficulty when a Harness stops serving one repository, one team, or one workflow. A Harness that works well for a single service may become fragile when twenty services depend on it. A workflow that is clear for one Developer Agent may become unpredictable when several agents operate in parallel. Validation that is inexpensive for one repository may become operationally expensive when repeated across an entire portfolio. The solution is not to build a larger orchestration script.
 
 The solution is to apply reusable **Harness patterns**.
 
 Enterprise Harness architecture should be assembled from explicit patterns with clear ownership, isolation, extension points, and operational boundaries. The objective is not to create one universal Harness capable of performing every engineering task. The objective is to create a composable platform in which common capabilities can be reused without eliminating repository autonomy.
 
-This chapter brings together the concepts introduced throughout Part III: orchestration, agent roles, deterministic gates, population processing, Run Workspaces, Scratchpads, validation, evaluation, recovery, metrics, and governance boundaries.
-
-The central principle is:
+This chapter brings together the concepts introduced throughout Part III: orchestration, agent roles, deterministic gates, population processing, Run Workspaces, Scratchpads, validation, evaluation, recovery, metrics, and governance boundaries. The central principle is:
 
 > **Enterprise Harnesses should be composed from clear, reusable patterns instead of growing into large, tightly coupled orchestration workflows.**
 
@@ -24,11 +18,7 @@ The handbook remains Claude-first while keeping its architecture vendor-neutral,
 
 ## 1. Story-driven Opening
 
-Alpha Car Detailing began its AI Engineering adoption with a single development team.
-
-The first Harness automated changes to the Booking service.
-
-A developer submitted a task:
+Alpha Car Detailing began its AI Engineering adoption with a single development team. The first Harness automated changes to the Booking service. A developer submitted a task:
 
 ```text
 Add support for recurring fleet bookings.
@@ -61,53 +51,21 @@ Evaluator Agent
 Human Approval
 ```
 
-The workflow worked well.
+The workflow worked well. Instructions were stored in the Booking repository. Skills described recurring implementation patterns.
 
-Instructions were stored in the Booking repository.
+The Run Workspace isolated execution state. The Scratchpad held temporary reasoning and observations. The Validator Agent executed deterministic gates.
 
-Skills described recurring implementation patterns.
+The Evaluator Agent determined whether the completed change achieved the requested outcome. Metrics recorded duration, retries, gate results, and final status. For one repository, the design was straightforward.
 
-The Run Workspace isolated execution state.
+Then adoption expanded. The Fleet team wanted the same capability. The Billing team followed.
 
-The Scratchpad held temporary reasoning and observations.
+The Customer team wanted a Harness for customer account changes. The Notifications team wanted AI-assisted development for event consumers. The Platform team wanted to maintain shared security checks.
 
-The Validator Agent executed deterministic gates.
+The architecture group wanted every service to follow common API and observability standards. Security required different approval rules for payment-related services. Some teams used GitHub.
 
-The Evaluator Agent determined whether the completed change achieved the requested outcome.
+Others still used Azure DevOps. Some services were .NET microservices. Others contained Terraform, Kubernetes manifests, operational scripts, or front-end code.
 
-Metrics recorded duration, retries, gate results, and final status.
-
-For one repository, the design was straightforward.
-
-Then adoption expanded.
-
-The Fleet team wanted the same capability.
-
-The Billing team followed.
-
-The Customer team wanted a Harness for customer account changes.
-
-The Notifications team wanted AI-assisted development for event consumers.
-
-The Platform team wanted to maintain shared security checks.
-
-The architecture group wanted every service to follow common API and observability standards.
-
-Security required different approval rules for payment-related services.
-
-Some teams used GitHub.
-
-Others still used Azure DevOps.
-
-Some services were .NET microservices.
-
-Others contained Terraform, Kubernetes manifests, operational scripts, or front-end code.
-
-Within several months, Alpha Car Detailing no longer had a single Harness problem.
-
-It had an **enterprise Harness architecture problem**.
-
-The first reaction was predictable.
+Within several months, Alpha Car Detailing no longer had a single Harness problem. It had an **enterprise Harness architecture problem**. The first reaction was predictable.
 
 The platform team considered extending the original Booking Harness:
 
@@ -154,29 +112,15 @@ Soon the central workflow knew:
 - retry strategies,
 - and repository-specific implementation details.
 
-The Harness was becoming powerful.
+The Harness was becoming powerful. It was also becoming dangerous. A change intended to improve Fleet validation could break Booking.
 
-It was also becoming dangerous.
+A new Billing approval rule could affect unrelated repositories. Adding another AI provider required modifying orchestration logic. Parallel execution shared mutable state.
 
-A change intended to improve Fleet validation could break Booking.
-
-A new Billing approval rule could affect unrelated repositories.
-
-Adding another AI provider required modifying orchestration logic.
-
-Parallel execution shared mutable state.
-
-Failures in one processing branch could contaminate another.
-
-Teams could no longer understand which rules were global and which were local.
-
-The Harness had become the thing the organization originally wanted AI Engineering to avoid:
+Failures in one processing branch could contaminate another. Teams could no longer understand which rules were global and which were local. The Harness had become the thing the organization originally wanted AI Engineering to avoid:
 
 **a large, tightly coupled system whose behavior depended on hidden knowledge.**
 
-The architecture group stopped adding conditions and reframed the problem.
-
-Instead of asking:
+The architecture group stopped adding conditions and reframed the problem. Instead of asking:
 
 > How do we make the Harness support every team?
 
@@ -184,9 +128,7 @@ they asked:
 
 > Which capabilities should be shared, which should remain local, and which patterns should govern how those capabilities are composed?
 
-That question changed the architecture.
-
-Shared concerns moved into reusable platform capabilities:
+That question changed the architecture. Shared concerns moved into reusable platform capabilities:
 
 - agent role definitions,
 - common Skills,
@@ -208,9 +150,7 @@ Repository-specific concerns remained close to the repository:
 - approval requirements,
 - local acceptance criteria.
 
-The resulting model was no longer one enormous Harness.
-
-It became an **enterprise Harness ecosystem**.
+The resulting model was no longer one enormous Harness. It became an **enterprise Harness ecosystem**.
 
 ```text
 Central Harness Platform
@@ -235,15 +175,11 @@ Central Harness Platform
       Rules     Rules    Rules
 ```
 
-The enterprise architecture did not eliminate duplication by centralizing everything.
-
-It eliminated **unnecessary duplication** while preserving necessary boundaries.
-
-That distinction is the foundation of enterprise Harness design.
+The enterprise architecture did not eliminate duplication by centralizing everything. It eliminated **unnecessary duplication** while preserving necessary boundaries. That distinction is the foundation of enterprise Harness design.
 
 ---
 
-# 2. Learning Objectives
+## 2. Learning Objectives
 
 By the end of this chapter, you should be able to:
 
@@ -268,33 +204,17 @@ By the end of this chapter, you should be able to:
 
 ---
 
-# 3. Background
+## 3. Background
 
-## 3.1 From Harness Implementation to Harness Architecture
+### 3.1 From Harness Implementation to Harness Architecture
 
-Earlier chapters examined individual Harness responsibilities.
+Earlier chapters examined individual Harness responsibilities. The Harness executes AI-assisted engineering workflows. The Lead Agent interprets work.
 
-The Harness executes AI-assisted engineering workflows.
+The Developer Agent implements changes. The Reviewer Agent independently inspects the implementation. The Validator Agent verifies deterministic evidence.
 
-The Lead Agent interprets work.
+The Evaluator Agent assesses whether the result satisfies the intended outcome. Population processing enables a Harness to apply controlled processing across collections of work. Metrics provide evidence about performance, reliability, cost, and behavior.
 
-The Developer Agent implements changes.
-
-The Reviewer Agent independently inspects the implementation.
-
-The Validator Agent verifies deterministic evidence.
-
-The Evaluator Agent assesses whether the result satisfies the intended outcome.
-
-Population processing enables a Harness to apply controlled processing across collections of work.
-
-Metrics provide evidence about performance, reliability, cost, and behavior.
-
-Run Workspaces and Scratchpads provide isolated execution state.
-
-Each concept is useful independently.
-
-Enterprise adoption requires them to work together.
+Run Workspaces and Scratchpads provide isolated execution state. Each concept is useful independently. Enterprise adoption requires them to work together.
 
 At that point, the central design problem becomes architectural:
 
@@ -304,11 +224,9 @@ Enterprise Harness patterns answer that question.
 
 ---
 
-## 3.2 What Is a Harness Pattern?
+### 3.2 What Is a Harness Pattern?
 
-A **Harness pattern** is a reusable architectural or execution structure that solves a recurring AI Engineering problem.
-
-Examples include:
+A **Harness pattern** is a reusable architectural or execution structure that solves a recurring AI Engineering problem. Examples include:
 
 - one Harness operating within one repository;
 - one shared platform serving many repository-specific Harnesses;
@@ -319,21 +237,11 @@ Examples include:
 - a human approval checkpoint before high-risk actions;
 - tool adapters separating orchestration from provider-specific APIs.
 
-A pattern is not a mandatory product architecture.
+A pattern is not a mandatory product architecture. It is a reusable solution shape. Two organizations can apply the same pattern differently.
 
-It is a reusable solution shape.
+For example, both may use a centralized Harness platform. One organization may run that platform in Kubernetes. Another may use GitHub Actions.
 
-Two organizations can apply the same pattern differently.
-
-For example, both may use a centralized Harness platform.
-
-One organization may run that platform in Kubernetes.
-
-Another may use GitHub Actions.
-
-A third may use Azure DevOps pipelines.
-
-The underlying pattern remains:
+A third may use Azure DevOps pipelines. The underlying pattern remains:
 
 ```text
 Shared Harness Capability
@@ -341,19 +249,13 @@ Shared Harness Capability
 Repository-Specific Execution
 ```
 
-The implementation changes.
-
-The architectural responsibility does not.
+The implementation changes. The architectural responsibility does not.
 
 ---
 
-## 3.3 Patterns Are Not Features
+### 3.3 Patterns Are Not Features
 
-A common mistake is to describe every Harness capability as a feature.
-
-Consider parallel execution.
-
-It might initially appear to be a feature:
+A common mistake is to describe every Harness capability as a feature. Consider parallel execution. It might initially appear to be a feature:
 
 ```text
 EnableParallelAgents = true
@@ -373,11 +275,7 @@ But enterprise parallelism affects:
 - deterministic validation,
 - human review.
 
-Parallelism is therefore not merely a switch.
-
-It is an architectural pattern with consequences.
-
-The same applies to:
+Parallelism is therefore not merely a switch. It is an architectural pattern with consequences. The same applies to:
 
 - multi-repository execution,
 - retries,
@@ -390,13 +288,9 @@ Patterns force architects to examine those consequences rather than treating the
 
 ---
 
-## 3.4 Composition Is the Enterprise Requirement
+### 3.4 Composition Is the Enterprise Requirement
 
-An enterprise rarely chooses one Harness pattern.
-
-It combines several.
-
-Alpha Car Detailing may use:
+An enterprise rarely chooses one Harness pattern. It combines several. Alpha Car Detailing may use:
 
 - a **centralized platform Harness**,
 - several **repository-specific Harnesses**,
@@ -435,15 +329,11 @@ A realistic architecture may therefore look like this:
        └── Approval Profile
 ```
 
-The challenge is not whether patterns may be combined.
-
-They should be.
-
-The challenge is ensuring that combining them does not blur responsibility.
+The challenge is not whether patterns may be combined. They should be. The challenge is ensuring that combining them does not blur responsibility.
 
 ---
 
-## 3.5 The Boundary Principle
+### 3.5 The Boundary Principle
 
 Every enterprise Harness architecture should make a distinction between:
 
@@ -453,9 +343,7 @@ and
 
 **local authority**.
 
-Shared capability provides reusable infrastructure.
-
-Local authority determines repository-specific engineering behavior.
+Shared capability provides reusable infrastructure. Local authority determines repository-specific engineering behavior.
 
 For example:
 
@@ -475,16 +363,20 @@ For example:
 This distinction prevents a shared Harness platform from becoming a centralized engineering authority.
 
 > **Enterprise Tip**
+
 >
+
 > Centralize infrastructure more readily than engineering decisions.
+
 >
+
 > Reusable execution infrastructure benefits from consistency. Domain and repository decisions often require local ownership.
 
 ---
 
-# 4. Concepts
+## 4. Concepts
 
-## 4.1 Single-Repository Harness
+### 4.1 Single-Repository Harness
 
 A **Single-Repository Harness** is scoped to one repository.
 
@@ -499,11 +391,9 @@ Repository
    └── Metrics
 ```
 
-This is often the best starting architecture.
+This is often the best starting architecture. The Harness understands one codebase and operates within one repository boundary.
 
-The Harness understands one codebase and operates within one repository boundary.
-
-### Appropriate when
+#### Appropriate when
 
 - one team owns the repository;
 - repository-specific behavior dominates;
@@ -512,7 +402,7 @@ The Harness understands one codebase and operates within one repository boundary
 - risk boundaries align with repository boundaries;
 - teams require substantial autonomy.
 
-### Advantages
+#### Advantages
 
 - simple ownership;
 - strong isolation;
@@ -521,7 +411,7 @@ The Harness understands one codebase and operates within one repository boundary
 - low coordination overhead;
 - straightforward security boundaries.
 
-### Disadvantages
+#### Disadvantages
 
 - shared logic may be duplicated;
 - improvements may propagate slowly;
@@ -544,15 +434,11 @@ booking/
 └── tests/
 ```
 
-This model is intentionally simple.
-
-It should not be abandoned merely because the organization becomes interested in enterprise scale.
-
-In many enterprises, repository-local Harnesses remain the execution boundary even after a central platform is introduced.
+This model is intentionally simple. It should not be abandoned merely because the organization becomes interested in enterprise scale. In many enterprises, repository-local Harnesses remain the execution boundary even after a central platform is introduced.
 
 ---
 
-## 4.2 Multi-Repository Harness
+### 4.2 Multi-Repository Harness
 
 A **Multi-Repository Harness** can coordinate work across several repositories.
 
@@ -585,9 +471,7 @@ A multi-repository Harness may coordinate the overall change.
                      Evaluation
 ```
 
-Multi-repository Harnesses introduce significantly more complexity.
-
-The Harness must understand:
+Multi-repository Harnesses introduce significantly more complexity. The Harness must understand:
 
 - repository dependencies;
 - compatible branches;
@@ -602,9 +486,7 @@ A multi-repository Harness should therefore not mean:
 
 > one agent gets write access to every repository.
 
-Instead, orchestration should preserve repository boundaries.
-
-A safer model is:
+Instead, orchestration should preserve repository boundaries. A safer model is:
 
 ```text
 Enterprise Run
@@ -628,13 +510,9 @@ The enterprise run coordinates them without merging their mutable execution stat
 
 ---
 
-## 4.3 Monorepo Harness
+### 4.3 Monorepo Harness
 
-A **Monorepo Harness** operates inside a repository containing multiple applications, services, packages, or bounded contexts.
-
-The repository boundary is shared, but engineering boundaries still exist.
-
-For Alpha Car Detailing:
+A **Monorepo Harness** operates inside a repository containing multiple applications, services, packages, or bounded contexts. The repository boundary is shared, but engineering boundaries still exist. For Alpha Car Detailing:
 
 ```text
 alpha-car-platform/
@@ -649,9 +527,7 @@ alpha-car-platform/
 └── harness/
 ```
 
-A poor monorepo Harness treats every change as repository-wide.
-
-A mature monorepo Harness determines the **affected scope**.
+A poor monorepo Harness treats every change as repository-wide. A mature monorepo Harness determines the **affected scope**.
 
 For example:
 
@@ -671,11 +547,7 @@ Scoped Tests
 Required Global Gates
 ```
 
-The Harness may execute service-level validation first and expensive repository-wide validation later.
-
-This is particularly important for large repositories.
-
-Running the full build, complete integration suite, architecture tests, security scanning, and all static analysis on every agent iteration may make an otherwise effective Harness operationally unusable.
+The Harness may execute service-level validation first and expensive repository-wide validation later. This is particularly important for large repositories. Running the full build, complete integration suite, architecture tests, security scanning, and all static analysis on every agent iteration may make an otherwise effective Harness operationally unusable.
 
 A common enterprise pattern is:
 
@@ -693,7 +565,7 @@ This preserves fast feedback without weakening final assurance.
 
 ---
 
-## 4.4 Centralized Harness
+### 4.4 Centralized Harness
 
 A **Centralized Harness** places major orchestration capability in a common platform.
 
@@ -722,17 +594,11 @@ The central platform may provide:
 - approval workflow integration;
 - artifact retention.
 
-Centralization is attractive because shared improvements can be delivered once.
+Centralization is attractive because shared improvements can be delivered once. However, a centralized Harness becomes dangerous when it also centralizes repository-specific decisions. The central platform should know **how to execute a validation profile**.
 
-However, a centralized Harness becomes dangerous when it also centralizes repository-specific decisions.
+It should not necessarily decide **which business validations Billing requires**. The difference is fundamental.
 
-The central platform should know **how to execute a validation profile**.
-
-It should not necessarily decide **which business validations Billing requires**.
-
-The difference is fundamental.
-
-### Good centralization
+#### Good centralization
 
 ```text
 Harness Platform:
@@ -750,7 +616,7 @@ validation:
     - payment-security-checks
 ```
 
-### Poor centralization
+#### Poor centralization
 
 ```csharp
 if (repository == "billing")
@@ -762,13 +628,11 @@ if (repository == "billing")
 }
 ```
 
-The second design embeds repository knowledge into the central orchestrator.
-
-Over time, the orchestrator becomes a map of organizational exceptions.
+The second design embeds repository knowledge into the central orchestrator. Over time, the orchestrator becomes a map of organizational exceptions.
 
 ---
 
-## 4.5 Distributed Harness
+### 4.5 Distributed Harness
 
 A **Distributed Harness** places execution capabilities close to teams or repositories while sharing contracts and standards.
 
@@ -794,19 +658,13 @@ The central organization may define:
 - approved tool interfaces;
 - metrics conventions.
 
-Teams independently implement or configure their execution environments.
-
-Distributed models provide autonomy but require stronger governance contracts.
-
-Without those contracts, the organization may end up with unrelated automation systems all called “Harnesses.”
+Teams independently implement or configure their execution environments. Distributed models provide autonomy but require stronger governance contracts. Without those contracts, the organization may end up with unrelated automation systems all called “Harnesses.”
 
 ---
 
-## 4.6 Shared Platform Harness
+### 4.6 Shared Platform Harness
 
-A **Shared Platform Harness** combines central infrastructure with distributed repository configuration.
-
-For many enterprises, this is the most balanced model.
+A **Shared Platform Harness** combines central infrastructure with distributed repository configuration. For many enterprises, this is the most balanced model.
 
 ```text
                     Shared Harness Platform
@@ -826,15 +684,11 @@ For many enterprises, this is the most balanced model.
      Booking               Fleet               Billing
 ```
 
-The platform owns execution capabilities.
-
-Repositories own configuration and engineering intent.
-
-This pattern supports enterprise reuse without converting the Harness platform into a domain-aware monolith.
+The platform owns execution capabilities. Repositories own configuration and engineering intent. This pattern supports enterprise reuse without converting the Harness platform into a domain-aware monolith.
 
 ---
 
-## 4.7 Team-Specific Harness
+### 4.7 Team-Specific Harness
 
 A **Team-Specific Harness** is optimized for a team's workflow.
 
@@ -859,11 +713,7 @@ Meanwhile:
 Internal Reporting Harness
 ```
 
-may have a different risk profile.
-
-Team-specific Harnesses are valuable where teams own several related repositories with common requirements.
-
-However, team ownership should not justify copying the entire platform.
+may have a different risk profile. Team-specific Harnesses are valuable where teams own several related repositories with common requirements. However, team ownership should not justify copying the entire platform.
 
 Prefer:
 
@@ -887,7 +737,7 @@ Permanent Fork
 
 ---
 
-# 4.8 Single-Agent Workflow
+### 4.8 Single-Agent Workflow
 
 The simplest execution model uses one AI Agent for the primary engineering task.
 
@@ -909,19 +759,13 @@ Single-agent workflows can be effective for:
 - straightforward refactoring;
 - small maintenance tasks.
 
-Their primary advantage is operational simplicity.
+Their primary advantage is operational simplicity. Their primary weakness is the lack of independent AI role separation. If the same agent implements and critiques its own work, independent review is reduced.
 
-Their primary weakness is the lack of independent AI role separation.
-
-If the same agent implements and critiques its own work, independent review is reduced.
-
-This does not make single-agent workflows invalid.
-
-It means the architecture should recognize the tradeoff explicitly.
+This does not make single-agent workflows invalid. It means the architecture should recognize the tradeoff explicitly.
 
 ---
 
-# 4.9 Multi-Agent Workflow
+### 4.9 Multi-Agent Workflow
 
 A **Multi-Agent Workflow** assigns distinct responsibilities to specialized roles.
 
@@ -953,19 +797,21 @@ It also increases:
 - failure possibilities;
 - state-management requirements.
 
-More agents are not automatically better.
-
-The number of agents should reflect the engineering problem.
+More agents are not automatically better. The number of agents should reflect the engineering problem.
 
 > **Architect's Note**
+
 >
+
 > Agent count is an architectural decision, not a maturity score.
+
 >
+
 > An enterprise Harness with seven agents is not inherently more advanced than one with three. Each role should exist because it owns a distinct responsibility.
 
 ---
 
-# 4.10 Sequential Orchestration
+### 4.10 Sequential Orchestration
 
 In sequential orchestration, stages execute in defined order.
 
@@ -981,27 +827,19 @@ Validator
 Evaluator
 ```
 
-Sequential execution is appropriate when later stages require output from earlier stages.
-
-Examples:
+Sequential execution is appropriate when later stages require output from earlier stages. Examples:
 
 - Reviewer requires Developer implementation evidence.
 - Validator requires a concrete implementation.
 - Evaluator requires validation and review evidence.
 
-Sequential orchestration provides clear causality.
-
-Its main disadvantage is latency.
-
-If every stage waits for the preceding stage even when no dependency exists, execution becomes unnecessarily slow.
+Sequential orchestration provides clear causality. Its main disadvantage is latency. If every stage waits for the preceding stage even when no dependency exists, execution becomes unnecessarily slow.
 
 ---
 
-# 4.11 Parallel Orchestration
+### 4.11 Parallel Orchestration
 
-Parallel orchestration executes independent tasks simultaneously.
-
-After an implementation is available, Alpha Car Detailing might perform:
+Parallel orchestration executes independent tasks simultaneously. After an implementation is available, Alpha Car Detailing might perform:
 
 ```text
                     Implementation
@@ -1015,9 +853,7 @@ After an implementation is available, Alpha Car Detailing might perform:
                       Gate Result
 ```
 
-Parallel execution is most valuable when tasks are independent and read-only relative to the same implementation state.
-
-Parallelism becomes dangerous when agents modify shared files.
+Parallel execution is most valuable when tasks are independent and read-only relative to the same implementation state. Parallelism becomes dangerous when agents modify shared files.
 
 Consider:
 
@@ -1027,9 +863,7 @@ Developer B ──writes──► repository
 Developer C ──writes──► repository
 ```
 
-Without isolation, the result may depend on timing rather than architecture.
-
-Safe parallel patterns use:
+Without isolation, the result may depend on timing rather than architecture. Safe parallel patterns use:
 
 - separate branches;
 - separate worktrees;
@@ -1042,13 +876,9 @@ Parallel execution must be controlled, not merely enabled.
 
 ---
 
-# 4.12 Fan-Out and Fan-In
+### 4.12 Fan-Out and Fan-In
 
-Fan-out/fan-in is a common pattern for enterprise-scale processing.
-
-One input is divided into independent work units.
-
-Those units are processed separately.
+Fan-out/fan-in is a common pattern for enterprise-scale processing. One input is divided into independent work units. Those units are processed separately.
 
 Their results are then aggregated.
 
@@ -1078,19 +908,13 @@ Alpha Car Detailing might use this for:
 - scanning repositories for architecture violations;
 - applying the same controlled refactoring across a population.
 
-Fan-in should aggregate **evidence and results**, not blindly combine every modification.
-
-For code-producing workloads, merge conflicts and cross-unit dependencies require explicit handling.
+Fan-in should aggregate **evidence and results**, not blindly combine every modification. For code-producing workloads, merge conflicts and cross-unit dependencies require explicit handling.
 
 ---
 
-# 4.13 Human Approval Gates
+### 4.13 Human Approval Gates
 
-Human approval is a governance boundary.
-
-It is not merely a notification.
-
-Examples include:
+Human approval is a governance boundary. It is not merely a notification. Examples include:
 
 ```text
 Implementation
@@ -1114,9 +938,7 @@ Human Production Approval
 Deployment
 ```
 
-Approval requirements should correspond to risk.
-
-Alpha Car Detailing might require:
+Approval requirements should correspond to risk. Alpha Car Detailing might require:
 
 | Change | Approval |
 |---|---|
@@ -1128,17 +950,13 @@ Alpha Car Detailing might require:
 | Production infrastructure | Platform approval |
 | Financial data handling | Security + domain approval |
 
-The Harness should enforce approval boundaries.
-
-It should not simulate human approval.
+The Harness should enforce approval boundaries. It should not simulate human approval.
 
 ---
 
-# 4.14 Deterministic Validation Gates
+### 4.14 Deterministic Validation Gates
 
-A deterministic gate verifies an objective condition.
-
-Examples:
+A deterministic gate verifies an objective condition. Examples:
 
 ```text
 dotnet build
@@ -1160,11 +978,7 @@ ERROR
 SKIPPED
 ```
 
-An AI Agent may interpret the failure.
-
-It should not redefine the deterministic result.
-
-A robust architecture often separates:
+An AI Agent may interpret the failure. It should not redefine the deterministic result. A robust architecture often separates:
 
 ```text
 Agent Reasoning
@@ -1182,17 +996,13 @@ Evidence
 Agent Evaluation
 ```
 
-The AI can reason about evidence.
-
-It does not replace the evidence.
+The AI can reason about evidence. It does not replace the evidence.
 
 ---
 
-# 4.15 Retry and Recovery
+### 4.15 Retry and Recovery
 
-Enterprise Harnesses must assume that execution can fail.
-
-Failures may come from:
+Enterprise Harnesses must assume that execution can fail. Failures may come from:
 
 - AI provider timeouts;
 - rate limits;
@@ -1219,26 +1029,27 @@ Compilation failure
 Return to Developer
 ```
 
-Those are different recovery actions.
-
-Blind retry is not resilience.
-
-Repeatedly asking an agent to perform the same action with unchanged conditions may simply increase cost.
+Those are different recovery actions. Blind retry is not resilience. Repeatedly asking an agent to perform the same action with unchanged conditions may simply increase cost.
 
 A robust recovery policy asks:
 
 1. Is the failure transient?
+
 2. Is retry safe?
+
 3. Is the operation idempotent?
+
 4. Has anything changed since the previous attempt?
+
 5. What is the retry limit?
+
 6. What evidence should be preserved?
+
 7. When should the run escalate?
+
 8. Can the run resume rather than restart?
 
-Run Workspace persistence becomes important here.
-
-A recovered run should know:
+Run Workspace persistence becomes important here. A recovered run should know:
 
 - completed stages;
 - produced artifacts;
@@ -1251,7 +1062,7 @@ Recovery should not require reconstructing execution history from an AI conversa
 
 ---
 
-# 4.16 Population Processing
+### 4.16 Population Processing
 
 Population processing applies a Harness workflow repeatedly across a defined collection.
 
@@ -1264,9 +1075,7 @@ Population
     └── Program N
 ```
 
-Each item should be treated as an independently trackable run or child run.
-
-This enables:
+Each item should be treated as an independently trackable run or child run. This enables:
 
 - isolation;
 - retry;
@@ -1287,17 +1096,13 @@ Population Job
      └── 2 Running
 ```
 
-The job should not be modeled as one enormous AI conversation.
-
-Enterprise processing requires durable state outside the model.
+The job should not be modeled as one enormous AI conversation. Enterprise processing requires durable state outside the model.
 
 ---
 
-# 4.17 Run Workspace and Scratchpad Pattern
+### 4.17 Run Workspace and Scratchpad Pattern
 
-A **Run Workspace** is the execution boundary for a Harness run.
-
-It may contain:
+A **Run Workspace** is the execution boundary for a Harness run. It may contain:
 
 ```text
 runs/
@@ -1311,9 +1116,7 @@ runs/
     └── result.json
 ```
 
-The **Scratchpad** is temporary working state within that run.
-
-It may contain:
+The **Scratchpad** is temporary working state within that run. It may contain:
 
 - observations;
 - assumptions;
@@ -1322,15 +1125,9 @@ It may contain:
 - unresolved questions;
 - progress checkpoints.
 
-It must not become the authoritative source of repository knowledge.
+It must not become the authoritative source of repository knowledge. The Run Workspace owns execution state. Repository Intelligence owns durable repository knowledge.
 
-The Run Workspace owns execution state.
-
-Repository Intelligence owns durable repository knowledge.
-
-Instructions own persistent engineering expectations.
-
-The distinction matters.
+Instructions own persistent engineering expectations. The distinction matters.
 
 ```text
 Run Workspace
@@ -1342,27 +1139,23 @@ Run Workspace
               └── temporary reasoning state
 ```
 
-When useful discoveries emerge, the Harness may propose promotion into governed knowledge.
-
-It should not silently rewrite authoritative knowledge.
+When useful discoveries emerge, the Harness may propose promotion into governed knowledge. It should not silently rewrite authoritative knowledge.
 
 ---
 
-# 4.18 Validation and Evaluation Pattern
+### 4.18 Validation and Evaluation Pattern
 
 Validation and evaluation solve different problems.
 
-### Validation asks
+#### Validation asks
 
 > Did objective engineering checks pass?
 
-### Evaluation asks
+#### Evaluation asks
 
 > Did the completed result achieve the intended outcome?
 
-Consider a Booking feature.
-
-Validation may prove:
+Consider a Booking feature. Validation may prove:
 
 ```text
 Build: PASS
@@ -1404,11 +1197,9 @@ A Harness that treats test success as equivalent to goal satisfaction is incompl
 
 ---
 
-# 4.19 Plugin and Adapter Architecture
+### 4.19 Plugin and Adapter Architecture
 
-Enterprise Harnesses inevitably integrate with external systems.
-
-Examples include:
+Enterprise Harnesses inevitably integrate with external systems. Examples include:
 
 - GitHub;
 - Azure DevOps;
@@ -1422,9 +1213,7 @@ Examples include:
 - approval systems;
 - observability platforms.
 
-Direct coupling creates brittle orchestration.
-
-Instead of:
+Direct coupling creates brittle orchestration. Instead of:
 
 ```csharp
 GitHubClient.CreatePullRequest(...);
@@ -1456,17 +1245,13 @@ IAgentProvider
      └── CodexAdapter
 ```
 
-The purpose is not abstraction for its own sake.
-
-The abstraction isolates orchestration from provider-specific behavior.
+The purpose is not abstraction for its own sake. The abstraction isolates orchestration from provider-specific behavior.
 
 ---
 
-# 4.20 Tool Abstraction
+### 4.20 Tool Abstraction
 
-Tool abstraction extends the adapter principle to capabilities.
-
-An agent should ideally request:
+Tool abstraction extends the adapter principle to capabilities. An agent should ideally request:
 
 ```text
 RunTests
@@ -1479,9 +1264,7 @@ QueryTicket
 PublishArtifact
 ```
 
-rather than embedding knowledge of every implementation.
-
-The Harness resolves the capability through an approved tool implementation.
+rather than embedding knowledge of every implementation. The Harness resolves the capability through an approved tool implementation.
 
 ```text
 Agent
@@ -1509,13 +1292,9 @@ It also helps prevent agents from receiving unrestricted access to underlying sy
 
 ---
 
-# 4.21 Shared Instructions and Skills
+### 4.21 Shared Instructions and Skills
 
-Enterprise reuse should include knowledge as well as infrastructure.
-
-However, Instructions and Skills have different ownership characteristics.
-
-A useful layering model is:
+Enterprise reuse should include knowledge as well as infrastructure. However, Instructions and Skills have different ownership characteristics. A useful layering model is:
 
 ```text
 Enterprise Instructions
@@ -1529,7 +1308,7 @@ Repository Instructions
 
 For example:
 
-### Enterprise Instructions
+#### Enterprise Instructions
 
 ```text
 Never commit secrets.
@@ -1539,7 +1318,7 @@ All production APIs require authentication.
 All code must be reviewed before merge.
 ```
 
-### Platform Instructions
+#### Platform Instructions
 
 ```text
 Services must emit OpenTelemetry traces.
@@ -1549,7 +1328,7 @@ Use approved container base images.
 Health endpoints must follow platform standards.
 ```
 
-### Booking Instructions
+#### Booking Instructions
 
 ```text
 Booking state transitions must occur through domain methods.
@@ -1583,11 +1362,9 @@ The architecture should support inheritance or composition without creating ambi
 
 ---
 
-# 4.22 Repository Intelligence Integration
+### 4.22 Repository Intelligence Integration
 
-An enterprise Harness should not repeatedly rediscover the same repository from scratch.
-
-Repository Intelligence may capture governed knowledge about:
+An enterprise Harness should not repeatedly rediscover the same repository from scratch. Repository Intelligence may capture governed knowledge about:
 
 - architecture;
 - bounded contexts;
@@ -1629,13 +1406,9 @@ Each serves a different purpose.
 
 ---
 
-# 4.23 Metrics and Observability
+### 4.23 Metrics and Observability
 
-Enterprise Harnesses are production systems.
-
-Production systems require observability.
-
-At minimum, the Harness should answer:
+Enterprise Harnesses are production systems. Production systems require observability. At minimum, the Harness should answer:
 
 - How many runs started?
 - How many completed?
@@ -1684,7 +1457,7 @@ Without correlation, distributed Harness execution becomes difficult to diagnose
 
 ---
 
-# 4.24 Security and Isolation
+### 4.24 Security and Isolation
 
 A Harness may have access to:
 
@@ -1698,9 +1471,7 @@ A Harness may have access to:
 - databases;
 - package feeds.
 
-Security must therefore be architectural.
-
-Important boundaries include:
+Security must therefore be architectural. Important boundaries include:
 
 ```text
 Agent Boundary
@@ -1712,11 +1483,7 @@ Credential Boundary
 Environment Boundary
 ```
 
-An agent operating on Booking should not automatically inherit access to Billing production systems.
-
-A run processing one customer repository should not share writable state with another.
-
-A tool capable of reading repository files does not automatically need deployment permissions.
+An agent operating on Booking should not automatically inherit access to Billing production systems. A run processing one customer repository should not share writable state with another. A tool capable of reading repository files does not automatically need deployment permissions.
 
 Apply least privilege.
 
@@ -1739,13 +1506,11 @@ The Harness should know not only **what tool to call**, but also:
 
 ---
 
-# 5. Architecture Discussion
+## 5. Architecture Discussion
 
-## 5.1 The Enterprise Harness Is a System of Systems
+### 5.1 The Enterprise Harness Is a System of Systems
 
-At enterprise scale, “the Harness” may refer to several cooperating systems.
-
-A realistic architecture includes:
+At enterprise scale, “the Harness” may refer to several cooperating systems. A realistic architecture includes:
 
 ```text
 Harness Control Plane
@@ -1762,11 +1527,11 @@ Treating all of these as one application usually creates unnecessary coupling.
 
 ---
 
-## 5.2 Control Plane and Execution Plane
+### 5.2 Control Plane and Execution Plane
 
 A useful architectural separation is between a **control plane** and an **execution plane**.
 
-### Control plane responsibilities
+#### Control plane responsibilities
 
 The control plane may manage:
 
@@ -1782,7 +1547,7 @@ The control plane may manage:
 - retry policy;
 - global metrics.
 
-### Execution plane responsibilities
+#### Execution plane responsibilities
 
 The execution plane performs:
 
@@ -1820,7 +1585,7 @@ This separation enables scaling execution without duplicating enterprise control
 
 ---
 
-## 5.3 Shared Platform, Local Configuration
+### 5.3 Shared Platform, Local Configuration
 
 A strong default architecture is:
 
@@ -1831,7 +1596,7 @@ Repository owns intent.
 
 For example:
 
-### Platform
+#### Platform
 
 ```yaml
 capabilities:
@@ -1843,7 +1608,7 @@ capabilities:
   - approval-workflows
 ```
 
-### Repository
+#### Repository
 
 ```yaml
 harness:
@@ -1868,17 +1633,13 @@ harness:
       - architecture
 ```
 
-The repository declares expectations.
-
-The platform provides execution capability.
+The repository declares expectations. The platform provides execution capability.
 
 ---
 
-## 5.4 Repository Profiles
+### 5.4 Repository Profiles
 
-As the number of repositories grows, the Harness needs a declarative way to describe them.
-
-A repository profile might contain:
+As the number of repositories grows, the Harness needs a declarative way to describe them. A repository profile might contain:
 
 ```yaml
 repository:
@@ -1914,19 +1675,13 @@ tools:
   workItems: azure-devops
 ```
 
-The exact format is implementation-specific.
-
-The pattern is not.
-
-Repository knowledge should be declarative wherever practical rather than embedded in orchestration code.
+The exact format is implementation-specific. The pattern is not. Repository knowledge should be declarative wherever practical rather than embedded in orchestration code.
 
 ---
 
-## 5.5 Capability Profiles
+### 5.5 Capability Profiles
 
-Repository profiles describe the repository.
-
-Capability profiles describe reusable execution behavior.
+Repository profiles describe the repository. Capability profiles describe reusable execution behavior.
 
 For example:
 
@@ -1956,11 +1711,9 @@ This encourages composition rather than hard-coded branching.
 
 ---
 
-## 5.6 Policy Overlay Pattern
+### 5.6 Policy Overlay Pattern
 
-Not every requirement belongs inside the repository.
-
-Certain controls may be centrally mandated.
+Not every requirement belongs inside the repository. Certain controls may be centrally mandated.
 
 For example:
 
@@ -1976,7 +1729,7 @@ Effective Run Policy
 
 Alpha Car Detailing might define:
 
-### Enterprise policy
+#### Enterprise policy
 
 ```text
 No secrets in source control.
@@ -1984,13 +1737,13 @@ All code changes require review.
 Critical security findings block completion.
 ```
 
-### Billing policy
+#### Billing policy
 
 ```text
 Payment calculation changes require senior approval.
 ```
 
-### Repository policy
+#### Repository policy
 
 ```text
 Billing contract tests must pass.
@@ -2000,11 +1753,9 @@ The Harness calculates the effective policy without giving one layer unrestricte
 
 ---
 
-## 5.7 Risk-Based Workflow Selection
+### 5.7 Risk-Based Workflow Selection
 
-Not every task requires the same workflow.
-
-A Harness may classify work into risk profiles.
+Not every task requires the same workflow. A Harness may classify work into risk profiles.
 
 ```text
 Task
@@ -2037,7 +1788,7 @@ Risk-based workflows can reduce unnecessary cost while preserving stronger contr
 
 ---
 
-## 5.8 Combining Sequential and Parallel Execution
+### 5.8 Combining Sequential and Parallel Execution
 
 Enterprise workflows often mix sequential and parallel patterns.
 
@@ -2073,13 +1824,9 @@ This design respects dependencies while reducing unnecessary serial execution.
 
 ---
 
-## 5.9 Failure Domains
+### 5.9 Failure Domains
 
-Every execution architecture should define failure domains.
-
-Suppose the Fleet validation worker crashes.
-
-Should that terminate:
+Every execution architecture should define failure domains. Suppose the Fleet validation worker crashes. Should that terminate:
 
 - the Fleet validation step?
 - the Fleet run?
@@ -2108,7 +1855,7 @@ The failure remains isolated while its business consequence remains visible.
 
 ---
 
-## 5.10 Immutable Evidence
+### 5.10 Immutable Evidence
 
 Parallel and distributed systems become easier to reason about when stage outputs are treated as immutable evidence.
 
@@ -2132,11 +1879,7 @@ Evaluator Output
 evaluation-result.json
 ```
 
-A later stage consumes earlier evidence.
-
-It should not silently rewrite it.
-
-This creates:
+A later stage consumes earlier evidence. It should not silently rewrite it. This creates:
 
 - auditability;
 - reproducibility;
@@ -2145,7 +1888,7 @@ This creates:
 
 ---
 
-## 5.11 Event-Driven Harness Architecture
+### 5.11 Event-Driven Harness Architecture
 
 At sufficient scale, Harness orchestration may benefit from event-driven execution.
 
@@ -2165,9 +1908,7 @@ EvaluationRequested
 RunCompleted
 ```
 
-Workers subscribe to relevant events.
-
-This pattern supports:
+Workers subscribe to relevant events. This pattern supports:
 
 - horizontal scaling;
 - asynchronous stages;
@@ -2175,17 +1916,13 @@ This pattern supports:
 - independent components;
 - population processing.
 
-However, event-driven architecture should be introduced because operational scale requires it, not because the Harness contains AI.
-
-A small Harness does not need a distributed message bus merely to appear enterprise-grade.
+However, event-driven architecture should be introduced because operational scale requires it, not because the Harness contains AI. A small Harness does not need a distributed message bus merely to appear enterprise-grade.
 
 ---
 
-## 5.12 Queue-Based Worker Pattern
+### 5.12 Queue-Based Worker Pattern
 
-Long-running AI workflows should generally not depend on one interactive process remaining alive.
-
-A queue-based model allows work to be resumed and scaled.
+Long-running AI workflows should generally not depend on one interactive process remaining alive. A queue-based model allows work to be resumed and scaled.
 
 ```text
 Run Request
@@ -2209,9 +1946,7 @@ Multiple workers may process independent runs.
       Worker 1     Worker 2     Worker 3
 ```
 
-Concurrency limits should be explicit.
-
-Unbounded concurrency can exhaust:
+Concurrency limits should be explicit. Unbounded concurrency can exhaust:
 
 - provider quotas;
 - build agents;
@@ -2222,11 +1957,9 @@ Unbounded concurrency can exhaust:
 
 ---
 
-## 5.13 Provider-Neutral Agent Architecture
+### 5.13 Provider-Neutral Agent Architecture
 
-Claude may be the primary implementation platform, but enterprise Harness design should avoid embedding Claude-specific assumptions into every orchestration layer.
-
-Prefer:
+Claude may be the primary implementation platform, but enterprise Harness design should avoid embedding Claude-specific assumptions into every orchestration layer. Prefer:
 
 ```text
 Harness
@@ -2250,17 +1983,13 @@ report tool calls
 return usage information
 ```
 
-Provider-specific capabilities may still exist.
-
-The architecture should isolate them.
+Provider-specific capabilities may still exist. The architecture should isolate them.
 
 ---
 
-## 5.14 Designing for Partial Capability
+### 5.14 Designing for Partial Capability
 
-AI providers do not expose identical capabilities.
-
-One may support:
+AI providers do not expose identical capabilities. One may support:
 
 - native subagents;
 - custom commands;
@@ -2268,11 +1997,7 @@ One may support:
 - repository instructions;
 - structured output.
 
-Another may expose those concepts differently.
-
-Therefore, the abstraction should not pretend every provider is identical.
-
-A good model separates:
+Another may expose those concepts differently. Therefore, the abstraction should not pretend every provider is identical. A good model separates:
 
 ```text
 Core Harness Contract
@@ -2297,7 +2022,7 @@ This prevents the lowest-common-denominator problem while preserving portability
 
 ---
 
-## 5.15 Shared Nothing Between Runs
+### 5.15 Shared Nothing Between Runs
 
 One of the most important enterprise execution principles is:
 
@@ -2311,9 +2036,7 @@ Unsafe:
 /shared/output/
 ```
 
-Two concurrent runs may overwrite one another.
-
-Safer:
+Two concurrent runs may overwrite one another. Safer:
 
 ```text
 /runs/{run-id}/scratchpad/
@@ -2322,15 +2045,13 @@ Safer:
 /runs/{run-id}/workspace/
 ```
 
-Shared resources may be read-only or controlled through transactional services.
-
-Mutable execution state belongs to a run.
+Shared resources may be read-only or controlled through transactional services. Mutable execution state belongs to a run.
 
 ---
 
-# 6. Professional Diagrams
+## 6. Professional Diagrams
 
-## 6.1 Central Harness with Repository-Specific Harnesses
+### 6.1 Central Harness with Repository-Specific Harnesses
 
 ```mermaid
 flowchart TB
@@ -2368,13 +2089,11 @@ flowchart TB
     BIR --> BIRS["Repository Skills"]
 ```
 
-The central platform supplies shared capability.
-
-Each repository retains local Instructions, Skills, validation requirements, and approval policy.
+The central platform supplies shared capability. Each repository retains local Instructions, Skills, validation requirements, and approval policy.
 
 ---
 
-## 6.2 Shared Platform Harness
+### 6.2 Shared Platform Harness
 
 ```mermaid
 flowchart LR
@@ -2412,7 +2131,7 @@ This architecture separates workflow control from execution mechanics.
 
 ---
 
-## 6.3 Repository Configuration Layers
+### 6.3 Repository Configuration Layers
 
 ```mermaid
 flowchart TB
@@ -2431,7 +2150,7 @@ The effective workflow is composed from several governance layers rather than ha
 
 ---
 
-## 6.4 Sequential and Parallel Orchestration
+### 6.4 Sequential and Parallel Orchestration
 
 ```mermaid
 flowchart TB
@@ -2455,13 +2174,11 @@ flowchart TB
     Eval --> Approval["Human Approval"]
 ```
 
-The Developer stage is sequential because implementation must exist first.
-
-Independent validation activities can then execute in parallel.
+The Developer stage is sequential because implementation must exist first. Independent validation activities can then execute in parallel.
 
 ---
 
-## 6.5 Fan-Out / Fan-In Population Pattern
+### 6.5 Fan-Out / Fan-In Population Pattern
 
 ```mermaid
 flowchart TB
@@ -2487,7 +2204,7 @@ Each population item remains independently observable and recoverable.
 
 ---
 
-## 6.6 Run Isolation
+### 6.6 Run Isolation
 
 ```mermaid
 flowchart LR
@@ -2514,7 +2231,7 @@ No run owns another run's mutable state.
 
 ---
 
-## 6.7 Validation and Evaluation
+### 6.7 Validation and Evaluation
 
 ```mermaid
 flowchart TB
@@ -2538,13 +2255,11 @@ flowchart TB
     E --> Outcome["Pass / Fail / Partial / Inconclusive"]
 ```
 
-Validation produces deterministic evidence.
-
-Evaluation assesses the completed outcome using that evidence.
+Validation produces deterministic evidence. Evaluation assesses the completed outcome using that evidence.
 
 ---
 
-## 6.8 Plugin and Adapter Architecture
+### 6.8 Plugin and Adapter Architecture
 
 ```mermaid
 flowchart TB
@@ -2576,7 +2291,7 @@ The Harness depends on capabilities rather than vendor APIs.
 
 ---
 
-## 6.9 Security Boundary Pattern
+### 6.9 Security Boundary Pattern
 
 ```mermaid
 flowchart TB
@@ -2597,7 +2312,7 @@ The agent receives only the capability and access required for the current task.
 
 ---
 
-## 6.10 Enterprise Pattern Composition
+### 6.10 Enterprise Pattern Composition
 
 A complete Alpha Car Detailing enterprise Harness may combine several patterns simultaneously.
 
@@ -2634,33 +2349,19 @@ flowchart TB
 
 This diagram illustrates an important point:
 
-There is no contradiction between centralization and distribution.
+There is no contradiction between centralization and distribution. The control plane can be centralized. Repository execution can remain isolated.
 
-The control plane can be centralized.
+Agent workflows can be standardized. Instructions can remain repository-specific. Validation infrastructure can be shared.
 
-Repository execution can remain isolated.
-
-Agent workflows can be standardized.
-
-Instructions can remain repository-specific.
-
-Validation infrastructure can be shared.
-
-Validation requirements can remain local.
-
-Metrics can be centralized.
-
-Mutable run state can remain isolated.
+Validation requirements can remain local. Metrics can be centralized. Mutable run state can remain isolated.
 
 This is the essence of pattern composition.
 
 ---
 
-## 6.11 Pattern Selection Matrix
+### 6.11 Pattern Selection Matrix
 
-No single pattern is correct for every organization.
-
-The selection should reflect the operating environment.
+No single pattern is correct for every organization. The selection should reflect the operating environment.
 
 | Decision Factor | Favor Simpler / Local Pattern | Favor Shared / Distributed Enterprise Pattern |
 |---|---|---|
@@ -2679,13 +2380,11 @@ The selection should reflect the operating environment.
 | Population workloads | Rare | Common |
 | Failure recovery | Manual acceptable | Durable recovery required |
 
-The matrix is guidance, not a scoring system.
-
-Architecture should reflect actual constraints.
+The matrix is guidance, not a scoring system. Architecture should reflect actual constraints.
 
 ---
 
-## 6.12 Pattern Combination Matrix
+### 6.12 Pattern Combination Matrix
 
 Common combinations include:
 
@@ -2704,9 +2403,7 @@ Common combinations include:
 | Repository Intelligence | Lead Agent, planning, scoped validation |
 | Tool Abstraction | provider adapters, least-privilege security |
 
-Patterns should be combined deliberately.
-
-The architectural question is not:
+Patterns should be combined deliberately. The architectural question is not:
 
 > Can these patterns work together?
 
@@ -2718,21 +2415,22 @@ That boundary discipline determines whether an enterprise Harness remains compos
 
 ---
 
-Chapter 21 status: In progress — next section: Hands-on Example
+## 7. Hands-on Example
 
-# 7. Hands-on Example
+### 7.1 Scenario: Building a Shared Enterprise Harness for Alpha Car Detailing
 
-## 7.1 Scenario: Building a Shared Enterprise Harness for Alpha Car Detailing
-
-Alpha Car Detailing has successfully introduced AI-assisted engineering workflows within its Booking service.
-
-The original Harness supports a structured development lifecycle:
+Alpha Car Detailing has successfully introduced AI-assisted engineering workflows within its Booking service. The original Harness supports a structured development lifecycle:
 
 1. The Lead Agent analyzes the engineering request.
+
 2. The Developer Agent implements the approved change.
+
 3. The Reviewer Agent independently examines the implementation.
+
 4. The Validator Agent executes deterministic checks.
+
 5. The Evaluator Agent assesses the completed outcome against acceptance criteria.
+
 6. The Harness records execution evidence and prepares the change for human approval.
 
 The organization now wants to extend these capabilities to three independently maintained microservices:
@@ -2743,11 +2441,7 @@ The organization now wants to extend these capabilities to three independently m
 | Fleet        | Corporate vehicles, fleet membership, vehicle eligibility | Fleet Team   |
 | Billing      | Invoices, payments, pricing, financial adjustments        | Billing Team |
 
-Although these services share enterprise engineering standards, they have different domain rules, validation requirements, and approval boundaries.
-
-The architecture team must design a solution that allows all three services to reuse the same Harness capabilities without creating a centralized workflow containing repository-specific conditions.
-
-The objective is to implement a Shared Platform Harness with repository-specific execution profiles.
+Although these services share enterprise engineering standards, they have different domain rules, validation requirements, and approval boundaries. The architecture team must design a solution that allows all three services to reuse the same Harness capabilities without creating a centralized workflow containing repository-specific conditions. The objective is to implement a Shared Platform Harness with repository-specific execution profiles.
 
 The solution will demonstrate the following patterns:
 
@@ -2764,42 +2458,44 @@ The solution will demonstrate the following patterns:
 
 The implementation uses .NET 10 for the orchestration components and Claude Code as the primary AI coding platform. The underlying architectural contracts remain independent of Claude.
 
-## 7.2 Step 1 — Define the Target Architecture
+### 7.2 Step 1 — Define the Target Architecture
 
 The solution separates responsibilities into three layers.
 
-Enterprise Harness Platform
+**Enterprise Harness Platform.** Provides common orchestration infrastructure, role contracts, tool adapters, validation execution, Run Workspace management, recovery, and metrics.
 
-Provides common orchestration infrastructure, role contracts, tool adapters, validation execution, Run Workspace management, recovery, and metrics.
+**Repository Harness Configuration.** Provides repository-specific Instructions, Skills, validation profiles, approval requirements, and Repository Intelligence references.
 
-Repository Harness Configuration
+**Run Execution.** Creates an isolated workspace, executes the selected workflow, collects evidence, and produces a structured result.
 
-Provides repository-specific Instructions, Skills, validation profiles, approval requirements, and Repository Intelligence references.
-
-Run Execution
-
-Creates an isolated workspace, executes the selected workflow, collects evidence, and produces a structured result.
-
-\#chatgpt-mermaid-\_r_17un\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(13, 13, 13);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_17un\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_17un\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_17un\_ .error-icon{fill:rgb(243, 243, 243);}#chatgpt-mermaid-\_r_17un\_ .error-text{fill:rgb(13, 13, 13);stroke:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17un\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_17un\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_17un\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_17un\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_17un\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_17un\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_17un\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_17un\_ .marker.cross{stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_17un\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_17un\_ p{margin:0;}#chatgpt-mermaid-\_r_17un\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17un\_ .cluster-label text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17un\_ .cluster-label span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17un\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_17un\_ .label text,#chatgpt-mermaid-\_r_17un\_ span{fill:rgb(13, 13, 13);color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17un\_ .node rect,#chatgpt-mermaid-\_r_17un\_ .node circle,#chatgpt-mermaid-\_r_17un\_ .node ellipse,#chatgpt-mermaid-\_r_17un\_ .node polygon,#chatgpt-mermaid-\_r_17un\_ .node path{fill:rgb(222, 234, 251);stroke:rgb(83, 154, 248);stroke-width:1px;}#chatgpt-mermaid-\_r_17un\_ .rough-node .label text,#chatgpt-mermaid-\_r_17un\_ .node .label text,#chatgpt-mermaid-\_r_17un\_ .image-shape .label,#chatgpt-mermaid-\_r_17un\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_17un\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_17un\_ .rough-node .label,#chatgpt-mermaid-\_r_17un\_ .node .label,#chatgpt-mermaid-\_r_17un\_ .image-shape .label,#chatgpt-mermaid-\_r_17un\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_17un\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_17un\_ .root .anchor path{fill:rgb(143, 143, 143)!important;stroke-width:0;stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_17un\_ .arrowheadPath{fill:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_17un\_ .edgePath .path{stroke:rgb(143, 143, 143);stroke-width:1px;}#chatgpt-mermaid-\_r_17un\_ .flowchart-link{stroke:rgb(143, 143, 143);fill:none;}#chatgpt-mermaid-\_r_17un\_ .edgeLabel{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_17un\_ .edgeLabel p{background-color:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_17un\_ .edgeLabel rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_17un\_ .labelBkg{background-color:rgba(252, 252, 252, 0.5);}#chatgpt-mermaid-\_r_17un\_ .cluster rect{fill:rgb(243, 243, 243);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_17un\_ .cluster text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17un\_ .cluster span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17un\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(243, 243, 243);border:1px solid rgba(0, 0, 0, 0.1);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_17un\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17un\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_17un\_ .icon-shape,#chatgpt-mermaid-\_r_17un\_ .image-shape{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_17un\_ .icon-shape p,#chatgpt-mermaid-\_r_17un\_ .image-shape p{background-color:rgb(252, 252, 252);padding:2px;}#chatgpt-mermaid-\_r_17un\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_17un\_ .image-shape .label rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_17un\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_17un\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_17un\_ .node .neo-node{stroke:rgb(83, 154, 248);}#chatgpt-mermaid-\_r_17un\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_17un\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_17un\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_17un\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_17un\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_17un\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_17un\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_17un\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_17un\_ [data-look="neo"].node .neo-line path{stroke:rgb(83, 154, 248);filter:none;}#chatgpt-mermaid-\_r_17un\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_17un\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_17un\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_17un\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_17un\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_17un\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_17un\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_17un\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_17un\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_17un\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_17un\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_17un\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-width:1px;}#chatgpt-mermaid-\_r_17un\_ .node rect,#chatgpt-mermaid-\_r_17un\_ .node circle,#chatgpt-mermaid-\_r_17un\_ .node ellipse,#chatgpt-mermaid-\_r_17un\_ .node polygon,#chatgpt-mermaid-\_r_17un\_ .node path{fill:rgb(229, 243, 255);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_17un\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_17un\_ .node.mermaid-decision .label-container{fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_17un\_ .edgePaths .flowchart-link{stroke:rgb(143, 143, 143);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_17un\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_17un\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}Shared CapabilitiesAgent RolesShared SkillsGate ExecutorWorkspace ManagerTool AdaptersMetricsEngineering RequestEnterprise Harness PlatformBooking Harness ProfileFleet Harness ProfileBilling Harness ProfileBooking Run WorkspaceFleet Run WorkspaceBilling Run Workspace
+```mermaid
+flowchart TB
+    R["Engineering Request"] --> P["Enterprise Harness Platform"]
+    P --> S["Shared Roles, Skills, Gates, Adapters, and Metrics"]
+    P --> B["Booking Harness Profile"]
+    P --> F["Fleet Harness Profile"]
+    P --> L["Billing Harness Profile"]
+    B --> BW["Isolated Booking Run Workspace"]
+    F --> FW["Isolated Fleet Run Workspace"]
+    L --> LW["Isolated Billing Run Workspace"]
+```
 
 The platform does not contain conditional orchestration logic such as:
 
-```
+```text
 if (repository == "billing")
 {
     RunBillingValidation();
 }
 ```
 
-Instead, repository profiles declare the required behavior, and the platform resolves approved capabilities through their registered contracts.
+Instead, repository profiles declare the required behavior, and the platform resolves approved capabilities through their registered contracts. This distinction is central to the exercise.
 
-This distinction is central to the exercise.
-
-## 7.3 Step 2 — Create the Solution Structure
+### 7.3 Step 2 — Create the Solution Structure
 
 Create the following structure in the companion Alpha Car Detailing example.
 
-```
+```text
 alpha-car-detailing/
 │
 ├── enterprise-harness/
@@ -2841,9 +2537,7 @@ alpha-car-detailing/
     └── harness.yaml
 ```
 
-In this example, the directories represent independently governed repositories. They are shown together for educational purposes; production deployments may reference separate Git repositories.
-
-The central Harness project follows Clean Architecture principles.
+In this example, the directories represent independently governed repositories. They are shown together for educational purposes; production deployments may reference separate Git repositories. The central Harness project follows Clean Architecture principles.
 
 | Project                  | Responsibility                                          |
 | ------------------------ | ------------------------------------------------------- |
@@ -2853,19 +2547,15 @@ The central Harness project follows Clean Architecture principles.
 | `Harness.Adapters`       | Claude, source control, and other external integrations |
 | `Harness.Host`           | Command-line or service entry point                     |
 
-The Application layer depends on contracts rather than specific provider implementations.
+The Application layer depends on contracts rather than specific provider implementations. This allows the architecture to support future CLI-based, API-based, or worker-based execution hosts without changing the core execution model.
 
-This allows the architecture to support future CLI-based, API-based, or worker-based execution hosts without changing the core execution model.
+### 7.4 Step 3 — Define Repository Profiles
 
-## 7.4 Step 3 — Define Repository Profiles
-
-Each repository declares its own engineering requirements.
-
-For Booking:
+Each repository declares its own engineering requirements. For Booking:
 
 File: `booking-service/harness.yaml`
 
-```
+```yaml
 schemaVersion: "1.0"
 
 repository:
@@ -2910,11 +2600,9 @@ execution:
   maxConcurrentGates: 3
 ```
 
-The Fleet repository uses different domain requirements.
+The Fleet repository uses different domain requirements. File: `fleet-service/harness.yaml`
 
-File: `fleet-service/harness.yaml`
-
-```
+```yaml
 schemaVersion: "1.0"
 
 repository:
@@ -2951,11 +2639,9 @@ execution:
   maxConcurrentGates: 3
 ```
 
-Billing requires additional controls.
+Billing requires additional controls. File: `billing-service/harness.yaml`
 
-File: `billing-service/harness.yaml`
-
-```
+```yaml
 schemaVersion: "1.0"
 
 repository:
@@ -2998,17 +2684,13 @@ execution:
   maxConcurrentGates: 2
 ```
 
-Notice that the Billing repository requires stronger validation and approval controls.
+Notice that the Billing repository requires stronger validation and approval controls. The central orchestrator does not need to know why Billing requires these checks. It only needs to enforce the resolved, validated policy.
 
-The central orchestrator does not need to know why Billing requires these checks.
-
-It only needs to enforce the resolved, validated policy.
-
-### Configuration precedence
+#### Configuration precedence
 
 The enterprise platform should resolve configuration in a predictable order:
 
-```
+```text
 Enterprise Mandatory Policy
              │
              ▼
@@ -3026,17 +2708,13 @@ Effective Run Configuration
 
 Repository configuration may extend enterprise requirements but must not weaken mandatory enterprise controls.
 
-For example, Billing may add a financial security gate. It cannot remove an enterprise-mandated secret scanning gate.
+For example, Billing may add a financial security gate. It cannot remove an enterprise-mandated secret scanning gate. A complete implementation should validate configuration against an explicit schema and reject unknown gate identifiers, unsupported settings, or attempts to weaken mandatory controls.
 
-A complete implementation should validate configuration against an explicit schema and reject unknown gate identifiers, unsupported settings, or attempts to weaken mandatory controls.
+### 7.5 Step 4 — Define Core Harness Contracts
 
-## 7.5 Step 4 — Define Core Harness Contracts
+The first implementation responsibility is to establish stable execution contracts. Project: `Harness.Contracts`
 
-The first implementation responsibility is to establish stable execution contracts.
-
-Project: `Harness.Contracts`
-
-```
+```csharp
 namespace Harness.Contracts;
 
 public sealed record HarnessRequest(
@@ -3068,7 +2746,8 @@ public sealed record GateResult(
     string Name,
     GateStatus Status,
     TimeSpan Duration,
-    string EvidenceLocation);
+    string EvidenceLocation,
+    string ImplementationCommit);
 
 public enum GateStatus
 {
@@ -3079,21 +2758,15 @@ public enum GateStatus
 }
 ```
 
-These contracts distinguish a Harness run from individual validation gates.
+These contracts distinguish a Harness run from individual validation gates. The `ImplementationCommit` field binds each result to the source version that was checked; production systems should also capture the effective gate configuration and evidence digest. A run can remain incomplete even when every executed gate passes.
 
-A run can remain incomplete even when every executed gate passes.
+For example, the implementation may pass validation but fail evaluation. Similarly, a run awaiting required human approval is not yet completed. A production implementation should also distinguish explicit cancellation, policy denial, timeout, and inconclusive evaluation.
 
-For example, the implementation may pass validation but fail evaluation.
-
-Similarly, a run awaiting required human approval is not yet completed.
-
-A production implementation should also distinguish explicit cancellation, policy denial, timeout, and inconclusive evaluation.
-
-### Agent provider abstraction
+#### Agent provider abstraction
 
 The orchestration layer should not depend directly on Claude commands.
 
-```
+```csharp
 namespace Harness.Contracts;
 
 public sealed record AgentRequest(
@@ -3115,11 +2788,9 @@ public interface IAgentProvider
 }
 ```
 
-The provider contract describes what the Harness requires.
+The provider contract describes what the Harness requires. Provider adapters determine how the request is executed.
 
-Provider adapters determine how the request is executed.
-
-```
+```text
 IAgentProvider
       │
       ├── ClaudeCodeAdapter
@@ -3127,15 +2798,13 @@ IAgentProvider
       └── CodexAdapter
 ```
 
-The abstraction should be expanded carefully as real capability differences emerge.
+The abstraction should be expanded carefully as real capability differences emerge. It should not assume that every provider supports identical agent roles, subagent orchestration, permissions, or tool interfaces.
 
-It should not assume that every provider supports identical agent roles, subagent orchestration, permissions, or tool interfaces.
-
-## 7.6 Step 5 — Implement the Repository Configuration Resolver
+### 7.6 Step 5 — Implement the Repository Configuration Resolver
 
 The platform needs to identify the effective requirements for a run.
 
-```
+```csharp
 namespace Harness.Contracts;
 
 public sealed record RepositoryProfile(
@@ -3158,18 +2827,22 @@ public interface IRepositoryProfileResolver
 An infrastructure implementation can:
 
 1. Locate the registered repository.
+
 2. Load its Harness configuration.
+
 3. Resolve shared profiles.
+
 4. Resolve team policy.
+
 5. Apply enterprise mandatory policy.
+
 6. Validate the resulting configuration.
+
 7. Produce an immutable effective profile.
 
-The orchestrator receives the resolved profile.
+The orchestrator receives the resolved profile. It does not implement repository-specific policy decisions.
 
-It does not implement repository-specific policy decisions.
-
-```
+```csharp
 var profile = await profileResolver.ResolveAsync(
     request.RepositoryId,
     cancellationToken);
@@ -3177,21 +2850,15 @@ var profile = await profileResolver.ResolveAsync(
 
 This allows the same orchestration code to process Booking, Fleet, and Billing.
 
-### Important boundary
+#### Important boundary
 
-Repository configuration is still a lower-trust input relative to enterprise policy.
+Repository configuration is still a lower-trust input relative to enterprise policy. A malicious repository change must not be able to disable security scanning, grant new credentials, or execute arbitrary privileged tools. Effective profiles must be validated against approved capability registrations and organization policy before a run begins.
 
-A malicious repository change must not be able to disable security scanning, grant new credentials, or execute arbitrary privileged tools.
+### 7.7 Step 6 — Implement Run Workspace Isolation
 
-Effective profiles must be validated against approved capability registrations and organization policy before a run begins.
+Every Harness run requires a separate execution workspace. A typical workspace contains:
 
-## 7.7 Step 6 — Implement Run Workspace Isolation
-
-Every Harness run requires a separate execution workspace.
-
-A typical workspace contains:
-
-```
+```text
 runs/
 └── 6e4b8d5a-.../
     ├── input/
@@ -3220,12 +2887,13 @@ runs/
 
 Create a workspace contract.
 
-```
+```csharp
 namespace Harness.Contracts;
 
 public sealed record RunWorkspace(
     Guid RunId,
     string RootPath,
+    string InputPath,
     string RepositoryPath,
     string ScratchpadPath,
     string EvidencePath,
@@ -3242,7 +2910,7 @@ public interface IRunWorkspaceManager
 
 A basic filesystem implementation can create the directory structure.
 
-```
+```csharp
 using Harness.Contracts;
 
 namespace Harness.Infrastructure;
@@ -3260,6 +2928,7 @@ public sealed class FileSystemRunWorkspaceManager(
             workspaceRoot,
             request.RunId.ToString("N"));
 
+        var input = Path.Combine(root, "input");
         var repository = Path.Combine(root, "repository");
         var scratchpad = Path.Combine(root, "scratchpad");
         var evidence = Path.Combine(root, "evidence");
@@ -3268,6 +2937,7 @@ public sealed class FileSystemRunWorkspaceManager(
 
         foreach (var path in new[]
         {
+            input,
             repository,
             scratchpad,
             evidence,
@@ -3281,6 +2951,7 @@ public sealed class FileSystemRunWorkspaceManager(
         return Task.FromResult(new RunWorkspace(
             request.RunId,
             root,
+            input,
             repository,
             scratchpad,
             evidence,
@@ -3290,9 +2961,7 @@ public sealed class FileSystemRunWorkspaceManager(
 }
 ```
 
-This illustrates workspace creation, not a complete secure workspace implementation.
-
-A production manager must additionally enforce:
+This illustrates workspace directory creation, not repository checkout, exclusive ownership, or a complete secure workspace implementation. The `input` directory is created consistently with the workspace contract and example layout. A production manager must additionally enforce:
 
 - trusted workspace roots;
 - non-following of unsafe symbolic links;
@@ -3307,20 +2976,18 @@ A production manager must additionally enforce:
 
 It must also ensure that the repository is checked out at the requested, verified commit before agent execution begins.
 
-### Why run isolation matters
+#### Why run isolation matters
 
 Consider two runs executing simultaneously:
 
-```
+```text
 Run A: Add fleet booking cancellation
 Run B: Fix recurring booking validation
 ```
 
-Without isolated workspaces, both runs may modify the same files.
+Without isolated workspaces, both runs may modify the same files. With isolation:
 
-With isolation:
-
-```
+```text
 Run A
   └── Workspace A
         └── Branch A
@@ -3330,21 +2997,17 @@ Run B
         └── Branch B
 ```
 
-Each run can proceed independently.
+Each run can proceed independently. The eventual merge process handles integration explicitly.
 
-The eventual merge process handles integration explicitly.
+### 7.8 Step 7 — Design the Scratchpad Contract
 
-## 7.8 Step 7 — Design the Scratchpad Contract
-
-The Scratchpad is temporary, task-scoped working state.
-
-It is not the same as Repository Intelligence or Harness Memory.
+The Scratchpad is temporary, task-scoped working state. It is not the same as Repository Intelligence or Harness Memory.
 
 For example, the Lead Agent might record:
 
 File: `scratchpad/lead.md`
 
-```
+```markdown
 # Lead Agent Scratchpad
 
 ## Objective
@@ -3379,11 +3042,7 @@ or the recurring booking definition?
 - Developer task prepared.
 ```
 
-The Scratchpad may evolve during execution.
-
-However, it must not become the source of authority for requirements or architectural standards.
-
-The governing distinction is:
+The Scratchpad may evolve during execution. However, it must not become the source of authority for requirements or architectural standards. The governing distinction is:
 
 | Artifact                | Purpose                                           |
 | ----------------------- | ------------------------------------------------- |
@@ -3395,21 +3054,20 @@ The governing distinction is:
 | Run Workspace           | Isolated execution state                          |
 | Harness Memory          | Governed, reusable learning from prior executions |
 
-A Scratchpad discovery may be proposed for promotion into Repository Intelligence.
+A Scratchpad discovery may be proposed for promotion into Repository Intelligence. That promotion should follow review and approval rules.
 
-That promotion should follow review and approval rules.
+### 7.9 Step 8 — Implement the Deterministic Gate Contract
 
-## 7.9 Step 8 — Implement the Deterministic Gate Contract
+A validation gate should have a stable execution interface. The implementation commit passed through `GateContext` must match the source snapshot being tested, and the gate should include that identity in the returned `GateResult`.
 
-A validation gate should have a stable execution interface.
-
-```
+```csharp
 namespace Harness.Contracts;
 
 public sealed record GateContext(
     Guid RunId,
     string RepositoryId,
-    string WorkingDirectory);
+    string WorkingDirectory,
+    string ImplementationCommit);
 
 public interface IValidationGate
 {
@@ -3423,32 +3081,28 @@ public interface IValidationGate
 
 A gate might execute:
 
-```
+```bash
 dotnet build
 ```
 
 Another might execute:
 
-```
+```bash
 dotnet test --no-restore
 ```
 
-Another may perform architecture validation.
+Another may perform architecture validation. The orchestrator should resolve the gate by its registered name.
 
-The orchestrator should resolve the gate by its registered name.
-
-```
+```csharp
 public interface IValidationGateRegistry
 {
     IValidationGate Resolve(string gateName);
 }
 ```
 
-This is a plugin-style registry.
+This is a plugin-style registry. The Booking profile can request:
 
-The Booking profile can request:
-
-```
+```yaml
 validation:
   required:
     - build
@@ -3460,7 +3114,7 @@ validation:
 
 The Billing profile can request:
 
-```
+```yaml
 validation:
   required:
     - build
@@ -3470,19 +3124,15 @@ validation:
     - security-scan
 ```
 
-Both use the same validation execution infrastructure.
+Both use the same validation execution infrastructure. Neither requires repository-specific branches in the central orchestrator.
 
-Neither requires repository-specific branches in the central orchestrator.
-
-### Gate dependencies
+#### Gate dependencies
 
 Not every gate can execute independently.
 
-For example, tests may depend on build artifacts.
+For example, tests may depend on build artifacts. Define an execution plan:
 
-Define an execution plan:
-
-```
+```text
 Restore
    ↓
 Build
@@ -3495,17 +3145,13 @@ Build
          Aggregate
 ```
 
-The Harness should validate the gate dependency graph before execution.
+The Harness should validate the gate dependency graph before execution. For a build gate, a failed build should block dependent tests rather than reporting them as successful or silently skipping them.
 
-For a build gate, a failed build should block dependent tests rather than reporting them as successful or silently skipping them.
+### 7.10 Step 9 — Execute Independent Gates in Parallel
 
-## 7.10 Step 9 — Execute Independent Gates in Parallel
+Parallel validation can reduce execution time when checks are independent. A simplified orchestration service is:
 
-Parallel validation can reduce execution time when checks are independent.
-
-A simplified orchestration service is:
-
-```
+```csharp
 using Harness.Contracts;
 
 namespace Harness.Application;
@@ -3546,17 +3192,11 @@ public sealed class ValidationOrchestrator(
 }
 ```
 
-This example illustrates bounded parallel execution.
+This example illustrates bounded parallel execution. It assumes that the selected gates have already been verified as independent, that they can safely share a read-only source snapshot, and that any generated output is isolated. It does not replace dependency-aware scheduling, timeout policies, or failure-to-result conversion.
 
-It assumes that the selected gates have already been verified as independent, that they can safely share a read-only source snapshot, and that any generated output is isolated.
+A production orchestrator should resolve a dependency graph and execute only currently eligible gates in parallel. For Alpha Car Detailing, the expected execution may be:
 
-It does not replace dependency-aware scheduling, timeout policies, or failure-to-result conversion.
-
-A production orchestrator should resolve a dependency graph and execute only currently eligible gates in parallel.
-
-For Alpha Car Detailing, the expected execution may be:
-
-```
+```text
 Build
   │
   ├── Unit Tests
@@ -3568,17 +3208,13 @@ Build
      Gate Aggregation
 ```
 
-The execution order is deliberate.
+The execution order is deliberate. An unbounded `Task.WhenAll` over every configured check could cause conflicting builds, unnecessary resource consumption, or tests running against incomplete artifacts.
 
-An unbounded `Task.WhenAll` over every configured check could cause conflicting builds, unnecessary resource consumption, or tests running against incomplete artifacts.
+### 7.11 Step 10 — Define Agent Role Orchestration
 
-## 7.11 Step 10 — Define Agent Role Orchestration
+The central Harness uses a workflow appropriate to the run's risk profile. For this example, consider the standard multi-agent workflow:
 
-The central Harness uses a workflow appropriate to the run's risk profile.
-
-For this example, consider the standard multi-agent workflow:
-
-```
+```text
 Lead
   ↓
 Developer
@@ -3590,11 +3226,9 @@ Evaluator
 Human Approval
 ```
 
-Reviewer and validation execution can occur independently after development if neither mutates the implementation.
+Reviewer and validation execution can occur independently after development if neither mutates the implementation. The following pseudocode illustrates the sequence:
 
-The following pseudocode illustrates the sequence:
-
-```
+```csharp
 var leadResult = await agentProvider.ExecuteAsync(
     leadRequest,
     cancellationToken);
@@ -3628,33 +3262,17 @@ var evaluationResult = await evaluator.EvaluateAsync(
     cancellationToken);
 ```
 
-This is an orchestration sketch, not a complete executable method. The surrounding Harness must construct role-specific requests, freeze the implementation snapshot before independent review and validation, persist evidence, and handle unsuccessful outcomes.
+This is an orchestration sketch, not a complete executable method. The surrounding Harness must construct role-specific requests, freeze the implementation snapshot before independent review and validation, persist evidence, and handle unsuccessful outcomes. An important rule applies:
 
-An important rule applies:
+The Evaluator must receive the actual evidence produced by the Reviewer and Validator. It should not depend solely on a Developer Agent's claim that the implementation is correct. If the Reviewer requests modifications, the Harness should return the work to the Developer under a bounded iteration policy.
 
-The Evaluator must receive the actual evidence produced by the Reviewer and Validator.
+Following modification, previous validation evidence is no longer sufficient for the changed implementation. Affected checks must be executed again.
 
-It should not depend solely on a Developer Agent's claim that the implementation is correct.
+### 7.12 Step 11 — Introduce Retry and Recovery
 
-If the Reviewer requests modifications, the Harness should return the work to the Developer under a bounded iteration policy.
+Suppose the Developer Agent encounters a temporary provider timeout. The Harness may retry the invocation. However, suppose the Developer produces code that fails compilation.
 
-Following modification, previous validation evidence is no longer sufficient for the changed implementation.
-
-Affected checks must be executed again.
-
-## 7.12 Step 11 — Introduce Retry and Recovery
-
-Suppose the Developer Agent encounters a temporary provider timeout.
-
-The Harness may retry the invocation.
-
-However, suppose the Developer produces code that fails compilation.
-
-That is not a provider reliability problem.
-
-The appropriate response is to return implementation evidence to the Developer for correction.
-
-A simple classification model is:
+That is not a provider reliability problem. The appropriate response is to return implementation evidence to the Developer for correction. A simple classification model is:
 
 | Failure                      | Recovery                                |
 | ---------------------------- | --------------------------------------- |
@@ -3671,7 +3289,7 @@ A simple classification model is:
 
 The Harness should record attempts.
 
-```
+```json
 {
   "runId": "6e4b8d5a-0000-4000-8000-000000000001",
   "stage": "developer",
@@ -3682,13 +3300,11 @@ The Harness should record attempts.
 }
 ```
 
-An exhausted run must retain its evidence.
-
-It should not simply disappear when retries are exhausted.
+An exhausted run must retain its evidence. It should not simply disappear when retries are exhausted.
 
 For example:
 
-```
+```text
 Run 1042
   Status: Exhausted
 
@@ -3702,11 +3318,11 @@ Run 1042
 
 The enterprise may archive failed or exhausted runs to artifact storage for troubleshooting.
 
-### Recovery checkpoints
+#### Recovery checkpoints
 
 Recommended checkpoints include:
 
-```
+```text
 RunAccepted
 RepositoryPrepared
 LeadCompleted
@@ -3718,42 +3334,34 @@ ApprovalCompleted
 RunCompleted
 ```
 
-On recovery, the Harness examines durable state and resumes only work whose prior completion can be trusted.
+On recovery, the Harness examines durable state and resumes only work whose prior completion can be trusted. Side-effecting operations, such as creating pull requests, must be idempotent or protected against duplicate execution.
 
-Side-effecting operations, such as creating pull requests, must be idempotent or protected against duplicate execution.
+### 7.13 Step 12 — Add Human Approval Boundaries
 
-## 7.13 Step 12 — Add Human Approval Boundaries
+Human approval requirements should come from the effective policy. Suppose a Booking change modifies only internal validation rules. The approval profile may require:
 
-Human approval requirements should come from the effective policy.
-
-Suppose a Booking change modifies only internal validation rules.
-
-The approval profile may require:
-
-```
+```text
 Booking Code Owner
 ```
 
 A Billing change modifying invoice calculations may require:
 
-```
+```text
 Billing Owner
 Security Reviewer
 ```
 
 A cross-service contract change may require:
 
-```
+```text
 Producing Service Owner
 Consuming Service Owner
 Architecture Owner
 ```
 
-The Harness should not treat approval as a Boolean value provided by an agent.
+The Harness should not treat approval as a Boolean value provided by an agent. Approval evidence should include:
 
-Approval evidence should include:
-
-```
+```json
 {
   "runId": "6e4b8d5a-0000-4000-8000-000000000001",
   "approvalType": "financial-change",
@@ -3766,15 +3374,11 @@ Approval evidence should include:
 }
 ```
 
-Approval must be tied to the exact implementation and evidence under consideration.
-
-If the implementation changes after approval, the previous approval may no longer be valid.
-
-The Harness must re-evaluate the approval requirements and revalidate the changed artifact.
+Approval must be tied to the exact implementation and evidence under consideration. If the implementation changes after approval, the previous approval may no longer be valid. The Harness must re-evaluate the approval requirements and revalidate the changed artifact.
 
 Approval should be recorded by an authorized identity through a trusted approval mechanism, not inferred from generated text.
 
-## 7.14 Step 13 — Introduce Cross-Repository Orchestration
+### 7.14 Step 13 — Introduce Cross-Repository Orchestration
 
 Consider a new Alpha Car Detailing requirement:
 
@@ -3782,35 +3386,40 @@ Consider a new Alpha Car Detailing requirement:
 
 This change affects several services.
 
-### Booking
+#### Booking
 
 Must expose completed booking information in a suitable contract or integration event.
 
-### Fleet
+#### Fleet
 
 Must provide the corporate account and vehicle association.
 
-### Billing
+#### Billing
 
-Must aggregate billable activity and generate a consolidated invoice.
+Must aggregate billable activity and generate a consolidated invoice. The enterprise Harness coordinates three repository runs.
 
-The enterprise Harness coordinates three repository runs.
-
-\#chatgpt-mermaid-\_r_1864\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(13, 13, 13);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_1864\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_1864\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_1864\_ .error-icon{fill:rgb(243, 243, 243);}#chatgpt-mermaid-\_r_1864\_ .error-text{fill:rgb(13, 13, 13);stroke:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_1864\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_1864\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_1864\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_1864\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_1864\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_1864\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_1864\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_1864\_ .marker.cross{stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_1864\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_1864\_ p{margin:0;}#chatgpt-mermaid-\_r_1864\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_1864\_ .cluster-label text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_1864\_ .cluster-label span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_1864\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_1864\_ .label text,#chatgpt-mermaid-\_r_1864\_ span{fill:rgb(13, 13, 13);color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_1864\_ .node rect,#chatgpt-mermaid-\_r_1864\_ .node circle,#chatgpt-mermaid-\_r_1864\_ .node ellipse,#chatgpt-mermaid-\_r_1864\_ .node polygon,#chatgpt-mermaid-\_r_1864\_ .node path{fill:rgb(222, 234, 251);stroke:rgb(83, 154, 248);stroke-width:1px;}#chatgpt-mermaid-\_r_1864\_ .rough-node .label text,#chatgpt-mermaid-\_r_1864\_ .node .label text,#chatgpt-mermaid-\_r_1864\_ .image-shape .label,#chatgpt-mermaid-\_r_1864\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_1864\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_1864\_ .rough-node .label,#chatgpt-mermaid-\_r_1864\_ .node .label,#chatgpt-mermaid-\_r_1864\_ .image-shape .label,#chatgpt-mermaid-\_r_1864\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_1864\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_1864\_ .root .anchor path{fill:rgb(143, 143, 143)!important;stroke-width:0;stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_1864\_ .arrowheadPath{fill:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_1864\_ .edgePath .path{stroke:rgb(143, 143, 143);stroke-width:1px;}#chatgpt-mermaid-\_r_1864\_ .flowchart-link{stroke:rgb(143, 143, 143);fill:none;}#chatgpt-mermaid-\_r_1864\_ .edgeLabel{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_1864\_ .edgeLabel p{background-color:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_1864\_ .edgeLabel rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_1864\_ .labelBkg{background-color:rgba(252, 252, 252, 0.5);}#chatgpt-mermaid-\_r_1864\_ .cluster rect{fill:rgb(243, 243, 243);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_1864\_ .cluster text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_1864\_ .cluster span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_1864\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(243, 243, 243);border:1px solid rgba(0, 0, 0, 0.1);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_1864\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_1864\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_1864\_ .icon-shape,#chatgpt-mermaid-\_r_1864\_ .image-shape{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_1864\_ .icon-shape p,#chatgpt-mermaid-\_r_1864\_ .image-shape p{background-color:rgb(252, 252, 252);padding:2px;}#chatgpt-mermaid-\_r_1864\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_1864\_ .image-shape .label rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_1864\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_1864\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_1864\_ .node .neo-node{stroke:rgb(83, 154, 248);}#chatgpt-mermaid-\_r_1864\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_1864\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_1864\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_1864\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1864\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_1864\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_1864\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_1864\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1864\_ [data-look="neo"].node .neo-line path{stroke:rgb(83, 154, 248);filter:none;}#chatgpt-mermaid-\_r_1864\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_1864\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1864\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_1864\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_1864\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1864\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_1864\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1864\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_1864\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_1864\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_1864\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_1864\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-width:1px;}#chatgpt-mermaid-\_r_1864\_ .node rect,#chatgpt-mermaid-\_r_1864\_ .node circle,#chatgpt-mermaid-\_r_1864\_ .node ellipse,#chatgpt-mermaid-\_r_1864\_ .node polygon,#chatgpt-mermaid-\_r_1864\_ .node path{fill:rgb(229, 243, 255);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_1864\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_1864\_ .node.mermaid-decision .label-container{fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_1864\_ .edgePaths .flowchart-link{stroke:rgb(143, 143, 143);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_1864\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_1864\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}Consolidated Fleet BillingRequestEnterprise LeadBooking RunFleet RunBilling RunBooking ValidationFleet ValidationBilling ValidationCross-Repository EvaluationRequired Human Approvals
-
-Each repository run remains isolated.
-
-The enterprise run coordinates dependencies and aggregates evidence.
-
-### A dependency-aware execution plan
-
-Not every repository can safely proceed independently.
-
-The shared contract may need to be defined before Billing can implement its consumer.
-
-A more realistic plan is:
-
+```mermaid
+flowchart TB
+    R["Consolidated Fleet Billing Request"] --> Lead["Enterprise Lead"]
+    Lead --> B["Booking Run"]
+    Lead --> F["Fleet Run"]
+    Lead --> I["Billing Run"]
+    B --> BV["Booking Validation"]
+    F --> FV["Fleet Validation"]
+    I --> IV["Billing Validation"]
+    BV --> E["Cross-Repository Evaluation"]
+    FV --> E
+    IV --> E
+    E --> A["Required Human Approvals"]
 ```
+
+Each repository run remains isolated. The enterprise run coordinates dependencies and aggregates evidence.
+
+#### A dependency-aware execution plan
+
+Not every repository can safely proceed independently. The shared contract may need to be defined before Billing can implement its consumer. A more realistic plan is:
+
+```text
 Enterprise Lead
       ↓
 Contract Proposal
@@ -3833,19 +3442,15 @@ Approved Contract Version
             Human Approval
 ```
 
-The implementation branches may execute in parallel once the contract is stable.
+The implementation branches may execute in parallel once the contract is stable. The final evaluation must establish that the combined behavior satisfies the original business requirement. This is the difference between three successful repository runs and one successful enterprise change.
 
-The final evaluation must establish that the combined behavior satisfies the original business requirement.
-
-This is the difference between three successful repository runs and one successful enterprise change.
-
-## 7.15 Step 14 — Integrate Repository Intelligence
+### 7.15 Step 14 — Integrate Repository Intelligence
 
 Each repository should provide its own Repository Intelligence.
 
 For example:
 
-```
+```text
 booking-service/
 └── .ai/
     └── repository-intelligence/
@@ -3857,27 +3462,19 @@ booking-service/
         └── dependencies.md
 ```
 
-The Lead Agent uses this information to identify affected components.
+The Lead Agent uses this information to identify affected components. The Developer Agent uses it to follow established implementation patterns. The Reviewer Agent uses it to assess architecture alignment.
 
-The Developer Agent uses it to follow established implementation patterns.
-
-The Reviewer Agent uses it to assess architecture alignment.
-
-The Validator Agent uses the resolved validation profile to execute objective checks.
-
-The Evaluator Agent uses the task criteria and execution evidence to assess the completed outcome.
-
-Repository Intelligence is not interchangeable with Instructions.
+The Validator Agent uses the resolved validation profile to execute objective checks. The Evaluator Agent uses the task criteria and execution evidence to assess the completed outcome. Repository Intelligence is not interchangeable with Instructions.
 
 An Instruction might state:
 
-```
+```text
 All integration events must be published through the outbox.
 ```
 
 Repository Intelligence might describe:
 
-```
+```text
 Booking integration events are defined in
 Booking.Contracts/IntegrationEvents.
 
@@ -3885,19 +3482,13 @@ The outbox implementation is located in
 Booking.Infrastructure/Outbox.
 ```
 
-The first defines an expectation.
+The first defines an expectation. The second describes the repository. Both are valuable, but their responsibilities are different.
 
-The second describes the repository.
+### 7.16 Step 15 — Add Observability
 
-Both are valuable, but their responsibilities are different.
+Every enterprise Harness run should produce structured telemetry. A useful trace hierarchy is:
 
-## 7.16 Step 15 — Add Observability
-
-Every enterprise Harness run should produce structured telemetry.
-
-A useful trace hierarchy is:
-
-```
+```text
 Enterprise Run
   ├── Repository Run: Booking
   │    ├── Lead
@@ -3915,7 +3506,7 @@ Enterprise Run
 
 Relevant attributes include:
 
-```
+```text
 harness.run.id
 harness.enterprise_run.id
 harness.repository.id
@@ -3926,11 +3517,9 @@ harness.validation.gate
 harness.outcome
 ```
 
-The implementation may use OpenTelemetry with an approved metrics and trace backend.
+The implementation may use OpenTelemetry with an approved metrics and trace backend. For a .NET Harness:
 
-For a .NET Harness:
-
-```
+```csharp
 using System.Diagnostics;
 using System.Diagnostics.Metrics;
 
@@ -3959,11 +3548,9 @@ public static class HarnessTelemetry
 
 The telemetry instrumentation should be independent of the logging destination.
 
-For example, the Harness could export to an OpenTelemetry Collector and onward to Azure Monitor, Grafana-compatible backends, or another approved platform.
+For example, the Harness could export to an OpenTelemetry Collector and onward to Azure Monitor, Grafana-compatible backends, or another approved platform. The key architectural requirement is a consistent telemetry model.
 
-The key architectural requirement is a consistent telemetry model.
-
-### Metrics should inform decisions
+#### Metrics should inform decisions
 
 Consider the following illustrative results:
 
@@ -3973,25 +3560,13 @@ Consider the following illustrative results:
 | Fleet      | 31 minutes          | 86%             | Event contract validation   |
 | Billing    | 47 minutes          | 79%             | Financial calculation tests |
 
-The platform team might identify shared orchestration inefficiencies.
+The platform team might identify shared orchestration inefficiencies. The Billing team might identify domain-specific test failures. The architecture group might identify a cross-service contract problem.
 
-The Billing team might identify domain-specific test failures.
+The shared metrics infrastructure enables comparison. It does not imply that every team should use the same engineering remedy. Avoid high-cardinality values such as unique run IDs as metric labels; preserve those identifiers in traces and structured logs instead. Sensitive prompts, secrets, source content, and personal data should not be emitted as unrestricted telemetry.
 
-The architecture group might identify a cross-service contract problem.
+### 7.17 Step 16 — Verify the Architecture with Tests
 
-The shared metrics infrastructure enables comparison.
-
-It does not imply that every team should use the same engineering remedy.
-
-Avoid high-cardinality values such as unique run IDs as metric labels; preserve those identifiers in traces and structured logs instead. Sensitive prompts, secrets, source content, and personal data should not be emitted as unrestricted telemetry.
-
-## 7.17 Step 16 — Verify the Architecture with Tests
-
-The Harness itself must be tested.
-
-AI-assisted execution does not remove the need for conventional engineering validation of orchestration infrastructure.
-
-At minimum, test the following scenarios.
+The Harness itself must be tested. AI-assisted execution does not remove the need for conventional engineering validation of orchestration infrastructure. At minimum, test the following scenarios.
 
 | Test                             | Expected Behavior                                  |
 | -------------------------------- | -------------------------------------------------- |
@@ -4014,7 +3589,7 @@ At minimum, test the following scenarios.
 
 A representative unit test might verify workspace isolation.
 
-```
+```csharp
 using Harness.Contracts;
 using Harness.Infrastructure;
 using Xunit;
@@ -4076,17 +3651,11 @@ public sealed class WorkspaceIsolationTests
 }
 ```
 
-This test verifies unique paths, not full filesystem security or concurrency correctness.
+This test verifies unique paths, not full filesystem security or concurrency correctness. Those require additional integration, fault-injection, and security tests.
 
-Those require additional integration, fault-injection, and security tests.
+### 7.18 Step 17 — Define Acceptance Criteria for the Harness Platform
 
-## 7.18 Step 17 — Define Acceptance Criteria for the Harness Platform
-
-The objective of this exercise is not simply to make three repositories execute through one command.
-
-It is to demonstrate that the architecture supports reuse while preserving boundaries.
-
-The following acceptance criteria should be satisfied.
+The objective of this exercise is not simply to make three repositories execute through one command. It is to demonstrate that the architecture supports reuse while preserving boundaries. The following acceptance criteria should be satisfied.
 
 | ID    | Acceptance Criterion                                                           |
 | ----- | ------------------------------------------------------------------------------ |
@@ -4109,21 +3678,15 @@ The following acceptance criteria should be satisfied.
 | AC-17 | Failure in one repository run does not corrupt another repository run          |
 | AC-18 | Recovery does not repeat completed side effects without idempotency protection |
 
-The most important architectural test is AC-16.
+The most important architectural test is AC-16. If onboarding a new service requires editing a large orchestration method, the solution has not achieved the intended composability.
 
-If onboarding a new service requires editing a large orchestration method, the solution has not achieved the intended composability.
+### 7.19 Step 18 — Evaluate a New Repository Onboarding Scenario
 
-## 7.19 Step 18 — Evaluate a New Repository Onboarding Scenario
-
-Alpha Car Detailing introduces a Notifications service.
-
-The service handles customer reminders and event-driven notifications.
-
-The platform team should not create another Harness implementation.
+Alpha Car Detailing introduces a Notifications service. The service handles customer reminders and event-driven notifications. The platform team should not create another Harness implementation.
 
 Instead, the Notifications team provides:
 
-```
+```text
 notifications-service/
 ├── .ai/
 │   ├── instructions/
@@ -4132,11 +3695,9 @@ notifications-service/
 └── harness.yaml
 ```
 
-The repository registers itself with the central platform.
+The repository registers itself with the central platform. Its profile declares:
 
-Its profile declares:
-
-```
+```yaml
 schemaVersion: "1.0"
 
 repository:
@@ -4170,105 +3731,85 @@ The shared Harness platform should already understand:
 - how to manage retries;
 - how to enforce approvals.
 
-The Notifications repository contributes only what is unique to Notifications.
+The Notifications repository contributes only what is unique to Notifications. This is the intended outcome of the Shared Platform Harness pattern.
 
-This is the intended outcome of the Shared Platform Harness pattern.
+### 7.20 Expected Results
 
-## 7.20 Expected Results
+After implementing the architecture, Alpha Car Detailing should have a Harness environment in which common engineering capabilities are shared without requiring centralized ownership of every repository decision. The resulting system has several important characteristics.
 
-After implementing the architecture, Alpha Car Detailing should have a Harness environment in which common engineering capabilities are shared without requiring centralized ownership of every repository decision.
-
-The resulting system has several important characteristics.
-
-Shared execution infrastructure
+**Shared execution infrastructure**
 
 Booking, Fleet, Billing, and Notifications can use the same orchestration engine, agent provider contracts, validation framework, and telemetry conventions.
 
-Repository-specific engineering control
+**Repository-specific engineering control**
 
 Each repository retains its Instructions, Skills, domain knowledge, validation profile, and applicable approval requirements.
 
-Controlled parallel execution
+**Controlled parallel execution**
 
 Independent tasks and gates may execute concurrently, subject to resource limits, dependency rules, and workspace isolation.
 
-Failure resilience
+**Failure resilience**
 
 Runs retain durable state and evidence. Transient failures can be retried without automatically repeating non-idempotent operations.
 
-Explicit governance
+**Explicit governance**
 
 Risk-based approvals and mandatory enterprise policies are enforced by the platform rather than delegated to agent discretion.
 
-Provider portability
+**Provider portability**
 
 The Harness can introduce additional AI providers and external tools through adapters, while recognizing provider-specific capabilities and limitations.
 
-Enterprise observability
+**Enterprise observability**
 
 Every run can be traced through its stages, gate results, retries, approvals, and final outcome.
 
-## 7.21 Architectural Lessons
+### 7.21 Architectural Lessons
 
 This exercise demonstrates five important principles.
 
-### First: Reuse capabilities, not entire workflows
+#### First: Reuse capabilities, not entire workflows
 
-A shared platform should offer composable orchestration, validation, metrics, and tool integrations.
+A shared platform should offer composable orchestration, validation, metrics, and tool integrations. It should not force every repository into one identical execution path.
 
-It should not force every repository into one identical execution path.
+#### Second: Treat repository configuration as an architectural contract
 
-### Second: Treat repository configuration as an architectural contract
+Profiles are not merely convenience files. They define how repository requirements interact with centrally governed execution capabilities. They must be validated, versioned, reviewed, and protected against unauthorized policy relaxation.
 
-Profiles are not merely convenience files.
-
-They define how repository requirements interact with centrally governed execution capabilities.
-
-They must be validated, versioned, reviewed, and protected against unauthorized policy relaxation.
-
-### Third: Isolation is a prerequisite for safe scale
+#### Third: Isolation is a prerequisite for safe scale
 
 Parallel execution is valuable only when mutable workspaces, branches, Scratchpads, and execution artifacts are correctly isolated.
 
-### Fourth: Validation, evaluation, and approval remain separate boundaries
+#### Fourth: Validation, evaluation, and approval remain separate boundaries
 
-Deterministic validation proves objective conditions.
-
-Evaluation assesses goal satisfaction.
-
-Human approval authorizes decisions requiring accountable human judgment.
+Deterministic validation proves objective conditions. Evaluation assesses goal satisfaction. Human approval authorizes decisions requiring accountable human judgment.
 
 These responsibilities should remain distinct regardless of the number of repositories or agents.
 
-### Fifth: Operational evidence determines whether the architecture is effective
+#### Fifth: Operational evidence determines whether the architecture is effective
 
-An enterprise Harness cannot be evaluated solely by whether it generates code.
+An enterprise Harness cannot be evaluated solely by whether it generates code. It must also be measured through reliability, cost, recovery effectiveness, gate outcomes, approval latency, and maintainability.
 
-It must also be measured through reliability, cost, recovery effectiveness, gate outcomes, approval latency, and maintainability.
+> **Architect's Note**
 
-> Architect's Note
 >
+
 > The success of an enterprise Harness architecture should be measured partly by how little central orchestration code must change when a new repository, team, validation capability, or approved provider is introduced.
+
 >
+
 > Reuse does not mean removing all differences. It means accommodating legitimate differences through explicit, governed extension points.
 
 The Alpha Car Detailing implementation now provides a practical foundation for applying the same architectural patterns through Claude Code. The next section examines how Claude-specific project Instructions, Skills, agent roles, commands, and tool integrations can participate in this vendor-neutral Harness architecture without becoming its controlling foundation.
 
-Chapter 21 status: In progress — next section: Claude Example
+## 8. Claude Example
 
-# 8. Claude Example
+### 8.1 Implementing Enterprise Harness Patterns with Claude Code
 
-## 8.1 Implementing Enterprise Harness Patterns with Claude Code
+The previous section established a vendor-neutral Enterprise Harness architecture for Alpha Car Detailing. The architecture separates shared execution infrastructure from repository-specific engineering requirements. It defines contracts for agent execution, validation, configuration resolution, Run Workspace isolation, evidence collection, and approval boundaries.
 
-The previous section established a vendor-neutral Enterprise Harness architecture for Alpha Car Detailing.
-
-The architecture separates shared execution infrastructure from repository-specific engineering requirements.
-
-It defines contracts for agent execution, validation, configuration resolution, Run Workspace isolation, evidence collection, and approval boundaries.
-
-Claude Code provides a practical implementation environment for these patterns.
-
-Its capabilities include:
+Claude Code provides a practical implementation environment for these patterns. Its capabilities include:
 
 - `CLAUDE.md` for persistent project Instructions.
 - Skills for reusable engineering workflows.
@@ -4278,15 +3819,13 @@ Its capabilities include:
 - Programmatic CLI execution for Harness integration.
 - Tool permissions for restricting agent capabilities.
 
-These capabilities support enterprise orchestration, but they do not eliminate the need for an independent Harness.
-
-The architectural responsibility remains unchanged:
+These capabilities support enterprise orchestration, but they do not eliminate the need for an independent Harness. The architectural responsibility remains unchanged:
 
 > Claude Code performs AI-assisted engineering work. The Harness controls execution, enforces deterministic gates, manages state, records evidence, and governs progression.
 
 Claude-specific capabilities should be integrated through well-defined extension points rather than becoming the foundation of enterprise orchestration.
 
-## 8.2 Mapping Claude Code Capabilities to Enterprise Harness Patterns
+### 8.2 Mapping Claude Code Capabilities to Enterprise Harness Patterns
 
 The following table maps the architecture developed in this chapter to Claude Code's implementation mechanisms.
 
@@ -4309,37 +3848,33 @@ The following table maps the architecture developed in this chapter to Claude Co
 | Metrics                    | Harness telemetry and provider usage evidence            | Harness                                |
 | Human approval             | External approval service and explicit state transitions | Governance layer                       |
 
-Claude Code supports subagents, Skills, Instructions, hooks, and MCP as distinct mechanisms. These should not be treated as interchangeable architectural responsibilities.&#x20;
+Claude Code supports subagents, Skills, Instructions, hooks, and MCP as distinct mechanisms. These should not be treated as interchangeable architectural responsibilities. See the [Claude Code documentation](https://code.claude.com/docs/en/overview) for current configuration details.
 
-[image](https://www.google.com/s2/favicons?domain=https://support.claude.com\&sz=32)
+### 8.3 Claude Code Integration Architecture
 
-Claude Help Center
+Alpha Car Detailing will use Claude Code as the primary agent execution provider. The enterprise platform retains orchestration authority.
 
-+1
+```mermaid
+flowchart TB
+    R["Engineering Request"] --> H["Enterprise Harness"]
+    H --> P["Resolve Repository Profile"] --> W["Create Isolated Run Workspace"]
+    W --> Roles["Harness-Controlled Agent Roles"]
+    Roles --> Adapter["Claude Code Adapter"] --> Claude["Claude Code"]
+    Claude --> Config["CLAUDE.md, Skills, Subagents, MCP"]
+    Roles --> Gates["Deterministic Validation"]
+    Gates --> E["Outcome Evaluation"] --> A["Human Approval"]
+    H --> Evidence["Evidence and Metrics"]
+```
 
-## 8.3 Claude Code Integration Architecture
-
-Alpha Car Detailing will use Claude Code as the primary agent execution provider.
-
-The enterprise platform retains orchestration authority.
-
-\#chatgpt-mermaid-\_r_1728\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(13, 13, 13);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_1728\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_1728\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_1728\_ .error-icon{fill:rgb(243, 243, 243);}#chatgpt-mermaid-\_r_1728\_ .error-text{fill:rgb(13, 13, 13);stroke:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_1728\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_1728\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_1728\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_1728\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_1728\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_1728\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_1728\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_1728\_ .marker.cross{stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_1728\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_1728\_ p{margin:0;}#chatgpt-mermaid-\_r_1728\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_1728\_ .cluster-label text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_1728\_ .cluster-label span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_1728\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_1728\_ .label text,#chatgpt-mermaid-\_r_1728\_ span{fill:rgb(13, 13, 13);color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_1728\_ .node rect,#chatgpt-mermaid-\_r_1728\_ .node circle,#chatgpt-mermaid-\_r_1728\_ .node ellipse,#chatgpt-mermaid-\_r_1728\_ .node polygon,#chatgpt-mermaid-\_r_1728\_ .node path{fill:rgb(222, 234, 251);stroke:rgb(83, 154, 248);stroke-width:1px;}#chatgpt-mermaid-\_r_1728\_ .rough-node .label text,#chatgpt-mermaid-\_r_1728\_ .node .label text,#chatgpt-mermaid-\_r_1728\_ .image-shape .label,#chatgpt-mermaid-\_r_1728\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_1728\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_1728\_ .rough-node .label,#chatgpt-mermaid-\_r_1728\_ .node .label,#chatgpt-mermaid-\_r_1728\_ .image-shape .label,#chatgpt-mermaid-\_r_1728\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_1728\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_1728\_ .root .anchor path{fill:rgb(143, 143, 143)!important;stroke-width:0;stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_1728\_ .arrowheadPath{fill:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_1728\_ .edgePath .path{stroke:rgb(143, 143, 143);stroke-width:1px;}#chatgpt-mermaid-\_r_1728\_ .flowchart-link{stroke:rgb(143, 143, 143);fill:none;}#chatgpt-mermaid-\_r_1728\_ .edgeLabel{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_1728\_ .edgeLabel p{background-color:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_1728\_ .edgeLabel rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_1728\_ .labelBkg{background-color:rgba(252, 252, 252, 0.5);}#chatgpt-mermaid-\_r_1728\_ .cluster rect{fill:rgb(243, 243, 243);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_1728\_ .cluster text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_1728\_ .cluster span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_1728\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(243, 243, 243);border:1px solid rgba(0, 0, 0, 0.1);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_1728\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_1728\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_1728\_ .icon-shape,#chatgpt-mermaid-\_r_1728\_ .image-shape{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_1728\_ .icon-shape p,#chatgpt-mermaid-\_r_1728\_ .image-shape p{background-color:rgb(252, 252, 252);padding:2px;}#chatgpt-mermaid-\_r_1728\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_1728\_ .image-shape .label rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_1728\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_1728\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_1728\_ .node .neo-node{stroke:rgb(83, 154, 248);}#chatgpt-mermaid-\_r_1728\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_1728\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_1728\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_1728\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1728\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_1728\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_1728\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_1728\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1728\_ [data-look="neo"].node .neo-line path{stroke:rgb(83, 154, 248);filter:none;}#chatgpt-mermaid-\_r_1728\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_1728\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1728\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_1728\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_1728\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1728\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_1728\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_1728\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_1728\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_1728\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_1728\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_1728\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-width:1px;}#chatgpt-mermaid-\_r_1728\_ .node rect,#chatgpt-mermaid-\_r_1728\_ .node circle,#chatgpt-mermaid-\_r_1728\_ .node ellipse,#chatgpt-mermaid-\_r_1728\_ .node polygon,#chatgpt-mermaid-\_r_1728\_ .node path{fill:rgb(229, 243, 255);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_1728\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_1728\_ .node.mermaid-decision .label-container{fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_1728\_ .edgePaths .flowchart-link{stroke:rgb(143, 143, 143);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_1728\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_1728\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}Engineering RequestEnterprise HarnessResolve Repository ProfileCreate Isolated Run WorkspaceAgent Role OrchestrationClaude Code AdapterClaude CodeCLAUDE.mdSkillsCustom SubagentsApproved MCP ToolsDeterministic ValidationOutcome EvaluationHuman ApprovalEvidence & Metrics
-
-The Harness decides which role should execute and when.
-
-Claude Code performs the assigned role within the approved workspace.
-
-The Harness independently interprets execution status, collects evidence, runs validation, and determines whether progression is permitted.
+The Harness decides which role should execute and when. Claude Code performs the assigned role within the approved workspace. The Harness independently interprets execution status, collects evidence, runs validation, and determines whether progression is permitted.
 
 This separation allows Claude Code to evolve without forcing the organization to redesign its entire Harness architecture.
 
-## 8.4 Organizing Claude Configuration Across Shared and Repository Boundaries
+### 8.4 Organizing Claude Configuration Across Shared and Repository Boundaries
 
-A Shared Platform Harness should establish a clear configuration structure.
+A Shared Platform Harness should establish a clear configuration structure. For Alpha Car Detailing:
 
-For Alpha Car Detailing:
-
-```
+```text
 enterprise-harness/
 ├── shared/
 │   ├── instructions/
@@ -4364,7 +3899,7 @@ enterprise-harness/
 
 The Booking repository may contain:
 
-```
+```text
 booking-service/
 ├── CLAUDE.md
 ├── .claude/
@@ -4384,19 +3919,13 @@ booking-service/
 └── tests/
 ```
 
-These are two different types of organization.
+These are two different types of organization. The `enterprise-harness/shared` directories form the governed source catalog for reusable capabilities. The repository `.claude` directory contains the Claude-specific configuration available to that repository's execution environment.
 
-The `enterprise-harness/shared` directories form the governed source catalog for reusable capabilities.
+The central Harness may provision approved shared Skills and agents into the isolated workspace before Claude starts. It should not assume that Claude automatically discovers files from an arbitrary enterprise catalog outside its configured project scope.
 
-The repository `.claude` directory contains the Claude-specific configuration available to that repository's execution environment.
+#### Provisioning sequence
 
-The central Harness may provision approved shared Skills and agents into the isolated workspace before Claude starts.
-
-It should not assume that Claude automatically discovers files from an arbitrary enterprise catalog outside its configured project scope.
-
-### Provisioning sequence
-
-```
+```text
 Repository Profile
        ↓
 Resolve Shared Capabilities
@@ -4412,23 +3941,15 @@ Provision Approved Claude Configuration
 Start Claude Session
 ```
 
-This sequence supports reproducibility.
+This sequence supports reproducibility. A run should record which versions of shared Instructions, Skills, and role definitions were used. Otherwise, two executions of the same task may behave differently because the shared catalog changed between runs.
 
-A run should record which versions of shared Instructions, Skills, and role definitions were used.
+### 8.5 Implementing Shared and Repository-Specific Instructions
 
-Otherwise, two executions of the same task may behave differently because the shared catalog changed between runs.
+The `CLAUDE.md` file is the primary Claude-specific mechanism for persistent project guidance. Alpha Car Detailing should avoid placing every enterprise and repository requirement in one enormous file. A better approach separates global engineering standards from repository-specific domain expectations.
 
-## 8.5 Implementing Shared and Repository-Specific Instructions
+#### Example: Booking `CLAUDE.md`
 
-The `CLAUDE.md` file is the primary Claude-specific mechanism for persistent project guidance.
-
-Alpha Car Detailing should avoid placing every enterprise and repository requirement in one enormous file.
-
-A better approach separates global engineering standards from repository-specific domain expectations.
-
-### Example: Booking `CLAUDE.md`
-
-```
+```markdown
 # Alpha Car Detailing — Booking Service
 
 ## Project
@@ -4479,21 +4000,17 @@ The file defines expectations, not an executable validation guarantee.
 
 For example:
 
-```
+```text
 Do not modify Billing repository contracts.
 ```
 
-is a useful Instruction.
+is a useful Instruction. However, the Harness must still enforce repository scope using workspace isolation, file access restrictions, and review or validation evidence. An Instruction alone does not create a security boundary.
 
-However, the Harness must still enforce repository scope using workspace isolation, file access restrictions, and review or validation evidence.
-
-An Instruction alone does not create a security boundary.
-
-### Shared Instruction composition
+#### Shared Instruction composition
 
 An enterprise requirement might state:
 
-```
+```markdown
 # Enterprise Engineering Standards
 
 All production APIs must:
@@ -4506,31 +4023,27 @@ All production APIs must:
 - Pass mandatory security checks before completion.
 ```
 
-The Harness can provision this content as a reviewed, versioned Instruction document and reference it from the repository's effective Claude context.
+The Harness can provision this content as a reviewed, versioned Instruction document and reference it from the repository's effective Claude context. Repositories may add more restrictive requirements. They must not weaken mandatory enterprise policies.
 
-Repositories may add more restrictive requirements.
+> **Architect's Note**
 
-They must not weaken mandatory enterprise policies.
-
-> Architect's Note
 >
+
 > `CLAUDE.md` influences how Claude performs engineering work. It is not a substitute for deterministic enforcement.
+
 >
+
 > Enterprise Instructions should be paired with independent validation and security controls whenever compliance must be objectively verified.
 
-## 8.6 Implementing Shared Skills
+### 8.6 Implementing Shared Skills
 
-Skills express reusable engineering workflows.
-
-For Alpha Car Detailing, a common Skill is Add Integration Event.
-
-It applies to Booking, Fleet, and Billing.
+Skills express reusable engineering workflows. For Alpha Car Detailing, a common Skill is Add Integration Event. It applies to Booking, Fleet, and Billing.
 
 The Skill should define the implementation approach without embedding assumptions about a specific repository.
 
-### Shared Skill structure
+#### Shared Skill structure
 
-```
+```text
 .claude/
 └── skills/
     └── add-integration-event/
@@ -4539,7 +4052,7 @@ The Skill should define the implementation approach without embedding assumption
 
 File: `SKILL.md`
 
-```
+```markdown
 ---
 name: add-integration-event
 description: Implement an integration event using established
@@ -4586,15 +4099,11 @@ Provide:
 - Validation recommendations
 ```
 
-Skills define recurring implementation procedures.
+Skills define recurring implementation procedures. They do not own final Harness completion decisions. Claude may use the Skill during implementation, but deterministic validation remains an independent stage.
 
-They do not own final Harness completion decisions.
+#### Sharing Skills across services
 
-Claude may use the Skill during implementation, but deterministic validation remains an independent stage.
-
-### Sharing Skills across services
-
-```
+```text
 Shared Skill
   Add Integration Event
           │
@@ -4603,47 +4112,31 @@ Shared Skill
  Booking Fleet Billing
 ```
 
-The services reuse a common method while preserving local differences.
+The services reuse a common method while preserving local differences. Booking may publish:
 
-Booking may publish:
-
-```
+```text
 BookingCompleted
 ```
 
 Fleet may publish:
 
-```
+```text
 FleetVehicleRegistered
 ```
 
 Billing may publish:
 
-```
+```text
 InvoiceGenerated
 ```
 
-The Skill provides the reusable engineering workflow.
+The Skill provides the reusable engineering workflow. Repository Instructions and Repository Intelligence provide the service-specific context. Claude Code Skills are defined using `SKILL.md` files and may be invoked explicitly or selected based on relevance.
 
-Repository Instructions and Repository Intelligence provide the service-specific context.
+### 8.7 Implementing Claude Subagents for Harness Roles
 
-Claude Code Skills are defined using `SKILL.md` files and may be invoked explicitly or selected based on relevance.&#x20;
+Custom Claude subagents provide a practical mechanism for specialized AI responsibilities. However, an important distinction must be maintained:
 
-[image](https://www.google.com/s2/favicons?domain=https://support.claude.com\&sz=32)
-
-Claude Help Center
-
-## 8.7 Implementing Claude Subagents for Harness Roles
-
-Custom Claude subagents provide a practical mechanism for specialized AI responsibilities.
-
-However, an important distinction must be maintained:
-
-A Claude subagent is an execution mechanism. A Harness role is an architectural responsibility.
-
-The two may map closely, but they are not identical.
-
-A Harness role may be implemented through:
+A Claude subagent is an execution mechanism. A Harness role is an architectural responsibility. The two may map closely, but they are not identical. A Harness role may be implemented through:
 
 - a Claude custom subagent;
 - a dedicated Claude CLI invocation;
@@ -4653,11 +4146,11 @@ A Harness role may be implemented through:
 
 For example, the Validator Agent's responsibilities include collecting and interpreting deterministic validation evidence. The build and test commands themselves must remain independently verifiable.
 
-### Developer Agent definition
+#### Developer Agent definition
 
 File: `.claude/agents/developer.md`
 
-```
+```markdown
 ---
 name: developer
 description: Implements approved engineering tasks within
@@ -4701,11 +4194,11 @@ Return:
 - Evidence references
 ```
 
-### Reviewer Agent definition
+#### Reviewer Agent definition
 
 File: `.claude/agents/reviewer.md`
 
-```
+```markdown
 ---
 name: reviewer
 description: Independently reviews implementation quality,
@@ -4749,23 +4242,13 @@ Produce a structured review result containing:
 - Overall review outcome
 ```
 
-The reviewer definition intentionally omits writing tools.
+The reviewer definition intentionally omits writing tools. That limits the available capability, although the external Harness must still enforce read-only access where independence is required. Claude custom subagents support role-specific Instructions and tool restrictions, and execute with their own context.
 
-That limits the available capability, although the external Harness must still enforce read-only access where independence is required.
-
-Claude custom subagents support role-specific Instructions and tool restrictions, and execute with their own context.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://claude.com\&sz=32)
-
-claude.com
-
-+1
-
-### Harness role ownership
+#### Harness role ownership
 
 The Harness determines when to invoke each role.
 
-```
+```text
 Harness
    │
    ├── Invoke Lead
@@ -4775,26 +4258,22 @@ Harness
    └── Invoke Evaluator
 ```
 
-A Developer subagent must not be permitted to declare the overall run completed simply because its implementation task has finished.
+A Developer subagent must not be permitted to declare the overall run completed simply because its implementation task has finished. That authority belongs to the Harness state machine after all required gates, evaluations, and approvals have been satisfied.
 
-That authority belongs to the Harness state machine after all required gates, evaluations, and approvals have been satisfied.
-
-## 8.8 Executing Claude Code from the Harness
+### 8.8 Executing Claude Code from the Harness
 
 The Harness can use Claude Code programmatically through its CLI.
 
 For example, from a prepared and authorized repository workspace:
 
-```
+```bash
 claude -p "Review the repository architecture and identify
 the components affected by recurring booking cancellation."
 ```
 
-The non-interactive `-p` option allows Claude Code to run against an explicit request without requiring a normal interactive conversation.
+The non-interactive `-p` option allows Claude Code to run against an explicit request without requiring a normal interactive conversation. For more structured integration, the Harness may request machine-readable output.
 
-For more structured integration, the Harness may request machine-readable output.
-
-```
+```powershell
 claude -p `
   --output-format json `
   "Analyze the proposed Booking change and provide
@@ -4803,11 +4282,11 @@ claude -p `
 
 The Harness should parse the actual output envelope supported by the installed CLI version rather than assuming that all provider output is an application-defined result object.
 
-### Example: Claude provider adapter
+#### Example: Claude provider adapter
 
 A production adapter may implement the vendor-neutral contract:
 
-```
+```csharp
 public interface IAgentProvider
 {
     Task<AgentResult> ExecuteAsync(
@@ -4819,32 +4298,37 @@ public interface IAgentProvider
 The Claude implementation is responsible for:
 
 1. Launching Claude Code within the authorized workspace.
+
 2. Selecting the approved role configuration.
+
 3. Supplying the assigned task.
+
 4. Applying tool permissions.
+
 5. Collecting standard output and error evidence.
+
 6. Distinguishing provider failure from agent-reported failure.
+
 7. Recording duration and available usage data.
+
 8. Returning a structured `AgentResult`.
 
 The adapter should not determine whether the entire engineering request is complete.
 
-### Example command invocation
+#### Example command invocation
 
 The Harness may execute the Developer role with:
 
-```
+```powershell
 claude --agent developer -p `
   "Implement the assigned Booking change.
   Follow repository Instructions and use approved Skills.
   Return implementation evidence."
 ```
 
-The Harness must launch this command with the correct working directory and effective configuration.
+The Harness must launch this command with the correct working directory and effective configuration. A separate invocation can execute the Reviewer role after the implementation snapshot has been frozen.
 
-A separate invocation can execute the Reviewer role after the implementation snapshot has been frozen.
-
-```
+```powershell
 claude --agent reviewer -p `
   "Review the completed implementation against
   the task requirements and repository Instructions.
@@ -4852,19 +4336,15 @@ claude --agent reviewer -p `
   Return findings with evidence."
 ```
 
-This model improves role separation.
+This model improves role separation. It also allows the Harness to capture each role's execution independently.
 
-It also allows the Harness to capture each role's execution independently.
-
-## 8.9 Implementing Sequential Agent Orchestration
+### 8.9 Implementing Sequential Agent Orchestration
 
 Consider the Booking requirement:
 
 > Allow a corporate fleet administrator to cancel one occurrence of a recurring booking without cancelling the entire recurring schedule.
 
-The Harness first invokes the Lead Agent.
-
-The Lead Agent examines:
+The Harness first invokes the Lead Agent. The Lead Agent examines:
 
 - the task;
 - acceptance criteria;
@@ -4874,23 +4354,28 @@ The Lead Agent examines:
 - existing cancellation behavior;
 - required tests.
 
-The Lead produces an implementation assignment.
+The Lead produces an implementation assignment. The Developer then implements the change. The Reviewer inspects the result.
 
-The Developer then implements the change.
+The Validator runs objective checks. The Evaluator assesses whether the requested business behavior exists.
 
-The Reviewer inspects the result.
-
-The Validator runs objective checks.
-
-The Evaluator assesses whether the requested business behavior exists.
-
-\#chatgpt-mermaid-\_r_176t\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(13, 13, 13);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_176t\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_176t\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_176t\_ .error-icon{fill:rgb(243, 243, 243);}#chatgpt-mermaid-\_r_176t\_ .error-text{fill:rgb(13, 13, 13);stroke:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_176t\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_176t\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_176t\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_176t\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_176t\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_176t\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_176t\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_176t\_ .marker.cross{stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_176t\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_176t\_ p{margin:0;}#chatgpt-mermaid-\_r_176t\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_176t\_ .cluster-label text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_176t\_ .cluster-label span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_176t\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_176t\_ .label text,#chatgpt-mermaid-\_r_176t\_ span{fill:rgb(13, 13, 13);color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_176t\_ .node rect,#chatgpt-mermaid-\_r_176t\_ .node circle,#chatgpt-mermaid-\_r_176t\_ .node ellipse,#chatgpt-mermaid-\_r_176t\_ .node polygon,#chatgpt-mermaid-\_r_176t\_ .node path{fill:rgb(222, 234, 251);stroke:rgb(83, 154, 248);stroke-width:1px;}#chatgpt-mermaid-\_r_176t\_ .rough-node .label text,#chatgpt-mermaid-\_r_176t\_ .node .label text,#chatgpt-mermaid-\_r_176t\_ .image-shape .label,#chatgpt-mermaid-\_r_176t\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_176t\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_176t\_ .rough-node .label,#chatgpt-mermaid-\_r_176t\_ .node .label,#chatgpt-mermaid-\_r_176t\_ .image-shape .label,#chatgpt-mermaid-\_r_176t\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_176t\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_176t\_ .root .anchor path{fill:rgb(143, 143, 143)!important;stroke-width:0;stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_176t\_ .arrowheadPath{fill:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_176t\_ .edgePath .path{stroke:rgb(143, 143, 143);stroke-width:1px;}#chatgpt-mermaid-\_r_176t\_ .flowchart-link{stroke:rgb(143, 143, 143);fill:none;}#chatgpt-mermaid-\_r_176t\_ .edgeLabel{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_176t\_ .edgeLabel p{background-color:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_176t\_ .edgeLabel rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_176t\_ .labelBkg{background-color:rgba(252, 252, 252, 0.5);}#chatgpt-mermaid-\_r_176t\_ .cluster rect{fill:rgb(243, 243, 243);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_176t\_ .cluster text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_176t\_ .cluster span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_176t\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(243, 243, 243);border:1px solid rgba(0, 0, 0, 0.1);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_176t\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_176t\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_176t\_ .icon-shape,#chatgpt-mermaid-\_r_176t\_ .image-shape{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_176t\_ .icon-shape p,#chatgpt-mermaid-\_r_176t\_ .image-shape p{background-color:rgb(252, 252, 252);padding:2px;}#chatgpt-mermaid-\_r_176t\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_176t\_ .image-shape .label rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_176t\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_176t\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_176t\_ .node .neo-node{stroke:rgb(83, 154, 248);}#chatgpt-mermaid-\_r_176t\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_176t\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_176t\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_176t\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_176t\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_176t\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_176t\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_176t\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_176t\_ [data-look="neo"].node .neo-line path{stroke:rgb(83, 154, 248);filter:none;}#chatgpt-mermaid-\_r_176t\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_176t\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_176t\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_176t\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_176t\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_176t\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_176t\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_176t\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_176t\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_176t\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_176t\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_176t\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-width:1px;}#chatgpt-mermaid-\_r_176t\_ .node rect,#chatgpt-mermaid-\_r_176t\_ .node circle,#chatgpt-mermaid-\_r_176t\_ .node ellipse,#chatgpt-mermaid-\_r_176t\_ .node polygon,#chatgpt-mermaid-\_r_176t\_ .node path{fill:rgb(229, 243, 255);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_176t\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_176t\_ .node.mermaid-decision .label-container{fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_176t\_ .edgePaths .flowchart-link{stroke:rgb(143, 143, 143);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_176t\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_176t\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}Recurring Booking CancellationClaude Lead AgentClaude Developer AgentClaude Reviewer AgentDeterministic ValidatorClaude Evaluator AgentOutcome Acceptable?Human ApprovalControlled ReworkYesNo
+```mermaid
+flowchart TB
+    R["Recurring Booking Cancellation"] --> L["Claude Lead Agent"]
+    L --> D["Claude Developer Agent"] --> V["Frozen Implementation Snapshot"]
+    V --> Rev["Claude Reviewer Agent"]
+    V --> Test["Deterministic Validator"]
+    Rev --> E["Claude Evaluator Agent"]
+    Test --> E
+    E --> Q{"Outcome Acceptable?"}
+    Q -->|Yes| A["Human Approval"]
+    Q -->|No| Rework["Controlled Rework"] --> D
+```
 
 Although Claude performs several roles, the Harness owns the transitions.
 
 For example:
 
-```
+```text
 Developer Result:
     Implementation Submitted
 
@@ -4904,17 +4389,11 @@ Run Status:
     Running
 ```
 
-The Reviewer cannot silently modify the implementation to resolve the findings.
+The Reviewer cannot silently modify the implementation to resolve the findings. The Developer cannot silently override the Reviewer outcome. The Harness enforces the workflow.
 
-The Developer cannot silently override the Reviewer outcome.
+### 8.10 Implementing Parallel Claude Execution
 
-The Harness enforces the workflow.
-
-## 8.10 Implementing Parallel Claude Execution
-
-Parallel orchestration is useful when independent engineering activities can execute safely at the same time.
-
-Alpha Car Detailing may require separate analyses of a proposed integration event:
+Parallel orchestration is useful when independent engineering activities can execute safely at the same time. Alpha Car Detailing may require separate analyses of a proposed integration event:
 
 - API compatibility;
 - event contract compatibility;
@@ -4922,15 +4401,19 @@ Alpha Car Detailing may require separate analyses of a proposed integration even
 
 These activities may operate against the same immutable repository snapshot.
 
-\#chatgpt-mermaid-\_r_177c\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(13, 13, 13);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_177c\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_177c\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_177c\_ .error-icon{fill:rgb(243, 243, 243);}#chatgpt-mermaid-\_r_177c\_ .error-text{fill:rgb(13, 13, 13);stroke:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_177c\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_177c\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_177c\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_177c\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_177c\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_177c\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_177c\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_177c\_ .marker.cross{stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_177c\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_177c\_ p{margin:0;}#chatgpt-mermaid-\_r_177c\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_177c\_ .cluster-label text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_177c\_ .cluster-label span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_177c\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_177c\_ .label text,#chatgpt-mermaid-\_r_177c\_ span{fill:rgb(13, 13, 13);color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_177c\_ .node rect,#chatgpt-mermaid-\_r_177c\_ .node circle,#chatgpt-mermaid-\_r_177c\_ .node ellipse,#chatgpt-mermaid-\_r_177c\_ .node polygon,#chatgpt-mermaid-\_r_177c\_ .node path{fill:rgb(222, 234, 251);stroke:rgb(83, 154, 248);stroke-width:1px;}#chatgpt-mermaid-\_r_177c\_ .rough-node .label text,#chatgpt-mermaid-\_r_177c\_ .node .label text,#chatgpt-mermaid-\_r_177c\_ .image-shape .label,#chatgpt-mermaid-\_r_177c\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_177c\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_177c\_ .rough-node .label,#chatgpt-mermaid-\_r_177c\_ .node .label,#chatgpt-mermaid-\_r_177c\_ .image-shape .label,#chatgpt-mermaid-\_r_177c\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_177c\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_177c\_ .root .anchor path{fill:rgb(143, 143, 143)!important;stroke-width:0;stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_177c\_ .arrowheadPath{fill:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_177c\_ .edgePath .path{stroke:rgb(143, 143, 143);stroke-width:1px;}#chatgpt-mermaid-\_r_177c\_ .flowchart-link{stroke:rgb(143, 143, 143);fill:none;}#chatgpt-mermaid-\_r_177c\_ .edgeLabel{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_177c\_ .edgeLabel p{background-color:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_177c\_ .edgeLabel rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_177c\_ .labelBkg{background-color:rgba(252, 252, 252, 0.5);}#chatgpt-mermaid-\_r_177c\_ .cluster rect{fill:rgb(243, 243, 243);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_177c\_ .cluster text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_177c\_ .cluster span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_177c\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(243, 243, 243);border:1px solid rgba(0, 0, 0, 0.1);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_177c\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_177c\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_177c\_ .icon-shape,#chatgpt-mermaid-\_r_177c\_ .image-shape{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_177c\_ .icon-shape p,#chatgpt-mermaid-\_r_177c\_ .image-shape p{background-color:rgb(252, 252, 252);padding:2px;}#chatgpt-mermaid-\_r_177c\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_177c\_ .image-shape .label rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_177c\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_177c\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_177c\_ .node .neo-node{stroke:rgb(83, 154, 248);}#chatgpt-mermaid-\_r_177c\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_177c\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_177c\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_177c\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_177c\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_177c\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_177c\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_177c\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_177c\_ [data-look="neo"].node .neo-line path{stroke:rgb(83, 154, 248);filter:none;}#chatgpt-mermaid-\_r_177c\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_177c\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_177c\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_177c\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_177c\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_177c\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_177c\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_177c\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_177c\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_177c\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_177c\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_177c\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-width:1px;}#chatgpt-mermaid-\_r_177c\_ .node rect,#chatgpt-mermaid-\_r_177c\_ .node circle,#chatgpt-mermaid-\_r_177c\_ .node ellipse,#chatgpt-mermaid-\_r_177c\_ .node polygon,#chatgpt-mermaid-\_r_177c\_ .node path{fill:rgb(229, 243, 255);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_177c\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_177c\_ .node.mermaid-decision .label-container{fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_177c\_ .edgePaths .flowchart-link{stroke:rgb(143, 143, 143);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_177c\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_177c\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}Immutable ImplementationSnapshotAPI Contract ReviewEvent Contract ReviewSecurity ReviewEvidence Aggregation
+```mermaid
+flowchart TB
+    S["Immutable Implementation Snapshot"] --> A["API Contract Review"]
+    S --> B["Event Contract Review"]
+    S --> C["Security Review"]
+    A --> E["Evidence Aggregation"]
+    B --> E
+    C --> E
+```
 
-Claude subagents can perform focused analyses with separate context.
+Claude subagents can perform focused analyses with separate context. Alternatively, the Harness can launch independent Claude sessions in separately provisioned execution environments. The choice depends on the required level of control.
 
-Alternatively, the Harness can launch independent Claude sessions in separately provisioned execution environments.
-
-The choice depends on the required level of control.
-
-### When to use subagents
+#### When to use subagents
 
 Subagents are suitable when:
 
@@ -4939,7 +4422,7 @@ Subagents are suitable when:
 - the required tools are clearly scoped;
 - execution remains within an approved repository context.
 
-### When to use independent Harness-managed sessions
+#### When to use independent Harness-managed sessions
 
 Independent sessions are preferable when:
 
@@ -4950,11 +4433,11 @@ Independent sessions are preferable when:
 - execution must survive parent-session failure;
 - work must be scheduled across distributed workers.
 
-### Parallel implementation requires stronger isolation
+#### Parallel implementation requires stronger isolation
 
 If several Developer Agents modify code, they should generally operate in separate branches, worktrees, or containers.
 
-```
+```text
 Developer A
    └── Workspace A
 
@@ -4965,27 +4448,17 @@ Developer C
    └── Workspace C
 ```
 
-The Harness then performs an explicit integration phase.
+The Harness then performs an explicit integration phase. It must not assume that independent agent modifications can be merged without conflicts or semantic incompatibilities.
 
-It must not assume that independent agent modifications can be merged without conflicts or semantic incompatibilities.
+### 8.11 Integrating Claude Hooks with Harness Guardrails
 
-## 8.11 Integrating Claude Hooks with Harness Guardrails
+Claude Code hooks provide lifecycle-triggered automation. They can inspect tool operations, run checks, or block certain actions. This makes hooks useful for local guardrails.
 
-Claude Code hooks provide lifecycle-triggered automation.
-
-They can inspect tool operations, run checks, or block certain actions.
-
-This makes hooks useful for local guardrails.
-
-However, Claude hooks and enterprise deterministic validation gates serve different purposes.
-
-A hook may prevent a dangerous operation while an agent is running.
-
-A validation gate independently determines whether an implementation meets required conditions.
+However, Claude hooks and enterprise deterministic validation gates serve different purposes. A hook may prevent a dangerous operation while an agent is running. A validation gate independently determines whether an implementation meets required conditions.
 
 For example:
 
-```
+```text
 Claude Hook:
     Detect prohibited tool operation.
 
@@ -4993,19 +4466,15 @@ Harness Validation Gate:
     Run complete mandatory security checks.
 ```
 
-The first is an execution guardrail.
+The first is an execution guardrail. The second is a completion condition.
 
-The second is a completion condition.
+#### Example: Protecting repository boundaries
 
-### Example: Protecting repository boundaries
-
-A `PreToolUse` hook can inspect a proposed tool call and reject operations that violate the execution boundary.
-
-A simplified project configuration might contain:
+A `PreToolUse` hook can inspect a proposed tool call and reject operations that violate the execution boundary. A simplified project configuration might contain:
 
 File: `.claude/settings.json`
 
-```
+```json
 {
   "hooks": {
     "PreToolUse": [
@@ -5023,23 +4492,13 @@ File: `.claude/settings.json`
 }
 ```
 
-The referenced script would examine the tool input and either allow the operation or reject it according to a validated policy.
+The referenced script would examine the tool input and either allow the operation or reject it according to a validated policy. A blocking command hook can reject a tool invocation using the documented hook exit mechanism. The implementation must not rely on a simplistic text search such as:
 
-A blocking command hook can reject a tool invocation using the documented hook exit mechanism.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://claude.com\&sz=32)
-
-claude.com
-
-The implementation must not rely on a simplistic text search such as:
-
-```
+```text
 if "rm" in command:    block()
 ```
 
-Such checks are easy to evade and can also block legitimate operations.
-
-For strong isolation, the Harness should combine:
+Such checks are easy to evade and can also block legitimate operations. For strong isolation, the Harness should combine:
 
 - scoped credentials;
 - restricted workspace mounts;
@@ -5049,23 +4508,23 @@ For strong isolation, the Harness should combine:
 - policy enforcement;
 - independent audit logging.
 
-Hooks provide an additional layer.
+Hooks provide an additional layer. They do not replace these controls.
 
-They do not replace these controls.
+> **Enterprise Tip**
 
-> Enterprise Tip
 >
+
 > Use hooks for immediate execution guardrails and deterministic gates for authoritative completion evidence.
+
 >
+
 > Do not allow a successful Claude hook execution to substitute for a required Validator Agent gate.
 
-## 8.12 Integrating MCP Through Tool Abstraction
+### 8.12 Integrating MCP Through Tool Abstraction
 
-Model Context Protocol allows Claude to interact with approved external tools and systems.
+Model Context Protocol allows Claude to interact with approved external tools and systems. Alpha Car Detailing may expose enterprise capabilities such as:
 
-Alpha Car Detailing may expose enterprise capabilities such as:
-
-```
+```text
 Repository Search
 Work Item Lookup
 Architecture Knowledge Retrieval
@@ -5073,29 +4532,33 @@ Validation Evidence Retrieval
 Artifact Publication
 ```
 
-A Claude session could use an approved MCP server to retrieve repository or work-item context.
+A Claude session could use an approved MCP server to retrieve repository or work-item context. However, MCP tools should not directly determine Harness workflow progression. The preferred architecture is:
 
-However, MCP tools should not directly determine Harness workflow progression.
+```mermaid
+flowchart TB
+    H["Enterprise Harness"] --> P["Policy and Authorization"]
+    A["Claude Code"] --> M["Approved MCP Tool Interface"]
+    P --> M
+    M --> RI["Repository Intelligence"]
+    M --> WI["Work Item Service"]
+    M --> EV["Evidence Query Service"]
+    H --> V["Deterministic Gates"]
+    H --> S["Durable Run State"]
+```
 
-The preferred architecture is:
+The tool interface provides controlled capabilities. The Harness retains authority over the run state and gate pipeline.
 
-\#chatgpt-mermaid-\_r_178t\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(13, 13, 13);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_178t\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_178t\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_178t\_ .error-icon{fill:rgb(243, 243, 243);}#chatgpt-mermaid-\_r_178t\_ .error-text{fill:rgb(13, 13, 13);stroke:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_178t\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_178t\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_178t\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_178t\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_178t\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_178t\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_178t\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_178t\_ .marker.cross{stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_178t\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_178t\_ p{margin:0;}#chatgpt-mermaid-\_r_178t\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_178t\_ .cluster-label text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_178t\_ .cluster-label span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_178t\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_178t\_ .label text,#chatgpt-mermaid-\_r_178t\_ span{fill:rgb(13, 13, 13);color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_178t\_ .node rect,#chatgpt-mermaid-\_r_178t\_ .node circle,#chatgpt-mermaid-\_r_178t\_ .node ellipse,#chatgpt-mermaid-\_r_178t\_ .node polygon,#chatgpt-mermaid-\_r_178t\_ .node path{fill:rgb(222, 234, 251);stroke:rgb(83, 154, 248);stroke-width:1px;}#chatgpt-mermaid-\_r_178t\_ .rough-node .label text,#chatgpt-mermaid-\_r_178t\_ .node .label text,#chatgpt-mermaid-\_r_178t\_ .image-shape .label,#chatgpt-mermaid-\_r_178t\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_178t\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_178t\_ .rough-node .label,#chatgpt-mermaid-\_r_178t\_ .node .label,#chatgpt-mermaid-\_r_178t\_ .image-shape .label,#chatgpt-mermaid-\_r_178t\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_178t\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_178t\_ .root .anchor path{fill:rgb(143, 143, 143)!important;stroke-width:0;stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_178t\_ .arrowheadPath{fill:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_178t\_ .edgePath .path{stroke:rgb(143, 143, 143);stroke-width:1px;}#chatgpt-mermaid-\_r_178t\_ .flowchart-link{stroke:rgb(143, 143, 143);fill:none;}#chatgpt-mermaid-\_r_178t\_ .edgeLabel{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_178t\_ .edgeLabel p{background-color:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_178t\_ .edgeLabel rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_178t\_ .labelBkg{background-color:rgba(252, 252, 252, 0.5);}#chatgpt-mermaid-\_r_178t\_ .cluster rect{fill:rgb(243, 243, 243);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_178t\_ .cluster text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_178t\_ .cluster span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_178t\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(243, 243, 243);border:1px solid rgba(0, 0, 0, 0.1);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_178t\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_178t\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_178t\_ .icon-shape,#chatgpt-mermaid-\_r_178t\_ .image-shape{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_178t\_ .icon-shape p,#chatgpt-mermaid-\_r_178t\_ .image-shape p{background-color:rgb(252, 252, 252);padding:2px;}#chatgpt-mermaid-\_r_178t\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_178t\_ .image-shape .label rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_178t\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_178t\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_178t\_ .node .neo-node{stroke:rgb(83, 154, 248);}#chatgpt-mermaid-\_r_178t\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_178t\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_178t\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_178t\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_178t\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_178t\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_178t\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_178t\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_178t\_ [data-look="neo"].node .neo-line path{stroke:rgb(83, 154, 248);filter:none;}#chatgpt-mermaid-\_r_178t\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_178t\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_178t\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_178t\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_178t\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_178t\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_178t\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_178t\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_178t\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_178t\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_178t\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_178t\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-width:1px;}#chatgpt-mermaid-\_r_178t\_ .node rect,#chatgpt-mermaid-\_r_178t\_ .node circle,#chatgpt-mermaid-\_r_178t\_ .node ellipse,#chatgpt-mermaid-\_r_178t\_ .node polygon,#chatgpt-mermaid-\_r_178t\_ .node path{fill:rgb(229, 243, 255);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_178t\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_178t\_ .node.mermaid-decision .label-container{fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_178t\_ .edgePaths .flowchart-link{stroke:rgb(143, 143, 143);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_178t\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_178t\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}Claude CodeMCP Tool InterfaceRepository IntelligenceWork Item ServiceEvidence Query ServiceEnterprise HarnessPolicy & AuthorizationDeterministic GatesRun State
-
-The tool interface provides controlled capabilities.
-
-The Harness retains authority over the run state and gate pipeline.
-
-### Example: Repository Intelligence tool
+#### Example: Repository Intelligence tool
 
 An approved tool might expose:
 
-```
+```text
 get_repository_architecture(repositoryId)
 ```
 
 Its result may contain:
 
-```
+```json
 {
   "repositoryId": "booking-service",
   "architecture": "Clean Architecture",
@@ -5110,25 +4573,19 @@ Its result may contain:
 }
 ```
 
-The information helps Claude understand the repository.
+The information helps Claude understand the repository. It does not automatically grant permission to modify files or alter repository policies.
 
-It does not automatically grant permission to modify files or alter repository policies.
+#### Security boundary
 
-### Security boundary
+MCP output must be treated as external data, not as a higher-priority Instruction. Repository files, work-item descriptions, tool responses, and retrieved documentation may contain malicious or misleading instructions. The Harness and Claude execution environment should prevent those inputs from overriding authoritative policies or granting new capabilities.
 
-MCP output must be treated as external data, not as a higher-priority Instruction.
-
-Repository files, work-item descriptions, tool responses, and retrieved documentation may contain malicious or misleading instructions.
-
-The Harness and Claude execution environment should prevent those inputs from overriding authoritative policies or granting new capabilities.
-
-## 8.13 Connecting Claude Execution to the Run Workspace
+### 8.13 Connecting Claude Execution to the Run Workspace
 
 Claude should execute within the Run Workspace created by the Harness.
 
 For example:
 
-```
+```text
 runs/
 └── run-1042/
     ├── repository/
@@ -5138,11 +4595,9 @@ runs/
     └── artifacts/
 ```
 
-The Harness should launch Claude from the verified repository checkout.
+The Harness should launch Claude from the verified repository checkout. The assigned prompt may include approved paths to run-scoped context.
 
-The assigned prompt may include approved paths to run-scoped context.
-
-```
+```text
 Task:
 Implement cancellation of one recurring booking occurrence.
 
@@ -5163,15 +4618,13 @@ Implementation summary, modified files, tests,
 known limitations, and evidence references.
 ```
 
-The paths and access restrictions must be prepared by the Harness before execution.
+The paths and access restrictions must be prepared by the Harness before execution. A prompt stating that Claude should remain inside a directory is not sufficient isolation.
 
-A prompt stating that Claude should remain inside a directory is not sufficient isolation.
-
-### Scratchpad ownership
+#### Scratchpad ownership
 
 Different roles may have separate Scratchpads.
 
-```
+```text
 scratchpad/
 ├── lead.md
 ├── developer.md
@@ -5183,7 +4636,7 @@ Shared findings can be promoted into a controlled handoff artifact.
 
 For example:
 
-```
+```text
 Lead
   ↓
 lead-assignment.json
@@ -5191,19 +4644,13 @@ lead-assignment.json
 Developer
 ```
 
-A Reviewer should not need to trust the Developer's Scratchpad as authoritative evidence.
+A Reviewer should not need to trust the Developer's Scratchpad as authoritative evidence. The Reviewer should inspect the implementation, requirements, and relevant independent evidence. This prevents temporary agent observations from becoming unquestioned facts.
 
-The Reviewer should inspect the implementation, requirements, and relevant independent evidence.
+### 8.14 Claude Execution Evidence
 
-This prevents temporary agent observations from becoming unquestioned facts.
+A Harness-integrated Claude invocation should produce more than a natural-language response. The platform should record:
 
-## 8.14 Claude Execution Evidence
-
-A Harness-integrated Claude invocation should produce more than a natural-language response.
-
-The platform should record:
-
-```
+```json
 {
   "runId": "run-1042",
   "repositoryId": "booking-service",
@@ -5218,11 +4665,7 @@ The platform should record:
 }
 ```
 
-This object represents the Harness's normalized evidence contract, not an assumed raw Claude CLI response.
-
-The adapter is responsible for translating supported provider output into the enterprise schema.
-
-The Harness should separately verify that:
+This object represents the Harness's normalized evidence contract, not an assumed raw Claude CLI response. The adapter is responsible for translating supported provider output into the enterprise schema. The Harness should separately verify that:
 
 - the provider process completed successfully;
 - expected artifacts exist;
@@ -5231,17 +4674,11 @@ The Harness should separately verify that:
 - the implementation snapshot is identifiable;
 - evidence has been persisted.
 
-A successful provider exit is not equivalent to a successful engineering result.
+A successful provider exit is not equivalent to a successful engineering result. Claude may complete its response even when the requested implementation remains incomplete. The Validator and Evaluator must still perform their respective responsibilities.
 
-Claude may complete its response even when the requested implementation remains incomplete.
+### 8.15 Handling Provider Errors and Recovery
 
-The Validator and Evaluator must still perform their respective responsibilities.
-
-## 8.15 Handling Provider Errors and Recovery
-
-Claude integration introduces provider-level failure modes.
-
-Examples include:
+Claude integration introduces provider-level failure modes. Examples include:
 
 - authentication errors;
 - usage limits;
@@ -5252,11 +4689,9 @@ Examples include:
 - unavailable tools;
 - context limitations.
 
-The Claude adapter should classify those errors and return structured failure information.
+The Claude adapter should classify those errors and return structured failure information. The Harness then applies the appropriate policy.
 
-The Harness then applies the appropriate policy.
-
-```
+```text
 Claude Invocation
        ↓
 Provider Result
@@ -5270,23 +4705,13 @@ Failure Classification
        └── Successful → Next Stage
 ```
 
-Do not blindly retry every unsuccessful Claude invocation.
+Do not blindly retry every unsuccessful Claude invocation. A denied tool operation may indicate a deliberate security boundary. A failed implementation may require a revised engineering plan.
 
-A denied tool operation may indicate a deliberate security boundary.
+A missing permission may require human authorization. These conditions should not be treated as temporary provider errors.
 
-A failed implementation may require a revised engineering plan.
+#### Recovery and session continuity
 
-A missing permission may require human authorization.
-
-These conditions should not be treated as temporary provider errors.
-
-### Recovery and session continuity
-
-Claude may support mechanisms for resuming an earlier session.
-
-However, enterprise recovery should not depend exclusively on session conversation history.
-
-The Harness should persist:
+Claude may support mechanisms for resuming an earlier session. However, enterprise recovery should not depend exclusively on session conversation history. The Harness should persist:
 
 - effective configuration;
 - task input;
@@ -5298,21 +4723,15 @@ The Harness should persist:
 - approval state;
 - retry history.
 
-A resumed session is an implementation convenience.
+A resumed session is an implementation convenience. Durable Harness state is the authoritative execution record.
 
-Durable Harness state is the authoritative execution record.
+### 8.16 Multi-Repository Claude Execution
 
-## 8.16 Multi-Repository Claude Execution
-
-Consider the consolidated fleet billing requirement introduced in the hands-on example.
-
-The enterprise Harness coordinates Booking, Fleet, and Billing.
-
-It should not launch one unrestricted Claude session and grant it write access to all three repositories.
+Consider the consolidated fleet billing requirement introduced in the hands-on example. The enterprise Harness coordinates Booking, Fleet, and Billing. It should not launch one unrestricted Claude session and grant it write access to all three repositories.
 
 Instead:
 
-```
+```text
 Enterprise Run
       │
       ├── Booking Child Run
@@ -5339,7 +4758,7 @@ The central Harness coordinates the dependencies.
 
 For example:
 
-```
+```text
 Contract Proposal
        ↓
 Human Contract Review
@@ -5359,7 +4778,7 @@ Approved Contract Baseline
 
 The objective is to reuse Claude capabilities while maintaining separate repository ownership.
 
-## 8.17 Claude-Specific Operational Considerations
+### 8.17 Claude-Specific Operational Considerations
 
 Claude-first adoption introduces several practical considerations.
 
@@ -5380,21 +4799,15 @@ Claude-first adoption introduces several practical considerations.
 | Security               | Enforce least privilege outside the prompt                |
 | Human approval         | Use trusted approval identities and services              |
 
-Claude's development experience encourages convenient interactive workflows.
+Claude's development experience encourages convenient interactive workflows. Enterprise Harness architecture must add explicit reliability, governance, and operational boundaries around those workflows.
 
-Enterprise Harness architecture must add explicit reliability, governance, and operational boundaries around those workflows.
+### 8.18 Architecture Decision: Claude-Native Orchestration or External Harness?
 
-## 8.18 Architecture Decision: Claude-Native Orchestration or External Harness?
+An enterprise must decide how much orchestration to delegate to Claude-specific capabilities. There are two broad approaches.
 
-An enterprise must decide how much orchestration to delegate to Claude-specific capabilities.
+#### Approach A — Claude-native workflow composition
 
-There are two broad approaches.
-
-### Approach A — Claude-native workflow composition
-
-Claude orchestrates subagents, Skills, and tools inside a primarily Claude-managed session.
-
-This can work well for:
+Claude orchestrates subagents, Skills, and tools inside a primarily Claude-managed session. This can work well for:
 
 - individual developer productivity;
 - relatively simple tasks;
@@ -5402,15 +4815,11 @@ This can work well for:
 - exploratory engineering;
 - limited parallel analysis.
 
-It reduces the amount of external orchestration code.
+It reduces the amount of external orchestration code. However, the organization may have less independent control over durable workflow state, cross-repository scheduling, formal approval transitions, and centralized recovery.
 
-However, the organization may have less independent control over durable workflow state, cross-repository scheduling, formal approval transitions, and centralized recovery.
+#### Approach B — External Harness orchestration
 
-### Approach B — External Harness orchestration
-
-An independent Harness controls the execution state machine and invokes Claude for selected responsibilities.
-
-This approach is preferable when the organization requires:
+An independent Harness controls the execution state machine and invokes Claude for selected responsibilities. This approach is preferable when the organization requires:
 
 - deterministic progression;
 - reproducible run configuration;
@@ -5426,21 +4835,23 @@ This approach is preferable when the organization requires:
 
 The two approaches can be combined.
 
-For example, the external Harness may invoke a Claude Developer role that internally uses several focused subagents for code analysis.
+For example, the external Harness may invoke a Claude Developer role that internally uses several focused subagents for code analysis. The key requirement is that internal Claude delegation must not bypass Harness-controlled boundaries.
 
-The key requirement is that internal Claude delegation must not bypass Harness-controlled boundaries.
+> **Decision Point**
 
-> Decision Point
 >
+
 > When should orchestration move outside Claude?
+
 >
+
 > When the organization needs independent control over execution state, validation, approvals, failure recovery, multi-repository coordination, or provider portability, these responsibilities should belong to the Harness rather than an individual Claude session.
 
-## 8.19 End-to-End Claude Execution Walkthrough
+### 8.19 End-to-End Claude Execution Walkthrough
 
 Consider the following task:
 
-```
+```text
 Add support for cancelling one occurrence of a recurring
 corporate fleet booking.
 
@@ -5455,53 +4866,25 @@ Add unit and integration tests.
 Do not modify Billing contracts.
 ```
 
-The enterprise Harness performs the following sequence.
+The enterprise Harness performs the following sequence. Phase 1 — Prepare
 
-Phase 1 — Prepare
+The Harness resolves the Booking profile, enterprise policies, approved Skills, role definitions, and repository commit. It creates an isolated Run Workspace and provisions the effective Claude configuration. Phase 2 — Analyze
 
-The Harness resolves the Booking profile, enterprise policies, approved Skills, role definitions, and repository commit.
+Claude executes the Lead role. The Lead reads relevant Instructions and Repository Intelligence, identifies affected domain behavior, and prepares the Developer assignment. Phase 3 — Implement
 
-It creates an isolated Run Workspace and provisions the effective Claude configuration.
+Claude executes the Developer role. The Developer uses repository-specific knowledge and applicable shared Skills to implement cancellation behavior and tests. Phase 4 — Review and validate
 
-Phase 2 — Analyze
-
-Claude executes the Lead role.
-
-The Lead reads relevant Instructions and Repository Intelligence, identifies affected domain behavior, and prepares the Developer assignment.
-
-Phase 3 — Implement
-
-Claude executes the Developer role.
-
-The Developer uses repository-specific knowledge and applicable shared Skills to implement cancellation behavior and tests.
-
-Phase 4 — Review and validate
-
-The Harness freezes the implementation snapshot.
-
-The Claude Reviewer independently examines the change.
-
-Deterministic tests, architecture checks, and contract gates execute through the Harness validation framework.
+The Harness freezes the implementation snapshot. The Claude Reviewer independently examines the change. Deterministic tests, architecture checks, and contract gates execute through the Harness validation framework.
 
 Phase 5 — Evaluate
 
-The Claude Evaluator receives the original acceptance criteria together with Reviewer and Validator evidence.
+The Claude Evaluator receives the original acceptance criteria together with Reviewer and Validator evidence. The Evaluator determines whether the change satisfies the intended outcome. Phase 6 — Approve
 
-The Evaluator determines whether the change satisfies the intended outcome.
+If all mandatory conditions are satisfied, the Harness advances the run to the required human approval stage. The approved implementation can then proceed to the authorized source-control operation. Phase 7 — Record
 
-Phase 6 — Approve
+The Harness persists the final result, evidence references, usage information, metrics, and audit history. A conceptual run result is:
 
-If all mandatory conditions are satisfied, the Harness advances the run to the required human approval stage.
-
-The approved implementation can then proceed to the authorized source-control operation.
-
-Phase 7 — Record
-
-The Harness persists the final result, evidence references, usage information, metrics, and audit history.
-
-A conceptual run result is:
-
-```
+```json
 {
   "runId": "run-1042",
   "repository": "booking-service",
@@ -5526,58 +4909,41 @@ A conceptual run result is:
 }
 ```
 
-The run is not marked `Completed` because required approval remains pending.
+The run is not marked `Completed` because required approval remains pending. That distinction illustrates how Claude Code participates in the workflow without controlling its final authorization.
 
-That distinction illustrates how Claude Code participates in the workflow without controlling its final authorization.
+### 8.20 Lessons from the Claude Implementation
 
-## 8.20 Lessons from the Claude Implementation
+Claude Code supplies effective building blocks for enterprise AI-assisted engineering. `CLAUDE.md` supports persistent Instructions. Skills support reusable workflows.
 
-Claude Code supplies effective building blocks for enterprise AI-assisted engineering.
+Subagents support role specialization. Hooks provide lifecycle guardrails. MCP supports approved external tools.
 
-`CLAUDE.md` supports persistent Instructions.
-
-Skills support reusable workflows.
-
-Subagents support role specialization.
-
-Hooks provide lifecycle guardrails.
-
-MCP supports approved external tools.
-
-Programmatic execution allows Claude to participate in an externally managed Harness.
-
-However, these mechanisms become enterprise-grade only when combined with disciplined orchestration boundaries.
-
-The Alpha Car Detailing example demonstrates that:
+Programmatic execution allows Claude to participate in an externally managed Harness. However, these mechanisms become enterprise-grade only when combined with disciplined orchestration boundaries. The Alpha Car Detailing example demonstrates that:
 
 1. A central Harness can share Claude capabilities across repositories without centralizing domain decisions.
+
 2. Repository-specific Instructions and Skills can coexist with enterprise standards.
+
 3. Claude subagents can implement specialized roles without owning overall workflow authority.
+
 4. Parallel Claude execution requires explicit workspace and state isolation.
+
 5. Hooks can strengthen execution guardrails but cannot replace authoritative deterministic gates.
+
 6. MCP integrations must remain subject to tool permissions, identity controls, and audit requirements.
+
 7. Recovery, metrics, and approvals belong to durable Harness infrastructure rather than an individual conversation.
+
 8. Claude should remain replaceable through an explicit agent-provider adapter.
 
-The essential architectural distinction is not between Claude and another AI coding platform.
-
-It is between agent capability and orchestration authority.
-
-Claude provides the capability to understand and implement engineering work.
+The essential architectural distinction is not between Claude and another AI coding platform. It is between agent capability and orchestration authority. Claude provides the capability to understand and implement engineering work.
 
 The enterprise Harness defines how that capability is controlled, validated, evaluated, governed, and scaled.
 
-Chapter 21 status: In progress — next section: GitHub Copilot Comparison
+## 9. GitHub Copilot Comparison
 
-# 9. GitHub Copilot Comparison
+### 9.1 Implementing Enterprise Harness Patterns with GitHub Copilot
 
-## 9.1 Implementing Enterprise Harness Patterns with GitHub Copilot
-
-The previous section demonstrated how Claude Code can participate in Alpha Car Detailing's Enterprise Harness architecture through persistent Instructions, Skills, specialized agents, hooks, MCP integrations, and programmatic execution.
-
-GitHub Copilot provides a comparable set of capabilities, but its integration model introduces different architectural considerations.
-
-Copilot operates across several development environments, including:
+The previous section demonstrated how Claude Code can participate in Alpha Car Detailing's Enterprise Harness architecture through persistent Instructions, Skills, specialized agents, hooks, MCP integrations, and programmatic execution. GitHub Copilot provides a comparable set of capabilities, but its integration model introduces different architectural considerations. Copilot operates across several development environments, including:
 
 - Visual Studio and Visual Studio Code.
 - GitHub-hosted development workflows.
@@ -5585,29 +4951,17 @@ Copilot operates across several development environments, including:
 - GitHub Copilot cloud agent.
 - GitHub Copilot SDK integrations.
 
-These environments provide different levels of agent execution, customization, automation, and orchestration control.
+These environments provide different levels of agent execution, customization, automation, and orchestration control. For enterprise Harness engineering, the distinction matters. An IDE-based Copilot workflow is generally centered on the developer's working environment.
 
-For enterprise Harness engineering, the distinction matters.
+A GitHub-hosted coding agent operates through repository and pull-request workflows. Copilot CLI and SDK integrations provide additional opportunities for programmatic execution. Therefore, an enterprise should not treat GitHub Copilot as one uniform execution mechanism.
 
-An IDE-based Copilot workflow is generally centered on the developer's working environment.
-
-A GitHub-hosted coding agent operates through repository and pull-request workflows.
-
-Copilot CLI and SDK integrations provide additional opportunities for programmatic execution.
-
-Therefore, an enterprise should not treat GitHub Copilot as one uniform execution mechanism.
-
-Instead, it should determine which Copilot capability is appropriate for each Harness responsibility.
-
-The central architectural principle remains unchanged:
+Instead, it should determine which Copilot capability is appropriate for each Harness responsibility. The central architectural principle remains unchanged:
 
 > GitHub Copilot can execute AI-assisted engineering tasks, but the Enterprise Harness must retain authority over deterministic validation, execution state, recovery, governance, and final completion.
 
-## 9.2 Claude Code and GitHub Copilot: Architectural Comparison
+### 9.2 Claude Code and GitHub Copilot: Architectural Comparison
 
-Claude Code and GitHub Copilot both support specialized AI Engineering workflows.
-
-However, their configuration conventions and integration surfaces differ.
+Claude Code and GitHub Copilot both support specialized AI Engineering workflows. However, their configuration conventions and integration surfaces differ.
 
 | Enterprise Concept          | Claude Code                        | GitHub Copilot                                                      |
 | --------------------------- | ---------------------------------- | ------------------------------------------------------------------- |
@@ -5625,37 +4979,25 @@ However, their configuration conventions and integration surfaces differ.
 | Approval enforcement        | External Harness                   | External Harness / repository governance                            |
 | Metrics and run evidence    | Harness-managed                    | Harness-managed                                                     |
 
-GitHub's customization model includes repository Instructions, prompt files, custom agents, Skills, hooks, and MCP servers. The supported features and exact configuration behavior vary by Copilot execution surface.&#x20;
+GitHub's customization model includes repository Instructions, prompt files, custom agents, Skills, hooks, and MCP servers. The supported features and exact configuration behavior vary by Copilot execution surface. See the [GitHub Copilot customization reference](https://docs.github.com/en/copilot/reference/customization-cheat-sheet). The architectural comparison should focus on responsibilities rather than assuming that similarly named files always behave identically.
 
-[image](https://www.google.com/s2/favicons?domain=https://docs.github.com\&sz=32)
+For example, a Claude subagent and a Copilot custom agent may both implement a Reviewer role, but the surrounding execution model, tool controls, and lifecycle management may differ. The Enterprise Harness should accommodate those differences through provider adapters.
 
-GitHub Docs
+### 9.3 Repository Instruction Pattern
 
-+1
+Alpha Car Detailing's Booking service uses `CLAUDE.md` when executing through Claude Code. The equivalent Copilot configuration can be stored in:
 
-The architectural comparison should focus on responsibilities rather than assuming that similarly named files always behave identically.
-
-For example, a Claude subagent and a Copilot custom agent may both implement a Reviewer role, but the surrounding execution model, tool controls, and lifecycle management may differ.
-
-The Enterprise Harness should accommodate those differences through provider adapters.
-
-## 9.3 Repository Instruction Pattern
-
-Alpha Car Detailing's Booking service uses `CLAUDE.md` when executing through Claude Code.
-
-The equivalent Copilot configuration can be stored in:
-
-```
+```text
 booking-service/
 └── .github/
     └── copilot-instructions.md
 ```
 
-### Example: Booking repository Instructions
+#### Example: Booking repository Instructions
 
 File: `.github/copilot-instructions.md`
 
-```
+```markdown
 # Alpha Car Detailing — Booking Service
 
 ## Architecture
@@ -5701,19 +5043,15 @@ Read relevant documentation from:
 - Do not create deployment artifacts unless authorized.
 ```
 
-This serves the same architectural purpose as the Booking `CLAUDE.md` example.
+This serves the same architectural purpose as the Booking `CLAUDE.md` example. It tells the agent how engineering work should be performed. It does not independently enforce the rules.
 
-It tells the agent how engineering work should be performed.
-
-It does not independently enforce the rules.
-
-### Path-specific Instructions
+#### Path-specific Instructions
 
 GitHub Copilot also supports path-specific Instructions.
 
 For example:
 
-```
+```text
 .github/
 └── instructions/
     ├── domain.instructions.md
@@ -5723,7 +5061,7 @@ For example:
 
 A Domain-layer Instruction may contain:
 
-```
+```markdown
 ---
 applyTo: "src/**/Domain/**/*.cs"
 ---
@@ -5736,38 +5074,26 @@ applyTo: "src/**/Domain/**/*.cs"
 - Do not place database access in domain entities.
 ```
 
-This is useful in large repositories where different layers require different engineering constraints.
+This is useful in large repositories where different layers require different engineering constraints. Copilot supports repository-wide and path-specific instruction mechanisms, including `AGENTS.md` in supported environments.
 
-Copilot supports repository-wide and path-specific instruction mechanisms, including `AGENTS.md` in supported environments.&#x20;
+#### Enterprise consideration
 
-[image](https://www.google.com/s2/favicons?domain=https://docs.github.com\&sz=32)
+Do not copy every global standard independently into every repository. Instead, maintain governed enterprise Instructions and distribute them using a controlled provisioning or synchronization process. When shared standards change, repository-specific overrides should remain visible and auditable.
 
-GitHub Docs
+### 9.4 Reusable Skills Pattern
 
-### Enterprise consideration
+GitHub Copilot supports reusable agent Skills defined through `SKILL.md`. For Alpha Car Detailing, the shared Add Integration Event Skill can be implemented using:
 
-Do not copy every global standard independently into every repository.
-
-Instead, maintain governed enterprise Instructions and distribute them using a controlled provisioning or synchronization process.
-
-When shared standards change, repository-specific overrides should remain visible and auditable.
-
-## 9.4 Reusable Skills Pattern
-
-GitHub Copilot supports reusable agent Skills defined through `SKILL.md`.
-
-For Alpha Car Detailing, the shared Add Integration Event Skill can be implemented using:
-
-```
+```text
 .github/
 └── skills/
     └── add-integration-event/
         └── SKILL.md
 ```
 
-### Example Skill
+#### Example Skill
 
-```
+```markdown
 ---
 name: add-integration-event
 description: Implement an integration event using repository
@@ -5804,23 +5130,15 @@ description: Implement an integration event using repository
 - Known risks
 ```
 
-The Skill is conceptually the same as the Claude example.
+The Skill is conceptually the same as the Claude example. Its purpose is to provide reusable implementation guidance. It should not own final execution authority.
 
-Its purpose is to provide reusable implementation guidance.
+Copilot can discover relevant Skills through their descriptions and load the corresponding instructions when needed.
 
-It should not own final execution authority.
-
-Copilot can discover relevant Skills through their descriptions and load the corresponding instructions when needed.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://docs.github.com\&sz=32)
-
-GitHub Docs
-
-### Shared Skill governance
+#### Shared Skill governance
 
 Alpha Car Detailing can maintain one enterprise Skill catalog.
 
-```
+```text
 Enterprise Skill Catalog
         │
         ├── Add API Endpoint
@@ -5834,21 +5152,13 @@ Enterprise Skill Catalog
        Booking Fleet Billing
 ```
 
-The repository consumes an approved Skill version.
+The repository consumes an approved Skill version. The Harness records which version was used for the run. This prevents repeated copy-and-paste implementations and provides a foundation for controlled Skill evolution.
 
-The Harness records which version was used for the run.
+### 9.5 Custom Agent Pattern
 
-This prevents repeated copy-and-paste implementations and provides a foundation for controlled Skill evolution.
+GitHub Copilot supports custom agents defined through agent profile files. This enables role specialization similar to the Claude subagent examples. For Alpha Car Detailing:
 
-## 9.5 Custom Agent Pattern
-
-GitHub Copilot supports custom agents defined through agent profile files.
-
-This enables role specialization similar to the Claude subagent examples.
-
-For Alpha Car Detailing:
-
-```
+```text
 .github/
 └── agents/
     ├── lead.agent.md
@@ -5857,11 +5167,11 @@ For Alpha Car Detailing:
     └── evaluator.agent.md
 ```
 
-### Example: Reviewer Agent
+#### Example: Reviewer Agent
 
 File: `.github/agents/reviewer.agent.md`
 
-```
+```markdown
 ---
 name: reviewer
 description: Independently review implementation quality,
@@ -5905,23 +5215,11 @@ Return:
 - Review outcome
 ```
 
-The profile represents a Harness role.
+The profile represents a Harness role. For production use, the team should configure tool restrictions supported by its selected Copilot surface and independently enforce read-only repository access where required. GitHub Copilot custom agents can specify specialized instructions and supported tool configurations.
 
-For production use, the team should configure tool restrictions supported by its selected Copilot surface and independently enforce read-only repository access where required.
+#### Architectural distinction
 
-GitHub Copilot custom agents can specify specialized instructions and supported tool configurations.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://docs.github.com\&sz=32)
-
-GitHub Docs
-
-+1
-
-### Architectural distinction
-
-A Copilot custom agent is not automatically an enterprise workflow controller.
-
-The Harness must still determine:
+A Copilot custom agent is not automatically an enterprise workflow controller. The Harness must still determine:
 
 - when the Reviewer executes;
 - what implementation snapshot is reviewed;
@@ -5930,36 +5228,26 @@ The Harness must still determine:
 - whether evaluation can proceed;
 - whether human approval is required.
 
-A specialized agent implements a responsibility.
+A specialized agent implements a responsibility. It does not redefine the authority associated with that responsibility.
 
-It does not redefine the authority associated with that responsibility.
+### 9.6 Programmatic Execution with GitHub Copilot CLI
 
-## 9.6 Programmatic Execution with GitHub Copilot CLI
-
-For externally orchestrated Harness workflows, Copilot CLI provides a useful integration option.
-
-The CLI supports non-interactive prompts.
+For externally orchestrated Harness workflows, Copilot CLI provides a useful integration option. The CLI supports non-interactive prompts.
 
 For example:
 
-```
+```bash
 copilot -p "Analyze the Booking repository and identify
 the components affected by recurring booking cancellation."
 ```
 
-The command can be executed from an authorized working directory prepared by the Harness.
+The command can be executed from an authorized working directory prepared by the Harness. GitHub documents programmatic Copilot CLI invocation through the `-p` or `--prompt` option, including use in scripts and automation workflows.
 
-GitHub documents programmatic Copilot CLI invocation through the `-p` or `--prompt` option, including use in scripts and automation workflows.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://docs.github.com\&sz=32)
-
-GitHub Docs
-
-### Provider adapter
+#### Provider adapter
 
 The same vendor-neutral contract introduced in the hands-on example can be used.
 
-```
+```csharp
 public interface IAgentProvider
 {
     Task<AgentResult> ExecuteAsync(
@@ -5970,7 +5258,7 @@ public interface IAgentProvider
 
 The Copilot implementation becomes:
 
-```
+```text
 IAgentProvider
       │
       ├── ClaudeCodeAdapter
@@ -5980,28 +5268,28 @@ IAgentProvider
 The `GitHubCopilotAdapter` should:
 
 1. Launch the supported Copilot execution interface.
+
 2. Provide the task and approved context.
+
 3. Apply appropriate tool authorization.
+
 4. Capture output and execution status.
+
 5. Normalize the result into Harness contracts.
+
 6. Preserve logs and evidence.
+
 7. Report failures to the Harness.
 
-The adapter must not infer engineering success from process completion alone.
+The adapter must not infer engineering success from process completion alone. As with Claude Code, successful CLI execution does not prove that acceptance criteria have been satisfied.
 
-As with Claude Code, successful CLI execution does not prove that acceptance criteria have been satisfied.
+### 9.7 GitHub Copilot Cloud Agent Pattern
 
-## 9.7 GitHub Copilot Cloud Agent Pattern
-
-GitHub Copilot cloud agent introduces an additional execution option.
-
-Rather than using an externally managed CLI session, a repository task can be delegated to a GitHub-hosted agent workflow.
-
-This is useful when engineering work naturally follows GitHub's issue, branch, and pull-request lifecycle.
+GitHub Copilot cloud agent introduces an additional execution option. Rather than using an externally managed CLI session, a repository task can be delegated to a GitHub-hosted agent workflow. This is useful when engineering work naturally follows GitHub's issue, branch, and pull-request lifecycle.
 
 Consider the Booking change:
 
-```
+```text
 GitHub Issue
      ↓
 Copilot Cloud Agent
@@ -6015,11 +5303,7 @@ CI Validation
 Human Review
 ```
 
-The cloud agent can perform the coding assignment, while GitHub repository workflows provide a natural integration point for review and validation.
-
-However, an enterprise Harness may require capabilities beyond a single repository pull-request workflow.
-
-Examples include:
+The cloud agent can perform the coding assignment, while GitHub repository workflows provide a natural integration point for review and validation. However, an enterprise Harness may require capabilities beyond a single repository pull-request workflow. Examples include:
 
 - coordinating several repositories;
 - managing organization-wide populations;
@@ -6030,19 +5314,27 @@ Examples include:
 
 A shared Harness should therefore treat GitHub-hosted agent execution as one available execution mechanism.
 
-\#chatgpt-mermaid-\_r_17f6\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(13, 13, 13);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_17f6\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_17f6\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_17f6\_ .error-icon{fill:rgb(243, 243, 243);}#chatgpt-mermaid-\_r_17f6\_ .error-text{fill:rgb(13, 13, 13);stroke:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17f6\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_17f6\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_17f6\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_17f6\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_17f6\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_17f6\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_17f6\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_17f6\_ .marker.cross{stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_17f6\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_17f6\_ p{margin:0;}#chatgpt-mermaid-\_r_17f6\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17f6\_ .cluster-label text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17f6\_ .cluster-label span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17f6\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_17f6\_ .label text,#chatgpt-mermaid-\_r_17f6\_ span{fill:rgb(13, 13, 13);color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17f6\_ .node rect,#chatgpt-mermaid-\_r_17f6\_ .node circle,#chatgpt-mermaid-\_r_17f6\_ .node ellipse,#chatgpt-mermaid-\_r_17f6\_ .node polygon,#chatgpt-mermaid-\_r_17f6\_ .node path{fill:rgb(222, 234, 251);stroke:rgb(83, 154, 248);stroke-width:1px;}#chatgpt-mermaid-\_r_17f6\_ .rough-node .label text,#chatgpt-mermaid-\_r_17f6\_ .node .label text,#chatgpt-mermaid-\_r_17f6\_ .image-shape .label,#chatgpt-mermaid-\_r_17f6\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_17f6\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_17f6\_ .rough-node .label,#chatgpt-mermaid-\_r_17f6\_ .node .label,#chatgpt-mermaid-\_r_17f6\_ .image-shape .label,#chatgpt-mermaid-\_r_17f6\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_17f6\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_17f6\_ .root .anchor path{fill:rgb(143, 143, 143)!important;stroke-width:0;stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_17f6\_ .arrowheadPath{fill:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_17f6\_ .edgePath .path{stroke:rgb(143, 143, 143);stroke-width:1px;}#chatgpt-mermaid-\_r_17f6\_ .flowchart-link{stroke:rgb(143, 143, 143);fill:none;}#chatgpt-mermaid-\_r_17f6\_ .edgeLabel{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_17f6\_ .edgeLabel p{background-color:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_17f6\_ .edgeLabel rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_17f6\_ .labelBkg{background-color:rgba(252, 252, 252, 0.5);}#chatgpt-mermaid-\_r_17f6\_ .cluster rect{fill:rgb(243, 243, 243);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_17f6\_ .cluster text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17f6\_ .cluster span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17f6\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(243, 243, 243);border:1px solid rgba(0, 0, 0, 0.1);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_17f6\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17f6\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_17f6\_ .icon-shape,#chatgpt-mermaid-\_r_17f6\_ .image-shape{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_17f6\_ .icon-shape p,#chatgpt-mermaid-\_r_17f6\_ .image-shape p{background-color:rgb(252, 252, 252);padding:2px;}#chatgpt-mermaid-\_r_17f6\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_17f6\_ .image-shape .label rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_17f6\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_17f6\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_17f6\_ .node .neo-node{stroke:rgb(83, 154, 248);}#chatgpt-mermaid-\_r_17f6\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_17f6\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_17f6\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_17f6\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_17f6\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_17f6\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_17f6\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_17f6\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_17f6\_ [data-look="neo"].node .neo-line path{stroke:rgb(83, 154, 248);filter:none;}#chatgpt-mermaid-\_r_17f6\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_17f6\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_17f6\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_17f6\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_17f6\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_17f6\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_17f6\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_17f6\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_17f6\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_17f6\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_17f6\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_17f6\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-width:1px;}#chatgpt-mermaid-\_r_17f6\_ .node rect,#chatgpt-mermaid-\_r_17f6\_ .node circle,#chatgpt-mermaid-\_r_17f6\_ .node ellipse,#chatgpt-mermaid-\_r_17f6\_ .node polygon,#chatgpt-mermaid-\_r_17f6\_ .node path{fill:rgb(229, 243, 255);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_17f6\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_17f6\_ .node.mermaid-decision .label-container{fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_17f6\_ .edgePaths .flowchart-link{stroke:rgb(143, 143, 143);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_17f6\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_17f6\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}Enterprise HarnessCopilot Execution AdapterCopilot CLICopilot Cloud AgentHarness WorkspaceGitHub Pull RequestExecution EvidenceHarness ValidationHarness Evaluation
+```mermaid
+flowchart TB
+    H["Enterprise Harness"] --> A["Copilot Execution Adapter"]
+    A --> CLI["Copilot CLI"]
+    A --> Cloud["Copilot Cloud Agent"]
+    CLI --> W["Harness Workspace"]
+    Cloud --> PR["GitHub Pull Request"]
+    W --> E["Execution Evidence"]
+    PR --> E
+    E --> V["Harness Validation"] --> O["Harness Evaluation"]
+```
 
 The integration contract must account for differences between local CLI execution and GitHub-hosted asynchronous execution.
 
 For example, a cloud agent workflow may require the Harness to track a remote task and collect its pull-request result rather than expecting a single local process to return all implementation artifacts.
 
-## 9.8 Sequential and Multi-Agent Orchestration
+### 9.8 Sequential and Multi-Agent Orchestration
 
-GitHub Copilot can support specialized agent workflows, including delegation to subagents in supported execution environments.
+GitHub Copilot can support specialized agent workflows, including delegation to subagents in supported execution environments. The same enterprise pattern applies:
 
-The same enterprise pattern applies:
-
-```
+```text
 Lead Agent
      ↓
 Developer Agent
@@ -6056,22 +5348,18 @@ Evaluator Agent
 
 However, the Harness should distinguish between two orchestration approaches.
 
-### Copilot-managed delegation
+#### Copilot-managed delegation
 
-A Copilot session delegates subtasks to other agents.
-
-This is appropriate for focused work such as:
+A Copilot session delegates subtasks to other agents. This is appropriate for focused work such as:
 
 - repository investigation;
 - security analysis;
 - documentation review;
 - test coverage analysis.
 
-### Harness-managed role execution
+#### Harness-managed role execution
 
-The external Harness invokes each required role as an independently recorded stage.
-
-This is more appropriate when:
+The external Harness invokes each required role as an independently recorded stage. This is more appropriate when:
 
 - role independence must be auditable;
 - different credentials are required;
@@ -6080,37 +5368,34 @@ This is more appropriate when:
 - human approval is mandatory;
 - multiple providers are involved.
 
-Copilot SDK capabilities include custom-agent and subagent orchestration, but these do not remove the need for independent enterprise gate enforcement.&#x20;
+Copilot SDK capabilities include custom-agent and subagent orchestration, but these do not remove the need for independent enterprise gate enforcement.
 
-[image](https://www.google.com/s2/favicons?domain=https://docs.github.com\&sz=32)
+#### Alpha Car Detailing example
 
-GitHub Docs
+The Harness may use a Copilot Developer role to implement an API change and a separate Copilot Reviewer role to examine the resulting commit. The Reviewer receives a fixed implementation snapshot. If findings require modifications, the Harness creates a new Developer iteration.
 
-### Alpha Car Detailing example
+The previous validation evidence must be reconsidered after the implementation changes. This preserves the role boundaries established in Chapters 14–18.
 
-The Harness may use a Copilot Developer role to implement an API change and a separate Copilot Reviewer role to examine the resulting commit.
+### 9.9 Parallel Orchestration and Fan-Out/Fan-In
 
-The Reviewer receives a fixed implementation snapshot.
+Copilot can participate in parallel execution through independently controlled tasks or supported agent orchestration mechanisms. Consider a cross-service change involving Booking, Fleet, and Billing.
 
-If findings require modifications, the Harness creates a new Developer iteration.
+```mermaid
+flowchart TB
+    R["Fleet Billing Feature"] --> Lead["Enterprise Lead"]
+    Lead --> B["Copilot Booking Run"]
+    Lead --> F["Copilot Fleet Run"]
+    Lead --> I["Copilot Billing Run"]
+    B --> BG["Booking Gates"]
+    F --> FG["Fleet Gates"]
+    I --> IG["Billing Gates"]
+    BG --> Join["Fan-In"]
+    FG --> Join
+    IG --> Join
+    Join --> E["Enterprise Evaluation"]
+```
 
-The previous validation evidence must be reconsidered after the implementation changes.
-
-This preserves the role boundaries established in Chapters 14–18.
-
-## 9.9 Parallel Orchestration and Fan-Out/Fan-In
-
-Copilot can participate in parallel execution through independently controlled tasks or supported agent orchestration mechanisms.
-
-Consider a cross-service change involving Booking, Fleet, and Billing.
-
-\#chatgpt-mermaid-\_r_17fs\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(13, 13, 13);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_17fs\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_17fs\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_17fs\_ .error-icon{fill:rgb(243, 243, 243);}#chatgpt-mermaid-\_r_17fs\_ .error-text{fill:rgb(13, 13, 13);stroke:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17fs\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_17fs\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_17fs\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_17fs\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_17fs\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_17fs\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_17fs\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_17fs\_ .marker.cross{stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_17fs\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_17fs\_ p{margin:0;}#chatgpt-mermaid-\_r_17fs\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17fs\_ .cluster-label text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17fs\_ .cluster-label span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17fs\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_17fs\_ .label text,#chatgpt-mermaid-\_r_17fs\_ span{fill:rgb(13, 13, 13);color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17fs\_ .node rect,#chatgpt-mermaid-\_r_17fs\_ .node circle,#chatgpt-mermaid-\_r_17fs\_ .node ellipse,#chatgpt-mermaid-\_r_17fs\_ .node polygon,#chatgpt-mermaid-\_r_17fs\_ .node path{fill:rgb(222, 234, 251);stroke:rgb(83, 154, 248);stroke-width:1px;}#chatgpt-mermaid-\_r_17fs\_ .rough-node .label text,#chatgpt-mermaid-\_r_17fs\_ .node .label text,#chatgpt-mermaid-\_r_17fs\_ .image-shape .label,#chatgpt-mermaid-\_r_17fs\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_17fs\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_17fs\_ .rough-node .label,#chatgpt-mermaid-\_r_17fs\_ .node .label,#chatgpt-mermaid-\_r_17fs\_ .image-shape .label,#chatgpt-mermaid-\_r_17fs\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_17fs\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_17fs\_ .root .anchor path{fill:rgb(143, 143, 143)!important;stroke-width:0;stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_17fs\_ .arrowheadPath{fill:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_17fs\_ .edgePath .path{stroke:rgb(143, 143, 143);stroke-width:1px;}#chatgpt-mermaid-\_r_17fs\_ .flowchart-link{stroke:rgb(143, 143, 143);fill:none;}#chatgpt-mermaid-\_r_17fs\_ .edgeLabel{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_17fs\_ .edgeLabel p{background-color:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_17fs\_ .edgeLabel rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_17fs\_ .labelBkg{background-color:rgba(252, 252, 252, 0.5);}#chatgpt-mermaid-\_r_17fs\_ .cluster rect{fill:rgb(243, 243, 243);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_17fs\_ .cluster text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17fs\_ .cluster span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17fs\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(243, 243, 243);border:1px solid rgba(0, 0, 0, 0.1);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_17fs\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17fs\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_17fs\_ .icon-shape,#chatgpt-mermaid-\_r_17fs\_ .image-shape{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_17fs\_ .icon-shape p,#chatgpt-mermaid-\_r_17fs\_ .image-shape p{background-color:rgb(252, 252, 252);padding:2px;}#chatgpt-mermaid-\_r_17fs\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_17fs\_ .image-shape .label rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_17fs\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_17fs\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_17fs\_ .node .neo-node{stroke:rgb(83, 154, 248);}#chatgpt-mermaid-\_r_17fs\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_17fs\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_17fs\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_17fs\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_17fs\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_17fs\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_17fs\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_17fs\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_17fs\_ [data-look="neo"].node .neo-line path{stroke:rgb(83, 154, 248);filter:none;}#chatgpt-mermaid-\_r_17fs\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_17fs\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_17fs\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_17fs\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_17fs\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_17fs\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_17fs\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_17fs\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_17fs\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_17fs\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_17fs\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_17fs\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-width:1px;}#chatgpt-mermaid-\_r_17fs\_ .node rect,#chatgpt-mermaid-\_r_17fs\_ .node circle,#chatgpt-mermaid-\_r_17fs\_ .node ellipse,#chatgpt-mermaid-\_r_17fs\_ .node polygon,#chatgpt-mermaid-\_r_17fs\_ .node path{fill:rgb(229, 243, 255);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_17fs\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_17fs\_ .node.mermaid-decision .label-container{fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_17fs\_ .edgePaths .flowchart-link{stroke:rgb(143, 143, 143);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_17fs\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_17fs\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}Fleet Billing FeatureEnterprise LeadCopilot Booking RunCopilot Fleet RunCopilot Billing RunBooking GatesFleet GatesBilling GatesFan-InEnterprise Evaluation
-
-The primary requirement is not that Copilot execute every branch within a single session.
-
-The requirement is that the Harness coordinate independent execution units.
-
-Each branch must maintain:
+The primary requirement is not that Copilot execute every branch within a single session. The requirement is that the Harness coordinate independent execution units. Each branch must maintain:
 
 - isolated repository state;
 - independently recorded evidence;
@@ -6119,11 +5404,11 @@ Each branch must maintain:
 - repository-specific validation;
 - appropriate approval requirements.
 
-### Population processing
+#### Population processing
 
 For a population of maintenance tasks:
 
-```
+```text
 Population: 100 repositories
         ↓
 Harness Scheduler
@@ -6137,19 +5422,11 @@ Repository Validation
 Result Aggregation
 ```
 
-A single failed repository should not corrupt the execution state of another repository.
+A single failed repository should not corrupt the execution state of another repository. Population status should remain durable outside Copilot session context. The Harness must also respect API quotas, execution budgets, concurrency limits, and organizational policy.
 
-Population status should remain durable outside Copilot session context.
+### 9.10 Hooks and Deterministic Gates
 
-The Harness must also respect API quotas, execution budgets, concurrency limits, and organizational policy.
-
-## 9.10 Hooks and Deterministic Gates
-
-GitHub Copilot supports hooks in applicable execution environments.
-
-Hooks can perform actions at defined points in the agent lifecycle.
-
-Examples include:
+GitHub Copilot supports hooks in applicable execution environments. Hooks can perform actions at defined points in the agent lifecycle. Examples include:
 
 - inspecting proposed tool operations;
 - preventing unauthorized commands;
@@ -6157,13 +5434,7 @@ Examples include:
 - applying local policy checks;
 - collecting audit evidence.
 
-GitHub documents hooks for Copilot cloud agent and CLI, including the ability to approve or deny certain tool executions.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://docs.github.com\&sz=32)
-
-GitHub Docs
-
-The same separation established in the Claude example must be preserved.
+GitHub documents hooks for Copilot cloud agent and CLI, including the ability to approve or deny certain tool executions. The same separation established in the Claude example must be preserved.
 
 | Mechanism       | Responsibility                                   |
 | --------------- | ------------------------------------------------ |
@@ -6176,7 +5447,7 @@ The same separation established in the Claude example must be preserved.
 
 For example:
 
-```
+```text
 Copilot Hook
     ↓
 Check proposed command
@@ -6186,7 +5457,7 @@ Allow or reject operation
 
 is different from:
 
-```
+```text
 Harness Validation Gate
     ↓
 Execute mandatory security scan
@@ -6196,15 +5467,11 @@ Capture evidence
 Block completion on failure
 ```
 
-Hooks should strengthen execution safety.
+Hooks should strengthen execution safety. They should not become the only validation mechanism.
 
-They should not become the only validation mechanism.
+### 9.11 MCP and External Tool Integration
 
-## 9.11 MCP and External Tool Integration
-
-GitHub Copilot supports MCP integrations in applicable execution environments.
-
-This enables access to tools such as:
+GitHub Copilot supports MCP integrations in applicable execution environments. This enables access to tools such as:
 
 - repository search;
 - work-item retrieval;
@@ -6214,7 +5481,7 @@ This enables access to tools such as:
 
 The architecture should remain independent of the specific MCP client.
 
-```
+```text
 Copilot
    ↓
 MCP Tool
@@ -6222,23 +5489,15 @@ MCP Tool
 Approved Enterprise Service
 ```
 
-For Alpha Car Detailing, an MCP tool may retrieve repository architecture or existing event contracts.
+For Alpha Car Detailing, an MCP tool may retrieve repository architecture or existing event contracts. However, retrieved information remains data. It must not be allowed to override higher-priority Instructions, expand repository access, or disable required validation.
 
-However, retrieved information remains data.
+The Harness should control the available tools and credentials for each execution context. This is especially important when a shared platform serves multiple teams with different security requirements.
 
-It must not be allowed to override higher-priority Instructions, expand repository access, or disable required validation.
+### 9.12 GitHub-Native Validation and Enterprise Validation
 
-The Harness should control the available tools and credentials for each execution context.
+One advantage of GitHub-hosted workflows is their proximity to pull requests, repository permissions, and CI/CD pipelines. Alpha Car Detailing may already use GitHub Actions for:
 
-This is especially important when a shared platform serves multiple teams with different security requirements.
-
-## 9.12 GitHub-Native Validation and Enterprise Validation
-
-One advantage of GitHub-hosted workflows is their proximity to pull requests, repository permissions, and CI/CD pipelines.
-
-Alpha Car Detailing may already use GitHub Actions for:
-
-```
+```text
 Build
 Unit Tests
 Integration Tests
@@ -6248,19 +5507,24 @@ Architecture Tests
 Contract Tests
 ```
 
-The enterprise Harness should reuse trustworthy validation infrastructure where practical.
-
-It should not duplicate expensive checks merely because a new AI execution platform has been introduced.
+The enterprise Harness should reuse trustworthy validation infrastructure where practical. It should not duplicate expensive checks merely because a new AI execution platform has been introduced.
 
 For example:
 
-\#chatgpt-mermaid-\_r_17ha\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(13, 13, 13);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_17ha\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_17ha\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_17ha\_ .error-icon{fill:rgb(243, 243, 243);}#chatgpt-mermaid-\_r_17ha\_ .error-text{fill:rgb(13, 13, 13);stroke:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17ha\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_17ha\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_17ha\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_17ha\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_17ha\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_17ha\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_17ha\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_17ha\_ .marker.cross{stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_17ha\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_17ha\_ p{margin:0;}#chatgpt-mermaid-\_r_17ha\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17ha\_ .cluster-label text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17ha\_ .cluster-label span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17ha\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_17ha\_ .label text,#chatgpt-mermaid-\_r_17ha\_ span{fill:rgb(13, 13, 13);color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17ha\_ .node rect,#chatgpt-mermaid-\_r_17ha\_ .node circle,#chatgpt-mermaid-\_r_17ha\_ .node ellipse,#chatgpt-mermaid-\_r_17ha\_ .node polygon,#chatgpt-mermaid-\_r_17ha\_ .node path{fill:rgb(222, 234, 251);stroke:rgb(83, 154, 248);stroke-width:1px;}#chatgpt-mermaid-\_r_17ha\_ .rough-node .label text,#chatgpt-mermaid-\_r_17ha\_ .node .label text,#chatgpt-mermaid-\_r_17ha\_ .image-shape .label,#chatgpt-mermaid-\_r_17ha\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_17ha\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_17ha\_ .rough-node .label,#chatgpt-mermaid-\_r_17ha\_ .node .label,#chatgpt-mermaid-\_r_17ha\_ .image-shape .label,#chatgpt-mermaid-\_r_17ha\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_17ha\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_17ha\_ .root .anchor path{fill:rgb(143, 143, 143)!important;stroke-width:0;stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_17ha\_ .arrowheadPath{fill:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_17ha\_ .edgePath .path{stroke:rgb(143, 143, 143);stroke-width:1px;}#chatgpt-mermaid-\_r_17ha\_ .flowchart-link{stroke:rgb(143, 143, 143);fill:none;}#chatgpt-mermaid-\_r_17ha\_ .edgeLabel{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_17ha\_ .edgeLabel p{background-color:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_17ha\_ .edgeLabel rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_17ha\_ .labelBkg{background-color:rgba(252, 252, 252, 0.5);}#chatgpt-mermaid-\_r_17ha\_ .cluster rect{fill:rgb(243, 243, 243);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_17ha\_ .cluster text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17ha\_ .cluster span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17ha\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(243, 243, 243);border:1px solid rgba(0, 0, 0, 0.1);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_17ha\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17ha\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_17ha\_ .icon-shape,#chatgpt-mermaid-\_r_17ha\_ .image-shape{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_17ha\_ .icon-shape p,#chatgpt-mermaid-\_r_17ha\_ .image-shape p{background-color:rgb(252, 252, 252);padding:2px;}#chatgpt-mermaid-\_r_17ha\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_17ha\_ .image-shape .label rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_17ha\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_17ha\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_17ha\_ .node .neo-node{stroke:rgb(83, 154, 248);}#chatgpt-mermaid-\_r_17ha\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_17ha\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_17ha\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_17ha\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_17ha\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_17ha\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_17ha\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_17ha\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_17ha\_ [data-look="neo"].node .neo-line path{stroke:rgb(83, 154, 248);filter:none;}#chatgpt-mermaid-\_r_17ha\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_17ha\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_17ha\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_17ha\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_17ha\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_17ha\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_17ha\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_17ha\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_17ha\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_17ha\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_17ha\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_17ha\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-width:1px;}#chatgpt-mermaid-\_r_17ha\_ .node rect,#chatgpt-mermaid-\_r_17ha\_ .node circle,#chatgpt-mermaid-\_r_17ha\_ .node ellipse,#chatgpt-mermaid-\_r_17ha\_ .node polygon,#chatgpt-mermaid-\_r_17ha\_ .node path{fill:rgb(229, 243, 255);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_17ha\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_17ha\_ .node.mermaid-decision .label-container{fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_17ha\_ .edgePaths .flowchart-link{stroke:rgb(143, 143, 143);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_17ha\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_17ha\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}Copilot ImplementationPull RequestGitHub ActionsBuild & TestsSecurity ScansContract ValidationValidation EvidenceEnterprise HarnessEvaluationHuman Approval
+```mermaid
+flowchart TB
+    C["Copilot Implementation"] --> PR["Pull Request"]
+    PR --> GH["GitHub Actions"]
+    GH --> Build["Build and Tests"]
+    GH --> Scan["Security Scans"]
+    GH --> Contract["Contract Validation"]
+    Build --> Evidence["Validation Evidence"]
+    Scan --> Evidence
+    Contract --> Evidence
+    Evidence --> H["Enterprise Harness"] --> E["Evaluation"] --> A["Human Approval"]
+```
 
-The Harness can consume validated CI results, provided the evidence is tied to the correct commit and workflow execution.
-
-A passing check from an earlier commit must not authorize a later modified implementation.
-
-The Harness should verify:
+The Harness can consume validated CI results, provided the evidence is tied to the correct commit and workflow execution. A passing check from an earlier commit must not authorize a later modified implementation. The Harness should verify:
 
 - repository identity;
 - commit SHA;
@@ -6272,7 +5536,7 @@ The Harness should verify:
 
 This principle applies equally to GitHub Actions, Azure DevOps pipelines, and other CI systems.
 
-## 9.13 Handling Copilot-Specific Operational Concerns
+### 9.13 Handling Copilot-Specific Operational Concerns
 
 An enterprise Harness should account for operational differences between Copilot execution mechanisms.
 
@@ -6293,11 +5557,9 @@ An enterprise Harness should account for operational differences between Copilot
 | Cross-repository workflows | Coordinate through external Harness state                  |
 | Provider portability       | Keep Copilot-specific behavior inside adapters             |
 
-A production deployment must also consider organizational licensing, feature availability, policy settings, and supported execution environments.
+A production deployment must also consider organizational licensing, feature availability, policy settings, and supported execution environments. These are operational configuration matters rather than changes to the fundamental Harness architecture.
 
-These are operational configuration matters rather than changes to the fundamental Harness architecture.
-
-## 9.14 Selecting Between Claude Code and GitHub Copilot
+### 9.14 Selecting Between Claude Code and GitHub Copilot
 
 The appropriate platform depends on how the enterprise wants to execute engineering work.
 
@@ -6315,9 +5577,7 @@ The appropriate platform depends on how the enterprise wants to execute engineer
 | Formal approval workflow             | External governance     | External governance / GitHub controls |
 | Cross-provider portability           | Agent-provider contract | Agent-provider contract               |
 
-Neither platform should be selected solely because it provides more built-in agent capabilities.
-
-The architectural decision should consider:
+Neither platform should be selected solely because it provides more built-in agent capabilities. The architectural decision should consider:
 
 - existing development environment;
 - enterprise source-control platform;
@@ -6331,23 +5591,19 @@ The architectural decision should consider:
 
 For Alpha Car Detailing, Claude Code remains the primary implementation platform, but GitHub Copilot can participate through the same enterprise execution contracts.
 
-## 9.15 Example: Adding GitHub Copilot as a Second Provider
+### 9.15 Example: Adding GitHub Copilot as a Second Provider
 
 Suppose Alpha Car Detailing initially uses:
 
-```
+```text
 Harness
    ↓
 ClaudeCodeAdapter
 ```
 
-The organization now wants selected teams to use GitHub Copilot.
+The organization now wants selected teams to use GitHub Copilot. A tightly coupled architecture might require rewriting the Harness. A composable architecture introduces another adapter:
 
-A tightly coupled architecture might require rewriting the Harness.
-
-A composable architecture introduces another adapter:
-
-```
+```text
 Harness
    ↓
 IAgentProvider
@@ -6357,7 +5613,7 @@ IAgentProvider
 
 Repository configuration may declare a preferred provider:
 
-```
+```yaml
 agents:
   provider: github-copilot
 
@@ -6368,13 +5624,9 @@ agents:
     evaluator: enabled
 ```
 
-The configuration is an enterprise Harness schema, not native Copilot configuration.
+The configuration is an enterprise Harness schema, not native Copilot configuration. The Harness resolves the requested provider against approved organizational policy and available capabilities. The workflow remains:
 
-The Harness resolves the requested provider against approved organizational policy and available capabilities.
-
-The workflow remains:
-
-```
+```text
 Lead
   ↓
 Developer
@@ -6386,11 +5638,7 @@ Evaluator
 Approval
 ```
 
-Only the provider execution mechanism changes.
-
-However, provider substitution should not be treated as a guaranteed one-line change.
-
-The adapter must account for differences in:
+Only the provider execution mechanism changes. However, provider substitution should not be treated as a guaranteed one-line change. The adapter must account for differences in:
 
 - role definitions;
 - available tools;
@@ -6403,11 +5651,9 @@ The adapter must account for differences in:
 
 The architecture isolates those differences rather than pretending they do not exist.
 
-## 9.16 Architecture Decision: GitHub-Native or External Orchestration?
+### 9.16 Architecture Decision: GitHub-Native or External Orchestration?
 
-An organization using GitHub may prefer to build the entire AI Engineering workflow around Copilot cloud agent and GitHub Actions.
-
-That can be appropriate when:
+An organization using GitHub may prefer to build the entire AI Engineering workflow around Copilot cloud agent and GitHub Actions. That can be appropriate when:
 
 - most work belongs to one repository;
 - pull requests are the primary output;
@@ -6427,7 +5673,7 @@ However, an external Harness becomes more valuable when:
 
 A hybrid architecture is often useful.
 
-```
+```text
 Enterprise Harness
       │
       ├── Claude CLI Execution
@@ -6447,35 +5693,38 @@ Enterprise Harness
               Human Approval
 ```
 
-The Harness coordinates the overall engineering lifecycle.
+The Harness coordinates the overall engineering lifecycle. GitHub and Copilot provide execution and repository workflow capabilities.
 
-GitHub and Copilot provide execution and repository workflow capabilities.
+> **Architect's Note**
 
-> Architect's Note
 >
+
 > GitHub-native automation and enterprise Harness orchestration are complementary.
+
 >
+
 > Use existing source-control and CI capabilities where they satisfy the required engineering contract. Introduce additional Harness infrastructure only where independent orchestration, recovery, governance, or cross-platform coordination provides measurable value.
 
-## 9.17 Lessons from the GitHub Copilot Comparison
+### 9.17 Lessons from the GitHub Copilot Comparison
 
-The GitHub Copilot implementation reinforces the central theme of this chapter.
+The GitHub Copilot implementation reinforces the central theme of this chapter. Enterprise Harness patterns are not tied to one AI coding provider. Repository Instructions, Skills, specialized agents, hooks, MCP integrations, and programmatic execution appear across modern AI Engineering platforms.
 
-Enterprise Harness patterns are not tied to one AI coding provider.
-
-Repository Instructions, Skills, specialized agents, hooks, MCP integrations, and programmatic execution appear across modern AI Engineering platforms.
-
-The mechanisms differ, but their architectural responsibilities remain recognizable.
-
-For Alpha Car Detailing, the important lessons are:
+The mechanisms differ, but their architectural responsibilities remain recognizable. For Alpha Car Detailing, the important lessons are:
 
 1. Instructions remain repository-governed. Copilot-specific files should express approved standards without becoming the sole enforcement mechanism.
+
 2. Skills remain reusable engineering workflows. Shared Skills should be governed, versioned, and composed with repository-specific requirements.
+
 3. Custom agents implement roles. They do not automatically own Harness progression, validation, or approval authority.
+
 4. Copilot cloud agent and CLI are different execution models. The Harness must integrate with each according to its actual lifecycle and capabilities.
+
 5. Deterministic validation remains independent. CI checks and Harness gates provide verifiable evidence tied to the implementation under review.
+
 6. Parallel and multi-repository execution require isolation. Separate repository runs must preserve independent state, security boundaries, and evidence.
+
 7. GitHub governance should be reused where appropriate. Pull-request protection and CI checks are valuable components of the larger engineering workflow.
+
 8. Provider portability requires deliberate abstraction. Adding Copilot should not force the organization to rewrite its orchestration model.
 
 The final distinction is architectural rather than product-specific:
@@ -6484,21 +5733,13 @@ The final distinction is architectural rather than product-specific:
 
 A well-designed Enterprise Harness can use either platform, or both, while preserving common engineering standards, deterministic evidence, repository autonomy, operational observability, and accountable human control.
 
-Chapter 21 status: In progress — next section: Codex Comparison
+## 10. Codex Comparison
 
-# 10. Codex Comparison
+### 10.1 Implementing Enterprise Harness Patterns with OpenAI Codex
 
-## 10.1 Implementing Enterprise Harness Patterns with OpenAI Codex
+The previous sections demonstrated how Claude Code and GitHub Copilot can participate in the Enterprise Harness architecture developed for Alpha Car Detailing. Both platforms provide capabilities for AI-assisted repository analysis, implementation, review, and specialized agent execution. OpenAI Codex introduces another implementation model.
 
-The previous sections demonstrated how Claude Code and GitHub Copilot can participate in the Enterprise Harness architecture developed for Alpha Car Detailing.
-
-Both platforms provide capabilities for AI-assisted repository analysis, implementation, review, and specialized agent execution.
-
-OpenAI Codex introduces another implementation model.
-
-Codex can operate through command-line, IDE, application, and programmatic interfaces. These interfaces support repository-aware engineering work, agent execution, tool integration, and automation.
-
-For enterprise Harness engineering, Codex offers several relevant integration mechanisms:
+Codex can operate through command-line, IDE, application, and programmatic interfaces. These interfaces support repository-aware engineering work, agent execution, tool integration, and automation. For enterprise Harness engineering, Codex offers several relevant integration mechanisms:
 
 - `AGENTS.md` for persistent repository Instructions.
 - Agent Skills for reusable engineering workflows.
@@ -6510,11 +5751,7 @@ For enterprise Harness engineering, Codex offers several relevant integration me
 - MCP integrations for external tools.
 - Sandbox and approval policies for controlling execution.
 
-These mechanisms allow Codex to participate in the same enterprise architecture used by Claude Code and GitHub Copilot.
-
-The essential design decision is not whether Codex can independently perform engineering tasks.
-
-It can.
+These mechanisms allow Codex to participate in the same enterprise architecture used by Claude Code and GitHub Copilot. The essential design decision is not whether Codex can independently perform engineering tasks. It can.
 
 The more important question is:
 
@@ -6522,21 +5759,27 @@ The more important question is:
 
 The answer follows the same architectural principle established throughout Part III:
 
-The Harness controls execution. Agents implement. Deterministic gates verify. Evaluators assess outcomes. Humans approve where required.
+The Harness controls execution. Agents implement. Deterministic gates verify. Evaluators assess outcomes. Humans approve where required. Codex may provide sophisticated agent execution and internal orchestration, but the enterprise must maintain explicit boundaries between those capabilities and its governed software delivery process.
 
-Codex may provide sophisticated agent execution and internal orchestration, but the enterprise must maintain explicit boundaries between those capabilities and its governed software delivery process.
+### 10.2 Codex as an Enterprise Execution Provider
 
-## 10.2 Codex as an Enterprise Execution Provider
+Codex should be treated as an execution provider within the Enterprise Harness architecture. For Alpha Car Detailing:
 
-Codex should be treated as an execution provider within the Enterprise Harness architecture.
+```mermaid
+flowchart TB
+    R["Engineering Request"] --> H["Enterprise Harness"]
+    H --> P["Repository Profile"] --> W["Isolated Run Workspace"]
+    W --> A["Codex Provider Adapter"]
+    A --> CLI["Codex CLI"]
+    A --> SDK["Codex SDK"]
+    A --> SERVER["App-Server / Managed Sessions"]
+    CLI --> E["Execution Evidence"]
+    SDK --> E
+    SERVER --> E
+    E --> V["Deterministic Validation"] --> O["Outcome Evaluation"] --> Approval["Human Approval"]
+```
 
-For Alpha Car Detailing:
-
-\#chatgpt-mermaid-\_r_17ii\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(13, 13, 13);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_17ii\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_17ii\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_17ii\_ .error-icon{fill:rgb(243, 243, 243);}#chatgpt-mermaid-\_r_17ii\_ .error-text{fill:rgb(13, 13, 13);stroke:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17ii\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_17ii\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_17ii\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_17ii\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_17ii\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_17ii\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_17ii\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_17ii\_ .marker.cross{stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_17ii\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_17ii\_ p{margin:0;}#chatgpt-mermaid-\_r_17ii\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17ii\_ .cluster-label text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17ii\_ .cluster-label span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17ii\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_17ii\_ .label text,#chatgpt-mermaid-\_r_17ii\_ span{fill:rgb(13, 13, 13);color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17ii\_ .node rect,#chatgpt-mermaid-\_r_17ii\_ .node circle,#chatgpt-mermaid-\_r_17ii\_ .node ellipse,#chatgpt-mermaid-\_r_17ii\_ .node polygon,#chatgpt-mermaid-\_r_17ii\_ .node path{fill:rgb(222, 234, 251);stroke:rgb(83, 154, 248);stroke-width:1px;}#chatgpt-mermaid-\_r_17ii\_ .rough-node .label text,#chatgpt-mermaid-\_r_17ii\_ .node .label text,#chatgpt-mermaid-\_r_17ii\_ .image-shape .label,#chatgpt-mermaid-\_r_17ii\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_17ii\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_17ii\_ .rough-node .label,#chatgpt-mermaid-\_r_17ii\_ .node .label,#chatgpt-mermaid-\_r_17ii\_ .image-shape .label,#chatgpt-mermaid-\_r_17ii\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_17ii\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_17ii\_ .root .anchor path{fill:rgb(143, 143, 143)!important;stroke-width:0;stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_17ii\_ .arrowheadPath{fill:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_17ii\_ .edgePath .path{stroke:rgb(143, 143, 143);stroke-width:1px;}#chatgpt-mermaid-\_r_17ii\_ .flowchart-link{stroke:rgb(143, 143, 143);fill:none;}#chatgpt-mermaid-\_r_17ii\_ .edgeLabel{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_17ii\_ .edgeLabel p{background-color:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_17ii\_ .edgeLabel rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_17ii\_ .labelBkg{background-color:rgba(252, 252, 252, 0.5);}#chatgpt-mermaid-\_r_17ii\_ .cluster rect{fill:rgb(243, 243, 243);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_17ii\_ .cluster text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17ii\_ .cluster span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17ii\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(243, 243, 243);border:1px solid rgba(0, 0, 0, 0.1);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_17ii\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17ii\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_17ii\_ .icon-shape,#chatgpt-mermaid-\_r_17ii\_ .image-shape{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_17ii\_ .icon-shape p,#chatgpt-mermaid-\_r_17ii\_ .image-shape p{background-color:rgb(252, 252, 252);padding:2px;}#chatgpt-mermaid-\_r_17ii\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_17ii\_ .image-shape .label rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_17ii\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_17ii\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_17ii\_ .node .neo-node{stroke:rgb(83, 154, 248);}#chatgpt-mermaid-\_r_17ii\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_17ii\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_17ii\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_17ii\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_17ii\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_17ii\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_17ii\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_17ii\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_17ii\_ [data-look="neo"].node .neo-line path{stroke:rgb(83, 154, 248);filter:none;}#chatgpt-mermaid-\_r_17ii\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_17ii\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_17ii\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_17ii\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_17ii\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_17ii\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_17ii\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_17ii\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_17ii\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_17ii\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_17ii\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_17ii\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-width:1px;}#chatgpt-mermaid-\_r_17ii\_ .node rect,#chatgpt-mermaid-\_r_17ii\_ .node circle,#chatgpt-mermaid-\_r_17ii\_ .node ellipse,#chatgpt-mermaid-\_r_17ii\_ .node polygon,#chatgpt-mermaid-\_r_17ii\_ .node path{fill:rgb(229, 243, 255);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_17ii\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_17ii\_ .node.mermaid-decision .label-container{fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_17ii\_ .edgePaths .flowchart-link{stroke:rgb(143, 143, 143);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_17ii\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_17ii\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}Engineering RequestEnterprise HarnessRepository ProfileIsolated Run WorkspaceCodex Provider AdapterCodex CLICodex SDKCodex App-Server / ManagedSessionsExecution EvidenceDeterministic ValidationOutcome EvaluationHuman Approval
-
-The Codex adapter is responsible for translating Harness execution requests into a supported Codex execution mechanism.
-
-The Harness remains responsible for:
+The Codex adapter is responsible for translating Harness execution requests into a supported Codex execution mechanism. The Harness remains responsible for:
 
 - selecting the engineering workflow;
 - resolving repository Instructions and Skills;
@@ -6552,7 +5795,7 @@ The Harness remains responsible for:
 
 This arrangement permits Codex to be replaced, upgraded, or combined with other providers without redesigning the underlying orchestration model.
 
-## 10.3 Comparing Claude Code, GitHub Copilot, and Codex
+### 10.3 Comparing Claude Code, GitHub Copilot, and Codex
 
 The three platforms expose similar architectural concepts through different configuration and execution mechanisms.
 
@@ -6573,27 +5816,15 @@ The three platforms expose similar architectural concepts through different conf
 
 These mappings represent architectural equivalents, not guarantees of identical runtime behavior.
 
-For example, a Codex multi-agent session may coordinate independent investigations, but that coordination is not automatically equivalent to the Harness's durable fan-out/fan-in processing model.
+For example, a Codex multi-agent session may coordinate independent investigations, but that coordination is not automatically equivalent to the Harness's durable fan-out/fan-in processing model. Similarly, a Codex sandbox controls aspects of execution, but it does not replace enterprise approval or repository governance.
 
-Similarly, a Codex sandbox controls aspects of execution, but it does not replace enterprise approval or repository governance.
+OpenAI provides several integration approaches, ranging from non-interactive CLI execution to SDK and managed agent sessions. See [Codex as a platform](https://developers.openai.com/blog/codex-as-a-platform) and the [Agents API overview](https://developers.openai.com/api/docs/guides/agents-api/overview).
 
-OpenAI provides several integration approaches, ranging from non-interactive CLI execution to SDK and managed agent sessions.&#x20;
+### 10.4 Repository Instructions with AGENTS.md
 
-[image](https://www.google.com/s2/favicons?domain=https://developers.openai.com\&sz=32)
+Codex uses `AGENTS.md` as an important mechanism for supplying persistent repository guidance. This aligns closely with the Instruction concept introduced in Chapter 6. For Alpha Car Detailing, the Booking repository may contain:
 
-OpenAI Developers
-
-+1
-
-## 10.4 Repository Instructions with AGENTS.md
-
-Codex uses `AGENTS.md` as an important mechanism for supplying persistent repository guidance.
-
-This aligns closely with the Instruction concept introduced in Chapter 6.
-
-For Alpha Car Detailing, the Booking repository may contain:
-
-```
+```text
 booking-service/
 ├── AGENTS.md
 ├── .agents/
@@ -6608,11 +5839,11 @@ booking-service/
 
 The repository's `AGENTS.md` defines how Codex should approach engineering work.
 
-### Example: Booking AGENTS.md
+#### Example: Booking AGENTS.md
 
 File: `booking-service/AGENTS.md`
 
-```
+```markdown
 # Alpha Car Detailing — Booking Service
 
 ## Project
@@ -6678,17 +5909,13 @@ Provide:
 - Evidence references
 ```
 
-This file plays the same architectural role as the earlier Claude and Copilot examples.
+This file plays the same architectural role as the earlier Claude and Copilot examples. Its purpose is to provide persistent repository-specific engineering guidance. It does not itself establish an enforceable security boundary.
 
-Its purpose is to provide persistent repository-specific engineering guidance.
-
-It does not itself establish an enforceable security boundary.
-
-### Enterprise Instruction layering
+#### Enterprise Instruction layering
 
 Alpha Car Detailing may maintain:
 
-```
+```text
 Enterprise Instructions
           ↓
 Platform Instructions
@@ -6698,27 +5925,23 @@ Team Instructions
 Repository AGENTS.md
 ```
 
-Codex can consume the effective Instructions prepared for its execution context.
+Codex can consume the effective Instructions prepared for its execution context. However, a repository must not be allowed to override mandatory enterprise policies simply by adding conflicting content to `AGENTS.md`. The Harness must independently enforce mandatory controls through validated configuration, execution permissions, and deterministic checks.
 
-However, a repository must not be allowed to override mandatory enterprise policies simply by adding conflicting content to `AGENTS.md`.
+> **Architect's Note**
 
-The Harness must independently enforce mandatory controls through validated configuration, execution permissions, and deterministic checks.
-
-> Architect's Note
 >
+
 > `AGENTS.md`, `CLAUDE.md`, and Copilot Instruction files represent platform-specific mechanisms for communicating engineering expectations.
+
 >
+
 > The authoritative enterprise policy model should remain independent of these files, even when they are used to deliver policy guidance to agents.
 
-## 10.5 Reusable Engineering Skills
+### 10.5 Reusable Engineering Skills
 
-Codex supports Agent Skills, using `SKILL.md` to describe reusable tasks and workflows.
+Codex supports Agent Skills, using `SKILL.md` to describe reusable tasks and workflows. This aligns directly with the Skill architecture introduced in Chapter 7. Alpha Car Detailing can maintain a shared catalog containing:
 
-This aligns directly with the Skill architecture introduced in Chapter 7.
-
-Alpha Car Detailing can maintain a shared catalog containing:
-
-```
+```text
 enterprise-harness/
 └── shared/
     └── skills/
@@ -6735,11 +5958,9 @@ enterprise-harness/
             └── SKILL.md
 ```
 
-The Harness can provision approved Skills into the Codex execution environment.
+The Harness can provision approved Skills into the Codex execution environment. A repository may also provide local Skills:
 
-A repository may also provide local Skills:
-
-```
+```text
 booking-service/
 └── .agents/
     └── skills/
@@ -6747,9 +5968,9 @@ booking-service/
             └── SKILL.md
 ```
 
-### Example: Add Booking Command Skill
+#### Example: Add Booking Command Skill
 
-```
+```markdown
 ---
 name: add-booking-command
 description: Add a CQRS command to the Booking service
@@ -6796,47 +6017,37 @@ Report:
 - Unresolved issues
 ```
 
-A Skill provides procedural guidance.
+A Skill provides procedural guidance. It does not determine whether the overall Harness run has satisfied every required gate. The Skill can guide implementation, while the Validator independently verifies the result.
 
-It does not determine whether the overall Harness run has satisfied every required gate.
+Codex Skills follow the reusable `SKILL.md` approach, and supported agent environments can load them from configured capability directories. OpenAI API
 
-The Skill can guide implementation, while the Validator independently verifies the result.
-
-Codex Skills follow the reusable `SKILL.md` approach, and supported agent environments can load them from configured capability directories.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://developers.openai.com\&sz=32)
-
-OpenAI API
-
-### Shared Skill ownership
+#### Shared Skill ownership
 
 The enterprise platform team may own a Skill such as:
 
-```
+```text
 add-transactional-outbox
 ```
 
 The Booking team may own:
 
-```
+```text
 add-booking-command
 ```
 
 The Billing team may own:
 
-```
+```text
 add-invoice-adjustment
 ```
 
-The Harness should preserve these ownership boundaries.
+The Harness should preserve these ownership boundaries. A repository-specific Skill should not silently replace an enterprise-approved security or architectural requirement.
 
-A repository-specific Skill should not silently replace an enterprise-approved security or architectural requirement.
-
-## 10.6 Programmatic Execution with Codex CLI
+### 10.6 Programmatic Execution with Codex CLI
 
 Codex CLI supports non-interactive execution through:
 
-```
+```bash
 codex exec
 ```
 
@@ -6844,21 +6055,19 @@ This provides an integration point for the Enterprise Harness.
 
 For example, from the prepared Booking workspace:
 
-```
+```bash
 codex exec "Analyze the recurring booking implementation.
 Identify the domain and application components required
 to support cancellation of a single occurrence."
 ```
 
-The Harness should establish the working directory, permissions, sandbox settings, and execution context before launching Codex.
+The Harness should establish the working directory, permissions, sandbox settings, and execution context before launching Codex. The resulting process should be treated as an agent invocation, not as an authoritative completion decision.
 
-The resulting process should be treated as an agent invocation, not as an authoritative completion decision.
-
-### Structured execution boundary
+#### Structured execution boundary
 
 The Harness supplies an execution request.
 
-```
+```csharp
 public sealed record AgentRequest(
     Guid RunId,
     string Role,
@@ -6868,7 +6077,7 @@ public sealed record AgentRequest(
 
 The Codex adapter implements:
 
-```
+```csharp
 public interface IAgentProvider
 {
     Task<AgentResult> ExecuteAsync(
@@ -6880,19 +6089,26 @@ public interface IAgentProvider
 The adapter should:
 
 1. Validate the execution request.
+
 2. Select the approved Codex configuration.
+
 3. Start Codex inside the authorized workspace.
+
 4. Apply the appropriate sandbox and approval policy.
+
 5. Capture process results and execution evidence.
+
 6. Normalize output into Harness contracts.
+
 7. Record execution duration and usage information where available.
+
 8. Return a structured outcome.
 
 The orchestration layer must not assume that a zero process exit code proves the engineering task is complete.
 
 For example:
 
-```
+```text
 Codex Invocation:
     Succeeded
 
@@ -6909,15 +6125,11 @@ Harness Run:
     Running
 ```
 
-The engineering workflow is still incomplete.
+The engineering workflow is still incomplete. This distinction prevents provider-level success from being confused with business-level completion.
 
-This distinction prevents provider-level success from being confused with business-level completion.
+### 10.7 Selecting a Codex Integration Model
 
-## 10.7 Selecting a Codex Integration Model
-
-Codex offers several integration approaches.
-
-The selection should reflect the required execution lifecycle.
+Codex offers several integration approaches. The selection should reflect the required execution lifecycle.
 
 | Integration               | Appropriate Use                                                                       |
 | ------------------------- | ------------------------------------------------------------------------------------- |
@@ -6927,17 +6139,9 @@ The selection should reflect the required execution lifecycle.
 | Agents API                | Managed, durable agent sessions with configurable execution environments              |
 | Independent Codex workers | Scaled repository jobs and population execution controlled by the enterprise platform |
 
-Codex's app-server and SDK support deeper application integration than a simple process wrapper. The managed Agents API additionally provides session orchestration and recovery features.&#x20;
+Codex's app-server and SDK support deeper application integration than a simple process wrapper. The managed Agents API additionally provides session orchestration and recovery features. For Alpha Car Detailing, these options should be viewed as alternative ways to implement the `CodexAdapter`.
 
-[image](https://www.google.com/s2/favicons?domain=https://developers.openai.com\&sz=32)
-
-OpenAI Developers
-
-+1
-
-For Alpha Car Detailing, these options should be viewed as alternative ways to implement the `CodexAdapter`.
-
-### Option A — CLI adapter
+#### Option A — CLI adapter
 
 Appropriate for:
 
@@ -6946,7 +6150,7 @@ Appropriate for:
 - scheduled maintenance tasks;
 - straightforward worker execution.
 
-### Option B — SDK or app-server integration
+#### Option B — SDK or app-server integration
 
 Appropriate for:
 
@@ -6957,21 +6161,15 @@ Appropriate for:
 - structured agent events;
 - long-running sessions.
 
-### Option C — Managed agent sessions
+#### Option C — Managed agent sessions
 
-Appropriate when the organization prefers a managed agent runtime while retaining its own enterprise policy, repository governance, and final approval logic.
+Appropriate when the organization prefers a managed agent runtime while retaining its own enterprise policy, repository governance, and final approval logic. An enterprise may use different integration modes for different workflows. The key architectural requirement is that provider-specific session management does not leak throughout the central Harness application.
 
-An enterprise may use different integration modes for different workflows.
+### 10.8 Implementing Specialized Harness Roles with Codex
 
-The key architectural requirement is that provider-specific session management does not leak throughout the central Harness application.
+The Enterprise Harness defines roles independently of the provider used to execute them. For Alpha Car Detailing, the role architecture remains:
 
-## 10.8 Implementing Specialized Harness Roles with Codex
-
-The Enterprise Harness defines roles independently of the provider used to execute them.
-
-For Alpha Car Detailing, the role architecture remains:
-
-```
+```text
 Lead Agent
      ↓
 Developer Agent
@@ -6983,17 +6181,15 @@ Validator Agent
 Evaluator Agent
 ```
 
-Codex can implement reasoning-oriented roles through separate execution requests or specialized agents within a multi-agent workflow.
+Codex can implement reasoning-oriented roles through separate execution requests or specialized agents within a multi-agent workflow. The important distinction is between role responsibility and execution mechanism.
 
-The important distinction is between role responsibility and execution mechanism.
-
-### Lead Agent
+#### Lead Agent
 
 The Lead Agent receives the engineering request and relevant repository context.
 
 For example:
 
-```
+```text
 Role: Lead Agent
 
 Task:
@@ -7018,15 +6214,11 @@ Output:
 Structured implementation assignment.
 ```
 
-The Harness invokes Codex with this assignment.
+The Harness invokes Codex with this assignment. The resulting plan becomes a controlled handoff artifact for the Developer Agent.
 
-The resulting plan becomes a controlled handoff artifact for the Developer Agent.
+#### Developer Agent
 
-### Developer Agent
-
-The Developer Agent receives the approved implementation assignment.
-
-It may:
+The Developer Agent receives the approved implementation assignment. It may:
 
 - inspect relevant source files;
 - modify authorized files;
@@ -7037,23 +6229,17 @@ It may:
 
 The Developer Agent must not mark the entire Harness run completed.
 
-### Reviewer Agent
+#### Reviewer Agent
 
-The Reviewer Agent independently examines the implementation.
+The Reviewer Agent independently examines the implementation. For meaningful independence, the Harness should provide a fixed implementation snapshot and restrict write access. The Reviewer must not depend solely on the Developer's explanation of the change.
 
-For meaningful independence, the Harness should provide a fixed implementation snapshot and restrict write access.
+#### Validator Agent
 
-The Reviewer must not depend solely on the Developer's explanation of the change.
-
-### Validator Agent
-
-The Validator Agent is responsible for objective verification.
-
-Codex may assist in interpreting test failures, but the deterministic validation results must originate from actual checks executed by the Harness or trusted CI infrastructure.
+The Validator Agent is responsible for objective verification. Codex may assist in interpreting test failures, but the deterministic validation results must originate from actual checks executed by the Harness or trusted CI infrastructure.
 
 For example:
 
-```
+```text
 dotnet build
 dotnet test
 architecture tests
@@ -7063,11 +6249,9 @@ security scanning
 
 An agent-generated statement that tests passed is not equivalent to recorded test execution.
 
-### Evaluator Agent
+#### Evaluator Agent
 
-The Evaluator Agent assesses whether the completed implementation satisfies the original goal.
-
-It consumes:
+The Evaluator Agent assesses whether the completed implementation satisfies the original goal. It consumes:
 
 - acceptance criteria;
 - implementation evidence;
@@ -7077,7 +6261,7 @@ It consumes:
 
 It returns a structured outcome such as:
 
-```
+```json
 {
   "outcome": "partial",
   "criteria": [
@@ -7095,15 +6279,11 @@ It returns a structured outcome such as:
 }
 ```
 
-The Harness determines the next workflow transition from the authoritative evidence and approved policy.
+The Harness determines the next workflow transition from the authoritative evidence and approved policy. The Evaluator does not bypass mandatory gates or human approval.
 
-The Evaluator does not bypass mandatory gates or human approval.
+### 10.9 Multi-Agent Execution with Codex
 
-## 10.9 Multi-Agent Execution with Codex
-
-Codex supports multi-agent execution in applicable environments.
-
-Independent agents can investigate different parts of a problem and return their findings to a coordinating agent.
+Codex supports multi-agent execution in applicable environments. Independent agents can investigate different parts of a problem and return their findings to a coordinating agent.
 
 For example, an engineering change may require separate investigations into:
 
@@ -7113,13 +6293,9 @@ For example, an engineering change may require separate investigations into:
 - integration events;
 - security.
 
-Codex's multi-agent capabilities allow independent subagents to work with separate context, including parallel analysis.&#x20;
+Codex's multi-agent capabilities allow independent subagents to work with separate context, including parallel analysis. OpenAI API
 
-[image](https://www.google.com/s2/favicons?domain=https://developers.openai.com\&sz=32)
-
-OpenAI API
-
-### Alpha Car Detailing example
+#### Alpha Car Detailing example
 
 Consider the requirement:
 
@@ -7127,19 +6303,23 @@ Consider the requirement:
 
 The Harness may use Codex to perform parallel analysis.
 
-\#chatgpt-mermaid-\_r_17na\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(13, 13, 13);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_17na\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_17na\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_17na\_ .error-icon{fill:rgb(243, 243, 243);}#chatgpt-mermaid-\_r_17na\_ .error-text{fill:rgb(13, 13, 13);stroke:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17na\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_17na\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_17na\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_17na\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_17na\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_17na\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_17na\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_17na\_ .marker.cross{stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_17na\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_17na\_ p{margin:0;}#chatgpt-mermaid-\_r_17na\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17na\_ .cluster-label text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17na\_ .cluster-label span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17na\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_17na\_ .label text,#chatgpt-mermaid-\_r_17na\_ span{fill:rgb(13, 13, 13);color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17na\_ .node rect,#chatgpt-mermaid-\_r_17na\_ .node circle,#chatgpt-mermaid-\_r_17na\_ .node ellipse,#chatgpt-mermaid-\_r_17na\_ .node polygon,#chatgpt-mermaid-\_r_17na\_ .node path{fill:rgb(222, 234, 251);stroke:rgb(83, 154, 248);stroke-width:1px;}#chatgpt-mermaid-\_r_17na\_ .rough-node .label text,#chatgpt-mermaid-\_r_17na\_ .node .label text,#chatgpt-mermaid-\_r_17na\_ .image-shape .label,#chatgpt-mermaid-\_r_17na\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_17na\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_17na\_ .rough-node .label,#chatgpt-mermaid-\_r_17na\_ .node .label,#chatgpt-mermaid-\_r_17na\_ .image-shape .label,#chatgpt-mermaid-\_r_17na\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_17na\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_17na\_ .root .anchor path{fill:rgb(143, 143, 143)!important;stroke-width:0;stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_17na\_ .arrowheadPath{fill:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_17na\_ .edgePath .path{stroke:rgb(143, 143, 143);stroke-width:1px;}#chatgpt-mermaid-\_r_17na\_ .flowchart-link{stroke:rgb(143, 143, 143);fill:none;}#chatgpt-mermaid-\_r_17na\_ .edgeLabel{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_17na\_ .edgeLabel p{background-color:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_17na\_ .edgeLabel rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_17na\_ .labelBkg{background-color:rgba(252, 252, 252, 0.5);}#chatgpt-mermaid-\_r_17na\_ .cluster rect{fill:rgb(243, 243, 243);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_17na\_ .cluster text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17na\_ .cluster span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17na\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(243, 243, 243);border:1px solid rgba(0, 0, 0, 0.1);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_17na\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17na\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_17na\_ .icon-shape,#chatgpt-mermaid-\_r_17na\_ .image-shape{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_17na\_ .icon-shape p,#chatgpt-mermaid-\_r_17na\_ .image-shape p{background-color:rgb(252, 252, 252);padding:2px;}#chatgpt-mermaid-\_r_17na\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_17na\_ .image-shape .label rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_17na\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_17na\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_17na\_ .node .neo-node{stroke:rgb(83, 154, 248);}#chatgpt-mermaid-\_r_17na\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_17na\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_17na\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_17na\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_17na\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_17na\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_17na\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_17na\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_17na\_ [data-look="neo"].node .neo-line path{stroke:rgb(83, 154, 248);filter:none;}#chatgpt-mermaid-\_r_17na\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_17na\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_17na\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_17na\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_17na\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_17na\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_17na\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_17na\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_17na\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_17na\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_17na\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_17na\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-width:1px;}#chatgpt-mermaid-\_r_17na\_ .node rect,#chatgpt-mermaid-\_r_17na\_ .node circle,#chatgpt-mermaid-\_r_17na\_ .node ellipse,#chatgpt-mermaid-\_r_17na\_ .node polygon,#chatgpt-mermaid-\_r_17na\_ .node path{fill:rgb(229, 243, 255);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_17na\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_17na\_ .node.mermaid-decision .label-container{fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_17na\_ .edgePaths .flowchart-link{stroke:rgb(143, 143, 143);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_17na\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_17na\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}Consolidated InvoicingRequirementCodex LeadBooking Contract AnalysisFleet Domain AnalysisBilling Architecture AnalysisAggregate FindingsImplementation Plan
+```mermaid
+flowchart TB
+    R["Consolidated Invoicing Requirement"] --> L["Codex Lead"]
+    L --> B["Booking Contract Analysis"]
+    L --> F["Fleet Domain Analysis"]
+    L --> I["Billing Architecture Analysis"]
+    B --> E["Aggregate Findings"]
+    F --> E
+    I --> E
+    E --> P["Implementation Plan"]
+```
 
-This approach can reduce the elapsed time required for independent investigation.
+This approach can reduce the elapsed time required for independent investigation. However, two levels of orchestration should be distinguished. Codex-managed subagents operate within a provider-managed agent workflow.
 
-However, two levels of orchestration should be distinguished.
+Harness-managed child runs are independently tracked engineering executions with explicit workspaces, status, evidence, and failure recovery. These are not equivalent.
 
-Codex-managed subagents operate within a provider-managed agent workflow.
-
-Harness-managed child runs are independently tracked engineering executions with explicit workspaces, status, evidence, and failure recovery.
-
-These are not equivalent.
-
-### Choosing the correct boundary
+#### Choosing the correct boundary
 
 Use Codex-managed subagents when:
 
@@ -7159,19 +6339,15 @@ Use Harness-managed child runs when:
 
 The Harness can combine both techniques.
 
-For example, a Booking child run may use several Codex subagents to analyze the Booking codebase.
+For example, a Booking child run may use several Codex subagents to analyze the Booking codebase. That child run still remains one independently tracked unit within the enterprise workflow.
 
-That child run still remains one independently tracked unit within the enterprise workflow.
+### 10.10 Parallel Execution and Workspace Isolation
 
-## 10.10 Parallel Execution and Workspace Isolation
-
-Parallel coding tasks introduce a more serious challenge than parallel analysis.
-
-If multiple Codex agents modify the same repository checkout simultaneously, their operations can interfere with each other.
+Parallel coding tasks introduce a more serious challenge than parallel analysis. If multiple Codex agents modify the same repository checkout simultaneously, their operations can interfere with each other.
 
 Consider:
 
-```
+```text
 Agent A
     Modifies BookingService.cs
 
@@ -7182,11 +6358,9 @@ Agent C
     Modifies BookingService.cs
 ```
 
-The final repository state may become unpredictable.
+The final repository state may become unpredictable. A safer architecture provides separate workspaces.
 
-A safer architecture provides separate workspaces.
-
-```
+```text
 Enterprise Harness
        │
        ├── Codex Run A
@@ -7199,31 +6373,28 @@ Enterprise Harness
               └── Worktree C
 ```
 
-Each agent receives an isolated implementation branch or worktree.
+Each agent receives an isolated implementation branch or worktree. The Harness coordinates the integration of resulting changes.
 
-The Harness coordinates the integration of resulting changes.
+#### Integration phase
 
-### Integration phase
+```mermaid
+flowchart TB
+    T["Engineering Task"] --> A["Codex Developer A"]
+    T --> B["Codex Developer B"]
+    A --> BA["Isolated Implementation Branch A"]
+    B --> BB["Isolated Implementation Branch B"]
+    BA --> I["Controlled Integration"]
+    BB --> I
+    I --> V["Combined Validation"] --> E["Outcome Evaluation"]
+```
 
-\#chatgpt-mermaid-\_r_17nv\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(13, 13, 13);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_17nv\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_17nv\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_17nv\_ .error-icon{fill:rgb(243, 243, 243);}#chatgpt-mermaid-\_r_17nv\_ .error-text{fill:rgb(13, 13, 13);stroke:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17nv\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_17nv\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_17nv\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_17nv\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_17nv\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_17nv\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_17nv\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_17nv\_ .marker.cross{stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_17nv\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_17nv\_ p{margin:0;}#chatgpt-mermaid-\_r_17nv\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17nv\_ .cluster-label text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17nv\_ .cluster-label span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17nv\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_17nv\_ .label text,#chatgpt-mermaid-\_r_17nv\_ span{fill:rgb(13, 13, 13);color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17nv\_ .node rect,#chatgpt-mermaid-\_r_17nv\_ .node circle,#chatgpt-mermaid-\_r_17nv\_ .node ellipse,#chatgpt-mermaid-\_r_17nv\_ .node polygon,#chatgpt-mermaid-\_r_17nv\_ .node path{fill:rgb(222, 234, 251);stroke:rgb(83, 154, 248);stroke-width:1px;}#chatgpt-mermaid-\_r_17nv\_ .rough-node .label text,#chatgpt-mermaid-\_r_17nv\_ .node .label text,#chatgpt-mermaid-\_r_17nv\_ .image-shape .label,#chatgpt-mermaid-\_r_17nv\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_17nv\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_17nv\_ .rough-node .label,#chatgpt-mermaid-\_r_17nv\_ .node .label,#chatgpt-mermaid-\_r_17nv\_ .image-shape .label,#chatgpt-mermaid-\_r_17nv\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_17nv\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_17nv\_ .root .anchor path{fill:rgb(143, 143, 143)!important;stroke-width:0;stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_17nv\_ .arrowheadPath{fill:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_17nv\_ .edgePath .path{stroke:rgb(143, 143, 143);stroke-width:1px;}#chatgpt-mermaid-\_r_17nv\_ .flowchart-link{stroke:rgb(143, 143, 143);fill:none;}#chatgpt-mermaid-\_r_17nv\_ .edgeLabel{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_17nv\_ .edgeLabel p{background-color:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_17nv\_ .edgeLabel rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_17nv\_ .labelBkg{background-color:rgba(252, 252, 252, 0.5);}#chatgpt-mermaid-\_r_17nv\_ .cluster rect{fill:rgb(243, 243, 243);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_17nv\_ .cluster text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17nv\_ .cluster span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17nv\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(243, 243, 243);border:1px solid rgba(0, 0, 0, 0.1);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_17nv\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17nv\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_17nv\_ .icon-shape,#chatgpt-mermaid-\_r_17nv\_ .image-shape{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_17nv\_ .icon-shape p,#chatgpt-mermaid-\_r_17nv\_ .image-shape p{background-color:rgb(252, 252, 252);padding:2px;}#chatgpt-mermaid-\_r_17nv\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_17nv\_ .image-shape .label rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_17nv\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_17nv\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_17nv\_ .node .neo-node{stroke:rgb(83, 154, 248);}#chatgpt-mermaid-\_r_17nv\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_17nv\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_17nv\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_17nv\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_17nv\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_17nv\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_17nv\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_17nv\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_17nv\_ [data-look="neo"].node .neo-line path{stroke:rgb(83, 154, 248);filter:none;}#chatgpt-mermaid-\_r_17nv\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_17nv\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_17nv\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_17nv\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_17nv\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_17nv\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_17nv\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_17nv\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_17nv\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_17nv\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_17nv\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_17nv\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-width:1px;}#chatgpt-mermaid-\_r_17nv\_ .node rect,#chatgpt-mermaid-\_r_17nv\_ .node circle,#chatgpt-mermaid-\_r_17nv\_ .node ellipse,#chatgpt-mermaid-\_r_17nv\_ .node polygon,#chatgpt-mermaid-\_r_17nv\_ .node path{fill:rgb(229, 243, 255);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_17nv\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_17nv\_ .node.mermaid-decision .label-container{fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_17nv\_ .edgePaths .flowchart-link{stroke:rgb(143, 143, 143);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_17nv\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_17nv\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}Engineering TaskCodex Developer ACodex Developer BImplementation Branch AImplementation Branch BControlled IntegrationCombined ValidationOutcome Evaluation
+The integration stage must account for both textual merge conflicts and semantic incompatibilities. Two changes may merge cleanly while introducing incorrect runtime behavior. Therefore, integration requires validation against the combined implementation.
 
-The integration stage must account for both textual merge conflicts and semantic incompatibilities.
+### 10.11 Codex Sandbox and Approval Boundaries
 
-Two changes may merge cleanly while introducing incorrect runtime behavior.
+Codex supports sandboxed execution and approval controls. These mechanisms allow organizations to constrain aspects of agent activity. However, the selected integration model determines which sandbox controls and approval interfaces are available.
 
-Therefore, integration requires validation against the combined implementation.
-
-## 10.11 Codex Sandbox and Approval Boundaries
-
-Codex supports sandboxed execution and approval controls.
-
-These mechanisms allow organizations to constrain aspects of agent activity.
-
-However, the selected integration model determines which sandbox controls and approval interfaces are available.
-
-A production Harness should select its execution policy explicitly.
-
-Relevant considerations include:
+A production Harness should select its execution policy explicitly. Relevant considerations include:
 
 - permitted filesystem access;
 - network access;
@@ -7235,7 +6406,7 @@ Relevant considerations include:
 
 The organization should avoid granting broad privileges merely to eliminate execution interruptions.
 
-### Separation of approval responsibilities
+#### Separation of approval responsibilities
 
 Codex execution approval and enterprise engineering approval are different concepts.
 
@@ -7247,15 +6418,13 @@ Codex execution approval and enterprise engineering approval are different conce
 | Security approval          | Approve a security-sensitive change               |
 | Production approval        | Authorize deployment into a protected environment |
 
-For example, approving a command that runs unit tests does not authorize a production deployment.
+For example, approving a command that runs unit tests does not authorize a production deployment. Likewise, allowing Codex to edit the Booking workspace does not authorize modifications to Billing.
 
-Likewise, allowing Codex to edit the Booking workspace does not authorize modifications to Billing.
-
-### Security design
+#### Security design
 
 A secure enterprise implementation should combine:
 
-```
+```text
 Harness Policy
        ↓
 Scoped Identity
@@ -7269,27 +6438,21 @@ Approved Tools
 Audit Evidence
 ```
 
-A sandbox provides an execution boundary, but its configuration and credential exposure require careful review.
+A sandbox provides an execution boundary, but its configuration and credential exposure require careful review. OpenAI's sandbox guidance recommends separating trusted control-plane credentials from agent-accessible execution environments and isolating environments by workload or user where necessary. OpenAI API
 
-OpenAI's sandbox guidance recommends separating trusted control-plane credentials from agent-accessible execution environments and isolating environments by workload or user where necessary.&#x20;
+> **Enterprise Tip**
 
-[image](https://www.google.com/s2/favicons?domain=https://developers.openai.com\&sz=32)
-
-OpenAI API
-
-+1
-
-> Enterprise Tip
 >
+
 > Never use a permissive agent execution mode as a substitute for designing proper permissions.
+
 >
+
 > Automating approvals safely requires narrowing available capabilities, not removing governance.
 
-## 10.12 MCP and Tool Adapter Architecture
+### 10.12 MCP and Tool Adapter Architecture
 
-Codex supports MCP integrations, allowing agents to interact with approved external tools.
-
-Alpha Car Detailing may expose enterprise tools for:
+Codex supports MCP integrations, allowing agents to interact with approved external tools. Alpha Car Detailing may expose enterprise tools for:
 
 - reading work items;
 - searching Repository Intelligence;
@@ -7299,11 +6462,20 @@ Alpha Car Detailing may expose enterprise tools for:
 
 The Harness should retain the tool-abstraction boundary introduced earlier.
 
-\#chatgpt-mermaid-\_r_17om\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(13, 13, 13);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_17om\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_17om\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_17om\_ .error-icon{fill:rgb(243, 243, 243);}#chatgpt-mermaid-\_r_17om\_ .error-text{fill:rgb(13, 13, 13);stroke:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17om\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_17om\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_17om\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_17om\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_17om\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_17om\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_17om\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_17om\_ .marker.cross{stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_17om\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_17om\_ p{margin:0;}#chatgpt-mermaid-\_r_17om\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17om\_ .cluster-label text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17om\_ .cluster-label span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17om\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_17om\_ .label text,#chatgpt-mermaid-\_r_17om\_ span{fill:rgb(13, 13, 13);color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17om\_ .node rect,#chatgpt-mermaid-\_r_17om\_ .node circle,#chatgpt-mermaid-\_r_17om\_ .node ellipse,#chatgpt-mermaid-\_r_17om\_ .node polygon,#chatgpt-mermaid-\_r_17om\_ .node path{fill:rgb(222, 234, 251);stroke:rgb(83, 154, 248);stroke-width:1px;}#chatgpt-mermaid-\_r_17om\_ .rough-node .label text,#chatgpt-mermaid-\_r_17om\_ .node .label text,#chatgpt-mermaid-\_r_17om\_ .image-shape .label,#chatgpt-mermaid-\_r_17om\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_17om\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_17om\_ .rough-node .label,#chatgpt-mermaid-\_r_17om\_ .node .label,#chatgpt-mermaid-\_r_17om\_ .image-shape .label,#chatgpt-mermaid-\_r_17om\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_17om\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_17om\_ .root .anchor path{fill:rgb(143, 143, 143)!important;stroke-width:0;stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_17om\_ .arrowheadPath{fill:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_17om\_ .edgePath .path{stroke:rgb(143, 143, 143);stroke-width:1px;}#chatgpt-mermaid-\_r_17om\_ .flowchart-link{stroke:rgb(143, 143, 143);fill:none;}#chatgpt-mermaid-\_r_17om\_ .edgeLabel{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_17om\_ .edgeLabel p{background-color:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_17om\_ .edgeLabel rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_17om\_ .labelBkg{background-color:rgba(252, 252, 252, 0.5);}#chatgpt-mermaid-\_r_17om\_ .cluster rect{fill:rgb(243, 243, 243);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_17om\_ .cluster text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17om\_ .cluster span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17om\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(243, 243, 243);border:1px solid rgba(0, 0, 0, 0.1);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_17om\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17om\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_17om\_ .icon-shape,#chatgpt-mermaid-\_r_17om\_ .image-shape{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_17om\_ .icon-shape p,#chatgpt-mermaid-\_r_17om\_ .image-shape p{background-color:rgb(252, 252, 252);padding:2px;}#chatgpt-mermaid-\_r_17om\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_17om\_ .image-shape .label rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_17om\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_17om\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_17om\_ .node .neo-node{stroke:rgb(83, 154, 248);}#chatgpt-mermaid-\_r_17om\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_17om\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_17om\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_17om\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_17om\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_17om\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_17om\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_17om\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_17om\_ [data-look="neo"].node .neo-line path{stroke:rgb(83, 154, 248);filter:none;}#chatgpt-mermaid-\_r_17om\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_17om\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_17om\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_17om\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_17om\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_17om\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_17om\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_17om\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_17om\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_17om\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_17om\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_17om\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-width:1px;}#chatgpt-mermaid-\_r_17om\_ .node rect,#chatgpt-mermaid-\_r_17om\_ .node circle,#chatgpt-mermaid-\_r_17om\_ .node ellipse,#chatgpt-mermaid-\_r_17om\_ .node polygon,#chatgpt-mermaid-\_r_17om\_ .node path{fill:rgb(229, 243, 255);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_17om\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_17om\_ .node.mermaid-decision .label-container{fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_17om\_ .edgePaths .flowchart-link{stroke:rgb(143, 143, 143);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_17om\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_17om\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}Codex AgentApproved MCP InterfaceRepository IntelligenceWork Item ServiceContract RegistryEvidence ServiceEnterprise HarnessTool Policy
+```mermaid
+flowchart TB
+    H["Enterprise Harness"] --> Policy["Tool Policy"]
+    A["Codex Agent"] --> MCP["Approved MCP Interface"]
+    Policy --> MCP
+    MCP --> R["Repository Intelligence"]
+    MCP --> W["Work Item Service"]
+    MCP --> C["Contract Registry"]
+    MCP --> E["Evidence Service"]
+```
 
 A tool may return information such as:
 
-```
+```json
 {
   "repositoryId": "billing-service",
   "architecture": "Clean Architecture",
@@ -7316,19 +6488,15 @@ A tool may return information such as:
 }
 ```
 
-This information helps Codex understand the repository.
+This information helps Codex understand the repository. It should not automatically authorize tool execution or redefine mandatory policy. The effective policy should be calculated by the Harness from trusted configuration.
 
-It should not automatically authorize tool execution or redefine mandatory policy.
-
-The effective policy should be calculated by the Harness from trusted configuration.
-
-### Tool portability
+#### Tool portability
 
 The same enterprise capability may be exposed to Claude, Copilot, and Codex through compatible interfaces or provider-specific adapters.
 
 For example:
 
-```
+```text
 Repository Intelligence Service
                │
          Approved Contract
@@ -7338,11 +6506,9 @@ Repository Intelligence Service
     Claude   Copilot   Codex
 ```
 
-This reduces duplication of repository knowledge and tool implementations.
+This reduces duplication of repository knowledge and tool implementations. It also makes it easier to maintain consistent access-control rules.
 
-It also makes it easier to maintain consistent access-control rules.
-
-## 10.13 Retry, Recovery, and Durable Execution
+### 10.13 Retry, Recovery, and Durable Execution
 
 Codex integrations may encounter:
 
@@ -7358,7 +6524,7 @@ The Harness must distinguish provider failures from engineering failures.
 
 For example:
 
-```
+```text
 Codex Request
       ↓
 Execution Result
@@ -7379,11 +6545,9 @@ Execution Result
              └── Continue Workflow
 ```
 
-A Codex conversation or session may retain useful context, but it should not be the sole source of run state.
+A Codex conversation or session may retain useful context, but it should not be the sole source of run state. The Harness should persist:
 
-The Harness should persist:
-
-```
+```text
 Run ID
 Repository ID
 Task
@@ -7398,25 +6562,15 @@ Approval State
 Artifact References
 ```
 
-### Managed session recovery
+#### Managed session recovery
 
-Where managed Codex sessions provide durable session and recovery capabilities, those features can reduce implementation complexity.
+Where managed Codex sessions provide durable session and recovery capabilities, those features can reduce implementation complexity. However, the enterprise should still preserve its own authoritative run-state contract. Managed session recovery and enterprise workflow recovery solve related but different problems.
 
-However, the enterprise should still preserve its own authoritative run-state contract.
+The provider may know how to resume an agent session. The Harness must know whether the overall engineering task is authorized to continue, which gates have passed, and whether side effects have already occurred.
 
-Managed session recovery and enterprise workflow recovery solve related but different problems.
+### 10.14 Population Processing with Codex
 
-The provider may know how to resume an agent session.
-
-The Harness must know whether the overall engineering task is authorized to continue, which gates have passed, and whether side effects have already occurred.
-
-## 10.14 Population Processing with Codex
-
-Population processing is an important enterprise pattern introduced earlier in Part III.
-
-It applies the Harness workflow across collections of independent engineering items.
-
-For Alpha Car Detailing, consider a modernization initiative affecting 60 repositories.
+Population processing is an important enterprise pattern introduced earlier in Part III. It applies the Harness workflow across collections of independent engineering items. For Alpha Car Detailing, consider a modernization initiative affecting 60 repositories.
 
 The organization wants to:
 
@@ -7428,7 +6582,19 @@ The organization wants to:
 
 A population workflow may look like this:
 
-\#chatgpt-mermaid-\_r_17po\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(13, 13, 13);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_17po\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_17po\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_17po\_ .error-icon{fill:rgb(243, 243, 243);}#chatgpt-mermaid-\_r_17po\_ .error-text{fill:rgb(13, 13, 13);stroke:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17po\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_17po\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_17po\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_17po\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_17po\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_17po\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_17po\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_17po\_ .marker.cross{stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_17po\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_17po\_ p{margin:0;}#chatgpt-mermaid-\_r_17po\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17po\_ .cluster-label text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17po\_ .cluster-label span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17po\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_17po\_ .label text,#chatgpt-mermaid-\_r_17po\_ span{fill:rgb(13, 13, 13);color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17po\_ .node rect,#chatgpt-mermaid-\_r_17po\_ .node circle,#chatgpt-mermaid-\_r_17po\_ .node ellipse,#chatgpt-mermaid-\_r_17po\_ .node polygon,#chatgpt-mermaid-\_r_17po\_ .node path{fill:rgb(222, 234, 251);stroke:rgb(83, 154, 248);stroke-width:1px;}#chatgpt-mermaid-\_r_17po\_ .rough-node .label text,#chatgpt-mermaid-\_r_17po\_ .node .label text,#chatgpt-mermaid-\_r_17po\_ .image-shape .label,#chatgpt-mermaid-\_r_17po\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_17po\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_17po\_ .rough-node .label,#chatgpt-mermaid-\_r_17po\_ .node .label,#chatgpt-mermaid-\_r_17po\_ .image-shape .label,#chatgpt-mermaid-\_r_17po\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_17po\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_17po\_ .root .anchor path{fill:rgb(143, 143, 143)!important;stroke-width:0;stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_17po\_ .arrowheadPath{fill:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_17po\_ .edgePath .path{stroke:rgb(143, 143, 143);stroke-width:1px;}#chatgpt-mermaid-\_r_17po\_ .flowchart-link{stroke:rgb(143, 143, 143);fill:none;}#chatgpt-mermaid-\_r_17po\_ .edgeLabel{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_17po\_ .edgeLabel p{background-color:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_17po\_ .edgeLabel rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_17po\_ .labelBkg{background-color:rgba(252, 252, 252, 0.5);}#chatgpt-mermaid-\_r_17po\_ .cluster rect{fill:rgb(243, 243, 243);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_17po\_ .cluster text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17po\_ .cluster span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17po\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(243, 243, 243);border:1px solid rgba(0, 0, 0, 0.1);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_17po\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17po\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_17po\_ .icon-shape,#chatgpt-mermaid-\_r_17po\_ .image-shape{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_17po\_ .icon-shape p,#chatgpt-mermaid-\_r_17po\_ .image-shape p{background-color:rgb(252, 252, 252);padding:2px;}#chatgpt-mermaid-\_r_17po\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_17po\_ .image-shape .label rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_17po\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_17po\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_17po\_ .node .neo-node{stroke:rgb(83, 154, 248);}#chatgpt-mermaid-\_r_17po\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_17po\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_17po\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_17po\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_17po\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_17po\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_17po\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_17po\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_17po\_ [data-look="neo"].node .neo-line path{stroke:rgb(83, 154, 248);filter:none;}#chatgpt-mermaid-\_r_17po\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_17po\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_17po\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_17po\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_17po\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_17po\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_17po\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_17po\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_17po\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_17po\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_17po\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_17po\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-width:1px;}#chatgpt-mermaid-\_r_17po\_ .node rect,#chatgpt-mermaid-\_r_17po\_ .node circle,#chatgpt-mermaid-\_r_17po\_ .node ellipse,#chatgpt-mermaid-\_r_17po\_ .node polygon,#chatgpt-mermaid-\_r_17po\_ .node path{fill:rgb(229, 243, 255);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_17po\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_17po\_ .node.mermaid-decision .label-container{fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_17po\_ .edgePaths .flowchart-link{stroke:rgb(143, 143, 143);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_17po\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_17po\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}60 Repository ModernizationItemsPopulation QueueHarness Worker AHarness Worker BHarness Worker CCodex ExecutionCodex ExecutionCodex ExecutionValidationValidationValidationPopulation Aggregation
+```mermaid
+flowchart TB
+    P["60 Repository Modernization Items"] --> Q["Population Queue"]
+    Q --> A["Harness Worker A"]
+    Q --> B["Harness Worker B"]
+    Q --> C["Harness Worker C"]
+    A --> CA["Codex Execution A"] --> VA["Validation A"]
+    B --> CB["Codex Execution B"] --> VB["Validation B"]
+    C --> CC["Codex Execution C"] --> VC["Validation C"]
+    VA --> R["Population Aggregation"]
+    VB --> R
+    VC --> R
+```
 
 Every population item should have independent:
 
@@ -7440,13 +6606,11 @@ Every population item should have independent:
 - retry policy;
 - artifact location.
 
-The central population scheduler should manage concurrency.
+The central population scheduler should manage concurrency. The AI provider should not be responsible for deciding how many enterprise repositories may execute simultaneously.
 
-The AI provider should not be responsible for deciding how many enterprise repositories may execute simultaneously.
+#### Example population status
 
-### Example population status
-
-```
+```json
 {
   "populationId": "logging-modernization-2026",
   "total": 60,
@@ -7458,21 +6622,15 @@ The AI provider should not be responsible for deciding how many enterprise repos
 }
 ```
 
-This information belongs to the Harness.
+This information belongs to the Harness. It should be recoverable without reconstructing every Codex conversation.
 
-It should be recoverable without reconstructing every Codex conversation.
+### 10.15 Integrating Codex with Deterministic Validation
 
-## 10.15 Integrating Codex with Deterministic Validation
-
-Codex can implement or modify tests.
-
-It can inspect validation failures and propose corrections.
-
-However, deterministic validation must remain independently executable.
+Codex can implement or modify tests. It can inspect validation failures and propose corrections. However, deterministic validation must remain independently executable.
 
 For example:
 
-```
+```text
 Codex Developer
        ↓
 Implementation
@@ -7490,7 +6648,7 @@ Validation Evidence
 
 The Validator records actual results.
 
-```
+```json
 {
   "runId": "run-1042",
   "commit": "validated-commit-sha",
@@ -7512,13 +6670,11 @@ The Validator records actual results.
 }
 ```
 
-The Harness must not allow Codex to override this failure by asserting that the implementation is logically correct.
+The Harness must not allow Codex to override this failure by asserting that the implementation is logically correct. Instead, the workflow returns the relevant evidence to the Developer role.
 
-Instead, the workflow returns the relevant evidence to the Developer role.
+#### Controlled rework
 
-### Controlled rework
-
-```
+```text
 Developer
     ↓
 Validation Failure
@@ -7530,17 +6686,11 @@ Developer Rework
 Validation Re-execution
 ```
 
-Rework should be bounded.
+Rework should be bounded. After the configured iteration limit, the run may enter an exhausted state. The Harness should preserve failure evidence for investigation.
 
-After the configured iteration limit, the run may enter an exhausted state.
+### 10.16 Using Codex for Evaluation
 
-The Harness should preserve failure evidence for investigation.
-
-## 10.16 Using Codex for Evaluation
-
-Codex can also implement the Evaluator Agent.
-
-The Evaluator receives:
+Codex can also implement the Evaluator Agent. The Evaluator receives:
 
 - original task;
 - acceptance criteria;
@@ -7553,7 +6703,7 @@ It then assesses whether the requested result was achieved.
 
 For example:
 
-```
+```text
 Goal:
 Support cancellation of one recurring booking occurrence
 without cancelling the recurring schedule.
@@ -7578,7 +6728,7 @@ Required tests pass.
 
 Suppose deterministic validation passes, but the Evaluator identifies a missing business behavior.
 
-```
+```json
 {
   "outcome": "partial",
   "findings": [
@@ -7591,19 +6741,13 @@ Suppose deterministic validation passes, but the Evaluator identifies a missing 
 }
 ```
 
-The Harness should treat this as an incomplete engineering outcome.
+The Harness should treat this as an incomplete engineering outcome. The Evaluator's judgment informs the next decision. It does not replace deterministic evidence or human approval.
 
-The Evaluator's judgment informs the next decision.
+### 10.17 Observability and Cost Management
 
-It does not replace deterministic evidence or human approval.
+Codex execution should participate in the same enterprise telemetry model used by Claude and Copilot. A normalized telemetry contract enables platform-independent reporting.
 
-## 10.17 Observability and Cost Management
-
-Codex execution should participate in the same enterprise telemetry model used by Claude and Copilot.
-
-A normalized telemetry contract enables platform-independent reporting.
-
-```
+```text
 EnterpriseRunId
 RunId
 RepositoryId
@@ -7618,9 +6762,7 @@ GateOutcome
 FinalOutcome
 ```
 
-Not every provider exposes identical usage or cost information.
-
-The Harness should distinguish measured values from estimates and unavailable data.
+Not every provider exposes identical usage or cost information. The Harness should distinguish measured values from estimates and unavailable data.
 
 For example:
 
@@ -7635,13 +6777,9 @@ For example:
 | Approval waiting time    | Governance workflow            |
 | Population throughput    | Population scheduler           |
 
-### Comparing provider performance
+#### Comparing provider performance
 
-Suppose Alpha Car Detailing evaluates Claude and Codex using the same controlled task population.
-
-The enterprise should compare more than agent response time.
-
-Relevant metrics include:
+Suppose Alpha Car Detailing evaluates Claude and Codex using the same controlled task population. The enterprise should compare more than agent response time. Relevant metrics include:
 
 - end-to-end completion time;
 - acceptance-criteria satisfaction;
@@ -7652,19 +6790,11 @@ Relevant metrics include:
 - failure and recovery rates;
 - cost per approved result.
 
-A provider that generates code quickly but requires repeated corrections may not deliver lower total engineering cost.
+A provider that generates code quickly but requires repeated corrections may not deliver lower total engineering cost. Likewise, higher token consumption may be justified when it produces more complete implementations that require less rework. Provider selection should therefore use evidence from comparable workloads rather than assumptions based on isolated demonstrations.
 
-Likewise, higher token consumption may be justified when it produces more complete implementations that require less rework.
+### 10.18 Selecting Codex, Claude Code, or GitHub Copilot
 
-Provider selection should therefore use evidence from comparable workloads rather than assumptions based on isolated demonstrations.
-
-## 10.18 Selecting Codex, Claude Code, or GitHub Copilot
-
-Alpha Car Detailing may operate in an environment where different teams use different AI coding platforms.
-
-The objective should not be to force all teams into identical tools merely for Harness consistency.
-
-Instead, the enterprise can preserve one set of execution contracts and allow approved providers.
+Alpha Car Detailing may operate in an environment where different teams use different AI coding platforms. The objective should not be to force all teams into identical tools merely for Harness consistency. Instead, the enterprise can preserve one set of execution contracts and allow approved providers.
 
 | Requirement                    | Claude Code              | GitHub Copilot                       | Codex                         |
 | ------------------------------ | ------------------------ | ------------------------------------ | ----------------------------- |
@@ -7681,19 +6811,15 @@ Instead, the enterprise can preserve one set of execution contracts and allow ap
 | Population processing          | External Harness         | External Harness                     | External Harness              |
 | Deterministic completion gates | External Harness         | External Harness / CI                | External Harness              |
 
-The platform differences are meaningful.
-
-However, none changes the responsibilities of the enterprise architecture.
-
-An organization may use Claude Code as its standard development agent while allowing Codex for selected engineering tasks.
+The platform differences are meaningful. However, none changes the responsibilities of the enterprise architecture. An organization may use Claude Code as its standard development agent while allowing Codex for selected engineering tasks.
 
 The Harness should support that decision through controlled provider registration.
 
-## 10.19 Adding Codex to the Alpha Car Detailing Harness
+### 10.19 Adding Codex to the Alpha Car Detailing Harness
 
 The hands-on example introduced:
 
-```
+```csharp
 public interface IAgentProvider
 {
     Task<AgentResult> ExecuteAsync(
@@ -7704,7 +6830,7 @@ public interface IAgentProvider
 
 The platform can register providers behind this contract.
 
-```
+```text
 IAgentProvider
       │
       ├── ClaudeCodeAdapter
@@ -7714,7 +6840,7 @@ IAgentProvider
 
 A repository may declare:
 
-```
+```yaml
 agents:
   provider: codex
 
@@ -7725,13 +6851,11 @@ agents:
     evaluator: enabled
 ```
 
-This YAML belongs to the enterprise Harness configuration, not to Codex's native configuration.
-
-The Harness resolves the provider and checks whether the selected execution environment supports the required capabilities.
+This YAML belongs to the enterprise Harness configuration, not to Codex's native configuration. The Harness resolves the provider and checks whether the selected execution environment supports the required capabilities.
 
 For example:
 
-```
+```text
 Repository:
     booking-service
 
@@ -7753,7 +6877,7 @@ Harness Decision:
 
 A different configuration may be rejected:
 
-```
+```text
 Repository:
     billing-service
 
@@ -7769,13 +6893,11 @@ Reason:
 
 The provider adapter should never be permitted to relax a mandatory Harness policy merely because the selected platform offers a convenient execution option.
 
-## 10.20 End-to-End Codex Execution Walkthrough
+### 10.20 End-to-End Codex Execution Walkthrough
 
-Consider the recurring booking cancellation requirement.
+Consider the recurring booking cancellation requirement. The engineer submits:
 
-The engineer submits:
-
-```
+```text
 Implement cancellation of an individual recurring
 booking occurrence.
 
@@ -7788,47 +6910,35 @@ Add relevant unit and integration tests.
 Do not modify Billing.
 ```
 
-### Phase 1 — Preparation
+#### Phase 1 — Preparation
 
-The Harness resolves the Booking profile.
+The Harness resolves the Booking profile. It loads mandatory enterprise requirements, approved Skills, repository Instructions, validation profiles, and the task-specific Prompt. It creates an isolated Run Workspace.
 
-It loads mandatory enterprise requirements, approved Skills, repository Instructions, validation profiles, and the task-specific Prompt.
+#### Phase 2 — Lead Analysis
 
-It creates an isolated Run Workspace.
+The Codex Lead role examines the affected repository components. It creates an implementation assignment and identifies contract risks.
 
-### Phase 2 — Lead Analysis
+#### Phase 3 — Development
 
-The Codex Lead role examines the affected repository components.
+The Codex Developer role implements the requested behavior. The Harness records the resulting implementation snapshot and evidence.
 
-It creates an implementation assignment and identifies contract risks.
+#### Phase 4 — Review and Validation
 
-### Phase 3 — Development
+An independent Reviewer examines the changes. The Harness executes deterministic gates against the relevant implementation commit.
 
-The Codex Developer role implements the requested behavior.
-
-The Harness records the resulting implementation snapshot and evidence.
-
-### Phase 4 — Review and Validation
-
-An independent Reviewer examines the changes.
-
-The Harness executes deterministic gates against the relevant implementation commit.
-
-### Phase 5 — Evaluation
+#### Phase 5 — Evaluation
 
 The Evaluator assesses the implementation against the original goal and acceptance criteria.
 
-### Phase 6 — Human Approval
+#### Phase 6 — Human Approval
 
 If all mandatory conditions are satisfied, the Harness moves the run to the required approval stage.
 
-### Phase 7 — Finalization
+#### Phase 7 — Finalization
 
-After authorized approval and required final operations, the Harness records the completed result.
+After authorized approval and required final operations, the Harness records the completed result. A representative final result is:
 
-A representative final result is:
-
-```
+```json
 {
   "runId": "run-1042",
   "repository": "booking-service",
@@ -7854,85 +6964,55 @@ A representative final result is:
 }
 ```
 
-This is a normalized Harness result rather than a native Codex response.
+This is a normalized Harness result rather than a native Codex response. The final status is owned by the Harness.
 
-The final status is owned by the Harness.
+### 10.21 Lessons from the Codex Implementation
 
-## 10.21 Lessons from the Codex Implementation
+The Codex comparison reinforces the importance of separating AI execution capabilities from enterprise engineering authority. Codex supports multiple forms of agent execution, reusable Instructions and Skills, multi-agent collaboration, external tools, and programmatic integration. These capabilities make Codex suitable for participating in an Enterprise Harness.
 
-The Codex comparison reinforces the importance of separating AI execution capabilities from enterprise engineering authority.
+However, several principles must remain intact. First, repository Instructions are not enforcement mechanisms. `AGENTS.md` communicates engineering expectations. The Harness must independently enforce mandatory policies.
 
-Codex supports multiple forms of agent execution, reusable Instructions and Skills, multi-agent collaboration, external tools, and programmatic integration.
+Second, Skills do not replace architecture governance. Reusable Skills guide implementation. They should remain versioned, reviewable, and subject to repository constraints. Third, agent orchestration and Harness orchestration are different layers.
 
-These capabilities make Codex suitable for participating in an Enterprise Harness.
+Codex can coordinate agents internally. The Harness owns durable execution state, dependency boundaries, validation, and approval. Fourth, parallel execution requires isolation. Independent agents should not freely modify shared mutable workspaces.
 
-However, several principles must remain intact.
+Fifth, deterministic validation remains authoritative. An agent's assessment of its own implementation must not override failed build, test, security, or architecture gates. Sixth, provider-level recovery does not replace Harness recovery.
 
-First, repository Instructions are not enforcement mechanisms.
+Enterprise runs require durable checkpoints, evidence, and idempotent side-effect management. Seventh, provider portability requires explicit contracts. Claude Code, GitHub Copilot, and Codex should be integrated through governed provider adapters rather than embedded directly into the orchestration engine.
 
-`AGENTS.md` communicates engineering expectations. The Harness must independently enforce mandatory policies.
+#### Final architectural perspective
 
-Second, Skills do not replace architecture governance.
+Alpha Car Detailing's Enterprise Harness should not be designed around any single AI coding product. It should be designed around stable engineering responsibilities.
 
-Reusable Skills guide implementation. They should remain versioned, reviewable, and subject to repository constraints.
+```mermaid
+flowchart TB
+    R["Engineering Request"] --> H["Enterprise Harness"]
+    H --> P["Agent Provider Contract"]
+    P --> C["Claude Code"]
+    P --> G["GitHub Copilot"]
+    P --> X["OpenAI Codex"]
+    H --> V["Deterministic Gates"]
+    H --> W["Run Workspace"]
+    H --> M["Metrics and Evidence"]
+    V --> Outcome["Governed Engineering Outcome"]
+    H --> A["Human Approval"] --> Outcome
+```
 
-Third, agent orchestration and Harness orchestration are different layers.
-
-Codex can coordinate agents internally. The Harness owns durable execution state, dependency boundaries, validation, and approval.
-
-Fourth, parallel execution requires isolation.
-
-Independent agents should not freely modify shared mutable workspaces.
-
-Fifth, deterministic validation remains authoritative.
-
-An agent's assessment of its own implementation must not override failed build, test, security, or architecture gates.
-
-Sixth, provider-level recovery does not replace Harness recovery.
-
-Enterprise runs require durable checkpoints, evidence, and idempotent side-effect management.
-
-Seventh, provider portability requires explicit contracts.
-
-Claude Code, GitHub Copilot, and Codex should be integrated through governed provider adapters rather than embedded directly into the orchestration engine.
-
-### Final architectural perspective
-
-Alpha Car Detailing's Enterprise Harness should not be designed around any single AI coding product.
-
-It should be designed around stable engineering responsibilities.
-
-\#chatgpt-mermaid-\_r_17sr\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(13, 13, 13);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_17sr\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_17sr\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_17sr\_ .error-icon{fill:rgb(243, 243, 243);}#chatgpt-mermaid-\_r_17sr\_ .error-text{fill:rgb(13, 13, 13);stroke:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17sr\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_17sr\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_17sr\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_17sr\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_17sr\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_17sr\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_17sr\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_17sr\_ .marker.cross{stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_17sr\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_17sr\_ p{margin:0;}#chatgpt-mermaid-\_r_17sr\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17sr\_ .cluster-label text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17sr\_ .cluster-label span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17sr\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_17sr\_ .label text,#chatgpt-mermaid-\_r_17sr\_ span{fill:rgb(13, 13, 13);color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17sr\_ .node rect,#chatgpt-mermaid-\_r_17sr\_ .node circle,#chatgpt-mermaid-\_r_17sr\_ .node ellipse,#chatgpt-mermaid-\_r_17sr\_ .node polygon,#chatgpt-mermaid-\_r_17sr\_ .node path{fill:rgb(222, 234, 251);stroke:rgb(83, 154, 248);stroke-width:1px;}#chatgpt-mermaid-\_r_17sr\_ .rough-node .label text,#chatgpt-mermaid-\_r_17sr\_ .node .label text,#chatgpt-mermaid-\_r_17sr\_ .image-shape .label,#chatgpt-mermaid-\_r_17sr\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_17sr\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_17sr\_ .rough-node .label,#chatgpt-mermaid-\_r_17sr\_ .node .label,#chatgpt-mermaid-\_r_17sr\_ .image-shape .label,#chatgpt-mermaid-\_r_17sr\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_17sr\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_17sr\_ .root .anchor path{fill:rgb(143, 143, 143)!important;stroke-width:0;stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_17sr\_ .arrowheadPath{fill:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_17sr\_ .edgePath .path{stroke:rgb(143, 143, 143);stroke-width:1px;}#chatgpt-mermaid-\_r_17sr\_ .flowchart-link{stroke:rgb(143, 143, 143);fill:none;}#chatgpt-mermaid-\_r_17sr\_ .edgeLabel{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_17sr\_ .edgeLabel p{background-color:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_17sr\_ .edgeLabel rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_17sr\_ .labelBkg{background-color:rgba(252, 252, 252, 0.5);}#chatgpt-mermaid-\_r_17sr\_ .cluster rect{fill:rgb(243, 243, 243);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_17sr\_ .cluster text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17sr\_ .cluster span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17sr\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(243, 243, 243);border:1px solid rgba(0, 0, 0, 0.1);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_17sr\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_17sr\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_17sr\_ .icon-shape,#chatgpt-mermaid-\_r_17sr\_ .image-shape{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_17sr\_ .icon-shape p,#chatgpt-mermaid-\_r_17sr\_ .image-shape p{background-color:rgb(252, 252, 252);padding:2px;}#chatgpt-mermaid-\_r_17sr\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_17sr\_ .image-shape .label rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_17sr\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_17sr\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_17sr\_ .node .neo-node{stroke:rgb(83, 154, 248);}#chatgpt-mermaid-\_r_17sr\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_17sr\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_17sr\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_17sr\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_17sr\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_17sr\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_17sr\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_17sr\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_17sr\_ [data-look="neo"].node .neo-line path{stroke:rgb(83, 154, 248);filter:none;}#chatgpt-mermaid-\_r_17sr\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_17sr\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_17sr\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_17sr\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_17sr\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_17sr\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_17sr\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_17sr\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_17sr\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_17sr\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_17sr\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_17sr\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-width:1px;}#chatgpt-mermaid-\_r_17sr\_ .node rect,#chatgpt-mermaid-\_r_17sr\_ .node circle,#chatgpt-mermaid-\_r_17sr\_ .node ellipse,#chatgpt-mermaid-\_r_17sr\_ .node polygon,#chatgpt-mermaid-\_r_17sr\_ .node path{fill:rgb(229, 243, 255);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_17sr\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_17sr\_ .node.mermaid-decision .label-container{fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_17sr\_ .edgePaths .flowchart-link{stroke:rgb(143, 143, 143);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_17sr\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_17sr\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}Engineering RequestEnterprise HarnessAgent Provider ContractClaude CodeGitHub CopilotOpenAI CodexDeterministic GatesRun WorkspaceMetrics & EvidenceHuman ApprovalGoverned EngineeringOutcome
-
-The Harness architecture determines how work is requested, performed, verified, evaluated, and approved.
-
-The AI coding platform determines how assigned agent work is executed.
-
-That separation allows enterprise engineering organizations to adopt new AI capabilities without continuously redesigning their development governance.
+The Harness architecture determines how work is requested, performed, verified, evaluated, and approved. The AI coding platform determines how assigned agent work is executed. That separation allows enterprise engineering organizations to adopt new AI capabilities without continuously redesigning their development governance.
 
 It also establishes the broader architectural lesson of this chapter:
 
 > Enterprise Harness patterns should remain stable even as AI coding platforms, agent capabilities, execution interfaces, and provider ecosystems evolve.
 
-Chapter 21 status: In progress — next section: Best Practices
+## 11. Best Practices
 
-# 11. Best Practices
-
-Enterprise Harness architecture succeeds when reusable capabilities are combined with explicit ownership, predictable execution, strong isolation, and independently verifiable engineering outcomes.
-
-The patterns discussed in this chapter provide the architectural building blocks. Applying them effectively requires disciplined implementation practices.
-
-The following best practices apply to single-repository, multi-repository, monorepo, centralized, distributed, and shared-platform Harness architectures.
+Enterprise Harness architecture succeeds when reusable capabilities are combined with explicit ownership, predictable execution, strong isolation, and independently verifiable engineering outcomes. The patterns discussed in this chapter provide the architectural building blocks. Applying them effectively requires disciplined implementation practices. The following best practices apply to single-repository, multi-repository, monorepo, centralized, distributed, and shared-platform Harness architectures.
 
 They are vendor-neutral and apply whether an organization uses Claude Code, GitHub Copilot, OpenAI Codex, or another AI coding platform.
 
-## 11.1 Prefer Composition Over Monolithic Orchestration
+### 11.1 Prefer Composition Over Monolithic Orchestration
 
-An Enterprise Harness should be assembled from independently understandable capabilities.
-
-Avoid building one orchestration component that directly implements every repository workflow, validation rule, provider integration, and approval requirement.
-
-Instead, divide the system into well-defined capabilities:
+An Enterprise Harness should be assembled from independently understandable capabilities. Avoid building one orchestration component that directly implements every repository workflow, validation rule, provider integration, and approval requirement. Instead, divide the system into well-defined capabilities:
 
 - workflow orchestration;
 - agent execution;
@@ -7945,11 +7025,9 @@ Instead, divide the system into well-defined capabilities:
 - metrics and observability;
 - tool and provider adapters.
 
-Each capability should expose explicit contracts.
+Each capability should expose explicit contracts. For Alpha Car Detailing:
 
-For Alpha Car Detailing:
-
-```
+```text
 Enterprise Harness
        │
        ├── Orchestration
@@ -7964,29 +7042,21 @@ Enterprise Harness
 
 The Booking, Fleet, and Billing repositories consume these capabilities through their respective profiles.
 
-### Recommended practice
+#### Recommended practice
 
-Design the central Harness so that adding a repository usually requires configuration, registration, and validation rather than modification of orchestration source code.
+Design the central Harness so that adding a repository usually requires configuration, registration, and validation rather than modification of orchestration source code. The same principle applies when adding a new AI provider or validation capability.
 
-The same principle applies when adding a new AI provider or validation capability.
+> **Architect's Note**
 
-> Architect's Note
 >
+
 > A composable Harness is not one that contains the greatest number of plugins. It is one in which independently owned capabilities can evolve without requiring unrelated components to change.
 
-## 11.2 Establish Clear Ownership Boundaries
+### 11.2 Establish Clear Ownership Boundaries
 
-Enterprise Harnesses involve multiple forms of ownership.
+Enterprise Harnesses involve multiple forms of ownership. The platform team owns shared execution infrastructure. Repository teams own local engineering requirements.
 
-The platform team owns shared execution infrastructure.
-
-Repository teams own local engineering requirements.
-
-Security teams own mandatory security policy.
-
-Architecture teams govern cross-cutting architectural standards.
-
-Authorized humans own approval decisions.
+Security teams own mandatory security policy. Architecture teams govern cross-cutting architectural standards. Authorized humans own approval decisions.
 
 These responsibilities must remain explicit.
 
@@ -8006,25 +7076,17 @@ These responsibilities must remain explicit.
 | Runtime metrics infrastructure              | Platform / Operations                   |
 | Acceptance criteria                         | Product / Business / Engineering Owners |
 
-Ownership should include responsibility for review, versioning, change approval, and maintenance.
+Ownership should include responsibility for review, versioning, change approval, and maintenance. Without explicit ownership, shared components frequently become ungoverned dependencies.
 
-Without explicit ownership, shared components frequently become ungoverned dependencies.
+### 11.3 Centralize Mechanisms, Not Every Engineering Decision
 
-## 11.3 Centralize Mechanisms, Not Every Engineering Decision
+A shared Harness platform should standardize how work is executed. It should not automatically standardize every repository-specific engineering choice.
 
-A shared Harness platform should standardize how work is executed.
-
-It should not automatically standardize every repository-specific engineering choice.
-
-For example, the platform may provide one validation execution framework.
-
-Booking may require event contract tests.
-
-Fleet may require vehicle eligibility tests.
+For example, the platform may provide one validation execution framework. Booking may require event contract tests. Fleet may require vehicle eligibility tests.
 
 Billing may require financial calculation and security checks.
 
-```
+```text
 Shared Validation Engine
          │
     ┌────┼────┐
@@ -8037,19 +7099,13 @@ Shared Validation Engine
 
 This preserves autonomy while eliminating duplicated execution infrastructure.
 
-### Recommended practice
+#### Recommended practice
 
-Use declarative repository profiles to define local requirements.
+Use declarative repository profiles to define local requirements. Apply mandatory enterprise controls through a separate, centrally governed policy layer. Do not permit repository profiles to override enterprise security requirements.
 
-Apply mandatory enterprise controls through a separate, centrally governed policy layer.
+### 11.4 Treat Repository Profiles as Versioned Contracts
 
-Do not permit repository profiles to override enterprise security requirements.
-
-## 11.4 Treat Repository Profiles as Versioned Contracts
-
-A repository profile defines how the Harness operates against a repository.
-
-It may include:
+A repository profile defines how the Harness operates against a repository. It may include:
 
 - repository identity;
 - ownership;
@@ -8067,7 +7123,7 @@ These profiles should be versioned and validated.
 
 For example:
 
-```
+```yaml
 schemaVersion: "1.0"
 
 repository:
@@ -8090,23 +7146,15 @@ execution:
   maxConcurrentGates: 3
 ```
 
-The Harness should reject unknown or invalid configurations before execution.
+The Harness should reject unknown or invalid configurations before execution. It should also record the effective profile version used for every run.
 
-It should also record the effective profile version used for every run.
+#### Why this matters
 
-### Why this matters
+Suppose a validation profile changes during an active run. Without version pinning, different stages may execute against different requirements. A reproducible Harness should retain the effective configuration snapshot associated with the run.
 
-Suppose a validation profile changes during an active run.
+### 11.5 Separate the Control Plane from the Execution Plane
 
-Without version pinning, different stages may execute against different requirements.
-
-A reproducible Harness should retain the effective configuration snapshot associated with the run.
-
-## 11.5 Separate the Control Plane from the Execution Plane
-
-At enterprise scale, scheduling and governance should be separated from execution.
-
-The control plane manages:
+At enterprise scale, scheduling and governance should be separated from execution. The control plane manages:
 
 - run submission;
 - workflow state;
@@ -8125,19 +7173,22 @@ The execution plane manages:
 - evidence generation;
 - workspace cleanup.
 
-\#chatgpt-mermaid-\_r_16bu\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(13, 13, 13);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_16bu\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_16bu\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_16bu\_ .error-icon{fill:rgb(243, 243, 243);}#chatgpt-mermaid-\_r_16bu\_ .error-text{fill:rgb(13, 13, 13);stroke:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16bu\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_16bu\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_16bu\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_16bu\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_16bu\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_16bu\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_16bu\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_16bu\_ .marker.cross{stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_16bu\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_16bu\_ p{margin:0;}#chatgpt-mermaid-\_r_16bu\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16bu\_ .cluster-label text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16bu\_ .cluster-label span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16bu\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_16bu\_ .label text,#chatgpt-mermaid-\_r_16bu\_ span{fill:rgb(13, 13, 13);color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16bu\_ .node rect,#chatgpt-mermaid-\_r_16bu\_ .node circle,#chatgpt-mermaid-\_r_16bu\_ .node ellipse,#chatgpt-mermaid-\_r_16bu\_ .node polygon,#chatgpt-mermaid-\_r_16bu\_ .node path{fill:rgb(222, 234, 251);stroke:rgb(83, 154, 248);stroke-width:1px;}#chatgpt-mermaid-\_r_16bu\_ .rough-node .label text,#chatgpt-mermaid-\_r_16bu\_ .node .label text,#chatgpt-mermaid-\_r_16bu\_ .image-shape .label,#chatgpt-mermaid-\_r_16bu\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_16bu\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_16bu\_ .rough-node .label,#chatgpt-mermaid-\_r_16bu\_ .node .label,#chatgpt-mermaid-\_r_16bu\_ .image-shape .label,#chatgpt-mermaid-\_r_16bu\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_16bu\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_16bu\_ .root .anchor path{fill:rgb(143, 143, 143)!important;stroke-width:0;stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_16bu\_ .arrowheadPath{fill:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_16bu\_ .edgePath .path{stroke:rgb(143, 143, 143);stroke-width:1px;}#chatgpt-mermaid-\_r_16bu\_ .flowchart-link{stroke:rgb(143, 143, 143);fill:none;}#chatgpt-mermaid-\_r_16bu\_ .edgeLabel{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_16bu\_ .edgeLabel p{background-color:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_16bu\_ .edgeLabel rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_16bu\_ .labelBkg{background-color:rgba(252, 252, 252, 0.5);}#chatgpt-mermaid-\_r_16bu\_ .cluster rect{fill:rgb(243, 243, 243);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_16bu\_ .cluster text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16bu\_ .cluster span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16bu\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(243, 243, 243);border:1px solid rgba(0, 0, 0, 0.1);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_16bu\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16bu\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_16bu\_ .icon-shape,#chatgpt-mermaid-\_r_16bu\_ .image-shape{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_16bu\_ .icon-shape p,#chatgpt-mermaid-\_r_16bu\_ .image-shape p{background-color:rgb(252, 252, 252);padding:2px;}#chatgpt-mermaid-\_r_16bu\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_16bu\_ .image-shape .label rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_16bu\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_16bu\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_16bu\_ .node .neo-node{stroke:rgb(83, 154, 248);}#chatgpt-mermaid-\_r_16bu\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_16bu\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_16bu\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_16bu\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_16bu\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_16bu\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_16bu\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_16bu\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_16bu\_ [data-look="neo"].node .neo-line path{stroke:rgb(83, 154, 248);filter:none;}#chatgpt-mermaid-\_r_16bu\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_16bu\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_16bu\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_16bu\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_16bu\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_16bu\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_16bu\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_16bu\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_16bu\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_16bu\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_16bu\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_16bu\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-width:1px;}#chatgpt-mermaid-\_r_16bu\_ .node rect,#chatgpt-mermaid-\_r_16bu\_ .node circle,#chatgpt-mermaid-\_r_16bu\_ .node ellipse,#chatgpt-mermaid-\_r_16bu\_ .node polygon,#chatgpt-mermaid-\_r_16bu\_ .node path{fill:rgb(229, 243, 255);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_16bu\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_16bu\_ .node.mermaid-decision .label-container{fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_16bu\_ .edgePaths .flowchart-link{stroke:rgb(143, 143, 143);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_16bu\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_16bu\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}Run RequestHarness Control PlaneExecution Worker AExecution Worker BExecution Worker CIsolated RunIsolated RunIsolated RunEvidence Store
+```mermaid
+flowchart TB
+    R["Run Request"] --> H["Harness Control Plane"]
+    H --> A["Execution Worker A"]
+    H --> B["Execution Worker B"]
+    H --> C["Execution Worker C"]
+    A --> RA["Isolated Run A"] --> E["Evidence Store"]
+    B --> RB["Isolated Run B"] --> E
+    C --> RC["Isolated Run C"] --> E
+```
 
-This architecture enables horizontal scaling without duplicating governance logic.
+This architecture enables horizontal scaling without duplicating governance logic. A smaller Harness may implement both planes inside one deployable application while preserving the logical separation. Physical distribution should follow operational need, not architectural fashion.
 
-A smaller Harness may implement both planes inside one deployable application while preserving the logical separation.
+### 11.6 Maintain Strict Run Workspace Isolation
 
-Physical distribution should follow operational need, not architectural fashion.
-
-## 11.6 Maintain Strict Run Workspace Isolation
-
-Every Harness run should have its own execution boundary.
-
-At minimum, isolate:
+Every Harness run should have its own execution boundary. At minimum, isolate:
 
 - repository working files;
 - temporary execution files;
@@ -8149,7 +7200,7 @@ At minimum, isolate:
 
 Example:
 
-```
+```text
 runs/
 ├── run-1001/
 │   ├── repository/
@@ -8166,19 +7217,13 @@ runs/
 
 Two concurrent runs should not share writable Scratchpad files or source directories.
 
-### Recommended practice
+#### Recommended practice
 
-Use isolated worktrees, containers, or equivalent execution environments according to the workload's risk level.
+Use isolated worktrees, containers, or equivalent execution environments according to the workload's risk level. Ensure that filesystem and credential isolation are enforced technically, not merely requested through agent Instructions. A unique directory name alone is not a complete security boundary.
 
-Ensure that filesystem and credential isolation are enforced technically, not merely requested through agent Instructions.
+### 11.7 Keep Scratchpads Temporary and Non-Authoritative
 
-A unique directory name alone is not a complete security boundary.
-
-## 11.7 Keep Scratchpads Temporary and Non-Authoritative
-
-Scratchpads are useful for preserving temporary execution observations.
-
-They may contain:
+Scratchpads are useful for preserving temporary execution observations. They may contain:
 
 - assumptions;
 - files under investigation;
@@ -8189,15 +7234,11 @@ They may contain:
 
 They should not become the authoritative source of architectural decisions.
 
-For example, a Developer may discover that a Booking event is consumed by Billing.
-
-That observation can be recorded in the run's Scratchpad.
-
-If it represents durable repository knowledge, the Harness may propose updating Repository Intelligence.
+For example, a Developer may discover that a Booking event is consumed by Billing. That observation can be recorded in the run's Scratchpad. If it represents durable repository knowledge, the Harness may propose updating Repository Intelligence.
 
 The update should undergo review before becoming authoritative.
 
-```
+```text
 Scratchpad Discovery
         ↓
 Knowledge Proposal
@@ -8207,23 +7248,17 @@ Human / Governed Review
 Repository Intelligence
 ```
 
-### Recommended practice
+#### Recommended practice
 
-Define Scratchpad retention, cleanup, security, and promotion policies.
+Define Scratchpad retention, cleanup, security, and promotion policies. Never silently convert temporary observations into permanent Instructions or repository standards.
 
-Never silently convert temporary observations into permanent Instructions or repository standards.
+### 11.8 Use Immutable Inputs for Independent Review and Validation
 
-## 11.8 Use Immutable Inputs for Independent Review and Validation
-
-The Reviewer and Validator should examine a known implementation state.
-
-A common mistake is to allow the Developer to keep modifying files while review or validation is running.
-
-This creates inconsistent evidence.
+The Reviewer and Validator should examine a known implementation state. A common mistake is to allow the Developer to keep modifying files while review or validation is running. This creates inconsistent evidence.
 
 For example:
 
-```
+```text
 Reviewer examines Commit A.
 
 Validator tests Commit B.
@@ -8231,11 +7266,9 @@ Validator tests Commit B.
 Evaluator receives both results.
 ```
 
-The evidence does not describe one coherent implementation.
+The evidence does not describe one coherent implementation. A better approach is:
 
-A better approach is:
-
-```
+```text
 Developer Completes
         ↓
 Freeze Implementation Snapshot
@@ -8251,23 +7284,17 @@ Freeze Implementation Snapshot
 
 Both activities operate against the same implementation snapshot.
 
-### Recommended practice
+#### Recommended practice
 
-Associate every material validation and review result with a repository commit, artifact digest, or equivalent immutable identifier.
+Associate every material validation and review result with a repository commit, artifact digest, or equivalent immutable identifier. If the implementation changes, determine which evidence must be regenerated. Final approval should apply to the exact artifact being approved.
 
-If the implementation changes, determine which evidence must be regenerated.
+### 11.9 Use Sequential Orchestration Only Where Dependencies Require It
 
-Final approval should apply to the exact artifact being approved.
-
-## 11.9 Use Sequential Orchestration Only Where Dependencies Require It
-
-Sequential workflows are easier to understand but may introduce unnecessary latency.
-
-Not every step depends on every preceding step.
+Sequential workflows are easier to understand but may introduce unnecessary latency. Not every step depends on every preceding step.
 
 For example, after a stable implementation snapshot exists, several checks may execute independently.
 
-```
+```text
 Implementation
       ↓
       ├── Reviewer
@@ -8280,23 +7307,15 @@ Implementation
           Evaluator
 ```
 
-This can reduce elapsed execution time.
+This can reduce elapsed execution time. However, parallelism should follow a dependency analysis. Tests requiring a completed build must not start before the necessary artifacts exist.
 
-However, parallelism should follow a dependency analysis.
+#### Recommended practice
 
-Tests requiring a completed build must not start before the necessary artifacts exist.
+Represent execution dependencies explicitly. Use a dependency graph rather than relying on an arbitrary sequence of commands or an unrestricted collection of parallel tasks.
 
-### Recommended practice
+### 11.10 Apply Bounded Parallelism
 
-Represent execution dependencies explicitly.
-
-Use a dependency graph rather than relying on an arbitrary sequence of commands or an unrestricted collection of parallel tasks.
-
-## 11.10 Apply Bounded Parallelism
-
-Parallel execution consumes shared resources.
-
-These may include:
+Parallel execution consumes shared resources. These may include:
 
 - AI provider capacity;
 - API quotas;
@@ -8311,7 +7330,7 @@ Uncontrolled concurrency may reduce overall throughput rather than improve it.
 
 For example, launching fifty builds on a worker sized for five concurrent builds may increase contention and failure rates.
 
-### Recommended practice
+#### Recommended practice
 
 Establish concurrency controls at several levels.
 
@@ -8325,17 +7344,13 @@ Establish concurrency controls at several levels.
 | Population     | Worker pool capacity                |
 | Infrastructure | CPU, memory, and storage quotas     |
 
-Concurrency should be adjustable based on measured throughput, cost, and failure rates.
+Concurrency should be adjustable based on measured throughput, cost, and failure rates. Do not select large concurrency values merely because the platform supports them.
 
-Do not select large concurrency values merely because the platform supports them.
+### 11.11 Preserve Failure Isolation in Fan-Out/Fan-In Workflows
 
-## 11.11 Preserve Failure Isolation in Fan-Out/Fan-In Workflows
+Fan-out/fan-in processing should preserve the outcome of every child operation. Suppose Alpha Car Detailing processes twenty repositories.
 
-Fan-out/fan-in processing should preserve the outcome of every child operation.
-
-Suppose Alpha Car Detailing processes twenty repositories.
-
-```
+```text
 Population: 20 Repositories
        │
        ├── 16 Passed
@@ -8344,11 +7359,9 @@ Population: 20 Repositories
        └── 1 Pending
 ```
 
-A poor aggregator reports only that the population failed.
+A poor aggregator reports only that the population failed. A mature Harness preserves individual results and explains why the population cannot yet be considered complete.
 
-A mature Harness preserves individual results and explains why the population cannot yet be considered complete.
-
-### Recommended practice
+#### Recommended practice
 
 Define aggregation policies explicitly.
 
@@ -8362,17 +7375,11 @@ For example:
 
 The parent run's outcome should be derived from known child states and policy, not a summary generated from incomplete agent observations.
 
-## 11.12 Design Retry Policies Around Failure Classification
+### 11.12 Design Retry Policies Around Failure Classification
 
-Not every failure should trigger the same recovery behavior.
+Not every failure should trigger the same recovery behavior. A network timeout may justify a retry. A compilation failure usually requires implementation correction.
 
-A network timeout may justify a retry.
-
-A compilation failure usually requires implementation correction.
-
-A security policy denial may require stopping the run.
-
-An approval rejection requires an authorized workflow decision.
+A security policy denial may require stopping the run. An approval rejection requires an authorized workflow decision.
 
 | Failure Type               | Recommended Response                         |
 | -------------------------- | -------------------------------------------- |
@@ -8386,23 +7393,23 @@ An approval rejection requires an authorized workflow decision.
 | Human approval rejection   | Return for revision or terminate             |
 | Worker interruption        | Recover from durable checkpoint              |
 
-### Recommended practice
+#### Recommended practice
 
-Define retry eligibility, maximum attempts, backoff, timeout, and exhaustion behavior separately for each failure class.
+Define retry eligibility, maximum attempts, backoff, timeout, and exhaustion behavior separately for each failure class. Avoid repeated execution without changing the conditions that caused a deterministic failure.
 
-Avoid repeated execution without changing the conditions that caused a deterministic failure.
+> **Enterprise Tip**
 
-> Enterprise Tip
 >
+
 > Retry policy should improve the probability of success, not merely increase the number of attempts.
+
 >
+
 > Measure whether retries actually resolve failures. Remove retry behavior that adds cost without improving outcomes.
 
-## 11.13 Make Side Effects Idempotent
+### 11.13 Make Side Effects Idempotent
 
-Enterprise Harnesses perform operations beyond generating code.
-
-Examples include:
+Enterprise Harnesses perform operations beyond generating code. Examples include:
 
 - creating branches;
 - creating pull requests;
@@ -8411,13 +7418,11 @@ Examples include:
 - updating run status;
 - recording approvals.
 
-A worker may fail after performing an operation but before recording its completion.
-
-On recovery, repeating the operation can create duplicates.
+A worker may fail after performing an operation but before recording its completion. On recovery, repeating the operation can create duplicates.
 
 For example:
 
-```
+```text
 Create Pull Request
        ↓
 GitHub succeeds
@@ -8429,29 +7434,21 @@ Harness retries
 Duplicate Pull Request
 ```
 
-### Recommended practice
+#### Recommended practice
 
-Use idempotency keys or equivalent deduplication mechanisms for side-effecting operations.
+Use idempotency keys or equivalent deduplication mechanisms for side-effecting operations. A key may include:
 
-A key may include:
-
-```
+```text
 RunId + OperationType + ArtifactVersion
 ```
 
-Before repeating an operation, the Harness should determine whether the operation already completed.
+Before repeating an operation, the Harness should determine whether the operation already completed. Durable state transitions and external-side-effect reconciliation are essential for reliable recovery.
 
-Durable state transitions and external-side-effect reconciliation are essential for reliable recovery.
+### 11.14 Keep Validation Deterministic and Independent
 
-## 11.14 Keep Validation Deterministic and Independent
+AI Agents may recommend checks and interpret their results. They should not replace objective execution evidence. For Alpha Car Detailing, validation may include:
 
-AI Agents may recommend checks and interpret their results.
-
-They should not replace objective execution evidence.
-
-For Alpha Car Detailing, validation may include:
-
-```
+```text
 dotnet restore
 dotnet build
 dotnet test
@@ -8472,45 +7469,35 @@ Each gate should return a structured result containing:
 
 The Harness should distinguish:
 
-```
+```text
 Passed
 Failed
 Error
 Skipped
 ```
 
-A skipped mandatory gate should not be interpreted as a pass.
+A skipped mandatory gate should not be interpreted as a pass. An infrastructure error should not be mistaken for an assertion failure.
 
-An infrastructure error should not be mistaken for an assertion failure.
+#### Recommended practice
 
-### Recommended practice
+Make gate outcomes explicit and machine-verifiable. The Validator Agent should report evidence accurately rather than transform an unsuccessful gate into a favorable narrative.
 
-Make gate outcomes explicit and machine-verifiable.
+### 11.15 Separate Fast Iteration Gates from Final Completion Gates
 
-The Validator Agent should report evidence accurately rather than transform an unsuccessful gate into a favorable narrative.
+Running every test after every small implementation change can make AI Engineering workflows unnecessarily expensive. A more efficient architecture uses different validation scopes.
 
-## 11.15 Separate Fast Iteration Gates from Final Completion Gates
+#### Iteration gates
 
-Running every test after every small implementation change can make AI Engineering workflows unnecessarily expensive.
-
-A more efficient architecture uses different validation scopes.
-
-### Iteration gates
-
-Execute checks relevant to the affected components.
-
-Examples:
+Execute checks relevant to the affected components. Examples:
 
 - changed-project build;
 - affected unit tests;
 - scoped component tests;
 - focused static analysis.
 
-### Final completion gates
+#### Final completion gates
 
-Execute the required authoritative validation profile.
-
-Examples:
+Execute the required authoritative validation profile. Examples:
 
 - full required solution build;
 - integration tests;
@@ -8518,7 +7505,7 @@ Examples:
 - architecture validation;
 - security scanning.
 
-```
+```text
 Developer Iteration
        ↓
 Scoped Validation
@@ -8532,15 +7519,11 @@ Mandatory Completion Gates
 
 This pattern is especially valuable in large monorepos and long-running automated bug-fix workflows.
 
-### Recommended practice
+#### Recommended practice
 
-Use repository dependency information to identify affected tests and projects.
+Use repository dependency information to identify affected tests and projects. Never reduce mandatory final assurance merely to improve execution speed. Scoped iteration optimizes feedback. Final gates determine completion.
 
-Never reduce mandatory final assurance merely to improve execution speed.
-
-Scoped iteration optimizes feedback. Final gates determine completion.
-
-## 11.16 Preserve Reviewer, Validator, and Evaluator Independence
+### 11.16 Preserve Reviewer, Validator, and Evaluator Independence
 
 These roles provide different forms of assurance.
 
@@ -8554,27 +7537,21 @@ A Harness should not collapse these responsibilities into one undifferentiated r
 
 For example:
 
-```
+```text
 Review: Passed
 Validation: Passed
 Evaluation: Partial
 ```
 
-is a legitimate outcome.
+is a legitimate outcome. The code may be maintainable and technically valid while failing to deliver a required business behavior.
 
-The code may be maintainable and technically valid while failing to deliver a required business behavior.
+#### Recommended practice
 
-### Recommended practice
+Maintain separate role results and evidence contracts. Do not permit the Developer to approve its own work merely because its internal reasoning indicates success.
 
-Maintain separate role results and evidence contracts.
+### 11.17 Establish Explicit Human Approval Boundaries
 
-Do not permit the Developer to approve its own work merely because its internal reasoning indicates success.
-
-## 11.17 Establish Explicit Human Approval Boundaries
-
-Human approval is required where accountability, risk, or policy demands it.
-
-Examples include:
+Human approval is required where accountability, risk, or policy demands it. Examples include:
 
 - production deployment;
 - authentication changes;
@@ -8586,7 +7563,7 @@ Examples include:
 
 Approval requirements should be derived from trusted policy and repository ownership information.
 
-### Recommended practice
+#### Recommended practice
 
 Associate approvals with:
 
@@ -8598,19 +7575,13 @@ Associate approvals with:
 - timestamp;
 - audit record.
 
-A change to the approved implementation may require renewed validation and approval.
+A change to the approved implementation may require renewed validation and approval. An AI Agent should never generate an approval record on behalf of an authorized human.
 
-An AI Agent should never generate an approval record on behalf of an authorized human.
+### 11.18 Keep AI Providers Behind Explicit Adapters
 
-## 11.18 Keep AI Providers Behind Explicit Adapters
+Claude Code, GitHub Copilot, and Codex provide different execution interfaces. The Harness should not embed provider-specific assumptions throughout its orchestration layer. Prefer:
 
-Claude Code, GitHub Copilot, and Codex provide different execution interfaces.
-
-The Harness should not embed provider-specific assumptions throughout its orchestration layer.
-
-Prefer:
-
-```
+```text
 Harness
    ↓
 IAgentProvider
@@ -8632,23 +7603,17 @@ The adapter should normalize:
 
 However, avoid pretending that all providers are identical.
 
-### Recommended practice
+#### Recommended practice
 
-Define a stable core contract and separately describe optional provider capabilities.
+Define a stable core contract and separately describe optional provider capabilities. The Harness should validate whether a provider supports the selected workflow before starting the run. Unsupported capabilities should result in explicit rejection or an approved alternative workflow—not silent degradation.
 
-The Harness should validate whether a provider supports the selected workflow before starting the run.
+### 11.19 Treat Tool Integrations as Governed Capabilities
 
-Unsupported capabilities should result in explicit rejection or an approved alternative workflow—not silent degradation.
-
-## 11.19 Treat Tool Integrations as Governed Capabilities
-
-External tools can expose sensitive systems.
-
-A tool adapter should not automatically grant unrestricted access simply because it supports a requested operation.
+External tools can expose sensitive systems. A tool adapter should not automatically grant unrestricted access simply because it supports a requested operation.
 
 For example:
 
-```
+```text
 ISourceControlProvider
        │
        ├── ReadRepository
@@ -8657,35 +7622,21 @@ ISourceControlProvider
        └── CreatePullRequest
 ```
 
-A Reviewer may require only read access.
+A Reviewer may require only read access. A Developer may require repository-local write access. A release workflow may require additional permissions.
 
-A Developer may require repository-local write access.
+#### Recommended practice
 
-A release workflow may require additional permissions.
+Apply least privilege at the tool, identity, repository, and run levels. Treat MCP responses and external repository content as potentially untrusted data. Do not allow tool output to redefine enterprise Instructions or grant new execution privileges.
 
-### Recommended practice
+### 11.20 Govern Shared Instructions and Skills
 
-Apply least privilege at the tool, identity, repository, and run levels.
-
-Treat MCP responses and external repository content as potentially untrusted data.
-
-Do not allow tool output to redefine enterprise Instructions or grant new execution privileges.
-
-## 11.20 Govern Shared Instructions and Skills
-
-Shared Instructions and Skills can improve consistency across many repositories.
-
-They can also spread defects rapidly when changed without governance.
-
-Suppose a shared Skill for adding integration events contains an incorrect outbox implementation pattern.
+Shared Instructions and Skills can improve consistency across many repositories. They can also spread defects rapidly when changed without governance. Suppose a shared Skill for adding integration events contains an incorrect outbox implementation pattern.
 
 If fifty services consume it, the impact may be enterprise-wide.
 
-### Recommended practice
+#### Recommended practice
 
-Treat shared Instructions and Skills as versioned engineering assets.
-
-Require:
+Treat shared Instructions and Skills as versioned engineering assets. Require:
 
 - designated ownership;
 - peer review;
@@ -8695,15 +7646,11 @@ Require:
 - change history;
 - rollback capability.
 
-A shared Skill update should not silently change the behavior of active runs.
+A shared Skill update should not silently change the behavior of active runs. The Harness should record the exact version used during execution.
 
-The Harness should record the exact version used during execution.
+### 11.21 Keep Repository Intelligence Governed and Current
 
-## 11.21 Keep Repository Intelligence Governed and Current
-
-Repository Intelligence should improve agent understanding without becoming an unreviewed collection of assumptions.
-
-Useful content includes:
+Repository Intelligence should improve agent understanding without becoming an unreviewed collection of assumptions. Useful content includes:
 
 - architecture;
 - domain boundaries;
@@ -8715,25 +7662,15 @@ Useful content includes:
 
 However, this information may become stale.
 
-### Recommended practice
+#### Recommended practice
 
-Associate Repository Intelligence with its source repository and maintain clear update ownership.
+Associate Repository Intelligence with its source repository and maintain clear update ownership. When the Harness detects inconsistencies between repository code and documented knowledge, it should report them. It should not silently rewrite authoritative documentation.
 
-When the Harness detects inconsistencies between repository code and documented knowledge, it should report them.
+Proposed changes should be reviewed before promotion. This preserves the distinction between temporary run discoveries and governed organizational knowledge.
 
-It should not silently rewrite authoritative documentation.
+### 11.22 Design Observability Before Scaling
 
-Proposed changes should be reviewed before promotion.
-
-This preserves the distinction between temporary run discoveries and governed organizational knowledge.
-
-## 11.22 Design Observability Before Scaling
-
-Observability should be part of the initial Harness architecture.
-
-A distributed Harness without consistent telemetry becomes difficult to operate.
-
-At minimum, record:
+Observability should be part of the initial Harness architecture. A distributed Harness without consistent telemetry becomes difficult to operate. At minimum, record:
 
 - run identity;
 - repository identity;
@@ -8758,19 +7695,13 @@ For population processing, also record:
 - pending items;
 - throughput.
 
-### Recommended practice
+#### Recommended practice
 
-Use consistent trace and metric conventions across all execution providers.
+Use consistent trace and metric conventions across all execution providers. Preserve correlation between parent runs, child runs, validation gates, and approval events. Avoid exposing sensitive Prompt content or secrets through unrestricted telemetry.
 
-Preserve correlation between parent runs, child runs, validation gates, and approval events.
+### 11.23 Optimize Total Engineering Cost, Not Only Agent Execution Time
 
-Avoid exposing sensitive Prompt content or secrets through unrestricted telemetry.
-
-## 11.23 Optimize Total Engineering Cost, Not Only Agent Execution Time
-
-The cost of a Harness run includes more than AI inference.
-
-Relevant components may include:
+The cost of a Harness run includes more than AI inference. Relevant components may include:
 
 - provider usage;
 - build infrastructure;
@@ -8792,21 +7723,15 @@ For example, two workflows may produce different operational results.
 | Total elapsed engineering time | 55 min     | 28 min     |
 | Developer iterations           | 4          | 1          |
 
-These values are illustrative.
+These values are illustrative. Workflow B takes longer during initial agent execution but reaches an acceptable outcome sooner.
 
-Workflow B takes longer during initial agent execution but reaches an acceptable outcome sooner.
+#### Recommended practice
 
-### Recommended practice
+Evaluate cost per validated and approved engineering outcome rather than cost per agent invocation alone. Use measurements from representative workloads before introducing optimization changes.
 
-Evaluate cost per validated and approved engineering outcome rather than cost per agent invocation alone.
+### 11.24 Introduce Caching Carefully
 
-Use measurements from representative workloads before introducing optimization changes.
-
-## 11.24 Introduce Caching Carefully
-
-Caching can reduce repeated work.
-
-Potential cache targets include:
+Caching can reduce repeated work. Potential cache targets include:
 
 - dependency restore results;
 - immutable build artifacts;
@@ -8815,13 +7740,11 @@ Potential cache targets include:
 - approved shared Skill packages;
 - static analysis outputs tied to immutable inputs.
 
-However, caching must not contaminate independent execution.
-
-A cache should have a clear identity and invalidation policy.
+However, caching must not contaminate independent execution. A cache should have a clear identity and invalidation policy.
 
 For example:
 
-```
+```text
 Repository Commit
      +
 Toolchain Version
@@ -8831,15 +7754,11 @@ Validation Configuration
 Cache Identity
 ```
 
-### Recommended practice
+#### Recommended practice
 
-Cache immutable or reproducibly derived data.
+Cache immutable or reproducibly derived data. Do not cache mutable Scratchpads, agent decisions, or validation success in a way that can be reused against changed implementation inputs. Never allow a cache hit to bypass mandatory validation unless the organization's validated gate policy explicitly permits reuse of equivalent evidence.
 
-Do not cache mutable Scratchpads, agent decisions, or validation success in a way that can be reused against changed implementation inputs.
-
-Never allow a cache hit to bypass mandatory validation unless the organization's validated gate policy explicitly permits reuse of equivalent evidence.
-
-## 11.25 Use Risk-Based Workflow Profiles
+### 11.25 Use Risk-Based Workflow Profiles
 
 Not every engineering task requires the most expensive multi-agent workflow.
 
@@ -8851,25 +7770,17 @@ For example:
 | Medium | Developer + Reviewer + Validator + Evaluator                                              |
 | High   | Lead + Developer + Reviewer + Validator + Evaluator + specialized review + human approval |
 
-These are example profiles; organizations should determine their own requirements.
+These are example profiles; organizations should determine their own requirements. A documentation-only change may need fewer stages than an authentication change.
 
-A documentation-only change may need fewer stages than an authentication change.
+#### Recommended practice
 
-### Recommended practice
+Use explicit, policy-driven risk classification. Do not allow an agent to unilaterally downgrade risk to avoid mandatory gates or approvals. When classification is uncertain, the Harness should use a conservative policy or request authorized review.
 
-Use explicit, policy-driven risk classification.
+### 11.26 Scale Incrementally
 
-Do not allow an agent to unilaterally downgrade risk to avoid mandatory gates or approvals.
+Enterprise Harness architectures should evolve with proven requirements. A recommended progression is:
 
-When classification is uncertain, the Harness should use a conservative policy or request authorized review.
-
-## 11.26 Scale Incrementally
-
-Enterprise Harness architectures should evolve with proven requirements.
-
-A recommended progression is:
-
-```
+```text
 Single Repository Harness
           ↓
 Shared Skills and Instructions
@@ -8887,37 +7798,23 @@ Population Processing
 Advanced Recovery and Optimization
 ```
 
-An organization does not need to implement every pattern at the beginning.
-
-For Alpha Car Detailing, the Booking Harness may first establish reliable execution, evidence, and validation.
-
-The Fleet and Billing teams can then adopt shared capabilities.
+An organization does not need to implement every pattern at the beginning. For Alpha Car Detailing, the Booking Harness may first establish reliable execution, evidence, and validation. The Fleet and Billing teams can then adopt shared capabilities.
 
 Cross-repository coordination should be introduced when actual dependencies justify it.
 
-### Recommended practice
+#### Recommended practice
 
-Scale architecture in response to measured complexity.
+Scale architecture in response to measured complexity. Avoid adopting distributed queues, worker pools, and elaborate workflow engines before the workload requires them.
 
-Avoid adopting distributed queues, worker pools, and elaborate workflow engines before the workload requires them.
+### 11.27 Establish Compatibility and Extension Contracts
 
-## 11.27 Establish Compatibility and Extension Contracts
+Enterprise Harnesses evolve continuously. New repositories appear. Validation rules change.
 
-Enterprise Harnesses evolve continuously.
-
-New repositories appear.
-
-Validation rules change.
-
-AI providers introduce new capabilities.
-
-Tool adapters receive upgrades.
-
-A composable architecture should support these changes through explicit compatibility rules.
+AI providers introduce new capabilities. Tool adapters receive upgrades. A composable architecture should support these changes through explicit compatibility rules.
 
 For example, the platform may define:
 
-```
+```text
 Harness Contract Version
 Repository Profile Schema Version
 Agent Result Schema Version
@@ -8926,21 +7823,15 @@ Skill Version
 Provider Adapter Version
 ```
 
-### Recommended practice
+#### Recommended practice
 
-Use semantic versioning or another clearly governed compatibility policy where appropriate.
-
-Validate configuration and adapter compatibility before execution.
-
-Provide migration paths for breaking changes.
+Use semantic versioning or another clearly governed compatibility policy where appropriate. Validate configuration and adapter compatibility before execution. Provide migration paths for breaking changes.
 
 Avoid forcing every repository team to upgrade simultaneously unless a mandatory security or compatibility requirement justifies it.
 
-## 11.28 Test the Harness Independently of AI Providers
+### 11.28 Test the Harness Independently of AI Providers
 
-The Harness itself is software and should have its own test suite.
-
-Tests should verify:
+The Harness itself is software and should have its own test suite. Tests should verify:
 
 - configuration resolution;
 - policy precedence;
@@ -8959,7 +7850,7 @@ For deterministic Harness tests, use controlled fake or stub agent providers.
 
 For example, a test provider may return:
 
-```
+```json
 {
   "role": "developer",
   "status": "succeeded",
@@ -8969,21 +7860,13 @@ For example, a test provider may return:
 
 The test can then verify that the Harness invokes the Reviewer and required validation gates.
 
-### Recommended practice
+#### Recommended practice
 
-Do not make every orchestration unit test depend on a live AI provider.
+Do not make every orchestration unit test depend on a live AI provider. Use contract tests and controlled integration tests to verify provider adapters separately. This reduces cost, improves reproducibility, and makes failures easier to diagnose.
 
-Use contract tests and controlled integration tests to verify provider adapters separately.
+### 11.29 Perform Failure-Injection Testing
 
-This reduces cost, improves reproducibility, and makes failures easier to diagnose.
-
-## 11.29 Perform Failure-Injection Testing
-
-Happy-path tests do not establish enterprise resilience.
-
-A production Harness should be tested against failure conditions.
-
-Examples include:
+Happy-path tests do not establish enterprise resilience. A production Harness should be tested against failure conditions. Examples include:
 
 - terminating a worker during validation;
 - interrupting an AI provider response;
@@ -8995,7 +7878,7 @@ Examples include:
 - injecting duplicate completion events;
 - triggering conflicting parallel modifications.
 
-### Recommended practice
+#### Recommended practice
 
 Verify that failures do not result in:
 
@@ -9008,15 +7891,13 @@ Verify that failures do not result in:
 
 The Harness should recover safely or fail visibly with sufficient evidence for investigation.
 
-## 11.30 Make Completion an Explicit State Transition
+### 11.30 Make Completion an Explicit State Transition
 
-A Harness should never infer final success merely because the last agent produced a favorable response.
-
-Completion must be based on the workflow's required conditions.
+A Harness should never infer final success merely because the last agent produced a favorable response. Completion must be based on the workflow's required conditions.
 
 For example:
 
-```
+```text
 Implementation Available
         +
 Review Acceptable
@@ -9030,29 +7911,21 @@ Required Approvals Satisfied
 Eligible for Completion
 ```
 
-The exact sequence depends on policy.
+The exact sequence depends on policy. A run requiring approval should remain:
 
-A run requiring approval should remain:
-
-```
+```text
 AwaitingApproval
 ```
 
-until the approval is received.
+until the approval is received. A run whose validation failed should remain unsuccessful even if the Evaluator produced positive commentary.
 
-A run whose validation failed should remain unsuccessful even if the Evaluator produced positive commentary.
+#### Recommended practice
 
-### Recommended practice
-
-Use an explicit state machine.
-
-Validate permitted transitions.
-
-Record who or what initiated each transition.
+Use an explicit state machine. Validate permitted transitions. Record who or what initiated each transition.
 
 Ensure that state changes are durable and auditable.
 
-## 11.31 Maintain a Pattern Decision Record
+### 11.31 Maintain a Pattern Decision Record
 
 Large organizations benefit from documenting why a particular Harness pattern was selected.
 
@@ -9060,7 +7933,7 @@ For example:
 
 Decision: Shared Platform Harness for Alpha Car Detailing
 
-```
+```markdown
 # Harness Architecture Decision
 
 ## Context
@@ -9095,7 +7968,7 @@ and isolated execution workers.
 - Fully distributed team-managed Harnesses
 ```
 
-### Recommended practice
+#### Recommended practice
 
 Maintain architecture decision records for significant choices involving:
 
@@ -9110,7 +7983,7 @@ Maintain architecture decision records for significant choices involving:
 
 Decision records make future architectural changes easier to evaluate.
 
-## 11.32 Enterprise Harness Best-Practice Checklist
+### 11.32 Enterprise Harness Best-Practice Checklist
 
 Before promoting a Harness architecture into enterprise use, verify the following conditions.
 
@@ -9143,67 +8016,43 @@ Before promoting a Harness architecture into enterprise use, verify the followin
 
 This checklist should be used during architecture review and periodically revisited as the number of repositories, agents, workflows, and teams increases.
 
-## 11.33 Final Best-Practice Principle
+### 11.33 Final Best-Practice Principle
 
-The purpose of Enterprise Harness patterns is not to maximize the amount of automation.
-
-It is to make automation reliable, understandable, reusable, and governable.
-
-A successful Enterprise Harness allows Alpha Car Detailing to add new repositories, introduce new agent capabilities, improve shared validation, and support multiple AI providers without sacrificing engineering independence or operational control.
+The purpose of Enterprise Harness patterns is not to maximize the amount of automation. It is to make automation reliable, understandable, reusable, and governable. A successful Enterprise Harness allows Alpha Car Detailing to add new repositories, introduce new agent capabilities, improve shared validation, and support multiple AI providers without sacrificing engineering independence or operational control.
 
 The architecture should remain clear about four questions:
 
-Who owns the engineering requirement?
+Who owns the engineering requirement? The appropriate product, architecture, and repository owners. Who performs the implementation?
 
-The appropriate product, architecture, and repository owners.
+The assigned Developer Agent or authorized engineering workflow. Who verifies and evaluates the result? Independent Reviewer, Validator, and Evaluator responsibilities, supported by objective evidence.
 
-Who performs the implementation?
-
-The assigned Developer Agent or authorized engineering workflow.
-
-Who verifies and evaluates the result?
-
-Independent Reviewer, Validator, and Evaluator responsibilities, supported by objective evidence.
-
-Who authorizes high-risk decisions?
-
-The appropriately designated human authorities.
-
-When these responsibilities remain explicit, the organization can safely combine centralized infrastructure, distributed execution, multi-agent workflows, parallel processing, reusable Skills, and provider adapters.
+Who authorizes high-risk decisions? The appropriately designated human authorities. When these responsibilities remain explicit, the organization can safely combine centralized infrastructure, distributed execution, multi-agent workflows, parallel processing, reusable Skills, and provider adapters.
 
 When they become blurred, even a technically sophisticated Harness can become difficult to trust.
 
-> Architect's Note
+> **Architect's Note**
+
 >
+
 > The defining characteristic of an enterprise-grade Harness is not the number of agents, integrations, repositories, or automated steps it supports.
+
 >
+
 > It is the ability to scale those capabilities while preserving clear responsibility, deterministic evidence, security isolation, operational visibility, and accountable human authority.
 
-Chapter 21 status: In progress — next section: Anti-patterns
+## 12. Anti-patterns
 
-# 12. Anti-patterns
+Enterprise Harnesses often begin as relatively simple automation workflows. A small number of scripts coordinate an AI Agent, execute tests, and prepare a pull request. As adoption expands, additional repositories, teams, providers, validation requirements, and governance controls are introduced. Without deliberate architectural boundaries, the Harness gradually becomes a collection of exceptions, duplicated workflows, shared mutable state, and hidden dependencies.
 
-Enterprise Harnesses often begin as relatively simple automation workflows. A small number of scripts coordinate an AI Agent, execute tests, and prepare a pull request. As adoption expands, additional repositories, teams, providers, validation requirements, and governance controls are introduced.
-
-Without deliberate architectural boundaries, the Harness gradually becomes a collection of exceptions, duplicated workflows, shared mutable state, and hidden dependencies.
-
-These problems are particularly dangerous because the Harness is responsible for changing other software systems. A defect in its orchestration, security, or validation logic may affect multiple repositories rather than one application.
-
-This section examines common Enterprise Harness anti-patterns, their consequences, and the architectural practices that prevent them.
-
-The central warning is:
+These problems are particularly dangerous because the Harness is responsible for changing other software systems. A defect in its orchestration, security, or validation logic may affect multiple repositories rather than one application. This section examines common Enterprise Harness anti-patterns, their consequences, and the architectural practices that prevent them. The central warning is:
 
 > A Harness that automates poor engineering boundaries does not eliminate complexity. It distributes that complexity across every repository and workflow that depends on it.
 
-## 12.1 The Universal Harness Anti-pattern
+### 12.1 The Universal Harness Anti-pattern
 
-### Problem
+#### Problem
 
-The organization attempts to create one Harness that directly understands and implements every possible engineering workflow.
-
-Initially, the Harness handles straightforward API changes.
-
-Over time, responsibilities expand to include:
+The organization attempts to create one Harness that directly understands and implements every possible engineering workflow. Initially, the Harness handles straightforward API changes. Over time, responsibilities expand to include:
 
 - application development;
 - bug fixing;
@@ -9218,7 +8067,7 @@ Over time, responsibilities expand to include:
 
 Instead of composing reusable capabilities, the organization adds more branches to the same orchestration workflow.
 
-```
+```text
 if (task.Type == "api-development")
 {
     // API development workflow
@@ -9239,7 +8088,7 @@ else if (task.Type == "security-remediation")
 
 As workflow types multiply, the central Harness becomes difficult to understand and maintain.
 
-### Consequences
+#### Consequences
 
 - High coupling between unrelated workflows.
 - Growing regression risk.
@@ -9249,27 +8098,33 @@ As workflow types multiply, the central Harness becomes difficult to understand 
 - Slow onboarding of new engineering capabilities.
 - Increased operational risk.
 
-### Recommended alternative
+#### Recommended alternative
 
 Create a composable workflow architecture.
 
-\#chatgpt-mermaid-\_r_16gd\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(13, 13, 13);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_16gd\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_16gd\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_16gd\_ .error-icon{fill:rgb(243, 243, 243);}#chatgpt-mermaid-\_r_16gd\_ .error-text{fill:rgb(13, 13, 13);stroke:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16gd\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_16gd\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_16gd\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_16gd\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_16gd\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_16gd\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_16gd\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_16gd\_ .marker.cross{stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_16gd\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_16gd\_ p{margin:0;}#chatgpt-mermaid-\_r_16gd\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16gd\_ .cluster-label text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16gd\_ .cluster-label span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16gd\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_16gd\_ .label text,#chatgpt-mermaid-\_r_16gd\_ span{fill:rgb(13, 13, 13);color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16gd\_ .node rect,#chatgpt-mermaid-\_r_16gd\_ .node circle,#chatgpt-mermaid-\_r_16gd\_ .node ellipse,#chatgpt-mermaid-\_r_16gd\_ .node polygon,#chatgpt-mermaid-\_r_16gd\_ .node path{fill:rgb(222, 234, 251);stroke:rgb(83, 154, 248);stroke-width:1px;}#chatgpt-mermaid-\_r_16gd\_ .rough-node .label text,#chatgpt-mermaid-\_r_16gd\_ .node .label text,#chatgpt-mermaid-\_r_16gd\_ .image-shape .label,#chatgpt-mermaid-\_r_16gd\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_16gd\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_16gd\_ .rough-node .label,#chatgpt-mermaid-\_r_16gd\_ .node .label,#chatgpt-mermaid-\_r_16gd\_ .image-shape .label,#chatgpt-mermaid-\_r_16gd\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_16gd\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_16gd\_ .root .anchor path{fill:rgb(143, 143, 143)!important;stroke-width:0;stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_16gd\_ .arrowheadPath{fill:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_16gd\_ .edgePath .path{stroke:rgb(143, 143, 143);stroke-width:1px;}#chatgpt-mermaid-\_r_16gd\_ .flowchart-link{stroke:rgb(143, 143, 143);fill:none;}#chatgpt-mermaid-\_r_16gd\_ .edgeLabel{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_16gd\_ .edgeLabel p{background-color:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_16gd\_ .edgeLabel rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_16gd\_ .labelBkg{background-color:rgba(252, 252, 252, 0.5);}#chatgpt-mermaid-\_r_16gd\_ .cluster rect{fill:rgb(243, 243, 243);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_16gd\_ .cluster text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16gd\_ .cluster span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16gd\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(243, 243, 243);border:1px solid rgba(0, 0, 0, 0.1);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_16gd\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16gd\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_16gd\_ .icon-shape,#chatgpt-mermaid-\_r_16gd\_ .image-shape{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_16gd\_ .icon-shape p,#chatgpt-mermaid-\_r_16gd\_ .image-shape p{background-color:rgb(252, 252, 252);padding:2px;}#chatgpt-mermaid-\_r_16gd\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_16gd\_ .image-shape .label rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_16gd\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_16gd\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_16gd\_ .node .neo-node{stroke:rgb(83, 154, 248);}#chatgpt-mermaid-\_r_16gd\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_16gd\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_16gd\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_16gd\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_16gd\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_16gd\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_16gd\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_16gd\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_16gd\_ [data-look="neo"].node .neo-line path{stroke:rgb(83, 154, 248);filter:none;}#chatgpt-mermaid-\_r_16gd\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_16gd\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_16gd\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_16gd\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_16gd\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_16gd\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_16gd\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_16gd\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_16gd\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_16gd\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_16gd\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_16gd\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-width:1px;}#chatgpt-mermaid-\_r_16gd\_ .node rect,#chatgpt-mermaid-\_r_16gd\_ .node circle,#chatgpt-mermaid-\_r_16gd\_ .node ellipse,#chatgpt-mermaid-\_r_16gd\_ .node polygon,#chatgpt-mermaid-\_r_16gd\_ .node path{fill:rgb(229, 243, 255);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_16gd\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_16gd\_ .node.mermaid-decision .label-container{fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_16gd\_ .edgePaths .flowchart-link{stroke:rgb(143, 143, 143);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_16gd\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_16gd\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}Enterprise Harness PlatformAPI Development WorkflowBug Fix WorkflowMigration WorkflowSecurity RemediationWorkflowShared Harness Capabilities
+```mermaid
+flowchart TB
+    H["Enterprise Harness Platform"] --> A["API Development Workflow"]
+    H --> B["Bug Fix Workflow"]
+    H --> C["Migration Workflow"]
+    H --> D["Security Remediation Workflow"]
+    A --> Shared["Shared Harness Capabilities"]
+    B --> Shared
+    C --> Shared
+    D --> Shared
+```
 
-Each workflow owns its execution-specific decisions while reusing approved capabilities.
+Each workflow owns its execution-specific decisions while reusing approved capabilities. The shared platform provides mechanisms such as workspace management, agent invocation, validation, metrics, and recovery. It should not become a repository-aware decision tree for every possible task.
 
-The shared platform provides mechanisms such as workspace management, agent invocation, validation, metrics, and recovery.
+### 12.2 Hard-Coded Repository Dependencies
 
-It should not become a repository-aware decision tree for every possible task.
-
-## 12.2 Hard-Coded Repository Dependencies
-
-### Problem
+#### Problem
 
 The central Harness contains knowledge of individual repository names, paths, commands, and engineering requirements.
 
 For example:
 
-```
+```text
 if (repositoryName == "booking-service")
 {
     RunBookingTests();
@@ -9284,13 +8139,9 @@ else if (repositoryName == "fleet-service")
 }
 ```
 
-This design appears convenient when the organization has only a few repositories.
+This design appears convenient when the organization has only a few repositories. However, every new service requires a Harness modification. The orchestration engine gradually becomes coupled to the organization's repository structure.
 
-However, every new service requires a Harness modification.
-
-The orchestration engine gradually becomes coupled to the organization's repository structure.
-
-### Consequences
+#### Consequences
 
 - New repositories require central code changes.
 - Repository ownership becomes unclear.
@@ -9299,11 +8150,11 @@ The orchestration engine gradually becomes coupled to the organization's reposit
 - Platform teams become bottlenecks.
 - Repository-specific behavior becomes difficult to test independently.
 
-### Recommended alternative
+#### Recommended alternative
 
 Use declarative repository profiles.
 
-```
+```yaml
 repository:
   id: booking-service
   owner: booking-team
@@ -9318,7 +8169,7 @@ validation:
 
 The Harness resolves the profile and executes registered capabilities.
 
-```
+```text
 Repository Profile
         ↓
 Configuration Resolver
@@ -9330,9 +8181,9 @@ Required Gates
 
 The platform should understand the validation contract, not the internal business meaning of every repository.
 
-## 12.3 Centralizing Every Team Decision
+### 12.3 Centralizing Every Team Decision
 
-### Problem
+#### Problem
 
 The organization establishes a central Harness team and makes that team responsible for every engineering decision.
 
@@ -9346,13 +8197,11 @@ For example, the platform team decides:
 
 The platform team gradually becomes a centralized authority for domain-specific implementation.
 
-### Consequences
+#### Consequences
 
-This model reduces team autonomy and creates organizational bottlenecks.
+This model reduces team autonomy and creates organizational bottlenecks. It may also lead to incorrect decisions because the central team lacks detailed domain knowledge.
 
-It may also lead to incorrect decisions because the central team lacks detailed domain knowledge.
-
-### Recommended alternative
+#### Recommended alternative
 
 Separate enterprise governance from repository engineering authority.
 
@@ -9366,23 +8215,23 @@ Separate enterprise governance from repository engineering authority.
 | Cross-service contract standards | Architecture Governance  |
 | Risk-based approvals             | Authorized Policy Owners |
 
-The platform supplies reusable capabilities.
+The platform supplies reusable capabilities. Teams retain responsibility for legitimate local engineering decisions.
 
-Teams retain responsibility for legitimate local engineering decisions.
+> **Architect's Note**
 
-> Architect's Note
 >
+
 > Centralizing reusable infrastructure improves consistency. Centralizing all engineering judgment often reduces scalability.
 
-## 12.4 Copy-and-Paste Harness Implementations
+### 12.4 Copy-and-Paste Harness Implementations
 
-### Problem
+#### Problem
 
 Every team copies an existing Harness repository and modifies it independently.
 
 For example:
 
-```
+```text
 booking-harness/
 fleet-harness/
 billing-harness/
@@ -9391,7 +8240,7 @@ notifications-harness/
 
 All four contain duplicated implementations of:
 
-```
+```text
 lead.ps1
 validate.ps1
 evaluate.ps1
@@ -9401,11 +8250,9 @@ metrics-collector
 provider-adapter
 ```
 
-Initially, the copied Harnesses behave similarly.
+Initially, the copied Harnesses behave similarly. Over time, each evolves independently.
 
-Over time, each evolves independently.
-
-### Consequences
+#### Consequences
 
 - Security fixes must be repeated.
 - Retry behavior becomes inconsistent.
@@ -9414,11 +8261,11 @@ Over time, each evolves independently.
 - Bugs reappear in multiple implementations.
 - Provider upgrades become expensive.
 
-### Recommended alternative
+#### Recommended alternative
 
 Use shared libraries, packages, execution services, or approved templates.
 
-```
+```text
 Shared Harness Platform
         │
         ├── Booking Profile
@@ -9427,19 +8274,17 @@ Shared Harness Platform
         └── Notifications Profile
 ```
 
-A local Harness may still exist, but it should consume shared capabilities rather than maintaining an unrelated copy.
+A local Harness may still exist, but it should consume shared capabilities rather than maintaining an unrelated copy. Not all duplication is harmful. Small repository-specific scripts may be easier to maintain locally. The problem arises when substantial shared execution logic is duplicated without ownership or synchronization.
 
-Not all duplication is harmful. Small repository-specific scripts may be easier to maintain locally. The problem arises when substantial shared execution logic is duplicated without ownership or synchronization.
+### 12.5 Tight Coupling to One AI Provider
 
-## 12.5 Tight Coupling to One AI Provider
-
-### Problem
+#### Problem
 
 The Harness directly embeds Claude-specific, Copilot-specific, or Codex-specific commands throughout orchestration code.
 
 For example:
 
-```
+```csharp
 public async Task RunWorkflowAsync()
 {
     await ExecuteClaudeLeadAsync();
@@ -9451,7 +8296,7 @@ public async Task RunWorkflowAsync()
 
 The workflow assumes that the AI platform is inseparable from the orchestration design.
 
-### Consequences
+#### Consequences
 
 - Provider upgrades affect unrelated components.
 - Introducing another provider requires extensive rewriting.
@@ -9459,11 +8304,11 @@ The workflow assumes that the AI platform is inseparable from the orchestration 
 - Provider-specific errors spread through the application.
 - Portability becomes expensive.
 
-### Recommended alternative
+#### Recommended alternative
 
 Introduce an agent-provider contract.
 
-```
+```csharp
 public interface IAgentProvider
 {
     Task<AgentResult> ExecuteAsync(
@@ -9474,7 +8319,7 @@ public interface IAgentProvider
 
 Implement provider adapters.
 
-```
+```text
 IAgentProvider
      │
      ├── ClaudeCodeAdapter
@@ -9482,13 +8327,11 @@ IAgentProvider
      └── CodexAdapter
 ```
 
-The architecture should support provider differences rather than assuming identical capabilities.
+The architecture should support provider differences rather than assuming identical capabilities. The objective is controlled substitution, not artificial uniformity.
 
-The objective is controlled substitution, not artificial uniformity.
+### 12.6 Duplicating Shared Validation Logic
 
-## 12.6 Duplicating Shared Validation Logic
-
-### Problem
+#### Problem
 
 Every repository Harness independently implements the same validation infrastructure.
 
@@ -9503,18 +8346,18 @@ For example, Booking, Fleet, and Billing each implement their own:
 
 The actual test commands may differ, but the surrounding execution mechanism is duplicated.
 
-### Consequences
+#### Consequences
 
 - Different repositories interpret failures differently.
 - Validation evidence becomes inconsistent.
 - Shared improvements require repeated changes.
 - Operational troubleshooting becomes more difficult.
 
-### Recommended alternative
+#### Recommended alternative
 
 Share the validation engine while retaining repository-specific gate selection.
 
-```
+```text
 Shared Validation Engine
           │
           ├── Booking Gate Profile
@@ -9522,17 +8365,13 @@ Shared Validation Engine
           └── Billing Gate Profile
 ```
 
-Standardize gate execution contracts, evidence formats, and failure classification.
+Standardize gate execution contracts, evidence formats, and failure classification. Allow repositories to select approved gates and provide valid parameters.
 
-Allow repositories to select approved gates and provide valid parameters.
+### 12.7 The Agent-as-Orchestrator Anti-pattern
 
-## 12.7 The Agent-as-Orchestrator Anti-pattern
+#### Problem
 
-### Problem
-
-One AI Agent is given complete authority over the engineering lifecycle.
-
-The agent decides when to:
+One AI Agent is given complete authority over the engineering lifecycle. The agent decides when to:
 
 - implement;
 - review;
@@ -9544,7 +8383,7 @@ The agent decides when to:
 
 For example:
 
-```
+```text
 Prompt:
 Implement the feature, review your own code,
 run whatever tests you consider necessary,
@@ -9553,7 +8392,7 @@ and mark the task completed when satisfied.
 
 This may work for small exploratory tasks but creates weak enterprise controls.
 
-### Consequences
+#### Consequences
 
 - Missing role independence.
 - Inconsistent validation.
@@ -9562,11 +8401,11 @@ This may work for small exploratory tasks but creates weak enterprise controls.
 - Self-approval.
 - Unreliable completion decisions.
 
-### Recommended alternative
+#### Recommended alternative
 
 The Harness owns workflow progression.
 
-```
+```text
 Harness
    │
    ├── Lead Agent
@@ -9577,26 +8416,24 @@ Harness
    └── Human Approval
 ```
 
-Agents execute assigned responsibilities.
+Agents execute assigned responsibilities. They do not redefine the authority of other roles.
 
-They do not redefine the authority of other roles.
+### 12.8 Uncontrolled Parallel Execution
 
-## 12.8 Uncontrolled Parallel Execution
-
-### Problem
+#### Problem
 
 The Harness launches many agents or validation processes simultaneously without considering resource limits or dependencies.
 
 For example:
 
-```
+```text
 await Task.WhenAll(
     tasks.Select(ExecuteAgentAsync));
 ```
 
 When the input collection contains hundreds of tasks, this may create hundreds of concurrent operations.
 
-### Consequences
+#### Consequences
 
 - Provider rate limits.
 - Excessive infrastructure consumption.
@@ -9605,11 +8442,11 @@ When the input collection contains hundreds of tasks, this may create hundreds o
 - Unpredictable execution costs.
 - Reduced overall throughput.
 
-### Recommended alternative
+#### Recommended alternative
 
 Apply bounded concurrency.
 
-```
+```text
 Task Queue
     ↓
 Concurrency Controller
@@ -9630,15 +8467,15 @@ Concurrency limits should consider:
 
 Parallelism should improve measured throughput rather than maximize simultaneous execution.
 
-## 12.9 Shared Mutable Run State
+### 12.9 Shared Mutable Run State
 
-### Problem
+#### Problem
 
 Multiple runs or agents write to shared files.
 
 For example:
 
-```
+```text
 /shared/scratchpad.md
 /shared/current-task.json
 /shared/validation-result.json
@@ -9646,7 +8483,7 @@ For example:
 
 A Booking run and a Fleet run may overwrite each other's observations or results.
 
-### Consequences
+#### Consequences
 
 - Race conditions.
 - Corrupted execution state.
@@ -9655,11 +8492,11 @@ A Booking run and a Fleet run may overwrite each other's observations or results
 - Unreliable recovery.
 - Difficult debugging.
 
-### Recommended alternative
+#### Recommended alternative
 
 Use run-scoped state.
 
-```
+```text
 runs/
 ├── run-1001/
 │   ├── scratchpad/
@@ -9674,40 +8511,38 @@ runs/
 
 Shared state should be immutable, transactional, or otherwise explicitly coordinated.
 
-> Common Mistake
+> **Common Mistake**
+
 >
+
 > A separate Scratchpad filename is not sufficient if agents still modify the same source checkout or share unrestricted credentials. Isolation must cover the execution environment, not merely one file.
 
-## 12.10 Treating the Scratchpad as Permanent Knowledge
+### 12.10 Treating the Scratchpad as Permanent Knowledge
 
-### Problem
+#### Problem
 
-The Harness begins using previous Scratchpads as authoritative repository documentation.
-
-Temporary assumptions become persistent facts.
+The Harness begins using previous Scratchpads as authoritative repository documentation. Temporary assumptions become persistent facts.
 
 For example, a Developer records:
 
-```
+```text
 The Billing service probably does not consume BookingCancelled.
 ```
 
 A later run reuses this statement without verification.
 
-### Consequences
+#### Consequences
 
 - Unverified assumptions become engineering requirements.
 - Stale knowledge influences implementation.
 - Repository Intelligence becomes inconsistent.
 - Errors propagate between runs.
 
-### Recommended alternative
+#### Recommended alternative
 
-Keep Scratchpads temporary and non-authoritative.
+Keep Scratchpads temporary and non-authoritative. Promote discoveries through a governed knowledge process.
 
-Promote discoveries through a governed knowledge process.
-
-```
+```text
 Scratchpad
     ↓
 Proposed Knowledge Update
@@ -9719,15 +8554,15 @@ Repository Intelligence
 
 The Harness must never silently convert temporary agent observations into enterprise Instructions or architectural standards.
 
-## 12.11 Missing Failure Isolation
+### 12.11 Missing Failure Isolation
 
-### Problem
+#### Problem
 
 A failure in one repository terminates or corrupts unrelated work.
 
 For example:
 
-```
+```text
 Enterprise Run
     ├── Booking: Passed
     ├── Fleet: Failed
@@ -9736,7 +8571,7 @@ Enterprise Run
 
 Billing is cancelled even though its work does not depend on Fleet.
 
-### Consequences
+#### Consequences
 
 - Unnecessary reprocessing.
 - Increased costs.
@@ -9744,11 +8579,11 @@ Billing is cancelled even though its work does not depend on Fleet.
 - Difficult partial recovery.
 - Loss of useful completed work.
 
-### Recommended alternative
+#### Recommended alternative
 
 Define failure domains.
 
-```
+```text
 Enterprise Run
     │
     ├── Booking Child Run
@@ -9756,21 +8591,17 @@ Enterprise Run
     └── Billing Child Run
 ```
 
-Each child run maintains independent status and evidence.
-
-The parent workflow determines whether failed dependencies block overall completion.
-
-Failure isolation does not imply that business success can be declared when a required dependency fails.
+Each child run maintains independent status and evidence. The parent workflow determines whether failed dependencies block overall completion. Failure isolation does not imply that business success can be declared when a required dependency fails.
 
 It means unrelated work should not be damaged by that failure.
 
-## 12.12 Blind Retry Loops
+### 12.12 Blind Retry Loops
 
-### Problem
+#### Problem
 
 Every failure causes the Harness to repeat the same operation.
 
-```
+```text
 Failure
    ↓
 Retry
@@ -9784,7 +8615,7 @@ Failure
 
 No distinction is made between transient infrastructure failures and deterministic engineering failures.
 
-### Consequences
+#### Consequences
 
 - Excessive provider usage.
 - Long-running exhausted jobs.
@@ -9792,7 +8623,7 @@ No distinction is made between transient infrastructure failures and determinist
 - Increased infrastructure costs.
 - Delayed human intervention.
 
-### Recommended alternative
+#### Recommended alternative
 
 Classify failures before retrying.
 
@@ -9806,19 +8637,15 @@ Classify failures before retrying.
 | Invalid credentials       | Remediate credentials            |
 | Rejected approval         | Return for revision or terminate |
 
-Retries should be bounded and measurable.
+Retries should be bounded and measurable. A run that cannot progress should enter an explicit failed or exhausted state with retained evidence.
 
-A run that cannot progress should enter an explicit failed or exhausted state with retained evidence.
+### 12.13 Restarting Entire Runs Instead of Resuming
 
-## 12.13 Restarting Entire Runs Instead of Resuming
+#### Problem
 
-### Problem
+A worker fails near the end of a long-running workflow. The Harness restarts the entire process.
 
-A worker fails near the end of a long-running workflow.
-
-The Harness restarts the entire process.
-
-```
+```text
 Lead Completed
 Developer Completed
 Reviewer Completed
@@ -9828,7 +8655,7 @@ Worker Failure
 Restart from Lead
 ```
 
-### Consequences
+#### Consequences
 
 - Repeated expensive agent work.
 - Duplicate side effects.
@@ -9836,11 +8663,11 @@ Restart from Lead
 - Longer completion time.
 - Potential implementation divergence.
 
-### Recommended alternative
+#### Recommended alternative
 
 Use durable checkpoints and resumable execution.
 
-```
+```text
 Run State
    ├── Lead: Completed
    ├── Developer: Completed
@@ -9849,17 +8676,15 @@ Run State
    └── Evaluation: Pending
 ```
 
-Recovery resumes from the appropriate stage after verifying that previous evidence remains valid.
+Recovery resumes from the appropriate stage after verifying that previous evidence remains valid. The Harness must also protect side-effecting operations against duplicate execution.
 
-The Harness must also protect side-effecting operations against duplicate execution.
+### 12.14 Treating Agent Output as Validation Evidence
 
-## 12.14 Treating Agent Output as Validation Evidence
-
-### Problem
+#### Problem
 
 The Harness accepts statements such as:
 
-```
+```text
 All tests passed.
 The implementation is correct.
 No security concerns were found.
@@ -9867,7 +8692,7 @@ No security concerns were found.
 
 without verifying actual execution results.
 
-### Consequences
+#### Consequences
 
 - False completion.
 - Undetected regressions.
@@ -9875,11 +8700,11 @@ without verifying actual execution results.
 - Weak auditability.
 - Unreliable quality reporting.
 
-### Recommended alternative
+#### Recommended alternative
 
 Require machine-verifiable deterministic evidence.
 
-```
+```text
 Implementation
       ↓
 Deterministic Gate
@@ -9889,36 +8714,28 @@ Exit Code + Test Report + Logs
 Structured Validation Result
 ```
 
-The Validator must report objective outcomes.
+The Validator must report objective outcomes. The Evaluator may use those outcomes to assess overall success. An agent's narrative is not a replacement for test execution.
 
-The Evaluator may use those outcomes to assess overall success.
+### 12.15 Confusing Validation with Evaluation
 
-An agent's narrative is not a replacement for test execution.
-
-## 12.15 Confusing Validation with Evaluation
-
-### Problem
+#### Problem
 
 The Harness treats passing tests as proof that the requested business goal has been achieved.
 
-For example, a recurring Booking cancellation feature compiles and passes its tests.
+For example, a recurring Booking cancellation feature compiles and passes its tests. However, cancelling one occurrence also cancels the entire recurring schedule. The technical checks pass because the missing scenario was not tested.
 
-However, cancelling one occurrence also cancels the entire recurring schedule.
-
-The technical checks pass because the missing scenario was not tested.
-
-### Consequences
+#### Consequences
 
 - Technically valid but functionally incomplete changes.
 - Missed acceptance criteria.
 - Incorrect completion reporting.
 - Business defects discovered after delivery.
 
-### Recommended alternative
+#### Recommended alternative
 
 Keep validation and evaluation separate.
 
-```
+```text
 Implementation
      │
      ├── Deterministic Validation
@@ -9929,21 +8746,17 @@ Implementation
         Combined Decision
 ```
 
-Validation determines whether objective checks pass.
+Validation determines whether objective checks pass. Evaluation determines whether the implementation satisfies the intended goal. Both are necessary where required by the workflow.
 
-Evaluation determines whether the implementation satisfies the intended goal.
+### 12.16 Missing Human Approval Boundaries
 
-Both are necessary where required by the workflow.
-
-## 12.16 Missing Human Approval Boundaries
-
-### Problem
+#### Problem
 
 The Harness automatically merges, deploys, or modifies sensitive systems without required human authorization.
 
 For example:
 
-```
+```text
 Developer Agent
      ↓
 Tests Passed
@@ -9953,7 +8766,7 @@ Automatic Production Deployment
 
 This ignores business and operational risk.
 
-### Consequences
+#### Consequences
 
 - Unauthorized changes.
 - Weak accountability.
@@ -9961,11 +8774,11 @@ This ignores business and operational risk.
 - Production incidents.
 - Unclear responsibility for high-risk decisions.
 
-### Recommended alternative
+#### Recommended alternative
 
 Introduce policy-driven human approval gates.
 
-```
+```text
 Implementation
       ↓
 Review
@@ -9979,13 +8792,11 @@ Human Approval
 Authorized Action
 ```
 
-Approvals must be associated with the actual implementation version and supporting evidence.
+Approvals must be associated with the actual implementation version and supporting evidence. An AI Agent must not approve its own sensitive actions.
 
-An AI Agent must not approve its own sensitive actions.
+### 12.17 Overloading Hooks with Workflow Responsibilities
 
-## 12.17 Overloading Hooks with Workflow Responsibilities
-
-### Problem
+#### Problem
 
 Hooks are used as the primary mechanism for orchestration, validation, approval, and recovery.
 
@@ -9999,7 +8810,7 @@ For example, a lifecycle hook:
 
 The result is a workflow hidden inside event handlers.
 
-### Consequences
+#### Consequences
 
 - Difficult execution tracing.
 - Unclear dependencies.
@@ -10008,15 +8819,11 @@ The result is a workflow hidden inside event handlers.
 - Hidden side effects.
 - Provider-specific coupling.
 
-### Recommended alternative
+#### Recommended alternative
 
-Use hooks for focused lifecycle guardrails.
+Use hooks for focused lifecycle guardrails. Use the Harness for orchestration and state transitions. Use deterministic gates for authoritative validation.
 
-Use the Harness for orchestration and state transitions.
-
-Use deterministic gates for authoritative validation.
-
-```
+```text
 Hook:
     Inspect or restrict an operation.
 
@@ -10029,17 +8836,13 @@ Validator:
 
 Hooks should support governance rather than replace Harness architecture.
 
-## 12.18 Over-Abstraction of Provider Capabilities
+### 12.18 Over-Abstraction of Provider Capabilities
 
-### Problem
+#### Problem
 
-The platform attempts to make every AI provider appear identical.
+The platform attempts to make every AI provider appear identical. It creates a large abstraction that hides all provider-specific features. As a result, specialized capabilities are either unavailable or represented through awkward workarounds.
 
-It creates a large abstraction that hides all provider-specific features.
-
-As a result, specialized capabilities are either unavailable or represented through awkward workarounds.
-
-### Consequences
+#### Consequences
 
 - Reduced provider functionality.
 - Difficult debugging.
@@ -10047,11 +8850,11 @@ As a result, specialized capabilities are either unavailable or represented thro
 - Misleading capability assumptions.
 - Brittle adapter implementations.
 
-### Recommended alternative
+#### Recommended alternative
 
 Define a small common execution contract and explicit optional capabilities.
 
-```
+```text
 IAgentProvider
       │
       ├── Core Execution
@@ -10063,21 +8866,17 @@ IAgentProvider
       └── Optional Structured Events
 ```
 
-The Harness should detect whether the chosen provider supports the required workflow.
+The Harness should detect whether the chosen provider supports the required workflow. Provider portability does not require pretending that every provider has identical capabilities.
 
-Provider portability does not require pretending that every provider has identical capabilities.
+### 12.19 The Plugin Everything Anti-pattern
 
-## 12.19 The Plugin Everything Anti-pattern
+#### Problem
 
-### Problem
-
-Every small operation becomes a plugin.
-
-The Harness contains hundreds of extensions for trivial activities.
+Every small operation becomes a plugin. The Harness contains hundreds of extensions for trivial activities.
 
 For example:
 
-```
+```text
 ReadFilePlugin
 ReadJsonFilePlugin
 ReadMarkdownFilePlugin
@@ -10087,7 +8886,7 @@ ReadTextFilePlugin
 
 This creates unnecessary abstraction and dependency complexity.
 
-### Consequences
+#### Consequences
 
 - Large configuration surface.
 - Difficult debugging.
@@ -10095,11 +8894,9 @@ This creates unnecessary abstraction and dependency complexity.
 - Poor discoverability.
 - Increased maintenance cost.
 
-### Recommended alternative
+#### Recommended alternative
 
-Introduce extension points around meaningful capability boundaries.
-
-Examples include:
+Introduce extension points around meaningful capability boundaries. Examples include:
 
 - AI provider;
 - source-control provider;
@@ -10109,17 +8906,15 @@ Examples include:
 - approval provider;
 - repository intelligence service.
 
-Not every function requires a plugin.
+Not every function requires a plugin. Use ordinary application components where extension is unnecessary.
 
-Use ordinary application components where extension is unnecessary.
+### 12.20 No Observability
 
-## 12.20 No Observability
-
-### Problem
+#### Problem
 
 The Harness records only a final status:
 
-```
+```text
 Run Failed.
 ```
 
@@ -10133,7 +8928,7 @@ It does not record:
 - validation evidence;
 - artifact locations.
 
-### Consequences
+#### Consequences
 
 - Difficult troubleshooting.
 - Poor cost analysis.
@@ -10141,11 +8936,11 @@ It does not record:
 - Inability to optimize workflows.
 - Weak operational accountability.
 
-### Recommended alternative
+#### Recommended alternative
 
 Design structured telemetry into the Harness.
 
-```
+```text
 RunId
 RepositoryId
 Stage
@@ -10157,25 +8952,23 @@ FailureCategory
 ArtifactReference
 ```
 
-Use correlation identifiers across parent and child runs.
+Use correlation identifiers across parent and child runs. Maintain metrics for throughput, latency, retries, failures, and completion outcomes.
 
-Maintain metrics for throughput, latency, retries, failures, and completion outcomes.
+> **Enterprise Tip**
 
-> Enterprise Tip
 >
+
 > A Harness that cannot explain why a run failed is not ready for large-scale autonomous execution.
 
-## 12.21 Optimizing Agent Speed While Ignoring Total Run Cost
+### 12.21 Optimizing Agent Speed While Ignoring Total Run Cost
 
-### Problem
+#### Problem
 
-The organization evaluates Harness performance only by AI response time.
-
-It ignores repeated builds, test execution, retries, approvals, and human rework.
+The organization evaluates Harness performance only by AI response time. It ignores repeated builds, test execution, retries, approvals, and human rework.
 
 For example:
 
-```
+```text
 Agent Execution: 12 minutes
 Validation: 45 minutes
 Retry Iterations: 4
@@ -10184,20 +8977,16 @@ Total Run: Several hours
 
 Reducing agent execution by two minutes may have little operational impact.
 
-### Consequences
+#### Consequences
 
 - Optimization effort targets the wrong components.
 - Infrastructure costs remain high.
 - Repeated validation dominates execution.
 - Completion time does not improve meaningfully.
 
-### Recommended alternative
+#### Recommended alternative
 
-Collect per-stage timing and cost data.
-
-Optimize measured bottlenecks.
-
-Potential improvements include:
+Collect per-stage timing and cost data. Optimize measured bottlenecks. Potential improvements include:
 
 - scoped iteration tests;
 - shared build artifacts;
@@ -10208,13 +8997,13 @@ Potential improvements include:
 
 Final mandatory validation must remain intact.
 
-## 12.22 Uncontrolled Cross-Repository Modification
+### 12.22 Uncontrolled Cross-Repository Modification
 
-### Problem
+#### Problem
 
 A single agent receives write access to Booking, Fleet, and Billing and modifies all repositories during one loosely controlled session.
 
-### Consequences
+#### Consequences
 
 - Unclear ownership.
 - Difficult rollback.
@@ -10223,23 +9012,32 @@ A single agent receives write access to Booking, Fleet, and Billing and modifies
 - Increased security exposure.
 - Cross-service integration failures.
 
-### Recommended alternative
+#### Recommended alternative
 
 Use coordinated child runs.
 
-\#chatgpt-mermaid-\_r_16n7\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(13, 13, 13);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_16n7\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_16n7\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_16n7\_ .error-icon{fill:rgb(243, 243, 243);}#chatgpt-mermaid-\_r_16n7\_ .error-text{fill:rgb(13, 13, 13);stroke:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16n7\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_16n7\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_16n7\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_16n7\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_16n7\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_16n7\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_16n7\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_16n7\_ .marker.cross{stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_16n7\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_16n7\_ p{margin:0;}#chatgpt-mermaid-\_r_16n7\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16n7\_ .cluster-label text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16n7\_ .cluster-label span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16n7\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_16n7\_ .label text,#chatgpt-mermaid-\_r_16n7\_ span{fill:rgb(13, 13, 13);color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16n7\_ .node rect,#chatgpt-mermaid-\_r_16n7\_ .node circle,#chatgpt-mermaid-\_r_16n7\_ .node ellipse,#chatgpt-mermaid-\_r_16n7\_ .node polygon,#chatgpt-mermaid-\_r_16n7\_ .node path{fill:rgb(222, 234, 251);stroke:rgb(83, 154, 248);stroke-width:1px;}#chatgpt-mermaid-\_r_16n7\_ .rough-node .label text,#chatgpt-mermaid-\_r_16n7\_ .node .label text,#chatgpt-mermaid-\_r_16n7\_ .image-shape .label,#chatgpt-mermaid-\_r_16n7\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_16n7\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_16n7\_ .rough-node .label,#chatgpt-mermaid-\_r_16n7\_ .node .label,#chatgpt-mermaid-\_r_16n7\_ .image-shape .label,#chatgpt-mermaid-\_r_16n7\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_16n7\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_16n7\_ .root .anchor path{fill:rgb(143, 143, 143)!important;stroke-width:0;stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_16n7\_ .arrowheadPath{fill:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_16n7\_ .edgePath .path{stroke:rgb(143, 143, 143);stroke-width:1px;}#chatgpt-mermaid-\_r_16n7\_ .flowchart-link{stroke:rgb(143, 143, 143);fill:none;}#chatgpt-mermaid-\_r_16n7\_ .edgeLabel{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_16n7\_ .edgeLabel p{background-color:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_16n7\_ .edgeLabel rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_16n7\_ .labelBkg{background-color:rgba(252, 252, 252, 0.5);}#chatgpt-mermaid-\_r_16n7\_ .cluster rect{fill:rgb(243, 243, 243);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_16n7\_ .cluster text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16n7\_ .cluster span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16n7\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(243, 243, 243);border:1px solid rgba(0, 0, 0, 0.1);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_16n7\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16n7\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_16n7\_ .icon-shape,#chatgpt-mermaid-\_r_16n7\_ .image-shape{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_16n7\_ .icon-shape p,#chatgpt-mermaid-\_r_16n7\_ .image-shape p{background-color:rgb(252, 252, 252);padding:2px;}#chatgpt-mermaid-\_r_16n7\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_16n7\_ .image-shape .label rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_16n7\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_16n7\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_16n7\_ .node .neo-node{stroke:rgb(83, 154, 248);}#chatgpt-mermaid-\_r_16n7\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_16n7\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_16n7\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_16n7\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_16n7\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_16n7\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_16n7\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_16n7\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_16n7\_ [data-look="neo"].node .neo-line path{stroke:rgb(83, 154, 248);filter:none;}#chatgpt-mermaid-\_r_16n7\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_16n7\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_16n7\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_16n7\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_16n7\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_16n7\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_16n7\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_16n7\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_16n7\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_16n7\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_16n7\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_16n7\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-width:1px;}#chatgpt-mermaid-\_r_16n7\_ .node rect,#chatgpt-mermaid-\_r_16n7\_ .node circle,#chatgpt-mermaid-\_r_16n7\_ .node ellipse,#chatgpt-mermaid-\_r_16n7\_ .node polygon,#chatgpt-mermaid-\_r_16n7\_ .node path{fill:rgb(229, 243, 255);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_16n7\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_16n7\_ .node.mermaid-decision .label-container{fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_16n7\_ .edgePaths .flowchart-link{stroke:rgb(143, 143, 143);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_16n7\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_16n7\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}Enterprise RunBooking Child RunFleet Child RunBilling Child RunBooking ValidationFleet ValidationBilling ValidationCross-Repository Evaluation
+```mermaid
+flowchart TB
+    R["Enterprise Run"] --> B["Booking Child Run"]
+    R --> F["Fleet Child Run"]
+    R --> I["Billing Child Run"]
+    B --> BV["Booking Validation"]
+    F --> FV["Fleet Validation"]
+    I --> IV["Billing Validation"]
+    BV --> E["Cross-Repository Evaluation"]
+    FV --> E
+    IV --> E
+```
 
-Each repository run maintains independent execution state and ownership.
+Each repository run maintains independent execution state and ownership. The enterprise run coordinates dependencies and final evaluation.
 
-The enterprise run coordinates dependencies and final evaluation.
+### 12.23 Ignoring Security Boundaries Between Teams
 
-## 12.23 Ignoring Security Boundaries Between Teams
-
-### Problem
+#### Problem
 
 Every Harness worker uses the same privileged identity with access to all repositories, secrets, cloud resources, and deployment environments.
 
-### Consequences
+#### Consequences
 
 - Excessive blast radius.
 - Cross-team data exposure.
@@ -10247,11 +9045,11 @@ Every Harness worker uses the same privileged identity with access to all reposi
 - Increased risk from prompt injection.
 - Unauthorized operations.
 
-### Recommended alternative
+#### Recommended alternative
 
 Apply least privilege and workload isolation.
 
-```
+```text
 Booking Run
     ↓
 Booking-Scoped Identity
@@ -10259,7 +9057,7 @@ Booking-Scoped Identity
 Booking Resources
 ```
 
-```
+```text
 Billing Run
     ↓
 Billing-Scoped Identity
@@ -10267,19 +9065,17 @@ Billing-Scoped Identity
 Billing Resources
 ```
 
-A shared orchestration platform does not require shared unrestricted credentials.
+A shared orchestration platform does not require shared unrestricted credentials. Execution identity should reflect the repository, operation, and approved access scope.
 
-Execution identity should reflect the repository, operation, and approved access scope.
+### 12.24 Silent Evolution of Shared Standards
 
-## 12.24 Silent Evolution of Shared Standards
-
-### Problem
+#### Problem
 
 The Harness learns from previous executions and automatically modifies enterprise Instructions, Skills, or validation policies without review.
 
 For example:
 
-```
+```text
 Repeated Validation Failure
           ↓
 Harness Changes Required Gate
@@ -10289,7 +9085,7 @@ Future Runs Skip the Check
 
 This is particularly dangerous in adaptive or self-improving Harnesses.
 
-### Consequences
+#### Consequences
 
 - Silent weakening of engineering standards.
 - Unapproved architecture changes.
@@ -10297,11 +9093,11 @@ This is particularly dangerous in adaptive or self-improving Harnesses.
 - Difficult auditability.
 - Unpredictable future behavior.
 
-### Recommended alternative
+#### Recommended alternative
 
 Separate learning from authoritative change.
 
-```
+```text
 Harness Observation
         ↓
 Improvement Proposal
@@ -10313,19 +9109,13 @@ Versioned Update
 Controlled Rollout
 ```
 
-The Harness may recommend improvements.
+The Harness may recommend improvements. It must not silently rewrite mandatory engineering standards. This principle remains essential as enterprise Harnesses evolve toward self-learning AI Engineering systems.
 
-It must not silently rewrite mandatory engineering standards.
+### 12.25 Premature Distributed Architecture
 
-This principle remains essential as enterprise Harnesses evolve toward self-learning AI Engineering systems.
+#### Problem
 
-## 12.25 Premature Distributed Architecture
-
-### Problem
-
-An organization builds a complex distributed orchestration platform before establishing a reliable single-repository Harness.
-
-The initial solution includes:
+An organization builds a complex distributed orchestration platform before establishing a reliable single-repository Harness. The initial solution includes:
 
 - distributed queues;
 - multiple worker services;
@@ -10336,7 +9126,7 @@ The initial solution includes:
 
 Yet the organization has not established reliable validation, evidence contracts, or role boundaries.
 
-### Consequences
+#### Consequences
 
 - High development cost.
 - Difficult debugging.
@@ -10344,23 +9134,23 @@ Yet the organization has not established reliable validation, evidence contracts
 - Slow iteration.
 - Complexity without demonstrated benefit.
 
-### Recommended alternative
+#### Recommended alternative
 
-Begin with clear logical boundaries.
+Begin with clear logical boundaries. Implement durable state and reliable execution first. Distribute components when scale, isolation, resilience, or organizational requirements justify it.
 
-Implement durable state and reliable execution first.
+> **Architect's Note**
 
-Distribute components when scale, isolation, resilience, or organizational requirements justify it.
-
-> Architect's Note
 >
+
 > Enterprise-grade architecture does not require distributed deployment from the beginning.
+
 >
+
 > A modular Harness with clear contracts, reliable validation, and strong state management can be more enterprise-ready than a distributed system with ambiguous responsibilities.
 
-## 12.26 Combining Patterns Without Defining Their Boundaries
+### 12.26 Combining Patterns Without Defining Their Boundaries
 
-### Problem
+#### Problem
 
 The organization combines centralized orchestration, distributed workers, multi-agent execution, population processing, and provider plugins without deciding which component owns each responsibility.
 
@@ -10373,7 +9163,7 @@ For example:
 
 Multiple components now control retry behavior.
 
-### Consequences
+#### Consequences
 
 - Duplicate execution.
 - Inconsistent state.
@@ -10381,7 +9171,7 @@ Multiple components now control retry behavior.
 - Difficult recovery.
 - Unclear accountability.
 
-### Recommended alternative
+#### Recommended alternative
 
 Define responsibility boundaries explicitly.
 
@@ -10400,7 +9190,7 @@ Define responsibility boundaries explicitly.
 
 Components may cooperate, but authoritative ownership must be unambiguous.
 
-## 12.27 Anti-pattern Summary Matrix
+### 12.27 Anti-pattern Summary Matrix
 
 | Anti-pattern                        | Primary Risk                 | Preferred Pattern                    |
 | ----------------------------------- | ---------------------------- | ------------------------------------ |
@@ -10431,29 +9221,15 @@ Components may cooperate, but authoritative ownership must be unambiguous.
 | Premature distribution              | Operational complexity       | Incremental scaling                  |
 | Ambiguous pattern ownership         | Conflicting control          | Explicit authority boundaries        |
 
-## 12.28 Recognizing Architectural Decay
+### 12.28 Recognizing Architectural Decay
 
-Enterprise Harness anti-patterns rarely appear all at once.
+Enterprise Harness anti-patterns rarely appear all at once. They emerge gradually. A repository-specific exception is added to the central workflow.
 
-They emerge gradually.
+A temporary shared Scratchpad becomes permanent. A retry is introduced without failure classification. A test is disabled to make a population run complete.
 
-A repository-specific exception is added to the central workflow.
+A provider-specific command is copied into another orchestration component. An agent receives additional permissions to avoid repeated authorization failures. Each individual decision may appear reasonable.
 
-A temporary shared Scratchpad becomes permanent.
-
-A retry is introduced without failure classification.
-
-A test is disabled to make a population run complete.
-
-A provider-specific command is copied into another orchestration component.
-
-An agent receives additional permissions to avoid repeated authorization failures.
-
-Each individual decision may appear reasonable.
-
-Together, they erode the architectural boundaries.
-
-A mature enterprise should periodically review its Harness against questions such as:
+Together, they erode the architectural boundaries. A mature enterprise should periodically review its Harness against questions such as:
 
 - Can a new repository be onboarded without changing central orchestration code?
 - Can one AI provider be replaced without rewriting workflow policy?
@@ -10467,17 +9243,13 @@ A mature enterprise should periodically review its Harness against questions suc
 - Are security identities scoped to the minimum required access?
 - Is every important workflow transition owned by one authoritative component?
 
-Repeated negative answers indicate architectural debt.
+Repeated negative answers indicate architectural debt. The organization should correct those boundaries before expanding autonomous execution further.
 
-The organization should correct those boundaries before expanding autonomous execution further.
-
-## 12.29 Final Anti-pattern Principle
+### 12.29 Final Anti-pattern Principle
 
 Enterprise Harness anti-patterns usually share one underlying characteristic:
 
-A responsibility has been placed in the wrong architectural layer or has been assigned to multiple layers without a clear authority boundary.
-
-Examples include:
+A responsibility has been placed in the wrong architectural layer or has been assigned to multiple layers without a clear authority boundary. Examples include:
 
 - placing repository policy inside the central orchestrator;
 - placing deterministic validation authority inside an AI Agent;
@@ -10486,55 +9258,51 @@ Examples include:
 - placing human approval inside an automated agent decision;
 - placing unrestricted credentials inside a shared execution worker.
 
-The remedy is not necessarily to introduce another service, agent, configuration file, or abstraction.
+The remedy is not necessarily to introduce another service, agent, configuration file, or abstraction. The remedy is to restore clear architectural ownership. For Alpha Car Detailing, the desired architecture remains:
 
-The remedy is to restore clear architectural ownership.
+```mermaid
+flowchart TB
+    P["Shared Enterprise Harness Platform"] --> Shared["Shared Capabilities"]
+    P --> Exec["Controlled Execution"]
+    P --> Gov["Governance"]
+    Exec --> B["Booking Harness"]
+    Exec --> F["Fleet Harness"]
+    Exec --> I["Billing Harness"]
+    B --> BR["Booking Requirements"]
+    F --> FR["Fleet Requirements"]
+    I --> IR["Billing Requirements"]
+    Shared --> V["Common Validation Infrastructure"]
+    Shared --> A["Provider and Tool Adapters"]
+    Shared --> M["Metrics and Observability"]
+    Gov --> H["Human Approval"]
+    Gov --> Policy["Mandatory Policies"]
+```
 
-For Alpha Car Detailing, the desired architecture remains:
+The shared platform provides reusable mechanisms. Repository-specific Harnesses preserve local engineering authority. Agents perform assigned work.
 
-\#chatgpt-mermaid-\_r_16o8\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(13, 13, 13);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_16o8\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_16o8\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_16o8\_ .error-icon{fill:rgb(243, 243, 243);}#chatgpt-mermaid-\_r_16o8\_ .error-text{fill:rgb(13, 13, 13);stroke:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16o8\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_16o8\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_16o8\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_16o8\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_16o8\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_16o8\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_16o8\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_16o8\_ .marker.cross{stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_16o8\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_16o8\_ p{margin:0;}#chatgpt-mermaid-\_r_16o8\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16o8\_ .cluster-label text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16o8\_ .cluster-label span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16o8\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_16o8\_ .label text,#chatgpt-mermaid-\_r_16o8\_ span{fill:rgb(13, 13, 13);color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16o8\_ .node rect,#chatgpt-mermaid-\_r_16o8\_ .node circle,#chatgpt-mermaid-\_r_16o8\_ .node ellipse,#chatgpt-mermaid-\_r_16o8\_ .node polygon,#chatgpt-mermaid-\_r_16o8\_ .node path{fill:rgb(222, 234, 251);stroke:rgb(83, 154, 248);stroke-width:1px;}#chatgpt-mermaid-\_r_16o8\_ .rough-node .label text,#chatgpt-mermaid-\_r_16o8\_ .node .label text,#chatgpt-mermaid-\_r_16o8\_ .image-shape .label,#chatgpt-mermaid-\_r_16o8\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_16o8\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_16o8\_ .rough-node .label,#chatgpt-mermaid-\_r_16o8\_ .node .label,#chatgpt-mermaid-\_r_16o8\_ .image-shape .label,#chatgpt-mermaid-\_r_16o8\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_16o8\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_16o8\_ .root .anchor path{fill:rgb(143, 143, 143)!important;stroke-width:0;stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_16o8\_ .arrowheadPath{fill:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_16o8\_ .edgePath .path{stroke:rgb(143, 143, 143);stroke-width:1px;}#chatgpt-mermaid-\_r_16o8\_ .flowchart-link{stroke:rgb(143, 143, 143);fill:none;}#chatgpt-mermaid-\_r_16o8\_ .edgeLabel{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_16o8\_ .edgeLabel p{background-color:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_16o8\_ .edgeLabel rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_16o8\_ .labelBkg{background-color:rgba(252, 252, 252, 0.5);}#chatgpt-mermaid-\_r_16o8\_ .cluster rect{fill:rgb(243, 243, 243);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_16o8\_ .cluster text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16o8\_ .cluster span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16o8\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(243, 243, 243);border:1px solid rgba(0, 0, 0, 0.1);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_16o8\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16o8\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_16o8\_ .icon-shape,#chatgpt-mermaid-\_r_16o8\_ .image-shape{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_16o8\_ .icon-shape p,#chatgpt-mermaid-\_r_16o8\_ .image-shape p{background-color:rgb(252, 252, 252);padding:2px;}#chatgpt-mermaid-\_r_16o8\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_16o8\_ .image-shape .label rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_16o8\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_16o8\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_16o8\_ .node .neo-node{stroke:rgb(83, 154, 248);}#chatgpt-mermaid-\_r_16o8\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_16o8\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_16o8\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_16o8\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_16o8\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_16o8\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_16o8\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_16o8\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_16o8\_ [data-look="neo"].node .neo-line path{stroke:rgb(83, 154, 248);filter:none;}#chatgpt-mermaid-\_r_16o8\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_16o8\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_16o8\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_16o8\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_16o8\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_16o8\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_16o8\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_16o8\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_16o8\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_16o8\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_16o8\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_16o8\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-width:1px;}#chatgpt-mermaid-\_r_16o8\_ .node rect,#chatgpt-mermaid-\_r_16o8\_ .node circle,#chatgpt-mermaid-\_r_16o8\_ .node ellipse,#chatgpt-mermaid-\_r_16o8\_ .node polygon,#chatgpt-mermaid-\_r_16o8\_ .node path{fill:rgb(229, 243, 255);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_16o8\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_16o8\_ .node.mermaid-decision .label-container{fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_16o8\_ .edgePaths .flowchart-link{stroke:rgb(143, 143, 143);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_16o8\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_16o8\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}Shared Enterprise HarnessPlatformShared CapabilitiesControlled ExecutionGovernanceBooking HarnessFleet HarnessBilling HarnessBooking RequirementsFleet RequirementsBilling RequirementsCommon ValidationInfrastructureProvider & Tool AdaptersMetrics & ObservabilityHuman ApprovalMandatory Policies
+Deterministic gates verify objective conditions. Evaluators assess intended outcomes. Governance controls authorize sensitive actions.
 
-The shared platform provides reusable mechanisms.
+Operational infrastructure preserves evidence, isolation, and recovery. These boundaries allow the organization to scale AI Engineering without allowing the Harness itself to become an uncontrolled source of architectural complexity.
 
-Repository-specific Harnesses preserve local engineering authority.
+> **Architect's Note**
 
-Agents perform assigned work.
-
-Deterministic gates verify objective conditions.
-
-Evaluators assess intended outcomes.
-
-Governance controls authorize sensitive actions.
-
-Operational infrastructure preserves evidence, isolation, and recovery.
-
-These boundaries allow the organization to scale AI Engineering without allowing the Harness itself to become an uncontrolled source of architectural complexity.
-
-> Architect's Note
 >
+
 > A successful Enterprise Harness should become easier to extend as its reusable patterns mature.
+
 >
+
 > If every new repository, workflow, provider, or validation requirement makes the central orchestration system substantially more complicated, the architecture is likely accumulating anti-patterns rather than achieving genuine reuse.
 
-Chapter 21 status: In progress — next section: Architect’s Notes
+## 13. Architect’s Notes
 
-# 13. Architect’s Notes
-
-Enterprise Harness architecture requires decisions that extend beyond agent configuration, workflow automation, and tool integration.
-
-At small scale, a Harness may be evaluated primarily by whether it can successfully complete an engineering task. At enterprise scale, the evaluation must also consider maintainability, organizational ownership, operational resilience, security boundaries, architectural consistency, cost, and governance.
-
-An effective Enterprise Harness must support change without becoming increasingly dependent on centralized knowledge or tightly coupled implementation details.
+Enterprise Harness architecture requires decisions that extend beyond agent configuration, workflow automation, and tool integration. At small scale, a Harness may be evaluated primarily by whether it can successfully complete an engineering task. At enterprise scale, the evaluation must also consider maintainability, organizational ownership, operational resilience, security boundaries, architectural consistency, cost, and governance. An effective Enterprise Harness must support change without becoming increasingly dependent on centralized knowledge or tightly coupled implementation details.
 
 The following Architect’s Notes examine the deeper architectural decisions behind the patterns introduced in this chapter.
 
-## 13.1 An Enterprise Harness Is an Engineering Platform, Not an AI Script
+### 13.1 An Enterprise Harness Is an Engineering Platform, Not an AI Script
 
-A common architectural misconception is to treat a Harness as a sophisticated script that invokes AI Agents.
-
-That description may be sufficient for an early prototype.
-
-It is inadequate for an enterprise platform serving multiple repositories and teams.
+A common architectural misconception is to treat a Harness as a sophisticated script that invokes AI Agents. That description may be sufficient for an early prototype. It is inadequate for an enterprise platform serving multiple repositories and teams.
 
 An Enterprise Harness has responsibilities similar to other distributed engineering platforms:
 
@@ -10550,29 +9318,23 @@ An Enterprise Harness has responsibilities similar to other distributed engineer
 - telemetry;
 - governance.
 
-AI execution is one component within this architecture.
+AI execution is one component within this architecture. The distinction becomes clear when examining Alpha Car Detailing. The organization does not merely need Claude Code to modify the Booking service.
 
-The distinction becomes clear when examining Alpha Car Detailing.
+It needs a repeatable engineering capability that can process changes across Booking, Fleet, Billing, and future services while preserving each repository's architecture and governance requirements. Therefore, the Harness should be designed as a software system with explicit contracts, tests, versioning, deployment processes, and operational ownership.
 
-The organization does not merely need Claude Code to modify the Booking service.
+> **Architect's Note**
 
-It needs a repeatable engineering capability that can process changes across Booking, Fleet, Billing, and future services while preserving each repository's architecture and governance requirements.
-
-Therefore, the Harness should be designed as a software system with explicit contracts, tests, versioning, deployment processes, and operational ownership.
-
-> Architect's Note
 >
+
 > The AI Agent is a participant in the software engineering process. The Harness is the system that makes the process repeatable, observable, recoverable, and governable.
 
-## 13.2 Separate the Architecture into Three Planes
+### 13.2 Separate the Architecture into Three Planes
 
 A useful enterprise design distinguishes three architectural planes.
 
-### Control Plane
+#### Control Plane
 
-The Control Plane determines what should execute and under which conditions.
-
-Its responsibilities include:
+The Control Plane determines what should execute and under which conditions. Its responsibilities include:
 
 - accepting engineering requests;
 - resolving repository configuration;
@@ -10583,11 +9345,9 @@ Its responsibilities include:
 - managing retries and recovery;
 - coordinating approval requirements.
 
-### Execution Plane
+#### Execution Plane
 
-The Execution Plane performs authorized work.
-
-Its responsibilities include:
+The Execution Plane performs authorized work. Its responsibilities include:
 
 - preparing isolated workspaces;
 - checking out repositories;
@@ -10597,11 +9357,9 @@ Its responsibilities include:
 - running tests;
 - collecting artifacts.
 
-### Knowledge and Governance Plane
+#### Knowledge and Governance Plane
 
-The Knowledge and Governance Plane provides controlled information and policies.
-
-Its responsibilities include:
+The Knowledge and Governance Plane provides controlled information and policies. Its responsibilities include:
 
 - shared Instructions;
 - shared Skills;
@@ -10612,21 +9370,32 @@ Its responsibilities include:
 - governed Harness Memory;
 - audit requirements.
 
-\#chatgpt-mermaid-\_r_16oh\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(13, 13, 13);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_16oh\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_16oh\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_16oh\_ .error-icon{fill:rgb(243, 243, 243);}#chatgpt-mermaid-\_r_16oh\_ .error-text{fill:rgb(13, 13, 13);stroke:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16oh\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_16oh\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_16oh\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_16oh\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_16oh\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_16oh\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_16oh\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_16oh\_ .marker.cross{stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_16oh\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_16oh\_ p{margin:0;}#chatgpt-mermaid-\_r_16oh\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16oh\_ .cluster-label text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16oh\_ .cluster-label span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16oh\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_16oh\_ .label text,#chatgpt-mermaid-\_r_16oh\_ span{fill:rgb(13, 13, 13);color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16oh\_ .node rect,#chatgpt-mermaid-\_r_16oh\_ .node circle,#chatgpt-mermaid-\_r_16oh\_ .node ellipse,#chatgpt-mermaid-\_r_16oh\_ .node polygon,#chatgpt-mermaid-\_r_16oh\_ .node path{fill:rgb(222, 234, 251);stroke:rgb(83, 154, 248);stroke-width:1px;}#chatgpt-mermaid-\_r_16oh\_ .rough-node .label text,#chatgpt-mermaid-\_r_16oh\_ .node .label text,#chatgpt-mermaid-\_r_16oh\_ .image-shape .label,#chatgpt-mermaid-\_r_16oh\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_16oh\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_16oh\_ .rough-node .label,#chatgpt-mermaid-\_r_16oh\_ .node .label,#chatgpt-mermaid-\_r_16oh\_ .image-shape .label,#chatgpt-mermaid-\_r_16oh\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_16oh\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_16oh\_ .root .anchor path{fill:rgb(143, 143, 143)!important;stroke-width:0;stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_16oh\_ .arrowheadPath{fill:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_16oh\_ .edgePath .path{stroke:rgb(143, 143, 143);stroke-width:1px;}#chatgpt-mermaid-\_r_16oh\_ .flowchart-link{stroke:rgb(143, 143, 143);fill:none;}#chatgpt-mermaid-\_r_16oh\_ .edgeLabel{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_16oh\_ .edgeLabel p{background-color:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_16oh\_ .edgeLabel rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_16oh\_ .labelBkg{background-color:rgba(252, 252, 252, 0.5);}#chatgpt-mermaid-\_r_16oh\_ .cluster rect{fill:rgb(243, 243, 243);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_16oh\_ .cluster text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16oh\_ .cluster span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16oh\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(243, 243, 243);border:1px solid rgba(0, 0, 0, 0.1);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_16oh\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16oh\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_16oh\_ .icon-shape,#chatgpt-mermaid-\_r_16oh\_ .image-shape{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_16oh\_ .icon-shape p,#chatgpt-mermaid-\_r_16oh\_ .image-shape p{background-color:rgb(252, 252, 252);padding:2px;}#chatgpt-mermaid-\_r_16oh\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_16oh\_ .image-shape .label rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_16oh\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_16oh\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_16oh\_ .node .neo-node{stroke:rgb(83, 154, 248);}#chatgpt-mermaid-\_r_16oh\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_16oh\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_16oh\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_16oh\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_16oh\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_16oh\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_16oh\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_16oh\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_16oh\_ [data-look="neo"].node .neo-line path{stroke:rgb(83, 154, 248);filter:none;}#chatgpt-mermaid-\_r_16oh\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_16oh\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_16oh\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_16oh\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_16oh\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_16oh\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_16oh\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_16oh\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_16oh\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_16oh\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_16oh\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_16oh\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-width:1px;}#chatgpt-mermaid-\_r_16oh\_ .node rect,#chatgpt-mermaid-\_r_16oh\_ .node circle,#chatgpt-mermaid-\_r_16oh\_ .node ellipse,#chatgpt-mermaid-\_r_16oh\_ .node polygon,#chatgpt-mermaid-\_r_16oh\_ .node path{fill:rgb(229, 243, 255);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_16oh\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_16oh\_ .node.mermaid-decision .label-container{fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_16oh\_ .edgePaths .flowchart-link{stroke:rgb(143, 143, 143);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_16oh\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_16oh\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}Knowledge & Governance PlaneExecution PlaneControl PlaneInstructionsSkillsRepository IntelligenceApproval PoliciesExecution WorkersAI AgentsDeterministic GatesRun WorkspacesHarness OrchestratorSchedulerPolicy ResolutionRun StateEngineering Request
-
-This is a logical separation.
-
-An organization may implement all three planes within a modular application initially.
-
-Physical distribution should follow scale, operational requirements, and security needs.
-
-## 13.3 The Harness Must Have One Authoritative State Machine
-
-Long-running AI Engineering workflows cannot rely on conversational context to determine execution status.
-
-Consider a run that progresses through:
-
+```mermaid
+flowchart TB
+    Request["Engineering Request"] --> C["Control Plane"]
+    C --> O["Harness Orchestrator"]
+    C --> Scheduler["Scheduler"]
+    C --> Policy["Policy Resolution"]
+    C --> State["Durable Run State"]
+    Scheduler --> E["Execution Plane"]
+    E --> W["Execution Workers"]
+    E --> Agents["AI Agents"]
+    E --> V["Deterministic Gates"]
+    E --> Workspace["Run Workspaces"]
+    K["Knowledge and Governance Plane"] --> I["Instructions"]
+    K --> S["Skills"]
+    K --> RI["Repository Intelligence"]
+    K --> Approval["Approval Policies"]
+    K --> Policy
 ```
+
+This is a logical separation. An organization may implement all three planes within a modular application initially. Physical distribution should follow scale, operational requirements, and security needs.
+
+### 13.3 The Harness Must Have One Authoritative State Machine
+
+Long-running AI Engineering workflows cannot rely on conversational context to determine execution status. Consider a run that progresses through:
+
+```text
 Pending
    ↓
 Preparing
@@ -10648,7 +9417,7 @@ Completed
 
 Additional transitions may include:
 
-```
+```text
 Failed
 Exhausted
 Cancelled
@@ -10656,11 +9425,9 @@ Cancelled
 
 The Harness must define which transitions are permitted.
 
-For example, an implementation cannot transition directly from `Implementing` to `Completed` if review, validation, evaluation, and approval are mandatory.
+For example, an implementation cannot transition directly from `Implementing` to `Completed` if review, validation, evaluation, and approval are mandatory. The state machine should be persisted independently of the AI provider.
 
-The state machine should be persisted independently of the AI provider.
-
-### Architectural implications
+#### Architectural implications
 
 Every transition should identify:
 
@@ -10672,25 +9439,21 @@ Every transition should identify:
 - transition timestamp;
 - resulting state version.
 
-In distributed deployments, transitions should use concurrency control to prevent two workers from independently advancing the same run.
+In distributed deployments, transitions should use concurrency control to prevent two workers from independently advancing the same run. A database transaction, optimistic concurrency token, or equivalent mechanism may be appropriate.
 
-A database transaction, optimistic concurrency token, or equivalent mechanism may be appropriate.
+> **Architect's Note**
 
-> Architect's Note
 >
+
 > There may be many workers, agents, and tool integrations, but only one authoritative interpretation of the run's lifecycle.
 
-## 13.4 Treat the Harness as a Deterministic Shell Around Probabilistic Execution
+### 13.4 Treat the Harness as a Deterministic Shell Around Probabilistic Execution
 
-AI Agents may produce different implementations for the same engineering request.
-
-That variability is inherent in AI-assisted development.
-
-The Harness should not attempt to eliminate all reasoning variability.
+AI Agents may produce different implementations for the same engineering request. That variability is inherent in AI-assisted development. The Harness should not attempt to eliminate all reasoning variability.
 
 Instead, it should establish deterministic boundaries around it.
 
-```
+```text
 Deterministic Input Contract
           ↓
 Probabilistic AI Execution
@@ -10712,51 +9475,41 @@ The Harness should control:
 - state transitions;
 - approval boundaries.
 
-The AI Agent retains flexibility in how it analyzes and implements the assigned task.
-
-This allows experimentation and adaptation without sacrificing operational control.
-
-For Alpha Car Detailing, two Developer runs may implement a Booking command differently.
+The AI Agent retains flexibility in how it analyzes and implements the assigned task. This allows experimentation and adaptation without sacrificing operational control. For Alpha Car Detailing, two Developer runs may implement a Booking command differently.
 
 Both must still satisfy the same architecture requirements, domain invariants, contract compatibility rules, and validation gates.
 
-## 13.5 Prefer a Hybrid Shared-Platform Architecture
+### 13.5 Prefer a Hybrid Shared-Platform Architecture
 
-Centralized and distributed Harness architectures should not be treated as mutually exclusive.
-
-A fully centralized design can become a bottleneck.
-
-A fully distributed design may produce inconsistent standards and duplicated infrastructure.
+Centralized and distributed Harness architectures should not be treated as mutually exclusive. A fully centralized design can become a bottleneck. A fully distributed design may produce inconsistent standards and duplicated infrastructure.
 
 For many enterprise environments, a hybrid design offers a practical balance.
 
-\#chatgpt-mermaid-\_r_16pc\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(13, 13, 13);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_16pc\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_16pc\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_16pc\_ .error-icon{fill:rgb(243, 243, 243);}#chatgpt-mermaid-\_r_16pc\_ .error-text{fill:rgb(13, 13, 13);stroke:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16pc\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_16pc\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_16pc\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_16pc\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_16pc\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_16pc\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_16pc\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_16pc\_ .marker.cross{stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_16pc\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_16pc\_ p{margin:0;}#chatgpt-mermaid-\_r_16pc\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16pc\_ .cluster-label text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16pc\_ .cluster-label span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16pc\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_16pc\_ .label text,#chatgpt-mermaid-\_r_16pc\_ span{fill:rgb(13, 13, 13);color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16pc\_ .node rect,#chatgpt-mermaid-\_r_16pc\_ .node circle,#chatgpt-mermaid-\_r_16pc\_ .node ellipse,#chatgpt-mermaid-\_r_16pc\_ .node polygon,#chatgpt-mermaid-\_r_16pc\_ .node path{fill:rgb(222, 234, 251);stroke:rgb(83, 154, 248);stroke-width:1px;}#chatgpt-mermaid-\_r_16pc\_ .rough-node .label text,#chatgpt-mermaid-\_r_16pc\_ .node .label text,#chatgpt-mermaid-\_r_16pc\_ .image-shape .label,#chatgpt-mermaid-\_r_16pc\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_16pc\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_16pc\_ .rough-node .label,#chatgpt-mermaid-\_r_16pc\_ .node .label,#chatgpt-mermaid-\_r_16pc\_ .image-shape .label,#chatgpt-mermaid-\_r_16pc\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_16pc\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_16pc\_ .root .anchor path{fill:rgb(143, 143, 143)!important;stroke-width:0;stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_16pc\_ .arrowheadPath{fill:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_16pc\_ .edgePath .path{stroke:rgb(143, 143, 143);stroke-width:1px;}#chatgpt-mermaid-\_r_16pc\_ .flowchart-link{stroke:rgb(143, 143, 143);fill:none;}#chatgpt-mermaid-\_r_16pc\_ .edgeLabel{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_16pc\_ .edgeLabel p{background-color:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_16pc\_ .edgeLabel rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_16pc\_ .labelBkg{background-color:rgba(252, 252, 252, 0.5);}#chatgpt-mermaid-\_r_16pc\_ .cluster rect{fill:rgb(243, 243, 243);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_16pc\_ .cluster text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16pc\_ .cluster span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16pc\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(243, 243, 243);border:1px solid rgba(0, 0, 0, 0.1);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_16pc\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16pc\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_16pc\_ .icon-shape,#chatgpt-mermaid-\_r_16pc\_ .image-shape{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_16pc\_ .icon-shape p,#chatgpt-mermaid-\_r_16pc\_ .image-shape p{background-color:rgb(252, 252, 252);padding:2px;}#chatgpt-mermaid-\_r_16pc\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_16pc\_ .image-shape .label rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_16pc\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_16pc\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_16pc\_ .node .neo-node{stroke:rgb(83, 154, 248);}#chatgpt-mermaid-\_r_16pc\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_16pc\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_16pc\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_16pc\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_16pc\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_16pc\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_16pc\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_16pc\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_16pc\_ [data-look="neo"].node .neo-line path{stroke:rgb(83, 154, 248);filter:none;}#chatgpt-mermaid-\_r_16pc\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_16pc\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_16pc\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_16pc\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_16pc\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_16pc\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_16pc\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_16pc\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_16pc\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_16pc\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_16pc\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_16pc\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-width:1px;}#chatgpt-mermaid-\_r_16pc\_ .node rect,#chatgpt-mermaid-\_r_16pc\_ .node circle,#chatgpt-mermaid-\_r_16pc\_ .node ellipse,#chatgpt-mermaid-\_r_16pc\_ .node polygon,#chatgpt-mermaid-\_r_16pc\_ .node path{fill:rgb(229, 243, 255);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_16pc\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_16pc\_ .node.mermaid-decision .label-container{fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_16pc\_ .edgePaths .flowchart-link{stroke:rgb(143, 143, 143);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_16pc\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_16pc\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}Shared Enterprise HarnessPlatformShared Execution CapabilitiesEnterprise GovernanceCentralized ObservabilityBooking HarnessFleet HarnessBilling HarnessBooking RepositoryFleet RepositoryBilling Repository
+```mermaid
+flowchart TB
+    P["Shared Enterprise Harness Platform"] --> S["Shared Execution Capabilities"]
+    P --> G["Enterprise Governance"]
+    P --> M["Centralized Observability"]
+    S --> B["Booking Harness"] --> BR["Booking Repository"]
+    S --> F["Fleet Harness"] --> FR["Fleet Repository"]
+    S --> I["Billing Harness"] --> IR["Billing Repository"]
+```
 
-The central platform supplies common execution capabilities.
+The central platform supplies common execution capabilities. Repository teams supply local configuration and domain requirements.
 
-Repository teams supply local configuration and domain requirements.
+#### Architectural benefit
 
-### Architectural benefit
-
-A shared security gate can be improved centrally.
-
-A Booking-specific domain Skill can evolve independently.
-
-A Billing approval requirement can change without modifying Fleet.
+A shared security gate can be improved centrally. A Booking-specific domain Skill can evolve independently. A Billing approval requirement can change without modifying Fleet.
 
 This is controlled federation rather than unrestricted centralization or fragmentation.
 
-## 13.6 Repository Autonomy Must Have Explicit Limits
+### 13.6 Repository Autonomy Must Have Explicit Limits
 
-Repository autonomy is important, but it cannot be unlimited.
-
-A team should be able to select relevant local Skills, define domain Instructions, and configure approved validation requirements.
-
-However, a team should not be able to disable mandatory enterprise security checks or expand agent permissions beyond authorized limits.
+Repository autonomy is important, but it cannot be unlimited. A team should be able to select relevant local Skills, define domain Instructions, and configure approved validation requirements. However, a team should not be able to disable mandatory enterprise security checks or expand agent permissions beyond authorized limits.
 
 A useful policy model is:
 
-```
+```text
 Enterprise Mandatory Policy
           +
 Platform Capability Profile
@@ -10768,43 +9521,34 @@ Repository Configuration
 Effective Run Policy
 ```
 
-These layers should have explicit precedence rules.
+These layers should have explicit precedence rules. A lower-trust configuration may add valid constraints. It must not weaken mandatory controls.
 
-A lower-trust configuration may add valid constraints.
+For example, Billing may require additional financial calculation tests. It cannot remove enterprise-mandated secret scanning simply because the checks slow down execution. Effective policy should be resolved and recorded before the run begins.
 
-It must not weaken mandatory controls.
+### 13.7 Multi-Repository Work Requires a Dependency Graph
 
-For example, Billing may require additional financial calculation tests.
+A multi-repository Harness should not assume that every repository change can execute independently. Consider consolidated invoicing for corporate fleet customers. Booking produces completed booking information.
 
-It cannot remove enterprise-mandated secret scanning simply because the checks slow down execution.
+Fleet identifies vehicles and corporate accounts. Billing consumes the resulting information. The work may depend on an agreed integration contract.
 
-Effective policy should be resolved and recorded before the run begins.
+```mermaid
+flowchart TB
+    R["Consolidated Fleet Billing"] --> C["Define Shared Contract"]
+    C --> A["Contract Review"]
+    A --> B["Booking Implementation"]
+    A --> F["Fleet Implementation"]
+    A --> I["Billing Implementation"]
+    B --> V["Cross-Service Validation"]
+    F --> V
+    I --> V
+    V --> E["Enterprise Evaluation"]
+```
 
-## 13.7 Multi-Repository Work Requires a Dependency Graph
+Parallelism should begin only where dependencies permit it. The Harness should model repository relationships explicitly.
 
-A multi-repository Harness should not assume that every repository change can execute independently.
+#### Architectural recommendation
 
-Consider consolidated invoicing for corporate fleet customers.
-
-Booking produces completed booking information.
-
-Fleet identifies vehicles and corporate accounts.
-
-Billing consumes the resulting information.
-
-The work may depend on an agreed integration contract.
-
-\#chatgpt-mermaid-\_r_16pr\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(13, 13, 13);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_16pr\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_16pr\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_16pr\_ .error-icon{fill:rgb(243, 243, 243);}#chatgpt-mermaid-\_r_16pr\_ .error-text{fill:rgb(13, 13, 13);stroke:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16pr\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_16pr\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_16pr\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_16pr\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_16pr\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_16pr\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_16pr\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_16pr\_ .marker.cross{stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_16pr\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_16pr\_ p{margin:0;}#chatgpt-mermaid-\_r_16pr\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16pr\_ .cluster-label text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16pr\_ .cluster-label span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16pr\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_16pr\_ .label text,#chatgpt-mermaid-\_r_16pr\_ span{fill:rgb(13, 13, 13);color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16pr\_ .node rect,#chatgpt-mermaid-\_r_16pr\_ .node circle,#chatgpt-mermaid-\_r_16pr\_ .node ellipse,#chatgpt-mermaid-\_r_16pr\_ .node polygon,#chatgpt-mermaid-\_r_16pr\_ .node path{fill:rgb(222, 234, 251);stroke:rgb(83, 154, 248);stroke-width:1px;}#chatgpt-mermaid-\_r_16pr\_ .rough-node .label text,#chatgpt-mermaid-\_r_16pr\_ .node .label text,#chatgpt-mermaid-\_r_16pr\_ .image-shape .label,#chatgpt-mermaid-\_r_16pr\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_16pr\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_16pr\_ .rough-node .label,#chatgpt-mermaid-\_r_16pr\_ .node .label,#chatgpt-mermaid-\_r_16pr\_ .image-shape .label,#chatgpt-mermaid-\_r_16pr\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_16pr\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_16pr\_ .root .anchor path{fill:rgb(143, 143, 143)!important;stroke-width:0;stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_16pr\_ .arrowheadPath{fill:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_16pr\_ .edgePath .path{stroke:rgb(143, 143, 143);stroke-width:1px;}#chatgpt-mermaid-\_r_16pr\_ .flowchart-link{stroke:rgb(143, 143, 143);fill:none;}#chatgpt-mermaid-\_r_16pr\_ .edgeLabel{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_16pr\_ .edgeLabel p{background-color:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_16pr\_ .edgeLabel rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_16pr\_ .labelBkg{background-color:rgba(252, 252, 252, 0.5);}#chatgpt-mermaid-\_r_16pr\_ .cluster rect{fill:rgb(243, 243, 243);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_16pr\_ .cluster text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16pr\_ .cluster span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16pr\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(243, 243, 243);border:1px solid rgba(0, 0, 0, 0.1);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_16pr\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16pr\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_16pr\_ .icon-shape,#chatgpt-mermaid-\_r_16pr\_ .image-shape{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_16pr\_ .icon-shape p,#chatgpt-mermaid-\_r_16pr\_ .image-shape p{background-color:rgb(252, 252, 252);padding:2px;}#chatgpt-mermaid-\_r_16pr\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_16pr\_ .image-shape .label rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_16pr\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_16pr\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_16pr\_ .node .neo-node{stroke:rgb(83, 154, 248);}#chatgpt-mermaid-\_r_16pr\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_16pr\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_16pr\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_16pr\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_16pr\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_16pr\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_16pr\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_16pr\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_16pr\_ [data-look="neo"].node .neo-line path{stroke:rgb(83, 154, 248);filter:none;}#chatgpt-mermaid-\_r_16pr\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_16pr\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_16pr\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_16pr\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_16pr\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_16pr\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_16pr\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_16pr\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_16pr\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_16pr\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_16pr\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_16pr\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-width:1px;}#chatgpt-mermaid-\_r_16pr\_ .node rect,#chatgpt-mermaid-\_r_16pr\_ .node circle,#chatgpt-mermaid-\_r_16pr\_ .node ellipse,#chatgpt-mermaid-\_r_16pr\_ .node polygon,#chatgpt-mermaid-\_r_16pr\_ .node path{fill:rgb(229, 243, 255);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_16pr\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_16pr\_ .node.mermaid-decision .label-container{fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_16pr\_ .edgePaths .flowchart-link{stroke:rgb(143, 143, 143);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_16pr\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_16pr\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}Consolidated Fleet BillingDefine Shared ContractContract ReviewBooking ImplementationFleet ImplementationBilling ImplementationCross-Service ValidationEnterprise Evaluation
-
-Parallelism should begin only where dependencies permit it.
-
-The Harness should model repository relationships explicitly.
-
-### Architectural recommendation
-
-Represent cross-repository work as a directed dependency graph.
-
-Each node should define:
+Represent cross-repository work as a directed dependency graph. Each node should define:
 
 - repository;
 - task;
@@ -10816,25 +9560,17 @@ Each node should define:
 
 This avoids relying on a Lead Agent's conversational memory to coordinate a long-running enterprise change.
 
-## 13.8 Cross-Repository Completion Is Not a Distributed Transaction
+### 13.8 Cross-Repository Completion Is Not a Distributed Transaction
 
-A critical architectural distinction concerns multi-repository completion.
+A critical architectural distinction concerns multi-repository completion. Suppose Booking, Fleet, and Billing each generate a pull request. The organization may be tempted to treat the operation as one transaction.
 
-Suppose Booking, Fleet, and Billing each generate a pull request.
+However, independent repository branches and pull requests generally cannot participate in an ordinary atomic transaction. One repository may be approved while another remains blocked. One deployment may succeed while another fails.
 
-The organization may be tempted to treat the operation as one transaction.
-
-However, independent repository branches and pull requests generally cannot participate in an ordinary atomic transaction.
-
-One repository may be approved while another remains blocked.
-
-One deployment may succeed while another fails.
-
-### Recommended approach
+#### Recommended approach
 
 Model cross-repository execution as a coordinated workflow with explicit intermediate states.
 
-```
+```text
 Contract Approved
        ↓
 Repository Changes Prepared
@@ -10860,15 +9596,15 @@ Where applicable, use:
 
 Avoid assuming that distributed engineering changes can simply be committed or rolled back atomically.
 
-> Architect's Note
+> **Architect's Note**
+
 >
+
 > A multi-repository Harness coordinates consistency across independent systems. It does not automatically provide transactional atomicity across repositories, pull requests, and deployments.
 
-## 13.9 Evidence Should Be a First-Class Architectural Artifact
+### 13.9 Evidence Should Be a First-Class Architectural Artifact
 
-AI Engineering workflows produce multiple kinds of evidence.
-
-Examples include:
+AI Engineering workflows produce multiple kinds of evidence. Examples include:
 
 - implementation manifests;
 - review findings;
@@ -10879,11 +9615,9 @@ Examples include:
 - evaluation outcomes;
 - approval records.
 
-These should not exist only as unstructured text in an agent conversation.
+These should not exist only as unstructured text in an agent conversation. A mature Harness should define an evidence model.
 
-A mature Harness should define an evidence model.
-
-```
+```text
 Run
  │
  ├── Input Evidence
@@ -10905,21 +9639,15 @@ Each artifact should be associated with:
 - artifact location;
 - applicable schema version.
 
-Where integrity is important, the Harness may store cryptographic digests for artifacts.
+Where integrity is important, the Harness may store cryptographic digests for artifacts. This supports traceability and prevents evidence from being accidentally associated with a different implementation.
 
-This supports traceability and prevents evidence from being accidentally associated with a different implementation.
+#### Design implication
 
-### Design implication
+The evidence schema deserves the same engineering discipline as an API or event contract. Changes to evidence formats should be versioned and tested.
 
-The evidence schema deserves the same engineering discipline as an API or event contract.
+### 13.10 Separate Operational State from Knowledge
 
-Changes to evidence formats should be versioned and tested.
-
-## 13.10 Separate Operational State from Knowledge
-
-Enterprise Harnesses manage several forms of information.
-
-They should not be stored or governed as though they were interchangeable.
+Enterprise Harnesses manage several forms of information. They should not be stored or governed as though they were interchangeable.
 
 | Information             | Purpose                                         | Authority                  |
 | ----------------------- | ----------------------------------------------- | -------------------------- |
@@ -10932,29 +9660,17 @@ They should not be stored or governed as though they were interchangeable.
 | Validation Evidence     | Records objective check results                 | Validation infrastructure  |
 | Harness Memory          | Captures approved reusable learning             | Governed knowledge process |
 
-A Scratchpad observation is not equivalent to a verified architecture fact.
+A Scratchpad observation is not equivalent to a verified architecture fact. An agent conversation is not equivalent to an authoritative state record. A validation report is not equivalent to an evaluation decision.
 
-An agent conversation is not equivalent to an authoritative state record.
+#### Recommended approach
 
-A validation report is not equivalent to an evaluation decision.
-
-### Recommended approach
-
-Design separate storage and lifecycle policies for each information category.
-
-Temporary state should expire according to policy.
-
-Authoritative engineering knowledge should be reviewed and versioned.
+Design separate storage and lifecycle policies for each information category. Temporary state should expire according to policy. Authoritative engineering knowledge should be reviewed and versioned.
 
 Audit evidence should follow the organization's retention requirements.
 
-## 13.11 Design Recovery Before Designing Maximum Parallelism
+### 13.11 Design Recovery Before Designing Maximum Parallelism
 
-Organizations frequently prioritize parallel execution because it promises faster engineering workflows.
-
-However, parallelism increases failure and recovery complexity.
-
-Before introducing substantial concurrency, the architecture should answer:
+Organizations frequently prioritize parallel execution because it promises faster engineering workflows. However, parallelism increases failure and recovery complexity. Before introducing substantial concurrency, the architecture should answer:
 
 - Can a run resume after worker failure?
 - Can a completed stage be recognized reliably?
@@ -10966,9 +9682,9 @@ Before introducing substantial concurrency, the architecture should answer:
 
 These questions are more important than the number of simultaneous agents supported.
 
-### Recommended order
+#### Recommended order
 
-```
+```text
 Reliable Sequential Execution
             ↓
 Durable Checkpoints
@@ -10984,13 +9700,11 @@ Distributed Scheduling
 
 This order produces a more reliable foundation for scaling.
 
-## 13.12 Optimize the Critical Path, Not the Number of Agents
+### 13.12 Optimize the Critical Path, Not the Number of Agents
 
-Adding more agents does not automatically reduce execution time.
+Adding more agents does not automatically reduce execution time. Suppose the workflow contains:
 
-Suppose the workflow contains:
-
-```
+```text
 Lead:       5 minutes
 Developer: 20 minutes
 Reviewer:   8 minutes
@@ -10998,11 +9712,7 @@ Validation: 35 minutes
 Evaluator:  5 minutes
 ```
 
-The total sequential time is 73 minutes.
-
-Running three additional agents during development may not improve completion time if the critical path remains dominated by validation.
-
-A better optimization may involve:
+The total sequential time is 73 minutes. Running three additional agents during development may not improve completion time if the critical path remains dominated by validation. A better optimization may involve:
 
 - reusing build artifacts;
 - running independent validation gates concurrently;
@@ -11010,25 +9720,17 @@ A better optimization may involve:
 - eliminating repeated repository discovery;
 - reducing redundant agent handoffs.
 
-### Architectural implication
+#### Architectural implication
 
-Use measured stage durations to identify the execution critical path.
+Use measured stage durations to identify the execution critical path. Parallelism should target independent work on that path. Do not optimize based only on the number of agent invocations.
 
-Parallelism should target independent work on that path.
+### 13.13 Separate Iteration Assurance from Completion Assurance
 
-Do not optimize based only on the number of agent invocations.
-
-## 13.13 Separate Iteration Assurance from Completion Assurance
-
-Development iteration and final completion have different performance requirements.
-
-During development, fast feedback is valuable.
-
-Before completion, comprehensive required evidence is essential.
+Development iteration and final completion have different performance requirements. During development, fast feedback is valuable. Before completion, comprehensive required evidence is essential.
 
 For Alpha Car Detailing:
 
-```
+```text
 Developer Iteration
         ↓
 Affected Project Build
@@ -11048,27 +9750,23 @@ Security Checks
 Evaluation
 ```
 
-This creates a two-level validation strategy.
-
-Iteration gates optimize feedback speed.
-
-Completion gates establish required assurance.
+This creates a two-level validation strategy. Iteration gates optimize feedback speed. Completion gates establish required assurance.
 
 The final gate profile must be governed independently of the agent's desire to complete quickly.
 
-> Architect's Note
+> **Architect's Note**
+
 >
+
 > Fast iteration and strong final validation are complementary objectives. A well-designed Harness should optimize both rather than weakening one to achieve the other.
 
-## 13.14 Security Isolation Should Follow the Execution Boundary
+### 13.14 Security Isolation Should Follow the Execution Boundary
 
-A centralized Harness does not require centralized unrestricted credentials.
-
-The platform may schedule execution centrally while using repository-specific identities.
+A centralized Harness does not require centralized unrestricted credentials. The platform may schedule execution centrally while using repository-specific identities.
 
 For example:
 
-```
+```text
 Booking Run
     ↓
 Booking Identity
@@ -11076,7 +9774,7 @@ Booking Identity
 Booking Repository and Approved Tools
 ```
 
-```
+```text
 Billing Run
     ↓
 Billing Identity
@@ -11086,7 +9784,7 @@ Billing Repository and Approved Tools
 
 A compromised or misbehaving Booking execution should not automatically gain access to Billing credentials.
 
-### Security architecture
+#### Security architecture
 
 Consider isolation at several levels:
 
@@ -11102,17 +9800,11 @@ Consider isolation at several levels:
 | Approval        | Trusted identity and authorization     |
 | Tenant / client | Strong data and execution isolation    |
 
-AI prompt instructions cannot replace these controls.
+AI prompt instructions cannot replace these controls. The security architecture must enforce them independently.
 
-The security architecture must enforce them independently.
+### 13.15 Provider Portability Is a Risk-Management Decision
 
-## 13.15 Provider Portability Is a Risk-Management Decision
-
-Supporting multiple AI providers introduces architectural flexibility.
-
-It also introduces additional complexity.
-
-Each provider may differ in:
+Supporting multiple AI providers introduces architectural flexibility. It also introduces additional complexity. Each provider may differ in:
 
 - agent lifecycle;
 - tool permissions;
@@ -11123,11 +9815,7 @@ Each provider may differ in:
 - retry behavior;
 - supported integrations.
 
-An organization should not implement provider abstraction solely because multiple providers exist.
-
-It should identify the business reason.
-
-Possible reasons include:
+An organization should not implement provider abstraction solely because multiple providers exist. It should identify the business reason. Possible reasons include:
 
 - reducing provider dependency;
 - supporting different team environments;
@@ -11135,25 +9823,15 @@ Possible reasons include:
 - enabling controlled migration;
 - maintaining continuity during provider changes.
 
-### Recommended approach
+#### Recommended approach
 
-Keep a small common execution contract.
+Keep a small common execution contract. Represent optional provider capabilities explicitly. Avoid building a large abstraction that attempts to hide every difference.
 
-Represent optional provider capabilities explicitly.
+For Alpha Car Detailing, Claude Code may remain the primary provider while the Harness supports Codex or Copilot for approved workflows. The architecture should permit that choice without requiring every provider to offer identical behavior.
 
-Avoid building a large abstraction that attempts to hide every difference.
+### 13.16 The Harness Is Also a Product
 
-For Alpha Car Detailing, Claude Code may remain the primary provider while the Harness supports Codex or Copilot for approved workflows.
-
-The architecture should permit that choice without requiring every provider to offer identical behavior.
-
-## 13.16 The Harness Is Also a Product
-
-Enterprise engineering platforms have users, stakeholders, operational requirements, and adoption challenges.
-
-A Harness should therefore have a product-oriented operating model.
-
-Its stakeholders may include:
+Enterprise engineering platforms have users, stakeholders, operational requirements, and adoption challenges. A Harness should therefore have a product-oriented operating model. Its stakeholders may include:
 
 - application developers;
 - architects;
@@ -11175,34 +9853,35 @@ Important product qualities include:
 
 A technically sophisticated Harness may fail organizationally if engineers cannot understand or operate it.
 
-### Architectural recommendation
+#### Architectural recommendation
 
-Treat developer experience as a quality attribute.
-
-A repository team should be able to answer:
+Treat developer experience as a quality attribute. A repository team should be able to answer:
 
 1. How do I register my repository?
+
 2. How do I configure Instructions and Skills?
+
 3. How do I select validation gates?
+
 4. How do I start a run?
+
 5. How do I inspect failures?
+
 6. How do I retry or resume?
+
 7. How do I approve or reject a result?
+
 8. How do I measure outcomes?
 
 These questions should influence the Harness API, CLI, user interface, configuration model, and documentation.
 
-## 13.17 Shared Platform Availability Is an Architectural Dependency
+### 13.17 Shared Platform Availability Is an Architectural Dependency
 
-Centralizing Harness capabilities introduces shared operational dependencies.
-
-If the orchestration service becomes unavailable, multiple teams may be unable to start new AI Engineering runs.
-
-If the shared artifact store fails, validation evidence may be unavailable.
+Centralizing Harness capabilities introduces shared operational dependencies. If the orchestration service becomes unavailable, multiple teams may be unable to start new AI Engineering runs. If the shared artifact store fails, validation evidence may be unavailable.
 
 If the configuration resolver is incorrect, repository policy may be applied improperly.
 
-### Recommended approach
+#### Recommended approach
 
 Identify the availability requirements of each shared service.
 
@@ -11220,17 +9899,13 @@ Consider:
 
 Not every component requires the same availability target.
 
-For example, temporary unavailability of a metrics dashboard may be less critical than corruption of authoritative run state.
+For example, temporary unavailability of a metrics dashboard may be less critical than corruption of authoritative run state. The architecture should reflect these differences.
 
-The architecture should reflect these differences.
+### 13.18 Governance Should Be Enforced at Boundaries
 
-## 13.18 Governance Should Be Enforced at Boundaries
+Enterprise governance is most reliable when enforcement occurs at clear technical boundaries. Examples include:
 
-Enterprise governance is most reliable when enforcement occurs at clear technical boundaries.
-
-Examples include:
-
-```
+```text
 Before Run:
     Validate effective policy.
 
@@ -11249,25 +9924,15 @@ Before Merge or Deployment:
 
 This is preferable to relying on an agent's general instruction to follow enterprise policy.
 
-### Architectural principle
+#### Architectural principle
 
-Policy enforcement should occur at the point where an operation becomes consequential.
+Policy enforcement should occur at the point where an operation becomes consequential. Instructions influence behavior. Guards prevent unauthorized operations.
 
-Instructions influence behavior.
+Deterministic gates establish objective evidence. Human approvals authorize sensitive decisions. These mechanisms complement rather than replace each other.
 
-Guards prevent unauthorized operations.
+### 13.19 Architecture Evolution Must Be Governed
 
-Deterministic gates establish objective evidence.
-
-Human approvals authorize sensitive decisions.
-
-These mechanisms complement rather than replace each other.
-
-## 13.19 Architecture Evolution Must Be Governed
-
-A successful Enterprise Harness will evolve.
-
-Organizations may introduce:
+A successful Enterprise Harness will evolve. Organizations may introduce:
 
 - new agent roles;
 - additional providers;
@@ -11279,13 +9944,11 @@ Organizations may introduce:
 - Harness Memory;
 - self-improvement recommendations.
 
-These changes can affect many repositories.
+These changes can affect many repositories. Therefore, shared Harness evolution requires disciplined change management.
 
-Therefore, shared Harness evolution requires disciplined change management.
+#### Recommended process
 
-### Recommended process
-
-```
+```text
 Improvement Proposal
          ↓
 Architecture Review
@@ -11303,19 +9966,13 @@ Operational Evaluation
 Approved Wider Rollout
 ```
 
-High-impact changes should support rollback where feasible.
-
-A shared validation policy should not be silently weakened because a new AI Agent recommends doing so.
-
-Likewise, a new Skill version should not automatically alter active runs.
+High-impact changes should support rollback where feasible. A shared validation policy should not be silently weakened because a new AI Agent recommends doing so. Likewise, a new Skill version should not automatically alter active runs.
 
 The effective configuration used by each run must remain traceable.
 
-## 13.20 Harness Quality Attributes Should Be Explicit
+### 13.20 Harness Quality Attributes Should Be Explicit
 
-Traditional software architecture evaluates quality attributes such as scalability, reliability, security, maintainability, and performance.
-
-Enterprise Harness architecture requires the same discipline.
+Traditional software architecture evaluates quality attributes such as scalability, reliability, security, maintainability, and performance. Enterprise Harness architecture requires the same discipline.
 
 | Quality Attribute | Enterprise Harness Question                                             |
 | ----------------- | ----------------------------------------------------------------------- |
@@ -11344,43 +10001,39 @@ For example:
 
 Architecture is the discipline of making these tradeoffs explicit.
 
-## 13.21 Use Architecture Fitness Functions
+### 13.21 Use Architecture Fitness Functions
 
-A Harness should continuously verify important architectural characteristics.
-
-Architecture fitness functions are automated checks that determine whether defined architectural properties remain satisfied.
+A Harness should continuously verify important architectural characteristics. Architecture fitness functions are automated checks that determine whether defined architectural properties remain satisfied.
 
 For example:
 
-### Dependency fitness
+#### Dependency fitness
 
 The Application layer must not depend on concrete Claude or Codex adapters.
 
-### Policy fitness
+#### Policy fitness
 
 Repository configuration must not disable mandatory enterprise gates.
 
-### Isolation fitness
+#### Isolation fitness
 
 Two concurrent runs must not share writable workspace paths.
 
-### Evidence fitness
+#### Evidence fitness
 
 Every completed run must have the required validation and evaluation evidence.
 
-### Approval fitness
+#### Approval fitness
 
 High-risk runs must not transition to completion without required authorization.
 
-### Provider fitness
+#### Provider fitness
 
-Adding a provider adapter must not require modifying repository-specific business workflows.
+Adding a provider adapter must not require modifying repository-specific business workflows. These checks can be implemented through unit tests, architecture tests, integration tests, and policy tests.
 
-These checks can be implemented through unit tests, architecture tests, integration tests, and policy tests.
+#### Example
 
-### Example
-
-```
+```csharp
 [Fact]
 public void CompletedRunMustHaveValidationEvidence()
 {
@@ -11395,15 +10048,11 @@ public void CompletedRunMustHaveValidationEvidence()
 }
 ```
 
-This is illustrative pseudocode; the exact domain model and policy API should match the Harness implementation.
+This is illustrative pseudocode; the exact domain model and policy API should match the Harness implementation. The important principle is that architectural rules should be tested rather than existing only in documentation.
 
-The important principle is that architectural rules should be tested rather than existing only in documentation.
+### 13.22 Make Architectural Tradeoffs Visible Through Decision Records
 
-## 13.22 Make Architectural Tradeoffs Visible Through Decision Records
-
-Enterprise Harness designs involve decisions that may not have universally correct answers.
-
-Examples include:
+Enterprise Harness designs involve decisions that may not have universally correct answers. Examples include:
 
 - centralized versus distributed execution;
 - one agent versus multiple agents;
@@ -11413,11 +10062,9 @@ Examples include:
 - sequential versus parallel gates;
 - local versus managed agent sessions.
 
-These decisions should be documented.
+These decisions should be documented. An Architecture Decision Record may contain:
 
-An Architecture Decision Record may contain:
-
-```
+```markdown
 # ADR-021 — Shared Platform Harness
 
 ## Context
@@ -11452,25 +10099,35 @@ Costs:
 - Fully distributed team-specific Harnesses
 ```
 
-Decision records help future architects understand why a pattern was selected.
+Decision records help future architects understand why a pattern was selected. They also make it easier to determine when changing circumstances justify revisiting the decision.
 
-They also make it easier to determine when changing circumstances justify revisiting the decision.
-
-## 13.23 Reference Architecture for Alpha Car Detailing
+### 13.23 Reference Architecture for Alpha Car Detailing
 
 Combining the principles in this section produces the following reference architecture.
 
-\#chatgpt-mermaid-\_r_16s7\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(13, 13, 13);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_16s7\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_16s7\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_16s7\_ .error-icon{fill:rgb(243, 243, 243);}#chatgpt-mermaid-\_r_16s7\_ .error-text{fill:rgb(13, 13, 13);stroke:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16s7\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_16s7\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_16s7\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_16s7\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_16s7\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_16s7\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_16s7\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_16s7\_ .marker.cross{stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_16s7\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_16s7\_ p{margin:0;}#chatgpt-mermaid-\_r_16s7\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16s7\_ .cluster-label text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16s7\_ .cluster-label span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16s7\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_16s7\_ .label text,#chatgpt-mermaid-\_r_16s7\_ span{fill:rgb(13, 13, 13);color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16s7\_ .node rect,#chatgpt-mermaid-\_r_16s7\_ .node circle,#chatgpt-mermaid-\_r_16s7\_ .node ellipse,#chatgpt-mermaid-\_r_16s7\_ .node polygon,#chatgpt-mermaid-\_r_16s7\_ .node path{fill:rgb(222, 234, 251);stroke:rgb(83, 154, 248);stroke-width:1px;}#chatgpt-mermaid-\_r_16s7\_ .rough-node .label text,#chatgpt-mermaid-\_r_16s7\_ .node .label text,#chatgpt-mermaid-\_r_16s7\_ .image-shape .label,#chatgpt-mermaid-\_r_16s7\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_16s7\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_16s7\_ .rough-node .label,#chatgpt-mermaid-\_r_16s7\_ .node .label,#chatgpt-mermaid-\_r_16s7\_ .image-shape .label,#chatgpt-mermaid-\_r_16s7\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_16s7\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_16s7\_ .root .anchor path{fill:rgb(143, 143, 143)!important;stroke-width:0;stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_16s7\_ .arrowheadPath{fill:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_16s7\_ .edgePath .path{stroke:rgb(143, 143, 143);stroke-width:1px;}#chatgpt-mermaid-\_r_16s7\_ .flowchart-link{stroke:rgb(143, 143, 143);fill:none;}#chatgpt-mermaid-\_r_16s7\_ .edgeLabel{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_16s7\_ .edgeLabel p{background-color:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_16s7\_ .edgeLabel rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_16s7\_ .labelBkg{background-color:rgba(252, 252, 252, 0.5);}#chatgpt-mermaid-\_r_16s7\_ .cluster rect{fill:rgb(243, 243, 243);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_16s7\_ .cluster text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16s7\_ .cluster span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16s7\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(243, 243, 243);border:1px solid rgba(0, 0, 0, 0.1);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_16s7\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16s7\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_16s7\_ .icon-shape,#chatgpt-mermaid-\_r_16s7\_ .image-shape{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_16s7\_ .icon-shape p,#chatgpt-mermaid-\_r_16s7\_ .image-shape p{background-color:rgb(252, 252, 252);padding:2px;}#chatgpt-mermaid-\_r_16s7\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_16s7\_ .image-shape .label rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_16s7\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_16s7\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_16s7\_ .node .neo-node{stroke:rgb(83, 154, 248);}#chatgpt-mermaid-\_r_16s7\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_16s7\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_16s7\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_16s7\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_16s7\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_16s7\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_16s7\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_16s7\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_16s7\_ [data-look="neo"].node .neo-line path{stroke:rgb(83, 154, 248);filter:none;}#chatgpt-mermaid-\_r_16s7\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_16s7\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_16s7\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_16s7\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_16s7\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_16s7\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_16s7\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_16s7\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_16s7\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_16s7\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_16s7\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_16s7\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-width:1px;}#chatgpt-mermaid-\_r_16s7\_ .node rect,#chatgpt-mermaid-\_r_16s7\_ .node circle,#chatgpt-mermaid-\_r_16s7\_ .node ellipse,#chatgpt-mermaid-\_r_16s7\_ .node polygon,#chatgpt-mermaid-\_r_16s7\_ .node path{fill:rgb(229, 243, 255);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_16s7\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_16s7\_ .node.mermaid-decision .label-container{fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_16s7\_ .edgePaths .flowchart-link{stroke:rgb(143, 143, 143);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_16s7\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_16s7\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}Execution PlaneKnowledge & GovernanceScheduler / QueueBooking WorkerFleet WorkerBilling WorkerIsolated WorkspaceIsolated WorkspaceIsolated WorkspaceEnterprise InstructionsShared SkillsRepository IntelligencePolicy EngineApproval ServiceEngineer / Work ItemHarness Control PlaneAI Provider AdapterClaude CodeGitHub CopilotOpenAI CodexDeterministic Gate EngineEvidence StoreEvaluationDurable Run StateMetrics & Observability
+```mermaid
+flowchart TB
+    U["Engineer / Work Item"] --> H["Harness Control Plane"]
+    K["Enterprise Instructions, Skills, Repository Intelligence"] --> H
+    Policy["Policy Engine and Approval Service"] --> H
+    H --> W["Isolated Execution Workers"]
+    W --> A["AI Provider Adapter"]
+    A --> C["Claude Code"]
+    A --> G["GitHub Copilot"]
+    A --> X["OpenAI Codex"]
+    W --> V["Deterministic Gate Engine"]
+    A --> E["Evidence Store"]
+    V --> E
+    E --> O["Evaluation"] --> Approval["Authorized Approval"]
+    H --> S["Durable Run State"]
+    H --> M["Metrics and Observability"]
+```
 
-This architecture does not require every component to be deployed separately.
-
-Its purpose is to make responsibility boundaries explicit.
-
-The platform can begin as a modular application and evolve toward distributed execution when justified.
+This architecture does not require every component to be deployed separately. Its purpose is to make responsibility boundaries explicit. The platform can begin as a modular application and evolve toward distributed execution when justified.
 
 The underlying contracts should remain stable as deployment complexity increases.
 
-## 13.24 Architectural Review Questions
+### 13.24 Architectural Review Questions
 
 Before approving an Enterprise Harness architecture, an architect should be able to answer the following questions.
 
@@ -11496,13 +10153,9 @@ Before approving an Enterprise Harness architecture, an architect should be able
 
 These questions should be revisited whenever the Harness expands to new teams, repositories, workflows, or execution providers.
 
-## 13.25 Final Architect’s Perspective
+### 13.25 Final Architect’s Perspective
 
-Enterprise Harness architecture is fundamentally about controlling complexity while increasing reusable engineering capability.
-
-The most important design decision is not which AI platform to adopt.
-
-It is how responsibilities are distributed across:
+Enterprise Harness architecture is fundamentally about controlling complexity while increasing reusable engineering capability. The most important design decision is not which AI platform to adopt. It is how responsibilities are distributed across:
 
 - the Harness;
 - the AI Agents;
@@ -11513,55 +10166,29 @@ It is how responsibilities are distributed across:
 - operational infrastructure;
 - human decision-makers.
 
-Alpha Car Detailing demonstrates why these boundaries matter.
+Alpha Car Detailing demonstrates why these boundaries matter. Booking, Fleet, and Billing share a common engineering platform but have different domain requirements. Their Harnesses should reuse orchestration, validation infrastructure, tool adapters, and observability while retaining local Instructions, Skills, Repository Intelligence, and approval requirements.
 
-Booking, Fleet, and Billing share a common engineering platform but have different domain requirements.
+The central architecture must coordinate these capabilities without absorbing every repository-specific decision. Likewise, Claude Code, GitHub Copilot, and Codex should be treated as interchangeable where their supported contracts permit, but their differences must remain explicit. Parallelism should be bounded.
 
-Their Harnesses should reuse orchestration, validation infrastructure, tool adapters, and observability while retaining local Instructions, Skills, Repository Intelligence, and approval requirements.
+Run state should be durable. Scratchpads should remain temporary. Validation evidence should be independently verifiable.
 
-The central architecture must coordinate these capabilities without absorbing every repository-specific decision.
-
-Likewise, Claude Code, GitHub Copilot, and Codex should be treated as interchangeable where their supported contracts permit, but their differences must remain explicit.
-
-Parallelism should be bounded.
-
-Run state should be durable.
-
-Scratchpads should remain temporary.
-
-Validation evidence should be independently verifiable.
-
-Evaluation should remain distinct from validation.
-
-Human approval must remain accountable.
-
-The resulting architectural principle is:
+Evaluation should remain distinct from validation. Human approval must remain accountable. The resulting architectural principle is:
 
 > An enterprise-grade Harness is not defined by how much work it can automate without intervention. It is defined by how reliably it can coordinate AI-assisted work while preserving engineering boundaries, objective evidence, recoverability, and governance.
 
 When these responsibilities are correctly separated, the Harness can evolve from a single-repository automation tool into a reusable enterprise engineering platform without becoming a monolithic orchestration system.
 
-Chapter 21 status: In progress — next section: Enterprise Tips
+## 14. Enterprise Tips
 
-# 14. Enterprise Tips
+Enterprise Harness adoption requires more than a well-designed technical architecture. Organizations must also establish an operating model that supports multiple teams, shared engineering standards, controlled execution, platform ownership, and measurable outcomes. A Harness that works successfully in one repository does not automatically become enterprise-ready when deployed across fifty repositories. Scale introduces challenges involving governance, onboarding, operational support, cost, security, change management, and organizational coordination.
 
-Enterprise Harness adoption requires more than a well-designed technical architecture. Organizations must also establish an operating model that supports multiple teams, shared engineering standards, controlled execution, platform ownership, and measurable outcomes.
-
-A Harness that works successfully in one repository does not automatically become enterprise-ready when deployed across fifty repositories. Scale introduces challenges involving governance, onboarding, operational support, cost, security, change management, and organizational coordination.
-
-The following Enterprise Tips provide practical guidance for organizations implementing the patterns introduced throughout this chapter.
-
-The central principle is:
+The following Enterprise Tips provide practical guidance for organizations implementing the patterns introduced throughout this chapter. The central principle is:
 
 > Scale Enterprise Harness capabilities through shared infrastructure, governed contracts, and team autonomy—not through centralized control of every engineering activity.
 
-## 14.1 Establish a Dedicated Harness Platform Ownership Model
+### 14.1 Establish a Dedicated Harness Platform Ownership Model
 
-An Enterprise Harness should have clearly defined ownership.
-
-For Alpha Car Detailing, the organization may establish a small Harness Platform Team responsible for maintaining shared execution capabilities.
-
-Its responsibilities include:
+An Enterprise Harness should have clearly defined ownership. For Alpha Car Detailing, the organization may establish a small Harness Platform Team responsible for maintaining shared execution capabilities. Its responsibilities include:
 
 - orchestration infrastructure;
 - agent-provider adapters;
@@ -11576,7 +10203,7 @@ Its responsibilities include:
 
 Repository teams remain responsible for domain-specific Instructions, Skills, validation requirements, and engineering decisions.
 
-### Recommended ownership structure
+#### Recommended ownership structure
 
 | Responsibility               | Primary Owner                 |
 | ---------------------------- | ----------------------------- |
@@ -11593,37 +10220,43 @@ Repository teams remain responsible for domain-specific Instructions, Skills, va
 | Platform monitoring          | Platform Operations           |
 | Business acceptance criteria | Product and Domain Owners     |
 
-The objective is not to introduce unnecessary management layers.
+The objective is not to introduce unnecessary management layers. It is to prevent critical capabilities from becoming unowned dependencies.
 
-It is to prevent critical capabilities from becoming unowned dependencies.
+> **Enterprise Tip**
 
-> Enterprise Tip
 >
+
 > Treat the Harness as an internal engineering product with an accountable owner, maintained interfaces, release policies, documentation, and operational support.
 
-## 14.2 Create a Standard Repository Onboarding Process
+### 14.2 Create a Standard Repository Onboarding Process
 
-Repository onboarding should be predictable.
-
-Adding a new repository should not require the Harness Platform Team to modify central orchestration logic.
+Repository onboarding should be predictable. Adding a new repository should not require the Harness Platform Team to modify central orchestration logic.
 
 For example, the Notifications team at Alpha Car Detailing should be able to onboard through a defined process.
 
-### Recommended onboarding sequence
+#### Recommended onboarding sequence
 
 1. Register the repository and its engineering owner.
+
 2. Select an approved technology and capability profile.
+
 3. Provide repository-specific Instructions and Skills.
+
 4. Register Repository Intelligence references.
+
 5. Configure approved validation requirements.
+
 6. Resolve mandatory enterprise policies.
+
 7. Configure execution identity and approval requirements.
+
 8. Execute a controlled onboarding validation run.
+
 9. Approve the repository for normal Harness execution.
 
 The repository may contain:
 
-```
+```text
 notifications-service/
 ├── AGENTS.md
 ├── CLAUDE.md
@@ -11636,13 +10269,9 @@ notifications-service/
 └── harness.yaml
 ```
 
-Not every provider-specific file must be maintained manually.
+Not every provider-specific file must be maintained manually. An enterprise may maintain vendor-neutral source Instructions and publish reviewed provider-specific representations. The important requirement is consistency without creating competing authoritative versions.
 
-An enterprise may maintain vendor-neutral source Instructions and publish reviewed provider-specific representations.
-
-The important requirement is consistency without creating competing authoritative versions.
-
-### Onboarding acceptance criteria
+#### Onboarding acceptance criteria
 
 Before enabling autonomous execution, verify that:
 
@@ -11656,13 +10285,9 @@ Before enabling autonomous execution, verify that:
 
 A repository should not enter normal automated processing merely because its source code can be cloned.
 
-## 14.3 Maintain a Governed Catalog of Harness Capabilities
+### 14.3 Maintain a Governed Catalog of Harness Capabilities
 
-As adoption grows, teams need a reliable way to discover existing capabilities.
-
-Without a catalog, teams may unknowingly duplicate Skills, validation gates, adapters, or workflows.
-
-Alpha Car Detailing can establish a shared capability catalog.
+As adoption grows, teams need a reliable way to discover existing capabilities. Without a catalog, teams may unknowingly duplicate Skills, validation gates, adapters, or workflows. Alpha Car Detailing can establish a shared capability catalog.
 
 | Capability                  | Category         | Owner                 |
 | --------------------------- | ---------------- | --------------------- |
@@ -11689,17 +10314,19 @@ Each catalog entry should include:
 - usage examples;
 - change history.
 
-> Enterprise Tip
+> **Enterprise Tip**
+
 >
+
 > Before developing a new Harness capability, require teams to check whether an approved capability already exists.
 
-## 14.4 Use Golden Paths Without Eliminating Team Flexibility
+### 14.4 Use Golden Paths Without Eliminating Team Flexibility
 
 A golden path is an approved, well-supported approach for a common engineering activity.
 
 For example, Alpha Car Detailing may provide a standard .NET microservice Harness profile.
 
-```
+```yaml
 profile: dotnet-microservice
 
 capabilities:
@@ -11712,15 +10339,11 @@ capabilities:
   - structured-logging
 ```
 
-Teams can adopt the profile instead of assembling every capability independently.
+Teams can adopt the profile instead of assembling every capability independently. Booking may extend it with event contract tests. Billing may extend it with financial validation.
 
-Booking may extend it with event contract tests.
+#### Recommended model
 
-Billing may extend it with financial validation.
-
-### Recommended model
-
-```
+```text
 Enterprise Golden Path
          │
          ├── Booking Extensions
@@ -11728,41 +10351,30 @@ Enterprise Golden Path
          └── Billing Extensions
 ```
 
-A golden path should minimize unnecessary configuration while preserving valid customization.
+A golden path should minimize unnecessary configuration while preserving valid customization. Exceptions should be explicit and reviewable. They should not require teams to permanently fork the shared Harness.
 
-Exceptions should be explicit and reviewable.
+### 14.5 Establish an Enterprise Policy Hierarchy
 
-They should not require teams to permanently fork the shared Harness.
+Enterprise governance must remain consistent even when repositories are independently owned. A policy hierarchy helps prevent conflicting requirements.
 
-## 14.5 Establish an Enterprise Policy Hierarchy
+```mermaid
+flowchart TB
+    E["Enterprise Mandatory Policy"] --> P["Effective Run Policy"]
+    S["Platform Standards"] --> P
+    T["Team Requirements"] --> P
+    R["Repository Configuration"] --> P
+    P --> H["Harness Execution"]
+```
 
-Enterprise governance must remain consistent even when repositories are independently owned.
+Alpha Car Detailing may require all repositories to run secret scanning before completion. Billing may additionally require financial security checks. Booking cannot remove secret scanning because a local team considers it unnecessary.
 
-A policy hierarchy helps prevent conflicting requirements.
+#### Recommended practice
 
-\#chatgpt-mermaid-\_r_16t3\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(13, 13, 13);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_16t3\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_16t3\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_16t3\_ .error-icon{fill:rgb(243, 243, 243);}#chatgpt-mermaid-\_r_16t3\_ .error-text{fill:rgb(13, 13, 13);stroke:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16t3\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_16t3\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_16t3\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_16t3\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_16t3\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_16t3\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_16t3\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_16t3\_ .marker.cross{stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_16t3\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_16t3\_ p{margin:0;}#chatgpt-mermaid-\_r_16t3\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16t3\_ .cluster-label text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16t3\_ .cluster-label span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16t3\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_16t3\_ .label text,#chatgpt-mermaid-\_r_16t3\_ span{fill:rgb(13, 13, 13);color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16t3\_ .node rect,#chatgpt-mermaid-\_r_16t3\_ .node circle,#chatgpt-mermaid-\_r_16t3\_ .node ellipse,#chatgpt-mermaid-\_r_16t3\_ .node polygon,#chatgpt-mermaid-\_r_16t3\_ .node path{fill:rgb(222, 234, 251);stroke:rgb(83, 154, 248);stroke-width:1px;}#chatgpt-mermaid-\_r_16t3\_ .rough-node .label text,#chatgpt-mermaid-\_r_16t3\_ .node .label text,#chatgpt-mermaid-\_r_16t3\_ .image-shape .label,#chatgpt-mermaid-\_r_16t3\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_16t3\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_16t3\_ .rough-node .label,#chatgpt-mermaid-\_r_16t3\_ .node .label,#chatgpt-mermaid-\_r_16t3\_ .image-shape .label,#chatgpt-mermaid-\_r_16t3\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_16t3\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_16t3\_ .root .anchor path{fill:rgb(143, 143, 143)!important;stroke-width:0;stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_16t3\_ .arrowheadPath{fill:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_16t3\_ .edgePath .path{stroke:rgb(143, 143, 143);stroke-width:1px;}#chatgpt-mermaid-\_r_16t3\_ .flowchart-link{stroke:rgb(143, 143, 143);fill:none;}#chatgpt-mermaid-\_r_16t3\_ .edgeLabel{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_16t3\_ .edgeLabel p{background-color:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_16t3\_ .edgeLabel rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_16t3\_ .labelBkg{background-color:rgba(252, 252, 252, 0.5);}#chatgpt-mermaid-\_r_16t3\_ .cluster rect{fill:rgb(243, 243, 243);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_16t3\_ .cluster text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16t3\_ .cluster span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16t3\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(243, 243, 243);border:1px solid rgba(0, 0, 0, 0.1);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_16t3\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16t3\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_16t3\_ .icon-shape,#chatgpt-mermaid-\_r_16t3\_ .image-shape{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_16t3\_ .icon-shape p,#chatgpt-mermaid-\_r_16t3\_ .image-shape p{background-color:rgb(252, 252, 252);padding:2px;}#chatgpt-mermaid-\_r_16t3\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_16t3\_ .image-shape .label rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_16t3\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_16t3\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_16t3\_ .node .neo-node{stroke:rgb(83, 154, 248);}#chatgpt-mermaid-\_r_16t3\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_16t3\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_16t3\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_16t3\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_16t3\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_16t3\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_16t3\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_16t3\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_16t3\_ [data-look="neo"].node .neo-line path{stroke:rgb(83, 154, 248);filter:none;}#chatgpt-mermaid-\_r_16t3\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_16t3\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_16t3\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_16t3\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_16t3\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_16t3\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_16t3\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_16t3\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_16t3\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_16t3\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_16t3\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_16t3\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-width:1px;}#chatgpt-mermaid-\_r_16t3\_ .node rect,#chatgpt-mermaid-\_r_16t3\_ .node circle,#chatgpt-mermaid-\_r_16t3\_ .node ellipse,#chatgpt-mermaid-\_r_16t3\_ .node polygon,#chatgpt-mermaid-\_r_16t3\_ .node path{fill:rgb(229, 243, 255);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_16t3\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_16t3\_ .node.mermaid-decision .label-container{fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_16t3\_ .edgePaths .flowchart-link{stroke:rgb(143, 143, 143);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_16t3\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_16t3\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}Enterprise Mandatory PolicyPlatform StandardsTeam RequirementsRepository ConfigurationEffective Run PolicyHarness Execution
+Resolve and validate effective policy before execution. Store the effective policy version in the Run Workspace or durable run record. Do not allow mutable repository configuration to weaken mandatory enterprise controls.
 
-Alpha Car Detailing may require all repositories to run secret scanning before completion.
+### 14.6 Implement Risk-Based Execution Profiles
 
-Billing may additionally require financial security checks.
-
-Booking cannot remove secret scanning because a local team considers it unnecessary.
-
-### Recommended practice
-
-Resolve and validate effective policy before execution.
-
-Store the effective policy version in the Run Workspace or durable run record.
-
-Do not allow mutable repository configuration to weaken mandatory enterprise controls.
-
-## 14.6 Implement Risk-Based Execution Profiles
-
-Not every engineering task requires identical agent orchestration.
-
-A documentation update and an authorization change carry different risks.
-
-Enterprise organizations should define approved workflow profiles.
+Not every engineering task requires identical agent orchestration. A documentation update and an authorization change carry different risks. Enterprise organizations should define approved workflow profiles.
 
 | Risk Profile | Typical Example                    | Expected Controls                                                              |
 | ------------ | ---------------------------------- | ------------------------------------------------------------------------------ |
@@ -11773,25 +10385,23 @@ Enterprise organizations should define approved workflow profiles.
 
 These profiles are illustrative rather than universal.
 
-### Recommended practice
+#### Recommended practice
 
 Risk classification should consider the change itself, not only the repository.
 
-For example, a Booking documentation change may be low risk, while a Booking authorization change may be high risk.
+For example, a Booking documentation change may be low risk, while a Booking authorization change may be high risk. The Harness should prevent agents from unilaterally downgrading required risk classification.
 
-The Harness should prevent agents from unilaterally downgrading required risk classification.
+> **Enterprise Tip**
 
-> Enterprise Tip
 >
+
 > Standardize risk-based workflow selection before attempting broad autonomous execution. This helps control cost without weakening high-risk engineering safeguards.
 
-## 14.7 Separate Development Automation from Production Authority
+### 14.7 Separate Development Automation from Production Authority
 
-A Harness that can modify source code does not automatically require permission to deploy into production.
+A Harness that can modify source code does not automatically require permission to deploy into production. Alpha Car Detailing should separate the development execution identity from deployment identities.
 
-Alpha Car Detailing should separate the development execution identity from deployment identities.
-
-```
+```text
 Development Harness
        ↓
 Source Changes
@@ -11807,23 +10417,21 @@ Protected Deployment Pipeline
 Production
 ```
 
-The AI execution environment should not inherit production credentials unless an explicitly approved operational workflow requires that access.
+The AI execution environment should not inherit production credentials unless an explicitly approved operational workflow requires that access. Even then, scope the identity to the authorized action. This separation limits the consequences of compromised tools, incorrect agent reasoning, and prompt injection.
 
-Even then, scope the identity to the authorized action.
+### 14.8 Adopt a Controlled Rollout Strategy
 
-This separation limits the consequences of compromised tools, incorrect agent reasoning, and prompt injection.
+Changes to shared Harness infrastructure can affect many teams. A new provider adapter, validation gate, or shared Skill may introduce regressions across multiple repositories. Avoid deploying major Harness changes across the entire organization simultaneously.
 
-## 14.8 Adopt a Controlled Rollout Strategy
+#### Recommended rollout model
 
-Changes to shared Harness infrastructure can affect many teams.
-
-A new provider adapter, validation gate, or shared Skill may introduce regressions across multiple repositories.
-
-Avoid deploying major Harness changes across the entire organization simultaneously.
-
-### Recommended rollout model
-
-\#chatgpt-mermaid-\_r_16ti\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(13, 13, 13);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_16ti\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_16ti\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_16ti\_ .error-icon{fill:rgb(243, 243, 243);}#chatgpt-mermaid-\_r_16ti\_ .error-text{fill:rgb(13, 13, 13);stroke:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16ti\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_16ti\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_16ti\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_16ti\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_16ti\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_16ti\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_16ti\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_16ti\_ .marker.cross{stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_16ti\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_16ti\_ p{margin:0;}#chatgpt-mermaid-\_r_16ti\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16ti\_ .cluster-label text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16ti\_ .cluster-label span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16ti\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_16ti\_ .label text,#chatgpt-mermaid-\_r_16ti\_ span{fill:rgb(13, 13, 13);color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16ti\_ .node rect,#chatgpt-mermaid-\_r_16ti\_ .node circle,#chatgpt-mermaid-\_r_16ti\_ .node ellipse,#chatgpt-mermaid-\_r_16ti\_ .node polygon,#chatgpt-mermaid-\_r_16ti\_ .node path{fill:rgb(222, 234, 251);stroke:rgb(83, 154, 248);stroke-width:1px;}#chatgpt-mermaid-\_r_16ti\_ .rough-node .label text,#chatgpt-mermaid-\_r_16ti\_ .node .label text,#chatgpt-mermaid-\_r_16ti\_ .image-shape .label,#chatgpt-mermaid-\_r_16ti\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_16ti\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_16ti\_ .rough-node .label,#chatgpt-mermaid-\_r_16ti\_ .node .label,#chatgpt-mermaid-\_r_16ti\_ .image-shape .label,#chatgpt-mermaid-\_r_16ti\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_16ti\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_16ti\_ .root .anchor path{fill:rgb(143, 143, 143)!important;stroke-width:0;stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_16ti\_ .arrowheadPath{fill:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_16ti\_ .edgePath .path{stroke:rgb(143, 143, 143);stroke-width:1px;}#chatgpt-mermaid-\_r_16ti\_ .flowchart-link{stroke:rgb(143, 143, 143);fill:none;}#chatgpt-mermaid-\_r_16ti\_ .edgeLabel{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_16ti\_ .edgeLabel p{background-color:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_16ti\_ .edgeLabel rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_16ti\_ .labelBkg{background-color:rgba(252, 252, 252, 0.5);}#chatgpt-mermaid-\_r_16ti\_ .cluster rect{fill:rgb(243, 243, 243);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_16ti\_ .cluster text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16ti\_ .cluster span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16ti\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(243, 243, 243);border:1px solid rgba(0, 0, 0, 0.1);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_16ti\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_16ti\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_16ti\_ .icon-shape,#chatgpt-mermaid-\_r_16ti\_ .image-shape{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_16ti\_ .icon-shape p,#chatgpt-mermaid-\_r_16ti\_ .image-shape p{background-color:rgb(252, 252, 252);padding:2px;}#chatgpt-mermaid-\_r_16ti\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_16ti\_ .image-shape .label rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_16ti\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_16ti\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_16ti\_ .node .neo-node{stroke:rgb(83, 154, 248);}#chatgpt-mermaid-\_r_16ti\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_16ti\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_16ti\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_16ti\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_16ti\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_16ti\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_16ti\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_16ti\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_16ti\_ [data-look="neo"].node .neo-line path{stroke:rgb(83, 154, 248);filter:none;}#chatgpt-mermaid-\_r_16ti\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_16ti\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_16ti\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_16ti\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_16ti\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_16ti\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_16ti\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_16ti\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_16ti\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_16ti\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_16ti\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_16ti\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-width:1px;}#chatgpt-mermaid-\_r_16ti\_ .node rect,#chatgpt-mermaid-\_r_16ti\_ .node circle,#chatgpt-mermaid-\_r_16ti\_ .node ellipse,#chatgpt-mermaid-\_r_16ti\_ .node polygon,#chatgpt-mermaid-\_r_16ti\_ .node path{fill:rgb(229, 243, 255);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_16ti\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_16ti\_ .node.mermaid-decision .label-container{fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_16ti\_ .edgePaths .flowchart-link{stroke:rgb(143, 143, 143);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_16ti\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_16ti\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}Platform DevelopmentHarness Regression TestsPilot RepositoriesSelected TeamsEnterprise Rollout
+```mermaid
+flowchart LR
+    A["Platform Development"] --> B["Harness Regression Tests"]
+    B --> C["Pilot Repositories"]
+    C --> D["Selected Teams"]
+    D --> E["Enterprise Rollout"]
+```
 
 For Alpha Car Detailing:
 
@@ -11834,19 +10442,13 @@ For Alpha Car Detailing:
 
 The platform should support version pinning and rollback where practical.
 
-### Recommended practice
+#### Recommended practice
 
-Measure the effect of shared changes on success rates, validation failures, execution duration, and cost.
+Measure the effect of shared changes on success rates, validation failures, execution duration, and cost. Do not consider a rollout successful solely because the updated Harness starts correctly.
 
-Do not consider a rollout successful solely because the updated Harness starts correctly.
+### 14.9 Establish Operational Service Levels
 
-## 14.9 Establish Operational Service Levels
-
-Once multiple teams depend on a Harness, it becomes an operational service.
-
-The organization should define appropriate service expectations.
-
-Relevant measures include:
+Once multiple teams depend on a Harness, it becomes an operational service. The organization should define appropriate service expectations. Relevant measures include:
 
 - run submission availability;
 - scheduling delay;
@@ -11867,19 +10469,17 @@ For example, Alpha Car Detailing might establish internal objectives for routine
 | Worker recovery                     | Resume from durable checkpoints          |
 | Unauthorized completion transitions | Zero                                     |
 
-These are sample targets, not measured system performance.
+These are sample targets, not measured system performance. Targets should be selected according to actual operational requirements and supported by monitoring.
 
-Targets should be selected according to actual operational requirements and supported by monitoring.
+> **Enterprise Tip**
 
-> Enterprise Tip
 >
+
 > Define service expectations around reliable engineering outcomes, not merely whether the AI provider responds successfully.
 
-## 14.10 Introduce Resource Quotas and Cost Controls
+### 14.10 Introduce Resource Quotas and Cost Controls
 
-AI-assisted engineering workloads consume multiple resources.
-
-These include:
+AI-assisted engineering workloads consume multiple resources. These include:
 
 - provider usage;
 - compute;
@@ -11891,7 +10491,7 @@ These include:
 
 A centralized Harness can consume significant resources when many teams submit tasks concurrently.
 
-### Recommended quota model
+#### Recommended quota model
 
 | Quota Scope    | Example                                       |
 | -------------- | --------------------------------------------- |
@@ -11903,29 +10503,19 @@ A centralized Harness can consume significant resources when many teams submit t
 | Individual run | Token, duration, and retry budgets            |
 | Validation     | CPU, memory, and worker limits                |
 
-The Harness should report budget exhaustion explicitly.
+The Harness should report budget exhaustion explicitly. It should not silently bypass required validation to remain within budget.
 
-It should not silently bypass required validation to remain within budget.
+#### Cost-aware orchestration
 
-### Cost-aware orchestration
+For Alpha Car Detailing, a low-risk documentation update should not automatically invoke every specialized agent and run the full integration test infrastructure unless policy requires those checks. Conversely, a high-risk financial calculation change should not receive reduced assurance merely because it is expensive. The objective is cost-efficient assurance, not minimum execution cost.
 
-For Alpha Car Detailing, a low-risk documentation update should not automatically invoke every specialized agent and run the full integration test infrastructure unless policy requires those checks.
-
-Conversely, a high-risk financial calculation change should not receive reduced assurance merely because it is expensive.
-
-The objective is cost-efficient assurance, not minimum execution cost.
-
-## 14.11 Standardize Metrics Across Teams
+### 14.11 Standardize Metrics Across Teams
 
 Enterprise metrics become useful when repositories report compatible definitions.
 
-For example, the term `Completed` should mean the same thing across Booking, Fleet, and Billing.
+For example, the term `Completed` should mean the same thing across Booking, Fleet, and Billing. A run should not be considered completed in one repository immediately after code generation while another repository requires evaluation and approval. Define shared status semantics.
 
-A run should not be considered completed in one repository immediately after code generation while another repository requires evaluation and approval.
-
-Define shared status semantics.
-
-```
+```text
 Pending
 Running
 AwaitingApproval
@@ -11948,53 +10538,28 @@ Also define shared operational measures.
 | Cost per accepted result   | Total attributable cost divided by accepted outcomes                 |
 | Population throughput      | Number of processed items per defined time interval                  |
 
-### Recommended practice
+#### Recommended practice
 
-Publish metric definitions as shared contracts.
-
-Avoid comparing team productivity based solely on run counts or AI-generated lines of code.
-
-Different repositories have different complexity, risk, and validation requirements.
+Publish metric definitions as shared contracts. Avoid comparing team productivity based solely on run counts or AI-generated lines of code. Different repositories have different complexity, risk, and validation requirements.
 
 Metrics should support improvement and operational decisions rather than encourage superficial output.
 
-## 14.12 Build a Central Operational Dashboard
+### 14.12 Build a Central Operational Dashboard
 
-An Enterprise Harness should provide operators with visibility across repositories and teams.
+An Enterprise Harness should provide operators with visibility across repositories and teams. An illustrative dashboard might show:
 
-An illustrative dashboard might show:
+**Alpha Car Detailing — Illustrative Harness Operations Dashboard**
 
-ALPHA CAR DETAILING — HARNESS OPERATIONS
+| Run status | Count |
+|---|---:|
+| Total runs | 124 |
+| Completed | 96 |
+| Failed | 12 |
+| Exhausted | 4 |
+| Running | 8 |
+| Awaiting approval | 4 |
 
-# 124
-
-Total runs
-
-# 96
-
-Completed
-
-# 12
-
-Failed
-
-# 4
-
-Exhausted
-
-# 8
-
-Running
-
-# 4
-
-Awaiting approval
-
-Example run distribution
-
-0306090120CompletedFailedExhaustedRunningApproval
-
-Illustrative data only. Not actual Alpha Car Detailing execution metrics.
+*Illustrative figures, not actual Alpha Car Detailing execution metrics.*
 
 The dashboard should also provide drill-down access to:
 
@@ -12009,15 +10574,11 @@ The dashboard should also provide drill-down access to:
 
 A failure should be diagnosable without manually reconstructing execution history from scattered logs.
 
-## 14.13 Preserve Evidence for Failed and Exhausted Runs
+### 14.13 Preserve Evidence for Failed and Exhausted Runs
 
-A common operational failure is preserving detailed artifacts only for successful runs.
+A common operational failure is preserving detailed artifacts only for successful runs. Failed and exhausted runs often contain the most valuable troubleshooting information. Alpha Car Detailing should preserve:
 
-Failed and exhausted runs often contain the most valuable troubleshooting information.
-
-Alpha Car Detailing should preserve:
-
-```
+```text
 run-1042/
 ├── input/
 ├── effective-policy.json
@@ -12029,9 +10590,7 @@ run-1042/
 └── result.json
 ```
 
-The organization may export these artifacts to an approved storage service.
-
-Retention periods should depend on:
+The organization may export these artifacts to an approved storage service. Retention periods should depend on:
 
 - security classification;
 - troubleshooting requirements;
@@ -12039,21 +10598,15 @@ Retention periods should depend on:
 - storage cost;
 - organizational policy.
 
-### Recommended practice
+#### Recommended practice
 
-Store sufficient failure evidence to identify the last successful stage, failure category, relevant implementation version, and recovery options.
+Store sufficient failure evidence to identify the last successful stage, failure category, relevant implementation version, and recovery options. Sensitive data must be redacted or access-controlled appropriately.
 
-Sensitive data must be redacted or access-controlled appropriately.
+### 14.14 Avoid Repeated Full-Suite Validation During Development Iterations
 
-## 14.14 Avoid Repeated Full-Suite Validation During Development Iterations
+Large enterprise repositories may contain extensive unit, integration, contract, and component test suites. Running every test after every small Developer iteration can make automated workflows excessively slow. A better approach separates iteration validation from final completion validation.
 
-Large enterprise repositories may contain extensive unit, integration, contract, and component test suites.
-
-Running every test after every small Developer iteration can make automated workflows excessively slow.
-
-A better approach separates iteration validation from final completion validation.
-
-```
+```text
 Developer Iteration
         ↓
 Scoped Build and Tests
@@ -12067,42 +10620,34 @@ Final Implementation
 Mandatory Completion Validation
 ```
 
-For a Booking-specific bug, the Harness may run affected tests during each iteration.
+For a Booking-specific bug, the Harness may run affected tests during each iteration. Before completion, it must execute the required final gate profile.
 
-Before completion, it must execute the required final gate profile.
+#### Recommended practice
 
-### Recommended practice
+Use dependency-aware test selection where reliable. Collect stage timings before optimizing. Verify that required final checks still execute against the exact implementation being approved.
 
-Use dependency-aware test selection where reliable.
+> **Enterprise Tip**
 
-Collect stage timings before optimizing.
-
-Verify that required final checks still execute against the exact implementation being approved.
-
-> Enterprise Tip
 >
+
 > Improve iteration speed by reducing unnecessary repeated work—not by weakening final completion standards.
 
-## 14.15 Establish Shared Test and Validation Profiles
+### 14.15 Establish Shared Test and Validation Profiles
 
-Teams should not have to recreate standard validation pipelines.
+Teams should not have to recreate standard validation pipelines. Alpha Car Detailing may offer:
 
-Alpha Car Detailing may offer:
-
-```
+```text
 dotnet-microservice
 event-driven-service
 security-sensitive-service
 infrastructure-repository
 ```
 
-Each profile can contain approved capabilities.
-
-A repository extends the profile with local requirements.
+Each profile can contain approved capabilities. A repository extends the profile with local requirements.
 
 For example:
 
-```
+```yaml
 profiles:
   - dotnet-microservice
   - event-driven-service
@@ -12115,21 +10660,13 @@ validation:
 
 The Harness resolves the effective set of gates.
 
-### Recommended practice
+#### Recommended practice
 
-Share gate execution infrastructure and approved baseline profiles.
+Share gate execution infrastructure and approved baseline profiles. Keep domain-specific validation close to the repository owner. Avoid creating one identical validation suite for every service regardless of actual dependencies.
 
-Keep domain-specific validation close to the repository owner.
+### 14.16 Create a Harness Change Advisory Process
 
-Avoid creating one identical validation suite for every service regardless of actual dependencies.
-
-## 14.16 Create a Harness Change Advisory Process
-
-Changes to shared orchestration, policy, and execution contracts can have enterprise-wide consequences.
-
-Not every change requires a formal committee, but high-impact changes deserve structured review.
-
-Examples include:
+Changes to shared orchestration, policy, and execution contracts can have enterprise-wide consequences. Not every change requires a formal committee, but high-impact changes deserve structured review. Examples include:
 
 - changing mandatory gate behavior;
 - modifying approval requirements;
@@ -12141,7 +10678,7 @@ Examples include:
 
 A practical review process may include:
 
-```
+```text
 Change Proposal
       ↓
 Impact Classification
@@ -12155,27 +10692,17 @@ Controlled Rollout
 Operational Verification
 ```
 
-The process should remain proportional to risk.
+The process should remain proportional to risk. A documentation correction should not require the same scrutiny as a change to authorization enforcement.
 
-A documentation correction should not require the same scrutiny as a change to authorization enforcement.
+### 14.17 Introduce an Enterprise Exception Process
 
-## 14.17 Introduce an Enterprise Exception Process
+Real enterprise environments contain exceptions. A legacy repository may be unable to pass an architecture gate immediately. A critical production fix may require an expedited workflow.
 
-Real enterprise environments contain exceptions.
-
-A legacy repository may be unable to pass an architecture gate immediately.
-
-A critical production fix may require an expedited workflow.
-
-A migration may temporarily require additional access.
-
-Exceptions must be explicit.
-
-They should not be implemented through hidden configuration changes or disabling gates without a record.
+A migration may temporarily require additional access. Exceptions must be explicit. They should not be implemented through hidden configuration changes or disabling gates without a record.
 
 An exception should identify:
 
-```
+```text
 Exception ID
 Affected Repository
 Affected Control
@@ -12187,23 +10714,17 @@ Compensating Control
 Audit Reference
 ```
 
-### Recommended practice
+#### Recommended practice
 
-Require exceptions to be time-limited and reviewed.
+Require exceptions to be time-limited and reviewed. Prefer compensating controls where immediate compliance is impossible. Do not allow AI Agents to approve their own exceptions.
 
-Prefer compensating controls where immediate compliance is impossible.
+### 14.18 Design for Multiple Source-Control Platforms
 
-Do not allow AI Agents to approve their own exceptions.
-
-## 14.18 Design for Multiple Source-Control Platforms
-
-Large organizations may use GitHub, Azure DevOps, or other source-control systems.
-
-The Enterprise Harness should avoid treating one platform's API as a universal orchestration model.
+Large organizations may use GitHub, Azure DevOps, or other source-control systems. The Enterprise Harness should avoid treating one platform's API as a universal orchestration model.
 
 For example:
 
-```
+```text
 ISourceControlProvider
         │
         ├── GitHubAdapter
@@ -12213,7 +10734,7 @@ ISourceControlProvider
 
 The shared contract may expose operations such as:
 
-```
+```text
 GetRepository
 CreateBranch
 GetCommit
@@ -12223,19 +10744,13 @@ GetPullRequestStatus
 
 Provider-specific capabilities should remain within adapters.
 
-### Recommended practice
+#### Recommended practice
 
-Use capability discovery and explicit compatibility checks.
+Use capability discovery and explicit compatibility checks. Do not silently omit required security or approval behavior because a selected source-control provider exposes different mechanisms.
 
-Do not silently omit required security or approval behavior because a selected source-control provider exposes different mechanisms.
+### 14.19 Use Approved Execution Environments
 
-## 14.19 Use Approved Execution Environments
-
-Enterprise Harness workers may execute AI-generated commands.
-
-This requires a deliberate execution security model.
-
-Possible controls include:
+Enterprise Harness workers may execute AI-generated commands. This requires a deliberate execution security model. Possible controls include:
 
 - ephemeral containers;
 - restricted network access;
@@ -12245,21 +10760,15 @@ Possible controls include:
 - resource quotas;
 - protected artifact storage.
 
-For Alpha Car Detailing, Booking runs should not automatically access Billing production resources.
+For Alpha Car Detailing, Booking runs should not automatically access Billing production resources. A centralized scheduler can still dispatch work to isolated environments using repository-specific identities.
 
-A centralized scheduler can still dispatch work to isolated environments using repository-specific identities.
+#### Recommended practice
 
-### Recommended practice
+Treat every AI execution workspace as a potentially untrusted workload. Enforce boundaries through infrastructure and identity controls rather than relying solely on Prompt instructions.
 
-Treat every AI execution workspace as a potentially untrusted workload.
+### 14.20 Maintain a Clear Support and Incident Model
 
-Enforce boundaries through infrastructure and identity controls rather than relying solely on Prompt instructions.
-
-## 14.20 Maintain a Clear Support and Incident Model
-
-When a Harness fails, teams should know who is responsible for investigation.
-
-The failure may involve:
+When a Harness fails, teams should know who is responsible for investigation. The failure may involve:
 
 - a repository configuration error;
 - a shared platform defect;
@@ -12283,11 +10792,9 @@ A support model should classify these failures.
 
 Clear responsibility reduces time lost transferring incidents between teams.
 
-## 14.21 Build Operational Runbooks
+### 14.21 Build Operational Runbooks
 
-Enterprise Harness operators need documented procedures for common failures.
-
-Runbooks should explain how to:
+Enterprise Harness operators need documented procedures for common failures. Runbooks should explain how to:
 
 - inspect a stuck run;
 - diagnose a failed gate;
@@ -12302,7 +10809,7 @@ Runbooks should explain how to:
 
 For example:
 
-```
+```text
 Run Status: Running
 Last Heartbeat: Older than Allowed Threshold
 
@@ -12317,17 +10824,13 @@ Operator Procedure:
 
 The Harness should distinguish a long-running but healthy task from an abandoned execution.
 
-### Recommended practice
+#### Recommended practice
 
-Automate safe recovery where possible.
+Automate safe recovery where possible. Require operator intervention when the system cannot establish whether repeating an operation is safe.
 
-Require operator intervention when the system cannot establish whether repeating an operation is safe.
+### 14.22 Train Teams on Harness Responsibilities
 
-## 14.22 Train Teams on Harness Responsibilities
-
-Enterprise adoption fails when developers assume that AI Agents, Skills, validation gates, and the Harness all perform the same function.
-
-Teams should understand:
+Enterprise adoption fails when developers assume that AI Agents, Skills, validation gates, and the Harness all perform the same function. Teams should understand:
 
 - Instructions define persistent engineering expectations.
 - Skills define reusable implementation workflows.
@@ -12341,21 +10844,13 @@ Teams should understand:
 - Evaluators assess outcomes.
 - Humans approve decisions requiring authorization.
 
-Training should use actual repository workflows.
-
-For Alpha Car Detailing, a Booking developer should understand how a change progresses from a Prompt to an approved pull request.
-
-A Billing engineer should understand why financial changes require additional controls.
+Training should use actual repository workflows. For Alpha Car Detailing, a Booking developer should understand how a change progresses from a Prompt to an approved pull request. A Billing engineer should understand why financial changes require additional controls.
 
 A platform engineer should understand how worker recovery and policy resolution operate.
 
-## 14.23 Measure Adoption Quality, Not Just Adoption Quantity
+### 14.23 Measure Adoption Quality, Not Just Adoption Quantity
 
-An organization may report that forty repositories have adopted the Harness.
-
-That number alone does not demonstrate effective adoption.
-
-More meaningful measures include:
+An organization may report that forty repositories have adopted the Harness. That number alone does not demonstrate effective adoption. More meaningful measures include:
 
 - percentage of repositories with valid Instructions;
 - percentage with reliable mandatory gates;
@@ -12366,29 +10861,25 @@ More meaningful measures include:
 - reduction in repeated engineering work;
 - developer experience feedback.
 
-### Recommended practice
+#### Recommended practice
 
 Differentiate between:
 
-```
+```text
 Registered Repository
 ```
 
 and:
 
-```
+```text
 Production-Ready Harness Repository
 ```
 
-A registered repository may have configuration files.
+A registered repository may have configuration files. A production-ready repository has validated execution, appropriate governance, reliable evidence, and an identified owner.
 
-A production-ready repository has validated execution, appropriate governance, reliable evidence, and an identified owner.
+### 14.24 Govern AI-Assisted Improvement
 
-## 14.24 Govern AI-Assisted Improvement
-
-As enterprise usage grows, the Harness may identify recurring opportunities for improvement.
-
-Examples include:
+As enterprise usage grows, the Harness may identify recurring opportunities for improvement. Examples include:
 
 - repeated build failures;
 - frequently missing acceptance criteria;
@@ -12397,59 +10888,39 @@ Examples include:
 - common architecture violations;
 - inefficient Prompt structures.
 
-These observations can inform a future self-learning Harness.
+These observations can inform a future self-learning Harness. However, proposed improvements must remain separate from authoritative changes.
 
-However, proposed improvements must remain separate from authoritative changes.
+```mermaid
+flowchart TB
+    R["Harness Execution History"] --> A["Improvement Analysis"] --> P["Improvement Proposal"]
+    P --> V["Governed Review"]
+    V -->|Approved| U["Versioned Capability Update"] --> Rollout["Controlled Rollout"]
+    V -->|Rejected| Archive["Retain Decision Evidence"]
+```
 
-\#chatgpt-mermaid-\_r_170o\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(13, 13, 13);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_170o\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_170o\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_170o\_ .error-icon{fill:rgb(243, 243, 243);}#chatgpt-mermaid-\_r_170o\_ .error-text{fill:rgb(13, 13, 13);stroke:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_170o\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_170o\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_170o\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_170o\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_170o\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_170o\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_170o\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_170o\_ .marker.cross{stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_170o\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_170o\_ p{margin:0;}#chatgpt-mermaid-\_r_170o\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_170o\_ .cluster-label text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_170o\_ .cluster-label span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_170o\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_170o\_ .label text,#chatgpt-mermaid-\_r_170o\_ span{fill:rgb(13, 13, 13);color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_170o\_ .node rect,#chatgpt-mermaid-\_r_170o\_ .node circle,#chatgpt-mermaid-\_r_170o\_ .node ellipse,#chatgpt-mermaid-\_r_170o\_ .node polygon,#chatgpt-mermaid-\_r_170o\_ .node path{fill:rgb(222, 234, 251);stroke:rgb(83, 154, 248);stroke-width:1px;}#chatgpt-mermaid-\_r_170o\_ .rough-node .label text,#chatgpt-mermaid-\_r_170o\_ .node .label text,#chatgpt-mermaid-\_r_170o\_ .image-shape .label,#chatgpt-mermaid-\_r_170o\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_170o\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_170o\_ .rough-node .label,#chatgpt-mermaid-\_r_170o\_ .node .label,#chatgpt-mermaid-\_r_170o\_ .image-shape .label,#chatgpt-mermaid-\_r_170o\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_170o\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_170o\_ .root .anchor path{fill:rgb(143, 143, 143)!important;stroke-width:0;stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_170o\_ .arrowheadPath{fill:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_170o\_ .edgePath .path{stroke:rgb(143, 143, 143);stroke-width:1px;}#chatgpt-mermaid-\_r_170o\_ .flowchart-link{stroke:rgb(143, 143, 143);fill:none;}#chatgpt-mermaid-\_r_170o\_ .edgeLabel{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_170o\_ .edgeLabel p{background-color:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_170o\_ .edgeLabel rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_170o\_ .labelBkg{background-color:rgba(252, 252, 252, 0.5);}#chatgpt-mermaid-\_r_170o\_ .cluster rect{fill:rgb(243, 243, 243);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_170o\_ .cluster text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_170o\_ .cluster span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_170o\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(243, 243, 243);border:1px solid rgba(0, 0, 0, 0.1);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_170o\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_170o\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_170o\_ .icon-shape,#chatgpt-mermaid-\_r_170o\_ .image-shape{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_170o\_ .icon-shape p,#chatgpt-mermaid-\_r_170o\_ .image-shape p{background-color:rgb(252, 252, 252);padding:2px;}#chatgpt-mermaid-\_r_170o\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_170o\_ .image-shape .label rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_170o\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_170o\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_170o\_ .node .neo-node{stroke:rgb(83, 154, 248);}#chatgpt-mermaid-\_r_170o\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_170o\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_170o\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_170o\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_170o\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_170o\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_170o\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_170o\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_170o\_ [data-look="neo"].node .neo-line path{stroke:rgb(83, 154, 248);filter:none;}#chatgpt-mermaid-\_r_170o\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_170o\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_170o\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_170o\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_170o\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_170o\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_170o\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_170o\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_170o\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_170o\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_170o\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_170o\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-width:1px;}#chatgpt-mermaid-\_r_170o\_ .node rect,#chatgpt-mermaid-\_r_170o\_ .node circle,#chatgpt-mermaid-\_r_170o\_ .node ellipse,#chatgpt-mermaid-\_r_170o\_ .node polygon,#chatgpt-mermaid-\_r_170o\_ .node path{fill:rgb(229, 243, 255);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_170o\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_170o\_ .node.mermaid-decision .label-container{fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_170o\_ .edgePaths .flowchart-link{stroke:rgb(143, 143, 143);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_170o\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_170o\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}Harness Execution HistoryImprovement AnalysisImprovement ProposalGoverned ReviewVersioned Capability UpdateRetain Decision EvidenceControlled RolloutApprovedRejected
+#### Recommended practice
 
-### Recommended practice
+Allow the Harness to recommend changes to Instructions, Skills, validation profiles, and workflow design. Do not allow it to silently rewrite mandatory standards. This preserves human accountability while enabling evidence-driven improvement.
 
-Allow the Harness to recommend changes to Instructions, Skills, validation profiles, and workflow design.
-
-Do not allow it to silently rewrite mandatory standards.
-
-This preserves human accountability while enabling evidence-driven improvement.
-
-## 14.25 Create an Enterprise Harness Maturity Model
+### 14.25 Create an Enterprise Harness Maturity Model
 
 A maturity model can help an organization adopt patterns progressively.
 
-ILLUSTRATIVE ENTERPRISE HARNESS MATURITY
+**Illustrative Enterprise Harness maturity model**
 
-Level 1 — Repository Automation
+| Level | Name | Characteristic |
+|---|---|---|
+| 1 | Repository Automation | A single-repository Harness with basic Instructions, Skills, and validation. |
+| 2 | Standardized Harness | Shared role contracts, deterministic gates, structured evidence, and workspace conventions. |
+| 3 | Shared Platform | Common orchestration capabilities, repository profiles, provider adapters, and operational metrics. |
+| 4 | Governed Scale | Multi-repository execution, population processing, recovery, isolation, and risk-based approval. |
+| 5 | Adaptive Enterprise Harness | Evidence-based improvement proposals, governed knowledge evolution, and continuous optimization. |
 
-Foundational
+This maturity model is a planning aid, not an industry certification standard. Organizations may progress differently according to their architecture, team structure, and risk profile. A smaller organization may never require a distributed Harness.
 
-Single-repository Harness, basic Instructions, Skills, and validation.
+An enterprise with many regulated services may require advanced governance before large-scale parallel execution. The purpose is to make progression deliberate.
 
-Level 2 — Standardized Harness
-
-Shared role contracts, deterministic gates, structured evidence, and workspace conventions.
-
-Level 3 — Shared Platform
-
-Central orchestration capabilities, repository profiles, provider adapters, and operational metrics.
-
-Level 4 — Governed Scale
-
-Multi-repository execution, population processing, recovery, strong isolation, and risk-based approval.
-
-Level 5 — Adaptive Enterprise Harness
-
-Evidence-based improvement recommendations, governed knowledge evolution, and continuous optimization.
-
-This maturity model is a planning aid, not an industry certification standard.
-
-Organizations may progress differently according to their architecture, team structure, and risk profile.
-
-A smaller organization may never require a distributed Harness.
-
-An enterprise with many regulated services may require advanced governance before large-scale parallel execution.
-
-The purpose is to make progression deliberate.
-
-## 14.26 Recommended Adoption Roadmap for Alpha Car Detailing
+### 14.26 Recommended Adoption Roadmap for Alpha Car Detailing
 
 Alpha Car Detailing can adopt the Enterprise Harness patterns through a staged approach.
 
@@ -12466,9 +10937,7 @@ Alpha Car Detailing can adopt the Enterprise Harness patterns through a staged a
 
 Each phase should have explicit acceptance criteria.
 
-For example, Phase 3 should not be considered complete merely because Fleet and Billing can invoke Claude.
-
-It should demonstrate that:
+For example, Phase 3 should not be considered complete merely because Fleet and Billing can invoke Claude. It should demonstrate that:
 
 - the central Harness is reused;
 - repository policies are resolved correctly;
@@ -12477,99 +10946,57 @@ It should demonstrate that:
 - workspaces are isolated;
 - evidence is consistently recorded.
 
-## 14.27 Enterprise Readiness Checklist
+### 14.27 Enterprise Readiness Checklist
 
 Before expanding a Harness to additional teams, assess the following areas.
 
-Enterprise readiness assessment
+**Enterprise readiness checklist**
 
-0 of 15 verified
+- [ ] **Ownership:** Platform, repository, Skill, gate, and governance owners are assigned.
+- [ ] **Onboarding:** Repositories can be added through validated configuration.
+- [ ] **Shared capabilities:** Common execution infrastructure is reused without uncontrolled copying.
+- [ ] **Governance:** Mandatory controls and approval requirements are enforceable.
+- [ ] **Isolation:** Runs, workspaces, tools, and credentials are appropriately isolated.
+- [ ] **Validation:** Required deterministic gates produce verifiable evidence.
+- [ ] **Evaluation:** Goal satisfaction is assessed independently.
+- [ ] **Recovery:** Interrupted runs can resume safely or fail with retained evidence.
+- [ ] **Observability:** Operators can trace run stages, failures, retries, and costs.
+- [ ] **Provider adapters:** Provider-specific behavior is isolated behind governed interfaces.
+- [ ] **Versioning:** Instructions, Skills, profiles, and execution contracts are versioned.
+- [ ] **Support:** Operational runbooks and escalation responsibilities exist.
+- [ ] **Cost controls:** Concurrency, duration, provider usage, and infrastructure budgets are governed.
+- [ ] **Security:** Least privilege and approval boundaries are enforced technically.
+- [ ] **Change management:** Shared Harness changes use controlled testing and rollout.
 
-Ownership — Platform, repository, Skill, gate, and governance owners are assigned.
+The checklist provides a practical foundation for architecture reviews, operational readiness assessments, and enterprise onboarding decisions. A critical missing security or validation control should block production-scale adoption even if most other conditions are satisfied.
 
-Onboarding — Repositories can be added through validated configuration.
+### 14.28 Final Enterprise Guidance
 
-Shared capabilities — Common execution infrastructure is reused without uncontrolled copying.
-
-Governance — Mandatory controls and approval requirements are enforceable.
-
-Isolation — Runs, workspaces, tools, and credentials are appropriately isolated.
-
-Validation — Required deterministic gates produce verifiable evidence.
-
-Evaluation — Goal satisfaction is assessed independently.
-
-Recovery — Interrupted runs can resume safely or fail with retained evidence.
-
-Observability — Operators can trace run stages, failures, retries, and costs.
-
-Provider adapters — Provider-specific behavior is isolated behind governed interfaces.
-
-Versioning — Instructions, Skills, profiles, and execution contracts are versioned.
-
-Support — Operational runbooks and escalation responsibilities exist.
-
-Cost controls — Concurrency, duration, provider usage, and infrastructure budgets are governed.
-
-Security — Least privilege and approval boundaries are enforced technically.
-
-Change management — Shared Harness changes use controlled testing and rollout.
-
-&#x20;Copy assessment
-
-The checklist provides a practical foundation for architecture reviews, operational readiness assessments, and enterprise onboarding decisions.
-
-A critical missing security or validation control should block production-scale adoption even if most other conditions are satisfied.
-
-## 14.28 Final Enterprise Guidance
-
-The transition from a repository Harness to an Enterprise Harness is not simply a question of infrastructure scale.
-
-It is an organizational and architectural transformation.
-
-Alpha Car Detailing must decide which engineering capabilities should be shared, which decisions belong to repository teams, how policies are enforced, how failures are recovered, and how results are measured.
+The transition from a repository Harness to an Enterprise Harness is not simply a question of infrastructure scale. It is an organizational and architectural transformation. Alpha Car Detailing must decide which engineering capabilities should be shared, which decisions belong to repository teams, how policies are enforced, how failures are recovered, and how results are measured.
 
 A successful implementation should make the following outcomes possible:
 
-A new repository can be onboarded without rewriting central orchestration.
+A new repository can be onboarded without rewriting central orchestration. A shared Skill can improve without forcing every team to maintain its own implementation. A security policy can be enforced consistently across repositories.
 
-A shared Skill can improve without forcing every team to maintain its own implementation.
+A failing run can be diagnosed and recovered without losing unrelated work. Multiple AI coding providers can participate through controlled execution interfaces. Teams retain legitimate domain ownership while complying with enterprise engineering standards.
 
-A security policy can be enforced consistently across repositories.
+Leadership can evaluate operational effectiveness through evidence rather than assumptions about AI productivity. The enterprise should resist the temptation to measure success by the number of agents, scripts, workflows, or integrations deployed. The more meaningful measure is whether the Harness allows engineering teams to deliver reliable, validated, and maintainable changes with predictable governance and operational cost.
 
-A failing run can be diagnosed and recovered without losing unrelated work.
+> **Enterprise Tip**
 
-Multiple AI coding providers can participate through controlled execution interfaces.
-
-Teams retain legitimate domain ownership while complying with enterprise engineering standards.
-
-Leadership can evaluate operational effectiveness through evidence rather than assumptions about AI productivity.
-
-The enterprise should resist the temptation to measure success by the number of agents, scripts, workflows, or integrations deployed.
-
-The more meaningful measure is whether the Harness allows engineering teams to deliver reliable, validated, and maintainable changes with predictable governance and operational cost.
-
-> Enterprise Tip
 >
+
 > Build the Harness platform to make the correct engineering workflow the easiest workflow.
+
 >
+
 > Provide teams with reusable capabilities, reliable defaults, clear ownership, and visible evidence. Reserve central control for shared infrastructure and mandatory governance, while keeping legitimate engineering decisions close to the teams that understand the repositories.
 
-Enterprise Harness patterns become valuable when they reduce organizational friction without hiding responsibility.
+Enterprise Harness patterns become valuable when they reduce organizational friction without hiding responsibility. The architecture should enable teams to move independently where independence is appropriate and coordinate deliberately where shared contracts, risk, and governance require it. That balance is the foundation of sustainable enterprise AI Engineering.
 
-The architecture should enable teams to move independently where independence is appropriate and coordinate deliberately where shared contracts, risk, and governance require it.
+## 15. Decision Points
 
-That balance is the foundation of sustainable enterprise AI Engineering.
-
-Chapter 21 status: In progress — next section: Decision Points
-
-# 15. Decision Points
-
-Enterprise Harness patterns are not interchangeable implementation techniques. Each pattern introduces tradeoffs involving architectural complexity, repository autonomy, scalability, execution reliability, governance, security, and cost.
-
-An architect must select patterns based on the organization's actual requirements rather than adopting the most sophisticated architecture available.
-
-For Alpha Car Detailing, the appropriate architecture depends on several questions:
+Enterprise Harness patterns are not interchangeable implementation techniques. Each pattern introduces tradeoffs involving architectural complexity, repository autonomy, scalability, execution reliability, governance, security, and cost. An architect must select patterns based on the organization's actual requirements rather than adopting the most sophisticated architecture available. For Alpha Car Detailing, the appropriate architecture depends on several questions:
 
 - How many repositories and teams will use the Harness?
 - Which execution capabilities should be shared?
@@ -12580,21 +11007,15 @@ For Alpha Car Detailing, the appropriate architecture depends on several questio
 - How should failures, retries, and recovery be handled?
 - What level of operational complexity can the organization support?
 
-This section provides a structured decision framework for selecting and combining Enterprise Harness patterns.
-
-The governing principle is:
+This section provides a structured decision framework for selecting and combining Enterprise Harness patterns. The governing principle is:
 
 > Choose the simplest combination of Harness patterns that satisfies the required engineering, security, operational, and governance constraints. Add complexity only when the benefits justify its cost.
 
-## 15.1 Decision Point: Single-Repository or Multi-Repository Harness?
+### 15.1 Decision Point: Single-Repository or Multi-Repository Harness?
 
-The first decision concerns the scope of repository execution.
+The first decision concerns the scope of repository execution. A Single-Repository Harness operates within one repository boundary. A Multi-Repository Harness coordinates engineering work across several repositories.
 
-A Single-Repository Harness operates within one repository boundary.
-
-A Multi-Repository Harness coordinates engineering work across several repositories.
-
-### Decision criteria
+#### Decision criteria
 
 | Factor                 | Single-Repository Harness | Multi-Repository Harness              |
 | ---------------------- | ------------------------- | ------------------------------------- |
@@ -12607,39 +11028,31 @@ A Multi-Repository Harness coordinates engineering work across several repositor
 | Approval               | Repository ownership      | Multiple ownership boundaries         |
 | Operational complexity | Lower                     | Higher                                |
 
-### Alpha Car Detailing example
+#### Alpha Car Detailing example
 
-Adding a validation rule to the Booking API requires only the Booking repository.
-
-A Single-Repository Harness is sufficient.
-
-Implementing consolidated fleet invoicing affects Booking, Fleet, and Billing.
+Adding a validation rule to the Booking API requires only the Booking repository. A Single-Repository Harness is sufficient. Implementing consolidated fleet invoicing affects Booking, Fleet, and Billing.
 
 A Multi-Repository Harness is appropriate because the change requires coordinated contracts, implementations, and integration validation.
 
-### Decision guidance
+#### Decision guidance
 
-Use a Multi-Repository Harness when the business outcome genuinely depends on coordinated changes across repositories.
+Use a Multi-Repository Harness when the business outcome genuinely depends on coordinated changes across repositories. Do not use multi-repository orchestration merely because several repositories belong to the same organization.
 
-Do not use multi-repository orchestration merely because several repositories belong to the same organization.
+> **Decision Point**
 
-> Decision Point
 >
+
 > If each repository can independently complete and validate its assigned change, prefer separate repository runs. Introduce parent-level orchestration when dependencies or a shared business outcome require coordination.
 
-## 15.2 Decision Point: Monorepo or Independent Repository Execution?
+### 15.2 Decision Point: Monorepo or Independent Repository Execution?
 
-Some organizations maintain multiple services within one repository.
+Some organizations maintain multiple services within one repository. Others maintain separate repositories for each service. The Harness must reflect the actual source-control and architectural boundaries.
 
-Others maintain separate repositories for each service.
-
-The Harness must reflect the actual source-control and architectural boundaries.
-
-### Monorepo considerations
+#### Monorepo considerations
 
 A monorepo may contain:
 
-```
+```text
 alpha-car-platform/
 ├── services/
 │   ├── booking/
@@ -12660,13 +11073,11 @@ Although all services share one repository, they may have different:
 
 A monorepo Harness should therefore support service-level scope detection.
 
-### Independent repository considerations
+#### Independent repository considerations
 
-Separate repositories provide natural source-control boundaries.
+Separate repositories provide natural source-control boundaries. However, cross-service work requires explicit dependency coordination and contract compatibility validation.
 
-However, cross-service work requires explicit dependency coordination and contract compatibility validation.
-
-### Selection guidance
+#### Selection guidance
 
 | Requirement                                          | Preferred Pattern                                   |
 | ---------------------------------------------------- | --------------------------------------------------- |
@@ -12675,19 +11086,15 @@ However, cross-service work requires explicit dependency coordination and contra
 | Independent repositories with coordinated changes    | Multi-Repository Harness                            |
 | Shared monorepo with independently governed services | Monorepo Harness with scoped profiles and approvals |
 
-The repository structure should not determine all engineering authority.
+The repository structure should not determine all engineering authority. Even in a monorepo, the Billing team may require stronger controls than the Booking team.
 
-Even in a monorepo, the Billing team may require stronger controls than the Booking team.
-
-## 15.3 Decision Point: Centralized, Distributed, or Shared Platform Harness?
+### 15.3 Decision Point: Centralized, Distributed, or Shared Platform Harness?
 
 This decision determines how common Harness capabilities are deployed and governed.
 
-### Centralized Harness
+#### Centralized Harness
 
-A central platform owns most execution infrastructure.
-
-Advantages include:
+A central platform owns most execution infrastructure. Advantages include:
 
 - consistent orchestration;
 - centralized observability;
@@ -12700,11 +11107,9 @@ Disadvantages include:
 - potential platform bottlenecks;
 - risk of over-centralizing repository decisions.
 
-### Distributed Harness
+#### Distributed Harness
 
-Teams operate independent Harness instances under shared contracts.
-
-Advantages include:
+Teams operate independent Harness instances under shared contracts. Advantages include:
 
 - greater autonomy;
 - local operational control;
@@ -12716,35 +11121,23 @@ Disadvantages include:
 - risk of duplicated implementation;
 - difficulty maintaining consistent governance.
 
-### Shared Platform Harness
+#### Shared Platform Harness
 
-A shared platform provides common capabilities while repository and team profiles define local behavior.
+A shared platform provides common capabilities while repository and team profiles define local behavior. This often provides the best balance for an organization with several independently owned services.
 
-This often provides the best balance for an organization with several independently owned services.
+| Option | When to favor it |
+|---|---|
+| Centralized execution | Teams use highly standardized workflows and require central operational control; avoid centralizing domain decisions. |
+| Distributed team-managed execution | Teams require stronger operational independence; enforce shared contracts and policy to prevent drift. |
+| Shared platform with repository-specific profiles | Multiple teams need common execution infrastructure while retaining local Instructions, Skills, gates, and approvals. |
 
-Architecture selection guide
+#### Alpha Car Detailing decision
 
-Centralized execution with centrally managed workflows
+The recommended architecture is a Shared Platform Harness. The organization can maintain one common execution platform while allowing Booking, Fleet, and Billing to define their local engineering requirements.
 
-Distributed team-managed execution
+### 15.4 Decision Point: Shared Harness or Team-Specific Harness?
 
-Shared platform with repository-specific profiles
-
-Shared Platform Harness
-
-Suitable where multiple teams need shared execution infrastructure while retaining domain-specific Instructions, Skills, validation profiles, and approval requirements.
-
-### Alpha Car Detailing decision
-
-The recommended architecture is a Shared Platform Harness.
-
-The organization can maintain one common execution platform while allowing Booking, Fleet, and Billing to define their local engineering requirements.
-
-## 15.4 Decision Point: Shared Harness or Team-Specific Harness?
-
-A shared Harness minimizes duplicated infrastructure.
-
-A team-specific Harness may be justified when a team has distinct execution, compliance, or security requirements.
+A shared Harness minimizes duplicated infrastructure. A team-specific Harness may be justified when a team has distinct execution, compliance, or security requirements.
 
 For example, the Billing team may require:
 
@@ -12755,31 +11148,31 @@ For example, the Billing team may require:
 
 This does not automatically justify creating an entirely separate Harness implementation.
 
-### Selection guidance
+#### Selection guidance
 
 First determine whether the requirement can be expressed through:
 
 1. a repository profile;
+
 2. a team profile;
+
 3. an approved plugin or adapter;
+
 4. a dedicated execution pool;
+
 5. a genuinely separate Harness deployment.
 
 Use separate deployments when isolation, compliance, operational ownership, or other requirements cannot be satisfied by configuration and controlled infrastructure boundaries.
 
-### Recommended decision
+#### Recommended decision
 
-Prefer shared capabilities with team-specific profiles.
+Prefer shared capabilities with team-specific profiles. Introduce separate Harness deployments only when their operational or security benefits justify the duplication.
 
-Introduce separate Harness deployments only when their operational or security benefits justify the duplication.
+### 15.5 Decision Point: Single-Agent or Multi-Agent Workflow?
 
-## 15.5 Decision Point: Single-Agent or Multi-Agent Workflow?
+A single-agent workflow minimizes coordination overhead. A multi-agent workflow introduces specialized responsibilities and independent review.
 
-A single-agent workflow minimizes coordination overhead.
-
-A multi-agent workflow introduces specialized responsibilities and independent review.
-
-### Comparison
+#### Comparison
 
 | Factor              | Single-Agent                       | Multi-Agent                 |
 | ------------------- | ---------------------------------- | --------------------------- |
@@ -12790,13 +11183,11 @@ A multi-agent workflow introduces specialized responsibilities and independent r
 | Evidence separation | Limited unless externally enforced | More explicit               |
 | Suitability         | Narrow, low-risk tasks             | Complex or higher-risk work |
 
-### Alpha Car Detailing examples
+#### Alpha Car Detailing examples
 
-A minor documentation correction may use one Developer Agent followed by required deterministic checks.
+A minor documentation correction may use one Developer Agent followed by required deterministic checks. A change to Billing financial calculations may require:
 
-A change to Billing financial calculations may require:
-
-```
+```text
 Lead
   ↓
 Developer
@@ -12810,29 +11201,35 @@ Evaluator
 Human Approval
 ```
 
-### Decision guidance
+#### Decision guidance
 
-Add agent roles when they provide distinct value.
+Add agent roles when they provide distinct value. Do not increase agent count merely to make a workflow appear more autonomous or sophisticated.
 
-Do not increase agent count merely to make a workflow appear more autonomous or sophisticated.
+> **Decision Point**
 
-> Decision Point
 >
+
 > If a role does not have distinct responsibilities, independent evidence, or a defined decision boundary, determine whether it is genuinely needed as a separate agent.
 
-## 15.6 Decision Point: Sequential or Parallel Orchestration?
+### 15.6 Decision Point: Sequential or Parallel Orchestration?
 
-Sequential orchestration is appropriate when one stage depends on another.
+Sequential orchestration is appropriate when one stage depends on another. Parallel orchestration is appropriate when activities are independent.
 
-Parallel orchestration is appropriate when activities are independent.
+For example, the Developer must generally produce an implementation before the Reviewer can examine it. However, security scanning and architecture analysis may be able to execute concurrently against the same immutable implementation snapshot.
 
-For example, the Developer must generally produce an implementation before the Reviewer can examine it.
+```mermaid
+flowchart TB
+    L["Lead"] --> D["Developer"]
+    D --> R["Independent Review"]
+    D --> T["Tests"]
+    D --> S["Security Scan"]
+    R --> A["Evidence Aggregation"]
+    T --> A
+    S --> A
+    A --> E["Evaluator"]
+```
 
-However, security scanning and architecture analysis may be able to execute concurrently against the same immutable implementation snapshot.
-
-\#chatgpt-mermaid-\_r_18bp\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(13, 13, 13);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_18bp\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_18bp\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_18bp\_ .error-icon{fill:rgb(243, 243, 243);}#chatgpt-mermaid-\_r_18bp\_ .error-text{fill:rgb(13, 13, 13);stroke:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18bp\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_18bp\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_18bp\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_18bp\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_18bp\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_18bp\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_18bp\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_18bp\_ .marker.cross{stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_18bp\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_18bp\_ p{margin:0;}#chatgpt-mermaid-\_r_18bp\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18bp\_ .cluster-label text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18bp\_ .cluster-label span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18bp\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_18bp\_ .label text,#chatgpt-mermaid-\_r_18bp\_ span{fill:rgb(13, 13, 13);color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18bp\_ .node rect,#chatgpt-mermaid-\_r_18bp\_ .node circle,#chatgpt-mermaid-\_r_18bp\_ .node ellipse,#chatgpt-mermaid-\_r_18bp\_ .node polygon,#chatgpt-mermaid-\_r_18bp\_ .node path{fill:rgb(222, 234, 251);stroke:rgb(83, 154, 248);stroke-width:1px;}#chatgpt-mermaid-\_r_18bp\_ .rough-node .label text,#chatgpt-mermaid-\_r_18bp\_ .node .label text,#chatgpt-mermaid-\_r_18bp\_ .image-shape .label,#chatgpt-mermaid-\_r_18bp\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_18bp\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_18bp\_ .rough-node .label,#chatgpt-mermaid-\_r_18bp\_ .node .label,#chatgpt-mermaid-\_r_18bp\_ .image-shape .label,#chatgpt-mermaid-\_r_18bp\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_18bp\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_18bp\_ .root .anchor path{fill:rgb(143, 143, 143)!important;stroke-width:0;stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_18bp\_ .arrowheadPath{fill:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_18bp\_ .edgePath .path{stroke:rgb(143, 143, 143);stroke-width:1px;}#chatgpt-mermaid-\_r_18bp\_ .flowchart-link{stroke:rgb(143, 143, 143);fill:none;}#chatgpt-mermaid-\_r_18bp\_ .edgeLabel{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_18bp\_ .edgeLabel p{background-color:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_18bp\_ .edgeLabel rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_18bp\_ .labelBkg{background-color:rgba(252, 252, 252, 0.5);}#chatgpt-mermaid-\_r_18bp\_ .cluster rect{fill:rgb(243, 243, 243);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_18bp\_ .cluster text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18bp\_ .cluster span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18bp\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(243, 243, 243);border:1px solid rgba(0, 0, 0, 0.1);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_18bp\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18bp\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_18bp\_ .icon-shape,#chatgpt-mermaid-\_r_18bp\_ .image-shape{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_18bp\_ .icon-shape p,#chatgpt-mermaid-\_r_18bp\_ .image-shape p{background-color:rgb(252, 252, 252);padding:2px;}#chatgpt-mermaid-\_r_18bp\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_18bp\_ .image-shape .label rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_18bp\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_18bp\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_18bp\_ .node .neo-node{stroke:rgb(83, 154, 248);}#chatgpt-mermaid-\_r_18bp\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_18bp\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_18bp\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_18bp\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_18bp\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_18bp\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_18bp\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_18bp\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_18bp\_ [data-look="neo"].node .neo-line path{stroke:rgb(83, 154, 248);filter:none;}#chatgpt-mermaid-\_r_18bp\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_18bp\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_18bp\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_18bp\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_18bp\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_18bp\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_18bp\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_18bp\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_18bp\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_18bp\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_18bp\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_18bp\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-width:1px;}#chatgpt-mermaid-\_r_18bp\_ .node rect,#chatgpt-mermaid-\_r_18bp\_ .node circle,#chatgpt-mermaid-\_r_18bp\_ .node ellipse,#chatgpt-mermaid-\_r_18bp\_ .node polygon,#chatgpt-mermaid-\_r_18bp\_ .node path{fill:rgb(229, 243, 255);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_18bp\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_18bp\_ .node.mermaid-decision .label-container{fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_18bp\_ .edgePaths .flowchart-link{stroke:rgb(143, 143, 143);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_18bp\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_18bp\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}LeadDeveloperIndependent ReviewTestsSecurity ScanEvidence AggregationEvaluator
-
-### Decision criteria
+#### Decision criteria
 
 Use parallel execution only when:
 
@@ -12842,19 +11239,13 @@ Use parallel execution only when:
 - result aggregation is defined;
 - failures are independently handled.
 
-### Important distinction
+#### Important distinction
 
-Parallel validation is often easier to implement safely than parallel code modification.
+Parallel validation is often easier to implement safely than parallel code modification. Multiple read-only checks may inspect one immutable snapshot. Multiple Developer Agents modifying overlapping files require isolated branches or worktrees and a controlled integration stage.
 
-Multiple read-only checks may inspect one immutable snapshot.
+### 15.7 Decision Point: When Should Fan-Out/Fan-In Be Used?
 
-Multiple Developer Agents modifying overlapping files require isolated branches or worktrees and a controlled integration stage.
-
-## 15.7 Decision Point: When Should Fan-Out/Fan-In Be Used?
-
-Fan-out/fan-in is appropriate when a task can be divided into independently processed work units whose results must later be aggregated.
-
-Examples include:
+Fan-out/fan-in is appropriate when a task can be divided into independently processed work units whose results must later be aggregated. Examples include:
 
 - repository-wide test generation;
 - modernization across dozens of services;
@@ -12862,7 +11253,7 @@ Examples include:
 - repeated security remediation;
 - architecture analysis across repositories.
 
-### Decision criteria
+#### Decision criteria
 
 Ask:
 
@@ -12873,21 +11264,15 @@ Ask:
 - Are dependencies between units known?
 - Can work units be retried independently?
 
-### Alpha Car Detailing example
+#### Alpha Car Detailing example
 
-Modernizing structured logging across forty microservices is a suitable population workflow.
+Modernizing structured logging across forty microservices is a suitable population workflow. Implementing a tightly coupled transaction across several services may require dependency-aware orchestration rather than unrestricted fan-out.
 
-Implementing a tightly coupled transaction across several services may require dependency-aware orchestration rather than unrestricted fan-out.
+#### Decision guidance
 
-### Decision guidance
+Use fan-out/fan-in for independent processing. Use dependency graphs when implementation ordering matters. Do not confuse parallel execution with independent engineering responsibility.
 
-Use fan-out/fan-in for independent processing.
-
-Use dependency graphs when implementation ordering matters.
-
-Do not confuse parallel execution with independent engineering responsibility.
-
-## 15.8 Decision Point: Where Should Deterministic Gates Execute?
+### 15.8 Decision Point: Where Should Deterministic Gates Execute?
 
 Validation gates may execute:
 
@@ -12908,31 +11293,21 @@ The location should depend on the gate's requirements.
 | Cross-service compatibility | Shared integration environment      |
 | Infrastructure validation   | Restricted validation worker        |
 
-### Architectural decision
+#### Architectural decision
 
-The Harness should own the validation requirement and result contract.
+The Harness should own the validation requirement and result contract. It need not personally execute every command.
 
-It need not personally execute every command.
+For example, GitHub Actions may execute a required test suite. The Harness can consume the result if it verifies the correct repository, commit, workflow, and evidence.
 
-For example, GitHub Actions may execute a required test suite.
+#### Recommended practice
 
-The Harness can consume the result if it verifies the correct repository, commit, workflow, and evidence.
+Reuse trusted validation infrastructure rather than duplicating costly checks. Do not accept stale results from an earlier implementation version.
 
-### Recommended practice
+### 15.9 Decision Point: When Should Human Approval Be Required?
 
-Reuse trusted validation infrastructure rather than duplicating costly checks.
+Not every automated action requires manual approval. Requiring approval for every minor operation can eliminate the productivity benefits of AI Engineering. However, eliminating approval entirely may create unacceptable risk.
 
-Do not accept stale results from an earlier implementation version.
-
-## 15.9 Decision Point: When Should Human Approval Be Required?
-
-Not every automated action requires manual approval.
-
-Requiring approval for every minor operation can eliminate the productivity benefits of AI Engineering.
-
-However, eliminating approval entirely may create unacceptable risk.
-
-### Risk-based decision matrix
+#### Risk-based decision matrix
 
 | Activity                         | Illustrative Approval Requirement                    |
 | -------------------------------- | ---------------------------------------------------- |
@@ -12949,31 +11324,26 @@ However, eliminating approval entirely may create unacceptable risk.
 
 These are examples. Organizational policy remains authoritative.
 
-### Decision guidance
+#### Decision guidance
 
-Place human approval where an action crosses an accountability or risk boundary.
+Place human approval where an action crosses an accountability or risk boundary. Approval should authorize a specific operation against a specific implementation version. It must not be inferred from an agent-generated statement.
 
-Approval should authorize a specific operation against a specific implementation version.
+### 15.10 Decision Point: Retry, Rework, Resume, or Escalate?
 
-It must not be inferred from an agent-generated statement.
+One of the most important decisions in a long-running Harness is selecting the correct response to failure. These actions have different meanings. Retry: Repeat an operation because a transient condition may have changed.
 
-## 15.10 Decision Point: Retry, Rework, Resume, or Escalate?
+Rework: Return engineering evidence to the Developer because implementation changes are required. Resume: Continue an interrupted run from a durable checkpoint. Escalate: Require authorized human intervention because automated progression is unsafe or impossible.
 
-One of the most important decisions in a long-running Harness is selecting the correct response to failure.
+```mermaid
+flowchart TB
+    F["Execution Failure"] --> C{"Failure Classification"}
+    C -->|Transient| R["Bounded Retry"]
+    C -->|Engineering| W["Developer Rework"]
+    C -->|Interrupted| P["Checkpoint Recovery"]
+    C -->|Policy / Unknown| H["Human Escalation"]
+```
 
-These actions have different meanings.
-
-Retry: Repeat an operation because a transient condition may have changed.
-
-Rework: Return engineering evidence to the Developer because implementation changes are required.
-
-Resume: Continue an interrupted run from a durable checkpoint.
-
-Escalate: Require authorized human intervention because automated progression is unsafe or impossible.
-
-\#chatgpt-mermaid-\_r_18c2\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(13, 13, 13);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_18c2\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_18c2\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_18c2\_ .error-icon{fill:rgb(243, 243, 243);}#chatgpt-mermaid-\_r_18c2\_ .error-text{fill:rgb(13, 13, 13);stroke:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18c2\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_18c2\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_18c2\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_18c2\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_18c2\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_18c2\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_18c2\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_18c2\_ .marker.cross{stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_18c2\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_18c2\_ p{margin:0;}#chatgpt-mermaid-\_r_18c2\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18c2\_ .cluster-label text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18c2\_ .cluster-label span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18c2\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_18c2\_ .label text,#chatgpt-mermaid-\_r_18c2\_ span{fill:rgb(13, 13, 13);color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18c2\_ .node rect,#chatgpt-mermaid-\_r_18c2\_ .node circle,#chatgpt-mermaid-\_r_18c2\_ .node ellipse,#chatgpt-mermaid-\_r_18c2\_ .node polygon,#chatgpt-mermaid-\_r_18c2\_ .node path{fill:rgb(222, 234, 251);stroke:rgb(83, 154, 248);stroke-width:1px;}#chatgpt-mermaid-\_r_18c2\_ .rough-node .label text,#chatgpt-mermaid-\_r_18c2\_ .node .label text,#chatgpt-mermaid-\_r_18c2\_ .image-shape .label,#chatgpt-mermaid-\_r_18c2\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_18c2\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_18c2\_ .rough-node .label,#chatgpt-mermaid-\_r_18c2\_ .node .label,#chatgpt-mermaid-\_r_18c2\_ .image-shape .label,#chatgpt-mermaid-\_r_18c2\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_18c2\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_18c2\_ .root .anchor path{fill:rgb(143, 143, 143)!important;stroke-width:0;stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_18c2\_ .arrowheadPath{fill:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_18c2\_ .edgePath .path{stroke:rgb(143, 143, 143);stroke-width:1px;}#chatgpt-mermaid-\_r_18c2\_ .flowchart-link{stroke:rgb(143, 143, 143);fill:none;}#chatgpt-mermaid-\_r_18c2\_ .edgeLabel{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_18c2\_ .edgeLabel p{background-color:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_18c2\_ .edgeLabel rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_18c2\_ .labelBkg{background-color:rgba(252, 252, 252, 0.5);}#chatgpt-mermaid-\_r_18c2\_ .cluster rect{fill:rgb(243, 243, 243);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_18c2\_ .cluster text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18c2\_ .cluster span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18c2\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(243, 243, 243);border:1px solid rgba(0, 0, 0, 0.1);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_18c2\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18c2\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_18c2\_ .icon-shape,#chatgpt-mermaid-\_r_18c2\_ .image-shape{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_18c2\_ .icon-shape p,#chatgpt-mermaid-\_r_18c2\_ .image-shape p{background-color:rgb(252, 252, 252);padding:2px;}#chatgpt-mermaid-\_r_18c2\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_18c2\_ .image-shape .label rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_18c2\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_18c2\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_18c2\_ .node .neo-node{stroke:rgb(83, 154, 248);}#chatgpt-mermaid-\_r_18c2\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_18c2\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_18c2\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_18c2\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_18c2\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_18c2\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_18c2\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_18c2\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_18c2\_ [data-look="neo"].node .neo-line path{stroke:rgb(83, 154, 248);filter:none;}#chatgpt-mermaid-\_r_18c2\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_18c2\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_18c2\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_18c2\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_18c2\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_18c2\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_18c2\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_18c2\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_18c2\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_18c2\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_18c2\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_18c2\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-width:1px;}#chatgpt-mermaid-\_r_18c2\_ .node rect,#chatgpt-mermaid-\_r_18c2\_ .node circle,#chatgpt-mermaid-\_r_18c2\_ .node ellipse,#chatgpt-mermaid-\_r_18c2\_ .node polygon,#chatgpt-mermaid-\_r_18c2\_ .node path{fill:rgb(229, 243, 255);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_18c2\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_18c2\_ .node.mermaid-decision .label-container{fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_18c2\_ .edgePaths .flowchart-link{stroke:rgb(143, 143, 143);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_18c2\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_18c2\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}Execution FailureFailure ClassificationBounded RetryDeveloper ReworkCheckpoint RecoveryHuman EscalationTransientEngineeringInterruptedPolicy / Unknown
-
-### Alpha Car Detailing examples
+#### Alpha Car Detailing examples
 
 | Failure                                      | Response                          |
 | -------------------------------------------- | --------------------------------- |
@@ -12984,19 +11354,15 @@ Escalate: Require authorized human intervention because automated progression is
 | Repeated unsuccessful development iterations | Exhaust run and preserve evidence |
 | Missing production approval                  | Remain awaiting approval          |
 
-### Recommended practice
+#### Recommended practice
 
-Establish failure classification before expanding autonomous retry capabilities.
+Establish failure classification before expanding autonomous retry capabilities. A Harness should never repeatedly perform an unsafe or non-idempotent operation merely because the previous response was incomplete.
 
-A Harness should never repeatedly perform an unsafe or non-idempotent operation merely because the previous response was incomplete.
+### 15.11 Decision Point: Local Execution or Distributed Workers?
 
-## 15.11 Decision Point: Local Execution or Distributed Workers?
+A simple Harness may execute directly on a developer workstation or CI runner. A larger enterprise platform may need distributed workers.
 
-A simple Harness may execute directly on a developer workstation or CI runner.
-
-A larger enterprise platform may need distributed workers.
-
-### Prefer local or direct execution when
+#### Prefer local or direct execution when
 
 - concurrency is low;
 - tasks are short;
@@ -13004,7 +11370,7 @@ A larger enterprise platform may need distributed workers.
 - operational ownership is limited;
 - recovery requirements are modest.
 
-### Prefer distributed workers when
+#### Prefer distributed workers when
 
 - many repositories execute concurrently;
 - runs are long-running;
@@ -13013,23 +11379,17 @@ A larger enterprise platform may need distributed workers.
 - centralized scheduling is necessary;
 - population processing is common.
 
-### Alpha Car Detailing decision
+#### Alpha Car Detailing decision
 
-The initial Booking Harness can operate on a single controlled execution host.
-
-As Fleet and Billing adoption increases, queue-based workers may become appropriate.
-
-The transition should preserve existing run, evidence, and validation contracts.
+The initial Booking Harness can operate on a single controlled execution host. As Fleet and Billing adoption increases, queue-based workers may become appropriate. The transition should preserve existing run, evidence, and validation contracts.
 
 The architecture should not require reimplementing engineering workflows merely because execution moves to distributed infrastructure.
 
-## 15.12 Decision Point: What Should Be Stored in the Scratchpad?
+### 15.12 Decision Point: What Should Be Stored in the Scratchpad?
 
-A Scratchpad contains temporary working information.
+A Scratchpad contains temporary working information. It should not become a general-purpose knowledge database.
 
-It should not become a general-purpose knowledge database.
-
-### Appropriate content
+#### Appropriate content
 
 - current investigation findings;
 - temporary assumptions;
@@ -13039,7 +11399,7 @@ It should not become a general-purpose knowledge database.
 - progress checkpoints;
 - handoff notes.
 
-### Inappropriate content
+#### Inappropriate content
 
 - permanent engineering standards;
 - authoritative architecture decisions;
@@ -13048,25 +11408,19 @@ It should not become a general-purpose knowledge database.
 - final approval records;
 - authoritative run status.
 
-### Decision guidance
+#### Decision guidance
 
 Ask:
 
 > Is this information useful only for the current execution, or must it remain authoritative after the run ends?
 
-If it is temporary, place it in the run-scoped Scratchpad.
+If it is temporary, place it in the run-scoped Scratchpad. If it is durable repository knowledge, propose promotion into Repository Intelligence through the governed review process. If it is execution state or audit evidence, store it in the appropriate Harness system.
 
-If it is durable repository knowledge, propose promotion into Repository Intelligence through the governed review process.
+### 15.13 Decision Point: When Should Repository Intelligence Be Refreshed?
 
-If it is execution state or audit evidence, store it in the appropriate Harness system.
+Repository Intelligence becomes less useful when it no longer reflects the codebase. However, refreshing all repository knowledge after every small change may be expensive.
 
-## 15.13 Decision Point: When Should Repository Intelligence Be Refreshed?
-
-Repository Intelligence becomes less useful when it no longer reflects the codebase.
-
-However, refreshing all repository knowledge after every small change may be expensive.
-
-### Possible refresh triggers
+#### Possible refresh triggers
 
 - major architecture change;
 - new service dependency;
@@ -13075,49 +11429,39 @@ However, refreshing all repository knowledge after every small change may be exp
 - new technology stack;
 - detected inconsistency between documentation and source.
 
-### Decision guidance
+#### Decision guidance
 
-Use an incremental approach where supported by reliable change detection.
-
-Require review before new observations become authoritative.
-
-Repository Intelligence should be associated with repository versions or otherwise have a traceable relationship to the source.
+Use an incremental approach where supported by reliable change detection. Require review before new observations become authoritative. Repository Intelligence should be associated with repository versions or otherwise have a traceable relationship to the source.
 
 A Harness should not silently update it based on one agent's unverified assumptions.
 
-## 15.14 Decision Point: Plugin, Adapter, or Direct Integration?
+### 15.14 Decision Point: Plugin, Adapter, or Direct Integration?
 
-Not every external dependency requires a plugin system.
+Not every external dependency requires a plugin system. The appropriate integration model depends on variability and ownership.
 
-The appropriate integration model depends on variability and ownership.
-
-### Direct integration
+#### Direct integration
 
 Suitable for simple, stable functionality that is unlikely to require substitution.
 
-### Adapter
+#### Adapter
 
-Suitable when an external provider implements a common capability.
+Suitable when an external provider implements a common capability. Examples:
 
-Examples:
-
-```
+```text
 ISourceControlProvider
 IArtifactStorage
 IAgentProvider
 ```
 
-### Plugin
+#### Plugin
 
-Suitable when independently maintained capabilities must be registered, discovered, configured, and executed.
-
-Examples include:
+Suitable when independently maintained capabilities must be registered, discovered, configured, and executed. Examples include:
 
 - validation gate plugins;
 - approved repository discovery providers;
 - specialized analysis capabilities.
 
-### Decision matrix
+#### Decision matrix
 
 | Question                                          | If Yes                                            |
 | ------------------------------------------------- | ------------------------------------------------- |
@@ -13127,56 +11471,44 @@ Examples include:
 | Is there only one stable implementation?          | Direct integration may be simpler                 |
 | Does the extension introduce privileged behavior? | Require explicit registration and policy controls |
 
-### Recommended practice
+#### Recommended practice
 
-Introduce extension points where genuine variation exists.
+Introduce extension points where genuine variation exists. Do not create a plugin for every internal function.
 
-Do not create a plugin for every internal function.
+### 15.15 Decision Point: Shared Instructions or Repository-Specific Instructions?
 
-## 15.15 Decision Point: Shared Instructions or Repository-Specific Instructions?
+Instructions exist at different scopes. Enterprise Instructions define organization-wide expectations. Repository Instructions define local engineering requirements.
 
-Instructions exist at different scopes.
-
-Enterprise Instructions define organization-wide expectations.
-
-Repository Instructions define local engineering requirements.
-
-### Alpha Car Detailing example
+#### Alpha Car Detailing example
 
 Enterprise:
 
-```
+```text
 All production APIs must use approved authentication.
 ```
 
 Booking:
 
-```
+```text
 Booking state transitions must preserve aggregate invariants.
 ```
 
 Billing:
 
-```
+```text
 Financial calculations must use approved decimal precision
 and rounding conventions.
 ```
 
-### Decision guidance
+#### Decision guidance
 
-Place an Instruction at the broadest level where it is genuinely applicable and governed.
-
-Do not duplicate a repository-specific domain rule across unrelated services.
-
-Do not weaken enterprise security policy through repository-local Instructions.
+Place an Instruction at the broadest level where it is genuinely applicable and governed. Do not duplicate a repository-specific domain rule across unrelated services. Do not weaken enterprise security policy through repository-local Instructions.
 
 A well-designed configuration hierarchy should distinguish mandatory policy from contextual guidance.
 
-## 15.16 Decision Point: Share a Skill or Create a Local Skill?
+### 15.16 Decision Point: Share a Skill or Create a Local Skill?
 
-A Skill should be shared when it represents a stable workflow useful across several repositories.
-
-A Skill should remain local when it contains domain-specific assumptions or implementation details.
+A Skill should be shared when it represents a stable workflow useful across several repositories. A Skill should remain local when it contains domain-specific assumptions or implementation details.
 
 | Skill                              | Recommended Ownership |
 | ---------------------------------- | --------------------- |
@@ -13187,23 +11519,17 @@ A Skill should remain local when it contains domain-specific assumptions or impl
 | Add Fleet Vehicle Eligibility Rule | Fleet                 |
 | Add Invoice Adjustment             | Billing               |
 
-A shared Skill should define reusable engineering procedure.
+A shared Skill should define reusable engineering procedure. Repository-specific Instructions and Intelligence should supply local context.
 
-Repository-specific Instructions and Intelligence should supply local context.
+#### Important consideration
 
-### Important consideration
+Do not promote a Skill into the shared catalog solely because two repositories have similarly named operations. Verify that their underlying architectural requirements and implementation contracts are compatible.
 
-Do not promote a Skill into the shared catalog solely because two repositories have similarly named operations.
+### 15.17 Decision Point: How Much Provider Portability Is Necessary?
 
-Verify that their underlying architectural requirements and implementation contracts are compatible.
+Supporting Claude Code, GitHub Copilot, and Codex can reduce dependency on one AI platform. However, additional providers increase testing, configuration, and adapter maintenance costs.
 
-## 15.17 Decision Point: How Much Provider Portability Is Necessary?
-
-Supporting Claude Code, GitHub Copilot, and Codex can reduce dependency on one AI platform.
-
-However, additional providers increase testing, configuration, and adapter maintenance costs.
-
-### Decision factors
+#### Decision factors
 
 - organizational AI platform strategy;
 - existing development environments;
@@ -13214,27 +11540,19 @@ However, additional providers increase testing, configuration, and adapter maint
 - workload differences;
 - migration requirements.
 
-### Recommended approach
+#### Recommended approach
 
-Separate the common Harness contract from provider-specific capabilities.
+Separate the common Harness contract from provider-specific capabilities. For Alpha Car Detailing, Claude Code may remain the default. Copilot and Codex can be introduced for approved workflows without rewriting central orchestration.
 
-For Alpha Car Detailing, Claude Code may remain the default.
+Do not require every provider to expose identical features. Instead, validate capability compatibility before executing a workflow.
 
-Copilot and Codex can be introduced for approved workflows without rewriting central orchestration.
+### 15.18 Decision Point: How Should Observability Be Organized?
 
-Do not require every provider to expose identical features.
+A single repository Harness may produce local logs. A distributed enterprise platform requires correlated telemetry.
 
-Instead, validate capability compatibility before executing a workflow.
+#### Recommended model
 
-## 15.18 Decision Point: How Should Observability Be Organized?
-
-A single repository Harness may produce local logs.
-
-A distributed enterprise platform requires correlated telemetry.
-
-### Recommended model
-
-```
+```text
 Enterprise Run
       │
       ├── Repository Run
@@ -13248,21 +11566,15 @@ Enterprise Run
 
 All components should use compatible identifiers and result semantics.
 
-### Decision guidance
+#### Decision guidance
 
-Centralize the telemetry model and aggregation where beneficial.
-
-Allow team-specific dashboards where useful.
-
-Preserve data access boundaries so that one team cannot automatically inspect sensitive artifacts belonging to another.
+Centralize the telemetry model and aggregation where beneficial. Allow team-specific dashboards where useful. Preserve data access boundaries so that one team cannot automatically inspect sensitive artifacts belonging to another.
 
 A central observability service should not imply unrestricted access to every Prompt, source file, or execution artifact.
 
-## 15.19 Decision Point: When Should a Workflow Be Optimized?
+### 15.19 Decision Point: When Should a Workflow Be Optimized?
 
-Premature optimization can complicate Harness architecture without meaningful benefit.
-
-Before changing orchestration, collect evidence about where time and cost are spent.
+Premature optimization can complicate Harness architecture without meaningful benefit. Before changing orchestration, collect evidence about where time and cost are spent.
 
 For example:
 
@@ -13275,15 +11587,11 @@ For example:
 | Validation             | 41 min                |
 | Evaluation             | 5 min                 |
 
-Validation dominates this example.
+Validation dominates this example. Optimizing the Lead Agent by one minute is unlikely to change the overall experience significantly.
 
-Optimizing the Lead Agent by one minute is unlikely to change the overall experience significantly.
+#### Recommended approach
 
-### Recommended approach
-
-Use per-stage metrics to identify the critical path.
-
-Possible improvements include:
+Use per-stage metrics to identify the critical path. Possible improvements include:
 
 - scoped iteration validation;
 - incremental builds;
@@ -13292,17 +11600,11 @@ Possible improvements include:
 - reduced redundant discovery;
 - fewer unnecessary agent handoffs.
 
-Measure the result after each optimization.
+Measure the result after each optimization. Never bypass mandatory final gates solely to reduce reported run duration.
 
-Never bypass mandatory final gates solely to reduce reported run duration.
+### 15.20 Decision Point: When Should a Harness Become a Shared Platform?
 
-## 15.20 Decision Point: When Should a Harness Become a Shared Platform?
-
-Not every organization needs a central Harness platform immediately.
-
-A shared platform becomes valuable when duplication and coordination costs exceed the cost of operating common infrastructure.
-
-Signals include:
+Not every organization needs a central Harness platform immediately. A shared platform becomes valuable when duplication and coordination costs exceed the cost of operating common infrastructure. Signals include:
 
 - several teams maintaining similar Harness implementations;
 - repeated security or validation fixes;
@@ -13312,11 +11614,9 @@ Signals include:
 - repeated repository onboarding work;
 - cross-repository coordination requirements.
 
-### Decision guidance
+#### Decision guidance
 
-Start by sharing the most stable capabilities.
-
-These often include:
+Start by sharing the most stable capabilities. These often include:
 
 - execution contracts;
 - gate result schemas;
@@ -13325,15 +11625,11 @@ These often include:
 - provider adapters;
 - telemetry conventions.
 
-Centralize orchestration infrastructure when workload and operational requirements justify it.
+Centralize orchestration infrastructure when workload and operational requirements justify it. Do not build an elaborate shared platform before proving reliable single-repository execution.
 
-Do not build an elaborate shared platform before proving reliable single-repository execution.
+### 15.21 Decision Point: When Should the Harness Support Adaptive Learning?
 
-## 15.21 Decision Point: When Should the Harness Support Adaptive Learning?
-
-An adaptive Harness may analyze execution history and recommend improvements.
-
-Examples include:
+An adaptive Harness may analyze execution history and recommend improvements. Examples include:
 
 - suggesting better Skills;
 - identifying recurring validation failures;
@@ -13343,19 +11639,20 @@ Examples include:
 
 However, learning introduces governance risks.
 
-### Decision guidance
+#### Decision guidance
 
 Separate observation, recommendation, and authoritative change.
 
-\#chatgpt-mermaid-\_r_18d9\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(13, 13, 13);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_18d9\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_18d9\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_18d9\_ .error-icon{fill:rgb(243, 243, 243);}#chatgpt-mermaid-\_r_18d9\_ .error-text{fill:rgb(13, 13, 13);stroke:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18d9\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_18d9\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_18d9\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_18d9\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_18d9\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_18d9\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_18d9\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_18d9\_ .marker.cross{stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_18d9\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_18d9\_ p{margin:0;}#chatgpt-mermaid-\_r_18d9\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18d9\_ .cluster-label text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18d9\_ .cluster-label span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18d9\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_18d9\_ .label text,#chatgpt-mermaid-\_r_18d9\_ span{fill:rgb(13, 13, 13);color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18d9\_ .node rect,#chatgpt-mermaid-\_r_18d9\_ .node circle,#chatgpt-mermaid-\_r_18d9\_ .node ellipse,#chatgpt-mermaid-\_r_18d9\_ .node polygon,#chatgpt-mermaid-\_r_18d9\_ .node path{fill:rgb(222, 234, 251);stroke:rgb(83, 154, 248);stroke-width:1px;}#chatgpt-mermaid-\_r_18d9\_ .rough-node .label text,#chatgpt-mermaid-\_r_18d9\_ .node .label text,#chatgpt-mermaid-\_r_18d9\_ .image-shape .label,#chatgpt-mermaid-\_r_18d9\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_18d9\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_18d9\_ .rough-node .label,#chatgpt-mermaid-\_r_18d9\_ .node .label,#chatgpt-mermaid-\_r_18d9\_ .image-shape .label,#chatgpt-mermaid-\_r_18d9\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_18d9\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_18d9\_ .root .anchor path{fill:rgb(143, 143, 143)!important;stroke-width:0;stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_18d9\_ .arrowheadPath{fill:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_18d9\_ .edgePath .path{stroke:rgb(143, 143, 143);stroke-width:1px;}#chatgpt-mermaid-\_r_18d9\_ .flowchart-link{stroke:rgb(143, 143, 143);fill:none;}#chatgpt-mermaid-\_r_18d9\_ .edgeLabel{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_18d9\_ .edgeLabel p{background-color:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_18d9\_ .edgeLabel rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_18d9\_ .labelBkg{background-color:rgba(252, 252, 252, 0.5);}#chatgpt-mermaid-\_r_18d9\_ .cluster rect{fill:rgb(243, 243, 243);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_18d9\_ .cluster text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18d9\_ .cluster span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18d9\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(243, 243, 243);border:1px solid rgba(0, 0, 0, 0.1);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_18d9\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18d9\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_18d9\_ .icon-shape,#chatgpt-mermaid-\_r_18d9\_ .image-shape{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_18d9\_ .icon-shape p,#chatgpt-mermaid-\_r_18d9\_ .image-shape p{background-color:rgb(252, 252, 252);padding:2px;}#chatgpt-mermaid-\_r_18d9\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_18d9\_ .image-shape .label rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_18d9\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_18d9\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_18d9\_ .node .neo-node{stroke:rgb(83, 154, 248);}#chatgpt-mermaid-\_r_18d9\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_18d9\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_18d9\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_18d9\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_18d9\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_18d9\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_18d9\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_18d9\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_18d9\_ [data-look="neo"].node .neo-line path{stroke:rgb(83, 154, 248);filter:none;}#chatgpt-mermaid-\_r_18d9\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_18d9\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_18d9\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_18d9\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_18d9\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_18d9\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_18d9\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_18d9\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_18d9\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_18d9\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_18d9\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_18d9\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-width:1px;}#chatgpt-mermaid-\_r_18d9\_ .node rect,#chatgpt-mermaid-\_r_18d9\_ .node circle,#chatgpt-mermaid-\_r_18d9\_ .node ellipse,#chatgpt-mermaid-\_r_18d9\_ .node polygon,#chatgpt-mermaid-\_r_18d9\_ .node path{fill:rgb(229, 243, 255);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_18d9\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_18d9\_ .node.mermaid-decision .label-container{fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_18d9\_ .edgePaths .flowchart-link{stroke:rgb(143, 143, 143);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_18d9\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_18d9\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}Harness HistoryLearning AnalysisProposed ImprovementHuman / Governed ReviewApproved Versioned UpdateApproved
+```mermaid
+flowchart TB
+    R["Harness History"] --> A["Learning Analysis"] --> P["Proposed Improvement"]
+    P --> H["Human or Governed Review"]
+    H -->|Approved| U["Approved Versioned Update"]
+```
 
-The Harness may propose changes.
+The Harness may propose changes. It must not silently weaken gates, rewrite standards, or modify approval requirements. Adaptive capabilities should be introduced only after reliable evidence and change governance are established.
 
-It must not silently weaken gates, rewrite standards, or modify approval requirements.
-
-Adaptive capabilities should be introduced only after reliable evidence and change governance are established.
-
-## 15.22 Enterprise Pattern Selection Matrix
+### 15.22 Enterprise Pattern Selection Matrix
 
 The following matrix summarizes the principal decisions.
 
@@ -13381,11 +11678,9 @@ The following matrix summarizes the principal decisions.
 | Many execution workers                   | Control/Execution Plane Separation     | Scalable operations      |
 | Repeated platform failures               | Observability + Failure Classification | Operational reliability  |
 
-The matrix should inform architectural judgment rather than automatically determine a design.
+The matrix should inform architectural judgment rather than automatically determine a design. Several patterns may be appropriate simultaneously.
 
-Several patterns may be appropriate simultaneously.
-
-## 15.23 Alpha Car Detailing: Recommended Pattern Combination
+### 15.23 Alpha Car Detailing: Recommended Pattern Combination
 
 For Alpha Car Detailing, the recommended target architecture combines the following patterns:
 
@@ -13410,27 +11705,39 @@ For Alpha Car Detailing, the recommended target architecture combines the follow
 
 The resulting architecture is:
 
-\#chatgpt-mermaid-\_r_18di\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(13, 13, 13);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_18di\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_18di\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_18di\_ .error-icon{fill:rgb(243, 243, 243);}#chatgpt-mermaid-\_r_18di\_ .error-text{fill:rgb(13, 13, 13);stroke:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18di\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_18di\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_18di\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_18di\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_18di\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_18di\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_18di\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_18di\_ .marker.cross{stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_18di\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_18di\_ p{margin:0;}#chatgpt-mermaid-\_r_18di\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18di\_ .cluster-label text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18di\_ .cluster-label span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18di\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_18di\_ .label text,#chatgpt-mermaid-\_r_18di\_ span{fill:rgb(13, 13, 13);color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18di\_ .node rect,#chatgpt-mermaid-\_r_18di\_ .node circle,#chatgpt-mermaid-\_r_18di\_ .node ellipse,#chatgpt-mermaid-\_r_18di\_ .node polygon,#chatgpt-mermaid-\_r_18di\_ .node path{fill:rgb(222, 234, 251);stroke:rgb(83, 154, 248);stroke-width:1px;}#chatgpt-mermaid-\_r_18di\_ .rough-node .label text,#chatgpt-mermaid-\_r_18di\_ .node .label text,#chatgpt-mermaid-\_r_18di\_ .image-shape .label,#chatgpt-mermaid-\_r_18di\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_18di\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_18di\_ .rough-node .label,#chatgpt-mermaid-\_r_18di\_ .node .label,#chatgpt-mermaid-\_r_18di\_ .image-shape .label,#chatgpt-mermaid-\_r_18di\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_18di\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_18di\_ .root .anchor path{fill:rgb(143, 143, 143)!important;stroke-width:0;stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_18di\_ .arrowheadPath{fill:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_18di\_ .edgePath .path{stroke:rgb(143, 143, 143);stroke-width:1px;}#chatgpt-mermaid-\_r_18di\_ .flowchart-link{stroke:rgb(143, 143, 143);fill:none;}#chatgpt-mermaid-\_r_18di\_ .edgeLabel{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_18di\_ .edgeLabel p{background-color:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_18di\_ .edgeLabel rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_18di\_ .labelBkg{background-color:rgba(252, 252, 252, 0.5);}#chatgpt-mermaid-\_r_18di\_ .cluster rect{fill:rgb(243, 243, 243);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_18di\_ .cluster text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18di\_ .cluster span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18di\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(243, 243, 243);border:1px solid rgba(0, 0, 0, 0.1);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_18di\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18di\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_18di\_ .icon-shape,#chatgpt-mermaid-\_r_18di\_ .image-shape{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_18di\_ .icon-shape p,#chatgpt-mermaid-\_r_18di\_ .image-shape p{background-color:rgb(252, 252, 252);padding:2px;}#chatgpt-mermaid-\_r_18di\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_18di\_ .image-shape .label rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_18di\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_18di\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_18di\_ .node .neo-node{stroke:rgb(83, 154, 248);}#chatgpt-mermaid-\_r_18di\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_18di\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_18di\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_18di\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_18di\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_18di\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_18di\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_18di\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_18di\_ [data-look="neo"].node .neo-line path{stroke:rgb(83, 154, 248);filter:none;}#chatgpt-mermaid-\_r_18di\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_18di\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_18di\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_18di\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_18di\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_18di\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_18di\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_18di\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_18di\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_18di\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_18di\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_18di\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-width:1px;}#chatgpt-mermaid-\_r_18di\_ .node rect,#chatgpt-mermaid-\_r_18di\_ .node circle,#chatgpt-mermaid-\_r_18di\_ .node ellipse,#chatgpt-mermaid-\_r_18di\_ .node polygon,#chatgpt-mermaid-\_r_18di\_ .node path{fill:rgb(229, 243, 255);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_18di\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_18di\_ .node.mermaid-decision .label-container{fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_18di\_ .edgePaths .flowchart-link{stroke:rgb(143, 143, 143);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_18di\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_18di\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}Engineering RequestShared Harness Control PlaneEffective PolicySchedulerDurable Run StateBooking Child RunFleet Child RunBilling Child RunIsolated WorkspaceIsolated WorkspaceIsolated WorkspaceAgent Provider AdapterClaude CodeGitHub CopilotCodexDeterministic GatesEvidence AggregationEvaluationHuman Approval
-
-This architecture preserves the central principles established in the handbook.
-
-The Harness owns orchestration.
-
-Agents perform assigned implementation and analysis responsibilities.
-
-Deterministic gates produce objective evidence.
-
-Evaluators assess whether the intended engineering outcomes have been achieved.
-
-Humans retain approval authority where required.
-
-## 15.24 Architecture Decision Record Template
-
-Enterprise teams should document significant pattern selections.
-
-The following template can be reused.
-
+```mermaid
+flowchart TB
+    R["Engineering Request"] --> H["Shared Harness Control Plane"]
+    H --> P["Effective Policy"]
+    H --> S["Scheduler"]
+    H --> State["Durable Run State"]
+    S --> B["Booking Child Run"]
+    S --> F["Fleet Child Run"]
+    S --> I["Billing Child Run"]
+    B --> BW["Isolated Booking Workspace"]
+    F --> FW["Isolated Fleet Workspace"]
+    I --> IW["Isolated Billing Workspace"]
+    BW --> Adapter["Agent Provider Adapter"]
+    FW --> Adapter
+    IW --> Adapter
+    Adapter --> C["Claude Code"]
+    Adapter --> G["GitHub Copilot"]
+    Adapter --> X["Codex"]
+    BW --> Gates["Deterministic Gates"]
+    FW --> Gates
+    IW --> Gates
+    Gates --> Evidence["Evidence Aggregation"] --> E["Evaluation"] --> A["Human Approval"]
 ```
+
+This architecture preserves the central principles established in the handbook. The Harness owns orchestration. Agents perform assigned implementation and analysis responsibilities.
+
+Deterministic gates produce objective evidence. Evaluators assess whether the intended engineering outcomes have been achieved. Humans retain approval authority where required.
+
+### 15.24 Architecture Decision Record Template
+
+Enterprise teams should document significant pattern selections. The following template can be reused.
+
+```markdown
 # Architecture Decision Record
 
 ## Decision Title
@@ -13489,7 +11796,7 @@ the decision to be reconsidered.
 
 For example, Alpha Car Detailing may record:
 
-```
+```text
 ADR-021:
 Adopt Shared Platform Harness with
 Repository-Specific Execution Profiles.
@@ -13497,127 +11804,105 @@ Repository-Specific Execution Profiles.
 
 The decision can be revisited if the organization grows, introduces new compliance requirements, or experiences operational limitations.
 
-## 15.25 Final Decision Framework
+### 15.25 Final Decision Framework
 
 When selecting Enterprise Harness patterns, architects should apply the following sequence.
 
-ARCHITECTURE DECISION SEQUENCE
+**Architecture decision sequence**
 
 1. Understand the workload
 
    Identify repositories, teams, services, task types, dependencies, and expected volume.
+
 2. Establish risk and governance boundaries
 
    Define security classifications, mandatory gates, approval requirements, and ownership.
+
 3. Choose the execution boundary
 
    Determine repository scope, workspaces, identities, and failure isolation.
+
 4. Select orchestration patterns
 
    Choose agent roles, sequential stages, parallel tasks, and fan-out/fan-in only where justified.
+
 5. Define reusable contracts
 
    Establish profiles, adapters, Skills, evidence schemas, and state transitions.
+
 6. Design operational resilience
 
    Include checkpoints, recovery, idempotency, quotas, and observability.
+
 7. Validate and evolve
 
-   Test the architecture, measure outcomes, and revise decisions using operational evidence.
+   Test the architecture, measure outcomes, and revise decisions using operational evidence. This sequence discourages premature complexity. It also ensures that engineering boundaries are defined before additional automation is introduced.
 
-This sequence discourages premature complexity.
+### 15.26 Final Architectural Decision Principle
 
-It also ensures that engineering boundaries are defined before additional automation is introduced.
+Enterprise Harness architecture is a collection of deliberate tradeoffs. A centralized platform may simplify governance but introduce shared dependencies. Distributed execution may improve isolation but increase operational complexity.
 
-## 15.26 Final Architectural Decision Principle
+Multi-agent workflows may improve independence but consume more resources. Parallel orchestration may reduce latency but complicate state management. Shared Skills may improve consistency but require stronger governance.
 
-Enterprise Harness architecture is a collection of deliberate tradeoffs.
+Provider abstraction may improve portability but create additional adapter responsibilities. No pattern eliminates every disadvantage. The architect's responsibility is to choose a coherent combination based on actual requirements.
 
-A centralized platform may simplify governance but introduce shared dependencies.
+For Alpha Car Detailing, the Shared Platform Harness offers a practical foundation because it balances reuse with repository autonomy. Booking, Fleet, and Billing can share execution infrastructure without losing ownership of domain-specific Instructions, Skills, validation requirements, and approvals. Cross-repository tasks can be coordinated through explicit dependencies.
 
-Distributed execution may improve isolation but increase operational complexity.
-
-Multi-agent workflows may improve independence but consume more resources.
-
-Parallel orchestration may reduce latency but complicate state management.
-
-Shared Skills may improve consistency but require stronger governance.
-
-Provider abstraction may improve portability but create additional adapter responsibilities.
-
-No pattern eliminates every disadvantage.
-
-The architect's responsibility is to choose a coherent combination based on actual requirements.
-
-For Alpha Car Detailing, the Shared Platform Harness offers a practical foundation because it balances reuse with repository autonomy.
-
-Booking, Fleet, and Billing can share execution infrastructure without losing ownership of domain-specific Instructions, Skills, validation requirements, and approvals.
-
-Cross-repository tasks can be coordinated through explicit dependencies.
-
-Independent tasks can execute concurrently within isolated workspaces.
-
-Failures can be recovered without corrupting unrelated runs.
-
-The organization's approved AI providers can participate through adapters.
+Independent tasks can execute concurrently within isolated workspaces. Failures can be recovered without corrupting unrelated runs. The organization's approved AI providers can participate through adapters.
 
 Most importantly, the Harness remains accountable to deterministic validation and human governance.
 
-> Architect's Note
+> **Architect's Note**
+
 >
+
 > Enterprise Harness patterns are architectural tools, not maturity badges.
+
 >
+
 > The strongest architecture is not the one using the greatest number of patterns. It is the one in which every selected pattern solves a real problem, every capability has an explicit owner, and every execution boundary can be understood, tested, and governed.
 
 The decisions presented in this section provide a foundation for designing Enterprise Harnesses that remain maintainable as their repositories, teams, workflows, and AI capabilities evolve.
 
-Chapter 21 status: In progress — next section: Exercises
+## 16. Exercises
 
-# 16. Exercises
+Enterprise Harness patterns become meaningful when architects and engineering teams apply them to realistic repository structures, execution constraints, governance requirements, and operational problems. The following exercises extend the Alpha Car Detailing running example and reinforce the architectural concepts introduced throughout this chapter. Unlike introductory AI coding exercises, these activities require participants to reason about system boundaries, ownership, composability, execution isolation, deterministic validation, failure recovery, and enterprise governance.
 
-Enterprise Harness patterns become meaningful when architects and engineering teams apply them to realistic repository structures, execution constraints, governance requirements, and operational problems.
+The exercises are designed for software architects, senior developers, platform engineers, DevOps engineers, and AI Engineering teams. Each exercise includes a scenario, objective, implementation tasks, expected deliverables, and acceptance criteria. Exercises can be completed independently or combined into a progressive enterprise Harness implementation. The emphasis is on producing working architecture, verifiable execution behavior, and explicit engineering decisions, rather than merely generating AI-assisted source code.
 
-The following exercises extend the Alpha Car Detailing running example and reinforce the architectural concepts introduced throughout this chapter.
-
-Unlike introductory AI coding exercises, these activities require participants to reason about system boundaries, ownership, composability, execution isolation, deterministic validation, failure recovery, and enterprise governance.
-
-The exercises are designed for software architects, senior developers, platform engineers, DevOps engineers, and AI Engineering teams.
-
-Each exercise includes a scenario, objective, implementation tasks, expected deliverables, and acceptance criteria. Exercises can be completed independently or combined into a progressive enterprise Harness implementation.
-
-The emphasis is on producing working architecture, verifiable execution behavior, and explicit engineering decisions, rather than merely generating AI-assisted source code.
-
-## 16.1 Exercise 1 — Design a Single-Repository Harness
+### 16.1 Exercise 1 — Design a Single-Repository Harness
 
 Difficulty: Foundation Primary patterns: Single-Repository Harness, sequential orchestration, deterministic gates, Run Workspace
 
-### Scenario
+#### Scenario
 
-The Alpha Car Detailing Booking team wants to automate routine changes to its .NET 10 microservice.
-
-The service uses Clean Architecture, CQRS, Domain-Driven Design, and event-driven integration.
-
-The team already maintains repository Instructions and reusable Skills.
+The Alpha Car Detailing Booking team wants to automate routine changes to its .NET 10 microservice. The service uses Clean Architecture, CQRS, Domain-Driven Design, and event-driven integration. The team already maintains repository Instructions and reusable Skills.
 
 Your task is to design a Harness that can execute a controlled engineering workflow for Booking without requiring a shared enterprise orchestration platform.
 
-### Objective
+#### Objective
 
 Implement a repository-local Harness with explicit responsibilities, isolated execution state, and deterministic validation.
 
-### Tasks
+#### Tasks
 
 1. Define the workflow from engineering request through implementation, review, validation, evaluation, and approval.
+
 2. Create separate execution contracts for the Lead, Developer, Reviewer, Validator, and Evaluator responsibilities.
+
 3. Design a repository-specific Harness configuration file.
+
 4. Implement a Run Workspace structure containing input, repository, Scratchpad, evidence, logs, and artifacts.
+
 5. Implement deterministic gates for build, unit tests, and architecture checks.
+
 6. Define a structured run result.
+
 7. Ensure that failed mandatory validation blocks completion.
 
-### Expected deliverables
+#### Expected deliverables
 
-```
+```text
 booking-service/
 ├── harness.yaml
 ├── harness/
@@ -13633,7 +11918,7 @@ booking-service/
 
 Also produce a workflow diagram and an example run result.
 
-### Acceptance criteria
+#### Acceptance criteria
 
 - The Harness operates within the Booking repository boundary.
 - Every execution uses an isolated Run Workspace.
@@ -13642,23 +11927,19 @@ Also produce a workflow diagram and an example run result.
 - A successful agent response cannot override a failed gate.
 - Completion follows the configured approval policy.
 
-### Architectural reflection
+#### Architectural reflection
 
-Which components would remain suitable for reuse if Fleet adopted the same Harness approach?
+Which components would remain suitable for reuse if Fleet adopted the same Harness approach? Which components are genuinely Booking-specific?
 
-Which components are genuinely Booking-specific?
-
-## 16.2 Exercise 2 — Refactor a Monolithic Harness into Reusable Capabilities
+### 16.2 Exercise 2 — Refactor a Monolithic Harness into Reusable Capabilities
 
 Difficulty: Intermediate Primary patterns: Shared capabilities, plugin architecture, repository profiles, dependency inversion
 
-### Scenario
+#### Scenario
 
-Alpha Car Detailing has expanded its original Booking Harness to support Fleet and Billing.
+Alpha Car Detailing has expanded its original Booking Harness to support Fleet and Billing. The current orchestration contains repository-specific conditions.
 
-The current orchestration contains repository-specific conditions.
-
-```
+```text
 if (repository == "booking-service")
 {
     await RunBookingBuildAsync();
@@ -13677,30 +11958,43 @@ else if (repository == "billing-service")
 }
 ```
 
-Every additional service requires modifying this method.
+Every additional service requires modifying this method. The Platform Team wants to remove repository-specific dependencies from the orchestration layer.
 
-The Platform Team wants to remove repository-specific dependencies from the orchestration layer.
-
-### Objective
+#### Objective
 
 Refactor the architecture into a shared validation engine driven by declarative repository profiles.
 
-### Tasks
+#### Tasks
 
 1. Identify the responsibilities currently mixed into the orchestration method.
+
 2. Define an `IValidationGate` interface.
+
 3. Define an `IValidationGateRegistry`.
+
 4. Create repository-specific validation profiles.
+
 5. Implement a profile resolver.
+
 6. Add configuration validation that rejects unknown gate identifiers.
+
 7. Ensure enterprise mandatory gates cannot be disabled by repository profiles.
+
 8. Add unit tests that verify configuration resolution.
 
-### Expected architecture
+#### Expected architecture
 
-\#chatgpt-mermaid-\_r_18fd\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(13, 13, 13);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_18fd\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_18fd\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_18fd\_ .error-icon{fill:rgb(243, 243, 243);}#chatgpt-mermaid-\_r_18fd\_ .error-text{fill:rgb(13, 13, 13);stroke:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18fd\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_18fd\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_18fd\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_18fd\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_18fd\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_18fd\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_18fd\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_18fd\_ .marker.cross{stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_18fd\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_18fd\_ p{margin:0;}#chatgpt-mermaid-\_r_18fd\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18fd\_ .cluster-label text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18fd\_ .cluster-label span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18fd\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_18fd\_ .label text,#chatgpt-mermaid-\_r_18fd\_ span{fill:rgb(13, 13, 13);color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18fd\_ .node rect,#chatgpt-mermaid-\_r_18fd\_ .node circle,#chatgpt-mermaid-\_r_18fd\_ .node ellipse,#chatgpt-mermaid-\_r_18fd\_ .node polygon,#chatgpt-mermaid-\_r_18fd\_ .node path{fill:rgb(222, 234, 251);stroke:rgb(83, 154, 248);stroke-width:1px;}#chatgpt-mermaid-\_r_18fd\_ .rough-node .label text,#chatgpt-mermaid-\_r_18fd\_ .node .label text,#chatgpt-mermaid-\_r_18fd\_ .image-shape .label,#chatgpt-mermaid-\_r_18fd\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_18fd\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_18fd\_ .rough-node .label,#chatgpt-mermaid-\_r_18fd\_ .node .label,#chatgpt-mermaid-\_r_18fd\_ .image-shape .label,#chatgpt-mermaid-\_r_18fd\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_18fd\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_18fd\_ .root .anchor path{fill:rgb(143, 143, 143)!important;stroke-width:0;stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_18fd\_ .arrowheadPath{fill:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_18fd\_ .edgePath .path{stroke:rgb(143, 143, 143);stroke-width:1px;}#chatgpt-mermaid-\_r_18fd\_ .flowchart-link{stroke:rgb(143, 143, 143);fill:none;}#chatgpt-mermaid-\_r_18fd\_ .edgeLabel{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_18fd\_ .edgeLabel p{background-color:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_18fd\_ .edgeLabel rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_18fd\_ .labelBkg{background-color:rgba(252, 252, 252, 0.5);}#chatgpt-mermaid-\_r_18fd\_ .cluster rect{fill:rgb(243, 243, 243);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_18fd\_ .cluster text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18fd\_ .cluster span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18fd\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(243, 243, 243);border:1px solid rgba(0, 0, 0, 0.1);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_18fd\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18fd\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_18fd\_ .icon-shape,#chatgpt-mermaid-\_r_18fd\_ .image-shape{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_18fd\_ .icon-shape p,#chatgpt-mermaid-\_r_18fd\_ .image-shape p{background-color:rgb(252, 252, 252);padding:2px;}#chatgpt-mermaid-\_r_18fd\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_18fd\_ .image-shape .label rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_18fd\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_18fd\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_18fd\_ .node .neo-node{stroke:rgb(83, 154, 248);}#chatgpt-mermaid-\_r_18fd\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_18fd\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_18fd\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_18fd\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_18fd\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_18fd\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_18fd\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_18fd\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_18fd\_ [data-look="neo"].node .neo-line path{stroke:rgb(83, 154, 248);filter:none;}#chatgpt-mermaid-\_r_18fd\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_18fd\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_18fd\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_18fd\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_18fd\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_18fd\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_18fd\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_18fd\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_18fd\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_18fd\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_18fd\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_18fd\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-width:1px;}#chatgpt-mermaid-\_r_18fd\_ .node rect,#chatgpt-mermaid-\_r_18fd\_ .node circle,#chatgpt-mermaid-\_r_18fd\_ .node ellipse,#chatgpt-mermaid-\_r_18fd\_ .node polygon,#chatgpt-mermaid-\_r_18fd\_ .node path{fill:rgb(229, 243, 255);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_18fd\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_18fd\_ .node.mermaid-decision .label-container{fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_18fd\_ .edgePaths .flowchart-link{stroke:rgb(143, 143, 143);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_18fd\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_18fd\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}Shared Harness OrchestratorRepository Profile ResolverValidation Gate RegistryBuild GateUnit Test GateSecurity GateContract Gate
+```mermaid
+flowchart TB
+    H["Shared Harness Orchestrator"] --> R["Repository Profile Resolver"]
+    R --> G["Validation Gate Registry"]
+    G --> B["Build Gate"]
+    G --> U["Unit Test Gate"]
+    G --> S["Security Gate"]
+    G --> C["Contract Gate"]
+```
 
-### Acceptance criteria
+#### Acceptance criteria
 
 - Central orchestration contains no repository-name conditional branches.
 - Adding a new repository requires only valid configuration and capability registration.
@@ -13708,17 +12002,15 @@ Refactor the architecture into a shared validation engine driven by declarative 
 - Mandatory enterprise gates remain enforced.
 - Existing Booking, Fleet, and Billing validation behavior is preserved.
 
-### Architectural reflection
+#### Architectural reflection
 
-Should the gate registry be implemented as a plugin system, dependency injection registration, or a separate service?
+Should the gate registry be implemented as a plugin system, dependency injection registration, or a separate service? Explain the tradeoffs.
 
-Explain the tradeoffs.
-
-## 16.3 Exercise 3 — Design a Shared Platform Harness
+### 16.3 Exercise 3 — Design a Shared Platform Harness
 
 Difficulty: Intermediate Primary patterns: Centralized Harness, distributed repository configuration, shared platform, governance
 
-### Scenario
+#### Scenario
 
 Alpha Car Detailing operates three engineering teams:
 
@@ -13726,30 +12018,35 @@ Alpha Car Detailing operates three engineering teams:
 - Fleet;
 - Billing.
 
-Each team requires different Instructions, Skills, and validation profiles.
+Each team requires different Instructions, Skills, and validation profiles. However, all teams should reuse the same orchestration engine, provider adapters, workspace manager, and metrics infrastructure.
 
-However, all teams should reuse the same orchestration engine, provider adapters, workspace manager, and metrics infrastructure.
-
-### Objective
+#### Objective
 
 Design a Shared Platform Harness that supports repository autonomy without duplicating common infrastructure.
 
-### Tasks
+#### Tasks
 
 1. Identify capabilities that should be centrally owned.
+
 2. Identify decisions that should remain repository-specific.
+
 3. Create a repository onboarding contract.
+
 4. Define enterprise, team, and repository configuration layers.
+
 5. Establish configuration precedence and conflict handling.
+
 6. Define ownership responsibilities.
+
 7. Design the deployment architecture.
+
 8. Document the decision using an Architecture Decision Record.
 
-### Expected deliverables
+#### Expected deliverables
 
 A professional architecture diagram, repository profile examples, ownership matrix, and ADR.
 
-### Acceptance criteria
+#### Acceptance criteria
 
 - Shared execution logic is reusable.
 - Domain-specific requirements remain locally controlled.
@@ -13757,40 +12054,43 @@ A professional architecture diagram, repository profile examples, ownership matr
 - Repository onboarding does not require central orchestration rewrites.
 - Operational responsibilities are documented.
 
-### Architectural reflection
+#### Architectural reflection
 
 What would cause you to reject a Shared Platform Harness in favor of a fully distributed model?
 
-## 16.4 Exercise 4 — Implement a Provider-Neutral Agent Adapter
+### 16.4 Exercise 4 — Implement a Provider-Neutral Agent Adapter
 
 Difficulty: Intermediate Primary patterns: Provider adapter, tool abstraction, dependency inversion
 
-### Scenario
+#### Scenario
 
-Alpha Car Detailing initially uses Claude Code.
+Alpha Car Detailing initially uses Claude Code. The organization now wants to support selected workflows through OpenAI Codex and GitHub Copilot. The existing Harness currently invokes Claude-specific commands directly.
 
-The organization now wants to support selected workflows through OpenAI Codex and GitHub Copilot.
-
-The existing Harness currently invokes Claude-specific commands directly.
-
-### Objective
+#### Objective
 
 Introduce a provider-neutral execution contract while preserving provider-specific capabilities.
 
-### Tasks
+#### Tasks
 
 1. Define `IAgentProvider`.
+
 2. Define structured agent request and result contracts.
+
 3. Implement a Claude Code adapter.
+
 4. Implement at least one additional provider adapter or controlled test adapter.
+
 5. Define common error classifications.
+
 6. Introduce capability discovery or compatibility validation.
+
 7. Add provider-independent orchestration tests.
+
 8. Ensure provider-specific errors do not leak into core workflow logic.
 
-### Example contract
+#### Example contract
 
-```
+```csharp
 public interface IAgentProvider
 {
     Task<AgentResult> ExecuteAsync(
@@ -13799,7 +12099,7 @@ public interface IAgentProvider
 }
 ```
 
-### Expected deliverables
+#### Expected deliverables
 
 - Provider contract.
 - Two adapter implementations or one real adapter plus a realistic test adapter.
@@ -13807,7 +12107,7 @@ public interface IAgentProvider
 - Contract tests.
 - Example provider selection configuration.
 
-### Acceptance criteria
+#### Acceptance criteria
 
 - The Harness can resolve the selected provider without changing its role workflow.
 - Unsupported capabilities are reported explicitly.
@@ -13815,21 +12115,19 @@ public interface IAgentProvider
 - Agent execution results do not directly determine Harness completion.
 - Validation and approval remain provider-independent.
 
-### Architectural reflection
+#### Architectural reflection
 
-Which capabilities should belong in the common interface?
+Which capabilities should belong in the common interface? Which should remain optional provider extensions?
 
-Which should remain optional provider extensions?
-
-## 16.5 Exercise 5 — Implement Safe Parallel Validation
+### 16.5 Exercise 5 — Implement Safe Parallel Validation
 
 Difficulty: Intermediate Primary patterns: Parallel orchestration, dependency graph, fan-in, deterministic gates
 
-### Scenario
+#### Scenario
 
 The Booking Harness currently executes every validation step sequentially.
 
-```
+```text
 Build
   ↓
 Unit Tests
@@ -13841,30 +12139,45 @@ Security Scan
 Contract Tests
 ```
 
-Some checks are independent once the build has completed.
+Some checks are independent once the build has completed. The Platform Team wants to reduce execution latency without introducing nondeterministic results.
 
-The Platform Team wants to reduce execution latency without introducing nondeterministic results.
-
-### Objective
+#### Objective
 
 Implement dependency-aware parallel validation.
 
-### Tasks
+#### Tasks
 
 1. Define a validation dependency graph.
+
 2. Identify which gates require build artifacts.
+
 3. Identify gates that can execute independently.
+
 4. Implement bounded parallel execution.
+
 5. Associate every result with the implementation snapshot.
+
 6. Aggregate gate outcomes.
+
 7. Handle failed dependencies.
+
 8. Preserve logs and evidence for individual gates.
 
-### Expected execution model
+#### Expected execution model
 
-\#chatgpt-mermaid-\_r_18g3\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(13, 13, 13);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_18g3\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_18g3\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_18g3\_ .error-icon{fill:rgb(243, 243, 243);}#chatgpt-mermaid-\_r_18g3\_ .error-text{fill:rgb(13, 13, 13);stroke:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18g3\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_18g3\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_18g3\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_18g3\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_18g3\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_18g3\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_18g3\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_18g3\_ .marker.cross{stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_18g3\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_18g3\_ p{margin:0;}#chatgpt-mermaid-\_r_18g3\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18g3\_ .cluster-label text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18g3\_ .cluster-label span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18g3\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_18g3\_ .label text,#chatgpt-mermaid-\_r_18g3\_ span{fill:rgb(13, 13, 13);color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18g3\_ .node rect,#chatgpt-mermaid-\_r_18g3\_ .node circle,#chatgpt-mermaid-\_r_18g3\_ .node ellipse,#chatgpt-mermaid-\_r_18g3\_ .node polygon,#chatgpt-mermaid-\_r_18g3\_ .node path{fill:rgb(222, 234, 251);stroke:rgb(83, 154, 248);stroke-width:1px;}#chatgpt-mermaid-\_r_18g3\_ .rough-node .label text,#chatgpt-mermaid-\_r_18g3\_ .node .label text,#chatgpt-mermaid-\_r_18g3\_ .image-shape .label,#chatgpt-mermaid-\_r_18g3\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_18g3\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_18g3\_ .rough-node .label,#chatgpt-mermaid-\_r_18g3\_ .node .label,#chatgpt-mermaid-\_r_18g3\_ .image-shape .label,#chatgpt-mermaid-\_r_18g3\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_18g3\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_18g3\_ .root .anchor path{fill:rgb(143, 143, 143)!important;stroke-width:0;stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_18g3\_ .arrowheadPath{fill:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_18g3\_ .edgePath .path{stroke:rgb(143, 143, 143);stroke-width:1px;}#chatgpt-mermaid-\_r_18g3\_ .flowchart-link{stroke:rgb(143, 143, 143);fill:none;}#chatgpt-mermaid-\_r_18g3\_ .edgeLabel{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_18g3\_ .edgeLabel p{background-color:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_18g3\_ .edgeLabel rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_18g3\_ .labelBkg{background-color:rgba(252, 252, 252, 0.5);}#chatgpt-mermaid-\_r_18g3\_ .cluster rect{fill:rgb(243, 243, 243);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_18g3\_ .cluster text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18g3\_ .cluster span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18g3\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(243, 243, 243);border:1px solid rgba(0, 0, 0, 0.1);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_18g3\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18g3\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_18g3\_ .icon-shape,#chatgpt-mermaid-\_r_18g3\_ .image-shape{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_18g3\_ .icon-shape p,#chatgpt-mermaid-\_r_18g3\_ .image-shape p{background-color:rgb(252, 252, 252);padding:2px;}#chatgpt-mermaid-\_r_18g3\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_18g3\_ .image-shape .label rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_18g3\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_18g3\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_18g3\_ .node .neo-node{stroke:rgb(83, 154, 248);}#chatgpt-mermaid-\_r_18g3\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_18g3\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_18g3\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_18g3\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_18g3\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_18g3\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_18g3\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_18g3\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_18g3\_ [data-look="neo"].node .neo-line path{stroke:rgb(83, 154, 248);filter:none;}#chatgpt-mermaid-\_r_18g3\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_18g3\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_18g3\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_18g3\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_18g3\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_18g3\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_18g3\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_18g3\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_18g3\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_18g3\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_18g3\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_18g3\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-width:1px;}#chatgpt-mermaid-\_r_18g3\_ .node rect,#chatgpt-mermaid-\_r_18g3\_ .node circle,#chatgpt-mermaid-\_r_18g3\_ .node ellipse,#chatgpt-mermaid-\_r_18g3\_ .node polygon,#chatgpt-mermaid-\_r_18g3\_ .node path{fill:rgb(229, 243, 255);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_18g3\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_18g3\_ .node.mermaid-decision .label-container{fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_18g3\_ .edgePaths .flowchart-link{stroke:rgb(143, 143, 143);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_18g3\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_18g3\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}BuildUnit TestsArchitecture TestsSecurity ScanContract TestsGate Aggregation
+```mermaid
+flowchart TB
+    B["Build"] --> U["Unit Tests"]
+    B --> A["Architecture Tests"]
+    B --> S["Security Scan"]
+    B --> C["Contract Tests"]
+    U --> F["Gate Aggregation"]
+    A --> F
+    S --> F
+    C --> F
+```
 
-### Acceptance criteria
+#### Acceptance criteria
 
 - Dependencies execute in the correct order.
 - Independent checks can execute concurrently.
@@ -13873,46 +12186,45 @@ Implement dependency-aware parallel validation.
 - Dependent gates are not incorrectly reported as passed.
 - Results remain reproducible and traceable.
 
-### Architectural reflection
+#### Architectural reflection
 
-Should every gate run in the same workspace?
+Should every gate run in the same workspace? What changes when a gate modifies generated files or test databases?
 
-What changes when a gate modifies generated files or test databases?
-
-## 16.6 Exercise 6 — Implement Run Workspace and Scratchpad Isolation
+### 16.6 Exercise 6 — Implement Run Workspace and Scratchpad Isolation
 
 Difficulty: Intermediate Primary patterns: Run Workspace, Scratchpad, isolated execution, immutable evidence
 
-### Scenario
+#### Scenario
 
-Two Booking engineering requests are submitted simultaneously.
+Two Booking engineering requests are submitted simultaneously. The first changes recurring booking cancellation. The second modifies appointment availability validation.
 
-The first changes recurring booking cancellation.
+Both runs currently use the same repository checkout and one shared Scratchpad file. This creates the possibility of conflicting modifications and overwritten state.
 
-The second modifies appointment availability validation.
-
-Both runs currently use the same repository checkout and one shared Scratchpad file.
-
-This creates the possibility of conflicting modifications and overwritten state.
-
-### Objective
+#### Objective
 
 Design run-scoped execution storage and prove that simultaneous runs remain isolated.
 
-### Tasks
+#### Tasks
 
 1. Define a Run Workspace contract.
+
 2. Create unique workspace identities.
+
 3. Isolate repository working files.
+
 4. Create role-specific Scratchpads.
+
 5. Separate temporary observations from authoritative run state.
+
 6. Implement safe artifact collection.
+
 7. Define cleanup and retention behavior.
+
 8. Test simultaneous execution.
 
-### Expected structure
+#### Expected structure
 
-```
+```text
 runs/
 ├── run-1001/
 │   ├── repository/
@@ -13927,7 +12239,7 @@ runs/
     └── logs/
 ```
 
-### Acceptance criteria
+#### Acceptance criteria
 
 - Concurrent runs cannot overwrite each other's files.
 - Scratchpad state remains run-scoped.
@@ -13935,58 +12247,70 @@ runs/
 - Cleanup cannot remove another run's workspace.
 - Sensitive artifacts follow the configured retention policy.
 
-### Architectural reflection
+#### Architectural reflection
 
-Why is a unique directory name insufficient to guarantee security isolation?
+Why is a unique directory name insufficient to guarantee security isolation? Discuss filesystem permissions, process boundaries, credentials, and network access.
 
-Discuss filesystem permissions, process boundaries, credentials, and network access.
-
-## 16.7 Exercise 7 — Design a Multi-Repository Harness Workflow
+### 16.7 Exercise 7 — Design a Multi-Repository Harness Workflow
 
 Difficulty: Advanced Primary patterns: Multi-repository coordination, dependency graph, fan-out/fan-in, cross-service validation
 
-### Scenario
+#### Scenario
 
-Alpha Car Detailing introduces consolidated invoicing for corporate fleets.
-
-The feature affects:
+Alpha Car Detailing introduces consolidated invoicing for corporate fleets. The feature affects:
 
 Booking Service
 
-Publishes completed booking information.
+Publishes completed booking information. Fleet Service
 
-Fleet Service
+Provides corporate account and vehicle associations. Billing Service
 
-Provides corporate account and vehicle associations.
+Calculates and generates consolidated invoices. The implementation requires coordinated changes while preserving repository ownership.
 
-Billing Service
-
-Calculates and generates consolidated invoices.
-
-The implementation requires coordinated changes while preserving repository ownership.
-
-### Objective
+#### Objective
 
 Design a Multi-Repository Harness that executes isolated child runs and performs enterprise-level evaluation.
 
-### Tasks
+#### Tasks
 
 1. Define the parent engineering request.
+
 2. Identify repository dependencies.
+
 3. Define a shared contract approval stage.
+
 4. Create repository-specific child-run contracts.
+
 5. Establish isolated workspaces for each repository.
+
 6. Select safe parallel execution opportunities.
+
 7. Define cross-repository validation.
+
 8. Aggregate implementation and validation evidence.
+
 9. Establish required approval roles.
+
 10. Define partial failure and recovery behavior.
 
-### Expected architecture
+#### Expected architecture
 
-\#chatgpt-mermaid-\_r_18gi\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(13, 13, 13);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_18gi\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_18gi\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_18gi\_ .error-icon{fill:rgb(243, 243, 243);}#chatgpt-mermaid-\_r_18gi\_ .error-text{fill:rgb(13, 13, 13);stroke:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18gi\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_18gi\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_18gi\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_18gi\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_18gi\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_18gi\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_18gi\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_18gi\_ .marker.cross{stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_18gi\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_18gi\_ p{margin:0;}#chatgpt-mermaid-\_r_18gi\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18gi\_ .cluster-label text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18gi\_ .cluster-label span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18gi\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_18gi\_ .label text,#chatgpt-mermaid-\_r_18gi\_ span{fill:rgb(13, 13, 13);color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18gi\_ .node rect,#chatgpt-mermaid-\_r_18gi\_ .node circle,#chatgpt-mermaid-\_r_18gi\_ .node ellipse,#chatgpt-mermaid-\_r_18gi\_ .node polygon,#chatgpt-mermaid-\_r_18gi\_ .node path{fill:rgb(222, 234, 251);stroke:rgb(83, 154, 248);stroke-width:1px;}#chatgpt-mermaid-\_r_18gi\_ .rough-node .label text,#chatgpt-mermaid-\_r_18gi\_ .node .label text,#chatgpt-mermaid-\_r_18gi\_ .image-shape .label,#chatgpt-mermaid-\_r_18gi\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_18gi\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_18gi\_ .rough-node .label,#chatgpt-mermaid-\_r_18gi\_ .node .label,#chatgpt-mermaid-\_r_18gi\_ .image-shape .label,#chatgpt-mermaid-\_r_18gi\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_18gi\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_18gi\_ .root .anchor path{fill:rgb(143, 143, 143)!important;stroke-width:0;stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_18gi\_ .arrowheadPath{fill:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_18gi\_ .edgePath .path{stroke:rgb(143, 143, 143);stroke-width:1px;}#chatgpt-mermaid-\_r_18gi\_ .flowchart-link{stroke:rgb(143, 143, 143);fill:none;}#chatgpt-mermaid-\_r_18gi\_ .edgeLabel{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_18gi\_ .edgeLabel p{background-color:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_18gi\_ .edgeLabel rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_18gi\_ .labelBkg{background-color:rgba(252, 252, 252, 0.5);}#chatgpt-mermaid-\_r_18gi\_ .cluster rect{fill:rgb(243, 243, 243);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_18gi\_ .cluster text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18gi\_ .cluster span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18gi\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(243, 243, 243);border:1px solid rgba(0, 0, 0, 0.1);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_18gi\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18gi\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_18gi\_ .icon-shape,#chatgpt-mermaid-\_r_18gi\_ .image-shape{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_18gi\_ .icon-shape p,#chatgpt-mermaid-\_r_18gi\_ .image-shape p{background-color:rgb(252, 252, 252);padding:2px;}#chatgpt-mermaid-\_r_18gi\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_18gi\_ .image-shape .label rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_18gi\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_18gi\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_18gi\_ .node .neo-node{stroke:rgb(83, 154, 248);}#chatgpt-mermaid-\_r_18gi\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_18gi\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_18gi\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_18gi\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_18gi\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_18gi\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_18gi\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_18gi\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_18gi\_ [data-look="neo"].node .neo-line path{stroke:rgb(83, 154, 248);filter:none;}#chatgpt-mermaid-\_r_18gi\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_18gi\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_18gi\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_18gi\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_18gi\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_18gi\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_18gi\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_18gi\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_18gi\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_18gi\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_18gi\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_18gi\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-width:1px;}#chatgpt-mermaid-\_r_18gi\_ .node rect,#chatgpt-mermaid-\_r_18gi\_ .node circle,#chatgpt-mermaid-\_r_18gi\_ .node ellipse,#chatgpt-mermaid-\_r_18gi\_ .node polygon,#chatgpt-mermaid-\_r_18gi\_ .node path{fill:rgb(229, 243, 255);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_18gi\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_18gi\_ .node.mermaid-decision .label-container{fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_18gi\_ .edgePaths .flowchart-link{stroke:rgb(143, 143, 143);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_18gi\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_18gi\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}Consolidated Fleet BillingEnterprise LeadContract Definition & ApprovalBooking Child RunFleet Child RunBilling Child RunBooking ValidationFleet ValidationBilling ValidationCross-Repository Fan-InIntegration ValidationEnterprise EvaluationHuman Approval
+```mermaid
+flowchart TB
+    R["Consolidated Fleet Billing"] --> L["Enterprise Lead"] --> C["Contract Definition and Approval"]
+    C --> B["Booking Child Run"]
+    C --> F["Fleet Child Run"]
+    C --> I["Billing Child Run"]
+    B --> BV["Booking Validation"]
+    F --> FV["Fleet Validation"]
+    I --> IV["Billing Validation"]
+    BV --> Join["Cross-Repository Fan-In"]
+    FV --> Join
+    IV --> Join
+    Join --> V["Integration Validation"] --> E["Enterprise Evaluation"] --> A["Human Approval"]
+```
 
-### Acceptance criteria
+#### Acceptance criteria
 
 - Each repository retains independent implementation state.
 - Contract dependencies are explicit.
@@ -13995,48 +12319,49 @@ Design a Multi-Repository Harness that executes isolated child runs and performs
 - The parent run cannot complete while mandatory child outcomes remain unsuccessful.
 - Approval requirements reflect the ownership of affected services.
 
-### Architectural reflection
+#### Architectural reflection
 
-Why should cross-repository workflow completion not be treated as an ordinary database transaction?
+Why should cross-repository workflow completion not be treated as an ordinary database transaction? Explain the role of backward-compatible contracts, staged deployment, and compensating actions.
 
-Explain the role of backward-compatible contracts, staged deployment, and compensating actions.
-
-## 16.8 Exercise 8 — Design a Population Processing Harness
+### 16.8 Exercise 8 — Design a Population Processing Harness
 
 Difficulty: Advanced Primary patterns: Population processing, worker queues, bounded parallelism, fan-out/fan-in
 
-### Scenario
+#### Scenario
 
-Alpha Car Detailing needs to introduce structured logging across 75 independently maintained services.
+Alpha Car Detailing needs to introduce structured logging across 75 independently maintained services. Each service should follow an approved logging Skill. The work must be processed using a shared Harness platform.
 
-Each service should follow an approved logging Skill.
+Some repositories may fail validation. Others may be temporarily unavailable.
 
-The work must be processed using a shared Harness platform.
-
-Some repositories may fail validation.
-
-Others may be temporarily unavailable.
-
-### Objective
+#### Objective
 
 Design a population workflow that safely processes the repository collection with independent status, evidence, retries, and aggregation.
 
-### Tasks
+#### Tasks
 
 1. Define a population manifest.
+
 2. Create child-run identities.
+
 3. Design a work queue.
+
 4. Establish concurrency limits.
+
 5. Implement per-item progress tracking.
+
 6. Add bounded retry policies.
+
 7. Define failed and exhausted states.
+
 8. Create population aggregation logic.
+
 9. Design operational metrics.
+
 10. Define artifact retention.
 
-### Example manifest
+#### Example manifest
 
-```
+```yaml
 population:
   id: structured-logging-modernization
 
@@ -14057,7 +12382,7 @@ validation:
     - logging-compliance
 ```
 
-### Acceptance criteria
+#### Acceptance criteria
 
 - Every repository has an independent run record.
 - One child failure does not corrupt another.
@@ -14067,21 +12392,19 @@ validation:
 - Population metrics are accurate.
 - Aggregated completion follows explicit policy.
 
-### Architectural reflection
+#### Architectural reflection
 
-How should the scheduler respond when the AI provider reaches its rate limit?
+How should the scheduler respond when the AI provider reaches its rate limit? What is the difference between throttling new work and retrying a failed item?
 
-What is the difference between throttling new work and retrying a failed item?
-
-## 16.9 Exercise 9 — Implement Durable Retry and Recovery
+### 16.9 Exercise 9 — Implement Durable Retry and Recovery
 
 Difficulty: Advanced Primary patterns: Checkpointing, recovery, idempotency, failure classification
 
-### Scenario
+#### Scenario
 
 A Booking Harness run performs the following stages:
 
-```
+```text
 Lead Completed
 Developer Completed
 Reviewer Completed
@@ -14089,32 +12412,37 @@ Validation Completed
 Evaluation Pending
 ```
 
-The worker crashes before evaluation begins.
+The worker crashes before evaluation begins. The current Harness starts the entire workflow again. This duplicates expensive execution and may repeat side effects.
 
-The current Harness starts the entire workflow again.
-
-This duplicates expensive execution and may repeat side effects.
-
-### Objective
+#### Objective
 
 Implement a durable recovery mechanism that safely resumes from the last trustworthy checkpoint.
 
-### Tasks
+#### Tasks
 
 1. Define the run state machine.
+
 2. Persist stage transitions.
+
 3. Record implementation and evidence versions.
+
 4. Implement checkpoint recovery.
+
 5. Define retry classification.
+
 6. Add idempotency protection for external operations.
+
 7. Simulate worker interruption.
+
 8. Verify that completed stages are not repeated unnecessarily.
+
 9. Define lease or worker-ownership recovery behavior.
+
 10. Preserve failed recovery evidence.
 
-### Example persisted state
+#### Example persisted state
 
-```
+```json
 {
   "runId": "run-1042",
   "status": "running",
@@ -14129,7 +12457,7 @@ Implement a durable recovery mechanism that safely resumes from the last trustwo
 }
 ```
 
-### Acceptance criteria
+#### Acceptance criteria
 
 - State survives process termination.
 - Recovery identifies completed trustworthy stages.
@@ -14138,46 +12466,49 @@ Implement a durable recovery mechanism that safely resumes from the last trustwo
 - The run does not incorrectly transition to completed.
 - Recovery respects current authorization and artifact validity.
 
-### Architectural reflection
+#### Architectural reflection
 
-What happens if a pull request was created successfully, but the worker crashed before recording the operation?
+What happens if a pull request was created successfully, but the worker crashed before recording the operation? Explain how the Harness should reconcile external state.
 
-Explain how the Harness should reconcile external state.
-
-## 16.10 Exercise 10 — Implement Risk-Based Human Approval Gates
+### 16.10 Exercise 10 — Implement Risk-Based Human Approval Gates
 
 Difficulty: Advanced Primary patterns: Human approval, governance, risk classification, policy enforcement
 
-### Scenario
+#### Scenario
 
-The Booking team requests a minor validation change.
-
-The Billing team requests an adjustment to financial calculation logic.
-
-The two changes have different risk profiles.
+The Booking team requests a minor validation change. The Billing team requests an adjustment to financial calculation logic. The two changes have different risk profiles.
 
 The organization requires financial changes to receive Billing Owner and Security Reviewer approval.
 
-### Objective
+#### Objective
 
 Implement policy-driven approval requirements without hard-coding repository decisions into the central orchestrator.
 
-### Tasks
+#### Tasks
 
 1. Define risk classifications.
+
 2. Create approval profiles.
+
 3. Resolve requirements from effective policy.
+
 4. Define trusted approver identities and roles.
+
 5. Persist approval requests.
+
 6. Bind approval to the implementation version.
+
 7. Prevent unauthorized progression.
+
 8. Invalidate affected approval evidence after material changes.
+
 9. Test approval rejection and timeout behavior.
+
 10. Generate an audit record.
 
-### Example approval configuration
+#### Example approval configuration
 
-```
+```yaml
 approval:
   financialChange:
     required:
@@ -14185,7 +12516,7 @@ approval:
       - security-reviewer
 ```
 
-### Acceptance criteria
+#### Acceptance criteria
 
 - Required approvals are resolved correctly.
 - Agents cannot approve their own high-risk operations.
@@ -14194,21 +12525,17 @@ approval:
 - Rejected approval produces a controlled workflow outcome.
 - Approval evidence remains auditable.
 
-### Architectural reflection
+#### Architectural reflection
 
-When should approval occur before implementation, before pull-request creation, before merge, or before deployment?
+When should approval occur before implementation, before pull-request creation, before merge, or before deployment? Explain why one approval point may not be sufficient for every workflow.
 
-Explain why one approval point may not be sufficient for every workflow.
-
-## 16.11 Exercise 11 — Integrate Repository Intelligence
+### 16.11 Exercise 11 — Integrate Repository Intelligence
 
 Difficulty: Intermediate Primary patterns: Repository Intelligence, shared knowledge contracts, governed knowledge promotion
 
-### Scenario
+#### Scenario
 
-The Booking Harness repeatedly spends time rediscovering the same application structure.
-
-Agents search for:
+The Booking Harness repeatedly spends time rediscovering the same application structure. Agents search for:
 
 - domain aggregates;
 - application commands;
@@ -14219,25 +12546,33 @@ Agents search for:
 
 The organization wants to reduce repeated discovery without introducing unverified permanent knowledge.
 
-### Objective
+#### Objective
 
 Integrate governed Repository Intelligence into the Harness execution process.
 
-### Tasks
+#### Tasks
 
 1. Define the Repository Intelligence directory.
+
 2. Document the Booking architecture.
+
 3. Identify important service dependencies.
+
 4. Record event contracts and test structure.
+
 5. Define how agents consume the information.
+
 6. Associate knowledge with repository revisions.
+
 7. Detect potentially stale knowledge.
+
 8. Create a proposal process for updates.
+
 9. Prevent Scratchpad observations from becoming authoritative automatically.
 
-### Expected structure
+#### Expected structure
 
-```
+```text
 .ai/
 └── repository-intelligence/
     ├── architecture.md
@@ -14248,7 +12583,7 @@ Integrate governed Repository Intelligence into the Harness execution process.
     └── test-strategy.md
 ```
 
-### Acceptance criteria
+#### Acceptance criteria
 
 - The Lead Agent receives relevant repository knowledge.
 - Repository Intelligence remains separate from Instructions.
@@ -14256,40 +12591,47 @@ Integrate governed Repository Intelligence into the Harness execution process.
 - Potentially stale information is identifiable.
 - Temporary Scratchpad assumptions are not automatically promoted.
 
-### Architectural reflection
+#### Architectural reflection
 
 How should the Harness behave when Repository Intelligence contradicts the current source code?
 
-## 16.12 Exercise 12 — Implement Harness Metrics and Observability
+### 16.12 Exercise 12 — Implement Harness Metrics and Observability
 
 Difficulty: Intermediate Primary patterns: Metrics, distributed tracing, structured logs, operational dashboards
 
-### Scenario
+#### Scenario
 
-Alpha Car Detailing's Harness completes engineering runs, but platform operators cannot reliably determine why some runs take several hours.
+Alpha Car Detailing's Harness completes engineering runs, but platform operators cannot reliably determine why some runs take several hours. The organization wants a consistent telemetry model.
 
-The organization wants a consistent telemetry model.
-
-### Objective
+#### Objective
 
 Introduce structured run, stage, gate, provider, and population telemetry.
 
-### Tasks
+#### Tasks
 
 1. Define standard correlation identifiers.
+
 2. Add structured stage logs.
+
 3. Record stage duration.
+
 4. Record retry and failure classifications.
+
 5. Record gate outcomes.
+
 6. Capture available provider usage.
+
 7. Introduce OpenTelemetry instrumentation.
+
 8. Design a run-level dashboard.
+
 9. Define alerts for stuck or exhausted runs.
+
 10. Ensure sensitive information is protected.
 
-### Example telemetry fields
+#### Example telemetry fields
 
-```
+```text
 EnterpriseRunId
 RunId
 RepositoryId
@@ -14303,7 +12645,7 @@ RunStatus
 FailureCategory
 ```
 
-### Acceptance criteria
+#### Acceptance criteria
 
 - Every run can be traced across stages.
 - Stage durations can be compared.
@@ -14312,44 +12654,57 @@ FailureCategory
 - Population status can be aggregated.
 - Telemetry does not expose secrets or unrestricted source content.
 
-### Architectural reflection
+#### Architectural reflection
 
 Why should unique run identifiers generally be kept in traces and logs rather than used as high-cardinality metric labels?
 
-## 16.13 Exercise 13 — Design a Secure Multi-Team Execution Environment
+### 16.13 Exercise 13 — Design a Secure Multi-Team Execution Environment
 
 Difficulty: Advanced Primary patterns: Security isolation, least privilege, tool abstraction, scoped identity
 
-### Scenario
+#### Scenario
 
-The Booking, Fleet, and Billing teams share a central Harness scheduler.
+The Booking, Fleet, and Billing teams share a central Harness scheduler. The current implementation uses one service identity with access to every repository and deployment environment. Security reviewers identify this as an unacceptable blast-radius risk.
 
-The current implementation uses one service identity with access to every repository and deployment environment.
-
-Security reviewers identify this as an unacceptable blast-radius risk.
-
-### Objective
+#### Objective
 
 Redesign execution identity and workspace isolation.
 
-### Tasks
+#### Tasks
 
 1. Define trust boundaries.
+
 2. Introduce repository-scoped identities.
+
 3. Separate development permissions from deployment permissions.
+
 4. Define approved tool capabilities.
+
 5. Isolate execution workspaces.
+
 6. Restrict sensitive network access.
+
 7. Define artifact access controls.
+
 8. Design credential expiration and rotation.
+
 9. Test unauthorized cross-repository access.
+
 10. Document residual risks.
 
-### Expected architecture
+#### Expected architecture
 
-\#chatgpt-mermaid-\_r_18i2\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(13, 13, 13);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_18i2\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_18i2\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_18i2\_ .error-icon{fill:rgb(243, 243, 243);}#chatgpt-mermaid-\_r_18i2\_ .error-text{fill:rgb(13, 13, 13);stroke:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18i2\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_18i2\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_18i2\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_18i2\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_18i2\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_18i2\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_18i2\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_18i2\_ .marker.cross{stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_18i2\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_18i2\_ p{margin:0;}#chatgpt-mermaid-\_r_18i2\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18i2\_ .cluster-label text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18i2\_ .cluster-label span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18i2\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_18i2\_ .label text,#chatgpt-mermaid-\_r_18i2\_ span{fill:rgb(13, 13, 13);color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18i2\_ .node rect,#chatgpt-mermaid-\_r_18i2\_ .node circle,#chatgpt-mermaid-\_r_18i2\_ .node ellipse,#chatgpt-mermaid-\_r_18i2\_ .node polygon,#chatgpt-mermaid-\_r_18i2\_ .node path{fill:rgb(222, 234, 251);stroke:rgb(83, 154, 248);stroke-width:1px;}#chatgpt-mermaid-\_r_18i2\_ .rough-node .label text,#chatgpt-mermaid-\_r_18i2\_ .node .label text,#chatgpt-mermaid-\_r_18i2\_ .image-shape .label,#chatgpt-mermaid-\_r_18i2\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_18i2\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_18i2\_ .rough-node .label,#chatgpt-mermaid-\_r_18i2\_ .node .label,#chatgpt-mermaid-\_r_18i2\_ .image-shape .label,#chatgpt-mermaid-\_r_18i2\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_18i2\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_18i2\_ .root .anchor path{fill:rgb(143, 143, 143)!important;stroke-width:0;stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_18i2\_ .arrowheadPath{fill:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_18i2\_ .edgePath .path{stroke:rgb(143, 143, 143);stroke-width:1px;}#chatgpt-mermaid-\_r_18i2\_ .flowchart-link{stroke:rgb(143, 143, 143);fill:none;}#chatgpt-mermaid-\_r_18i2\_ .edgeLabel{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_18i2\_ .edgeLabel p{background-color:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_18i2\_ .edgeLabel rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_18i2\_ .labelBkg{background-color:rgba(252, 252, 252, 0.5);}#chatgpt-mermaid-\_r_18i2\_ .cluster rect{fill:rgb(243, 243, 243);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_18i2\_ .cluster text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18i2\_ .cluster span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18i2\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(243, 243, 243);border:1px solid rgba(0, 0, 0, 0.1);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_18i2\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18i2\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_18i2\_ .icon-shape,#chatgpt-mermaid-\_r_18i2\_ .image-shape{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_18i2\_ .icon-shape p,#chatgpt-mermaid-\_r_18i2\_ .image-shape p{background-color:rgb(252, 252, 252);padding:2px;}#chatgpt-mermaid-\_r_18i2\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_18i2\_ .image-shape .label rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_18i2\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_18i2\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_18i2\_ .node .neo-node{stroke:rgb(83, 154, 248);}#chatgpt-mermaid-\_r_18i2\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_18i2\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_18i2\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_18i2\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_18i2\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_18i2\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_18i2\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_18i2\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_18i2\_ [data-look="neo"].node .neo-line path{stroke:rgb(83, 154, 248);filter:none;}#chatgpt-mermaid-\_r_18i2\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_18i2\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_18i2\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_18i2\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_18i2\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_18i2\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_18i2\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_18i2\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_18i2\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_18i2\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_18i2\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_18i2\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-width:1px;}#chatgpt-mermaid-\_r_18i2\_ .node rect,#chatgpt-mermaid-\_r_18i2\_ .node circle,#chatgpt-mermaid-\_r_18i2\_ .node ellipse,#chatgpt-mermaid-\_r_18i2\_ .node polygon,#chatgpt-mermaid-\_r_18i2\_ .node path{fill:rgb(229, 243, 255);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_18i2\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_18i2\_ .node.mermaid-decision .label-container{fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_18i2\_ .edgePaths .flowchart-link{stroke:rgb(143, 143, 143);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_18i2\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_18i2\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}Shared SchedulerBooking WorkerFleet WorkerBilling WorkerBooking IdentityFleet IdentityBilling IdentityBooking ResourcesFleet ResourcesBilling Resources
+```mermaid
+flowchart TB
+    S["Shared Scheduler"] --> B["Booking Worker"]
+    S --> F["Fleet Worker"]
+    S --> I["Billing Worker"]
+    B --> BI["Booking Identity"] --> BR["Booking Resources"]
+    F --> FI["Fleet Identity"] --> FR["Fleet Resources"]
+    I --> II["Billing Identity"] --> IR["Billing Resources"]
+```
 
-### Acceptance criteria
+#### Acceptance criteria
 
 - Booking execution cannot access Billing resources without authorization.
 - Workers do not use unrestricted shared credentials.
@@ -14358,21 +12713,19 @@ Redesign execution identity and workspace isolation.
 - Unauthorized operations fail visibly.
 - Security boundaries are enforced outside agent Instructions.
 
-### Architectural reflection
+#### Architectural reflection
 
-How might prompt injection exploit an overly privileged Harness worker?
+How might prompt injection exploit an overly privileged Harness worker? Why is a sandbox insufficient if unrestricted credentials are available inside it?
 
-Why is a sandbox insufficient if unrestricted credentials are available inside it?
-
-## 16.14 Exercise 14 — Design a Monorepo-Aware Harness
+### 16.14 Exercise 14 — Design a Monorepo-Aware Harness
 
 Difficulty: Advanced Primary patterns: Monorepo, change-scope detection, scoped validation, final completion gates
 
-### Scenario
+#### Scenario
 
 Alpha Car Detailing decides to consolidate several internal services into one monorepo.
 
-```
+```text
 alpha-car-platform/
 ├── services/
 │   ├── booking/
@@ -14385,24 +12738,33 @@ alpha-car-platform/
 
 Running the full solution build and test suite after every Developer iteration is expensive.
 
-### Objective
+#### Objective
 
 Design scope-aware execution without weakening mandatory completion validation.
 
-### Tasks
+#### Tasks
 
 1. Create a service dependency map.
+
 2. Identify affected components from changed files.
+
 3. Resolve applicable local Instructions.
+
 4. Select relevant Skills.
+
 5. Determine iteration validation scope.
+
 6. Identify shared-library impact.
+
 7. Define mandatory final gates.
+
 8. Implement scope selection tests.
+
 9. Handle ambiguous or incomplete dependency information.
+
 10. Compare execution time before and after optimization.
 
-### Acceptance criteria
+#### Acceptance criteria
 
 - Changes affecting Booking select relevant Booking tests.
 - Shared-library changes include dependent service checks.
@@ -14410,38 +12772,45 @@ Design scope-aware execution without weakening mandatory completion validation.
 - Final required gates remain enforced.
 - Scope selection is explainable and auditable.
 
-### Architectural reflection
+#### Architectural reflection
 
 Under what conditions should the Harness abandon scoped validation and execute broader tests?
 
-## 16.15 Exercise 15 — Compare Claude Code, GitHub Copilot, and Codex
+### 16.15 Exercise 15 — Compare Claude Code, GitHub Copilot, and Codex
 
 Difficulty: Advanced Primary patterns: Provider adapters, capability profiles, portability, evaluation
 
-### Scenario
+#### Scenario
 
-Alpha Car Detailing uses Claude Code as its primary AI coding platform.
+Alpha Car Detailing uses Claude Code as its primary AI coding platform. The architecture team wants to determine whether GitHub Copilot and Codex can execute selected Harness workflows through the same provider contract.
 
-The architecture team wants to determine whether GitHub Copilot and Codex can execute selected Harness workflows through the same provider contract.
-
-### Objective
+#### Objective
 
 Evaluate provider interoperability without compromising engineering or governance requirements.
 
-### Tasks
+#### Tasks
 
 1. Define a common agent execution contract.
+
 2. Document required capabilities.
+
 3. Map each provider's Instruction and Skill mechanisms.
+
 4. Implement or prototype provider adapters.
+
 5. Execute the same controlled engineering task.
+
 6. Record structured results.
+
 7. Apply identical mandatory validation.
+
 8. Compare role behavior and execution evidence.
+
 9. Compare operational cost and reliability.
+
 10. Document architectural differences.
 
-### Suggested comparison criteria
+#### Suggested comparison criteria
 
 | Criterion                 | Evaluation Question                                        |
 | ------------------------- | ---------------------------------------------------------- |
@@ -14456,7 +12825,7 @@ Evaluate provider interoperability without compromising engineering or governanc
 | Cost visibility           | What usage information is available?                       |
 | Governance                | Can mandatory controls remain external to the provider?    |
 
-### Acceptance criteria
+#### Acceptance criteria
 
 - Provider-specific behavior is isolated in adapters.
 - Core Harness orchestration remains unchanged.
@@ -14464,25 +12833,23 @@ Evaluate provider interoperability without compromising engineering or governanc
 - Unsupported provider capabilities are reported explicitly.
 - Results are supported by recorded evidence.
 
-### Architectural reflection
+#### Architectural reflection
 
 Why is provider portability not necessarily equivalent to identical behavior or identical output quality?
 
-## 16.16 Exercise 16 — Conduct an Enterprise Harness Architecture Review
+### 16.16 Exercise 16 — Conduct an Enterprise Harness Architecture Review
 
 Difficulty: Advanced Primary patterns: Architecture governance, anti-pattern detection, ADRs, fitness functions
 
-### Scenario
+#### Scenario
 
-Alpha Car Detailing has completed its first Enterprise Harness implementation.
+Alpha Car Detailing has completed its first Enterprise Harness implementation. The architecture group must determine whether the solution is ready for broader adoption.
 
-The architecture group must determine whether the solution is ready for broader adoption.
-
-### Objective
+#### Objective
 
 Conduct a formal architecture assessment.
 
-### Tasks
+#### Tasks
 
 Evaluate the following areas:
 
@@ -14501,9 +12868,7 @@ Evaluate the following areas:
 - operational complexity;
 - cost efficiency.
 
-Identify at least five architectural risks.
-
-For each risk, document:
+Identify at least five architectural risks. For each risk, document:
 
 - description;
 - affected components;
@@ -14513,51 +12878,48 @@ For each risk, document:
 - responsible owner;
 - verification method.
 
-### Expected deliverables
+#### Expected deliverables
 
 1. Architecture review report.
+
 2. Updated component diagram.
+
 3. Risk register.
+
 4. Architecture Decision Records.
+
 5. Remediation backlog.
+
 6. Enterprise readiness recommendation.
 
-### Acceptance criteria
+#### Acceptance criteria
 
-The assessment must identify architectural weaknesses using concrete evidence rather than subjective claims.
-
-It should distinguish:
+The assessment must identify architectural weaknesses using concrete evidence rather than subjective claims. It should distinguish:
 
 - critical blockers;
 - required improvements;
 - acceptable tradeoffs;
 - future enhancements.
 
-### Architectural reflection
+#### Architectural reflection
 
-Can an architecture be enterprise-ready even if it does not support every Harness pattern discussed in this chapter?
+Can an architecture be enterprise-ready even if it does not support every Harness pattern discussed in this chapter? Explain why completeness of features is not the same as architectural fitness.
 
-Explain why completeness of features is not the same as architectural fitness.
-
-## 16.17 Capstone Exercise — Build an Enterprise Harness for Alpha Car Detailing
+### 16.17 Capstone Exercise — Build an Enterprise Harness for Alpha Car Detailing
 
 Difficulty: Expert Primary patterns: All major Enterprise Harness patterns
 
-### Scenario
+#### Scenario
 
-Alpha Car Detailing wants to establish a reusable Enterprise Harness platform supporting Booking, Fleet, Billing, and Notifications.
-
-The platform must support multiple repositories, shared capabilities, local engineering requirements, independent validation, controlled multi-agent execution, durable recovery, and enterprise governance.
-
-Claude Code is the primary AI execution provider.
+Alpha Car Detailing wants to establish a reusable Enterprise Harness platform supporting Booking, Fleet, Billing, and Notifications. The platform must support multiple repositories, shared capabilities, local engineering requirements, independent validation, controlled multi-agent execution, durable recovery, and enterprise governance. Claude Code is the primary AI execution provider.
 
 The architecture should permit additional providers through governed adapters.
 
-### Objective
+#### Objective
 
 Design and implement a functional Enterprise Harness reference solution that demonstrates the central architectural principles of Part III.
 
-### Required capabilities
+#### Required capabilities
 
 The solution must support:
 
@@ -14579,9 +12941,9 @@ The solution must support:
 - Metrics and observability.
 - Security isolation.
 
-### Suggested solution structure
+#### Suggested solution structure
 
-```
+```text
 alpha-car-detailing/
 │
 ├── enterprise-harness/
@@ -14612,45 +12974,23 @@ alpha-car-detailing/
 └── notifications-service/
 ```
 
-### Required demonstration scenarios
+#### Required demonstration scenarios
 
 Scenario A — Single-repository development
 
-Implement a Booking API enhancement.
+Implement a Booking API enhancement. Verify role execution, deterministic gates, evaluation, and approval. Scenario B — Cross-repository engineering
 
-Verify role execution, deterministic gates, evaluation, and approval.
+Implement a coordinated Booking, Fleet, and Billing contract change. Demonstrate isolated child runs and cross-service evidence aggregation. Scenario C — Population processing
 
-Scenario B — Cross-repository engineering
+Execute a controlled engineering change across multiple repositories. Demonstrate bounded concurrency, per-item status, and failure isolation. Scenario D — Failure recovery
 
-Implement a coordinated Booking, Fleet, and Billing contract change.
+Terminate a worker during execution. Verify checkpoint recovery and protection against duplicate side effects. Scenario E — Governance enforcement
 
-Demonstrate isolated child runs and cross-service evidence aggregation.
+Attempt to bypass a mandatory security gate or required approval. Verify that the Harness rejects unauthorized progression. Scenario F — Provider substitution
 
-Scenario C — Population processing
+Execute a controlled task using Claude and another approved provider or a realistic adapter test double. Verify that central orchestration contracts remain unchanged.
 
-Execute a controlled engineering change across multiple repositories.
-
-Demonstrate bounded concurrency, per-item status, and failure isolation.
-
-Scenario D — Failure recovery
-
-Terminate a worker during execution.
-
-Verify checkpoint recovery and protection against duplicate side effects.
-
-Scenario E — Governance enforcement
-
-Attempt to bypass a mandatory security gate or required approval.
-
-Verify that the Harness rejects unauthorized progression.
-
-Scenario F — Provider substitution
-
-Execute a controlled task using Claude and another approved provider or a realistic adapter test double.
-
-Verify that central orchestration contracts remain unchanged.
-
-### Expected deliverables
+#### Expected deliverables
 
 The capstone should produce:
 
@@ -14668,7 +13008,7 @@ The capstone should produce:
 - ADRs;
 - execution evidence from the demonstration scenarios.
 
-### Capstone acceptance criteria
+#### Capstone acceptance criteria
 
 | ID     | Requirement                                                                            |
 | ------ | -------------------------------------------------------------------------------------- |
@@ -14689,7 +13029,7 @@ The capstone should produce:
 | CAP-15 | New repositories can be onboarded without central orchestration rewrites               |
 | CAP-16 | Architecture decisions and tradeoffs are documented                                    |
 
-### Capstone evaluation
+#### Capstone evaluation
 
 The final solution should be evaluated on five dimensions.
 
@@ -14701,37 +13041,25 @@ The final solution should be evaluated on five dimensions.
 | Operational observability             | 15%    |
 | Maintainability and extensibility     | 15%    |
 
-The weighting is an instructional rubric, not an organizational policy.
+The weighting is an instructional rubric, not an organizational policy. Critical failures in security, validation, or approval enforcement should prevent a passing capstone assessment regardless of the numerical score.
 
-Critical failures in security, validation, or approval enforcement should prevent a passing capstone assessment regardless of the numerical score.
+### 16.18 Exercise Assessment Guidance
 
-## 16.18 Exercise Assessment Guidance
-
-The exercises should not be evaluated solely by whether generated code compiles.
-
-A successful submission should demonstrate:
+The exercises should not be evaluated solely by whether generated code compiles. A successful submission should demonstrate:
 
 Architectural correctness
 
-Responsibilities are separated, dependencies are controlled, and selected patterns fit the problem.
+Responsibilities are separated, dependencies are controlled, and selected patterns fit the problem. Engineering correctness
 
-Engineering correctness
+Implementation contracts, validation behavior, and recovery mechanisms work as intended. Governance correctness
 
-Implementation contracts, validation behavior, and recovery mechanisms work as intended.
+Mandatory policies, approval requirements, and ownership boundaries remain enforceable. Operational correctness
 
-Governance correctness
-
-Mandatory policies, approval requirements, and ownership boundaries remain enforceable.
-
-Operational correctness
-
-Failures are visible, execution can be diagnosed, and state is preserved appropriately.
-
-Maintainability
+Failures are visible, execution can be diagnosed, and state is preserved appropriately. Maintainability
 
 The architecture can support new repositories, Skills, gates, and approved providers without accumulating repository-specific branches.
 
-### Suggested evaluation questions
+#### Suggested evaluation questions
 
 For each exercise, reviewers should ask:
 
@@ -14745,29 +13073,27 @@ For each exercise, reviewers should ask:
 
 The goal is to develop engineering judgment, not merely familiarity with Harness terminology.
 
-## 16.19 Exercise Progression
+### 16.19 Exercise Progression
 
 The exercises are intentionally arranged from foundational patterns to enterprise-scale orchestration.
 
-\#chatgpt-mermaid-\_r_18in\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(13, 13, 13);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_18in\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_18in\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_18in\_ .error-icon{fill:rgb(243, 243, 243);}#chatgpt-mermaid-\_r_18in\_ .error-text{fill:rgb(13, 13, 13);stroke:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18in\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_18in\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_18in\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_18in\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_18in\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_18in\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_18in\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_18in\_ .marker.cross{stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_18in\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_18in\_ p{margin:0;}#chatgpt-mermaid-\_r_18in\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18in\_ .cluster-label text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18in\_ .cluster-label span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18in\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_18in\_ .label text,#chatgpt-mermaid-\_r_18in\_ span{fill:rgb(13, 13, 13);color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18in\_ .node rect,#chatgpt-mermaid-\_r_18in\_ .node circle,#chatgpt-mermaid-\_r_18in\_ .node ellipse,#chatgpt-mermaid-\_r_18in\_ .node polygon,#chatgpt-mermaid-\_r_18in\_ .node path{fill:rgb(222, 234, 251);stroke:rgb(83, 154, 248);stroke-width:1px;}#chatgpt-mermaid-\_r_18in\_ .rough-node .label text,#chatgpt-mermaid-\_r_18in\_ .node .label text,#chatgpt-mermaid-\_r_18in\_ .image-shape .label,#chatgpt-mermaid-\_r_18in\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_18in\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_18in\_ .rough-node .label,#chatgpt-mermaid-\_r_18in\_ .node .label,#chatgpt-mermaid-\_r_18in\_ .image-shape .label,#chatgpt-mermaid-\_r_18in\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_18in\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_18in\_ .root .anchor path{fill:rgb(143, 143, 143)!important;stroke-width:0;stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_18in\_ .arrowheadPath{fill:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_18in\_ .edgePath .path{stroke:rgb(143, 143, 143);stroke-width:1px;}#chatgpt-mermaid-\_r_18in\_ .flowchart-link{stroke:rgb(143, 143, 143);fill:none;}#chatgpt-mermaid-\_r_18in\_ .edgeLabel{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_18in\_ .edgeLabel p{background-color:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_18in\_ .edgeLabel rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_18in\_ .labelBkg{background-color:rgba(252, 252, 252, 0.5);}#chatgpt-mermaid-\_r_18in\_ .cluster rect{fill:rgb(243, 243, 243);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_18in\_ .cluster text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18in\_ .cluster span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18in\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(243, 243, 243);border:1px solid rgba(0, 0, 0, 0.1);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_18in\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18in\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_18in\_ .icon-shape,#chatgpt-mermaid-\_r_18in\_ .image-shape{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_18in\_ .icon-shape p,#chatgpt-mermaid-\_r_18in\_ .image-shape p{background-color:rgb(252, 252, 252);padding:2px;}#chatgpt-mermaid-\_r_18in\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_18in\_ .image-shape .label rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_18in\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_18in\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_18in\_ .node .neo-node{stroke:rgb(83, 154, 248);}#chatgpt-mermaid-\_r_18in\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_18in\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_18in\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_18in\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_18in\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_18in\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_18in\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_18in\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_18in\_ [data-look="neo"].node .neo-line path{stroke:rgb(83, 154, 248);filter:none;}#chatgpt-mermaid-\_r_18in\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_18in\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_18in\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_18in\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_18in\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_18in\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_18in\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_18in\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_18in\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_18in\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_18in\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_18in\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-width:1px;}#chatgpt-mermaid-\_r_18in\_ .node rect,#chatgpt-mermaid-\_r_18in\_ .node circle,#chatgpt-mermaid-\_r_18in\_ .node ellipse,#chatgpt-mermaid-\_r_18in\_ .node polygon,#chatgpt-mermaid-\_r_18in\_ .node path{fill:rgb(229, 243, 255);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_18in\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_18in\_ .node.mermaid-decision .label-container{fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_18in\_ .edgePaths .flowchart-link{stroke:rgb(143, 143, 143);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_18in\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_18in\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}Single-Repository HarnessReusable CapabilitiesShared PlatformProvider AbstractionParallel ValidationRun IsolationMulti-Repository CoordinationPopulation ProcessingRecoveryGovernanceRepository IntelligenceObservabilitySecurityMonorepo OptimizationProvider ComparisonArchitecture ReviewEnterprise Harness Capstone
+```mermaid
+flowchart TB
+    E1["Single-Repository Harness"] --> E2["Reusable Capabilities"] --> E3["Shared Platform"]
+    E3 --> E4["Provider Abstraction"] --> E5["Parallel Validation"] --> E6["Run Isolation"]
+    E6 --> E7["Multi-Repository Coordination"] --> E8["Population Processing"] --> E9["Recovery"]
+    E9 --> E10["Governance"] --> E11["Repository Intelligence"] --> E12["Observability"]
+    E12 --> E13["Security"] --> E14["Monorepo Optimization"] --> E15["Provider Comparison"]
+    E15 --> E16["Architecture Review"] --> C["Enterprise Harness Capstone"]
+```
 
-This progression demonstrates an important enterprise principle.
+This progression demonstrates an important enterprise principle. Reliable single-repository execution should precede complex distributed orchestration. Durable state and isolation should precede large-scale parallelism.
 
-Reliable single-repository execution should precede complex distributed orchestration.
+Deterministic validation and governance should be established before increasing autonomous execution authority. Provider abstraction and shared capabilities should support real extensibility requirements rather than introduce unnecessary complexity.
 
-Durable state and isolation should precede large-scale parallelism.
+### 16.20 Final Exercise Perspective
 
-Deterministic validation and governance should be established before increasing autonomous execution authority.
-
-Provider abstraction and shared capabilities should support real extensibility requirements rather than introduce unnecessary complexity.
-
-## 16.20 Final Exercise Perspective
-
-The exercises in this chapter are designed to demonstrate that Enterprise Harness Engineering is an architectural discipline.
-
-The objective is not simply to invoke Claude Code, GitHub Copilot, or Codex from a script.
-
-The objective is to build a governed execution system that can reliably coordinate AI-assisted engineering across repositories, teams, services, and technologies.
+The exercises in this chapter are designed to demonstrate that Enterprise Harness Engineering is an architectural discipline. The objective is not simply to invoke Claude Code, GitHub Copilot, or Codex from a script. The objective is to build a governed execution system that can reliably coordinate AI-assisted engineering across repositories, teams, services, and technologies.
 
 A successful Enterprise Harness should make the following possible:
 
@@ -14784,21 +13110,19 @@ A successful Enterprise Harness should make the following possible:
 
 These capabilities collectively distinguish an Enterprise Harness from a collection of AI automation scripts.
 
-> Architect's Note
+> **Architect's Note**
+
 >
+
 > The most valuable outcome of these exercises is not a Harness containing every possible pattern.
+
 >
+
 > It is a Harness whose architecture can be explained, whose responsibilities are testable, whose failures are recoverable, and whose engineering outcomes are supported by trustworthy evidence.
 
-Chapter 21 status: In progress — next section: Interview Questions
+## 17. Interview Questions
 
-# 17. Interview Questions
-
-Enterprise Harness patterns introduce architectural challenges that extend beyond AI coding tools, Prompt design, and individual Agent workflows.
-
-Senior engineers and architects must understand how to design Harnesses that remain maintainable, secure, observable, and governable as the number of repositories, teams, services, and execution workloads increases.
-
-The following questions assess both conceptual understanding and practical architecture judgment.
+Enterprise Harness patterns introduce architectural challenges that extend beyond AI coding tools, Prompt design, and individual Agent workflows. Senior engineers and architects must understand how to design Harnesses that remain maintainable, secure, observable, and governable as the number of repositories, teams, services, and execution workloads increases. The following questions assess both conceptual understanding and practical architecture judgment.
 
 They are suitable for:
 
@@ -14810,19 +13134,15 @@ They are suitable for:
 - AI Engineering Leads
 - Enterprise Architecture Review Panels
 
-Questions are grouped into foundational concepts, architecture patterns, orchestration, validation, recovery, security, provider integration, and enterprise-scale scenarios.
+Questions are grouped into foundational concepts, architecture patterns, orchestration, validation, recovery, security, provider integration, and enterprise-scale scenarios. Each question includes an expected answer and, where appropriate, a follow-up discussion to explore architectural depth.
 
-Each question includes an expected answer and, where appropriate, a follow-up discussion to explore architectural depth.
+### 17.1 Foundational Questions
 
-## 17.1 Foundational Questions
-
-### Question 1 — What is an Enterprise Harness pattern?
+#### Question 1 — What is an Enterprise Harness pattern?
 
 Expected answer
 
-An Enterprise Harness pattern is a reusable architectural or execution structure that solves a recurring problem in AI-assisted software engineering.
-
-Examples include:
+An Enterprise Harness pattern is a reusable architectural or execution structure that solves a recurring problem in AI-assisted software engineering. Examples include:
 
 - Single-Repository Harness
 - Multi-Repository Harness
@@ -14835,21 +13155,13 @@ Examples include:
 - Run Workspace Isolation
 - Plugin and Adapter Architecture
 
-Patterns define how responsibilities are organized and combined. They are not necessarily tied to a particular AI coding platform or deployment technology.
+Patterns define how responsibilities are organized and combined. They are not necessarily tied to a particular AI coding platform or deployment technology. Follow-up: Why should Enterprise Harnesses be composed from patterns rather than implemented as one large orchestration workflow? A pattern-based design reduces coupling, supports independent evolution, clarifies ownership, and avoids embedding every repository-specific decision in a central workflow.
 
-Follow-up: Why should Enterprise Harnesses be composed from patterns rather than implemented as one large orchestration workflow?
-
-A pattern-based design reduces coupling, supports independent evolution, clarifies ownership, and avoids embedding every repository-specific decision in a central workflow.
-
-### Question 2 — What is the difference between a Harness and an AI Agent?
+#### Question 2 — What is the difference between a Harness and an AI Agent?
 
 Expected answer
 
-An AI Agent performs an assigned engineering responsibility such as planning, implementation, review, or evaluation.
-
-A Harness coordinates the engineering lifecycle.
-
-The Harness controls:
+An AI Agent performs an assigned engineering responsibility such as planning, implementation, review, or evaluation. A Harness coordinates the engineering lifecycle. The Harness controls:
 
 - workflow progression;
 - agent invocation;
@@ -14860,41 +13172,25 @@ The Harness controls:
 - metrics;
 - approval boundaries.
 
-The Agent performs assigned reasoning or implementation work.
-
-The Harness determines whether the workflow can progress.
-
-Key principle
+The Agent performs assigned reasoning or implementation work. The Harness determines whether the workflow can progress. Key principle
 
 > The Harness controls execution. Agents implement. Deterministic gates verify. Evaluators assess. Humans approve.
 
-### Question 3 — Why should an Enterprise Harness remain vendor-neutral?
+#### Question 3 — Why should an Enterprise Harness remain vendor-neutral?
 
 Expected answer
 
-Vendor neutrality prevents the core engineering architecture from becoming dependent on one AI provider's implementation details.
+Vendor neutrality prevents the core engineering architecture from becoming dependent on one AI provider's implementation details. Claude Code, GitHub Copilot, and Codex expose different interfaces for Instructions, Skills, agents, tool integration, and execution. A vendor-neutral Harness defines stable responsibilities and contracts independently of those differences.
 
-Claude Code, GitHub Copilot, and Codex expose different interfaces for Instructions, Skills, agents, tool integration, and execution.
-
-A vendor-neutral Harness defines stable responsibilities and contracts independently of those differences.
-
-Provider adapters translate Harness requests into provider-specific operations.
-
-Vendor neutrality does not require identical behavior from every provider.
-
-Follow-up: What are the disadvantages of excessive provider abstraction?
+Provider adapters translate Harness requests into provider-specific operations. Vendor neutrality does not require identical behavior from every provider. Follow-up: What are the disadvantages of excessive provider abstraction?
 
 Excessive abstraction can hide useful provider capabilities, increase complexity, and produce misleading assumptions about feature compatibility.
 
-### Question 4 — What is the difference between a Harness pattern and a Harness capability?
+#### Question 4 — What is the difference between a Harness pattern and a Harness capability?
 
 Expected answer
 
-A capability is functionality the Harness provides.
-
-Examples include invoking an agent, executing a validation gate, or publishing an artifact.
-
-A pattern describes how capabilities are organized to solve a larger architectural problem.
+A capability is functionality the Harness provides. Examples include invoking an agent, executing a validation gate, or publishing an artifact. A pattern describes how capabilities are organized to solve a larger architectural problem.
 
 For example:
 
@@ -14905,15 +13201,13 @@ For example:
 
 A capability may participate in several patterns.
 
-## 17.2 Repository and Platform Architecture
+### 17.2 Repository and Platform Architecture
 
-### Question 5 — When should an organization use a Single-Repository Harness?
+#### Question 5 — When should an organization use a Single-Repository Harness?
 
 Expected answer
 
-A Single-Repository Harness is appropriate when engineering tasks remain within one repository, ownership is clear, and cross-repository coordination is limited.
-
-It provides:
+A Single-Repository Harness is appropriate when engineering tasks remain within one repository, ownership is clear, and cross-repository coordination is limited. It provides:
 
 - simple execution boundaries;
 - repository-specific configuration;
@@ -14923,15 +13217,11 @@ It provides:
 
 For Alpha Car Detailing, modifying Booking appointment validation is a suitable Single-Repository Harness task.
 
-### Question 6 — When is a Multi-Repository Harness justified?
+#### Question 6 — When is a Multi-Repository Harness justified?
 
 Expected answer
 
-A Multi-Repository Harness is justified when a business outcome requires coordinated changes across multiple repositories.
-
-Examples include introducing a new integration contract between Booking, Fleet, and Billing.
-
-A Multi-Repository Harness should support:
+A Multi-Repository Harness is justified when a business outcome requires coordinated changes across multiple repositories. Examples include introducing a new integration contract between Booking, Fleet, and Billing. A Multi-Repository Harness should support:
 
 - parent and child runs;
 - repository-specific workspaces;
@@ -14943,23 +13233,15 @@ A Multi-Repository Harness should support:
 
 A Multi-Repository Harness should not simply grant one Agent unrestricted write access to every repository.
 
-### Question 7 — What is the difference between a Monorepo Harness and a Multi-Repository Harness?
+#### Question 7 — What is the difference between a Monorepo Harness and a Multi-Repository Harness?
 
 Expected answer
 
-A Monorepo Harness operates within one source-control repository containing multiple services, applications, packages, or bounded contexts.
+A Monorepo Harness operates within one source-control repository containing multiple services, applications, packages, or bounded contexts. A Multi-Repository Harness coordinates execution across independently versioned repositories. A Monorepo Harness typically requires scope detection and dependency-aware validation.
 
-A Multi-Repository Harness coordinates execution across independently versioned repositories.
+A Multi-Repository Harness additionally requires cross-repository coordination, independent change management, and potentially multiple approval workflows. Follow-up: Does a monorepo eliminate the need for service-specific Instructions? No. Services within a monorepo may still have different domain, security, validation, and approval requirements.
 
-A Monorepo Harness typically requires scope detection and dependency-aware validation.
-
-A Multi-Repository Harness additionally requires cross-repository coordination, independent change management, and potentially multiple approval workflows.
-
-Follow-up: Does a monorepo eliminate the need for service-specific Instructions?
-
-No. Services within a monorepo may still have different domain, security, validation, and approval requirements.
-
-### Question 8 — Compare Centralized, Distributed, and Shared Platform Harness architectures
+#### Question 8 — Compare Centralized, Distributed, and Shared Platform Harness architectures
 
 Expected answer
 
@@ -14971,7 +13253,7 @@ Expected answer
 
 A Shared Platform Harness is often appropriate when multiple teams need common infrastructure while preserving repository-specific engineering requirements.
 
-### Question 9 — What responsibilities should be centralized in an Enterprise Harness?
+#### Question 9 — What responsibilities should be centralized in an Enterprise Harness?
 
 Expected answer
 
@@ -14986,17 +13268,13 @@ Good candidates for centralization include:
 - retry infrastructure;
 - mandatory security policy enforcement.
 
-Repository-specific domain rules, local Skills, acceptance criteria, and engineering ownership should generally remain close to the responsible teams.
+Repository-specific domain rules, local Skills, acceptance criteria, and engineering ownership should generally remain close to the responsible teams. The key principle is to centralize reusable mechanisms without centralizing every engineering decision.
 
-The key principle is to centralize reusable mechanisms without centralizing every engineering decision.
-
-### Question 10 — How can a new repository be onboarded without modifying the central orchestrator?
+#### Question 10 — How can a new repository be onboarded without modifying the central orchestrator?
 
 Expected answer
 
-Use declarative repository profiles and registered capabilities.
-
-A repository profile should specify:
+Use declarative repository profiles and registered capabilities. A repository profile should specify:
 
 - repository identity;
 - owner;
@@ -15007,29 +13285,21 @@ A repository profile should specify:
 - approval requirements;
 - execution limits.
 
-The Harness resolves and validates the profile against enterprise policy.
-
-It then uses shared infrastructure to execute the workflow.
-
-Follow-up: What happens if the repository requests an unknown validation gate?
+The Harness resolves and validates the profile against enterprise policy. It then uses shared infrastructure to execute the workflow. Follow-up: What happens if the repository requests an unknown validation gate?
 
 The Harness should reject the configuration before execution rather than silently ignoring the requirement.
 
-## 17.3 Agent Workflow and Orchestration
+### 17.3 Agent Workflow and Orchestration
 
-### Question 11 — When should a Harness use a Single-Agent Workflow?
+#### Question 11 — When should a Harness use a Single-Agent Workflow?
 
 Expected answer
 
-Single-Agent Workflows are appropriate for narrow, lower-risk engineering tasks where additional role coordination provides limited benefit.
-
-Examples include straightforward documentation updates and small maintenance changes.
-
-Mandatory validation and approval requirements must still be enforced externally where applicable.
+Single-Agent Workflows are appropriate for narrow, lower-risk engineering tasks where additional role coordination provides limited benefit. Examples include straightforward documentation updates and small maintenance changes. Mandatory validation and approval requirements must still be enforced externally where applicable.
 
 A Single-Agent Workflow should not automatically imply self-approval.
 
-### Question 12 — When is a Multi-Agent Workflow preferable?
+#### Question 12 — When is a Multi-Agent Workflow preferable?
 
 Expected answer
 
@@ -15041,41 +13311,25 @@ A Multi-Agent Workflow is preferable when work requires distinct responsibilitie
 - deterministic validation;
 - goal evaluation.
 
-It can improve role separation and evidence quality.
+It can improve role separation and evidence quality. However, it introduces additional execution cost, latency, and orchestration complexity. Agent count should reflect distinct responsibilities rather than an assumption that more agents produce better results.
 
-However, it introduces additional execution cost, latency, and orchestration complexity.
-
-Agent count should reflect distinct responsibilities rather than an assumption that more agents produce better results.
-
-### Question 13 — How do sequential and parallel orchestration differ?
+#### Question 13 — How do sequential and parallel orchestration differ?
 
 Expected answer
 
-Sequential orchestration executes dependent stages in order.
+Sequential orchestration executes dependent stages in order. Parallel orchestration executes independent work concurrently.
 
-Parallel orchestration executes independent work concurrently.
+For example, the Developer must produce an implementation before the Reviewer can inspect it. After implementation is frozen, independent test, security, and architecture checks may execute concurrently. Follow-up: Why is parallel code modification more complex than parallel analysis?
 
-For example, the Developer must produce an implementation before the Reviewer can inspect it.
+Because multiple modifying agents may change overlapping files or contracts, creating conflicts and inconsistent implementation state. Safe parallel implementation requires isolated workspaces and an explicit integration stage.
 
-After implementation is frozen, independent test, security, and architecture checks may execute concurrently.
-
-Follow-up: Why is parallel code modification more complex than parallel analysis?
-
-Because multiple modifying agents may change overlapping files or contracts, creating conflicts and inconsistent implementation state.
-
-Safe parallel implementation requires isolated workspaces and an explicit integration stage.
-
-### Question 14 — Explain the Fan-Out/Fan-In pattern
+#### Question 14 — Explain the Fan-Out/Fan-In pattern
 
 Expected answer
 
-Fan-out divides one workload into independently executable units.
+Fan-out divides one workload into independently executable units. Fan-in aggregates their results.
 
-Fan-in aggregates their results.
-
-For example, a Harness may process a population of fifty repositories independently and aggregate their validation outcomes.
-
-Each child unit should retain its own:
+For example, a Harness may process a population of fifty repositories independently and aggregate their validation outcomes. Each child unit should retain its own:
 
 - identity;
 - state;
@@ -15085,15 +13339,11 @@ Each child unit should retain its own:
 
 The parent workflow determines the aggregate outcome according to defined policy.
 
-### Question 15 — What is the difference between provider-managed subagents and Harness-managed child runs?
+#### Question 15 — What is the difference between provider-managed subagents and Harness-managed child runs?
 
 Expected answer
 
-Provider-managed subagents operate within an AI provider's execution model.
-
-They may be useful for independent analysis, delegation, and specialized tasks.
-
-Harness-managed child runs have explicit enterprise lifecycle responsibilities.
+Provider-managed subagents operate within an AI provider's execution model. They may be useful for independent analysis, delegation, and specialized tasks. Harness-managed child runs have explicit enterprise lifecycle responsibilities.
 
 Each child run may have its own:
 
@@ -15107,13 +13357,11 @@ Each child run may have its own:
 
 Provider-managed delegation does not automatically provide durable enterprise orchestration.
 
-### Question 16 — How should a Harness prevent uncontrolled parallel execution?
+#### Question 16 — How should a Harness prevent uncontrolled parallel execution?
 
 Expected answer
 
-Use bounded concurrency and explicit dependency scheduling.
-
-Concurrency controls may exist at:
+Use bounded concurrency and explicit dependency scheduling. Concurrency controls may exist at:
 
 - enterprise level;
 - team level;
@@ -15122,52 +13370,38 @@ Concurrency controls may exist at:
 - validation level;
 - population level.
 
-The Harness should account for resource limits, API quotas, modification conflicts, and workload priority.
+The Harness should account for resource limits, API quotas, modification conflicts, and workload priority. Unlimited parallelism is not an appropriate enterprise default.
 
-Unlimited parallelism is not an appropriate enterprise default.
+### 17.4 Validation, Evaluation, and Governance
 
-## 17.4 Validation, Evaluation, and Governance
-
-### Question 17 — What is the difference between a deterministic validation gate and an AI Agent review?
+#### Question 17 — What is the difference between a deterministic validation gate and an AI Agent review?
 
 Expected answer
 
-A deterministic gate verifies an objective engineering condition.
+A deterministic gate verifies an objective engineering condition. Examples include compilation, test execution, schema validation, and architecture rules. An AI Reviewer assesses implementation quality, architecture alignment, maintainability, and potential risks.
 
-Examples include compilation, test execution, schema validation, and architecture rules.
+The Reviewer may identify issues not covered by tests. However, its judgment should not replace mandatory deterministic evidence.
 
-An AI Reviewer assesses implementation quality, architecture alignment, maintainability, and potential risks.
-
-The Reviewer may identify issues not covered by tests.
-
-However, its judgment should not replace mandatory deterministic evidence.
-
-### Question 18 — Why must validation and evaluation remain separate?
+#### Question 18 — Why must validation and evaluation remain separate?
 
 Expected answer
 
-Validation determines whether objective engineering checks pass.
-
-Evaluation determines whether the completed implementation satisfies the intended goal and acceptance criteria.
-
-A Booking feature may compile and pass tests but still fail the requirement to preserve future recurring appointments after cancelling one occurrence.
+Validation determines whether objective engineering checks pass. Evaluation determines whether the completed implementation satisfies the intended goal and acceptance criteria. A Booking feature may compile and pass tests but still fail the requirement to preserve future recurring appointments after cancelling one occurrence.
 
 In that situation:
 
-```
+```text
 Validation: Passed
 Evaluation: Failed
 ```
 
 The Harness must not classify the change as completed.
 
-### Question 19 — How should the Harness determine whether a run is complete?
+#### Question 19 — How should the Harness determine whether a run is complete?
 
 Expected answer
 
-Completion should be an explicit, policy-governed state transition.
-
-The Harness must verify all applicable completion conditions, such as:
+Completion should be an explicit, policy-governed state transition. The Harness must verify all applicable completion conditions, such as:
 
 - implementation availability;
 - required review outcome;
@@ -15178,13 +13412,11 @@ The Harness must verify all applicable completion conditions, such as:
 
 A successful AI provider response does not automatically satisfy these conditions.
 
-### Question 20 — When should human approval be required?
+#### Question 20 — When should human approval be required?
 
 Expected answer
 
-Human approval should be required when an operation crosses a defined risk, accountability, or governance boundary.
-
-Examples include:
+Human approval should be required when an operation crosses a defined risk, accountability, or governance boundary. Examples include:
 
 - financial calculation changes;
 - authentication or authorization changes;
@@ -15193,11 +13425,9 @@ Examples include:
 - production deployment;
 - architecture exceptions.
 
-Approval should be tied to the exact implementation or artifact being authorized.
+Approval should be tied to the exact implementation or artifact being authorized. An AI Agent must not generate approval on behalf of an authorized human.
 
-An AI Agent must not generate approval on behalf of an authorized human.
-
-### Question 21 — How should enterprise and repository-specific policies be combined?
+#### Question 21 — How should enterprise and repository-specific policies be combined?
 
 Expected answer
 
@@ -15205,7 +13435,7 @@ Use an explicit configuration hierarchy.
 
 For example:
 
-```
+```text
 Enterprise Mandatory Policy
           +
 Platform Standards
@@ -15217,19 +13447,15 @@ Repository Configuration
 Effective Run Policy
 ```
 
-Lower-level configuration can introduce additional requirements but must not weaken mandatory enterprise controls.
+Lower-level configuration can introduce additional requirements but must not weaken mandatory enterprise controls. The effective policy should be validated and recorded for the run.
 
-The effective policy should be validated and recorded for the run.
+### 17.5 State, Scratchpads, Recovery, and Reliability
 
-## 17.5 State, Scratchpads, Recovery, and Reliability
-
-### Question 22 — What is the purpose of the Run Workspace?
+#### Question 22 — What is the purpose of the Run Workspace?
 
 Expected answer
 
-The Run Workspace is an isolated execution boundary containing the files and artifacts associated with one Harness run.
-
-It may contain:
+The Run Workspace is an isolated execution boundary containing the files and artifacts associated with one Harness run. It may contain:
 
 - task input;
 - source checkout;
@@ -15241,19 +13467,15 @@ It may contain:
 
 Isolation prevents concurrent runs from corrupting one another's state.
 
-### Question 23 — How does a Scratchpad differ from Repository Intelligence?
+#### Question 23 — How does a Scratchpad differ from Repository Intelligence?
 
 Expected answer
 
-A Scratchpad contains temporary, task-scoped observations and working state.
-
-Repository Intelligence contains governed knowledge describing a repository's architecture, conventions, dependencies, and contracts.
-
-Scratchpad observations are not authoritative.
+A Scratchpad contains temporary, task-scoped observations and working state. Repository Intelligence contains governed knowledge describing a repository's architecture, conventions, dependencies, and contracts. Scratchpad observations are not authoritative.
 
 Useful discoveries may be proposed for promotion into Repository Intelligence after review.
 
-### Question 24 — Why is shared mutable run state dangerous?
+#### Question 24 — Why is shared mutable run state dangerous?
 
 Expected answer
 
@@ -15266,11 +13488,9 @@ Shared mutable state creates opportunities for:
 - cross-run data exposure;
 - unreliable recovery.
 
-Independent runs should use isolated mutable state.
+Independent runs should use isolated mutable state. Shared resources should be immutable, transactional, or explicitly coordinated.
 
-Shared resources should be immutable, transactional, or explicitly coordinated.
-
-### Question 25 — Explain retry, rework, resume, and escalation
+#### Question 25 — Explain retry, rework, resume, and escalation
 
 Expected answer
 
@@ -15285,31 +13505,33 @@ These actions should not be treated as interchangeable.
 
 For example, compilation failure normally requires rework, not repeated identical retries.
 
-### Question 26 — How can a Harness recover from a worker crash?
+#### Question 26 — How can a Harness recover from a worker crash?
 
 Expected answer
 
-The Harness should persist durable execution state and evidence.
-
-After recovery, it should:
+The Harness should persist durable execution state and evidence. After recovery, it should:
 
 1. Verify the previous worker is no longer authoritative.
+
 2. Read the durable run checkpoint.
+
 3. Verify completed stage artifacts.
+
 4. Identify incomplete or uncertain operations.
+
 5. Reconcile external side effects.
+
 6. Resume from a safe point.
+
 7. Preserve recovery evidence.
 
 The Harness should not automatically restart every completed stage.
 
-### Question 27 — Why is idempotency important in Harness operations?
+#### Question 27 — Why is idempotency important in Harness operations?
 
 Expected answer
 
-A Harness may repeat operations after failures.
-
-Without idempotency, repeated execution may create duplicate:
+A Harness may repeat operations after failures. Without idempotency, repeated execution may create duplicate:
 
 - pull requests;
 - branches;
@@ -15321,15 +13543,11 @@ Idempotency or equivalent deduplication prevents repeated attempts from producin
 
 For example, a pull-request operation may use a run-specific operation identity and reconcile an existing pull request before creating another.
 
-### Question 28 — What is an exhausted run?
+#### Question 28 — What is an exhausted run?
 
 Expected answer
 
-An exhausted run is one that has reached an applicable execution or recovery limit without satisfying the required completion conditions.
-
-Examples include exceeding allowed Developer iterations or retry attempts.
-
-An exhausted run should preserve:
+An exhausted run is one that has reached an applicable execution or recovery limit without satisfying the required completion conditions. Examples include exceeding allowed Developer iterations or retry attempts. An exhausted run should preserve:
 
 - final failure category;
 - attempt history;
@@ -15340,15 +13558,13 @@ An exhausted run should preserve:
 
 Exhaustion must not be misreported as successful completion.
 
-## 17.6 Tool Integration and Provider Architecture
+### 17.6 Tool Integration and Provider Architecture
 
-### Question 29 — Why should an Enterprise Harness use provider adapters?
+#### Question 29 — Why should an Enterprise Harness use provider adapters?
 
 Expected answer
 
-Provider adapters isolate differences between AI coding platforms.
-
-Claude Code, GitHub Copilot, and Codex may differ in:
+Provider adapters isolate differences between AI coding platforms. Claude Code, GitHub Copilot, and Codex may differ in:
 
 - execution interfaces;
 - agent configuration;
@@ -15358,19 +13574,13 @@ Claude Code, GitHub Copilot, and Codex may differ in:
 - failure reporting;
 - usage data.
 
-An adapter translates provider-specific behavior into the Harness's execution contracts.
+An adapter translates provider-specific behavior into the Harness's execution contracts. This reduces coupling and supports controlled provider substitution.
 
-This reduces coupling and supports controlled provider substitution.
-
-### Question 30 — How does a tool adapter differ from an AI provider adapter?
+#### Question 30 — How does a tool adapter differ from an AI provider adapter?
 
 Expected answer
 
-An AI provider adapter integrates an AI execution platform.
-
-Examples include Claude Code, GitHub Copilot, and Codex.
-
-A tool adapter integrates an external capability.
+An AI provider adapter integrates an AI execution platform. Examples include Claude Code, GitHub Copilot, and Codex. A tool adapter integrates an external capability.
 
 Examples include:
 
@@ -15382,17 +13592,13 @@ Examples include:
 
 Both use abstraction, but they serve different integration boundaries.
 
-### Question 31 — What is the role of MCP in an Enterprise Harness?
+#### Question 31 — What is the role of MCP in an Enterprise Harness?
 
 Expected answer
 
 MCP provides a mechanism for AI Agents to interact with external tools and resources.
 
-For example, an Agent may retrieve Repository Intelligence or work-item details through an approved MCP tool.
-
-However, MCP is not automatically the Harness orchestrator.
-
-The Harness must continue to enforce:
+For example, an Agent may retrieve Repository Intelligence or work-item details through an approved MCP tool. However, MCP is not automatically the Harness orchestrator. The Harness must continue to enforce:
 
 - tool authorization;
 - execution boundaries;
@@ -15402,29 +13608,21 @@ The Harness must continue to enforce:
 
 External MCP results should be treated as data rather than instructions that can override enterprise policy.
 
-### Question 32 — Should every Harness capability be implemented as a plugin?
+#### Question 32 — Should every Harness capability be implemented as a plugin?
 
 Expected answer
 
-No.
+No. Plugins are appropriate when capabilities require independent registration, versioning, discovery, or substitution. Examples include specialized validation gates and external provider integrations.
 
-Plugins are appropriate when capabilities require independent registration, versioning, discovery, or substitution.
+Simple internal functionality may be better implemented through ordinary application components. Excessive plugin abstraction increases maintenance and configuration complexity without necessarily improving extensibility.
 
-Examples include specialized validation gates and external provider integrations.
+### 17.7 Security and Operational Architecture
 
-Simple internal functionality may be better implemented through ordinary application components.
-
-Excessive plugin abstraction increases maintenance and configuration complexity without necessarily improving extensibility.
-
-## 17.7 Security and Operational Architecture
-
-### Question 33 — How should a shared Harness isolate different teams?
+#### Question 33 — How should a shared Harness isolate different teams?
 
 Expected answer
 
-A shared scheduler can coordinate multiple teams without granting every worker unrestricted access.
-
-Use:
+A shared scheduler can coordinate multiple teams without granting every worker unrestricted access. Use:
 
 - repository-scoped credentials;
 - isolated workspaces;
@@ -15436,21 +13634,15 @@ Use:
 
 For example, a Booking run should not automatically have access to Billing production resources.
 
-### Question 34 — Why are Instructions insufficient as security controls?
+#### Question 34 — Why are Instructions insufficient as security controls?
 
 Expected answer
 
-Instructions guide Agent behavior but do not technically prevent unauthorized operations.
+Instructions guide Agent behavior but do not technically prevent unauthorized operations. An Agent may misunderstand instructions, encounter prompt injection, or invoke a tool with excessive permissions. Security must be enforced through infrastructure, identity, tool permissions, sandboxing, and authorization.
 
-An Agent may misunderstand instructions, encounter prompt injection, or invoke a tool with excessive permissions.
+Instructions complement those mechanisms. They do not replace them.
 
-Security must be enforced through infrastructure, identity, tool permissions, sandboxing, and authorization.
-
-Instructions complement those mechanisms.
-
-They do not replace them.
-
-### Question 35 — What metrics are most useful for an Enterprise Harness?
+#### Question 35 — What metrics are most useful for an Enterprise Harness?
 
 Expected answer
 
@@ -15468,17 +13660,13 @@ Useful metrics include:
 - cost per accepted result;
 - recovery success.
 
-Metrics should have consistent definitions across repositories and teams.
+Metrics should have consistent definitions across repositories and teams. AI-generated lines of code or total Agent invocations are insufficient measures of engineering effectiveness.
 
-AI-generated lines of code or total Agent invocations are insufficient measures of engineering effectiveness.
-
-### Question 36 — How should an architect balance Harness cost and engineering assurance?
+#### Question 36 — How should an architect balance Harness cost and engineering assurance?
 
 Expected answer
 
-The goal is to minimize unnecessary execution cost without weakening required assurance.
-
-Approaches include:
+The goal is to minimize unnecessary execution cost without weakening required assurance. Approaches include:
 
 - scoped iteration tests;
 - reusing immutable build artifacts;
@@ -15487,25 +13675,17 @@ Approaches include:
 - risk-based workflow selection;
 - minimizing unnecessary Agent handoffs.
 
-Mandatory final validation and required approval must remain intact.
+Mandatory final validation and required approval must remain intact. Cost should be measured per validated and accepted engineering outcome.
 
-Cost should be measured per validated and accepted engineering outcome.
+### 17.8 Scenario-Based Architecture Questions
 
-## 17.8 Scenario-Based Architecture Questions
-
-### Question 37 — A Shared Harness Platform becomes unavailable. How should the system respond?
+#### Question 37 — A Shared Harness Platform becomes unavailable. How should the system respond?
 
 Scenario
 
-Booking, Fleet, and Billing all depend on one central scheduler.
+Booking, Fleet, and Billing all depend on one central scheduler. The scheduler becomes unavailable while several runs are executing. Expected answer
 
-The scheduler becomes unavailable while several runs are executing.
-
-Expected answer
-
-The architecture should distinguish control-plane failure from execution-plane failure.
-
-Depending on the implementation:
+The architecture should distinguish control-plane failure from execution-plane failure. Depending on the implementation:
 
 - already assigned workers may continue safely;
 - new scheduling may stop;
@@ -15514,98 +13694,58 @@ Depending on the implementation:
 - recovery should reconcile active leases and completed operations;
 - operators should receive meaningful alerts.
 
-The platform should not lose run records or duplicate work during recovery.
+The platform should not lose run records or duplicate work during recovery. Architectural insight
 
-Architectural insight
+Centralization introduces shared availability dependencies. These must be addressed through durable state, recovery, and appropriate redundancy.
 
-Centralization introduces shared availability dependencies.
-
-These must be addressed through durable state, recovery, and appropriate redundancy.
-
-### Question 38 — Two Developer Agents modify the same file in parallel. What should the Harness do?
+#### Question 38 — Two Developer Agents modify the same file in parallel. What should the Harness do?
 
 Scenario
 
-Two independent Booking tasks modify `BookingService.cs`.
+Two independent Booking tasks modify `BookingService.cs`. Both runs use the same repository checkout. Expected answer
 
-Both runs use the same repository checkout.
+The architecture has violated safe mutable-state isolation. The Harness should use separate worktrees, branches, containers, or equivalent isolated workspaces. It should also define an integration strategy.
 
-Expected answer
+A successful textual merge does not guarantee semantic correctness. The combined implementation must undergo appropriate validation.
 
-The architecture has violated safe mutable-state isolation.
-
-The Harness should use separate worktrees, branches, containers, or equivalent isolated workspaces.
-
-It should also define an integration strategy.
-
-A successful textual merge does not guarantee semantic correctness.
-
-The combined implementation must undergo appropriate validation.
-
-### Question 39 — A repository disables a mandatory security gate. How should the Harness respond?
+#### Question 39 — A repository disables a mandatory security gate. How should the Harness respond?
 
 Scenario
 
 The Billing repository changes its profile:
 
-```
+```yaml
 validation:
   required:
     - build
     - unit-tests
 ```
 
-The enterprise requires security scanning for all production services.
+The enterprise requires security scanning for all production services. Expected answer
 
-Expected answer
+The Harness should calculate effective policy using mandatory enterprise requirements. The repository must not be able to remove required security gates. If the configuration violates policy, the Harness should reject or correct the effective configuration according to the approved policy-resolution design.
 
-The Harness should calculate effective policy using mandatory enterprise requirements.
+It should record the policy decision. An AI Agent must not independently authorize the exception.
 
-The repository must not be able to remove required security gates.
-
-If the configuration violates policy, the Harness should reject or correct the effective configuration according to the approved policy-resolution design.
-
-It should record the policy decision.
-
-An AI Agent must not independently authorize the exception.
-
-### Question 40 — All deterministic tests pass, but the Evaluator reports a missing business requirement. What happens?
+#### Question 40 — All deterministic tests pass, but the Evaluator reports a missing business requirement. What happens?
 
 Scenario
 
-Booking cancellation tests pass.
+Booking cancellation tests pass. The Evaluator determines that cancelling one occurrence incorrectly cancels all future occurrences. Expected answer
 
-The Evaluator determines that cancelling one occurrence incorrectly cancels all future occurrences.
+The run must not complete successfully. The evaluation result indicates failure or partial satisfaction of the intended goal. The Harness should return the finding for controlled rework, subject to its iteration policy.
 
-Expected answer
+After the implementation changes, affected deterministic validation must run again. The result should not be overridden by the previous passing test report.
 
-The run must not complete successfully.
-
-The evaluation result indicates failure or partial satisfaction of the intended goal.
-
-The Harness should return the finding for controlled rework, subject to its iteration policy.
-
-After the implementation changes, affected deterministic validation must run again.
-
-The result should not be overridden by the previous passing test report.
-
-### Question 41 — A population job contains one hundred repositories, and ten fail. Should the entire population be restarted?
+#### Question 41 — A population job contains one hundred repositories, and ten fail. Should the entire population be restarted?
 
 Expected answer
 
-Generally, no.
+Generally, no. Each repository should be an independently tracked child run. The Harness should preserve successful results and classify unsuccessful child runs.
 
-Each repository should be an independently tracked child run.
+Retry eligible failed items independently. The parent population outcome should follow an explicit aggregation policy. Restarting all items may create unnecessary cost and duplicate side effects.
 
-The Harness should preserve successful results and classify unsuccessful child runs.
-
-Retry eligible failed items independently.
-
-The parent population outcome should follow an explicit aggregation policy.
-
-Restarting all items may create unnecessary cost and duplicate side effects.
-
-### Question 42 — When should an organization split a centralized Harness into distributed services?
+#### Question 42 — When should an organization split a centralized Harness into distributed services?
 
 Expected answer
 
@@ -15619,52 +13759,49 @@ Distribution becomes appropriate when justified by measurable requirements such 
 - long-running asynchronous processing;
 - operational availability.
 
-It should not be introduced merely because the Harness contains multiple AI Agents.
+It should not be introduced merely because the Harness contains multiple AI Agents. A modular application with clear contracts may remain the better design until those requirements emerge.
 
-A modular application with clear contracts may remain the better design until those requirements emerge.
-
-### Question 43 — How would you migrate from a Claude-only Harness to a multi-provider Harness?
+#### Question 43 — How would you migrate from a Claude-only Harness to a multi-provider Harness?
 
 Expected answer
 
 A controlled migration should:
 
 1. Identify Claude-specific dependencies in orchestration.
+
 2. Define a core `IAgentProvider` contract.
+
 3. Implement the Claude adapter.
+
 4. Normalize execution and failure evidence.
+
 5. Add a second provider adapter.
+
 6. Define capability compatibility rules.
+
 7. Test both adapters independently.
+
 8. Execute controlled comparative workloads.
+
 9. Preserve deterministic gates and governance.
+
 10. Roll out provider selection through approved configuration.
 
 The migration should avoid redesigning repository-specific engineering workflows unless provider capability differences genuinely require it.
 
-### Question 44 — A new shared Skill causes failures across several repositories. What should happen?
+#### Question 44 — A new shared Skill causes failures across several repositories. What should happen?
 
 Expected answer
 
-The enterprise should identify the affected Skill version and consuming runs.
+The enterprise should identify the affected Skill version and consuming runs. The platform should support controlled rollback or pinning to a previously approved version. Failed runs should preserve evidence.
 
-The platform should support controlled rollback or pinning to a previously approved version.
+The Skill owner should investigate the regression. The corrected version should undergo review and staged rollout. Shared Skills should be treated as governed engineering assets rather than unversioned Prompt fragments.
 
-Failed runs should preserve evidence.
-
-The Skill owner should investigate the regression.
-
-The corrected version should undergo review and staged rollout.
-
-Shared Skills should be treated as governed engineering assets rather than unversioned Prompt fragments.
-
-### Question 45 — How would you determine whether an Enterprise Harness architecture is successful?
+#### Question 45 — How would you determine whether an Enterprise Harness architecture is successful?
 
 Expected answer
 
-Evaluate both technical and organizational outcomes.
-
-Technical measures include:
+Evaluate both technical and organizational outcomes. Technical measures include:
 
 - reliability;
 - recoverability;
@@ -15685,11 +13822,9 @@ Organizational measures include:
 
 Success should not be measured solely by the number of Agents, completed runs, or generated lines of code.
 
-## 17.9 Advanced Architecture Discussion Questions
+### 17.9 Advanced Architecture Discussion Questions
 
-The following questions are intended for architecture workshops, senior engineering interviews, and technical design reviews.
-
-They require reasoned architectural decisions rather than memorized definitions.
+The following questions are intended for architecture workshops, senior engineering interviews, and technical design reviews. They require reasoned architectural decisions rather than memorized definitions.
 
 | Question                                                                | Core Concept Being Assessed          |
 | ----------------------------------------------------------------------- | ------------------------------------ |
@@ -15711,7 +13846,7 @@ They require reasoned architectural decisions rather than memorized definitions.
 
 A strong architectural answer should identify the relevant requirements, present alternatives, explain tradeoffs, and select an approach with explicit justification.
 
-## 17.10 Interview Evaluation Rubric
+### 17.10 Interview Evaluation Rubric
 
 Interviewers and technical reviewers may assess responses across five dimensions.
 
@@ -15725,11 +13860,9 @@ Interviewers and technical reviewers may assess responses across five dimensions
 
 The weighting is illustrative and may be adapted to the role.
 
-For example, a Platform Architect may receive greater emphasis on scaling, execution isolation, and distributed state.
+For example, a Platform Architect may receive greater emphasis on scaling, execution isolation, and distributed state. An AI Engineering Lead may receive greater emphasis on workflow design, role separation, Skills, validation, and operational outcomes.
 
-An AI Engineering Lead may receive greater emphasis on workflow design, role separation, Skills, validation, and operational outcomes.
-
-### Indicators of a strong response
+#### Indicators of a strong response
 
 A strong candidate:
 
@@ -15742,7 +13875,7 @@ A strong candidate:
 - avoids unnecessary architectural complexity;
 - uses real engineering evidence to support decisions.
 
-### Indicators of a weak response
+#### Indicators of a weak response
 
 A weak candidate may:
 
@@ -15755,13 +13888,9 @@ A weak candidate may:
 - centralize every repository-specific decision;
 - recommend distributed infrastructure without establishing a need.
 
-## 17.11 Final Interview Perspective
+### 17.11 Final Interview Perspective
 
-The purpose of these questions is not to test familiarity with particular Claude Code, GitHub Copilot, or Codex commands.
-
-Those commands and interfaces will continue to evolve.
-
-The deeper competency is the ability to design reliable engineering systems around AI execution.
+The purpose of these questions is not to test familiarity with particular Claude Code, GitHub Copilot, or Codex commands. Those commands and interfaces will continue to evolve. The deeper competency is the ability to design reliable engineering systems around AI execution.
 
 An Enterprise Harness Architect should understand how to combine:
 
@@ -15778,9 +13907,7 @@ An Enterprise Harness Architect should understand how to combine:
 - provider adapters;
 - governed knowledge.
 
-The Alpha Car Detailing example demonstrates that these decisions become increasingly important as AI Engineering expands beyond one repository or development team.
-
-The most important architectural interview question is therefore not:
+The Alpha Car Detailing example demonstrates that these decisions become increasingly important as AI Engineering expands beyond one repository or development team. The most important architectural interview question is therefore not:
 
 > How many AI Agents can your Harness execute?
 
@@ -15790,29 +13917,17 @@ It is:
 
 A well-designed Enterprise Harness should be able to answer that question through explicit architectural boundaries, executable controls, and verifiable engineering evidence.
 
-Chapter 21 status: In progress — next section: Chapter Summary
+## 18. Chapter Summary
 
-# 18. Chapter Summary
+Enterprise AI Engineering becomes significantly more complex when Harnesses expand beyond a single repository, development team, or engineering workflow. A Harness that operates successfully for one service may become difficult to maintain when it must support dozens of repositories, multiple AI coding platforms, different validation requirements, distributed execution, and enterprise governance. The solution is not to continuously extend one large orchestration workflow.
 
-Enterprise AI Engineering becomes significantly more complex when Harnesses expand beyond a single repository, development team, or engineering workflow.
-
-A Harness that operates successfully for one service may become difficult to maintain when it must support dozens of repositories, multiple AI coding platforms, different validation requirements, distributed execution, and enterprise governance.
-
-The solution is not to continuously extend one large orchestration workflow.
-
-Instead, organizations should build Enterprise Harnesses from clear, reusable architectural and execution patterns.
-
-Throughout this chapter, Alpha Car Detailing demonstrated how Booking, Fleet, Billing, and other microservices can share common Harness capabilities while preserving repository-specific Instructions, Skills, validation requirements, security boundaries, and approval policies.
-
-The central principle is:
+Instead, organizations should build Enterprise Harnesses from clear, reusable architectural and execution patterns. Throughout this chapter, Alpha Car Detailing demonstrated how Booking, Fleet, Billing, and other microservices can share common Harness capabilities while preserving repository-specific Instructions, Skills, validation requirements, security boundaries, and approval policies. The central principle is:
 
 > Enterprise Harnesses should be composed from clear, reusable patterns instead of growing into large, tightly coupled orchestration workflows.
 
-## 18.1 Enterprise Harnesses Require Composable Architecture
+### 18.1 Enterprise Harnesses Require Composable Architecture
 
-The chapter established that an Enterprise Harness is more than an automation script or AI Agent execution pipeline.
-
-At enterprise scale, it becomes an engineering platform responsible for coordinating:
+The chapter established that an Enterprise Harness is more than an automation script or AI Agent execution pipeline. At enterprise scale, it becomes an engineering platform responsible for coordinating:
 
 - AI Agent execution;
 - repository-specific workflows;
@@ -15825,19 +13940,13 @@ At enterprise scale, it becomes an engineering platform responsible for coordina
 - metrics and observability;
 - security and isolation.
 
-These responsibilities should be separated through explicit contracts.
+These responsibilities should be separated through explicit contracts. A composable architecture allows capabilities to evolve independently.
 
-A composable architecture allows capabilities to evolve independently.
-
-For example, adding a new source-control adapter should not require changes to validation logic.
-
-Adding a repository should not require rewriting the central orchestrator.
-
-Introducing a new AI provider should not change mandatory approval requirements.
+For example, adding a new source-control adapter should not require changes to validation logic. Adding a repository should not require rewriting the central orchestrator. Introducing a new AI provider should not change mandatory approval requirements.
 
 The value of composition is the ability to extend the Harness without increasing unnecessary coupling.
 
-## 18.2 Repository Structure Determines Important Execution Boundaries
+### 18.2 Repository Structure Determines Important Execution Boundaries
 
 The chapter examined several repository-oriented patterns.
 
@@ -15851,21 +13960,13 @@ The chapter examined several repository-oriented patterns.
 | Shared Platform Harness   | Reuse infrastructure while preserving repository autonomy       |
 | Team-Specific Harness     | Support specialized team workflows and requirements             |
 
-These patterns are not mutually exclusive.
+These patterns are not mutually exclusive. An enterprise may operate a centralized control plane while running isolated repository-specific Harness executions. A monorepo may use team-specific validation profiles.
 
-An enterprise may operate a centralized control plane while running isolated repository-specific Harness executions.
+A Multi-Repository Harness may coordinate several independently governed child runs. The architectural requirement is that every selected pattern has a clear responsibility.
 
-A monorepo may use team-specific validation profiles.
+### 18.3 Shared Platforms Should Preserve Repository Autonomy
 
-A Multi-Repository Harness may coordinate several independently governed child runs.
-
-The architectural requirement is that every selected pattern has a clear responsibility.
-
-## 18.3 Shared Platforms Should Preserve Repository Autonomy
-
-One of the most important lessons from Alpha Car Detailing is the distinction between shared infrastructure and local engineering authority.
-
-The enterprise platform may provide:
+One of the most important lessons from Alpha Car Detailing is the distinction between shared infrastructure and local engineering authority. The enterprise platform may provide:
 
 - agent execution infrastructure;
 - common role contracts;
@@ -15887,23 +13988,27 @@ Individual repositories retain ownership of:
 - acceptance criteria;
 - applicable domain approvals.
 
-\#chatgpt-mermaid-\_r_18ko\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(13, 13, 13);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_18ko\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_18ko\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_18ko\_ .error-icon{fill:rgb(243, 243, 243);}#chatgpt-mermaid-\_r_18ko\_ .error-text{fill:rgb(13, 13, 13);stroke:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18ko\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_18ko\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_18ko\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_18ko\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_18ko\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_18ko\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_18ko\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_18ko\_ .marker.cross{stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_18ko\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_18ko\_ p{margin:0;}#chatgpt-mermaid-\_r_18ko\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18ko\_ .cluster-label text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18ko\_ .cluster-label span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18ko\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_18ko\_ .label text,#chatgpt-mermaid-\_r_18ko\_ span{fill:rgb(13, 13, 13);color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18ko\_ .node rect,#chatgpt-mermaid-\_r_18ko\_ .node circle,#chatgpt-mermaid-\_r_18ko\_ .node ellipse,#chatgpt-mermaid-\_r_18ko\_ .node polygon,#chatgpt-mermaid-\_r_18ko\_ .node path{fill:rgb(222, 234, 251);stroke:rgb(83, 154, 248);stroke-width:1px;}#chatgpt-mermaid-\_r_18ko\_ .rough-node .label text,#chatgpt-mermaid-\_r_18ko\_ .node .label text,#chatgpt-mermaid-\_r_18ko\_ .image-shape .label,#chatgpt-mermaid-\_r_18ko\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_18ko\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_18ko\_ .rough-node .label,#chatgpt-mermaid-\_r_18ko\_ .node .label,#chatgpt-mermaid-\_r_18ko\_ .image-shape .label,#chatgpt-mermaid-\_r_18ko\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_18ko\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_18ko\_ .root .anchor path{fill:rgb(143, 143, 143)!important;stroke-width:0;stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_18ko\_ .arrowheadPath{fill:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_18ko\_ .edgePath .path{stroke:rgb(143, 143, 143);stroke-width:1px;}#chatgpt-mermaid-\_r_18ko\_ .flowchart-link{stroke:rgb(143, 143, 143);fill:none;}#chatgpt-mermaid-\_r_18ko\_ .edgeLabel{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_18ko\_ .edgeLabel p{background-color:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_18ko\_ .edgeLabel rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_18ko\_ .labelBkg{background-color:rgba(252, 252, 252, 0.5);}#chatgpt-mermaid-\_r_18ko\_ .cluster rect{fill:rgb(243, 243, 243);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_18ko\_ .cluster text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18ko\_ .cluster span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18ko\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(243, 243, 243);border:1px solid rgba(0, 0, 0, 0.1);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_18ko\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18ko\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_18ko\_ .icon-shape,#chatgpt-mermaid-\_r_18ko\_ .image-shape{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_18ko\_ .icon-shape p,#chatgpt-mermaid-\_r_18ko\_ .image-shape p{background-color:rgb(252, 252, 252);padding:2px;}#chatgpt-mermaid-\_r_18ko\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_18ko\_ .image-shape .label rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_18ko\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_18ko\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_18ko\_ .node .neo-node{stroke:rgb(83, 154, 248);}#chatgpt-mermaid-\_r_18ko\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_18ko\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_18ko\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_18ko\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_18ko\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_18ko\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_18ko\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_18ko\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_18ko\_ [data-look="neo"].node .neo-line path{stroke:rgb(83, 154, 248);filter:none;}#chatgpt-mermaid-\_r_18ko\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_18ko\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_18ko\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_18ko\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_18ko\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_18ko\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_18ko\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_18ko\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_18ko\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_18ko\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_18ko\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_18ko\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-width:1px;}#chatgpt-mermaid-\_r_18ko\_ .node rect,#chatgpt-mermaid-\_r_18ko\_ .node circle,#chatgpt-mermaid-\_r_18ko\_ .node ellipse,#chatgpt-mermaid-\_r_18ko\_ .node polygon,#chatgpt-mermaid-\_r_18ko\_ .node path{fill:rgb(229, 243, 255);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_18ko\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_18ko\_ .node.mermaid-decision .label-container{fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_18ko\_ .edgePaths .flowchart-link{stroke:rgb(143, 143, 143);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_18ko\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_18ko\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}Shared Enterprise HarnessShared CapabilitiesBooking HarnessFleet HarnessBilling HarnessBooking Instructions & SkillsFleet Instructions & SkillsBilling Instructions & SkillsValidation InfrastructureProvider & Tool AdaptersMetrics & Observability
+```mermaid
+flowchart TB
+    P["Shared Enterprise Harness"] --> C["Shared Capabilities"]
+    P --> B["Booking Harness"]
+    P --> F["Fleet Harness"]
+    P --> I["Billing Harness"]
+    B --> BR["Booking Instructions and Skills"]
+    F --> FR["Fleet Instructions and Skills"]
+    I --> IR["Billing Instructions and Skills"]
+    C --> V["Validation Infrastructure"]
+    C --> A["Provider and Tool Adapters"]
+    C --> M["Metrics and Observability"]
+```
 
-The platform standardizes execution mechanisms without requiring every repository to follow identical domain procedures.
+The platform standardizes execution mechanisms without requiring every repository to follow identical domain procedures. This balance allows reuse without eliminating legitimate engineering differences.
 
-This balance allows reuse without eliminating legitimate engineering differences.
+### 18.4 Agent Roles and Orchestration Patterns Must Remain Explicit
 
-## 18.4 Agent Roles and Orchestration Patterns Must Remain Explicit
+The chapter compared Single-Agent and Multi-Agent Workflows. A Single-Agent Workflow offers simplicity and lower coordination overhead. A Multi-Agent Workflow introduces specialized responsibilities and potentially stronger independence.
 
-The chapter compared Single-Agent and Multi-Agent Workflows.
-
-A Single-Agent Workflow offers simplicity and lower coordination overhead.
-
-A Multi-Agent Workflow introduces specialized responsibilities and potentially stronger independence.
-
-The choice should reflect task complexity, risk, and required assurance.
-
-The established role boundaries remain:
+The choice should reflect task complexity, risk, and required assurance. The established role boundaries remain:
 
 | Role            | Responsibility                                              |
 | --------------- | ----------------------------------------------------------- |
@@ -15913,27 +14018,15 @@ The established role boundaries remain:
 | Validator Agent | Verify deterministic engineering evidence                   |
 | Evaluator Agent | Assess intended goal and acceptance-criteria satisfaction   |
 
-The Harness controls the transitions between these roles.
+The Harness controls the transitions between these roles. Agents must not independently redefine workflow authority. The chapter also distinguished sequential orchestration from parallel orchestration.
 
-Agents must not independently redefine workflow authority.
-
-The chapter also distinguished sequential orchestration from parallel orchestration.
-
-Sequential execution is appropriate when tasks depend on preceding results.
-
-Parallel execution is appropriate when work is independent and safely isolated.
-
-Fan-out/fan-in extends these concepts to processing collections of independent work items.
+Sequential execution is appropriate when tasks depend on preceding results. Parallel execution is appropriate when work is independent and safely isolated. Fan-out/fan-in extends these concepts to processing collections of independent work items.
 
 Parallelism should follow known dependencies and isolation boundaries rather than simply maximizing the number of concurrent Agents.
 
-## 18.5 Deterministic Gates and Human Approval Are Essential Boundaries
+### 18.5 Deterministic Gates and Human Approval Are Essential Boundaries
 
-Enterprise Harnesses cannot rely exclusively on AI-generated assertions of correctness.
-
-Deterministic validation gates must execute objective engineering checks.
-
-Examples include:
+Enterprise Harnesses cannot rely exclusively on AI-generated assertions of correctness. Deterministic validation gates must execute objective engineering checks. Examples include:
 
 - compilation;
 - unit and integration tests;
@@ -15943,17 +14036,11 @@ Examples include:
 - static analysis;
 - security scanning.
 
-These gates produce verifiable evidence.
+These gates produce verifiable evidence. The Evaluator then assesses whether the implementation satisfies the original goal and acceptance criteria. A technically valid implementation may still fail the business requirement.
 
-The Evaluator then assesses whether the implementation satisfies the original goal and acceptance criteria.
+Human approval provides a separate governance boundary for decisions requiring accountable authorization. The fundamental separation is:
 
-A technically valid implementation may still fail the business requirement.
-
-Human approval provides a separate governance boundary for decisions requiring accountable authorization.
-
-The fundamental separation is:
-
-```
+```text
 Implementation
       ↓
 Independent Review
@@ -15969,13 +14056,9 @@ Authorized Completion
 
 The exact sequencing may be optimized where dependencies permit, but the responsibilities must remain distinct.
 
-## 18.6 Run Workspaces and Scratchpads Enable Safe Execution
+### 18.6 Run Workspaces and Scratchpads Enable Safe Execution
 
-Every enterprise Harness run requires an identifiable execution boundary.
-
-The Run Workspace contains its working files, intermediate artifacts, evidence, logs, and temporary state.
-
-The Scratchpad stores temporary observations and execution notes.
+Every enterprise Harness run requires an identifiable execution boundary. The Run Workspace contains its working files, intermediate artifacts, evidence, logs, and temporary state. The Scratchpad stores temporary observations and execution notes.
 
 The two concepts have different responsibilities.
 
@@ -15988,48 +14071,28 @@ The two concepts have different responsibilities.
 | Harness Memory          | Governed reusable learning                                  |
 | Run State               | Authoritative execution lifecycle information               |
 
-Independent runs should not share unrestricted mutable state.
-
-Likewise, temporary Scratchpad observations must not silently become permanent engineering standards.
-
-Useful discoveries may be proposed for promotion into governed knowledge after review.
+Independent runs should not share unrestricted mutable state. Likewise, temporary Scratchpad observations must not silently become permanent engineering standards. Useful discoveries may be proposed for promotion into governed knowledge after review.
 
 This separation improves concurrency safety, auditability, and recovery.
 
-## 18.7 Enterprise Execution Must Be Recoverable
+### 18.7 Enterprise Execution Must Be Recoverable
 
-Long-running AI Engineering workflows may encounter provider failures, infrastructure interruptions, build failures, permission issues, and validation errors.
-
-The Harness must distinguish among:
+Long-running AI Engineering workflows may encounter provider failures, infrastructure interruptions, build failures, permission issues, and validation errors. The Harness must distinguish among:
 
 - retry;
 - rework;
 - resume;
 - escalation.
 
-A temporary provider timeout may justify a bounded retry.
+A temporary provider timeout may justify a bounded retry. A failed test generally requires Developer correction. A worker crash may require recovery from a durable checkpoint.
 
-A failed test generally requires Developer correction.
+A security policy violation may require stopping execution or authorized escalation. Durable state must exist independently of the AI Agent conversation. Side-effecting operations should be idempotent or protected by reliable deduplication and reconciliation.
 
-A worker crash may require recovery from a durable checkpoint.
+An exhausted run should retain evidence rather than disappear without explanation. Recovery is a core execution responsibility, not an optional enhancement added after scale.
 
-A security policy violation may require stopping execution or authorized escalation.
+### 18.8 Population Processing Requires Independent Work Units
 
-Durable state must exist independently of the AI Agent conversation.
-
-Side-effecting operations should be idempotent or protected by reliable deduplication and reconciliation.
-
-An exhausted run should retain evidence rather than disappear without explanation.
-
-Recovery is a core execution responsibility, not an optional enhancement added after scale.
-
-## 18.8 Population Processing Requires Independent Work Units
-
-Population processing allows a Harness to apply controlled engineering workflows across large collections of repositories, programs, services, or tasks.
-
-The chapter demonstrated how fan-out/fan-in can support these workloads.
-
-Each work item should maintain independent:
+Population processing allows a Harness to apply controlled engineering workflows across large collections of repositories, programs, services, or tasks. The chapter demonstrated how fan-out/fan-in can support these workloads. Each work item should maintain independent:
 
 - identity;
 - execution state;
@@ -16039,23 +14102,15 @@ Each work item should maintain independent:
 - failure status;
 - artifacts.
 
-The population coordinator aggregates results according to defined policy.
-
-A failed child item should not automatically destroy unrelated successful work.
-
-Likewise, the population should not be reported as successful when mandatory child outcomes remain incomplete.
+The population coordinator aggregates results according to defined policy. A failed child item should not automatically destroy unrelated successful work. Likewise, the population should not be reported as successful when mandatory child outcomes remain incomplete.
 
 This pattern enables reliable enterprise-scale processing without treating a large workload as one uninterrupted AI conversation.
 
-## 18.9 Provider and Tool Abstractions Support Long-Term Flexibility
+### 18.9 Provider and Tool Abstractions Support Long-Term Flexibility
 
-Claude Code, GitHub Copilot, and OpenAI Codex provide different mechanisms for Instructions, Skills, specialized Agents, tool integration, and execution.
+Claude Code, GitHub Copilot, and OpenAI Codex provide different mechanisms for Instructions, Skills, specialized Agents, tool integration, and execution. The chapter demonstrated how these platforms can participate in one vendor-neutral Harness architecture. A common contract may provide:
 
-The chapter demonstrated how these platforms can participate in one vendor-neutral Harness architecture.
-
-A common contract may provide:
-
-```
+```csharp
 public interface IAgentProvider
 {
     Task<AgentResult> ExecuteAsync(
@@ -16066,7 +14121,7 @@ public interface IAgentProvider
 
 Provider adapters implement the contract.
 
-```
+```text
 IAgentProvider
       │
       ├── ClaudeCodeAdapter
@@ -16074,35 +14129,19 @@ IAgentProvider
       └── CodexAdapter
 ```
 
-Tool adapters similarly isolate source control, artifact storage, work management, and external integrations.
-
-However, portability must not be confused with identical provider behavior.
-
-The Harness should expose a stable core contract and explicitly model optional provider capabilities.
+Tool adapters similarly isolate source control, artifact storage, work management, and external integrations. However, portability must not be confused with identical provider behavior. The Harness should expose a stable core contract and explicitly model optional provider capabilities.
 
 This supports controlled evolution without hiding meaningful technical differences.
 
-## 18.10 Shared Instructions, Skills, and Repository Intelligence Reduce Duplication
+### 18.10 Shared Instructions, Skills, and Repository Intelligence Reduce Duplication
 
-Enterprise reuse should include engineering knowledge as well as execution infrastructure.
+Enterprise reuse should include engineering knowledge as well as execution infrastructure. Shared Instructions provide baseline expectations. Shared Skills provide reusable implementation procedures.
 
-Shared Instructions provide baseline expectations.
+Repository-specific Instructions and Skills capture legitimate local requirements. Repository Intelligence supplies evidence-based understanding of the codebase. These artifacts should be governed through ownership, versioning, review, and controlled distribution.
 
-Shared Skills provide reusable implementation procedures.
+The chapter emphasized that shared knowledge should not be copied and modified independently across repositories without a maintenance strategy. Likewise, agents should not silently change authoritative knowledge based on temporary run observations. The preferred approach is:
 
-Repository-specific Instructions and Skills capture legitimate local requirements.
-
-Repository Intelligence supplies evidence-based understanding of the codebase.
-
-These artifacts should be governed through ownership, versioning, review, and controlled distribution.
-
-The chapter emphasized that shared knowledge should not be copied and modified independently across repositories without a maintenance strategy.
-
-Likewise, agents should not silently change authoritative knowledge based on temporary run observations.
-
-The preferred approach is:
-
-```
+```text
 Shared Engineering Knowledge
             +
 Repository-Specific Context
@@ -16114,13 +14153,9 @@ Controlled Agent Execution
 
 This structure supports consistent engineering practices without removing repository autonomy.
 
-## 18.11 Observability and Cost Management Are Architectural Concerns
+### 18.11 Observability and Cost Management Are Architectural Concerns
 
-Enterprise Harnesses are operational software systems.
-
-They require structured logs, metrics, traces, and correlated evidence.
-
-At minimum, organizations should understand:
+Enterprise Harnesses are operational software systems. They require structured logs, metrics, traces, and correlated evidence. At minimum, organizations should understand:
 
 - run completion rates;
 - stage durations;
@@ -16133,23 +14168,13 @@ At minimum, organizations should understand:
 - recovery effectiveness;
 - cost per accepted engineering outcome.
 
-Metrics should use consistent definitions across teams and repositories.
+Metrics should use consistent definitions across teams and repositories. Optimization should focus on measured bottlenecks.
 
-Optimization should focus on measured bottlenecks.
+For example, repeatedly executing an expensive full test suite during every development iteration may be less efficient than using scoped iteration checks followed by mandatory completion gates. The objective is not simply faster Agent execution. It is reliable engineering completion at a sustainable operational cost.
 
-For example, repeatedly executing an expensive full test suite during every development iteration may be less efficient than using scoped iteration checks followed by mandatory completion gates.
+### 18.12 Security and Governance Must Be Enforced Technically
 
-The objective is not simply faster Agent execution.
-
-It is reliable engineering completion at a sustainable operational cost.
-
-## 18.12 Security and Governance Must Be Enforced Technically
-
-An enterprise Harness may access sensitive repositories, infrastructure, configuration, credentials, and business information.
-
-Security therefore requires explicit boundaries.
-
-These include:
+An enterprise Harness may access sensitive repositories, infrastructure, configuration, credentials, and business information. Security therefore requires explicit boundaries. These include:
 
 - repository isolation;
 - run isolation;
@@ -16160,21 +14185,13 @@ These include:
 - approval enforcement;
 - audit logging.
 
-Instructions and Prompts can influence Agent behavior.
+Instructions and Prompts can influence Agent behavior. They do not replace technical authorization. A Booking execution should not automatically gain access to Billing production resources because both services share a Harness platform.
 
-They do not replace technical authorization.
+Shared orchestration does not require shared unrestricted credentials. The Harness must enforce least privilege and preserve the separation between automation capability and operational authority.
 
-A Booking execution should not automatically gain access to Billing production resources because both services share a Harness platform.
+### 18.13 Enterprise Harness Anti-patterns Reveal Boundary Failures
 
-Shared orchestration does not require shared unrestricted credentials.
-
-The Harness must enforce least privilege and preserve the separation between automation capability and operational authority.
-
-## 18.13 Enterprise Harness Anti-patterns Reveal Boundary Failures
-
-The anti-patterns examined in this chapter share a common characteristic: architectural responsibilities become misplaced, duplicated, or ambiguous.
-
-Important examples include:
+The anti-patterns examined in this chapter share a common characteristic: architectural responsibilities become misplaced, duplicated, or ambiguous. Important examples include:
 
 | Anti-pattern                           | Architectural Correction                   |
 | -------------------------------------- | ------------------------------------------ |
@@ -16192,15 +14209,11 @@ Important examples include:
 | Missing observability                  | Structured telemetry                       |
 | Silent changes to shared standards     | Governed improvement process               |
 
-Avoiding these anti-patterns does not require a more complicated architecture.
+Avoiding these anti-patterns does not require a more complicated architecture. It requires placing each responsibility in the correct layer and assigning it an explicit owner.
 
-It requires placing each responsibility in the correct layer and assigning it an explicit owner.
+### 18.14 Pattern Selection Must Reflect the Organization
 
-## 18.14 Pattern Selection Must Reflect the Organization
-
-No single Harness architecture is universally correct.
-
-Pattern selection should consider:
+No single Harness architecture is universally correct. Pattern selection should consider:
 
 - repository structure;
 - number of teams;
@@ -16212,66 +14225,65 @@ Pattern selection should consider:
 - cost;
 - operational complexity.
 
-A small engineering team may operate effectively with a modular Single-Repository Harness.
+A small engineering team may operate effectively with a modular Single-Repository Harness. An organization with many services may benefit from shared execution capabilities and repository profiles. A large, multi-team environment may require distributed workers, population processing, durable recovery, and centralized observability.
 
-An organization with many services may benefit from shared execution capabilities and repository profiles.
+The architecture should evolve in response to actual needs. Enterprise maturity is demonstrated by reliable boundaries and measurable outcomes, not by the number of architectural patterns implemented.
 
-A large, multi-team environment may require distributed workers, population processing, durable recovery, and centralized observability.
-
-The architecture should evolve in response to actual needs.
-
-Enterprise maturity is demonstrated by reliable boundaries and measurable outcomes, not by the number of architectural patterns implemented.
-
-## 18.15 Alpha Car Detailing: Final Architecture
+### 18.15 Alpha Car Detailing: Final Architecture
 
 The recommended Alpha Car Detailing architecture combines shared platform capabilities with repository-specific execution and governance.
 
-\#chatgpt-mermaid-\_r_18lq\_{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;fill:rgb(13, 13, 13);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_18lq\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_18lq\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_18lq\_ .error-icon{fill:rgb(243, 243, 243);}#chatgpt-mermaid-\_r_18lq\_ .error-text{fill:rgb(13, 13, 13);stroke:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18lq\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_18lq\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_18lq\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_18lq\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_18lq\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_18lq\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_18lq\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_18lq\_ .marker.cross{stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_18lq\_ svg{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:16px;}#chatgpt-mermaid-\_r_18lq\_ p{margin:0;}#chatgpt-mermaid-\_r_18lq\_ .label{font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18lq\_ .cluster-label text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18lq\_ .cluster-label span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18lq\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_18lq\_ .label text,#chatgpt-mermaid-\_r_18lq\_ span{fill:rgb(13, 13, 13);color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18lq\_ .node rect,#chatgpt-mermaid-\_r_18lq\_ .node circle,#chatgpt-mermaid-\_r_18lq\_ .node ellipse,#chatgpt-mermaid-\_r_18lq\_ .node polygon,#chatgpt-mermaid-\_r_18lq\_ .node path{fill:rgb(222, 234, 251);stroke:rgb(83, 154, 248);stroke-width:1px;}#chatgpt-mermaid-\_r_18lq\_ .rough-node .label text,#chatgpt-mermaid-\_r_18lq\_ .node .label text,#chatgpt-mermaid-\_r_18lq\_ .image-shape .label,#chatgpt-mermaid-\_r_18lq\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_18lq\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_18lq\_ .rough-node .label,#chatgpt-mermaid-\_r_18lq\_ .node .label,#chatgpt-mermaid-\_r_18lq\_ .image-shape .label,#chatgpt-mermaid-\_r_18lq\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_18lq\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_18lq\_ .root .anchor path{fill:rgb(143, 143, 143)!important;stroke-width:0;stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_18lq\_ .arrowheadPath{fill:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_18lq\_ .edgePath .path{stroke:rgb(143, 143, 143);stroke-width:1px;}#chatgpt-mermaid-\_r_18lq\_ .flowchart-link{stroke:rgb(143, 143, 143);fill:none;}#chatgpt-mermaid-\_r_18lq\_ .edgeLabel{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_18lq\_ .edgeLabel p{background-color:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_18lq\_ .edgeLabel rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_18lq\_ .labelBkg{background-color:rgba(252, 252, 252, 0.5);}#chatgpt-mermaid-\_r_18lq\_ .cluster rect{fill:rgb(243, 243, 243);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_18lq\_ .cluster text{fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18lq\_ .cluster span{color:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18lq\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";font-size:12px;background:rgb(243, 243, 243);border:1px solid rgba(0, 0, 0, 0.1);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_18lq\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(13, 13, 13);}#chatgpt-mermaid-\_r_18lq\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_18lq\_ .icon-shape,#chatgpt-mermaid-\_r_18lq\_ .image-shape{background-color:rgb(252, 252, 252);text-align:center;}#chatgpt-mermaid-\_r_18lq\_ .icon-shape p,#chatgpt-mermaid-\_r_18lq\_ .image-shape p{background-color:rgb(252, 252, 252);padding:2px;}#chatgpt-mermaid-\_r_18lq\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_18lq\_ .image-shape .label rect{opacity:0.5;background-color:rgb(252, 252, 252);fill:rgb(252, 252, 252);}#chatgpt-mermaid-\_r_18lq\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_18lq\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_18lq\_ .node .neo-node{stroke:rgb(83, 154, 248);}#chatgpt-mermaid-\_r_18lq\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_18lq\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_18lq\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_18lq\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_18lq\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_18lq\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_18lq\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_18lq\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_18lq\_ [data-look="neo"].node .neo-line path{stroke:rgb(83, 154, 248);filter:none;}#chatgpt-mermaid-\_r_18lq\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_18lq\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_18lq\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_18lq\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_18lq\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_18lq\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_18lq\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_18lq\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_18lq\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(0, 79, 153);}#chatgpt-mermaid-\_r_18lq\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_18lq\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_18lq\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-width:1px;}#chatgpt-mermaid-\_r_18lq\_ .node rect,#chatgpt-mermaid-\_r_18lq\_ .node circle,#chatgpt-mermaid-\_r_18lq\_ .node ellipse,#chatgpt-mermaid-\_r_18lq\_ .node polygon,#chatgpt-mermaid-\_r_18lq\_ .node path{fill:rgb(229, 243, 255);stroke:rgba(0, 0, 0, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_18lq\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_18lq\_ .node.mermaid-decision .label-container{fill:rgb(245, 250, 255);stroke:rgb(206, 219, 229);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_18lq\_ .edgePaths .flowchart-link{stroke:rgb(143, 143, 143);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_18lq\_ .marker{fill:rgb(143, 143, 143);stroke:rgb(143, 143, 143);}#chatgpt-mermaid-\_r_18lq\_ :root{--mermaid-font-family:-apple-system-body,ui-sans-serif,-apple-system,system-ui,"Segoe UI",Helvetica,"Apple Color Emoji",Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";}Shared Harness CapabilitiesAgent RolesShared SkillsValidation InfrastructureTool & Provider AdaptersRetry & RecoveryMetrics & ObservabilityEngineering RequestEnterprise Harness ControlPlaneBooking HarnessFleet HarnessBilling HarnessIsolated Booking RunIsolated Fleet RunIsolated Billing RunEvidence AggregationEnterprise EvaluationRequired Human Approval
+```mermaid
+flowchart TB
+    R["Engineering Request"] --> H["Enterprise Harness Control Plane"]
+    H --> P["Shared Capabilities: Roles, Skills, Gates, Adapters, Recovery, Metrics"]
+    H --> B["Booking Harness"]
+    H --> F["Fleet Harness"]
+    H --> I["Billing Harness"]
+    B --> BW["Isolated Booking Run"]
+    F --> FW["Isolated Fleet Run"]
+    I --> IW["Isolated Billing Run"]
+    BW --> A["Evidence Aggregation"]
+    FW --> A
+    IW --> A
+    A --> E["Enterprise Evaluation"] --> Approval["Required Human Approval"]
+```
 
-The central platform provides reusable mechanisms.
+The central platform provides reusable mechanisms. Each repository retains its applicable Instructions, Skills, Repository Intelligence, validation profiles, and approval requirements. Agents operate within controlled execution boundaries.
 
-Each repository retains its applicable Instructions, Skills, Repository Intelligence, validation profiles, and approval requirements.
+The Harness manages state and orchestration. Deterministic gates provide objective evidence. Evaluators assess engineering outcomes.
 
-Agents operate within controlled execution boundaries.
+Authorized humans retain accountability for decisions requiring approval. This architecture can support additional services and approved AI providers without requiring the central orchestrator to understand every repository's domain rules.
 
-The Harness manages state and orchestration.
-
-Deterministic gates provide objective evidence.
-
-Evaluators assess engineering outcomes.
-
-Authorized humans retain accountability for decisions requiring approval.
-
-This architecture can support additional services and approved AI providers without requiring the central orchestrator to understand every repository's domain rules.
-
-## 18.16 Key Takeaways
+### 18.16 Key Takeaways
 
 The chapter establishes the following architectural conclusions.
 
 1. Build Enterprise Harnesses through composition. Reusable patterns provide clearer boundaries than large, tightly coupled orchestration workflows.
+
 2. Separate shared mechanisms from local engineering authority. Centralize reusable execution infrastructure while preserving repository-specific requirements.
+
 3. Use explicit execution contracts. Repository profiles, agent-provider interfaces, validation results, and state transitions should be versioned and testable.
+
 4. Control parallelism through dependencies and isolation. Concurrent execution is valuable only when shared mutable state and resource consumption are managed.
+
 5. Preserve independent assurance responsibilities. Reviewer, Validator, Evaluator, and human approval roles must not be collapsed into one success decision.
+
 6. Design recovery and observability from the beginning. Enterprise execution requires durable state, reliable evidence, failure classification, and operational metrics.
+
 7. Keep AI coding platforms replaceable where practical. Claude Code, GitHub Copilot, and Codex should participate through controlled integrations rather than determine the overall Harness architecture.
+
 8. Govern shared knowledge and capabilities. Instructions, Skills, Repository Intelligence, and future Harness Memory must evolve through explicit ownership and review.
+
 9. Enforce security through technical boundaries. Prompts and Instructions cannot replace scoped identities, permissions, isolation, and trusted approval mechanisms.
+
 10. Select patterns based on requirements. Architectural complexity should be justified by measurable engineering or operational value.
 
-## 18.17 Closing Perspective
+### 18.17 Closing Perspective
 
-Enterprise Harness Engineering represents the transition from isolated AI-assisted development workflows to a reusable, governed engineering capability.
+Enterprise Harness Engineering represents the transition from isolated AI-assisted development workflows to a reusable, governed engineering capability. At the beginning of Part III, the Harness was introduced as the system responsible for coordinating AI Agents, validation, evaluation, execution state, and engineering evidence. Subsequent chapters examined individual Agent roles, population processing, metrics, and execution responsibilities.
 
-At the beginning of Part III, the Harness was introduced as the system responsible for coordinating AI Agents, validation, evaluation, execution state, and engineering evidence.
-
-Subsequent chapters examined individual Agent roles, population processing, metrics, and execution responsibilities.
-
-This chapter brought those concepts together through reusable enterprise architecture patterns.
-
-The resulting design is not dependent on Claude Code, GitHub Copilot, Codex, or any future AI coding platform.
-
-It is based on enduring software architecture principles:
+This chapter brought those concepts together through reusable enterprise architecture patterns. The resulting design is not dependent on Claude Code, GitHub Copilot, Codex, or any future AI coding platform. It is based on enduring software architecture principles:
 
 - separation of concerns;
 - explicit contracts;
@@ -16284,39 +14296,31 @@ It is based on enduring software architecture principles:
 - least privilege;
 - governed change.
 
-The Alpha Car Detailing example illustrates how these principles support multiple teams and microservices without requiring a universal monolithic Harness.
-
-The organization can extend its automation capabilities while maintaining engineering consistency, local ownership, and accountable control.
-
-The most important conclusion of this chapter is:
+The Alpha Car Detailing example illustrates how these principles support multiple teams and microservices without requiring a universal monolithic Harness. The organization can extend its automation capabilities while maintaining engineering consistency, local ownership, and accountable control. The most important conclusion of this chapter is:
 
 > A successful Enterprise Harness does not attempt to control every engineering decision from one central workflow. It provides reusable capabilities and explicit boundaries that allow independent engineering workflows to operate safely within a consistent enterprise architecture.
 
-The next stage of the handbook can now examine provider-specific engineering capabilities in greater depth, beginning with Claude Code, while preserving the vendor-neutral architecture established throughout Part III.
+The architecture established in Part III provides a foundation for deeper provider-specific engineering practices without making the Harness dependent on any one AI coding platform.
 
-Chapter 21 status: In progress — next section: Further Reading
+## 19. Further Reading
 
-# 19. Further Reading
+Enterprise Harness Engineering builds upon established disciplines in software architecture, distributed systems, workflow orchestration, platform engineering, security, and observability. Although AI coding platforms introduce new capabilities, the architectural challenges associated with coordinating independent workers, managing execution state, isolating failures, enforcing policy, and preserving evidence are not entirely new. Many of these challenges have been studied extensively in enterprise software engineering.
 
-Enterprise Harness Engineering builds upon established disciplines in software architecture, distributed systems, workflow orchestration, platform engineering, security, and observability.
+The following references provide deeper technical and architectural background for the patterns introduced in this chapter. The resources are organized by subject rather than by AI vendor. Readers should prioritize the architectural principles and use provider-specific documentation to understand how those principles can be implemented with their selected tools.
 
-Although AI coding platforms introduce new capabilities, the architectural challenges associated with coordinating independent workers, managing execution state, isolating failures, enforcing policy, and preserving evidence are not entirely new.
+### 19.1 Software Architecture and Enterprise Design Patterns
 
-Many of these challenges have been studied extensively in enterprise software engineering.
+#### 1. Fundamentals of Software Architecture
 
-The following references provide deeper technical and architectural background for the patterns introduced in this chapter.
+**Publisher reference:** [O'Reilly](https://www.oreilly.com/library/view/fundamentals-of-software/9781492043447/)
 
-The resources are organized by subject rather than by AI vendor. Readers should prioritize the architectural principles and use provider-specific documentation to understand how those principles can be implemented with their selected tools.
+**Authors:** Mark Richards and Neal Ford  
 
-## 19.1 Software Architecture and Enterprise Design Patterns
-
-### 1. Fundamentals of Software Architecture
-
-Authors: Mark Richards and Neal Ford Publisher: O'Reilly Media
+**Publisher:** O'Reilly Media
 
 This book explores foundational software architecture concepts, including architectural characteristics, coupling, modularity, architecture styles, and tradeoff analysis.
 
-Relevance to Chapter 21
+**Relevance to Chapter 21**
 
 Enterprise Harness architecture requires choices involving:
 
@@ -16329,13 +14333,17 @@ Enterprise Harness architecture requires choices involving:
 
 This reference helps readers evaluate Harness patterns using general software architecture principles rather than AI-specific product features.
 
-### 2. Software Architecture: The Hard Parts
+#### 2. Software Architecture: The Hard Parts
 
-Authors: Neal Ford, Mark Richards, Pramod Sadalage, and Zhamak Dehghani Publisher: O'Reilly Media
+**Publisher reference:** [O'Reilly](https://www.oreilly.com/library/view/software-architecture-the/9781492086888/)
+
+**Authors:** Neal Ford, Mark Richards, Pramod Sadalage, and Zhamak Dehghani  
+
+**Publisher:** O'Reilly Media
 
 This work examines difficult architectural decisions in distributed systems, including service boundaries, data ownership, distributed workflows, and architecture tradeoffs.
 
-Relevance to Chapter 21
+**Relevance to Chapter 21**
 
 Particularly useful when designing:
 
@@ -16348,19 +14356,17 @@ Particularly useful when designing:
 
 The central lesson is that architecture decisions rarely have universally correct answers. They depend on context and competing quality attributes.
 
-### 3. Designing Data-Intensive Applications
+#### 3. Designing Data-Intensive Applications
 
-Authors: Martin Kleppmann and Chris Riccomini, second edition (2026) Publisher: O'Reilly Media
+**Publisher reference:** [O'Reilly, second edition](https://www.oreilly.com/library/view/designing-data-intensive-applications/9781098119058/)
 
-This reference explains fundamental challenges in reliable and scalable data systems, including state management, consistency, distributed processing, and failure handling.&#x20;
+**Authors:** Martin Kleppmann and Chris Riccomini (second edition, 2026)  
 
-[image](https://www.google.com/s2/favicons?domain=https://books.google.com\&sz=32)
+**Publisher:** O'Reilly Media
 
-Google Books
+This reference explains fundamental challenges in reliable and scalable data systems, including state management, consistency, distributed processing, and failure handling.
 
-+1
-
-Relevance to Chapter 21
+**Relevance to Chapter 21**
 
 Enterprise Harnesses depend on many of the same principles:
 
@@ -16374,35 +14380,27 @@ Enterprise Harnesses depend on many of the same principles:
 
 Readers designing distributed Harness workers or population-processing infrastructure will benefit particularly from these topics.
 
-### 4. Domain-Driven Design: Tackling Complexity in the Heart of Software
+#### 4. Domain-Driven Design: Tackling Complexity in the Heart of Software
 
-Author: Eric Evans Publisher: Addison-Wesley
+**Publisher reference:** [Pearson](https://www.pearson.com/en-gb/subject-catalog/p/domain-driven-design-tackling-complexity-in-the-heart-of-software/P200000009375)
 
-Domain-Driven Design provides foundational guidance for defining domain boundaries, responsibilities, and models in complex enterprise systems.&#x20;
+**Author:** Eric Evans  
 
-[image](https://www.google.com/s2/favicons?domain=https://books.google.com\&sz=32)
+**Publisher:** Addison-Wesley
 
-Google Books
+Domain-Driven Design provides foundational guidance for defining domain boundaries, responsibilities, and models in complex enterprise systems.
 
-Relevance to Chapter 21
+**Relevance to Chapter 21**
 
-A Shared Platform Harness should respect the bounded contexts and engineering ownership of Booking, Fleet, and Billing.
+A Shared Platform Harness should respect the bounded contexts and engineering ownership of Booking, Fleet, and Billing. DDD helps explain why shared execution infrastructure should not absorb domain-specific engineering decisions.
 
-DDD helps explain why shared execution infrastructure should not absorb domain-specific engineering decisions.
+### 19.2 Cloud Architecture Patterns
 
-## 19.2 Cloud Architecture Patterns
+#### 5. Microsoft — Azure Architecture Center: Cloud Design Patterns
 
-### 5. Microsoft — Azure Architecture Center: Cloud Design Patterns
+**Official reference:** [Azure Cloud Design Patterns](https://learn.microsoft.com/en-us/azure/architecture/patterns/)
 
-Official reference: [Azure Cloud Design Patterns](https://learn.microsoft.com/en-us/azure/architecture/patterns/)
-
-The Azure Architecture Center documents reusable patterns for distributed workloads, resilience, workload coordination, and cloud system design. It also emphasizes combining patterns to solve related problems.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://github.com\&sz=32)
-
-GitHub
-
-The following patterns are particularly relevant to Enterprise Harness Engineering.
+The Azure Architecture Center documents reusable patterns for distributed workloads, resilience, workload coordination, and cloud system design. It also emphasizes combining patterns to solve related problems. The following patterns are particularly relevant to Enterprise Harness Engineering.
 
 | Architecture Pattern         | Harness Application                                  |
 | ---------------------------- | ---------------------------------------------------- |
@@ -16418,21 +14416,17 @@ The following patterns are particularly relevant to Enterprise Harness Engineeri
 
 These patterns offer a strong foundation for implementing the Execution Plane and Control Plane discussed in this chapter.
 
-### 6. Microsoft — Scheduler Agent Supervisor Pattern
+#### 6. Microsoft — Scheduler Agent Supervisor Pattern
 
-Official reference: [Scheduler Agent Supervisor Pattern](https://learn.microsoft.com/en-us/azure/architecture/patterns/scheduler-agent-supervisor)
+**Official reference:** [Scheduler Agent Supervisor Pattern](https://learn.microsoft.com/en-us/azure/architecture/patterns/scheduler-agent-supervisor)
 
-This pattern describes the coordination of distributed, multi-step work using scheduling, execution, and supervision responsibilities. It addresses durable state, operation deadlines, recovery, and failure handling.&#x20;
+This pattern describes the coordination of distributed, multi-step work using scheduling, execution, and supervision responsibilities. It addresses durable state, operation deadlines, recovery, and failure handling.
 
-[image](https://www.google.com/s2/favicons?domain=https://learn.microsoft.com\&sz=32)
-
-Microsoft Learn
-
-Relevance to Chapter 21
+**Relevance to Chapter 21**
 
 The pattern closely relates to an Enterprise Harness that coordinates:
 
-```
+```text
 Harness Scheduler
         ↓
 Execution Worker
@@ -16453,17 +14447,13 @@ It is especially valuable when designing:
 
 The terminology should not be confused with the handbook's AI Agent roles. In this architectural pattern, an agent may refer to a distributed task executor rather than an AI coding agent.
 
-### 7. Microsoft — Bulkhead Pattern
+#### 7. Microsoft — Bulkhead Pattern
 
-Official reference: [Bulkhead Pattern](https://learn.microsoft.com/en-us/azure/architecture/patterns/bulkhead)
+**Official reference:** [Bulkhead Pattern](https://learn.microsoft.com/en-us/azure/architecture/patterns/bulkhead)
 
-The Bulkhead pattern isolates resources and failure domains so that problems in one workload do not unnecessarily affect others.&#x20;
+The Bulkhead pattern isolates resources and failure domains so that problems in one workload do not unnecessarily affect others.
 
-[image](https://www.google.com/s2/favicons?domain=https://learn.microsoft.com\&sz=32)
-
-Microsoft Learn
-
-Relevance to Chapter 21
+**Relevance to Chapter 21**
 
 Apply this pattern to:
 
@@ -16475,17 +14465,13 @@ Apply this pattern to:
 
 For Alpha Car Detailing, a Billing execution failure should not automatically exhaust resources required by Booking.
 
-### 8. Microsoft — Competing Consumers Pattern
+#### 8. Microsoft — Competing Consumers Pattern
 
-Official reference: [Competing Consumers Pattern](https://learn.microsoft.com/en-us/azure/architecture/patterns/competing-consumers)
+**Official reference:** [Competing Consumers Pattern](https://learn.microsoft.com/en-us/azure/architecture/patterns/competing-consumers)
 
-This pattern describes processing queue messages through multiple concurrent consumers to improve throughput and workload distribution.&#x20;
+This pattern describes processing queue messages through multiple concurrent consumers to improve throughput and workload distribution.
 
-[image](https://www.google.com/s2/favicons?domain=https://learn.microsoft.com\&sz=32)
-
-Microsoft Learn
-
-Relevance to Chapter 21
+**Relevance to Chapter 21**
 
 Use this reference when implementing:
 
@@ -16496,23 +14482,19 @@ Use this reference when implementing:
 
 The pattern should be combined with idempotency, visibility of execution ownership, and durable result tracking.
 
-### 9. Microsoft — Saga Pattern
+#### 9. Microsoft — Saga Pattern
 
-Official reference: [Saga Pattern](https://learn.microsoft.com/en-us/azure/architecture/patterns/saga)
+**Official reference:** [Saga Pattern](https://learn.microsoft.com/en-us/azure/architecture/patterns/saga)
 
-The Saga pattern coordinates a sequence of local transactions and uses compensating actions when distributed operations require recovery.&#x20;
+The Saga pattern coordinates a sequence of local transactions and uses compensating actions when distributed operations require recovery.
 
-[image](https://www.google.com/s2/favicons?domain=https://learn.microsoft.com\&sz=32)
-
-Microsoft Learn
-
-Relevance to Chapter 21
+**Relevance to Chapter 21**
 
 This is useful background for cross-repository and cross-service Harness workflows that cannot be treated as one atomic transaction.
 
 For example:
 
-```
+```text
 Booking Change
       ↓
 Fleet Change
@@ -16522,23 +14504,17 @@ Billing Change
 Cross-Service Validation
 ```
 
-Architects should consider which operations can be retried, reversed, compensated, or safely left in an intermediate state.
+Architects should consider which operations can be retried, reversed, compensated, or safely left in an intermediate state. A Saga is not automatically required for every Multi-Repository Harness, but its principles help clarify distributed completion and recovery.
 
-A Saga is not automatically required for every Multi-Repository Harness, but its principles help clarify distributed completion and recovery.
+### 19.3 Observability and Operational Engineering
 
-## 19.3 Observability and Operational Engineering
+#### 10. OpenTelemetry — Official Documentation
 
-### 10. OpenTelemetry — Official Documentation
+**Official reference:** [OpenTelemetry Documentation](https://opentelemetry.io/docs/)
 
-Official reference: [OpenTelemetry Documentation](https://opentelemetry.io/docs/)
+OpenTelemetry provides a vendor-neutral foundation for generating, collecting, and exporting traces, metrics, and logs.
 
-OpenTelemetry provides a vendor-neutral foundation for generating, collecting, and exporting traces, metrics, and logs.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://opentelemetry.io\&sz=32)
-
-OpenTelemetry
-
-Relevance to Chapter 21
+**Relevance to Chapter 21**
 
 An Enterprise Harness should expose consistent operational evidence across:
 
@@ -16552,27 +14528,21 @@ An Enterprise Harness should expose consistent operational evidence across:
 
 OpenTelemetry can provide the instrumentation model underlying this visibility.
 
-### 11. OpenTelemetry — Signals and Context Propagation
+#### 11. OpenTelemetry — Signals and Context Propagation
 
 Official references:
 
-[OpenTelemetry Signals](https://opentelemetry.io/docs/concepts/signals/)[OpenTelemetry Concepts](https://opentelemetry.io/docs/concepts/)
+[OpenTelemetry Signals](https://opentelemetry.io/docs/concepts/signals/) and [OpenTelemetry Concepts](https://opentelemetry.io/docs/concepts/)
 
-These resources explain telemetry signals and how execution context can be carried across distributed components.&#x20;
+These resources explain telemetry signals and how execution context can be carried across distributed components.
 
-[image](https://www.google.com/s2/favicons?domain=https://opentelemetry.io\&sz=32)
-
-OpenTelemetry
-
-+1
-
-Relevance to Chapter 21
+**Relevance to Chapter 21**
 
 A distributed Harness needs to correlate execution across workers.
 
 For example:
 
-```
+```text
 EnterpriseRunId
      ↓
 RepositoryRunId
@@ -16586,15 +14556,13 @@ ExecutionTrace
 
 Context propagation helps preserve the relationship between operations even when execution spans multiple processes or services.
 
-## 19.4 Claude Code Engineering
+### 19.4 Claude Code Engineering
 
-### 12. Anthropic — Claude Code Documentation
+#### 12. Anthropic — Claude Code Documentation
 
-Official reference: [Claude Code Documentation](https://code.claude.com/docs/en/overview)
+**Official reference:** [Claude Code Documentation](https://code.claude.com/docs/en/overview)
 
-The official Claude Code documentation covers its execution environment and customization mechanisms.
-
-For this chapter, focus on:
+The official Claude Code documentation covers its execution environment and customization mechanisms. For this chapter, focus on:
 
 - `CLAUDE.md`;
 - Skills;
@@ -16604,77 +14572,59 @@ For this chapter, focus on:
 - permissions;
 - programmatic CLI execution.
 
-Relevance to Chapter 21
+**Relevance to Chapter 21**
 
-Claude Code is the primary implementation platform for the handbook.
+Claude Code is the primary implementation platform for the handbook. Its capabilities can implement specialized engineering roles and reusable workflows inside the vendor-neutral Harness architecture. However, the Harness should retain independent control over deterministic gates, approval requirements, durable state, and execution recovery.
 
-Its capabilities can implement specialized engineering roles and reusable workflows inside the vendor-neutral Harness architecture.
+#### 13. Anthropic — Model Context Protocol
 
-However, the Harness should retain independent control over deterministic gates, approval requirements, durable state, and execution recovery.
-
-### 13. Anthropic — Model Context Protocol
-
-Official reference: [Model Context Protocol](https://modelcontextprotocol.io/)
+**Official reference:** [Model Context Protocol](https://modelcontextprotocol.io/)
 
 MCP provides a standardized approach for connecting AI applications to tools and external context.
 
-Relevance to Chapter 21
+**Relevance to Chapter 21**
 
-An Enterprise Harness can expose approved capabilities such as Repository Intelligence retrieval, work-item access, and controlled evidence queries.
+An Enterprise Harness can expose approved capabilities such as Repository Intelligence retrieval, work-item access, and controlled evidence queries. Architects should pay particular attention to authorization, tool boundaries, and the distinction between retrieved data and authoritative Instructions.
 
-Architects should pay particular attention to authorization, tool boundaries, and the distinction between retrieved data and authoritative Instructions.
+### 19.5 GitHub Copilot Engineering
 
-## 19.5 GitHub Copilot Engineering
+#### 14. GitHub — Copilot Documentation
 
-### 14. GitHub — Copilot Documentation
-
-Official reference: [GitHub Copilot Documentation](https://docs.github.com/en/copilot)
+**Official reference:** [GitHub Copilot Documentation](https://docs.github.com/en/copilot)
 
 GitHub provides documentation for repository Instructions, custom agents, reusable Skills, Copilot CLI, cloud agents, and integration with GitHub development workflows.
 
-Relevance to Chapter 21
+**Relevance to Chapter 21**
 
-These mechanisms are useful when implementing repository-specific Harness profiles and GitHub-native development workflows.
+These mechanisms are useful when implementing repository-specific Harness profiles and GitHub-native development workflows. They should be integrated without making GitHub-specific behavior a mandatory dependency of the central Harness.
 
-They should be integrated without making GitHub-specific behavior a mandatory dependency of the central Harness.
+#### 15. GitHub — Custom Agents
 
-### 15. GitHub — Custom Agents
+**Official reference:** [Custom Agents in GitHub Copilot](https://docs.github.com/en/copilot/concepts/agents/copilot-cli/about-custom-agents)
 
-Official reference: [Custom Agents in GitHub Copilot](https://docs.github.com/en/copilot/concepts/agents/copilot-cli/about-custom-agents)
+Custom agent profiles support specialized instructions, tools, and MCP integrations.
 
-Custom agent profiles support specialized instructions, tools, and MCP integrations.&#x20;
-
-[image](https://www.google.com/s2/favicons?domain=https://docs.github.com\&sz=32)
-
-GitHub Docs
-
-Relevance to Chapter 21
+**Relevance to Chapter 21**
 
 Useful for implementing specialized development or review responsibilities while preserving external Harness orchestration authority.
 
-### 16. GitHub — Agent Skills
+#### 16. GitHub — Agent Skills
 
-Official reference: [Adding Agent Skills for GitHub Copilot](https://docs.github.com/en/copilot/how-tos/copilot-on-github/customize-copilot/customize-cloud-agent/add-skills)
+**Official reference:** [Adding Agent Skills for GitHub Copilot](https://docs.github.com/en/copilot/how-tos/copilot-on-github/customize-copilot/customize-cloud-agent/add-skills)
 
-GitHub documents reusable Skills based on `SKILL.md`, including supported repository locations and the distinction between Skills and persistent custom Instructions.&#x20;
+GitHub documents reusable Skills based on `SKILL.md`, including supported repository locations and the distinction between Skills and persistent custom Instructions.
 
-[image](https://www.google.com/s2/favicons?domain=https://docs.github.com\&sz=32)
-
-GitHub Docs
-
-Relevance to Chapter 21
+**Relevance to Chapter 21**
 
 Supports the enterprise pattern of maintaining shared engineering procedures while retaining repository-specific guidance.
 
-## 19.6 OpenAI Codex Engineering
+### 19.6 OpenAI Codex Engineering
 
-### 17. OpenAI — Codex Documentation
+#### 17. OpenAI — Codex Documentation
 
-Official reference: [Codex Documentation](https://developers.openai.com/codex/)
+**Official reference:** [Codex Documentation](https://developers.openai.com/codex/)
 
-The official Codex documentation provides guidance for using Codex as a coding agent and integrating it into engineering workflows.
-
-Relevant areas include:
+The official Codex documentation provides guidance for using Codex as a coding agent and integrating it into engineering workflows. Relevant areas include:
 
 - `AGENTS.md`;
 - Agent Skills;
@@ -16686,29 +14636,21 @@ Relevant areas include:
 - MCP;
 - multi-agent capabilities.
 
-Relevance to Chapter 21
+**Relevance to Chapter 21**
 
-Codex can participate as an AI execution provider through the Harness's agent-provider contract.
+Codex can participate as an AI execution provider through the Harness's agent-provider contract. The architecture should continue to enforce validation, state management, isolation, and governance outside provider-specific reasoning.
 
-The architecture should continue to enforce validation, state management, isolation, and governance outside provider-specific reasoning.
+#### 18. OpenAI — Codex CLI
 
-### 18. OpenAI — Codex CLI
+**Official reference:** [OpenAI Codex Repository](https://github.com/openai/codex)
 
-Official reference: [OpenAI Codex Repository](https://github.com/openai/codex)
+Codex CLI provides a command-line execution mechanism suitable for interactive and automated engineering work.
 
-Codex CLI provides a command-line execution mechanism suitable for interactive and automated engineering work.&#x20;
+**Relevance to Chapter 21**
 
-[image](https://www.google.com/s2/favicons?domain=https://help.openai.com\&sz=32)
+This is useful when designing a Codex provider adapter for an Enterprise Harness. The adapter should normalize execution results and errors without transferring final workflow authority to the provider.
 
-OpenAI Help Center
-
-Relevance to Chapter 21
-
-This is useful when designing a Codex provider adapter for an Enterprise Harness.
-
-The adapter should normalize execution results and errors without transferring final workflow authority to the provider.
-
-## 19.7 Recommended Reading by Architectural Responsibility
+### 19.7 Recommended Reading by Architectural Responsibility
 
 Readers do not need to study every reference before implementing a Harness. The most useful resources depend on the architectural problem being solved.
 
@@ -16731,29 +14673,17 @@ Readers do not need to study every reference before implementing a Harness. The 
 
 These references should be used to deepen architectural understanding rather than reproduce their implementations without considering the requirements of the Harness.
 
-## 19.8 Applying the References to Alpha Car Detailing
+### 19.8 Applying the References to Alpha Car Detailing
 
-The Alpha Car Detailing companion implementation provides a practical environment for applying these resources.
+The Alpha Car Detailing companion implementation provides a practical environment for applying these resources. A useful study progression is to begin with the existing Booking Harness and progressively introduce additional patterns. First, establish reliable Single-Repository Harness execution with isolated workspaces and deterministic gates.
 
-A useful study progression is to begin with the existing Booking Harness and progressively introduce additional patterns.
+Next, extract reusable capabilities into the shared platform. Then, onboard Fleet and Billing using repository-specific profiles. Introduce multi-repository orchestration only when a feature requires coordinated changes across services.
 
-First, establish reliable Single-Repository Harness execution with isolated workspaces and deterministic gates.
-
-Next, extract reusable capabilities into the shared platform.
-
-Then, onboard Fleet and Billing using repository-specific profiles.
-
-Introduce multi-repository orchestration only when a feature requires coordinated changes across services.
-
-Use distributed architecture patterns when population processing, recovery, or execution scale requires them.
-
-Instrument the platform using OpenTelemetry.
-
-Finally, integrate approved AI providers through explicit adapters while retaining common validation and governance requirements.
+Use distributed architecture patterns when population processing, recovery, or execution scale requires them. Instrument the platform using OpenTelemetry. Finally, integrate approved AI providers through explicit adapters while retaining common validation and governance requirements.
 
 The resulting architecture should demonstrate:
 
-```
+```text
 Shared Enterprise Harness
           │
           ├── Reusable Engineering Capabilities
@@ -16768,17 +14698,11 @@ Shared Enterprise Harness
 
 This progression connects the concepts in this chapter to proven software architecture practices.
 
-## 19.9 Final Reading Perspective
+### 19.9 Final Reading Perspective
 
-AI coding platforms will continue to evolve.
+AI coding platforms will continue to evolve. New models, tools, agent capabilities, execution interfaces, and automation frameworks will emerge. Some provider-specific techniques described in this handbook may change as those products evolve.
 
-New models, tools, agent capabilities, execution interfaces, and automation frameworks will emerge.
-
-Some provider-specific techniques described in this handbook may change as those products evolve.
-
-The architectural principles underlying Enterprise Harness Engineering are more durable.
-
-Organizations will continue to need:
+The architectural principles underlying Enterprise Harness Engineering are more durable. Organizations will continue to need:
 
 - explicit responsibility boundaries;
 - composable components;
@@ -16791,20 +14715,16 @@ Organizations will continue to need:
 - accountable approval;
 - governed evolution.
 
-These are established enterprise engineering concerns that remain relevant regardless of which AI Agent performs the implementation work.
-
-The purpose of further reading is therefore not only to learn more about AI coding platforms.
-
-It is to understand the software architecture principles that make AI-assisted engineering reliable at enterprise scale.
+These are established enterprise engineering concerns that remain relevant regardless of which AI Agent performs the implementation work. The purpose of further reading is therefore not only to learn more about AI coding platforms. It is to understand the software architecture principles that make AI-assisted engineering reliable at enterprise scale.
 
 > Closing Architect's Note
+
 >
+
 > An Enterprise Harness should be designed so that new AI capabilities can be adopted without sacrificing architectural clarity, repository autonomy, deterministic evidence, recoverability, security, or human accountability.
+
 >
+
 > The strongest Harness architecture is one whose patterns remain understandable and reusable even when the tools executing those patterns change.
 
-With the completion of Enterprise Harness Patterns, Part III — Harness Engineering has established the architectural foundation for coordinating AI Agents, reusable engineering capabilities, validation, evaluation, population processing, metrics, and enterprise execution.
-
-The next part of the handbook examines Claude Code engineering in greater depth, beginning with the structure, purpose, ownership, and governance of `CLAUDE.md`.
-
-Chapter 21 status: Complete
+With the completion of Enterprise Harness Patterns, Part III — Harness Engineering has established the architectural foundation for coordinating AI Agents, reusable engineering capabilities, validation, evaluation, population processing, metrics, and enterprise execution. Subsequent chapters can examine provider-specific engineering practices in greater depth while preserving the vendor-neutral architecture established throughout Part III.

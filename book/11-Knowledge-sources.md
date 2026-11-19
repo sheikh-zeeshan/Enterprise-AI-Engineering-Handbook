@@ -12,6 +12,8 @@ This distinction is foundational to Enterprise AI Engineering and follows the ha
 
 ## 1. Story-Driven Opening
 
+**Case-study convention.** Alpha Car Detailing is the handbook’s illustrative system. Release 3.8, the dated source records, example commits, incident details, approvals, and test results in this chapter are worked-example fixtures—not verified claims about a deployed product. The scenario is set during the July–August 2026 pilot, so its time-bound Steering Note is evaluated as of that period.
+
 The Alpha Car Detailing product team had reached the final week of a time-sensitive release. The primary objective was to extend corporate fleet booking so that large customers could schedule recurring services for hundreds of vehicles across multiple detailing stations.
 
 The request appeared straightforward:
@@ -30,15 +32,15 @@ The OpenAPI specification exposed a `recurrencePattern` property that did not ex
 
 A database document described a `FleetSchedule` table, but no such table existed in the current migration history.
 
-A product requirements document stated that corporate account administrators could approve bookings up to £25,000 per month.
+A draft corporate approval policy proposed a £25,000 monthly limit, but the policy had not been approved.
 
-A security document stated that approval limits must be enforced by the Corporate Account service, not the Booking service.
+An active security document stated that approval decisions belonged to the Corporate Accounts service, not the Booking service.
 
 A deployment manifest referenced a `scheduling-worker` container that was not present in the solution.
 
 A recent pull request had removed an earlier recurring-booking implementation after reviewers identified duplicate booking creation under retry conditions.
 
-An incident report described a production failure caused by two workers processing the same schedule.
+An incident report described a production failure in which a worker retry created another booking after a partial completion.
 
 A Steering Note for the current release stated:
 
@@ -52,7 +54,7 @@ The API contract suggested that clients might already expect the capability.
 
 The database documentation suggested that a persistence model had been designed.
 
-The migration history suggested that it had never been deployed.
+The migration history showed that the table had not been introduced through the examined migrations; production deployment still required separate verification.
 
 The ADR established an architectural direction.
 
@@ -73,14 +75,14 @@ A repository-aware agent would recognize that the evidence conflicted.
 A governed AI agent would do something more disciplined:
 
 1. Classify each source.
-2. determine its authority and scope;
-3. evaluate its freshness and reliability;
-4. identify contradictions;
-5. distinguish current truth from proposed design;
-6. locate the owners of the conflicting sources;
-7. document unresolved knowledge gaps;
-8. request human review where the evidence could not safely be reconciled; and
-9. cite the sources used in the final implementation decision.
+2. Determine its authority and scope.
+3. Evaluate its freshness and reliability.
+4. Identify contradictions.
+5. Distinguish implemented state from proposed design.
+6. Locate owners of conflicting sources.
+7. Document unresolved knowledge gaps.
+8. Request human review where evidence cannot safely be reconciled.
+9. Cite the sources used in the implementation decision.
 
 The agent therefore did not begin by modifying `FleetBookingService`.
 
@@ -92,7 +94,7 @@ Instead, it created a source assessment.
 | Architecture Decision Record | Scheduling must be handled asynchronously                          | ADR may still be authoritative, but its implementation status is unclear |
 | OpenAPI specification        | Clients may send recurrence information                            | Contract may be ahead of implementation or stale                         |
 | Database documentation       | A schedule persistence model was planned                           | Document may describe an abandoned design                                |
-| EF Core migrations           | No schedule table has been deployed                                | Strong evidence of actual database state                                 |
+| EF Core migrations           | No schedule table appears in examined migrations                   | Strong evidence of repository-defined schema evolution; not proof of production state |
 | Product requirement          | Corporate customers require recurring bookings and approval limits | Business requirement may have changed since publication                  |
 | Security guidance            | Corporate Account service owns approval enforcement                | Likely authoritative for service responsibility                          |
 | Deployment files             | A scheduling worker was expected                                   | File may reference an obsolete or environment-specific component         |
@@ -102,7 +104,7 @@ Instead, it created a source assessment.
 
 The agent then reported:
 
-> The repository contains conflicting evidence regarding the intended recurring fleet-booking design. The current source code and migrations show that no recurring schedule implementation is deployed. ADR-014 requires asynchronous scheduling, while the current release Steering Note prohibits introducing a new distributed scheduler. The OpenAPI and database documents appear to describe a design that is not reflected in the deployed system. A previous pull request and incident report show that naive retry processing caused duplicate bookings. Human confirmation is required regarding whether the existing background worker should implement recurrence temporarily or whether the feature scope should be reduced for this release.
+> The repository contains conflicting evidence regarding the intended recurring fleet-booking design. The examined source code and migrations do not show a recurring schedule implementation; deployed state has not yet been independently verified. ADR-014 requires asynchronous scheduling, while the current release Steering Note prohibits introducing a new distributed scheduler. The OpenAPI and database documents appear to describe a design that is not reflected in the examined repository revision. A previous pull request and incident report show that naive retry processing caused duplicate bookings. Human confirmation is required regarding whether the existing background worker should implement recurrence temporarily or whether the feature scope should be reduced for this release.
 
 That response was slower than immediately generating code.
 
@@ -205,7 +207,7 @@ Different truths exist at different levels.
 
 Source code may be the best evidence of current application behaviour.
 
-Database migrations may be the best evidence of deployed schema evolution.
+Database migrations may be the best evidence of schema evolution defined in the repository; release and deployed-schema evidence is needed to establish production state.
 
 An approved ADR may be the best evidence of an architectural decision.
 
@@ -820,16 +822,15 @@ An enterprise source model should identify authority explicitly.
 
 A simple authority classification might include:
 
-| Authority level | Meaning                                                             |
-| --------------- | ------------------------------------------------------------------- |
-| Mandatory       | Defines an approved policy, contract, control, or required decision |
-| Authoritative   | Primary maintained evidence for a defined scope                     |
-| Supporting      | Adds useful detail or corroborating evidence                        |
-| Informational   | Provides context but should not determine a decision alone          |
-| Historical      | Explains prior states, decisions, or failures                       |
-| Unverified      | Has not been approved or validated                                  |
-| Superseded      | Replaced by a newer source                                          |
-| Rejected        | Records an option that was considered but not adopted               |
+| Authority level | Meaning |
+| --- | --- |
+| Mandatory | An approved obligation that applies within its defined scope |
+| Authoritative | Primary maintained evidence for a defined question and scope |
+| Supporting | Corroborating evidence that should not determine a high-impact decision alone |
+| Informational | Context with no decision-setting authority |
+| Unverified | Evidence whose validity or approval has not been established |
+
+**Do not confuse authority with lifecycle or evidence role.** `Superseded` and `Rejected` are lifecycle statuses, not authority levels. `Historical` describes how evidence is used, not a universal rank. A closed incident may be highly reliable evidence of a past failure even though it does not set current architecture. Record these dimensions separately.
 
 The classification must be accompanied by scope.
 
@@ -1149,7 +1150,10 @@ Typical statuses include:
 * proposed;
 * under review;
 * approved;
+* accepted;
+* published;
 * active;
+* closed (for completed incidents and work items);
 * deprecated;
 * superseded;
 * archived;
@@ -1648,11 +1652,10 @@ Source Score =
   × Scope Match
   × Reliability
   × Freshness
-  × Access Eligibility
   × Provenance Confidence
 ```
 
-This is not necessarily a literal mathematical formula. It illustrates that semantic similarity alone is insufficient.
+This is not a calibrated mathematical formula; it illustrates that semantic similarity alone is insufficient. **Access eligibility is a hard prerequisite, not a ranking factor:** unauthorised sources must be excluded before any source text is provided to an agent.
 
 A highly similar but rejected architecture proposal should not outrank an accepted ADR.
 
@@ -1987,7 +1990,8 @@ knowledge_sources:
     - path: database/booking/schema.md
     - path: runbooks/booking-worker.md
 conflicts:
-  - sources:
+  - id: CF-BOOKING-API-001
+    sources:
       - contracts/openapi/booking-api.v2.yaml
       - src/Booking/AlphaCarDetailing.Booking.Api/
     issue: recurrencePattern exists in contract but not implementation
@@ -2389,8 +2393,6 @@ flowchart LR
     CONF --> RESULT[Cited Engineering Decision]
 ```
 
-Chapter 11 status: In progress — next section: Hands-on Example
-
 ## 7. Hands-on Example
 
 This section builds a practical Knowledge Source structure for the Alpha Car Detailing repository and applies it to the recurring corporate fleet-booking scenario.
@@ -2447,6 +2449,8 @@ alpha-car-detailing/
 │       ├── authority-model.md
 │       ├── source-types.md
 │       ├── conflicts/
+│       │   └── CF-BOOKING-API-001.md
+│       ├── gaps/
 │       │   └── KG-BOOKING-017.md
 │       ├── manifests/
 │       │   └── ACD-FLEET-284.yaml
@@ -2573,9 +2577,9 @@ Task-specific source manifests are stored in:
 
 ## Conflicts and Knowledge Gaps
 
-Unresolved conflicts and missing knowledge are stored in:
+Unresolved contradictions between sources are stored in `conflicts/`.
 
-`conflicts/`
+Missing information and open knowledge gaps are stored in `gaps/`.
 
 ## Refresh Governance
 
@@ -2652,18 +2656,6 @@ Examples:
 - training material;
 - explanatory diagrams.
 
-### Historical
-
-Explains a previous state, decision, incident, or implementation.
-
-Examples:
-
-- superseded ADR;
-- retired design;
-- old pull request;
-- incident report;
-- release retrospective.
-
 ### Unverified
 
 Has not been approved, reviewed, or validated.
@@ -2675,13 +2667,9 @@ Examples:
 - developer scratch note;
 - generated document awaiting review.
 
-### Superseded
+## Evidence Role and Lifecycle
 
-Was previously valid but has been replaced by another source.
-
-### Rejected
-
-Documents an option that was considered but not adopted.
+`Historical` is an evidence role, not an authority level. Historical sources remain useful for prior decisions and failure modes. `Superseded` and `Rejected` are lifecycle statuses that must prevent a source from defining current direction. Record both fields independently of authority.
 
 ## Decision Rule
 
@@ -2839,7 +2827,8 @@ sources:
     type: ArchitectureDecisionRecord
     path: architecture/decisions/ADR-009-synchronous-recurring-booking.md
     status: Superseded
-    authority: Historical
+    authority: Informational
+    evidenceRole: Historical
     owner: Architecture Council
     classification: Internal
     scope:
@@ -2914,13 +2903,12 @@ sources:
       apiVersions:
         - v2
     freshness:
-      generatedOn: 2026-07-20
-      validatedAgainst:
-        commit: "a84f2c1"
-        environment: Integration
+      publishedOn: 2026-07-20
+      sourceCommit: "a84f2c1"
+      validationStatus: SchemaLinted
     reliability:
-      generationMethod: BuildGenerated
-      reviewStatus: PipelineValidated
+      generationMethod: ContractFirst
+      reviewStatus: PublishedContractReview
     keywords:
       - booking API
       - recurrence pattern
@@ -2975,7 +2963,8 @@ sources:
     type: IncidentReport
     path: incidents/INC-2026-031-duplicate-fleet-bookings.md
     status: Closed
-    authority: Historical
+    authority: Informational
+    evidenceRole: Historical
     owner: Booking Service Team
     classification: Confidential
     scope:
@@ -3048,7 +3037,7 @@ The catalogue exposes several important facts before source content is retrieved
 * Database documentation is overdue for review.
 * The incident report is confidential.
 * The security guidance is mandatory.
-* The API contract was generated and validated against a known commit.
+* The published API contract has traceable metadata, but its compatibility with current runtime behaviour still needs verification.
 
 An agent that opens documents without checking this metadata could misclassify all of these sources.
 
@@ -3364,12 +3353,32 @@ The source catalogue correctly classifies it as supporting evidence with an over
 
 ### 7.11 Create the Knowledge Gap Record
 
-The agent has found conflicting evidence regarding corporate approval limits.
+The agent has identified a missing, unapproved approval threshold; the service-ownership question is already resolved by applicable authoritative sources. Record this as a **knowledge gap**, not as a conflict between two approved policies.
+
+Separately, the API contract-versus-implementation mismatch should be recorded under `.ai/knowledge/conflicts/CF-BOOKING-API-001.md`, with its owner, evidence, impact, and resolution status. For example:
+
+```markdown
+# CF-BOOKING-API-001 — Published Contract and Implementation Divergence
+
+Status: Awaiting Booking Service Owner decision
+
+Sources:
+- `contracts/openapi/booking-api.v2.yaml` (Published)
+- `src/Booking/` (examined revision)
+
+Finding: The contract exposes recurrence fields that the current code does not handle.
+
+Impact: Do not alter the published contract until its intended scope is confirmed.
+
+Decision owner: Booking Service Owner
+
+Resolution evidence: Recorded human decision and contract-test run.
+```
 
 Create:
 
 ```text
-.ai/knowledge/conflicts/KG-BOOKING-017.md
+.ai/knowledge/gaps/KG-BOOKING-017.md
 ```
 
 ```markdown
@@ -3546,6 +3555,11 @@ excludedSources:
     reason: Superseded by ADR-014
 
 conflicts:
+  - id: CF-BOOKING-API-001
+    subject: Published recurrence fields absent from current code
+    requiredOwner: Booking Service Owner
+
+knowledgeGaps:
   - id: KG-BOOKING-017
     subject: Corporate approval threshold
     implementationImpact: Do not hard-code a monetary threshold
@@ -3941,6 +3955,61 @@ public sealed class FleetSchedule
 }
 ```
 
+The aggregate uses supporting types that should also be defined in the Domain project. The following minimal declarations make the example explicit; a production implementation must additionally validate recurrence syntax, vehicle ownership, cancellation, concurrency, and approval transitions.
+
+```csharp
+namespace AlphaCarDetailing.Booking.Domain.FleetSchedules;
+
+public enum FleetScheduleStatus
+{
+    PendingApproval,
+    Active,
+    Rejected
+}
+
+public sealed record FleetScheduleVehicle(Guid FleetScheduleId, Guid VehicleId);
+
+public enum FleetScheduleOccurrenceStatus
+{
+    Pending,
+    Processing,
+    Completed,
+    Failed
+}
+
+public sealed class FleetScheduleOccurrence
+{
+    private FleetScheduleOccurrence() { } // For EF Core
+
+    public FleetScheduleOccurrence(
+        Guid id,
+        Guid fleetScheduleId,
+        Guid stationId,
+        DateOnly plannedServiceDate,
+        string idempotencyKey)
+    {
+        if (id == Guid.Empty || fleetScheduleId == Guid.Empty || stationId == Guid.Empty)
+            throw new ArgumentException("Identifiers must be nonempty.");
+        if (string.IsNullOrWhiteSpace(idempotencyKey))
+            throw new ArgumentException("An idempotency key is required.", nameof(idempotencyKey));
+
+        Id = id;
+        FleetScheduleId = fleetScheduleId;
+        StationId = stationId;
+        PlannedServiceDate = plannedServiceDate;
+        IdempotencyKey = idempotencyKey;
+        Status = FleetScheduleOccurrenceStatus.Pending;
+    }
+
+    public Guid Id { get; private set; }
+    public Guid FleetScheduleId { get; private set; }
+    public Guid StationId { get; private set; }
+    public DateOnly PlannedServiceDate { get; private set; }
+    public string IdempotencyKey { get; private set; } = string.Empty;
+    public FleetScheduleOccurrenceStatus Status { get; private set; }
+}
+```
+
 The domain model reflects approved evidence:
 
 * the schedule belongs to a corporate account;
@@ -3981,8 +4050,7 @@ public static class FleetScheduleIdempotencyKey
                 nameof(stationId));
         }
 
-        var source = string.Create(
-            provider: null,
+        var source = FormattableString.Invariant(
             $"{scheduleId:N}:{stationId:N}:{plannedServiceDate:yyyy-MM-dd}");
 
         var bytes = Encoding.UTF8.GetBytes(source);
@@ -3993,15 +4061,16 @@ public static class FleetScheduleIdempotencyKey
 }
 ```
 
-The key is based on the schedule, station, and occurrence date. Retries for the same occurrence generate the same key.
+The key is based on the schedule, station, and occurrence date. Retries for the same occurrence generate the same key. This key shape assumes **at most one occurrence per schedule, station, and service date**. If the product permits multiple daily slots, an immutable occurrence-slot identifier or scheduled start instant must be included consistently in both the key and uniqueness constraint.
 
 ### 7.18 Persistence Constraint
 
 The incident report shows that application-level checking alone is insufficient.
 
-The persistence model should enforce uniqueness.
+The persistence model should enforce uniqueness. **A unique `FleetScheduleOccurrence` row alone is not enough to guarantee one Booking record** if a worker crashes after booking creation but before it records completion. The booking write must also use a stable occurrence identifier under a unique constraint (or an equivalent durable idempotency ledger), with retry logic that reads the existing result. Use a database transaction where the writes share a database; for cross-service side effects, use an outbox/inbox or equivalent retry-safe coordination pattern.
 
 ```csharp
+using AlphaCarDetailing.Booking.Domain.FleetSchedules;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -4261,7 +4330,7 @@ The refresh record turns documentation quality into visible engineering work.
 
 ### 7.23 Expected Harness Output
 
-When the task completes, the harness should produce an evidence summary similar to the following.
+When the task completes, the harness should produce an evidence summary similar to the following. **The values below are fictional demonstration data, not tests or deployments executed for this chapter.** An actual harness must populate every result from a verifiable pipeline run.
 
 ```markdown
 # Harness Evidence Summary
@@ -4337,8 +4406,6 @@ It preserved citations and created explicit knowledge-refresh work.
 Most importantly, the agent proceeded where evidence was sufficient and escalated only the decisions that genuinely required human authority.
 
 That balance is central to Enterprise AI Engineering.
-
-Chapter 11 status: In progress — next section: Claude Example
 
 ## 8. Claude Example
 
@@ -4594,8 +4661,8 @@ ACD-FLEET-284 — Add recurring corporate fleet booking.
 
 5. `incidents/INC-2026-031-duplicate-fleet-bookings.md`
    - Status: Closed
-   - Authority: Historical
-   - Use: Defines the known duplicate-processing failure mode.
+   - Evidence role: Historical
+   - Use: Records the known duplicate-processing failure mode.
 
 6. `.ai/steering/release-3.8.md`
    - Status: Active
@@ -5166,6 +5233,8 @@ Do not report a scenario as passed merely because a test exists.
 
 ### 8.16 Example Claude Validation Output
 
+The following report illustrates the required evidence format. All commits, test counts, and results are **sample data**, not verified executions.
+
 ```markdown
 ## Validation Result
 
@@ -5519,8 +5588,6 @@ It determines:
 
 That is the difference between repository search and Repository Intelligence.
 
-Chapter 11 status: In progress — next section: GitHub Copilot Comparison
-
 ## 9. GitHub Copilot Comparison
 
 GitHub Copilot can use repository knowledge effectively, but its operating model differs from Claude Code in several important ways.
@@ -5722,6 +5789,8 @@ A file matched by an instruction pattern is not automatically authoritative.
 
 ### 9.4 Copilot Prompt for Source Discovery
 
+The following `.prompt.md` samples use the **VS Code Local-harness prompt-file format** (`agent: agent`). That prompt-file workflow is being deprecated in favour of Skills in newer Copilot harness sessions; for those sessions, package recurring procedures as an agent Skill with `SKILL.md`. Keep the vendor-neutral source catalogue and evidence rules unchanged. Verify which customization format your selected IDE and Copilot harness supports.
+
 Create:
 
 ```text
@@ -5730,7 +5799,7 @@ Create:
 
 ```markdown
 ---
-mode: agent
+agent: agent
 description: Discover and assess Knowledge Sources before implementation
 ---
 
@@ -5802,7 +5871,7 @@ Create:
 
 ```markdown
 ---
-mode: agent
+agent: agent
 description: Implement recurring corporate fleet booking using governed sources
 ---
 
@@ -6232,7 +6301,7 @@ A review Prompt might be stored at:
 
 ```markdown
 ---
-mode: agent
+agent: agent
 description: Review recurring fleet booking against approved evidence
 ---
 
@@ -6319,7 +6388,7 @@ Create:
 
 ```markdown
 ---
-mode: agent
+agent: agent
 description: Validate recurring fleet booking with execution evidence
 ---
 
@@ -6403,7 +6472,8 @@ Example:
   type: PullRequestFinding
   pullRequest: 482
   status: Resolved
-  authority: Historical
+  authority: Informational
+  evidenceRole: Historical
   owner: Booking Service Team
   subject: Retry idempotency
   finding: Random operation identifiers permit duplicate occurrence creation
@@ -6789,8 +6859,6 @@ It should help engineers establish:
 
 GitHub Copilot is therefore most effective when the repository turns evidence discovery into an explicit engineering workflow rather than leaving source selection to chance.
 
-Chapter 11 status: In progress — next section: Codex Comparison
-
 ## 10. Codex Comparison
 
 OpenAI Codex can participate in the same governed Knowledge Source model used by Claude Code and GitHub Copilot.
@@ -6826,6 +6894,10 @@ A Codex-compatible Alpha Car Detailing repository can retain the vendor-neutral 
 alpha-car-detailing/
 │
 ├── AGENTS.md
+├── .agents/
+│   └── skills/
+│       └── validate-knowledge-sources/
+│           └── SKILL.md
 │
 ├── .ai/
 │   ├── instructions/
@@ -6878,7 +6950,7 @@ alpha-car-detailing/
 
 `AGENTS.md` provides persistent repository instructions applicable to Codex and other compatible agents.
 
-The `.ai` directory preserves the broader vendor-neutral engineering model.
+The `.ai` directory preserves the broader vendor-neutral engineering model. The `.ai/skills/*.md` examples are **handbook conventions**, not automatically discovered native Codex Skills. Native reusable Codex Skills should be packaged as directories containing `SKILL.md` under `.agents/skills/` (or an equivalent supported skills location), optionally delegating to shared `.ai` procedures.
 
 ### 10.2 Codex Repository Instructions
 
@@ -7650,7 +7722,7 @@ ADR-014 also assigns approval ownership to Corporate Accounts.
   **Service Responsibilities**
 - `ADR-014`,
   **Decision**
-- `.ai/knowledge/conflicts/KG-BOOKING-017.md`,
+- `.ai/knowledge/gaps/KG-BOOKING-017.md`,
   **Safe Implementation Direction**
 
 ### Required Correction
@@ -7712,7 +7784,7 @@ Classify each requirement as:
 Do not infer success from test definitions or workflow files.
 ```
 
-Example output:
+Example output (illustrative only; no commands were executed for this manuscript):
 
 ```markdown
 # Validation Report
@@ -8123,8 +8195,6 @@ The effectiveness of Codex therefore depends less on the volume of repository co
 Claude Code, GitHub Copilot, and Codex can all work with the same Knowledge Source foundation.
 
 The enterprise should maintain one governed evidence model and adapt only the platform-specific invocation, instruction files, and orchestration mechanisms.
-
-Chapter 11 status: In progress — next section: Best Practices
 
 ## 11. Best Practices
 
@@ -8887,7 +8957,8 @@ Example:
 Source: INC-2026-031
 Type: Incident Report
 Status: Closed
-Authority: Historical
+Authority: Informational
+Evidence role: Historical
 Classification: Confidential
 Permitted use: Retry and idempotency failure analysis
 ```
@@ -9307,8 +9378,6 @@ Instead, it ensures that uncertainty is:
 The objective is not to give AI agents unlimited access to more documents.
 
 The objective is to give them controlled access to better evidence and a disciplined method for using it.
-
-Chapter 11 status: In progress — next section: Anti-patterns
 
 ## 12. Anti-patterns
 
@@ -10803,8 +10872,6 @@ A governed enterprise system must ensure that agents cannot gain apparent certai
 
 Knowledge Sources improve AI engineering only when the organisation treats source quality, source access, source interpretation, and source change as first-class architectural concerns.
 
-Chapter 11 status: In progress — next section: Architect’s Notes
-
 ## 13. Architect’s Notes
 
 Knowledge Sources are often introduced as a documentation concern.
@@ -12018,8 +12085,6 @@ It is to design a system in which:
 Knowledge Sources are therefore part of the architecture of AI-assisted delivery itself.
 
 Without that architecture, AI agents may produce technically sophisticated outputs based on the wrong evidence.
-
-Chapter 11 status: In progress — next section: Enterprise Tips
 
 ## 14. Enterprise Tips
 
@@ -13300,8 +13365,6 @@ It is achieved when the organisation can reliably answer:
 * Will future agents retrieve the corrected result?
 
 A mature organisation treats these questions as part of software architecture, delivery governance, security, and operational readiness.
-
-Chapter 11 status: In progress — next section: Decision Points
 
 ## 15. Decision Points
 
@@ -14874,8 +14937,6 @@ A mature organisation should be able to explain:
 
 When these decisions are explicit, Claude Code, GitHub Copilot, Codex, and future agents can operate within the same enterprise evidence model.
 
-Chapter 11 status: In progress — next section: Exercises
-
 ## 16. Exercises
 
 The exercises in this section are designed for architects, senior developers, engineering leads, platform engineers, security reviewers, and teams building AI-assisted development workflows.
@@ -15940,8 +16001,6 @@ The exercises are complete when the participant can demonstrate that they can:
 * prevent silent source modification;
 * integrate source governance into an AI harness;
 * preserve vendor-neutral principles across AI platforms.
-
-Chapter 11 status: In progress — next section: Interview Questions
 
 ## 17. Interview Questions
 
@@ -17772,8 +17831,6 @@ They should reveal whether the candidate understands that reliable AI-assisted e
 
 A candidate who can generate code but cannot evaluate evidence quality is not yet prepared to design enterprise AI engineering systems.
 
-Chapter 11 status: In progress — next section: Chapter Summary
-
 ## 18. Chapter Summary
 
 Knowledge Sources provide the evidence and context that AI agents need to make accurate, reviewable, and governable engineering decisions.
@@ -17916,7 +17973,7 @@ A source catalogue makes important evidence discoverable and governable.
 
 It should include metadata such as:
 
-```yaml id="8asxtm"
+```yaml
 id:
 title:
 type:
@@ -18118,7 +18175,7 @@ Technical controls should reinforce this boundary through:
 
 Inside an AI harness, Knowledge Sources should participate in a repeatable workflow:
 
-```text id="onay0a"
+```text
 Prompt
   ↓
 Instructions
@@ -18288,8 +18345,6 @@ When Knowledge Sources are poorly governed, AI agents can turn stale, conflictin
 Knowledge Sources are therefore not an optional documentation layer.
 
 They are a foundational component of Repository Intelligence and Enterprise AI Engineering.
-
-Chapter 11 status: In progress — next section: Further Reading
 
 ## 19. Further Reading
 
@@ -19023,7 +19078,21 @@ For teams continuing the Alpha Car Detailing implementation, review the followin
 * human decision records;
 * source-refresh status.
 
-### 19.27 Final Reading Principle
+### 19.27 Selected External References
+
+The following primary resources provide concrete standards, techniques, and platform documentation for further study. Consult the version applicable to your organisation’s tools and policies.
+
+- [Architecture Decision Records](https://adr.github.io/) — established ADR patterns and decision-record resources.
+- [The C4 Model](https://c4model.com/) — layered software-architecture diagrams and terminology.
+- [OpenAPI Specification](https://spec.openapis.org/oas/latest.html) — authoritative HTTP API description standard.
+- [Google Site Reliability Engineering Book](https://sre.google/sre-book/table-of-contents/) — operational readiness, monitoring, and incident practices.
+- [NIST AI Risk Management Framework](https://www.nist.gov/itl/ai-risk-management-framework) — governance and AI risk management.
+- [OWASP Top 10 for LLM Applications](https://owasp.org/www-project-top-10-for-large-language-model-applications/) — risks relevant to AI-assisted retrieval and agent systems.
+- [GitHub Copilot Custom Instructions](https://docs.github.com/en/copilot/concepts/prompting-and-context/custom-instructions) — repository and path-scoped guidance.
+- [VS Code Prompt Files](https://code.visualstudio.com/docs/agent-customization/prompt-files) — client-specific prompt-file format and compatibility guidance.
+- [Codex Repository Skills](https://developers.openai.com/blog/skills-agents-sdk) — `AGENTS.md`, `SKILL.md`, and repository-local workflows.
+
+### 19.28 Final Reading Principle
 
 Further reading should expand the team’s ability to evaluate evidence, not merely increase the number of documents available to AI agents.
 
@@ -19048,5 +19117,3 @@ Together, Chapters 5–11 establish a disciplined repository model:
 * Knowledge Sources provide evidence and context.
 
 These elements prepare the foundation for Part III: Harness Engineering, where the handbook will explain how to orchestrate agents, validation, evaluation, approvals, metrics, and evidence into repeatable enterprise workflows.
-
-Chapter 11 status: Complete

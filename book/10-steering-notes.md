@@ -2,100 +2,21 @@
 
 ## 1. Story-Driven Opening
 
-The Alpha Car Detailing engineering organization was entering the final week before the quarterly enterprise release.
+At 08:30 on Monday, the Alpha Car Detailing release team learned that its carefully planned final sprint had changed. Three national fleet customers were scheduled to begin onboarding the following week, and the Corporate Fleet Booking capability was a contractual dependency. The Booking Service could accept individual appointments, but fleet reservations still required engineering work on bulk requests, booking limits, and account-level authorization.
 
-One feature had become the company's highest business priority: **Corporate Fleet Booking**.
+Then an incident elsewhere in the platform consumed part of the release team's capacity. At the same time, a customer requested stronger protections against accidental duplicate bookings. The engineering lead had to make a choice: continue investing in planned architectural improvements, or narrow the work to the features and controls needed for the committed release. The team chose the latter. Notification refactoring was deferred; new service creation was frozen; database changes now required explicit DBA review; and security approval became a prerequisite for the release merge.
 
-The sales organization had already demonstrated the feature to three national fleet customers. Marketing campaigns had been scheduled. Customer onboarding sessions were booked. The executive steering committee had committed to the release date.
+The repository already held sound engineering guidance. Instructions established architecture, coding, security, testing, and observability standards. Skills captured reusable procedures for API implementation, transactional outbox processing, integration testing, and telemetry. Roles distinguished the Lead Agent, Developer Agent, Reviewer Agent, Validator Agent, and Evaluator Agent. Prompts assigned concrete tasks. None of these artifacts was wrong, but none by itself communicated the newly agreed mission.
 
-The repository already contained mature engineering guidance.
+The problem became visible in a parallel development run. One Developer Agent proposed splitting fleet reservations into a new microservice because it appeared architecturally attractive. Another pursued a Notification Service optimization found during repository discovery. Both changes might have been defensible during ordinary development. During release stabilization, both were distractions—and the first crossed an explicitly agreed boundary.
 
-Repository Instructions defined architecture standards, coding conventions, testing requirements, security policies, logging practices, and review expectations.
+The engineering lead published a short, approved briefing at `Search/steering-note.md`. It identified Corporate Fleet Booking as the highest priority, listed the services that could and could not change, named the release deadline, documented known risks and dependencies, and specified approvals and escalation conditions. The harness was configured to check that the note was current and to supply its approved version to each participating agent.
 
-Skills described repeatable engineering procedures such as creating APIs, publishing domain events, implementing transactional outbox patterns, adding OpenTelemetry instrumentation, and writing integration tests.
+The next run behaved differently. The Developer Agent extended the Booking Service rather than inventing another deployment unit. The Reviewer Agent checked tenant isolation and event compatibility. The Validator Agent collected integration evidence. The Lead Agent escalated an unresolved identity dependency instead of silently expanding scope. The team had not rewritten its architectural standards or its reusable workflows. It had supplied an operational mission briefing whose authority and lifetime were explicit.
 
-Roles separated responsibilities among Lead Agent, Developer Agent, Reviewer Agent, Validator Agent, Security Reviewer, and Evaluator Agent.
+That is the role of a **Steering Note**: temporary, human-maintained guidance that aligns engineering decisions with a current initiative while leaving durable engineering standards intact.
 
-Prompts described today's engineering work.
-
-Everything appeared ready.
-
-Then an unexpected situation emerged.
-
-A production issue affecting another service required emergency engineering attention. At the same time, the corporate fleet customers requested one additional capability before signing their contracts.
-
-Engineering priorities changed overnight.
-
-Not every service should continue receiving new features.
-
-Some services were now frozen.
-
-Some architectural improvements were postponed.
-
-Certain infrastructure work was temporarily suspended.
-
-Additional security approval became mandatory before deployment.
-
-The repository Instructions remained correct.
-
-The Skills remained correct.
-
-The Roles remained correct.
-
-The Prompt requesting implementation of Corporate Fleet Booking remained valid.
-
-Yet none of those artifacts communicated the organization's **current mission**.
-
-Every AI coding agent needed immediate awareness that:
-
-* Fleet Booking was the organization's highest priority.
-* Customer Notification Service was temporarily out of scope.
-* Pricing Service changes required architecture approval.
-* The Booking Service must be completed before Friday.
-* Security review was mandatory before merging.
-* Database schema changes required DBA approval.
-* Existing APIs could be extended, but no new microservices could be introduced during the release stabilization period.
-* Any performance degradation exceeding agreed thresholds required immediate escalation.
-
-These directions were temporary.
-
-They would disappear after the release.
-
-Embedding them into repository Instructions would permanently pollute engineering standards.
-
-Embedding them into Skills would incorrectly alter reusable implementation workflows.
-
-Embedding them into Prompts would require repeating identical business context across dozens of engineering tasks.
-
-Instead, the engineering lead updated a single repository file:
-
-```text
-Search/steering-note.md
-```
-
-Every AI agent began its work by reading that file.
-
-Developer agents understood current priorities.
-
-Reviewer agents knew which rules required additional attention.
-
-Validator agents recognized temporary acceptance criteria.
-
-Evaluator agents understood release risks.
-
-The Steering Note aligned every participant around the current mission without changing the long-term engineering standards of the repository.
-
-This distinction represents one of the most important concepts in Enterprise AI Engineering.
-
-A repository contains both permanent knowledge and temporary direction.
-
-Instructions preserve institutional engineering standards.
-
-Steering Notes communicate today's operational reality.
-
----
-
-# 2. Learning Objectives
+## 2. Learning Objectives
 
 After completing this chapter, you will be able to:
 
@@ -110,67 +31,22 @@ After completing this chapter, you will be able to:
 * Recognize common anti-patterns associated with temporary engineering guidance.
 * Govern Steering Notes as auditable engineering artifacts rather than informal documentation.
 
----
 
-# 3. Background
+## 3. Background
 
-Enterprise software development rarely occurs under static conditions.
+Enterprise delivery operates on two different timescales. Some decisions endure across many releases: where authentication is enforced, how services publish events, how changes are reviewed, and what evidence is required before deployment. Other decisions are short-lived: which customer commitment takes precedence this week, which integration is under a change freeze, what has become a release blocker, and which approvers must be consulted before a specific milestone.
 
-Business priorities evolve.
+Human teams often absorb the second category through planning meetings, incident bridges, release channels, and informal discussions. AI agents do not automatically share that situational awareness. Even when an agent can access collaboration tools, access does not establish which message is current, approved, or applicable. An agent presented with only repository code and permanent Instructions may propose work that is technically reasonable but operationally wrong.
 
-Release schedules change.
+Duplicating mission context in every Prompt is equally fragile. A release with multiple services and parallel agent runs can produce dozens of task Prompts. If the deadline moves or an external dependency fails, copied instructions diverge. Some agents act on the newest priority; others act on yesterday's description. A Steering Note solves that coordination problem by providing one governed, time-bound source of mission context.
 
-Security incidents emerge.
+The note is deliberately neither a task backlog nor a substitute for architecture documentation. It records current priorities, constraints, risks, dependencies, and escalation boundaries; Prompts still define individual tasks, Knowledge Sources still describe the system, and Instructions still define mandatory standards. The harness or human operator is responsible for making the relevant note available and verifying that it is the approved version.
 
-Production defects require immediate attention.
+This distinction matters most under pressure. A release freeze, security incident, regulatory change, or customer escalation is precisely when an organization needs concise guidance with a named owner, a finite lifetime, and an auditable decision trail. Without these properties, temporary direction tends to become untraceable folklore—or, worse, an accidental permanent exception.
 
-Architecture reviews introduce temporary constraints.
+## 4. Concepts
 
-External dependencies become unavailable.
-
-Compliance requirements change before deployment.
-
-While permanent engineering standards remain relatively stable, operational priorities can change several times during a single sprint.
-
-Human engineering teams naturally communicate these changes through meetings, release briefings, architecture reviews, chat channels, sprint planning sessions, and daily stand-ups.
-
-AI coding agents do not participate in these conversations.
-
-Without an explicit mechanism for communicating temporary direction, different agents may optimize for different objectives.
-
-One agent may continue refactoring code during a release freeze.
-
-Another may introduce architectural improvements that delay deployment.
-
-A third may implement features that have already been deprioritized.
-
-None of these actions violate repository Instructions.
-
-None violate Skills.
-
-None violate their assigned Role.
-
-They simply lack awareness of the organization's current mission.
-
-Steering Notes bridge this gap.
-
-They provide a concise, human-maintained briefing that informs every AI agent of the current engineering context before work begins.
-
-Unlike Instructions, Steering Notes are intentionally temporary.
-
-Unlike Prompts, they are shared across many engineering tasks.
-
-Unlike Skills, they describe priorities rather than procedures.
-
-Unlike Roles, they describe mission context rather than responsibilities.
-
-They are operational guidance rather than institutional knowledge.
-
----
-
-# 4. Concepts
-
-## What Is a Steering Note?
+### What Is a Steering Note?
 
 A **Steering Note** is a temporary, human-authored engineering document that communicates the current mission, priorities, constraints, risks, dependencies, and expectations for AI agents participating in a specific initiative, sprint, release, or operational activity.
 
@@ -187,9 +63,8 @@ Search/
 
 An AI harness can automatically discover this location during repository initialization and include its contents in the context supplied to every participating AI agent. This aligns with the agreed project convention that `Search/steering-note.md` serves as the mission briefing maintained by humans for AI consumption.
 
----
 
-## Characteristics of a Steering Note
+### Characteristics of a Steering Note
 
 A professional Steering Note has several defining characteristics.
 
@@ -203,9 +78,8 @@ A professional Steering Note has several defining characteristics.
 | Time-bound         | Includes an expected expiration date or review date.                         |
 | Auditable          | Changes are tracked through version control and code review.                 |
 
----
 
-## Why Temporary Guidance Is Needed
+### Why Temporary Guidance Is Needed
 
 Enterprise repositories already contain substantial engineering knowledge.
 
@@ -223,9 +97,8 @@ These are operational decisions.
 
 They belong in a Steering Note because they change frequently and should not become permanent engineering standards.
 
----
 
-## Typical Contents of a Steering Note
+### Typical Contents of a Steering Note
 
 Although organizations may customize the format, enterprise Steering Notes commonly include sections such as:
 
@@ -244,9 +117,8 @@ Although organizations may customize the format, enterprise Steering Notes commo
 | Expected Outputs          | Clarifies the deliverables expected from participating agents. |
 | Expiration                | Specifies when the Steering Note is no longer valid.           |
 
----
 
-## Example Steering Note
+### Example Steering Note
 
 The following simplified example illustrates a Steering Note for the Corporate Fleet Booking release.
 
@@ -273,7 +145,7 @@ No database technology changes.
 Reuse existing event contracts.
 
 Release Deadline
-Friday 18:00 UTC
+2026-07-10 18:00 UTC
 
 Known Risks
 Large fleet imports.
@@ -290,16 +162,15 @@ Security vulnerability
 Breaking API change
 
 Expiration
-Remove after Q3 release completion.
+Expires 2026-07-11 18:00 UTC, unless superseded earlier; renewal requires approval.
 ```
 
 This document provides operational context that every participating AI agent can understand before beginning work.
 
 Unlike repository Instructions, it intentionally describes only the current initiative.
 
----
 
-## Steering Notes Are Normally Human-Maintained
+### Steering Notes Are Normally Human-Maintained
 
 One of the most important governance principles in Enterprise AI Engineering is ownership.
 
@@ -320,7 +191,7 @@ AI agents are expected to:
 * Respect its constraints.
 * Reference it when making implementation decisions.
 
-AI agents should **not** silently modify the Steering Note.
+AI agents must **not** silently modify the Steering Note. Any explicitly authorized edit remains subject to the prescribed human review and approval gates.
 
 If an agent discovers conflicting priorities, outdated guidance, missing dependencies, or new operational risks, it should prepare a recommendation instead of altering the repository.
 
@@ -334,9 +205,8 @@ A human reviewer evaluates the proposal and decides whether the official Steerin
 
 This governance model preserves accountability while allowing AI systems to surface valuable observations without becoming the authority over organizational priorities.
 
----
 
-# 5. Architecture Discussion
+## 5. Architecture Discussion
 
 Steering Notes are most effective when treated as a first-class architectural component of the AI engineering ecosystem rather than as informal project documentation.
 
@@ -362,9 +232,8 @@ They are not organizational policy.
 
 They are mission guidance.
 
----
 
-## Steering Notes Within Repository Intelligence
+### Steering Notes Within Repository Intelligence
 
 The following architecture illustrates how Steering Notes complement the other repository artifacts.
 
@@ -403,9 +272,8 @@ Each repository artifact answers a different question.
 
 Collectively, these artifacts enable AI agents to make decisions that are technically correct, procedurally consistent, organizationally aligned, and operationally relevant.
 
----
 
-## Steering Notes Versus Instructions
+### Steering Notes Versus Instructions
 
 This distinction is fundamental to Enterprise AI Engineering.
 
@@ -421,13 +289,13 @@ Examples include:
 * Architectural patterns
 * Branch policies
 
-These standards rarely change.
+These standards normally evolve more slowly than release priorities.
 
 Steering Notes, by contrast, intentionally change whenever organizational priorities change.
 
 Consider the following example from Alpha Car Detailing.
 
-### Repository Instruction
+#### Repository Instruction
 
 ```text
 Every externally accessible API must expose OpenTelemetry traces.
@@ -443,7 +311,7 @@ During the Fleet Booking release, prioritize API stability over performance opti
 
 This guidance applies only during the current release.
 
-After deployment, the guidance disappears.
+After its approved lifetime, the guidance expires and should be archived or superseded.
 
 Promoting temporary operational guidance into permanent Instructions creates unnecessary long-term complexity.
 
@@ -451,9 +319,8 @@ Likewise, embedding permanent standards into Steering Notes risks those standard
 
 Enterprise repositories therefore maintain a clear separation between enduring engineering policy and temporary operational direction.
 
----
 
-## Steering Notes Versus Prompts
+### Steering Notes Versus Prompts
 
 Prompts define individual engineering tasks.
 
@@ -479,15 +346,14 @@ Architecture review is mandatory before merge.
 Performance regressions require immediate escalation.
 ```
 
-Every Prompt issued during the release automatically inherits this context.
+Every Prompt issued through the configured harness can receive this context; direct agent sessions must explicitly load or reference the note.
 
 Instead of repeating these conditions across dozens of prompts, the repository centralizes them within a single Steering Note.
 
-This significantly improves consistency while reducing prompt duplication.
+When the loading mechanism is verified, this improves consistency and reduces duplication across task Prompts.
 
----
 
-## Steering Notes Versus Roles
+### Steering Notes Versus Roles
 
 Roles define responsibilities.
 
@@ -519,9 +385,8 @@ Similarly, a Developer Agent continues implementing software according to its as
 
 The Steering Note merely explains which work should receive immediate attention.
 
----
 
-## Steering Notes Versus Knowledge Sources
+### Steering Notes Versus Knowledge Sources
 
 Knowledge Sources provide factual information.
 
@@ -553,13 +418,12 @@ Steering Notes describe today's operational priorities.
 
 Because they solve different problems, both should be supplied to AI agents.
 
----
 
-## Scope and Lifetime
+### Scope and Lifetime
 
 One of the defining characteristics of Steering Notes is their deliberately limited lifespan.
 
-A Steering Note should never become permanent repository documentation.
+A Steering Note should not remain active as permanent repository documentation.
 
 Instead, it should exist only for the duration of a clearly defined operational activity.
 
@@ -590,9 +454,8 @@ When the initiative concludes, the Steering Note should either:
 
 Allowing obsolete Steering Notes to remain active creates confusion for both humans and AI agents.
 
----
 
-## Ownership and Update Responsibility
+### Ownership and Update Responsibility
 
 Unlike Skills or Prompts, Steering Notes represent organizational intent rather than engineering implementation.
 
@@ -623,9 +486,8 @@ However, these observations should be presented as recommendations rather than d
 
 This separation preserves clear accountability for operational decisions.
 
----
 
-## AI-Proposed Steering Updates
+### AI-Proposed Steering Updates
 
 Enterprise AI systems become increasingly valuable as they observe repository activity.
 
@@ -660,13 +522,12 @@ Human Approval Required
 
 The proposal becomes part of the normal engineering review process.
 
-Only after human approval should the official Steering Note be updated.
+Only after the designated human approvals should the official Steering Note be updated and activated.
 
 This governance model aligns with the broader handbook principle that AI systems recommend improvements while humans retain authority over engineering standards and organizational direction.
 
----
 
-## Approval and Expiration
+### Approval and Expiration
 
 Every Steering Note should identify who is authorized to approve it.
 
@@ -692,779 +553,374 @@ Possible approaches include:
 
 A Steering Note without an expiration condition eventually becomes indistinguishable from permanent repository documentation, defeating its intended purpose.
 
----
 
-# 6. Professional Diagrams
+### Authority, Conflicts, and Permitted Exceptions
 
-Steering Notes are best understood as a temporary governance layer that sits above implementation activities and below long-term repository standards.
+A Steering Note is not a mechanism for overriding higher-authority controls. It can narrow the set of acceptable engineering choices—such as deferring a refactor or prohibiting a new service during stabilization—but it cannot suspend mandatory authentication, audit logging, data residency, approved change control, or other binding policies. A temporary exception to a mandatory requirement must follow the organization's separate exception process and be approved by the owner of that requirement.
 
-Unlike Instructions, which define permanent engineering policy, Steering Notes continuously adapt to the current business mission.
+| Situation | Required response |
+| --- | --- |
+| The Steering Note narrows an otherwise permitted design choice | Apply the temporary restriction for the specified scope and dates. |
+| The note contradicts a mandatory Instruction or security policy | Do not implement the conflicting direction; escalate to the accountable owners. |
+| Two approved Steering Notes claim the same scope | Hold affected work until the designated owner resolves precedence. |
+| The note is expired, unapproved, or lacks an identifiable owner | Do not treat it as active authority; seek a valid note or explicit human decision. |
+| The Prompt requests work outside the note's scope | Explain the conflict and obtain an authorized scope update before proceeding. |
+| A task involves a security incident requiring an emergency policy exception | Follow the formal incident and exception process; record the authorization and lifetime. |
 
-The following diagrams illustrate how Steering Notes participate in Enterprise AI Engineering.
+The resolution sequence is deliberately simple: identify the documents and their approved versions, determine whether the disagreement is about priority or mandatory policy, stop the conflicting work, route the decision to the relevant human owner, and preserve the decision in the run record. A newer file timestamp is not proof that one document supersedes another.
 
----
+### Agent Permissions and Trust Boundaries
 
-## Steering Notes Within the Repository Intelligence Model
+The Steering Note should be accessible as read-only context during ordinary engineering execution. The agent can report ambiguities and create a separate update proposal in an authorized workspace. It should not modify the active note, change its approval metadata, alter its expiration, or assign itself new approval authority. If an organization explicitly authorizes an agent to prepare edits to the active file, those edits should still be treated as a pending change and should not become operative until the required human approval has been recorded.
 
-```mermaid
-flowchart TB
+A Markdown declaration alone does not enforce these permissions. Repository branch protection, scoped credentials, CODEOWNERS or equivalent review controls, CI checks on protected files, and independent approval records are necessary defense-in-depth controls. The harness must not equate an agent-written phrase such as “approved” with proof of authorization.
 
-    subgraph Repository["Repository Intelligence"]
-        A[Instructions]
-        B[Skills]
-        C[Roles]
-        D[Knowledge Sources]
-        E[Steering Note]
-        F[Prompt]
-    end
+Steering Notes are also an input-trust boundary. A compromised note can carry prompt-injection-like instructions that request unauthorized tool use, secret disclosure, or altered approval behavior. Limit write access, review changes, verify the expected source and revision, and do not permit the note to override tool permissions or higher-priority security controls. Avoid embedding customer data, tokens, internal credentials, or unnecessary incident details in an agent-consumable briefing.
 
-    Repository --> G[Lead Agent]
+### Versioning Across Long-Running and Parallel Work
 
-    G --> H[Developer Agent]
-    G --> I[Reviewer Agent]
-    G --> J[Validator Agent]
-    G --> K[Evaluator Agent]
+A multi-agent run should record the approved Steering Note version or content hash at initialization. The Lead Agent may distribute role-specific excerpts, but all participating agents should reference that same approved snapshot. If the owner publishes a new version while work is in progress, the harness needs an explicit transition decision: continue under the captured version if still safe and authorized, revalidate and replan against the new version, or stop the affected work. Silent mid-run substitution makes outcomes difficult to reproduce.
 
-    H --> L[Implementation]
-    I --> L
-    J --> L
-    K --> L
-```
+Parallel branches may carry different repository snapshots. Before merge or release, validation should compare the run's Steering Note version against the currently approved release guidance and report material drift. A note that expired during execution is not automatically extended because a run remains active.
 
-Every participating agent receives exactly the same Steering Note.
+## 6. Professional Diagrams
 
-No agent is expected to discover current priorities independently.
+A Steering Note is a controlled input to a development run, not an alternative instruction hierarchy. The following diagrams distinguish **context assembly**, **document governance**, and **multi-agent execution**—three concerns that are easily confused when a note is treated as just another file in the repository.
 
-Instead, the repository communicates organizational intent consistently to every participant.
-
----
-
-## Separation of Permanent and Temporary Guidance
-
-```mermaid
-flowchart LR
-
-    A[Enterprise Standards]
-
-    A --> B[Instructions]
-
-    B --> C[Permanent Rules]
-
-    D[Current Initiative]
-
-    D --> E[Steering Note]
-
-    E --> F[Temporary Direction]
-
-    C --> G[AI Agent]
-
-    F --> G
-
-    G --> H[Engineering Decisions]
-```
-
-The AI agent simultaneously consumes:
-
-* permanent repository standards, and
-* temporary operational guidance.
-
-Both are necessary.
-
-Permanent standards ensure consistency.
-
-Temporary guidance ensures organizational alignment.
-
----
-
-## Steering Note Lifecycle
+### Context Assembly and Admission
 
 ```mermaid
 flowchart TD
-
-    A[Engineering Lead]
-
-    A --> B[Create Steering Note]
-
-    B --> C[Repository]
-
-    C --> D[AI Harness Discovery]
-
-    D --> E[All AI Agents Read Note]
-
-    E --> F[Engineering Work]
-
-    F --> G{Need Update?}
-
-    G -- No --> H[Continue]
-
-    G -- Yes --> I[Generate proposed-steering-update.md]
-
-    I --> J[Human Review]
-
-    J --> K{Approved?}
-
-    K -- Yes --> L[Update Steering Note]
-
-    K -- No --> H
-
-    L --> H
-
-    H --> M[Release Complete]
-
-    M --> N[Archive or Remove Steering Note]
+    A["Engineering task submitted"] --> B["Discover repository guidance"]
+    B --> C["Read active Steering Note"]
+    C --> D{"In scope, approved, and current?"}
+    D -- "No / uncertain" --> E["Hold scoped work and request human clarification"]
+    D -- "Yes" --> F["Capture version and content hash"]
+    F --> G["Assemble role, task, skills, and knowledge"]
+    G --> H["Run permitted engineering work"]
+    H --> I["Review and deterministic validation gates"]
+    I --> J["Record evidence and submit for approval"]
 ```
 
-This lifecycle reinforces a fundamental governance principle:
+The discovery mechanism does not make a Markdown file authoritative by itself. Approval metadata, applicability, date checks, and repository controls determine whether the note is eligible for use. A note that is missing, expired, or contradictory cannot silently be replaced by an agent's best guess when a task depends on that guidance.
 
-AI agents may recommend changes, but humans approve organizational direction.
+### Governance Lifecycle
 
----
+```mermaid
+stateDiagram-v2
+    [*] --> Draft
+    Draft --> Approved: Authorized human approval
+    Approved --> Active: Effective date reached
+    Active --> ProposedRevision: Agent or engineer identifies change
+    ProposedRevision --> Active: Proposal declined
+    ProposedRevision --> Approved: Human approves new version
+    Active --> Expired: Deadline or exit condition reached
+    Approved --> Superseded: Replaced before activation
+    Expired --> Archived: Record retained
+    Superseded --> Archived
+    Archived --> [*]
+```
 
-## Steering Notes Inside an AI Harness
+A proposal is not a revision to the active note. Until the updated document is approved and activated, the last valid approved version remains the governing mission briefing. A new deadline or exception must never be inferred from the existence of a proposed update.
 
-The AI harness acts as the orchestration layer responsible for distributing Steering Notes to every participating agent.
+### Consistent Multi-Agent Consumption
 
 ```mermaid
 sequenceDiagram
-
+    participant Owner as Human Owner
+    participant Repo as Controlled Repository
+    participant Harness as AI Harness
     participant Lead as Lead Agent
-    participant Harness
-    participant Search as Search/steering-note.md
     participant Dev as Developer Agent
     participant Review as Reviewer Agent
-    participant Validate as Validator Agent
+    participant Gate as Validation Gate
 
-    Lead->>Harness: Begin engineering task
-
-    Harness->>Search: Read Steering Note
-
-    Search-->>Harness: Current mission guidance
-
-    Harness-->>Dev: Context + Steering Note
-
-    Harness-->>Review: Context + Steering Note
-
-    Harness-->>Validate: Context + Steering Note
-
-    Dev->>Harness: Implementation
-
-    Review->>Harness: Review
-
-    Validate->>Harness: Validation
+    Owner->>Repo: Approve steering-note.md version 1.2
+    Harness->>Repo: Retrieve and validate approved version
+    Repo-->>Harness: Version 1.2 and content hash
+    Harness->>Lead: Mission summary and version reference
+    Harness->>Dev: Applicable constraints and version reference
+    Dev-->>Harness: Implementation and evidence
+    Harness->>Review: Applicable constraints and version reference
+    Review-->>Harness: Findings and approval requirements
+    Harness->>Gate: Validate restrictions and protected-file changes
+    Gate-->>Harness: Pass, fail, or human approval required
+    Harness-->>Owner: Results, version used, unresolved decisions
 ```
 
-Because every agent receives identical mission guidance, engineering decisions remain aligned throughout the workflow.
+Agents do not necessarily receive identical prompts or all the same documents. The architectural requirement is that they operate against **the same approved Steering Note version**, using the relevant portions for their Roles. The harness records the version or content hash used by the run so that later reviews can reconstruct the decision context.
 
----
 
-## Steering Note Governance
+## 7. Hands-on Example
 
-```mermaid
-flowchart TD
+Alpha Car Detailing is preparing Corporate Fleet Booking for a contractual release. The Booking Service already supports individual reservations; the new capability introduces fleet-level booking limits, bulk requests, and compatibility requirements for existing customer integrations. The deadline creates pressure to improve the platform, but the release steering decision is to extend the current architecture rather than expand the service topology.
 
-    A[Human Owner]
+The exercise below creates one authoritative mission briefing, consumes it during an agent run, and demonstrates how an agent proposes—not performs—a governance change.
 
-    A --> B[Steering Note]
-
-    B --> C[AI Reads]
-
-    C --> D[Engineering Decisions]
-
-    D --> E{Improvement Needed?}
-
-    E -- No --> F[Continue]
-
-    E -- Yes --> G[proposed-steering-update.md]
-
-    G --> H[Human Approval]
-
-    H --> I[Update Steering Note]
-
-    I --> B
-```
-
-This governance model preserves organizational accountability while still allowing AI agents to contribute useful operational observations.
-
----
-
-# 7. Hands-on Example
-
-Throughout this handbook, Alpha Car Detailing serves as the enterprise reference implementation.
-
-The engineering organization is preparing the **Corporate Fleet Booking** capability for the upcoming quarterly release.
-
-A Steering Note has been created to ensure every AI agent understands the current operational priorities.
-
----
-
-## Example Repository Structure
+### Repository Placement
 
 ```text
-AlphaCarDetailing/
-
-Search/
-    steering-note.md
-
-Instructions/
-    CLAUDE.md
-
-Skills/
-    create-api.md
-    create-event.md
-    transactional-outbox.md
-
-Prompts/
-    implement-fleet-booking.md
-
-Roles/
-    developer.md
-    reviewer.md
-    validator.md
+alpha-car-detailing/
+├── CLAUDE.md
+├── AGENTS.md
+├── .github/
+│   └── copilot-instructions.md
+├── Search/
+│   ├── steering-note.md
+│   └── proposed-steering-update.md   # created only when needed
+├── Skills/
+├── Roles/
+├── Prompts/
+├── Knowledge/
+└── harness/
 ```
 
-The repository discovery process identifies all repository intelligence before engineering begins.
+`Search/` is the convention used by this handbook; it is **not** a directory that Claude Code, GitHub Copilot, or Codex automatically recognizes as a special Steering Note location. The repository Instructions or harness configuration must explicitly identify it. The proposal file does not need to exist until a change is recommended.
 
-The harness loads:
+### The Active Steering Note
 
-1. Repository Instructions
-2. Required Skills
-3. Assigned Role
-4. Current Prompt
-5. Steering Note
-6. Relevant Knowledge Sources
-
-Only after all context has been assembled does implementation begin.
-
----
-
-## Example Steering Note
+Create `Search/steering-note.md` with the following content. The dates, services, roles, and approval status are illustrative values for this scenario, not statements about a real deployment.
 
 ```markdown
-# Fleet Booking Release
+# Steering Note — Corporate Fleet Booking Release
 
-Owner
-Technical Lead
+| Field | Value |
+| --- | --- |
+| Mission ID | ACD-FLEET-2026-Q3 |
+| Version | 1.2 |
+| Status | Approved |
+| Owner | Fleet Release Technical Lead |
+| Business sponsor | Enterprise Fleet Product Lead |
+| Effective (UTC) | 2026-07-06 09:00 |
+| Review by (UTC) | 2026-07-09 12:00 |
+| Release deadline (UTC) | 2026-07-10 18:00 |
+| Expires (UTC) | 2026-07-11 18:00 |
+| Approval record | Change request ACD-REL-042 (illustrative) |
 
-Effective Date
-2026-07-01
+## Current business priority
 
-Review Date
-2026-07-05
+Deliver Corporate Fleet Booking for contractual customer onboarding.
+Prioritize release stability and compatibility over unrelated optimization.
 
-Expiration
-Release Completion
+## Scope
 
-Business Priority
+**In scope:** Booking Service, Fleet Management Service integration,
+existing Customer API, related integration tests and telemetry.
 
-Corporate Fleet Booking is the highest engineering priority for this release.
+**Out of scope:** Loyalty Service, Notification Service refactoring,
+Pricing Service optimization, creation of new microservices.
 
-Services In Scope
+## Architecture boundaries
 
-- Booking Service
-- Fleet Service
-- Customer API
+- Extend existing service boundaries; do not introduce another service.
+- Preserve published booking API and event compatibility.
+- Use the existing transactional outbox for integration events.
+- Database schema changes require DBA and architecture approval.
+- These restrictions do not waive any permanent security or quality policy.
 
-Services Out of Scope
+## Security and data handling
 
-- Loyalty Service
-- Mobile Application
-- Notification Refactoring
+- Preserve tenant isolation and authorization for corporate fleet accounts.
+- Do not place customer identifiers or tokens in logs or agent transcripts.
+- Security approval is required before release merge.
+- Do not use production customer data for agent experiments.
 
-Architecture Constraints
+## Dependencies
 
-Reuse existing Booking events.
+- Identity Service: security contract and token scopes to be confirmed.
+- Fleet Management API: compatibility verification required.
+- Release Engineering: staging deployment window must be reserved.
 
-No new microservices.
+## Known risks
 
-No database platform changes.
+- Imports containing up to 100,000 vehicles may stress booking throughput.
+- Large concurrent booking batches may amplify duplicate requests.
+- Identity Service maintenance may affect end-to-end validation.
 
-Security
+## Required outputs
 
-Security review required before merge.
+- Reviewed implementation of the approved fleet booking scope.
+- Unit and integration test results, including tenant isolation.
+- Evidence of idempotent processing and event compatibility.
+- Traces and performance observations against approved service SLOs.
+- Architecture, DBA (if relevant), and security approval records.
 
-Dependencies
+## Stop and escalate when
 
-Fleet Management API
+- An implementation requires an out-of-scope service change.
+- A breaking API/event contract or tenant isolation defect is detected.
+- A change violates permanent repository or enterprise policy.
+- Performance exceeds an approved SLO or a required dependency is blocked.
+- Approval, ownership, applicability, or expiry is unclear.
 
-Identity Service
+## Retirement
 
-Architecture Review
-
-Known Risks
-
-Large customer imports
-
-Peak booking traffic
-
-Escalation
-
-Performance degradation
-
-Breaking API changes
-
-Authentication failures
-
-Expected Outputs
-
-Production-ready implementation
-
-Integration tests
-
-Architecture approval
-
-Security approval
+The owner must archive or supersede this note at release closure.
+After expiry, agents must not treat it as active without reapproval.
 ```
 
-Notice that none of this information belongs in repository Instructions.
+The note supplies business priorities and temporary boundaries, while referencing existing enterprise controls instead of duplicating them. Most importantly, it includes a finite expiry, a named human owner, clear stop conditions, and an approval record that can be verified against the actual change-management system.
 
-Likewise, it should not be duplicated inside every Prompt.
+### Execute a Scoped Task
 
-The Steering Note centralizes current operational guidance for the entire initiative.
-
----
-
-## Agent Behavior
-
-After reading the Steering Note, a Developer Agent immediately understands:
-
-* Fleet Booking takes precedence over lower-priority enhancements.
-* New microservices must not be introduced.
-* Existing event contracts must be reused.
-* Security approval is mandatory.
-* Performance regressions require escalation.
-
-A Reviewer Agent focuses additional attention on:
-
-* Event compatibility
-* Security compliance
-* Architecture constraints
-
-A Validator Agent confirms:
-
-* Required integration tests exist.
-* Deployment constraints have been respected.
-* Expected deliverables have been produced.
-
-Each agent continues fulfilling its assigned Role while operating under the same temporary mission guidance.
-
----
-
-## Detecting an Outdated Steering Note
-
-During implementation, the Evaluator Agent discovers that the Fleet Management API dependency has already been upgraded and the associated temporary restriction is no longer necessary.
-
-The agent **does not** edit `Search/steering-note.md`.
-
-Instead, it creates:
+The task Prompt remains independent of the Steering Note:
 
 ```text
-proposed-steering-update.md
+Implement corporate fleet booking limits in the existing Booking Service.
+Read the active Search/steering-note.md and applicable repository
+Instructions before editing. Identify any conflict or expired guidance.
+Do not modify the Steering Note. Reuse current event contracts and
+outbox processing. Supply implementation evidence, tests, and approvals
+required before merge; if blocked, report the issue rather than
+expanding scope without authorization.
 ```
 
-Example:
+The agent should produce changes to the Booking domain and application workflow, relevant API behavior, automated tests, and an evidence summary. It should not create a Notification Service refactor simply because the same code review uncovered one. That observation belongs in a separate proposal or backlog item.
+
+### Example: An Agent Detects a Changed Dependency
+
+Suppose the Evaluator Agent finds verified evidence that the Fleet Management API compatibility restriction is no longer needed. It creates `Search/proposed-steering-update.md`:
 
 ```markdown
-Observation
+# Proposed Steering Update — ACD-FLEET-2026-Q3
 
-Fleet Management API v3 has completed production rollout.
+- Current Steering Note: version 1.2
+- Proposed by: Evaluator Agent, run ACD-RUN-084 (illustrative)
+- Proposed status: Awaiting human review
+- Proposed owner: Fleet Release Technical Lead
 
-Recommendation
+## Observation
 
-Remove temporary compatibility warning.
+The Fleet Management API compatibility test suite passed against the
+new integration endpoint. This suggests the temporary compatibility
+warning may be obsolete; production readiness is not assumed.
 
-Reason
+## Evidence
 
-Dependency validation completed successfully.
+- Integration verification: FT-212, run ACD-RUN-084
+- API contract diff: no breaking changes reported
+- Outstanding check: release owner to verify production readiness
 
-Supporting Evidence
+## Requested change
 
-Integration Test FT-212
-Production Validation Report
+Review whether the compatibility warning may be removed. Do not
+change any other release constraint.
 
-Approval Required
+## Decision
 
-Technical Lead
+Pending explicit approval from the Technical Lead and API owner.
 ```
 
-The Technical Lead reviews the proposal.
+This is deliberately a **proposal**, not an edit to the approved note. The reviewer verifies the evidence and its scope. If approved, a human updates the note in a separate, attributable repository change, increments the version, and records the approval. If rejected, the current approved note continues to apply and the proposal remains available for audit.
 
-If approved, the official Steering Note is updated.
+### Acceptance Check
 
-If rejected, the proposal becomes part of the engineering audit trail.
+Before merging work produced under this mission, the team should confirm that the Steering Note was active when the run started; that its version was recorded; that restricted services were untouched or explicitly approved; that tests and deterministic checks passed; and that any security or architecture exceptions were approved through the normal governance process. These checks should be represented in the harness and repository protection settings, not left solely to an AI agent's self-assessment.
 
-This workflow preserves the handbook's governance principle that Steering Notes are normally maintained by humans while allowing AI agents to contribute recommendations without assuming organizational authority.
 
----
+## 8. Claude Example
 
-# 8. Claude Example
+Claude Code can read repository context and its conventional `CLAUDE.md` instructions, but `Search/steering-note.md` is a **project convention rather than a Claude Code native configuration file**. The team must instruct Claude to read the note, or its harness must supply the contents. Relying on the filename alone is not sufficient.
 
-Throughout this handbook, **Claude Code** serves as the primary implementation platform because it is the organization's approved AI coding agent. However, the engineering principles discussed remain vendor-neutral and apply equally to other AI coding platforms.
-
-One of the strengths of Claude Code is its ability to consume repository context before performing engineering work.
-
-Rather than relying solely on a user prompt, Claude can be guided by multiple repository artifacts discovered during initialization.
-
-For the Corporate Fleet Booking initiative, the harness supplies the following information:
-
-1. Repository Instructions
-2. Required Skills
-3. Assigned Role
-4. Current Prompt
-5. Steering Note
-6. Relevant Knowledge Sources
-
-The Steering Note provides temporary operational context that complements—but never replaces—the permanent repository standards.
-
----
-
-## Claude Repository Context
-
-A typical repository may contain the following structure:
-
-```text
-AlphaCarDetailing/
-
-CLAUDE.md
-
-Search/
-    steering-note.md
-
-Skills/
-    create-api.md
-    transactional-outbox.md
-    integration-testing.md
-
-Roles/
-    developer.md
-
-Prompts/
-    implement-fleet-booking.md
-
-Knowledge/
-    architecture.md
-    booking-domain.md
-```
-
-When Claude begins work, it already understands:
-
-* repository engineering standards,
-* reusable engineering procedures,
-* its assigned responsibilities,
-* the requested engineering task,
-* and the current organizational priorities.
-
-This layered context enables significantly better engineering decisions than a prompt alone.
-
----
-
-## Example Steering Note
-
-Claude reads the current Steering Note before implementation.
+The persistent `CLAUDE.md` file should describe the mechanism without copying a release's temporary priorities into permanent Instructions:
 
 ```markdown
-# Fleet Booking Release
+## Active release steering
 
-Priority
-
-Corporate Fleet Booking is the highest business priority.
-
-Current Sprint Goal
-
-Complete Fleet Booking API and domain workflow.
-
-Architecture Constraints
-
-Reuse existing Booking events.
-
-No new microservices.
-
-No infrastructure changes.
-
-Security
-
-Architecture approval required.
-
-Security approval required.
-
-Risks
-
-Fleet imports exceeding 100,000 vehicles.
-
-High booking traffic during customer onboarding.
-
-Escalation
-
-Breaking API changes.
-
-Authentication failures.
-
-Database schema conflicts.
+For release-scoped work, read `Search/steering-note.md` before planning
+changes. Verify its scope, owner, approval state and expiry. Treat it
+as temporary mission guidance and do not edit it without explicit
+human authorization. If guidance is missing, expired, or conflicts
+with mandatory policy, stop the affected work and ask the owner.
+Propose improvements in `Search/proposed-steering-update.md`.
 ```
 
-This guidance immediately influences implementation decisions.
-
-Claude understands that introducing an entirely new Booking platform would violate the current mission, even if technically feasible.
-
-Instead, it extends the existing architecture because that aligns with the temporary operational direction.
-
----
-
-## Claude Workflow
-
-The following illustrates a typical execution sequence.
-
-```mermaid
-flowchart TD
-
-    A[Repository Discovery]
-
-    A --> B[Read CLAUDE.md]
-
-    B --> C[Read Skills]
-
-    C --> D[Read Role]
-
-    D --> E[Read Prompt]
-
-    E --> F[Read Search/steering-note.md]
-
-    F --> G[Read Knowledge Sources]
-
-    G --> H[Generate Implementation]
-
-    H --> I[Validate Against Steering Note]
-
-    I --> J[Submit Results]
-```
-
-Notice that the Steering Note is consumed **before** implementation begins.
-
-This ensures that engineering decisions reflect current organizational priorities rather than repository standards alone.
-
----
-
-## Example Engineering Decision
-
-Suppose Claude identifies an opportunity to improve the Notification Service while implementing Fleet Booking.
-
-From a purely technical perspective, the improvement is beneficial.
-
-However, the Steering Note states:
+The task can then reference the document directly in Claude Code:
 
 ```text
-Notification Service enhancements are out of scope for this release.
+@Search/steering-note.md
+
+Implement corporate fleet booking limits in the existing Booking Service.
+Follow the applicable repository Instructions and approved release scope.
+Report the Steering Note version and any blockers in your completion summary.
 ```
 
-Claude therefore postpones the improvement and continues focusing exclusively on Fleet Booking.
+Claude Code supports file references and project Instructions, but whether additional files are loaded or preserved in a particular workflow depends on the client, configuration, and context. For a controlled release, the harness should verify the note independently and capture its approved version or hash; an agent's statement that it read the file is not itself proof.
 
-This is an example of the Steering Note influencing prioritization without changing architectural standards.
+In Alpha Car Detailing, the Developer Agent may discover a useful Notification Service optimization during the booking implementation. Because the note explicitly excludes that work, the agent records the observation without making the change. If the optimization becomes release-critical, it prepares a proposal and asks for human direction. The Steering Note narrows the mission; it does not expand Claude's authority to bypass branch protection, security review, or mandatory tests.
 
----
+A typical completion report should contain the changed service boundaries, tests executed, risks observed, note version used, open approvals, and links or identifiers for build and review evidence. Such reporting makes the work traceable without repeating the entire note in the response.
 
-## Example AI Response
 
-Suppose the implementation Prompt is:
+## 9. GitHub Copilot Comparison
 
-```text
-Implement Corporate Fleet Booking support.
-```
+GitHub Copilot supports repository-wide custom Instructions in `.github/copilot-instructions.md`, path-specific instructions for supported clients, and agent instruction conventions such as `AGENTS.md`. Support and precedence vary by Copilot surface, so it would be inaccurate to characterize Copilot as merely an editor tool that cannot use repository context. Nor should the team assume that a custom file under `Search/` will be included automatically.
 
-Claude may internally reason along these lines:
-
-* Fleet Booking is the highest business priority.
-* Notification Service is outside the current release scope.
-* Existing Booking events must be reused.
-* New microservices are prohibited.
-* Architecture approval is required before merge.
-* Security review is mandatory.
-* Integration tests are expected.
-
-These conclusions are derived from the Steering Note rather than from the Prompt itself.
-
-The Prompt defines **what** to implement.
-
-The Steering Note defines **how the organization expects the initiative to be executed under current operational conditions**.
-
----
-
-## Detecting a Needed Steering Change
-
-During implementation, Claude discovers that one dependency has already completed production rollout.
-
-Rather than editing the Steering Note directly, Claude generates a proposal.
-
-```text
-proposed-steering-update.md
-```
-
-Example:
+For the Alpha Car Detailing repository, the permanent Copilot instructions can contain a concise pointer:
 
 ```markdown
-# Proposed Steering Update
+## Release-specific mission briefing
 
-Observation
-
-Fleet Import Service production rollout completed successfully.
-
-Recommendation
-
-Remove temporary deployment restriction.
-
-Reason
-
-Production validation has completed.
-
-Supporting Evidence
-
-Deployment Report 2026.07.08
-
-Approval Required
-
-Technical Lead
+Before making release-scoped changes, inspect Search/steering-note.md.
+Confirm it is approved, current, and applicable to the requested work.
+Do not silently edit this file. When a change is needed, prepare a
+separate proposed-steering-update.md for authorized human review.
 ```
 
-The proposal is submitted for human review.
-
-Only after explicit approval should `Search/steering-note.md` be updated.
-
-This preserves one of the most important governance principles in Enterprise AI Engineering:
-
-> **AI agents may recommend changes to organizational direction, but humans remain responsible for defining and approving that direction.**
-
----
-
-# 9. GitHub Copilot Comparison
-
-GitHub Copilot also benefits from temporary operational guidance, but the mechanism differs from Claude Code.
-
-Claude Code is designed to work with a repository-centric context model, where repository discovery can automatically assemble Instructions, Skills, Roles, Steering Notes, Prompts, and Knowledge Sources into a unified working context.
-
-GitHub Copilot typically relies more heavily on:
-
-* the currently opened files,
-* workspace context,
-* editor selection,
-* chat history,
-* and explicitly referenced documentation.
-
-As a result, engineering teams should make Steering Notes easy to discover and intentionally reference them during Copilot-assisted development.
-
----
-
-## Typical Copilot Workflow
-
-```mermaid
-flowchart LR
-
-    A[Developer]
-
-    A --> B[Open Repository]
-
-    B --> C[Open steering-note.md]
-
-    C --> D[Reference in Copilot Chat]
-
-    D --> E[Copilot Generates Code]
-
-    E --> F[Developer Review]
-```
-
-The human developer plays a larger role in ensuring that temporary guidance is included in the AI conversation.
-
----
-
-## Example Copilot Prompt
+The engineering Prompt should still explicitly call out the applicable note and important boundaries, especially in a client or session where file inclusion is uncertain:
 
 ```text
-Implement Corporate Fleet Booking.
-
-Use the repository instructions.
-
-Follow the current guidance in Search/steering-note.md.
-
-Do not modify any services marked as out of scope.
+Implement fleet booking limits in the existing Booking Service.
+Use the approved Search/steering-note.md for release scope and risks.
+Before coding, identify its version and flag any outdated or conflicting
+constraints. Do not edit the Steering Note or out-of-scope services.
 ```
 
-This explicit reference helps ensure that Copilot considers the temporary operational context in addition to the code currently visible in the editor.
+The operator can verify which repository Instructions and files were supplied through the client where such diagnostics are available. Teams should test their chosen IDE, cloud agent, CLI, or code-review integration rather than assuming uniform behavior across Copilot products.
 
----
+The governance boundary is independent of Copilot: repository permissions, protected branches, CODEOWNERS or equivalent reviewers, and CI validations should enforce protection of `Search/steering-note.md`. Neither a statement in a Prompt nor an agent's willingness to comply substitutes for these controls.
 
-## Comparison with Claude
 
-| Capability                          | Claude Code                                  | GitHub Copilot                                          |
-| ----------------------------------- | -------------------------------------------- | ------------------------------------------------------- |
-| Repository discovery                | Repository-first workflow                    | Primarily editor and workspace context                  |
-| Automatic Steering Note consumption | Common harness pattern                       | Usually referenced explicitly by the developer          |
-| Multi-document reasoning            | Strong support across repository artifacts   | Depends on workspace context and referenced files       |
-| Operational guidance                | Naturally fits repository intelligence model | Best included through chat instructions or opened files |
+## 10. Codex Comparison
 
-The underlying engineering principle remains identical:
+OpenAI Codex can use `AGENTS.md` as repository guidance in supported environments. This is distinct from the handbook's custom Steering Note path: `Search/steering-note.md` does not become a native Codex instruction source simply by existing. The repository's `AGENTS.md`, an explicit task Prompt, or the enterprise harness must direct Codex to consume it.
 
-Every AI agent should understand the organization's current priorities before producing implementation decisions.
+A durable repository-level `AGENTS.md` may include:
 
----
+```markdown
+## Current engineering mission
 
-# 10. Codex Comparison
-
-OpenAI Codex follows the same engineering principle, although its operational workflow depends on the environment in which it is used.
-
-Whether Codex operates through a command-line interface, integrated development environment, or automated harness, it benefits from receiving repository intelligence before executing engineering tasks.
-
-A typical enterprise harness supplies Codex with:
-
-* repository Instructions,
-* relevant Skills,
-* assigned Role,
-* current Prompt,
-* Steering Note,
-* and supporting Knowledge Sources.
-
-The source of the context may differ, but the objective remains the same: align implementation with the current mission rather than relying solely on the task description.
-
----
-
-## Typical Codex Workflow
-
-```mermaid
-flowchart TD
-
-    A[Harness]
-
-    A --> B[Load Repository Intelligence]
-
-    B --> C[Load Steering Note]
-
-    C --> D[Provide Context to Codex]
-
-    D --> E[Generate Implementation]
-
-    E --> F[Human Review]
+For release work, inspect `Search/steering-note.md` and validate
+its approval status, applicability, and expiration before changing code.
+Record the approved note version in your summary. Do not edit the note
+unless a named human owner has explicitly authorized the specific edit.
+Propose changes separately in `Search/proposed-steering-update.md`.
 ```
 
----
+Then a Codex task can ask for a read-only discovery pass before implementation:
 
-## Comparison Across Platforms
+```text
+Review repository guidance and the current Search/steering-note.md.
+Summarize the fleet booking scope, constraints, approvals, and any
+conflicts. If active and unambiguous, implement the existing-service
+booking-limit change with tests; otherwise stop and request direction.
+Do not change the Steering Note.
+```
 
-| Capability                                    | Claude Code                 | GitHub Copilot             | OpenAI Codex               |
-| --------------------------------------------- | --------------------------- | -------------------------- | -------------------------- |
-| Repository-centric workflow                   | Excellent                   | Moderate                   | Harness-dependent          |
-| Steering Note integration                     | Natural repository artifact | Usually developer-supplied | Typically harness-supplied |
-| Human ownership of Steering Note              | Yes                         | Yes                        | Yes                        |
-| AI may silently edit Steering Note            | No                          | No                         | No                         |
-| Supports proposed-steering-update.md workflow | Yes                         | Yes                        | Yes                        |
+The key distinction among the platforms is **how context is made available**, not who owns organizational priorities. Claude Code, Copilot, and Codex can all work within a governed repository, and each can be integrated into an enterprise harness. None supplies, by default, the complete Steering Note approval lifecycle defined in this chapter.
 
-Regardless of platform, the governance rule is unchanged:
+| Concern | Claude Code | GitHub Copilot | OpenAI Codex |
+| --- | --- | --- | --- |
+| Conventional durable repository guidance | `CLAUDE.md` | `.github/copilot-instructions.md`; other supported instruction files | `AGENTS.md` |
+| Custom `Search/steering-note.md` | Explicit reference, project instruction pointer, or harness | Explicit file context, instruction pointer, or harness | Explicit task context, `AGENTS.md` pointer, or harness |
+| Verification that the note is current | Repository control or harness | Repository control or harness | Repository control or harness |
+| Approval of mission changes | Authorized human | Authorized human | Authorized human |
+| Prevention of unauthorized edits | Permissions and review gates | Permissions and review gates | Permissions and review gates |
 
-* Steering Notes are normally maintained by humans.
-* AI agents read and follow them.
-* Proposed changes are documented separately.
-* Human approval is required before organizational direction is modified.
+Because product behavior changes, platform mechanics should be verified against current vendor documentation when a team configures its deployment. The organization-specific lifecycle, approval rules, and audit requirements remain the same even when the tools change.
 
-This consistency allows organizations to remain vendor-neutral while adopting different AI coding platforms.
 
----
-
-# 11. Best Practices
+## 11. Best Practices
 
 Steering Notes are most valuable when they remain concise, current, authoritative, and clearly distinguished from other repository artifacts.
 
@@ -1472,9 +928,8 @@ Many organizations initially treat Steering Notes as informal project notes. Mat
 
 The following practices have consistently proven effective in enterprise-scale development.
 
----
 
-## Keep Steering Notes Temporary
+### Keep Steering Notes Temporary
 
 A Steering Note should communicate only information relevant to the current initiative.
 
@@ -1492,9 +947,8 @@ For example:
 
 Maintaining this separation keeps every repository artifact focused on its intended purpose.
 
----
 
-## Assign a Clearly Identified Owner
+### Assign a Clearly Identified Owner
 
 Every Steering Note should identify the individual or team responsible for maintaining it.
 
@@ -1513,9 +967,8 @@ Ownership ensures accountability.
 
 When priorities change, everyone knows who is responsible for updating the document.
 
----
 
-## Include an Expiration Mechanism
+### Include an Expiration Mechanism
 
 Temporary guidance should never remain active indefinitely.
 
@@ -1544,9 +997,8 @@ Remove after Fleet Booking production deployment.
 
 An expired Steering Note should either be archived or replaced with a newer version.
 
----
 
-## Focus on Operational Decisions
+### Focus on Operational Decisions
 
 A Steering Note should communicate operational context rather than implementation details.
 
@@ -1570,9 +1022,8 @@ Poor examples include:
 
 Those topics belong elsewhere within the repository.
 
----
 
-## Make Guidance Easy to Discover
+### Make Guidance Easy to Discover
 
 Every AI agent should know exactly where to locate the current Steering Note.
 
@@ -1583,17 +1034,16 @@ Search/
     steering-note.md
 ```
 
-The AI harness should automatically discover and distribute the Steering Note before engineering work begins.
+The team should configure the AI harness to discover, validate, and distribute the active Steering Note before engineering work begins.
 
 Developers should not have to remember its location during every task.
 
----
 
-## Keep It Short
+### Keep It Short
 
 A Steering Note is a mission briefing—not a design document.
 
-Most enterprise Steering Notes are only one or two pages.
+For a release-scoped briefing, one or two pages is a useful design target, provided the necessary approvals, risks, and escalation rules remain explicit.
 
 The objective is rapid situational awareness.
 
@@ -1601,9 +1051,8 @@ Engineers and AI agents should be able to understand the current mission within 
 
 If the document grows into dozens of pages, important priorities become difficult to identify.
 
----
 
-## Separate Facts from Decisions
+### Separate Facts from Decisions
 
 Professional Steering Notes distinguish between factual information and temporary management decisions.
 
@@ -1617,9 +1066,8 @@ For example:
 
 This separation makes it easier for both humans and AI agents to understand why temporary guidance exists.
 
----
 
-## Record Risks Explicitly
+### Record Risks Explicitly
 
 Operational risk should never be implied.
 
@@ -1636,9 +1084,8 @@ Examples include:
 
 Explicitly documenting risks helps AI agents make better engineering trade-offs.
 
----
 
-## Define Escalation Conditions
+### Define Escalation Conditions
 
 AI agents should know when autonomous decision-making must stop.
 
@@ -1651,11 +1098,10 @@ Examples include:
 * Significant performance degradation
 * Compliance concerns
 
-When these conditions occur, the agent should immediately request human involvement rather than continuing independently.
+When these conditions occur, the agent should stop the affected action, preserve the evidence, and request human involvement rather than proceeding independently.
 
----
 
-## Preserve Audit History
+### Preserve Audit History
 
 Steering Notes should remain under version control.
 
@@ -1675,17 +1121,15 @@ An organization should always be able to answer:
 
 Version control provides this audit trail.
 
----
 
-# 12. Anti-patterns
+## 12. Anti-patterns
 
 Like every repository artifact, Steering Notes can be misused.
 
 The following anti-patterns are commonly observed during early AI adoption and often lead to inconsistent engineering decisions.
 
----
 
-## Anti-pattern 1: Using Steering Notes as Permanent Instructions
+### Anti-pattern 1: Using Steering Notes as Permanent Instructions
 
 One of the most common mistakes is gradually turning the Steering Note into another Instructions document.
 
@@ -1699,15 +1143,14 @@ Always write integration tests.
 Always use CQRS.
 ```
 
-These are permanent engineering standards.
+These examples illustrate durable engineering policies when adopted by the organization; a Steering Note is not where those standards are defined.
 
 They belong in repository Instructions—not in a temporary Steering Note.
 
 If they remain in the Steering Note, they may disappear when the release concludes.
 
----
 
-## Anti-pattern 2: Embedding Task Prompts
+### Anti-pattern 2: Embedding Task Prompts
 
 Some organizations copy entire implementation requests into the Steering Note.
 
@@ -1729,9 +1172,8 @@ They belong in Prompts.
 
 A Steering Note should describe the mission, not the implementation backlog.
 
----
 
-## Anti-pattern 3: Missing Ownership
+### Anti-pattern 3: Missing Ownership
 
 A Steering Note without an owner quickly becomes unreliable.
 
@@ -1744,9 +1186,8 @@ When priorities change:
 
 Always identify the responsible owner.
 
----
 
-## Anti-pattern 4: Stale Priorities
+### Anti-pattern 4: Stale Priorities
 
 A Steering Note that continues listing completed work as the highest priority eventually becomes misleading.
 
@@ -1762,9 +1203,8 @@ Three months after deployment, this statement is no longer useful.
 
 Expired priorities reduce trust in repository intelligence.
 
----
 
-## Anti-pattern 5: No Expiration Date
+### Anti-pattern 5: No Expiration Date
 
 Temporary guidance without a retirement mechanism frequently becomes permanent by accident.
 
@@ -1774,9 +1214,8 @@ Every Steering Note should answer:
 
 If that question cannot be answered, the Steering Note is incomplete.
 
----
 
-## Anti-pattern 6: Conflicting Direction
+### Anti-pattern 6: Conflicting Direction
 
 Conflicting guidance creates uncertainty for both humans and AI agents.
 
@@ -1785,7 +1224,7 @@ Example:
 **Instruction**
 
 ```text
-New microservices are encouraged.
+Prefer a separate service when justified by clear domain boundaries.
 ```
 
 **Steering Note**
@@ -1794,15 +1233,10 @@ New microservices are encouraged.
 No new microservices during release stabilization.
 ```
 
-This is acceptable because the Steering Note introduces a **temporary operational exception**.
+This is an allowable temporary *restriction* when the Instruction expresses a preference rather than a mandatory requirement: an organization may encourage services in general while prohibiting new service creation during stabilization. The note must identify the scope and expiration of that restriction. By contrast, a Steering Note saying “skip mandatory authorization checks until Friday” conflicts with binding security policy and must not be followed; it requires escalation, not agent interpretation.
 
-However, the temporary nature should be clearly stated.
 
-Otherwise, developers may incorrectly assume that repository standards have changed permanently.
-
----
-
-## Anti-pattern 7: Unclear Scope
+### Anti-pattern 7: Unclear Scope
 
 A Steering Note should define its scope explicitly.
 
@@ -1822,9 +1256,8 @@ Other services are outside the scope of this initiative.
 
 Specific scope enables focused engineering effort.
 
----
 
-## Anti-pattern 8: Allowing AI Agents to Silently Edit Steering Notes
+### Anti-pattern 8: Allowing AI Agents to Silently Edit Steering Notes
 
 Perhaps the most dangerous anti-pattern is allowing autonomous agents to rewrite organizational priorities without human approval.
 
@@ -1850,9 +1283,8 @@ proposed-steering-update.md
 
 The recommendation is then reviewed through the organization's normal governance process before any official Steering Note is modified.
 
----
 
-## Anti-pattern 9: Treating Temporary Exceptions as Permanent Standards
+### Anti-pattern 9: Treating Temporary Exceptions as Permanent Standards
 
 Release-specific decisions should not migrate into long-term engineering policy.
 
@@ -1866,9 +1298,8 @@ This temporary compromise should disappear once the release is complete.
 
 Keeping temporary exceptions beyond their intended lifetime creates architectural debt and confusion.
 
----
 
-## Anti-pattern 10: Omitting Risks and Escalation Conditions
+### Anti-pattern 10: Omitting Risks and Escalation Conditions
 
 A Steering Note that lists only priorities is incomplete.
 
@@ -1881,9 +1312,8 @@ Professional Steering Notes should also answer:
 
 Without these answers, agents may continue operating beyond the organization's acceptable risk threshold.
 
----
 
-# 13. Architect's Notes
+## 13. Architect's Notes
 
 > **Architect's Note**
 >
@@ -1895,217 +1325,49 @@ Without these answers, agents may continue operating beyond the organization's a
 
 > **Architect's Note**
 >
-> Human ownership is a governance requirement, not merely a recommendation. AI agents can analyze operational conditions and recommend updates, but organizational priorities remain a management responsibility.
+> Human ownership is a governance requirement, not merely a recommendation. AI agents can analyze operational conditions and recommend updates, but organizational priorities and policy exceptions remain with accountable human owners.
 
 > **Architect's Note**
 >
 > The most effective Steering Notes are intentionally concise. A one-page document that clearly communicates priorities, risks, approvals, and constraints is often more valuable than a lengthy operational handbook.
 
----
 
-# 14. Enterprise Tips
+## 14. Enterprise Tips
 
-Organizations that successfully scale AI-assisted software development recognize that technical excellence alone is insufficient. AI agents must also understand the organization's current operational priorities.
+Best practices describe how to write a sound Steering Note. Enterprise adoption also requires operational mechanisms that make the guidance dependable across teams, environments, and concurrent development runs.
 
-The following practices have consistently proven effective in large enterprise environments.
+### Maintain One Active Mission per Defined Scope
 
----
+A large enterprise may have several legitimate Steering Notes at the same time: one for the Fleet Booking release, another for an authentication incident, and a third for a platform migration. Avoid treating a single repository-wide note as the universal priority for every task. Record each note's scope and, when more than one may apply, define an explicit human-owned selection or precedence process. Agents must not resolve competing release directives by picking whichever file was modified most recently.
 
-## Enterprise Tip 1: Standardize the Steering Note Location
+### Separate Readable Guidance from Enforceable Controls
 
-Every repository should expose the Steering Note from a predictable location.
+A Steering Note communicates intent; CI and access control enforce critical boundaries. For Alpha Car Detailing, a release rule such as "no Booking API contract break" should be backed by contract tests. Protection against unauthorized note edits should be enforced through branch rules, CODEOWNERS or an equivalent approval mechanism, and limited write credentials. The more consequential the restriction, the less the organization should depend on an agent remembering a sentence.
 
-For example:
+### Make Expiry Part of Run Admission
 
-```text
-Search/
-    steering-note.md
-```
+Do not rely on a retrospective cleanup exercise to find expired notes. The harness should check expiry and approval status before admitting release-scoped work, then record the result alongside the execution evidence. A run already in progress when the note changes should trigger a deliberate continue, replan, or stop decision. This prevents two concurrent runs from silently interpreting different priorities as the same mission.
 
-Avoid placing Steering Notes in random project folders or temporary collaboration spaces.
+### Keep the Briefing Safe to Distribute
 
-A consistent repository location enables AI harnesses, automation scripts, and engineering tools to discover the current mission without requiring project-specific configuration.
+Steering Notes may be shared with multiple agents and external model services under the organization's approved operating arrangements. They should contain actionable risk summaries, not credentials, production customer records, private incident transcripts, or confidential contractual details that the agent does not need. Use references to approved systems of record for sensitive evidence and provide only the minimum necessary context.
 
----
+### Include Steering Note Hygiene in Release Reviews
 
-## Enterprise Tip 2: Load Steering Notes Before Prompt Execution
+At release planning, confirm the owner, scope, version, approval record, milestone dates, dependencies, and escalation contacts. At release closure, archive the final note and record whether its constraints prevented scope drift, whether any proposed updates were accepted, and whether unresolved exceptions need to be promoted into governed long-term documentation. These activities make Steering Notes useful not only for the current release but also for the next retrospective.
 
-The Prompt should never be the first document consumed by an AI agent.
+### Measure Leading Indicators, Not Just Document Counts
 
-Instead, repository intelligence should be assembled in a consistent order.
+A team with many Steering Notes is not necessarily better governed. More meaningful indicators include the proportion of release runs with a validated note version, the delay between an approved priority change and its availability to agents, the number of runs stopped for stale or conflicting guidance, and the proportion of protected-file changes with proper approvals. Interpret these indicators alongside operational outcomes rather than rewarding the creation of more Markdown files.
 
-```mermaid
-flowchart LR
-
-    A[Repository Discovery]
-
-    A --> B[Instructions]
-
-    B --> C[Skills]
-
-    C --> D[Roles]
-
-    D --> E[Steering Note]
-
-    E --> F[Prompt]
-
-    F --> G[Implementation]
-```
-
-By the time the Prompt is processed, the agent already understands:
-
-* engineering standards,
-* reusable workflows,
-* assigned responsibilities,
-* current business priorities.
-
-This dramatically reduces inconsistent engineering decisions.
-
----
-
-## Enterprise Tip 3: Review Steering Notes During Sprint Planning
-
-Many organizations update user stories while forgetting to update temporary operational guidance.
-
-An effective sprint planning checklist should include questions such as:
-
-* Have business priorities changed?
-* Have release dates changed?
-* Have architectural constraints changed?
-* Have new dependencies emerged?
-* Have escalation conditions changed?
-* Does the Steering Note still reflect reality?
-
-Keeping Steering Notes synchronized with sprint planning helps ensure that AI agents and human engineers begin the sprint with the same understanding of organizational priorities.
-
----
-
-## Enterprise Tip 4: Archive Completed Steering Notes
-
-Steering Notes provide valuable historical context.
-
-Rather than deleting them after every release, archive them.
-
-For example:
-
-```text
-Search/
-
-    steering-note.md
-
-Archive/
-
-    steering-note-2026-Q2.md
-
-    steering-note-2026-Q3.md
-
-    steering-note-major-incident.md
-```
-
-Archived Steering Notes support:
-
-* release retrospectives,
-* engineering audits,
-* post-incident analysis,
-* AI learning,
-* organizational knowledge retention.
-
-The active Steering Note remains concise while historical decisions remain available when needed.
-
----
-
-## Enterprise Tip 5: Separate Business Priorities from Technical Constraints
-
-Professional Steering Notes distinguish between **why** the initiative matters and **how** engineering must operate.
-
-For example:
-
-| Business Priorities                              | Technical Constraints          |
-| ------------------------------------------------ | ------------------------------ |
-| Deliver Fleet Booking before customer onboarding | No new microservices           |
-| Minimize customer onboarding delays              | Reuse existing event contracts |
-| Maintain production stability                    | No database technology changes |
-| Meet contractual release date                    | Architecture approval required |
-
-This separation allows AI agents to understand both organizational intent and engineering boundaries.
-
----
-
-## Enterprise Tip 6: Make Risks Explicit
-
-Enterprise AI agents should not infer operational risk.
-
-Document it.
-
-Instead of writing:
-
-```text
-Deployment may be difficult.
-```
-
-Provide actionable guidance:
-
-```text
-Known Risks
-
-• Fleet imports exceeding 250,000 vehicles
-
-• Increased API traffic during onboarding
-
-• Identity Service dependency undergoing maintenance
-
-Escalate immediately if authentication latency exceeds agreed thresholds.
-```
-
-Explicit risk documentation improves both AI reasoning and human situational awareness.
-
----
-
-## Enterprise Tip 7: Use Steering Notes Across All Agents
-
-Steering Notes should not be limited to Developer Agents.
-
-Every participating agent benefits from understanding the current mission.
-
-| Agent             | Steering Note Usage                                 |
-| ----------------- | --------------------------------------------------- |
-| Lead Agent        | Coordinate work according to business priorities    |
-| Developer Agent   | Focus implementation on current objectives          |
-| Reviewer Agent    | Evaluate compliance with temporary constraints      |
-| Validator Agent   | Verify expected deliverables                        |
-| Evaluator Agent   | Detect operational improvements and propose updates |
-| Security Reviewer | Apply temporary security guidance during review     |
-
-A shared operational context keeps multi-agent systems aligned throughout the engineering workflow.
-
----
-
-## Enterprise Tip 8: Measure Steering Note Effectiveness
-
-Like any engineering artifact, Steering Notes should be evaluated.
-
-Useful metrics include:
-
-* Number of outdated Steering Notes
-* Average time between priority changes and Steering Note updates
-* Percentage of releases with current Steering Notes
-* Number of AI-generated proposed steering updates
-* Time required for human approval
-* Number of incidents caused by outdated operational guidance
-
-These measurements help engineering leaders continuously improve governance processes.
-
----
-
-# 15. Decision Points
+## 15. Decision Points
 
 Enterprise AI Engineering frequently requires balancing stability with adaptability.
 
 The following decision points help architects determine how Steering Notes should be managed within their organizations.
 
----
 
-## Decision Point 1: Where Should Steering Notes Be Stored?
+### Decision Point 1: Where Should Steering Notes Be Stored?
 
 Possible approaches include:
 
@@ -2118,9 +1380,8 @@ Possible approaches include:
 
 For enterprise AI engineering, storing Steering Notes in the repository provides the strongest alignment with automated discovery, code review, and auditability.
 
----
 
-## Decision Point 2: Who Owns the Steering Note?
+### Decision Point 2: Who Owns the Steering Note?
 
 Possible owners include:
 
@@ -2134,11 +1395,10 @@ Ownership should follow organizational responsibility rather than technical impl
 
 The owner should have authority to define priorities, constraints, and operational direction.
 
----
 
-## Decision Point 3: Can AI Agents Update Steering Notes?
+### Decision Point 3: Can AI Agents Update Steering Notes?
 
-The handbook recommends the following governance model.
+The handbook recommends the following governance model; any explicitly authorized agent-assisted editing remains a proposed change until the required human approval is recorded.
 
 | Activity                      | AI Agent | Human |
 | ----------------------------- | -------- | ----- |
@@ -2146,14 +1406,13 @@ The handbook recommends the following governance model.
 | Follow Steering Note          | ✓        | ✓     |
 | Detect outdated guidance      | ✓        | ✓     |
 | Recommend changes             | ✓        | ✓     |
-| Modify official Steering Note | ✗        | ✓     |
-| Approve operational direction | ✗        | ✓     |
+| Modify official Steering Note | Only with explicit authorization and review | Authorized owner/reviewer |
+| Approve operational direction | No | Accountable human approver |
 
 This model preserves accountability while still benefiting from AI-assisted analysis.
 
----
 
-## Decision Point 4: How Often Should Steering Notes Be Reviewed?
+### Decision Point 4: How Often Should Steering Notes Be Reviewed?
 
 Review frequency should reflect the pace of operational change.
 
@@ -2167,9 +1426,8 @@ Review frequency should reflect the pace of operational change.
 
 A review schedule should be documented within the Steering Note itself.
 
----
 
-## Decision Point 5: What Happens When Guidance Conflicts?
+### Decision Point 5: What Happens When Guidance Conflicts?
 
 Occasionally, a Steering Note may appear to conflict with existing repository Instructions.
 
@@ -2195,11 +1453,10 @@ The Steering Note introduces a temporary operational constraint that applies onl
 
 If the conflict cannot be resolved through context, the matter should be escalated to the Steering Note owner rather than interpreted independently by an AI agent.
 
----
 
-# 16. Exercises
+## 16. Exercises
 
-### Exercise 1 — Identify the Correct Artifact
+#### Exercise 1 — Identify the Correct Artifact
 
 For each statement below, determine whether it belongs in:
 
@@ -2217,9 +1474,8 @@ For each statement below, determine whether it belongs in:
 
 Discuss your reasoning with your team and justify each classification.
 
----
 
-### Exercise 2 — Create a Steering Note
+#### Exercise 2 — Create a Steering Note
 
 Using the Alpha Car Detailing system, create a Steering Note for a nationwide holiday promotion.
 
@@ -2236,9 +1492,8 @@ Include:
 
 Compare your document with the examples presented in this chapter.
 
----
 
-### Exercise 3 — Detect Anti-patterns
+#### Exercise 3 — Detect Anti-patterns
 
 Review the following Steering Note and identify every governance issue.
 
@@ -2264,9 +1519,8 @@ No approvals.
 
 Identify which information belongs in other repository artifacts and propose an improved version.
 
----
 
-### Exercise 4 — AI Governance Scenario
+#### Exercise 4 — AI Governance Scenario
 
 An Evaluator Agent determines that a temporary architecture restriction is no longer required because all validation activities have completed successfully.
 
@@ -2280,9 +1534,8 @@ C. Create `proposed-steering-update.md` for human review
 
 Explain your answer using the governance principles discussed in this chapter.
 
----
 
-# 17. Interview Questions
+## 17. Interview Questions
 
 1. What problem do Steering Notes solve in Enterprise AI Engineering?
 
@@ -2304,210 +1557,32 @@ Explain your answer using the governance principles discussed in this chapter.
 
 10. Describe the purpose of `proposed-steering-update.md` and explain when it should be created.
 
----
 
-# 18. Chapter Summary
+## 18. Chapter Summary
 
-Enterprise AI Engineering requires more than technically capable AI coding agents. It requires AI agents that understand the organization's current mission.
+Steering Notes address a coordination problem that permanent repository documentation cannot solve on its own: engineering priorities change faster than the standards governing how software is built. An AI coding agent needs both. Instructions specify enduring requirements; Skills provide reusable procedures; Prompts assign the current task; Roles identify responsibilities and authority; Knowledge Sources supply factual reference material. A Steering Note adds a **temporary, approved mission briefing** that explains what matters during the present initiative and where its boundaries lie.
 
-Throughout this chapter, we introduced the concept of **Steering Notes** as the temporary operational guidance that aligns engineering work with current business priorities, release objectives, architectural constraints, and organizational risk.
+The Alpha Car Detailing release demonstrated the practical distinction. Fleet booking work was prioritized, unrelated changes were deferred, existing event contracts were preserved, and explicit security, database, and architecture approvals were required. Those choices did not rewrite the organization's engineering policies. They constrained a defined set of release activities for a limited period.
 
-Unlike permanent repository artifacts, Steering Notes intentionally evolve as initiatives progress.
+Ownership and enforcement are central. The active `Search/steering-note.md` has a human owner, a scope, an approval record, a version, a review date, and an expiry. AI agents may read it, follow its applicable constraints, and propose improvements through `Search/proposed-steering-update.md`. They must not make unauthorized edits or treat a self-generated approval statement as a valid governance decision. Mandatory policies remain binding even when a temporary note asks for a different outcome.
 
-They communicate what matters **today**, not what should remain true forever.
+An enterprise harness turns the briefing into dependable execution context: it validates the note, records the version or hash used by the run, distributes relevant guidance to each participating Role, and uses deterministic checks and human review to enforce consequential boundaries. If the note becomes stale, conflicting, or inapplicable, the correct response is not to guess; it is to stop the affected work and seek an accountable decision.
 
-One of the central themes of this handbook is that every repository artifact answers a different engineering question.
+The next chapter turns from temporary direction to durable factual reference. **Knowledge Sources** explain how agents obtain the architecture, domain, operational, and business information needed to perform the mission described by the Steering Note. Together, these artifacts complete the repository-intelligence foundation for the harness engineering disciplines developed in Part III.
 
-| Repository Artifact | Primary Purpose                                              |
-| ------------------- | ------------------------------------------------------------ |
-| Instructions        | Define permanent engineering standards and constraints       |
-| Skills              | Define reusable engineering procedures                       |
-| Prompts             | Define the current engineering task                          |
-| Roles               | Define responsibilities and authority                        |
-| Steering Notes      | Define temporary mission priorities and operational guidance |
-| Knowledge Sources   | Provide factual repository and business information          |
+## 19. Further Reading
 
-Keeping these responsibilities separate allows repositories to remain organized, maintainable, and understandable for both humans and AI agents.
+The other chapters of Part II provide the concepts needed to place Steering Notes correctly: Chapter 5 explains repository discovery; Chapter 6 establishes persistent Instructions; Chapter 7 describes reusable Skills; Chapter 8 defines task-specific Prompts; and Chapter 9 separates agent responsibilities and authority. Chapter 11, **Knowledge Sources**, develops the distinction between current mission guidance and durable factual reference material.
 
-Steering Notes communicate information such as:
+For platform implementation details, consult the current official documentation rather than assuming that the custom `Search/` convention has native tool support:
 
-* current business priorities,
-* services in scope,
-* services temporarily out of scope,
-* architecture constraints,
-* operational risks,
-* dependencies,
-* release milestones,
-* required approvals,
-* escalation conditions,
-* expected engineering outputs.
+- **Anthropic, Claude Code documentation — [How Claude remembers your project](https://code.claude.com/docs/en/memory).** Project Instructions, `CLAUDE.md`, and file-loading behavior.
+- **Anthropic, [Steering Claude Code: when to use CLAUDE.md, skills, hooks, and subagents](https://claude.com/resources/articles/steering-claude-code-skills-hooks-rules-subagents-and-more).** Choosing the right form of context and guidance.
+- **GitHub Docs, [Custom instructions for GitHub Copilot](https://docs.github.com/en/copilot/concepts/prompting-and-context/custom-instructions).** Repository-wide, path-specific, and agent instruction conventions; support differs by client.
+- **GitHub Docs, [Support for different types of custom instructions](https://docs.github.com/en/copilot/reference/custom-instructions-support).** Capability matrix for IDE, GitHub, and CLI environments.
+- **OpenAI, [Iterating Development Workflows with Codex](https://developers.openai.com/cookbook/examples/codex/iterating-development-workflows-with-codex).** Practical guidance on `AGENTS.md`, phase context, and governed development workflows.
+- **OpenAI, [Custom Code Review rules for Codex](https://developers.openai.com/blog/custom-code-review-rules-for-codex).** The complementary role of repository guidance, code review, and deterministic enforcement.
 
-Because this information changes frequently, it should never become part of the repository's permanent Instructions.
+Within an enterprise, these resources should be read alongside the organization's release management policy, security exception process, architecture decision records, source-control approval rules, and audit-retention standard. Those documents—not the choice of AI platform—determine who can approve mission changes and which controls an engineering team may never bypass.
 
-Likewise, implementation tasks belong in Prompts, reusable workflows belong in Skills, and long-term engineering standards belong in Instructions.
-
-The chapter also established an important governance principle:
-
-**Steering Notes are normally maintained by humans.**
-
-AI agents should:
-
-* discover the current Steering Note,
-* understand it,
-* follow it,
-* validate their work against it,
-* and recommend improvements when appropriate.
-
-However, AI agents should **not** modify Steering Notes autonomously.
-
-When improvements are identified, they should instead generate:
-
-```text
-proposed-steering-update.md
-```
-
-Human engineering leadership remains responsible for approving changes to organizational direction.
-
-This approval model preserves accountability while allowing AI systems to contribute valuable operational observations.
-
-We also explored how Steering Notes integrate naturally into enterprise AI harnesses.
-
-During repository discovery, the harness assembles multiple sources of repository intelligence—including Instructions, Skills, Roles, Prompts, Knowledge Sources, and the current Steering Note—and distributes them consistently to every participating AI agent.
-
-This shared operational context ensures that Lead Agents, Developer Agents, Reviewer Agents, Validator Agents, Evaluator Agents, and Security Reviewers all make decisions based on the same understanding of the organization's current priorities.
-
-Finally, we examined common anti-patterns, including:
-
-* treating Steering Notes as permanent Instructions,
-* embedding implementation tasks,
-* failing to identify an owner,
-* allowing priorities to become stale,
-* omitting expiration dates,
-* introducing conflicting direction,
-* allowing AI agents to silently edit Steering Notes,
-* and failing to document risks or escalation conditions.
-
-Avoiding these mistakes enables organizations to maintain a clear distinction between **permanent engineering knowledge** and **temporary operational guidance**.
-
-As AI-assisted software development continues to mature, organizations will increasingly rely on Steering Notes to coordinate complex engineering initiatives involving multiple human engineers, multiple AI agents, and multiple parallel workstreams.
-
-A well-governed Steering Note becomes the operational briefing that keeps every participant aligned with the current mission while preserving the long-term integrity of the repository.
-
----
-
-# 19. Further Reading
-
-The concepts introduced in this chapter build upon the repository intelligence model established throughout Part II of this handbook and prepare the reader for the next stage of enterprise AI engineering.
-
-The following chapters and resources are recommended for continued study.
-
-## Earlier Chapters
-
-Review the preceding chapters to reinforce the relationships among repository artifacts:
-
-* Chapter 5 — Repository Discovery
-* Chapter 6 — Instructions
-* Chapter 7 — Skills
-* Chapter 8 — Prompts
-* Chapter 9 — Roles
-
-Together with this chapter, these artifacts form the complete Repository Intelligence model.
-
----
-
-## Next Chapter
-
-**Chapter 11 — Knowledge Sources**
-
-The next chapter explores how AI agents discover, organize, retrieve, and reason over enterprise knowledge beyond repository instructions and operational guidance.
-
-Topics include:
-
-* Knowledge Source discovery
-* Architecture Decision Records (ADRs)
-* Design documentation
-* Business documentation
-* API specifications
-* Database documentation
-* Runbooks
-* Operational documentation
-* External reference material
-* Retrieval strategies
-* Repository knowledge organization
-* Governance and ownership of enterprise knowledge
-
-Where Steering Notes communicate **temporary operational priorities**, Knowledge Sources provide the **authoritative factual information** that AI agents use to make technically correct engineering decisions.
-
----
-
-## Recommended Repository References
-
-As organizations implement the practices described in this chapter, the following repository artifacts should be reviewed together:
-
-```text
-Search/
-    steering-note.md
-
-Search/
-    proposed-steering-update.md
-
-CLAUDE.md
-
-AGENTS.md
-
-.github/
-    copilot-instructions.md
-
-Skills/
-
-Roles/
-
-Prompts/
-```
-
-These artifacts collectively define:
-
-* permanent engineering standards,
-* reusable engineering procedures,
-* operational priorities,
-* engineering responsibilities,
-* current implementation objectives,
-* and organizational governance.
-
----
-
-## Enterprise Architecture References
-
-Readers responsible for enterprise AI adoption should also become familiar with:
-
-* Architecture Decision Records (ADRs)
-* Software architecture governance
-* Release management practices
-* Change management processes
-* Risk management frameworks
-* Engineering approval workflows
-* AI governance policies
-* Enterprise DevSecOps practices
-* Repository governance strategies
-
-These disciplines complement Steering Notes by providing the broader organizational framework within which AI-assisted software development operates.
-
----
-
-## Key Takeaways
-
-Before continuing to the next chapter, ensure that you can confidently answer the following questions:
-
-* What problem do Steering Notes solve?
-* How do Steering Notes differ from Instructions, Skills, Prompts, and Roles?
-* Why are Steering Notes intentionally temporary?
-* Why should AI agents treat Steering Notes as read-only?
-* When should `proposed-steering-update.md` be created?
-* How do Steering Notes improve coordination in multi-agent engineering systems?
-* Why are ownership, expiration, and auditability essential for Steering Notes?
-
-Mastering these concepts establishes the final operational layer of Repository Intelligence and prepares you for the broader knowledge management concepts introduced in the next chapter.
-
----
-
-**Chapter 10 status: Complete**
+A reliable Steering Note process is complete only when the organization can reproduce **which approved briefing an agent used, what the agent changed, which restrictions were checked, who approved any exception, and when the guidance expired**. That evidence provides the bridge from Repository Intelligence to the governed harness execution patterns explored in Part III.

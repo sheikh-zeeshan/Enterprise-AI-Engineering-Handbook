@@ -1,4 +1,3 @@
-
 # Chapter 41 — Skill Evolution
 
 ## Story-driven Opening
@@ -87,7 +86,7 @@ This principle is consistent with the broader self-learning architecture of the 
 
 ---
 
-# Learning Objectives
+## Learning Objectives
 
 By the end of this chapter, you should be able to:
 
@@ -99,6 +98,7 @@ By the end of this chapter, you should be able to:
 - measure Skill effectiveness across multiple executions;
 - design candidate Skill improvements without immediately changing production Skills;
 - version reusable Skills as governed engineering assets;
+- define the discovery, resolution, approval, publication, and rollback contract of a Skill Registry;
 - test proposed Skill versions before adoption;
 - evaluate backward compatibility and repository compatibility;
 - design rollback strategies for Skill changes;
@@ -113,9 +113,9 @@ By the end of this chapter, you should be able to:
 
 ---
 
-# Background
+## Background
 
-## Skills as Reusable Engineering Knowledge
+### Skills as Reusable Engineering Knowledge
 
 A Prompt describes a task that needs to be performed.
 
@@ -188,7 +188,7 @@ This makes Skill quality an architectural concern.
 
 ---
 
-## Why Skills Need Improvement
+### Why Skills Need Improvement
 
 A Skill that was correct when created may become incomplete over time.
 
@@ -275,9 +275,9 @@ Evidence must accumulate.
 
 ---
 
-# Concepts
+## Concepts
 
-## What Is Skill Evolution?
+### What Is Skill Evolution?
 
 **Skill Evolution is the governed process of improving reusable engineering Skills based on repeated execution evidence, human feedback, and measured effectiveness.**
 
@@ -323,7 +323,7 @@ The difference between these models is the difference between adaptive engineeri
 
 ---
 
-## The Skill Evolution Model
+### The Skill Evolution Model
 
 The core lifecycle can be expressed as:
 
@@ -332,16 +332,19 @@ flowchart TD
     A[Skill Execution] --> B[Build + Review + Validation + PR Evidence]
     B --> C[Pattern Detection]
     C --> D[Candidate Skill Improvement]
-    D --> E[Human Review]
+    D --> E[Owner Triage]
 
     E -->|Reject| F[Keep Current Skill]
-    E -->|Approve| G[Create New Skill Version]
+    E -->|Revise| D
+    E -->|Accept for testing| G[Prepare Candidate Version]
 
-    G --> H[Validate Skill Version]
-    H -->|Validation Failed| I[Reject or Revise Candidate]
-    H -->|Validation Passed| J[Publish Approved Version]
+    G --> H[Validate and Test Candidate]
+    H -->|Failed| I[Reject or Revise Candidate]
+    H -->|Passed| J[Human Approval]
+    J -->|Approved| PUB[Publish New Immutable Version]
+    J -->|Rejected| F
 
-    J --> K[Future Runs]
+    PUB --> K[Future Runs]
     K --> A
 ```
 
@@ -353,7 +356,7 @@ Governed Skills change selectively.
 
 ---
 
-# Learning Signals
+### Learning Signals
 
 Skill Evolution requires evidence.
 
@@ -361,7 +364,7 @@ No single signal is sufficient for every decision.
 
 The Harness should aggregate multiple types of evidence before proposing changes.
 
-## Build Failures
+#### Build Failures
 
 Build failures can reveal mechanical deficiencies in a Skill.
 
@@ -396,7 +399,7 @@ Skill Evolution should seek recurring relationships between the Skill and the fa
 
 ---
 
-## Review Findings
+#### Review Findings
 
 Reviewer findings are particularly valuable because they expose deficiencies that deterministic gates may not detect.
 
@@ -425,7 +428,7 @@ Not every review comment belongs inside a Skill.
 
 ---
 
-## Validation Failures
+#### Validation Failures
 
 Validation failures provide deterministic evidence.
 
@@ -455,7 +458,7 @@ The correct improvement may therefore be a stronger concurrency procedure inside
 
 ---
 
-## Evaluator Findings
+#### Evaluator Findings
 
 The Evaluator Agent asks a different question:
 
@@ -474,7 +477,7 @@ Evaluator findings can reveal systemic deficiencies in the workflow represented 
 
 ---
 
-## Pull-Request Outcomes
+#### Pull-Request Outcomes
 
 Pull requests provide important downstream evidence because they capture what happened after AI-generated work entered normal engineering governance.
 
@@ -503,7 +506,7 @@ Skill effectiveness must therefore combine multiple indicators.
 
 ---
 
-## Human Feedback
+#### Human Feedback
 
 Humans remain essential sources of knowledge.
 
@@ -534,7 +537,7 @@ A statement from an architecture owner should not be treated identically to an u
 
 ---
 
-# Skill Effectiveness
+### Skill Effectiveness
 
 If Skills are governed engineering assets, organizations need a way to evaluate whether they are effective.
 
@@ -582,11 +585,16 @@ No metric should be interpreted alone.
 
 ---
 
-# Detecting Incomplete or Weak Skills
+#### Measurement Discipline
+
+The denominator and population must be explicit: count only executions that actually loaded the specified Skill version, and separately track failures before Skill execution, canceled runs, and runs with incomplete evidence. Compare versions on matched task categories, repository contexts, Agent/model configurations, and validation-gate policies. Because multiple Skills may be composed in one run, a correlated finding is not automatically caused by the Skill being evaluated. A proposed improvement should record competing explanations and require human review of attribution. Security and architecture regressions are release-blocking constraints, not metrics that can be traded against faster execution.
+
+
+### Detecting Incomplete or Weak Skills
 
 A Skill becomes a candidate for evolution when evidence indicates that its guidance is incomplete, ambiguous, outdated, or consistently ineffective.
 
-## Repeated Missing Artifacts
+#### Repeated Missing Artifacts
 
 Suppose `create-api-endpoint` is expected to produce:
 
@@ -607,7 +615,7 @@ That suggests the Skill may not communicate telemetry expectations clearly enoug
 
 ---
 
-## Repeated Reviewer Corrections
+#### Repeated Reviewer Corrections
 
 If reviewers repeatedly add:
 
@@ -633,7 +641,7 @@ The system must determine whether cancellation handling belongs to:
 
 ---
 
-## High Variation in Outputs
+#### High Variation in Outputs
 
 Two agents may interpret the same Skill differently.
 
@@ -653,7 +661,7 @@ If architecture requires the transactional outbox, this variation indicates that
 
 ---
 
-## Excessive Human Repair
+#### Excessive Human Repair
 
 Suppose the initial output usually requires human engineers to add:
 
@@ -669,7 +677,7 @@ That is evidence of weak reusable guidance.
 
 ---
 
-## Repeated Skill Bypass
+#### Repeated Skill Bypass
 
 Developers may repeatedly avoid a particular Skill.
 
@@ -688,7 +696,7 @@ Skill usage itself is therefore a useful metric.
 
 ---
 
-# Evidence Thresholds
+### Evidence Thresholds
 
 An Adaptive Harness should not propose modifications after every unusual outcome.
 
@@ -700,14 +708,15 @@ A threshold might include:
 skill_evolution:
   minimum_executions: 10
   minimum_repeated_findings: 3
+  # Illustrative default for enterprise-scoped candidates.
   minimum_repositories: 2
   minimum_confidence: 0.80
   require_human_feedback: true
 ```
 
-These numbers are illustrative.
+These numbers are illustrative defaults for an **enterprise-scoped recommendation**. A repository-local observation may justify a lower-threshold candidate **for investigation only**, without permitting automatic publication or enterprise-wide promotion. Repeated findings must be deduplicated by underlying defect so that several comments on one pull request are not mistaken for independent evidence.
 
-Different organizations will require different policies.
+Different organizations will require different policies. A single credible critical security finding may justify immediate containment or revocation under incident-response policy; that emergency action does not authorize an Agent to silently rewrite or publish a governed Skill.
 
 A security-sensitive Skill may require stronger evidence and more formal approval.
 
@@ -721,7 +730,7 @@ A repository-local Skill can often evolve with less governance than an organizat
 
 ---
 
-# Candidate Improvements
+### Candidate Improvements
 
 The Harness should separate **observations** from **proposed changes**.
 
@@ -769,7 +778,7 @@ That separation improves auditability.
 
 ---
 
-# Skill Versioning
+### Skill Versioning
 
 Skills should be versioned.
 
@@ -821,13 +830,13 @@ Deprecation status
 
 ---
 
-# Semantic Change Classification
+### Semantic Change Classification
 
 Not every Skill change has the same impact.
 
 A useful model classifies changes as:
 
-### Patch change
+#### Patch change
 
 Clarifies wording or fixes a small defect without changing expected behavior.
 
@@ -837,7 +846,7 @@ Example:
 v2.1.1
 ```
 
-### Minor change
+#### Minor change
 
 Adds backward-compatible capability.
 
@@ -849,7 +858,7 @@ v2.2.0
 
 such as adding optional OpenTelemetry guidance.
 
-### Major change
+#### Major change
 
 Changes expected workflow or output significantly.
 
@@ -859,13 +868,13 @@ Example:
 v3.0.0
 ```
 
-such as changing integration-event publishing from direct publication to mandatory transactional outbox.
+such as introducing an incompatible required output artifact or changing an existing Skill's public input contract. If the change would replace direct event publication with a mandatory transactional outbox, that architecture decision must be approved separately **before** a new major Skill version can encode it.
 
 Enterprise organizations may use other version schemes, but the distinction between low-impact and high-impact changes is important.
 
 ---
 
-# Testing Skills
+### Testing Skills
 
 A Skill should not be considered safe merely because its Markdown looks reasonable.
 
@@ -873,7 +882,7 @@ Skills require tests.
 
 The exact testing approach depends on the Skill.
 
-## Structural Tests
+#### Structural Tests
 
 Structural tests verify that required guidance exists.
 
@@ -891,7 +900,7 @@ transactional-outbox Skill must include:
 
 ---
 
-## Scenario Tests
+#### Scenario Tests
 
 Scenario tests execute the Skill against representative tasks.
 
@@ -912,7 +921,7 @@ The generated implementations can then be evaluated.
 
 ---
 
-## Negative Tests
+#### Negative Tests
 
 Negative tests verify that the Skill prevents known bad patterns.
 
@@ -931,7 +940,7 @@ The authorization Skill must not rely only on UI-level access control.
 
 ---
 
-## Regression Tests
+#### Regression Tests
 
 Whenever Skill Evolution fixes a recurring problem, a regression test should preserve the learning.
 
@@ -941,7 +950,7 @@ This transforms historical failures into future safeguards.
 
 ---
 
-# Compatibility
+### Compatibility
 
 A Skill that performs well in one repository may be inappropriate elsewhere.
 
@@ -981,7 +990,7 @@ The Skill should not be promoted globally merely because it performs well inside
 
 ---
 
-# Repository-Specific Versus Global Learning
+### Repository-Specific Versus Global Learning
 
 One of the most dangerous forms of Skill Evolution is accidental generalization.
 
@@ -1022,7 +1031,7 @@ Scope should be earned by evidence.
 
 ---
 
-# Rollback
+### Rollback
 
 Any governed Skill evolution process must include rollback.
 
@@ -1057,7 +1066,7 @@ If a Skill version is frequently rolled back, the evolution process may be promo
 
 ---
 
-# Ownership
+### Ownership
 
 A Skill without an owner is difficult to govern.
 
@@ -1091,7 +1100,7 @@ It should not replace accountable ownership.
 
 ---
 
-# Human Approval
+### Human Approval
 
 The Adaptive Harness may create a sophisticated proposal containing:
 
@@ -1126,7 +1135,7 @@ This is more useful than a simple yes/no workflow.
 
 ---
 
-# Deprecation
+### Deprecation
 
 Skills should not remain active forever simply because they once worked.
 
@@ -1158,7 +1167,7 @@ It should not silently delete historical versions.
 
 ---
 
-# Skill Composition
+### Skill Composition
 
 Mature Skills should avoid becoming large all-purpose workflows.
 
@@ -1205,7 +1214,9 @@ Composition allows each reusable capability to evolve independently.
 
 ---
 
-# Skill Dependency Graph
+## Architecture Discussion
+
+### Skill Dependency Graph
 
 The Harness can maintain relationships between Skills.
 
@@ -1235,7 +1246,7 @@ That enables impact analysis before approval.
 
 ---
 
-# Harness Memory and Skill Evolution
+### Harness Memory and Skill Evolution
 
 Harness Memory plays an important role in Skill Evolution.
 
@@ -1284,7 +1295,7 @@ It does not automatically become an engineering standard.
 
 ---
 
-# Skill Evolution Architecture
+### Skill Evolution Architecture
 
 Skill Evolution should exist as an explicit subsystem inside the Adaptive Harness.
 
@@ -1333,14 +1344,15 @@ flowchart LR
     PD --> SE[Skill Evolution Engine]
     SE --> CP[Candidate Proposal]
 
-    CP --> HR[Human Review]
+    CP --> IMPACT[Impact and Compatibility Analysis]
+    IMPACT --> ST[Candidate Skill Tests]
+    ST -->|Fail| CP
+    ST -->|Pass| HR[Human Owner Review]
 
     HR -->|Reject| ARCH[Archive Decision]
-    HR -->|Approve| SV[New Skill Version]
-
-    SV --> ST[Skill Tests]
-    ST -->|Fail| CP
-    ST -->|Pass| REG[Skill Registry]
+    HR -->|Revise| CP
+    HR -->|Approve| PUB[Publish Immutable Skill Version]
+    PUB --> REG[Skill Registry]
 
     REG --> L
 ```
@@ -1361,7 +1373,7 @@ The Skill Registry exposes approved versions for future runs.
 
 ---
 
-# Evidence Model
+### Evidence Model
 
 A Skill Evolution subsystem benefits from structured evidence.
 
@@ -1418,9 +1430,700 @@ The data model matters because explainable evolution requires traceable evidence
 
 ---
 
-# Professional Diagrams
+### Evidence Integrity and Trust Boundaries
 
-## End-to-End Skill Evolution Pipeline
+Build logs, review comments, pull-request discussions, and tool outputs are **observations**, not instructions to the Harness. They may contain inaccurate classifications, sensitive data, or text intended to manipulate an AI Agent. The evidence pipeline should record source identifiers and timestamps, enforce access controls and retention rules, redact secrets, deduplicate related findings, and treat retrieved text as untrusted when generating recommendations. Only validated policy, architecture decisions, and approved registry records may change governed Skill behavior.
+
+
+### Skill Registry Contract
+
+#### Purpose and Architectural Responsibility
+
+A Skill Registry is the governed system of record for reusable engineering Skills available to the Harness.
+
+It provides a consistent contract for discovering, resolving, versioning, validating, approving, publishing, deprecating, and rolling back Skills.
+
+Without a registry, the Harness may discover Skills from repository directories or contextual instructions, but it cannot reliably establish which version is approved, whether it is compatible with the target repository, or whether its use is permitted.
+
+A Skill Registry is not the Skill Evolution Engine.
+
+The Skill Evolution Engine analyzes evidence and proposes improvements. The Skill Registry maintains the authoritative inventory of approved, governed Skill artifacts and their lifecycle states.
+
+The registry must answer five questions before a Skill is executed:
+
+1. Identity: Which Skill is being requested?
+2. Version: Which immutable version should be used?
+3. Authority: Is that version approved and permitted for this execution?
+4. Compatibility: Is the Skill compatible with the repository and its architectural constraints?
+5. Integrity: Can the Harness verify that the resolved artifact is the exact version that was approved?
+
+The fundamental contract is:
+
+> A Harness must resolve an approved, immutable, compatible Skill version before execution and record the exact resolved artifact as part of run provenance.
+
+#### Registry Architecture
+
+The registry stands between the adaptive analysis subsystem and the authorized Skill versions used by engineering Agents.
+
+```mermaid
+flowchart TD
+    LEAD[Lead Agent] --> RES[Skill Resolver]
+    RES --> REG[Skill Registry]
+    REG --> META[Version and Ownership Metadata]
+    REG --> POLICY[Approval and Compatibility Policies]
+    REG --> ART[Immutable Skill Artifacts]
+    RES --> CHECK{Approved, compatible and valid?}
+    CHECK -->|No| DENY[Fail Closed / Escalate]
+    CHECK -->|Yes| VERIFY[Verify Bundle Digest]
+    VERIFY -->|Mismatch| DENY
+    VERIFY -->|Verified| DEV[Developer Agent]
+    DEV --> GATES[Reviewer, Validator and Evaluator]
+    GATES --> MEM[Harness Memory]
+    MEM --> EVOLVE[Skill Evolution Engine]
+    EVOLVE --> CAND[Candidate Skill Version]
+    CAND --> GOV[Tests and Human Approval]
+    GOV -->|Approved| REG
+    GOV -->|Rejected| MEM
+```
+
+#### 1. Canonical Skill Identity
+
+Every Skill must have a stable, globally unambiguous identifier within its governance namespace.
+
+A recommended identity format is:
+
+```text
+<scope-path>/<skill-name>@<semantic-version>
+```
+
+Examples:
+
+```text
+enterprise/create-api-endpoint@2.3.0
+enterprise/transactional-outbox@3.2.0
+enterprise/idempotent-consumer@2.1.0
+enterprise/opentelemetry@1.4.0
+repository/alpha-car-detailing/fleet-authorization@1.0.0
+```
+
+The scope path identifies the governance boundary and may itself contain multiple segments. The registry treats the entire identifier before `@` as an opaque, canonical Skill ID; version resolution operates on the explicit semantic version.
+
+| Namespace           | Governance scope                     | Example                           |
+| ------------------- | ------------------------------------ | --------------------------------- |
+| `enterprise`        | Organization-wide approved practices | `enterprise/transactional-outbox` |
+| `domain/<name>`     | Shared domain-specific workflows     | `domain/fleet-booking`            |
+| `repository/<name>` | Repository-local workflows           | `repository/alpha-car-detailing`  |
+| `experimental`      | Nonproduction evaluation             | `experimental/api-generation`     |
+
+A repository-local Skill must not become an enterprise Skill simply because it performs successfully.
+
+Promotion requires evidence and approval at the broader governance scope.
+
+#### 2. Canonical Skill Manifest
+
+Every registered Skill version must provide a machine-readable manifest and an associated governance record.
+
+The manifest describes identity, ownership, scope, artifact integrity, compatibility, composition, tests, and lifecycle state.
+
+The following is a proposed enterprise contract rather than a specification imposed by any particular AI coding platform.
+
+```yaml
+schemaVersion: "1.0"
+
+kind: Skill
+
+metadata:
+  id: enterprise/transactional-outbox
+  name: transactional-outbox
+  version: 3.2.0
+  title: Implement Transactional Outbox
+  description: >
+    Implements reliable integration-event publishing
+    using the transactional outbox pattern.
+
+  scope: enterprise
+
+  owner:
+    team: platform-architecture
+    contact: platform-architecture@example.com
+
+  maintainers:
+    - platform-engineering
+
+  labels:
+    domain: messaging
+    category: reliability
+    technology: dotnet
+
+spec:
+  artifact:
+    bundlePath: artifacts/transactional-outbox-3.2.0.tar.gz
+    entrypoint: SKILL.md
+    digest:
+      algorithm: sha256
+      value: "<verified-bundle-sha256>"
+
+  execution:
+    agentRoles:
+      - developer
+
+    inputs:
+      required:
+        - repositoryContext
+        - targetService
+        - integrationEvent
+
+    outputs:
+      expected:
+        - outboxEntity
+        - outboxPersistence
+        - publisher
+        - integrationTests
+
+  compatibility:
+    languages:
+      - csharp
+
+    frameworks:
+      - name: dotnet
+        versionRange: ">=10.0 <11.0"
+
+    architectures:
+      - clean-architecture
+
+    requiredCapabilities:
+      - relational-database
+      - background-processing
+
+  dependencies:
+    skills:
+      - id: enterprise/opentelemetry
+        versionRange: ">=1.4.0 <2.0.0"
+
+  constraints:
+    prohibitedPatterns:
+      - direct-event-publication-in-business-transaction
+
+    requiredGates:
+      - build
+      - unit-tests
+      - integration-tests
+      - architecture-tests
+
+  tests:
+    suite: tests/skill-tests.yaml
+
+  governance:
+    approvalPolicy: enterprise-standard
+    changeClassification: minor
+
+    evidenceReferences:
+      - skill-pattern-0142
+
+status:
+  lifecycle: active
+  approved: true
+  approvalId: approval-0412
+  approvedBy:
+    - platform-architecture
+    - observability-owner
+
+  approvedAt: "2026-11-13T10:00:00Z"
+  publishedAt: "2026-11-13T11:00:00Z"
+
+  supersedes: "3.1.0"
+  replacement: null
+  deprecatedAt: null
+```
+
+All names, versions, identities, paths, and approval records in this example are illustrative.
+
+In a production registry, the digest must contain the actual verified hash of the canonical artifact. Placeholder digests must never pass publication or resolution checks.
+
+The `spec` defines the immutable versioned Skill artifact, including the canonical Skill bundle, entry point, and expected engineering outputs. Its digest covers the **entire canonical bundle** (the Skill, tests, and packaged resources), not merely the `SKILL.md` file. Real implementations must define deterministic bundle creation before calculating the digest.
+
+The `status` block is shown alongside the manifest for readability; in the registry's persistence model, it is a **separate, mutable lifecycle record** linked to an immutable Skill-version manifest. These fields must be supplied or verified by trusted registry services—not accepted as self-declared truth in a candidate's YAML. Approval attestations refer to the exact bundle digest and the authorized approving identities. Deprecation, revocation, and release-channel rollback update registry records without rewriting previously approved artifacts.
+
+#### 3. Skill Registry Operations
+
+The Harness should interact with the registry through explicit operations rather than directly reading arbitrary Skill directories.
+
+A minimal logical interface is:
+
+```csharp
+public interface ISkillRegistry
+{
+    Task<SkillDescriptor?> GetAsync(
+        string skillId,
+        string version,
+        CancellationToken cancellationToken);
+
+    Task<IReadOnlyList<SkillDescriptor>> SearchAsync(
+        SkillSearchQuery query,
+        CancellationToken cancellationToken);
+
+    Task<SkillResolutionResult> ResolveAsync(
+        SkillResolutionRequest request,
+        CancellationToken cancellationToken);
+
+    Task<SkillValidationResult> ValidateCandidateAsync(
+        SkillCandidate candidate,
+        CancellationToken cancellationToken);
+
+    Task<SkillDescriptor> PublishApprovedAsync(
+        ApprovedSkillPublication publication,
+        CancellationToken cancellationToken);
+
+    Task<SkillLifecycleResult> DeprecateAsync(
+        SkillDeprecationRequest request,
+        CancellationToken cancellationToken);
+
+    Task<SkillChannelResult> RollbackChannelAsync(
+        SkillRollbackRequest request,
+        CancellationToken cancellationToken);
+}
+```
+
+These operations have distinct responsibilities.
+
+| Operation                | Responsibility                                               | Expected authorization              |
+| ------------------------ | ------------------------------------------------------------ | ----------------------------------- |
+| `GetAsync`               | Retrieve metadata for an exact version                       | Harness reader                      |
+| `SearchAsync`            | Discover relevant registered Skills                          | Harness reader                      |
+| `ResolveAsync`           | Select an approved compatible version                        | Skill resolver                      |
+| `ValidateCandidateAsync` | Check candidate integrity, contract, dependencies, and tests | Validation service                  |
+| `PublishApprovedAsync`   | Publish a validated, approved immutable version              | Authorized publisher                |
+| `DeprecateAsync`         | Mark a version as deprecated                                 | Skill owner or governance authority |
+| `RollbackChannelAsync`   | Restore a previous approved version as the channel default   | Authorized release owner            |
+
+Importantly, the registry does not expose an unrestricted operation such as:
+
+```text
+UpdateSkillContentAsync(...)
+```
+
+against an already published version.
+
+Approved Skill artifacts are immutable.
+
+A changed Skill must receive a new version.
+
+#### 4. Skill Resolution Contract
+
+A Skill Resolver translates a task requirement into an exact, approved Skill version.
+
+For example, the Lead Agent may request:
+
+```json
+{
+  "skillId": "enterprise/transactional-outbox",
+  "versionConstraint": "^3.0.0",
+  "channel": "stable",
+  "repository": {
+    "id": "alpha-car-detailing",
+    "language": "csharp",
+    "framework": "dotnet",
+    "frameworkVersion": "10.0",
+    "architecture": "clean-architecture",
+    "capabilities": [
+      "relational-database",
+      "background-processing"
+    ]
+  }
+}
+```
+
+The resolver should check:
+
+- identity;
+- version constraint;
+- approval status;
+- lifecycle status;
+- governance scope;
+- repository compatibility;
+- required dependencies;
+- dependency version conflicts;
+- required execution capabilities;
+- artifact integrity;
+- organization policy.
+
+A successful resolution returns an exact version and its transitive dependency lock:
+
+```json
+{
+  "status": "resolved",
+  "skill": {
+    "id": "enterprise/transactional-outbox",
+    "version": "3.2.0",
+    "artifactDigest": "sha256:<verified-artifact-digest>",
+    "approvalId": "approval-0412"
+  },
+  "dependencies": [
+    {
+      "id": "enterprise/opentelemetry",
+      "version": "1.4.0",
+      "artifactDigest": "sha256:<verified-dependency-digest>"
+    }
+  ],
+  "resolutionId": "resolution-7291"
+}
+```
+
+This dependency lock prevents the Harness from selecting different transitive Skill versions midway through the same run.
+
+Resolution must fail closed when an approved compatible version cannot be established. The Harness must not silently fall back to an unapproved Skill or a different implementation pattern. In particular, it should report a typed failure such as `SkillNotFound`, `VersionConflict`, `ApprovalMissing`, `CompatibilityMismatch`, `DependencyConflict`, `ArtifactIntegrityFailure`, or `SkillRevoked`, and preserve the failed resolution attempt in the run audit trail.
+
+#### 5. Skill Lifecycle State Machine
+
+A Skill must have a defined lifecycle. Candidate preparation, validation, and approval are separate states; production execution can resolve only versions allowed by governance policy.
+
+```mermaid
+stateDiagram-v2
+    [*] --> Candidate
+    Candidate --> Validated: Mandatory tests pass
+    Candidate --> Rejected: Proposal rejected
+    Validated --> Candidate: Revision required
+    Validated --> Approved: Authorized human approval
+    Approved --> Active: Immutable publication / release
+    Active --> Deprecated: Superseded
+    Active --> Revoked: Critical policy or integrity issue
+    Deprecated --> Retired: Migration complete
+    Deprecated --> Revoked: Critical issue
+    Revoked --> Retired: Retention and recovery
+    Rejected --> [*]
+```
+
+The lifecycle has several important guarantees.
+
+Candidate: Not eligible for ordinary production execution.
+
+Validated: Passed prescribed checks but not yet authorized for production.
+
+Approved: Authorized for publication, subject to the recorded approval.
+
+Active: Available for resolution under an allowed release channel.
+
+Deprecated: Retained for historical use; new executions may be warned, blocked, or permitted under an explicit compatibility policy.
+
+Retired: No longer selected for new executions; retained for auditability.
+
+Revoked: Explicitly prohibited from new execution because of a serious security, integrity, or governance concern.
+
+Rejected: A proposal that did not receive approval and cannot be published.
+
+Revocation must take precedence over all version-selection and compatibility rules.
+
+Rollback must never reactivate a revoked Skill.
+
+#### 6. Skill Publication Contract
+
+Publishing a Skill must be a controlled transaction rather than a file-copy operation.
+
+The required sequence is:
+
+```mermaid
+flowchart TD
+    A[Candidate Bundle] --> B[Manifest Schema and Identity]
+    B --> C[Dependency and Compatibility Checks]
+    C --> D[Scenario, Negative and Regression Tests]
+    D --> E[Owner and Policy Approval]
+    E --> F[Verify Approved Bundle Digest]
+    F --> G[Atomic Immutable Publication]
+    G --> H[Append-only Audit Event]
+    H --> I[Release Channel Activation]
+```
+
+A publication must be rejected when:
+
+- the Skill identifier is invalid;
+- the version already exists with different content;
+- required metadata is missing;
+- mandatory tests fail;
+- dependencies are missing or incompatible;
+- the approval is absent, expired, or unauthorized;
+- the approval refers to a different candidate digest;
+- the artifact digest does not match the submitted content;
+- the Skill violates an enterprise policy.
+
+Approval must be bound to the exact candidate artifact digest.
+
+Otherwise, an artifact could be changed after approval but before publication.
+
+The registry should use atomic publication and audit recording, with retry-safe operations and unique version constraints. A failed publication must not leave a partially active version.
+
+#### 7. Run Provenance Contract
+
+Every Harness run that uses a Skill must record the exact resolved version.
+
+A representative record is:
+
+```json
+{
+  "runId": "run-2026-11-00481",
+  "repository": "alpha-car-detailing",
+  "task": "Implement FleetBookingCreated event",
+  "skillResolution": {
+    "resolutionId": "resolution-7291",
+    "resolvedAt": "2026-11-13T11:30:00Z",
+    "skills": [
+      {
+        "id": "enterprise/transactional-outbox",
+        "version": "3.2.0",
+        "digest": "sha256:<verified-artifact-digest>",
+        "approvalId": "approval-0412"
+      },
+      {
+        "id": "enterprise/opentelemetry",
+        "version": "1.4.0",
+        "digest": "sha256:<verified-dependency-digest>"
+      }
+    ]
+  }
+}
+```
+
+Execution evidence can then be correlated with the exact Skill version.
+
+For example:
+
+```text
+Skill version 3.1.0
+    ↓
+12 executions
+    ↓
+8 telemetry-related corrections
+```
+
+After a governed change:
+
+```text
+Skill version 3.2.0
+    ↓
+12 comparable executions
+    ↓
+2 telemetry-related corrections
+```
+
+This supports effectiveness analysis.
+
+It does not, by itself, prove that the Skill change caused the improvement. Task complexity, repository differences, agent versions, and validation changes must also be considered.
+
+The Harness should preserve enough execution context to support meaningful comparisons, including Prompt and Instruction revisions, Agent/model configuration, repository commit, gate configuration, and any composed Skill versions.
+
+#### 8. Skill Composition Contract
+
+A Skill may depend on other Skills, but those relationships must be explicit.
+
+Example:
+
+```yaml
+dependencies:
+  skills:
+    - id: enterprise/opentelemetry
+      versionRange: ">=1.4.0 <2.0.0"
+      required: true
+
+    - id: enterprise/integration-testing
+      versionRange: ">=2.0.0 <3.0.0"
+      required: true
+```
+
+The registry must ensure:
+
+1. dependencies exist;
+2. selected versions are approved;
+3. dependencies are compatible;
+4. dependency graphs contain no prohibited cycles;
+5. version constraints can be satisfied together;
+6. dependency scope is permitted;
+7. all resolved versions are recorded.
+
+The Skill Resolver should use deterministic dependency selection.
+
+If two Skills require incompatible versions of the same dependency, resolution should fail with a clear conflict rather than silently choosing one.
+
+#### 9. Rollback Contract
+
+Rollback should not delete or overwrite the problematic version.
+
+Instead, it should change which previously approved version is selected by the relevant release channel.
+
+For example:
+
+```text
+enterprise/transactional-outbox
+
+stable → 3.2.0
+```
+
+After a regression:
+
+```text
+stable → 3.1.0
+```
+
+Version `3.2.0` remains available for audit and investigation, subject to its lifecycle and access policy.
+
+A rollback request should include:
+
+```json
+{
+  "skillId": "enterprise/transactional-outbox",
+  "channel": "stable",
+  "currentVersion": "3.2.0",
+  "targetVersion": "3.1.0",
+  "reason": "Regression in publication telemetry integration",
+  "approvalId": "rollback-approval-019"
+}
+```
+
+The registry must verify that the target version is approved, compatible, and not revoked.
+
+A rollback must generate an audit event and identify potentially affected Harness runs.
+
+Already-running executions should normally remain pinned to their resolved Skill versions. Emergency security revocation may instead require those runs to be stopped according to organizational policy.
+
+#### 10. Registry Audit Contract
+
+Every governance-changing operation must create an append-only audit event.
+
+A minimum audit record includes:
+
+```json
+{
+  "eventId": "skill-event-00821",
+  "eventType": "SKILL_VERSION_PUBLISHED",
+  "skillId": "enterprise/transactional-outbox",
+  "version": "3.2.0",
+  "actor": "skill-registry-publisher",
+  "approvedBy": [
+    "platform-architecture",
+    "observability-owner"
+  ],
+  "approvalId": "approval-0412",
+  "evidenceReferences": [
+    "skill-pattern-0142"
+  ],
+  "previousVersion": "3.1.0",
+  "timestamp": "2026-11-13T11:00:00Z"
+}
+```
+
+Additional event types include:
+
+```text
+SKILL_CANDIDATE_REGISTERED
+SKILL_VALIDATION_PASSED
+SKILL_VALIDATION_FAILED
+SKILL_APPROVED
+SKILL_REJECTED
+SKILL_VERSION_PUBLISHED
+SKILL_VERSION_DEPRECATED
+SKILL_VERSION_RETIRED
+SKILL_VERSION_REVOKED
+SKILL_CHANNEL_ROLLED_BACK
+SKILL_OWNERSHIP_CHANGED
+```
+
+Audit records must identify who or what performed an action, what was affected, when it happened, which authorization permitted it, and which evidence justified the decision.
+
+The Harness should record read and resolution provenance separately from governance mutations.
+
+#### 11. Enterprise Registry Invariants
+
+The following invariants should be enforced independently of the coding Agent.
+
+| Invariant              | Required behavior                                                |
+| ---------------------- | ---------------------------------------------------------------- |
+| Immutable publication  | A published Skill version cannot be overwritten                  |
+| Approved execution     | Ordinary production runs use only authorized versions            |
+| Digest verification    | Executed artifacts match their approved content                  |
+| Exact resolution       | Runs use pinned versions, not mutable floating content           |
+| Dependency consistency | All transitive dependencies satisfy compatibility constraints    |
+| Governed publication   | No new active Skill version without required authorization       |
+| Revocation enforcement | Revoked Skills cannot be selected for new runs                   |
+| Rollback support       | Previous approved versions remain recoverable                    |
+| Lifecycle traceability | Deprecation, retirement, and revocation preserve history         |
+| Provenance recording   | Every execution records Skill IDs, versions, and digests         |
+| Scope enforcement      | Repository-local Skills are not silently promoted globally       |
+| Separation of duties   | A learning Agent cannot authorize its own governed Skill changes |
+| Evidence traceability  | Every approved evolution links to supporting evidence            |
+| Validation protection  | Skill Evolution cannot disable required deterministic gates      |
+
+These invariants should be enforced through registry services, authorization controls, storage constraints, and deterministic validation—not solely through natural-language instructions.
+
+#### 12. Applying the Contract to Alpha Car Detailing
+
+Consider a fleet-booking enhancement that requires:
+
+```text
+Create recurring fleet booking API
+    ↓
+Persist booking
+    ↓
+Publish integration event
+    ↓
+Ensure idempotent processing
+    ↓
+Add telemetry
+    ↓
+Create tests
+```
+
+The Lead Agent requests the required Skills.
+
+The Skill Resolver returns a pinned set:
+
+```text
+enterprise/create-api-endpoint@2.3.0
+enterprise/ef-core-persistence@2.1.0
+enterprise/transactional-outbox@3.2.0
+enterprise/idempotent-consumer@2.1.0
+enterprise/opentelemetry@1.4.0
+enterprise/integration-testing@2.4.0
+```
+
+The Harness records the versions and artifact digests before execution.
+
+The Developer Agent implements the feature using the resolved Skills.
+
+The Reviewer, Validator, and Evaluator Agents assess the result.
+
+The Harness stores the evidence.
+
+If repeated findings expose a weakness in `enterprise/transactional-outbox@3.2.0`, the Skill Evolution Engine may produce a candidate for version `3.3.0`.
+
+It cannot publish that candidate merely because its confidence score exceeds a threshold.
+
+The candidate must still pass the registry publication contract.
+
+This creates the necessary separation:
+
+Harness Memory stores what happened. The Skill Evolution Engine proposes what should improve. The Skill Registry controls what is approved for reuse. The Harness executes only what has been authorized.
+
+#### Registry Acceptance Criteria
+
+The registry is acceptable for enterprise deployment only when automated tests demonstrate the contract's safety properties. A representative acceptance suite must verify that a run cannot resolve an unapproved version; a published version cannot be overwritten; modification of even one bundle byte fails digest verification; incompatible or cyclic dependencies fail deterministically; revocation prevents new execution; release-channel rollback preserves historical versions; and publication fails when the approval refers to a different digest. Each successful execution must produce an auditable dependency lock containing exact Skill identities, versions, and digests.
+
+#### Architect's Note — A Skill Registry Is a Governance Boundary
+
+A directory containing Markdown files is a Skill library.
+
+A service that can search those files is a Skill catalog.
+
+A Skill Registry adds the contractual guarantees required for enterprise reuse: stable identity, immutable versions, controlled resolution, compatibility, provenance, ownership, approval, integrity, lifecycle management, and rollback.
+
+The distinction matters because Skill Evolution increases the rate at which reusable engineering guidance may change.
+
+As the system becomes more adaptive, governance must become more explicit—not less.
+
+The registry is what allows the organization to improve engineering knowledge continuously while preserving control over which knowledge its AI Agents are permitted to execute.
+
+---
+
+## Professional Diagrams
+
+### End-to-End Skill Evolution Pipeline
 
 ```mermaid
 flowchart TD
@@ -1448,8 +2151,9 @@ flowchart TD
     H -->|Yes| J[Create Candidate Improvement]
 
     J --> K[Impact Analysis]
-    K --> L[Skill Tests]
-    L --> M[Human Owner Review]
+    K --> L[Skill Tests and Compatibility Gates]
+    L -->|Passed| M[Human Owner Review]
+    L -->|Failed| J
 
     M -->|Reject| N[Record Rejection]
     M -->|Revise| J
@@ -1460,7 +2164,7 @@ flowchart TD
 
     Q --> R{Better outcome?}
     R -->|Yes| S[Continue Adoption]
-    R -->|No| T[Rollback or Revise]
+    R -->|No| T[Rollback Channel or Open Revision]
 
     S --> A
     T --> A
@@ -1468,7 +2172,7 @@ flowchart TD
 
 ---
 
-## Evidence Confidence Model
+### Evidence Confidence Model
 
 ```mermaid
 flowchart LR
@@ -1488,7 +2192,7 @@ The diagram illustrates an important concept:
 
 ---
 
-## Skill Governance Boundary
+### Skill Governance Boundary
 
 ```mermaid
 flowchart LR
@@ -1530,9 +2234,9 @@ The governed asset changes only after approval.
 
 ---
 
-# Hands-on Example
+## Hands-on Example
 
-## Scenario: Improving the Transactional Outbox Skill
+### Scenario: Improving the Transactional Outbox Skill
 
 Alpha Car Detailing uses integration events to communicate between services.
 
@@ -1579,7 +2283,7 @@ But evidence begins to accumulate.
 
 ---
 
-## Execution One
+### Execution One
 
 The Developer Agent uses Skill v3.1.0 to implement:
 
@@ -1613,7 +2317,7 @@ One review finding is not enough.
 
 ---
 
-## Execution Two
+### Execution Two
 
 Three weeks later, the same Skill is used for:
 
@@ -1652,7 +2356,7 @@ Still no Skill modification.
 
 ---
 
-## Execution Three
+### Execution Three
 
 The Fleet service uses the same Skill.
 
@@ -1676,19 +2380,17 @@ The Harness now has evidence from:
 ```text
 3 executions
 2 services
-2 repositories/modules
+1 repository (2 services/modules)
 Reviewer findings
 Evaluator findings
 PR corrections
 ```
 
-This exceeds the organization's repository-local candidate threshold.
-
-The Skill Evolution Engine creates a proposal.
+The three independent corrections meet the organization's illustrative repository-local threshold for **raising a candidate**. They do not meet the stricter enterprise-wide evidence threshold described earlier. The Skill Evolution Engine may therefore prepare a proposal for owner review, but it must not assume the proposed improvement is globally applicable. Before enterprise-wide publication, the owner requires validation on representative compatible repositories and explicit approval.
 
 ---
 
-## Candidate Proposal
+### Candidate Proposal
 
 ```markdown
 # Candidate Skill Evolution
@@ -1734,10 +2436,9 @@ Transactional-outbox semantics remain unchanged.
 
 ## Compatibility
 
-Backward compatible.
+Conditionally compatible with repositories that already use the approved observability abstraction.
 
-Repositories without OpenTelemetry support must compose the approved
-observability abstraction rather than introduce a new tracing library.
+Repositories without that capability require separate compatibility evaluation; the Skill must not introduce a conflicting tracing library. If the change creates a new mandatory interface or requirement for previously supported consumers, it must be treated as a major version, not a minor release.
 
 ## Risk
 
@@ -1759,7 +2460,7 @@ The current version remains unchanged.
 
 ---
 
-## Human Review
+### Human Review
 
 The observability owner reviews the proposal.
 
@@ -1783,7 +2484,7 @@ The Adaptive Harness had identified the correct problem but did not possess enou
 
 ---
 
-## Revised Skill
+### Revised Skill
 
 The proposed addition becomes:
 
@@ -1806,7 +2507,7 @@ The proposal moves to testing.
 
 ---
 
-## Skill Test Scenario
+### Skill Test Scenario
 
 The Harness creates a controlled task:
 
@@ -1828,11 +2529,11 @@ Failure is recorded.
 Consumer remains idempotent.
 ```
 
-The test implementation passes.
+The scenario also passes build, integration, architecture, and relevant policy gates in representative compatible repositories; failing or unsupported repository configurations must be documented rather than silently excluded.
 
 ---
 
-## Negative Test
+### Negative Test
 
 A second scenario intentionally provides a repository with an existing observability abstraction.
 
@@ -1852,9 +2553,9 @@ The test ensures the evolved Skill respects existing architecture.
 
 ---
 
-## Approval
+### Approval
 
-The Skill owner approves version:
+After reviewing the updated evidence, cross-repository compatibility results, and the observability owner's decision, the Skill owner approves version:
 
 ```text
 3.2.0
@@ -1891,7 +2592,7 @@ rollback:
   version: 3.1.0
 ```
 
-Future executions may now use v3.2.0.
+Future executions in authorized, compatible repositories may now use v3.2.0 after its immutable bundle and approval are recorded in the Skill Registry. Unsupported repositories remain pinned to an earlier approved version or require a separately governed adapter.
 
 The organization has learned.
 
@@ -1899,11 +2600,11 @@ But it has learned through governance.
 
 ---
 
-# Skill Evolution for Alpha Car Detailing
+### Skill Evolution for Alpha Car Detailing
 
 The same model can improve many reusable Skills.
 
-## Creating API Endpoints
+#### Creating API Endpoints
 
 Evidence may reveal that generated endpoints repeatedly omit:
 
@@ -1924,7 +2625,7 @@ The Skill should be updated **after** the architecture decision is approved.
 
 ---
 
-## Publishing Integration Events
+#### Publishing Integration Events
 
 Evidence may reveal repeated problems involving:
 
@@ -1940,7 +2641,7 @@ It must not invent a new event architecture.
 
 ---
 
-## Transactional Outbox
+#### Transactional Outbox
 
 Possible learning signals include:
 
@@ -1956,7 +2657,7 @@ These observations can improve implementation guidance while preserving the appr
 
 ---
 
-## Idempotent Consumers
+#### Idempotent Consumers
 
 Repeated validation failures may reveal weak guidance around concurrency.
 
@@ -1996,7 +2697,7 @@ Repeated concurrency-test failures could justify evolving the Skill to require:
 
 ---
 
-## EF Core Persistence
+#### EF Core Persistence
 
 Skill Evolution may reveal patterns such as:
 
@@ -2022,7 +2723,7 @@ Context still matters.
 
 ---
 
-## Authorization
+#### Authorization
 
 Authorization Skills require particularly strong governance.
 
@@ -2041,7 +2742,7 @@ Skill Evolution must not weaken security checks to increase execution success.
 
 ---
 
-## OpenTelemetry
+#### OpenTelemetry
 
 Observability Skills may evolve based on repeated operational findings.
 
@@ -2059,7 +2760,7 @@ The goal is to improve operational usefulness while respecting established telem
 
 ---
 
-## Unit Tests
+#### Unit Tests
 
 A test-generation Skill may produce large numbers of tests while still missing important behaviors.
 
@@ -2080,7 +2781,7 @@ Evidence should instead consider:
 
 ---
 
-## Integration Tests
+#### Integration Tests
 
 Integration-test Skills may learn from escaped defects.
 
@@ -2098,7 +2799,7 @@ This is a valuable form of institutional learning.
 
 ---
 
-# Claude Example
+## Claude Example
 
 Claude-based implementations can treat Skills as reusable contextual engineering assets and apply them during repository work.
 
@@ -2136,8 +2837,8 @@ Create the FleetBookingCancelled integration event.
 Resolved Skills:
 - publish-integration-event@2.4.0
 - transactional-outbox@3.2.0
-- opentelemetry@2.1.0
-- integration-testing@4.0.0
+- opentelemetry@1.4.0
+- integration-testing@2.4.0
 ```
 
 The version information should be preserved with the run.
@@ -2159,7 +2860,7 @@ For example:
     },
     {
       "name": "opentelemetry",
-      "version": "2.1.0"
+      "version": "1.4.0"
     }
   ]
 }
@@ -2206,7 +2907,7 @@ Governance controls mutation.
 
 ---
 
-# GitHub Copilot Comparison
+## GitHub Copilot Comparison
 
 GitHub Copilot can participate in a Skill-oriented engineering workflow, but the reusable-knowledge mechanism may be expressed through different repository artifacts, instructions, reusable prompts, agent configurations, or organizational tooling.
 
@@ -2270,7 +2971,7 @@ The enterprise principle remains unchanged:
 
 ---
 
-# Codex Comparison
+## Codex Comparison
 
 Codex-based engineering workflows can follow the same model.
 
@@ -2335,9 +3036,9 @@ The same architecture works across Claude, GitHub Copilot, Codex, and future cod
 
 ---
 
-# Best Practices
+## Best Practices
 
-## Require Repeated Evidence
+### Require Repeated Evidence
 
 Do not change Skills because of one unusual execution.
 
@@ -2351,7 +3052,7 @@ Look for:
 
 ---
 
-## Preserve Evidence Provenance
+### Preserve Evidence Provenance
 
 Every recommendation should answer:
 
@@ -2371,7 +3072,7 @@ The answer should link back to:
 
 ---
 
-## Separate Observation from Governance
+### Separate Observation from Governance
 
 The Harness may observe:
 
@@ -2389,7 +3090,7 @@ Keep these layers separate.
 
 ---
 
-## Version Every Governed Change
+### Version Every Governed Change
 
 Do not mutate shared Skills in place without history.
 
@@ -2408,7 +3109,7 @@ validation results
 
 ---
 
-## Test Skills Like Engineering Assets
+### Test Skills Like Engineering Assets
 
 A Skill should have:
 
@@ -2419,13 +3120,13 @@ A Skill should have:
 
 ---
 
-## Preserve Rollback
+### Preserve Rollback
 
 Every new version should have a known rollback target.
 
 ---
 
-## Measure Outcomes After Promotion
+### Measure Outcomes After Promotion
 
 Approval is not proof that the Skill improved outcomes.
 
@@ -2441,7 +3142,7 @@ using the same quality metrics.
 
 ---
 
-## Keep Skills Focused
+### Keep Skills Focused
 
 Prefer composable Skills over giant workflows.
 
@@ -2449,13 +3150,13 @@ A Skill should have a clear responsibility.
 
 ---
 
-## Maintain Explicit Ownership
+### Maintain Explicit Ownership
 
 Every governed Skill should have an accountable owner.
 
 ---
 
-## Respect Architecture Boundaries
+### Respect Architecture Boundaries
 
 Skill Evolution should implement architecture decisions.
 
@@ -2463,19 +3164,19 @@ It should not make them implicitly.
 
 ---
 
-## Separate Local and Global Learning
+### Separate Local and Global Learning
 
 Repository-specific success should remain repository specific until broader evidence exists.
 
 ---
 
-## Treat Security Skills Conservatively
+### Treat Security Skills Conservatively
 
 Authorization, secrets handling, cryptography, dependency security, and similar Skills should require stronger evidence and stronger approval.
 
 ---
 
-## Preserve Rejected Proposals
+### Preserve Rejected Proposals
 
 A rejected proposal is still useful knowledge.
 
@@ -2483,9 +3184,9 @@ It prevents the Harness from repeatedly recommending the same inappropriate chan
 
 ---
 
-# Anti-patterns
+## Anti-patterns
 
-## Silent Self-Modifying Skills
+### Silent Self-Modifying Skills
 
 This is the most serious anti-pattern.
 
@@ -2511,7 +3212,7 @@ It is uncontrolled mutation.
 
 ---
 
-## No Versioning
+### No Versioning
 
 Without versioning, a team may ask:
 
@@ -2523,7 +3224,7 @@ Skill version must be part of execution provenance.
 
 ---
 
-## No Rollback
+### No Rollback
 
 A Skill can pass controlled tests and still cause problems at scale.
 
@@ -2531,7 +3232,7 @@ If the system cannot return to the previous version, evolution becomes risky.
 
 ---
 
-## No Evidence Threshold
+### No Evidence Threshold
 
 Without thresholds, the system becomes hypersensitive.
 
@@ -2543,7 +3244,7 @@ The resulting Skills become unstable.
 
 ---
 
-## No Skill Tests
+### No Skill Tests
 
 A Skill modification is code-like engineering knowledge.
 
@@ -2551,7 +3252,7 @@ Changing it without testing is equivalent to changing a shared library without v
 
 ---
 
-## Learning from Isolated Incidents
+### Learning from Isolated Incidents
 
 One failed implementation does not establish a pattern.
 
@@ -2568,7 +3269,7 @@ Repeated evidence matters.
 
 ---
 
-## Overfitting Skills to One Repository
+### Overfitting Skills to One Repository
 
 A Skill may work beautifully in Alpha Car Detailing while being inappropriate elsewhere.
 
@@ -2588,7 +3289,7 @@ without broader evidence.
 
 ---
 
-## Allowing Skills to Become Large All-Purpose Workflows
+### Allowing Skills to Become Large All-Purpose Workflows
 
 Large Skills are difficult to:
 
@@ -2603,7 +3304,7 @@ Prefer focused capabilities.
 
 ---
 
-## Optimizing Only for Faster Execution
+### Optimizing Only for Faster Execution
 
 Suppose Skill v5 reduces average execution time from:
 
@@ -2626,7 +3327,7 @@ Execution speed is only one dimension of effectiveness.
 
 ---
 
-## Removing Validation to Improve Success Rates
+### Removing Validation to Improve Success Rates
 
 This is a particularly dangerous optimization.
 
@@ -2646,7 +3347,7 @@ The system must optimize the implementation, not weaken the evidence.
 
 ---
 
-## Allowing Skill Evolution to Change Architecture
+### Allowing Skill Evolution to Change Architecture
 
 Suppose generated implementations repeatedly struggle with the transactional outbox.
 
@@ -2664,7 +3365,7 @@ It must not silently replace the architecture.
 
 ---
 
-## Losing Historical Versions
+### Losing Historical Versions
 
 Historical Skills are part of the audit trail.
 
@@ -2677,7 +3378,7 @@ Deleting them destroys:
 
 ---
 
-## Hiding Why a Skill Changed
+### Hiding Why a Skill Changed
 
 A Skill version without explanation is incomplete governance.
 
@@ -2692,7 +3393,7 @@ What problem was it intended to solve?
 
 ---
 
-# Architect's Notes
+## Architect's Notes
 
 > **Architect's Note — Adaptive Does Not Mean Autonomous Authority**
 >
@@ -2724,7 +3425,7 @@ What problem was it intended to solve?
 
 ---
 
-# Enterprise Tips
+## Enterprise Tips
 
 > **Enterprise Tip — Build a Skill Registry**
 >
@@ -2768,9 +3469,9 @@ What problem was it intended to solve?
 
 ---
 
-# Decision Points
+## Decision Points
 
-## Decision Point: When Should the Harness Propose a Skill Change?
+### Decision Point: When Should the Harness Propose a Skill Change?
 
 Ask:
 
@@ -2797,7 +3498,7 @@ If several answers are unclear, continue observing.
 
 ---
 
-## Decision Point: Skill Change or Instruction Change?
+### Decision Point: Skill Change or Instruction Change?
 
 Suppose every API implementation needs authorization.
 
@@ -2823,7 +3524,7 @@ The architectural expectation may live in Instructions.
 
 ---
 
-## Decision Point: Skill Change or Architecture Decision?
+### Decision Point: Skill Change or Architecture Decision?
 
 Suppose repeated evidence suggests that synchronous event publication is unreliable.
 
@@ -2849,7 +3550,7 @@ Only after approval should Skill Evolution encode the new approach.
 
 ---
 
-## Decision Point: Local or Global Skill?
+### Decision Point: Local or Global Skill?
 
 Use questions such as:
 
@@ -2869,7 +3570,7 @@ Promote scope cautiously.
 
 ---
 
-## Decision Point: Modify or Deprecate?
+### Decision Point: Modify or Deprecate?
 
 Sometimes continued modification is worse than replacement.
 
@@ -2884,9 +3585,9 @@ deprecation may be safer than another revision.
 
 ---
 
-# Exercises
+## Exercises
 
-## Exercise 1 — Identify Skill Evolution Signals
+### Exercise 1 — Identify Skill Evolution Signals
 
 Alpha Car Detailing has an `authorization` Skill.
 
@@ -2908,7 +3609,7 @@ Determine:
 
 ---
 
-## Exercise 2 — Design an Evidence Threshold
+### Exercise 2 — Design an Evidence Threshold
 
 Define an evidence policy for the `transactional-outbox` Skill.
 
@@ -2927,7 +3628,7 @@ Explain why your thresholds are appropriate.
 
 ---
 
-## Exercise 3 — Create Skill Version Metadata
+### Exercise 3 — Create Skill Version Metadata
 
 Design metadata for:
 
@@ -2949,7 +3650,7 @@ Include:
 
 ---
 
-## Exercise 4 — Detect Overfitting
+### Exercise 4 — Detect Overfitting
 
 Suppose Alpha Car Detailing uses SQL Server and a unique filtered index for idempotency tracking.
 
@@ -2961,7 +3662,7 @@ Design a safer abstraction.
 
 ---
 
-## Exercise 5 — Define Skill Tests
+### Exercise 5 — Define Skill Tests
 
 Create Skill-level tests for:
 
@@ -2978,7 +3679,7 @@ Include:
 
 ---
 
-## Exercise 6 — Compare Skill Versions
+### Exercise 6 — Compare Skill Versions
 
 Assume:
 
@@ -3000,7 +3701,7 @@ Explain which additional evidence you would examine.
 
 ---
 
-## Exercise 7 — Design a Rollback
+### Exercise 7 — Design a Rollback
 
 A new `ef-core-persistence` Skill version causes several repositories to generate incompatible query patterns.
 
@@ -3015,7 +3716,7 @@ Design:
 
 ---
 
-## Exercise 8 — Separate Architecture from Skill Evolution
+### Exercise 8 — Separate Architecture from Skill Evolution
 
 The Harness finds repeated failures implementing direct integration-event publication.
 
@@ -3026,7 +3727,13 @@ Create two outputs:
 
 ---
 
-# Interview Questions
+### Exercise 9 — Implement Skill Registry Safety Checks
+
+Alpha Car Detailing requests `enterprise/transactional-outbox@^3.0.0` while the `stable` channel points to version `3.2.0`. Design a registry resolver and tests that establish the exact version and dependency lock before the Developer Agent runs. Cover an approved compatible version, a revoked version, a corrupted artifact bundle, two incompatible transitive dependencies, a request for a repository-local Skill from an unauthorized repository, and a channel rollback to `3.1.0`. Explain which cases must fail closed and what audit evidence the Harness should retain.
+
+---
+
+## Interview Questions
 
 ### 1. What is Skill Evolution?
 
@@ -3146,7 +3853,13 @@ It should have sufficient supporting evidence, ownership review, compatibility a
 
 ---
 
-# Chapter Summary
+### 19. What makes a Skill Registry different from a directory or Skill catalog?
+
+A directory stores Skills, and a catalog makes them discoverable. A governed Skill Registry additionally enforces immutable versions, verified artifact integrity, approval and lifecycle status, compatibility and dependency resolution, scope restrictions, reproducible run provenance, rollback, and auditable change authority. An AI Agent may propose a candidate, but only an authorized publication workflow may activate a new version.
+
+---
+
+## Chapter Summary
 
 Skills transform recurring engineering practice into reusable execution knowledge.
 
@@ -3220,6 +3933,7 @@ A mature Skill Evolution architecture therefore requires:
 - Harness Memory;
 - pattern detection;
 - candidate proposals;
+- a governed Skill Registry with immutable versions, verified resolution, and run provenance;
 - versioning;
 - Skill tests;
 - compatibility analysis;
@@ -3259,7 +3973,7 @@ That is the subject of the next chapter.
 
 ---
 
-# Further Reading
+## Further Reading
 
 Readers should continue by studying the following areas:
 
@@ -3295,648 +4009,3 @@ Within the Enterprise AI Engineering Handbook, this chapter should be read toget
 - **Chapter 39 — Learning from Reviews**, for reviewer-derived learning signals;
 - **Chapter 40 — Learning from Pull Requests**, for downstream engineering evidence;
 - **Chapter 42 — Prompt Evolution**, which extends the same governed-learning model to task instructions.
-
-Chapter 41 status: Complete
-
-## Skill Registry Contract
-
-### Purpose and Architectural Responsibility
-
-A Skill Registry is the governed system of record for reusable engineering Skills available to the Harness.
-
-It provides a consistent contract for discovering, resolving, versioning, validating, approving, publishing, deprecating, and rolling back Skills.
-
-Without a registry, the Harness may discover Skills from repository directories or contextual instructions, but it cannot reliably establish which version is approved, whether it is compatible with the target repository, or whether its use is permitted.
-
-A Skill Registry is not the Skill Evolution Engine.
-
-The Skill Evolution Engine analyzes evidence and proposes improvements. The Skill Registry maintains the authoritative inventory of approved, governed Skill artifacts and their lifecycle states.
-
-The registry must answer five questions before a Skill is executed:
-
-1. Identity: Which Skill is being requested?
-2. Version: Which immutable version should be used?
-3. Authority: Is that version approved and permitted for this execution?
-4. Compatibility: Is the Skill compatible with the repository and its architectural constraints?
-5. Integrity: Can the Harness verify that the resolved artifact is the exact version that was approved?
-
-The fundamental contract is:
-
-> A Harness must resolve an approved, immutable, compatible Skill version before execution and record the exact resolved artifact as part of run provenance.
-
-### Registry Architecture
-
-\#chatgpt-mermaid-\_r_135\_{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:14px;fill:rgb(255, 255, 255);}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#chatgpt-mermaid-\_r_135\_ .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_135\_ .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#chatgpt-mermaid-\_r_135\_ .error-icon{fill:rgba(255, 255, 255, 0.03);}#chatgpt-mermaid-\_r_135\_ .error-text{fill:rgb(255, 255, 255);stroke:rgb(255, 255, 255);}#chatgpt-mermaid-\_r_135\_ .edge-thickness-normal{stroke-width:1px;}#chatgpt-mermaid-\_r_135\_ .edge-thickness-thick{stroke-width:3.5px;}#chatgpt-mermaid-\_r_135\_ .edge-pattern-solid{stroke-dasharray:0;}#chatgpt-mermaid-\_r_135\_ .edge-thickness-invisible{stroke-width:0;fill:none;}#chatgpt-mermaid-\_r_135\_ .edge-pattern-dashed{stroke-dasharray:3;}#chatgpt-mermaid-\_r_135\_ .edge-pattern-dotted{stroke-dasharray:2;}#chatgpt-mermaid-\_r_135\_ .marker{fill:rgba(255, 255, 255, 0.498);stroke:rgba(255, 255, 255, 0.498);}#chatgpt-mermaid-\_r_135\_ .marker.cross{stroke:rgba(255, 255, 255, 0.498);}#chatgpt-mermaid-\_r_135\_ svg{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:14px;}#chatgpt-mermaid-\_r_135\_ p{margin:0;}#chatgpt-mermaid-\_r_135\_ .label{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:rgb(255, 255, 255);}#chatgpt-mermaid-\_r_135\_ .cluster-label text{fill:rgb(255, 255, 255);}#chatgpt-mermaid-\_r_135\_ .cluster-label span{color:rgb(255, 255, 255);}#chatgpt-mermaid-\_r_135\_ .cluster-label span p{background-color:transparent;}#chatgpt-mermaid-\_r_135\_ .label text,#chatgpt-mermaid-\_r_135\_ span{fill:rgb(255, 255, 255);color:rgb(255, 255, 255);}#chatgpt-mermaid-\_r_135\_ .node rect,#chatgpt-mermaid-\_r_135\_ .node circle,#chatgpt-mermaid-\_r_135\_ .node ellipse,#chatgpt-mermaid-\_r_135\_ .node polygon,#chatgpt-mermaid-\_r_135\_ .node path{fill:rgb(26, 40, 61);stroke:rgb(31, 78, 148);stroke-width:1px;}#chatgpt-mermaid-\_r_135\_ .rough-node .label text,#chatgpt-mermaid-\_r_135\_ .node .label text,#chatgpt-mermaid-\_r_135\_ .image-shape .label,#chatgpt-mermaid-\_r_135\_ .icon-shape .label{text-anchor:middle;}#chatgpt-mermaid-\_r_135\_ .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#chatgpt-mermaid-\_r_135\_ .rough-node .label,#chatgpt-mermaid-\_r_135\_ .node .label,#chatgpt-mermaid-\_r_135\_ .image-shape .label,#chatgpt-mermaid-\_r_135\_ .icon-shape .label{text-align:center;}#chatgpt-mermaid-\_r_135\_ .node.clickable{cursor:pointer;}#chatgpt-mermaid-\_r_135\_ .root .anchor path{fill:rgba(255, 255, 255, 0.498)!important;stroke-width:0;stroke:rgba(255, 255, 255, 0.498);}#chatgpt-mermaid-\_r_135\_ .arrowheadPath{fill:rgba(255, 255, 255, 0.498);}#chatgpt-mermaid-\_r_135\_ .edgePath .path{stroke:rgba(255, 255, 255, 0.498);stroke-width:1px;}#chatgpt-mermaid-\_r_135\_ .flowchart-link{stroke:rgba(255, 255, 255, 0.498);fill:none;}#chatgpt-mermaid-\_r_135\_ .edgeLabel{background-color:rgb(24, 24, 24);text-align:center;}#chatgpt-mermaid-\_r_135\_ .edgeLabel p{background-color:rgb(24, 24, 24);}#chatgpt-mermaid-\_r_135\_ .edgeLabel rect{opacity:0.5;background-color:rgb(24, 24, 24);fill:rgb(24, 24, 24);}#chatgpt-mermaid-\_r_135\_ .labelBkg{background-color:rgba(24, 24, 24, 0.5);}#chatgpt-mermaid-\_r_135\_ .cluster rect{fill:rgba(255, 255, 255, 0.03);stroke:rgba(255, 255, 255, 0.082);stroke-width:1px;}#chatgpt-mermaid-\_r_135\_ .cluster text{fill:rgb(255, 255, 255);}#chatgpt-mermaid-\_r_135\_ .cluster span{color:rgb(255, 255, 255);}#chatgpt-mermaid-\_r_135\_ div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:12px;background:rgba(255, 255, 255, 0.03);border:1px solid rgba(255, 255, 255, 0.082);border-radius:2px;pointer-events:none;z-index:100;}#chatgpt-mermaid-\_r_135\_ .flowchartTitleText{text-anchor:middle;font-size:18px;fill:rgb(255, 255, 255);}#chatgpt-mermaid-\_r_135\_ rect.text{fill:none;stroke-width:0;}#chatgpt-mermaid-\_r_135\_ .icon-shape,#chatgpt-mermaid-\_r_135\_ .image-shape{background-color:rgb(24, 24, 24);text-align:center;}#chatgpt-mermaid-\_r_135\_ .icon-shape p,#chatgpt-mermaid-\_r_135\_ .image-shape p{background-color:rgb(24, 24, 24);padding:2px;}#chatgpt-mermaid-\_r_135\_ .icon-shape .label rect,#chatgpt-mermaid-\_r_135\_ .image-shape .label rect{opacity:0.5;background-color:rgb(24, 24, 24);fill:rgb(24, 24, 24);}#chatgpt-mermaid-\_r_135\_ .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#chatgpt-mermaid-\_r_135\_ .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#chatgpt-mermaid-\_r_135\_ .node .neo-node{stroke:rgb(31, 78, 148);}#chatgpt-mermaid-\_r_135\_ [data-look="neo"].node rect,#chatgpt-mermaid-\_r_135\_ [data-look="neo"].cluster rect,#chatgpt-mermaid-\_r_135\_ [data-look="neo"].node polygon{stroke:url(#chatgpt-mermaid-\_r_135\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_135\_ [data-look="neo"].swimlane.cluster rect{filter:none;}#chatgpt-mermaid-\_r_135\_ [data-look="neo"].node path{stroke:url(#chatgpt-mermaid-\_r_135\_-gradient);stroke-width:1px;}#chatgpt-mermaid-\_r_135\_ [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_135\_ [data-look="neo"].node .neo-line path{stroke:rgb(31, 78, 148);filter:none;}#chatgpt-mermaid-\_r_135\_ [data-look="neo"].node circle{stroke:url(#chatgpt-mermaid-\_r_135\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_135\_ [data-look="neo"].node circle .state-start{fill:#000000;}#chatgpt-mermaid-\_r_135\_ [data-look="neo"].icon-shape .icon{fill:url(#chatgpt-mermaid-\_r_135\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_135\_ [data-look="neo"].icon-shape .icon-neo path{stroke:url(#chatgpt-mermaid-\_r_135\_-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#chatgpt-mermaid-\_r_135\_ .node text{font-size:14px;font-weight:600;letter-spacing:normal;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_135\_ .edgeLabels text{font-size:13px;font-weight:600;letter-spacing:-0.08px;fill:rgb(153, 206, 255);}#chatgpt-mermaid-\_r_135\_ .node tspan[font-weight="normal"],#chatgpt-mermaid-\_r_135\_ .edgeLabels tspan[font-weight="normal"]{font-weight:600;}#chatgpt-mermaid-\_r_135\_ .edgeLabel .label rect{opacity:1;rx:13px;ry:13px;fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-width:1px;}#chatgpt-mermaid-\_r_135\_ .node rect,#chatgpt-mermaid-\_r_135\_ .node circle,#chatgpt-mermaid-\_r_135\_ .node ellipse,#chatgpt-mermaid-\_r_135\_ .node polygon,#chatgpt-mermaid-\_r_135\_ .node path{fill:rgb(0, 40, 77);stroke:rgba(255, 255, 255, 0.1);stroke-width:1px;}#chatgpt-mermaid-\_r_135\_ .node rect{rx:16px;ry:16px;}#chatgpt-mermaid-\_r_135\_ .mermaid-decision .label-container{fill:rgb(0, 14, 26);stroke:rgb(26, 62, 95);stroke-dasharray:2,2;}#chatgpt-mermaid-\_r_135\_ .edgePaths .flowchart-link{stroke:rgba(255, 255, 255, 0.498);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;}#chatgpt-mermaid-\_r_135\_ .marker{fill:rgba(255, 255, 255, 0.498);stroke:rgba(255, 255, 255, 0.498);}#chatgpt-mermaid-\_r_135\_ :root{--mermaid-font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;}Lead AgentSkill ResolverSkill RegistrySkill MetadataVersion CatalogCompatibility RulesApproval RecordsArtifact ReferencesResolution Successful?Fail Closed or Request HumanDecisionVerify Artifact IntegrityDeveloper AgentReviewer / Validator /EvaluatorExecution EvidenceHarness MemorySkill Evolution EngineCandidate VersionHuman Approval andValidationNoYesInvalidValidApproved
-
-The Skill Registry participates in two different workflows.
-
-Execution workflow: The Harness reads the registry to resolve approved Skills.
-
-Evolution workflow: A candidate Skill passes validation and governance before a new immutable version is published to the registry.
-
-The execution workflow must never modify the registry's approved artifacts.
-
-### 1. Canonical Skill Identity
-
-Every Skill must have a stable, globally unambiguous identifier within its governance namespace.
-
-A recommended identity format is:
-
-```
-<namespace>/<skill-name>@<version>
-```
-
-Examples:
-
-```
-enterprise/create-api-endpoint@2.3.0
-enterprise/transactional-outbox@3.2.0
-enterprise/idempotent-consumer@2.1.0
-enterprise/opentelemetry@1.4.0
-alpha-car-detailing/fleet-authorization@1.0.0
-```
-
-The namespace distinguishes ownership and scope.
-
-| Namespace           | Governance scope                     | Example                           |
-| ------------------- | ------------------------------------ | --------------------------------- |
-| `enterprise`        | Organization-wide approved practices | `enterprise/transactional-outbox` |
-| `domain/<name>`     | Shared domain-specific workflows     | `domain/fleet-booking`            |
-| `repository/<name>` | Repository-local workflows           | `repository/alpha-car-detailing`  |
-| `experimental`      | Nonproduction evaluation             | `experimental/api-generation`     |
-
-A repository-local Skill must not become an enterprise Skill simply because it performs successfully.
-
-Promotion requires evidence and approval at the broader governance scope.
-
-### 2. Canonical Skill Manifest
-
-Every registered Skill version must provide a machine-readable manifest.
-
-The manifest describes identity, ownership, scope, artifact integrity, compatibility, composition, tests, and lifecycle state.
-
-The following is a proposed enterprise contract rather than a specification imposed by any particular AI coding platform.
-
-```
-schemaVersion: "1.0"
-
-kind: Skill
-
-metadata:
-  id: enterprise/transactional-outbox
-  name: transactional-outbox
-  version: 3.2.0
-  title: Implement Transactional Outbox
-  description: >
-    Implements reliable integration-event publishing
-    using the transactional outbox pattern.
-
-  scope: enterprise
-
-  owner:
-    team: platform-architecture
-    contact: platform-architecture@example.com
-
-  maintainers:
-    - platform-engineering
-
-  labels:
-    domain: messaging
-    category: reliability
-    technology: dotnet
-
-spec:
-  artifact:
-    path: SKILL.md
-    digest:
-      algorithm: sha256
-      value: "<verified-artifact-sha256>"
-
-  execution:
-    agentRoles:
-      - developer
-
-    inputs:
-      required:
-        - repositoryContext
-        - targetService
-        - integrationEvent
-
-    outputs:
-      expected:
-        - outboxEntity
-        - outboxPersistence
-        - publisher
-        - integrationTests
-
-  compatibility:
-    languages:
-      - csharp
-
-    frameworks:
-      - name: dotnet
-        versionRange: ">=10.0 <11.0"
-
-    architectures:
-      - clean-architecture
-
-    requiredCapabilities:
-      - relational-database
-      - background-processing
-
-  dependencies:
-    skills:
-      - id: enterprise/opentelemetry
-        versionRange: ">=1.4.0 <2.0.0"
-
-  constraints:
-    prohibitedPatterns:
-      - direct-event-publication-in-business-transaction
-
-    requiredGates:
-      - build
-      - unit-tests
-      - integration-tests
-      - architecture-tests
-
-  tests:
-    suite: tests/skill-tests.yaml
-
-  governance:
-    approvalPolicy: enterprise-standard
-    changeClassification: minor
-
-    evidenceReferences:
-      - skill-pattern-0142
-
-status:
-  lifecycle: active
-  approved: true
-  approvedBy:
-    - platform-architecture
-    - observability-owner
-
-  approvedAt: "2026-11-13T10:00:00Z"
-  publishedAt: "2026-11-13T11:00:00Z"
-
-  supersedes: "3.1.0"
-  replacement: null
-  deprecatedAt: null
-```
-
-All names, versions, identities, paths, and approval records in this example are illustrative.
-
-In a production registry, the digest must contain the actual verified hash of the canonical artifact. Placeholder digests must never pass publication or resolution checks.
-
-The manifest deliberately separates `spec` from `status`.
-
-The `spec` describes the published Skill contract.
-
-The `status` records lifecycle and governance state.
-
-In a mature implementation, lifecycle state and approval attestations may be stored separately from the immutable manifest so that deprecation or revocation does not require mutating historical Skill artifacts.
-
-### 3. Skill Registry Operations
-
-The Harness should interact with the registry through explicit operations rather than directly reading arbitrary Skill directories.
-
-A minimal logical interface is:
-
-```
-public interface ISkillRegistry
-{
-    Task<SkillDescriptor?> GetAsync(
-        string skillId,
-        string version,
-        CancellationToken cancellationToken);
-
-    Task<IReadOnlyList<SkillDescriptor>> SearchAsync(
-        SkillSearchQuery query,
-        CancellationToken cancellationToken);
-
-    Task<SkillResolutionResult> ResolveAsync(
-        SkillResolutionRequest request,
-        CancellationToken cancellationToken);
-
-    Task<SkillValidationResult> ValidateCandidateAsync(
-        SkillCandidate candidate,
-        CancellationToken cancellationToken);
-
-    Task<SkillDescriptor> PublishApprovedAsync(
-        ApprovedSkillPublication publication,
-        CancellationToken cancellationToken);
-
-    Task<SkillLifecycleResult> DeprecateAsync(
-        SkillDeprecationRequest request,
-        CancellationToken cancellationToken);
-
-    Task<SkillChannelResult> RollbackChannelAsync(
-        SkillRollbackRequest request,
-        CancellationToken cancellationToken);
-}
-```
-
-These operations have distinct responsibilities.
-
-| Operation                | Responsibility                                               | Expected authorization              |
-| ------------------------ | ------------------------------------------------------------ | ----------------------------------- |
-| `GetAsync`               | Retrieve metadata for an exact version                       | Harness reader                      |
-| `SearchAsync`            | Discover relevant registered Skills                          | Harness reader                      |
-| `ResolveAsync`           | Select an approved compatible version                        | Skill resolver                      |
-| `ValidateCandidateAsync` | Check candidate integrity, contract, dependencies, and tests | Validation service                  |
-| `PublishApprovedAsync`   | Publish a validated, approved immutable version              | Authorized publisher                |
-| `DeprecateAsync`         | Mark a version as deprecated                                 | Skill owner or governance authority |
-| `RollbackChannelAsync`   | Restore a previous approved version as the channel default   | Authorized release owner            |
-
-Importantly, the registry does not expose an unrestricted operation such as:
-
-```
-UpdateSkillContentAsync(...)
-```
-
-against an already published version.
-
-Approved Skill artifacts are immutable.
-
-A changed Skill must receive a new version.
-
-### 4. Skill Resolution Contract
-
-A Skill Resolver translates a task requirement into an exact, approved Skill version.
-
-For example, the Lead Agent may request:
-
-```
-{
-  "skillId": "enterprise/transactional-outbox",
-  "versionConstraint": "^3.0.0",
-  "channel": "stable",
-  "repository": {
-    "id": "alpha-car-detailing",
-    "language": "csharp",
-    "framework": "dotnet",
-    "frameworkVersion": "10.0",
-    "architecture": "clean-architecture",
-    "capabilities": [
-      "relational-database",
-      "background-processing"
-    ]
-  }
-}
-```
-
-The resolver should check:
-
-- identity;
-- version constraint;
-- approval status;
-- lifecycle status;
-- governance scope;
-- repository compatibility;
-- required dependencies;
-- dependency version conflicts;
-- required execution capabilities;
-- artifact integrity;
-- organization policy.
-
-A successful resolution returns an exact version and its transitive dependency lock:
-
-```
-{
-  "status": "resolved",
-  "skill": {
-    "id": "enterprise/transactional-outbox",
-    "version": "3.2.0",
-    "artifactDigest": "sha256:<verified-artifact-digest>",
-    "approvalId": "approval-0412"
-  },
-  "dependencies": [
-    {
-      "id": "enterprise/opentelemetry",
-      "version": "1.4.0",
-      "artifactDigest": "sha256:<verified-dependency-digest>"
-    }
-  ],
-  "resolutionId": "resolution-7291"
-}
-```
-
-This dependency lock prevents the Harness from selecting different transitive Skill versions midway through the same run.
-
-Resolution must fail closed when an approved compatible version cannot be established. The Harness must not silently fall back to an unapproved Skill or a different implementation pattern.
-
-### 5. Skill Lifecycle State Machine
-
-A Skill must have a defined lifecycle.
-
-The lifecycle has several important guarantees.
-
-Candidate: Not eligible for ordinary production execution.
-
-Validated: Passed prescribed checks but not yet authorized for production.
-
-Approved: Authorized for publication, subject to the recorded approval.
-
-Active: Available for resolution under an allowed release channel.
-
-Deprecated: Retained for historical use; new executions may be warned, blocked, or permitted under an explicit compatibility policy.
-
-Retired: No longer selected for new executions; retained for auditability.
-
-Revoked: Explicitly prohibited from new execution because of a serious security, integrity, or governance concern.
-
-Rejected: A proposal that did not receive approval and cannot be published.
-
-Revocation must take precedence over all version-selection and compatibility rules.
-
-Rollback must never reactivate a revoked Skill.
-
-### 6. Skill Publication Contract
-
-Publishing a Skill must be a controlled transaction rather than a file-copy operation.
-
-The required sequence is:
-
-A publication must be rejected when:
-
-- the Skill identifier is invalid;
-- the version already exists with different content;
-- required metadata is missing;
-- mandatory tests fail;
-- dependencies are missing or incompatible;
-- the approval is absent, expired, or unauthorized;
-- the approval refers to a different candidate digest;
-- the artifact digest does not match the submitted content;
-- the Skill violates an enterprise policy.
-
-Approval must be bound to the exact candidate artifact digest.
-
-Otherwise, an artifact could be changed after approval but before publication.
-
-The registry should use atomic publication and audit recording, with retry-safe operations and unique version constraints. A failed publication must not leave a partially active version.
-
-### 7. Run Provenance Contract
-
-Every Harness run that uses a Skill must record the exact resolved version.
-
-A representative record is:
-
-```
-{
-  "runId": "run-2026-11-00481",
-  "repository": "alpha-car-detailing",
-  "task": "Implement FleetBookingCreated event",
-  "skillResolution": {
-    "resolutionId": "resolution-7291",
-    "resolvedAt": "2026-11-13T11:30:00Z",
-    "skills": [
-      {
-        "id": "enterprise/transactional-outbox",
-        "version": "3.2.0",
-        "digest": "sha256:<verified-artifact-digest>",
-        "approvalId": "approval-0412"
-      },
-      {
-        "id": "enterprise/opentelemetry",
-        "version": "1.4.0",
-        "digest": "sha256:<verified-dependency-digest>"
-      }
-    ]
-  }
-}
-```
-
-Execution evidence can then be correlated with the exact Skill version.
-
-For example:
-
-```
-Skill version 3.1.0
-    ↓
-12 executions
-    ↓
-8 telemetry-related corrections
-```
-
-After a governed change:
-
-```
-Skill version 3.2.0
-    ↓
-12 comparable executions
-    ↓
-2 telemetry-related corrections
-```
-
-This supports effectiveness analysis.
-
-It does not, by itself, prove that the Skill change caused the improvement. Task complexity, repository differences, agent versions, and validation changes must also be considered.
-
-The Harness should preserve enough execution context to support meaningful comparisons.
-
-### 8. Skill Composition Contract
-
-A Skill may depend on other Skills, but those relationships must be explicit.
-
-Example:
-
-```
-dependencies:
-  skills:
-    - id: enterprise/opentelemetry
-      versionRange: ">=1.4.0 <2.0.0"
-      required: true
-
-    - id: enterprise/integration-testing
-      versionRange: ">=2.0.0 <3.0.0"
-      required: true
-```
-
-The registry must ensure:
-
-1. dependencies exist;
-2. selected versions are approved;
-3. dependencies are compatible;
-4. dependency graphs contain no prohibited cycles;
-5. version constraints can be satisfied together;
-6. dependency scope is permitted;
-7. all resolved versions are recorded.
-
-The Skill Resolver should use deterministic dependency selection.
-
-If two Skills require incompatible versions of the same dependency, resolution should fail with a clear conflict rather than silently choosing one.
-
-### 9. Rollback Contract
-
-Rollback should not delete or overwrite the problematic version.
-
-Instead, it should change which previously approved version is selected by the relevant release channel.
-
-For example:
-
-```
-enterprise/transactional-outbox
-
-stable → 3.2.0
-```
-
-After a regression:
-
-```
-stable → 3.1.0
-```
-
-Version `3.2.0` remains available for audit and investigation, subject to its lifecycle and access policy.
-
-A rollback request should include:
-
-```
-{
-  "skillId": "enterprise/transactional-outbox",
-  "channel": "stable",
-  "currentVersion": "3.2.0",
-  "targetVersion": "3.1.0",
-  "reason": "Regression in publication telemetry integration",
-  "approvalId": "rollback-approval-019"
-}
-```
-
-The registry must verify that the target version is approved, compatible, and not revoked.
-
-A rollback must generate an audit event and identify potentially affected Harness runs.
-
-Already-running executions should normally remain pinned to their resolved Skill versions. Emergency security revocation may instead require those runs to be stopped according to organizational policy.
-
-### 10. Registry Audit Contract
-
-Every governance-changing operation must create an append-only audit event.
-
-A minimum audit record includes:
-
-```
-{
-  "eventId": "skill-event-00821",
-  "eventType": "SKILL_VERSION_PUBLISHED",
-  "skillId": "enterprise/transactional-outbox",
-  "version": "3.2.0",
-  "actor": "skill-registry-publisher",
-  "approvedBy": [
-    "platform-architecture",
-    "observability-owner"
-  ],
-  "approvalId": "approval-0412",
-  "evidenceReferences": [
-    "skill-pattern-0142"
-  ],
-  "previousVersion": "3.1.0",
-  "timestamp": "2026-11-13T11:00:00Z"
-}
-```
-
-Additional event types include:
-
-```
-SKILL_CANDIDATE_REGISTERED
-SKILL_VALIDATION_PASSED
-SKILL_VALIDATION_FAILED
-SKILL_APPROVED
-SKILL_REJECTED
-SKILL_VERSION_PUBLISHED
-SKILL_VERSION_DEPRECATED
-SKILL_VERSION_RETIRED
-SKILL_VERSION_REVOKED
-SKILL_CHANNEL_ROLLED_BACK
-SKILL_OWNERSHIP_CHANGED
-```
-
-Audit records must identify who or what performed an action, what was affected, when it happened, which authorization permitted it, and which evidence justified the decision.
-
-The Harness should record read and resolution provenance separately from governance mutations.
-
-### 11. Enterprise Registry Invariants
-
-The following invariants should be enforced independently of the coding Agent.
-
-| Invariant              | Required behavior                                                |
-| ---------------------- | ---------------------------------------------------------------- |
-| Immutable publication  | A published Skill version cannot be overwritten                  |
-| Approved execution     | Ordinary production runs use only authorized versions            |
-| Digest verification    | Executed artifacts match their approved content                  |
-| Exact resolution       | Runs use pinned versions, not mutable floating content           |
-| Dependency consistency | All transitive dependencies satisfy compatibility constraints    |
-| Governed publication   | No new active Skill version without required authorization       |
-| Revocation enforcement | Revoked Skills cannot be selected for new runs                   |
-| Rollback support       | Previous approved versions remain recoverable                    |
-| Lifecycle traceability | Deprecation, retirement, and revocation preserve history         |
-| Provenance recording   | Every execution records Skill IDs, versions, and digests         |
-| Scope enforcement      | Repository-local Skills are not silently promoted globally       |
-| Separation of duties   | A learning Agent cannot authorize its own governed Skill changes |
-| Evidence traceability  | Every approved evolution links to supporting evidence            |
-| Validation protection  | Skill Evolution cannot disable required deterministic gates      |
-
-These invariants should be enforced through registry services, authorization controls, storage constraints, and deterministic validation—not solely through natural-language instructions.
-
-### 12. Applying the Contract to Alpha Car Detailing
-
-Consider a fleet-booking enhancement that requires:
-
-```
-Create recurring fleet booking API
-    ↓
-Persist booking
-    ↓
-Publish integration event
-    ↓
-Ensure idempotent processing
-    ↓
-Add telemetry
-    ↓
-Create tests
-```
-
-The Lead Agent requests the required Skills.
-
-The Skill Resolver returns a pinned set:
-
-```
-enterprise/create-api-endpoint@2.3.0
-enterprise/ef-core-persistence@2.1.0
-enterprise/transactional-outbox@3.2.0
-enterprise/idempotent-consumer@2.1.0
-enterprise/opentelemetry@1.4.0
-enterprise/integration-testing@2.4.0
-```
-
-The Harness records the versions and artifact digests before execution.
-
-The Developer Agent implements the feature using the resolved Skills.
-
-The Reviewer, Validator, and Evaluator Agents assess the result.
-
-The Harness stores the evidence.
-
-If repeated findings expose a weakness in `enterprise/transactional-outbox@3.2.0`, the Skill Evolution Engine may produce a candidate for version `3.3.0`.
-
-It cannot publish that candidate merely because its confidence score exceeds a threshold.
-
-The candidate must still pass the registry publication contract.
-
-This creates the necessary separation:
-
-Harness Memory stores what happened. The Skill Evolution Engine proposes what should improve. The Skill Registry controls what is approved for reuse. The Harness executes only what has been authorized.
-
-### Architect's Note — A Skill Registry Is a Governance Boundary
-
-A directory containing Markdown files is a Skill library.
-
-A service that can search those files is a Skill catalog.
-
-A Skill Registry adds the contractual guarantees required for enterprise reuse: stable identity, immutable versions, controlled resolution, compatibility, provenance, ownership, approval, integrity, lifecycle management, and rollback.
-
-The distinction matters because Skill Evolution increases the rate at which reusable engineering guidance may change.
-
-As the system becomes more adaptive, governance must become more explicit—not less.
-
-The registry is what allows the organization to improve engineering knowledge continuously while preserving control over which knowledge its AI Agents are permitted to execute.
-
-Chapter 41 status: Complete
