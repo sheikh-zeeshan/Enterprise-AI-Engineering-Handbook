@@ -8,6 +8,7 @@ The project follows the principles of [Keep a Changelog](https://keepachangelog.
 
 ### Added
 
+- Chapter 50, Event-Driven Architecture, covering producer-owned contracts, reliable publication and consumption, recovery, schema evolution, security, and governance in the Alpha Car Detailing case study.
 - Repository starter structure for book content, diagrams, templates, examples, the Alpha Car Detailing reference system, prompts, skills, harness assets, references, and publication builds.
 - Initial `README.md`, contribution guide, roadmap, and editorial style guide.
 - Placeholder files that preserve required empty directories in Git.
