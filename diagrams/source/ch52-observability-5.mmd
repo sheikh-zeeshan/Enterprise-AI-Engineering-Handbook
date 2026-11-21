@@ -1,0 +1,22 @@
+flowchart TD
+  subgraph Producer["Booking ownership"]
+    Commit[("Confirmation and outbox transaction")]
+    Relay["Relay send attempts"]
+    Commit -->|"Oldest unpublished age"| Relay
+  end
+  Broker["Broker retention and delivery"]
+  Relay -->|"Acceptance delay"| Broker
+  subgraph Consumer["Notification ownership"]
+    Handler["Validate and process delivery"]
+    Local[("Inbox and delivery-intent transaction")]
+    Dispatch["Dispatcher attempts"]
+    Evidence[("Provider outcome or uncertainty")]
+    Quarantine[("Owned failed-record isolation")]
+    Handler -->|"One local effect"| Local
+    Handler -->|"Rejected record"| Quarantine
+    Local -->|"Intent age"| Dispatch
+    Dispatch --> Evidence
+    Evidence -->|"Uncertain: reconcile"| Dispatch
+  end
+  Broker -->|"Lag, age, and processing spans"| Handler
+  Local -.->|"Checkpoint after durable handling"| Broker

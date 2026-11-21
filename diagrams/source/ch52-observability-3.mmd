@@ -1,0 +1,23 @@
+flowchart TD
+  subgraph Entry["Authorized request boundary"]
+    User["Corporate User"] --> Gateway["API Gateway"]
+    Gateway --> Booking["Booking coordination"]
+  end
+  subgraph Prerequisites["Owned prerequisite decisions"]
+    Account["Corporate Account eligibility"]
+    Fleet["Fleet batch validation"]
+    Station["Station Operations capacity"]
+  end
+  Booking --> Account
+  Booking --> Fleet
+  Booking --> Station
+  Account --> Confirm["Booking confirmation and outbox"]
+  Fleet --> Confirm
+  Station -->|"Committed capacity"| Confirm
+  Station -.->|"Lost response"| Reconcile["Capacity reconciliation"]
+  Confirm --> Confirmed["BookingConfirmed event"]
+  Confirmed --> Notification["Notification intent and dispatch"]
+  Notification -.->|"Uncertain provider outcome"| NotifyRecovery["Notification reconciliation"]
+  Station -->|"Later qualifying work"| Completed["ServiceCompleted event"]
+  Completed --> Billing["Billing recognition and invoicing"]
+  Billing -->|"When authorized"| Payment["Payment and reconciliation"]

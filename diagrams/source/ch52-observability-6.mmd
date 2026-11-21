@@ -1,0 +1,13 @@
+flowchart TD
+  Alert["SLI or backlog alert"] --> Quality{"Signal trustworthy?"}
+  Quality -->|"Gap detected"| Monitoring["Restore evidence and assess uncertainty"]
+  Quality -->|"Yes"| Owner["Route to accountable responder"]
+  Monitoring --> Owner
+  Owner --> Investigate["Assess impact and gather evidence"]
+  Investigate --> Supported{"Recovery supported by evidence?"}
+  Supported -->|"No"| Investigate
+  Supported -->|"Yes"| Authority{"Authorized; required Human Approval present?"}
+  Authority -->|"No"| Hold["Hold action and escalate"]
+  Authority -->|"Yes"| Recover["Owner executes bounded recovery"]
+  Recover --> Verify["Verify outcomes, backlog, and sustained recovery"]
+  Verify --> Improve["Review prevention and evidence gaps"]

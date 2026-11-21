@@ -1,0 +1,11 @@
+flowchart TD
+  Signal["Journey or service anomaly"] --> Fresh{"Evidence fresh and complete?"}
+  Fresh -->|"No"| Gap["Record gap and investigate collection"]
+  Fresh -->|"Yes"| Available{"Representative trace available?"}
+  Available -->|"Yes"| Trace["Inspect execution and correlated logs"]
+  Available -->|"No"| Lookup["Use authorized operation reference"]
+  Trace --> State[("Owned commitments and recovery state")]
+  Lookup --> State
+  Gap --> State
+  State --> Compare["Compare dependency and release evidence"]
+  Compare --> Hypothesis["Test explanation and assess impact"]

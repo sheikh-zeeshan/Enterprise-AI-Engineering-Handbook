@@ -1,0 +1,27 @@
+flowchart TD
+  subgraph Application["Application boundary"]
+    Gateway["API Gateway"]
+    Services["Booking and capability services"]
+    Stores[("Owned data and messaging")]
+    Gateway --> Services
+    Services --> Stores
+  end
+  subgraph Collection["Telemetry collection boundary"]
+    Logs["Structured log collection"]
+    Collector["OpenTelemetry Collector"]
+    Infrastructure["Database, broker, and cluster signals"]
+    Logs --> Collector
+    Infrastructure --> Collector
+  end
+  subgraph Operations["Authorized operations boundary"]
+    Backend[("Telemetry storage and query")]
+    Views["Dashboards and alert evaluation"]
+    Responder("Accountable responder")
+    Backend --> Views --> Responder
+  end
+  Gateway -.->|"Traces and metrics"| Collector
+  Services -.->|"Traces and metrics"| Collector
+  Services -.->|"Selected log route"| Logs
+  Stores -.->|"Platform evidence"| Infrastructure
+  Collector -->|"Bounded authenticated export"| Backend
+  Collector -.->|"Queue and loss evidence"| Views

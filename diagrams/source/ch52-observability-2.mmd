@@ -1,0 +1,14 @@
+sequenceDiagram
+  participant U as Corporate User
+  participant G as API Gateway
+  participant B as Booking Service
+  participant A as Authority Services
+  participant D as Booking Database
+  U->>G: Authorized booking request
+  G->>B: Validated correlation and trace context
+  B->>A: Eligibility and reservation operations
+  A-->>B: Decisions and commitment evidence
+  B->>D: Commit outcome and outbox obligation
+  D-->>B: Local transaction committed
+  B-->>G: Contract-defined outcome
+  G-->>U: Outcome and support reference
