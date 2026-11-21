@@ -1,0 +1,11 @@
+flowchart TD
+    Review["Review provider-specific migration"] --> Preflight["Verify schema, authority, and recovery"]
+    Preflight --> Expand["Apply compatible expansion"]
+    Expand --> Valid{"Expansion verified?"}
+    Valid -->|No| Stop["Stop rollout and inspect state"]
+    Valid -->|Yes| App["Deploy compatible application"]
+    App --> Backfill["Restartable backfill and data checks"]
+    Backfill --> Retire{"Old users and recovery window retired?"}
+    Retire -->|No| Retain["Retain compatible schema"]
+    Retire -->|Yes| Contract["Separately authorize contraction"]
+    Contract --> Evidence["Record schema and recovery limits"]

@@ -1,0 +1,12 @@
+flowchart TD
+    Registry["Approved image digest"] --> Admission["Verify admission policy"]
+    Provenance["Expected provenance and current scans"] --> Admission
+    Intent["Authorized manifest and configuration"] --> Admission
+    Admission --> Allowed{"Deployment permitted?"}
+    Allowed -->|No| Reject["Reject and retain decision"]
+    Allowed -->|Yes| Reconcile["Reconcile desired workload"]
+    Reconcile --> Probes["Startup, readiness, and progress"]
+    Probes --> Observe["Check requests and worker progress"]
+    Observe --> Decision{"Continue exposure?"}
+    Decision -->|Yes| Complete["Complete verified deployment"]
+    Decision -->|No or unknown| Pause["Pause and assess recovery"]

@@ -1,0 +1,12 @@
+flowchart TD
+    Signal["Regression or unverifiable outcome"] --> Contain["Pause exposure and preserve evidence"]
+    Contain --> Assess["Assess schema, events, config, and security"]
+    Assess --> Eligible{"Previous release eligible?"}
+    Eligible -->|Yes| Restore["Restore approved application state"]
+    Eligible -->|No| Repair["Contain and perform forward repair"]
+    Restore --> Reconcile["Owners reconcile outstanding work"]
+    Repair --> Reconcile
+    Reconcile --> Verify["Verify customers and backlog recovery"]
+    Verify --> Stable{"Recovery established?"}
+    Stable -->|No| Assess
+    Stable -->|Yes| Record["Record recovery and follow-up"]

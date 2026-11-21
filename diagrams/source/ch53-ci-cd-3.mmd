@@ -1,0 +1,14 @@
+flowchart TD
+    Image["One candidate digest"] --> Integration["Integration verification"]
+    Integration --> Test["Test environment verification"]
+    Test --> Staging["Staging rehearsal"]
+    Config["Reviewed configuration and secret references"] -.-> Integration
+    Config -.-> Test
+    Config -.-> Staging
+    Staging --> Decision{"Current evidence and authority?"}
+    Decision -->|No| Hold["Hold or repeat affected checks"]
+    Decision -->|Yes| Production["Production deployment"]
+    Config -.-> Production
+    Production --> Verified{"Post-deployment checks satisfied?"}
+    Verified -->|Yes| Record["Record verified outcome"]
+    Verified -->|No or unknown| Recovery["Enter recovery policy"]

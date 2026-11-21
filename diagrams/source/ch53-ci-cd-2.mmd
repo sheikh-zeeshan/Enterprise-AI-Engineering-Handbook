@@ -1,0 +1,17 @@
+flowchart TD
+    Inputs["Revision, tools, and policy"] --> Build["Restore and build"]
+    Build --> Tests["Unit and integration tests"]
+    Build --> Architecture["Architecture checks"]
+    Build --> Contracts["Contract compatibility"]
+    Build --> Security["Source and dependency security"]
+    Tests --> Aggregate["Aggregate required evidence"]
+    Architecture --> Aggregate
+    Contracts --> Aggregate
+    Security --> Aggregate
+    Aggregate --> SourceReady{"Source gates passed?"}
+    SourceReady -->|No or incomplete| Block["Block and retain diagnostics"]
+    SourceReady -->|Yes| Package["Create candidate image"]
+    Package --> ImageGate["Container scan and image tests"]
+    ImageGate --> ImageReady{"Exact digest eligible?"}
+    ImageReady -->|No or incomplete| Block
+    ImageReady -->|Yes| Evidence["Publish candidate and provenance"]

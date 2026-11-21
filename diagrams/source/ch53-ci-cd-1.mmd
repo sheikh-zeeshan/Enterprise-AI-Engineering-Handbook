@@ -1,0 +1,14 @@
+flowchart TD
+    Author["Developer or AI Agent"] --> PR["Pull request and review"]
+    PR --> Build["Controlled build"]
+    Build --> Gates["Deterministic Validation Gates"]
+    Gates --> Eligible{"Required evidence complete?"}
+    Eligible -->|No| Hold["Hold and preserve findings"]
+    Eligible -->|Yes| Image["Immutable image and evidence"]
+    Image --> Promote["Verified environment promotion"]
+    Promote --> Approval["Human Approval where required"]
+    Approval --> Deploy["Controlled deployment"]
+    Deploy --> Verify["Post-deployment validation"]
+    Verify --> Outcome{"Customer outcomes acceptable?"}
+    Outcome -->|Yes| Record["Record verified release"]
+    Outcome -->|No or unknown| Recover["Pause and assess recovery"]

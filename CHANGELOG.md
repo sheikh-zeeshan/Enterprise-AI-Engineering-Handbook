@@ -8,6 +8,7 @@ The project follows the principles of [Keep a Changelog](https://keepachangelog.
 
 ### Added
 
+- Chapter 53, CI/CD, covering protected integration, deterministic gates, immutable artifacts, environment promotion, Kubernetes rollout, compatible migrations, release evidence, recovery, and bounded AI assistance in Alpha Car Detailing, with six delivery diagrams.
 - Chapter 52, Observability, covering correlated telemetry, durable business evidence, .NET instrumentation, asynchronous context, service and journey indicators, actionable alerts, Kubernetes, and evidence-based AI troubleshooting in Alpha Car Detailing.
 - Chapter 51, Security, covering end-to-end application security, corporate account and fleet authorization, workload and event boundaries, credential lifecycle, infrastructure controls, security verification, incident response, and Human Approval in Alpha Car Detailing.
 - Chapter 50, Event-Driven Architecture, covering producer-owned contracts, reliable publication and consumption, recovery, schema evolution, security, and governance in the Alpha Car Detailing case study.
