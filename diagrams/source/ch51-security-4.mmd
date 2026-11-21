@@ -1,0 +1,23 @@
+flowchart TD
+    Booking["Booking workload"]
+    Federation["Managed or federated identity"]
+    ApiToken["Target API credential"]
+    CloudToken["Cloud resource credential"]
+    Delegation["User delegation or system scope"]
+    Target{"Caller, permission, scope valid?"}
+    Accounts["Corporate Account"]
+    Fleet["Fleet"]
+    Station["Station Operations"]
+    Cloud["Permitted vault or broker access"]
+    Deny["Reject"]
+    Booking --> Federation
+    Federation --> ApiToken
+    Federation --> CloudToken
+    Booking --> Delegation
+    ApiToken --> Target
+    Delegation --> Target
+    Target -->|"Allowed contract"| Accounts
+    Target -->|"Allowed contract"| Fleet
+    Target -->|"Allowed contract"| Station
+    Target -->|"Denied"| Deny
+    CloudToken --> Cloud

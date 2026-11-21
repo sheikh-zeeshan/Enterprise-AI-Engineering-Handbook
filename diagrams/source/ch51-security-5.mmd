@@ -1,0 +1,21 @@
+flowchart TD
+    Admin["Lifecycle administrator"]
+    Vault["Managed vault"]
+    Runtime["Authorized secret read or key use"]
+    Rotate["Issue successor"]
+    Refresh["Refresh runtime use"]
+    Verify{"Successor use verified?"}
+    Revoke["Revoke predecessor by policy"]
+    Recover["Alert and controlled recovery"]
+    Monitor["Detect expiry or compromise"]
+    Admin -->|"Provision and govern"| Vault
+    Vault -->|"Scoped access"| Runtime
+    Admin --> Rotate
+    Rotate --> Vault
+    Vault --> Refresh
+    Refresh --> Verify
+    Verify -->|"Yes"| Revoke
+    Verify -->|"No"| Recover
+    Runtime -.-> Monitor
+    Vault -.-> Monitor
+    Monitor -->|"Compromise or expiry"| Recover

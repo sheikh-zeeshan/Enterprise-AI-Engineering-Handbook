@@ -1,0 +1,23 @@
+flowchart TD
+    Change["Threat-informed change"]
+    Checks["Review, scan, test"]
+    Evidence{"Evidence acceptable?"}
+    Findings["Record findings and gaps"]
+    Disposition{"Fixed or authorized exception?"}
+    Stop["Block promotion"]
+    Candidate["Bind artifact and environment"]
+    Approval{"Human Approval valid?"}
+    Deploy["Verify admission and deploy"]
+    Monitor["Monitor and exercise recovery"]
+    Change --> Checks
+    Checks --> Evidence
+    Evidence -->|"No"| Findings
+    Findings --> Disposition
+    Disposition -->|"No"| Stop
+    Disposition -->|"Yes: re-evaluate evidence"| Checks
+    Evidence -->|"Yes"| Candidate
+    Candidate --> Approval
+    Approval -->|"No"| Stop
+    Approval -->|"Yes or not required by policy"| Deploy
+    Deploy --> Monitor
+    Monitor -->|"New risk or drift"| Change

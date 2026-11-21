@@ -1,0 +1,23 @@
+sequenceDiagram
+    participant User as Corporate user
+    participant IdP as Identity provider
+    participant Gateway as API Gateway
+    participant Booking as Booking Service
+    participant Accounts as Scope authority
+    User->>IdP: Sign in through approved client flow
+    IdP-->>User: Access token for intended API
+    User->>Gateway: Booking request and bearer token
+    Gateway->>Gateway: Validate ingress identity and limits
+    Gateway->>Booking: Request over protected connection
+    Booking->>Booking: Validate credential and operation policy
+    Booking->>Booking: Resolve persisted booking account and fleet
+    Booking->>Accounts: Verify current caller and resource scope
+    Accounts-->>Booking: Allow, deny, or unavailable
+    alt Identity, permission, and scope accepted
+        Booking->>Booking: Execute authorized operation
+        Booking-->>User: Response through gateway
+    else Scope denied or resource concealed
+        Booking-->>User: Safe denial through gateway
+    else Required authority unavailable
+        Booking-->>User: Controlled availability failure
+    end

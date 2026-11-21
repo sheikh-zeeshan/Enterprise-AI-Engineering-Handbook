@@ -1,0 +1,27 @@
+flowchart TD
+    subgraph Client["Client boundary"]
+        User["Corporate user"]
+        IdP["Approved identity provider"]
+        User -->|"Sign-in"| IdP
+        IdP -->|"API access token"| User
+    end
+    subgraph Edge["Ingress boundary"]
+        Gateway["API Gateway"]
+    end
+    subgraph Application["Service boundaries"]
+        Booking["Booking and private store"]
+        Owners["Corporate Account, Fleet, Station Operations"]
+        Consumers["Billing, Payment, Notification"]
+        Broker["Protected broker"]
+        Booking -->|"Authorized API contracts"| Owners
+        Booking -->|"Owned facts through outbox"| Broker
+        Broker -->|"Approved consumption"| Consumers
+    end
+    Vault["Vault and keys"]
+    Delivery["Protected delivery"]
+    Audit["Audit and detection"]
+    User -->|"Bearer credential over TLS"| Gateway
+    Gateway -->|"Protected service connection"| Booking
+    Vault -.->|"Narrow workload access"| Booking
+    Delivery -.->|"Approved artifacts and policies"| Application
+    Application -.->|"Bounded security evidence"| Audit

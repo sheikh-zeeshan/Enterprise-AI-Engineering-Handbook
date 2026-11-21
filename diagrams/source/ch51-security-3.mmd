@@ -1,0 +1,21 @@
+flowchart TD
+    Request["Pending booking"]
+    Scope["Authorize caller and fleet scope"]
+    Account["Account eligibility and approval"]
+    Fleet["Vehicle eligibility"]
+    Station["Authorized capacity commitment"]
+    Decision{"Prerequisites valid?"}
+    Stop["Reject or reconcile; do not confirm"]
+    Commit["Confirmation and outbox commit"]
+    Publish["Authorized BookingConfirmed publication"]
+    Consume["Verified, idempotent consumption"]
+    Request --> Scope
+    Scope --> Account
+    Scope --> Fleet
+    Account --> Station
+    Fleet --> Station
+    Station --> Decision
+    Decision -->|"No or uncertain"| Stop
+    Decision -->|"Yes"| Commit
+    Commit --> Publish
+    Publish --> Consume
