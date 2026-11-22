@@ -1,0 +1,13 @@
+flowchart TD
+    A["Tool Failure"] --> B{"Failure Classified?"}
+    B -->|No| X["Investigate or Escalate"]
+    B -->|Yes| C{"Possible Side Effects?"}
+    C -->|No| D{"Transient and Retryable?"}
+    D -->|No| X
+    D -->|Yes| R["Bounded Retry"]
+    C -->|Yes| E{"Completion Known and Idempotency Enforced?"}
+    E -->|No| X
+    E -->|Yes| G{"Retry Authorized?"}
+    G -->|No| X
+    G -->|Yes| R
+    R --> H["Record Attempt"] --> I["Execute Again"]

@@ -1,0 +1,14 @@
+flowchart TD
+    N0["Change Request"]
+    N1["Generate Implementation"]
+    N2["Validate Migration"]
+    N3["Prepare Deployment Artifact"]
+    N4{"Human Approval?"}
+    N5["Approved Deployment Workflow"]
+    N6["Stop and Report"]
+    N0 --> N1
+    N1 --> N2
+    N2 --> N3
+    N3 --> N4
+    N4 -- Approved --> N5
+    N4 -- Not approved --> N6

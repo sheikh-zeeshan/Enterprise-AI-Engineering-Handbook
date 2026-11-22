@@ -1,0 +1,8 @@
+flowchart TB
+    H["Enterprise Harness"] --> Policy["Tool Policy"]
+    A["Codex Agent"] --> MCP["Approved MCP Interface"]
+    Policy --> MCP
+    MCP --> R["Repository Intelligence"]
+    MCP --> W["Work Item Service"]
+    MCP --> C["Contract Registry"]
+    MCP --> E["Evidence Service"]

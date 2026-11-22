@@ -1,0 +1,15 @@
+flowchart TD
+    A[Enterprise Policy] --> B[Repository Instructions]
+    B --> C[Skills]
+    B --> D[Prompts]
+    B --> E[Agent Roles]
+    C --> F[Harness Execution]
+    D --> F
+    E --> F
+    F --> G[Deterministic Controls]
+    G --> H[Human Approval]
+    H --> I[Audit Evidence]
+
+    A -. Mandatory Boundary .-> F
+    A -. Mandatory Boundary .-> G
+    A -. Mandatory Boundary .-> H

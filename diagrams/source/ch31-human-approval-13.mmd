@@ -1,0 +1,8 @@
+flowchart LR
+    Evidence["Engineering evidence complete"] --> Architecture["Architecture approval"]
+    Evidence --> Data["Data governance approval"]
+    Architecture --> Ready["Final release readiness"]
+    Data --> Ready
+    Ready --> Production["Production approval"]
+    Production --> Authorization["Execution authorization"]
+    Authorization --> Deployment["Production deployment"]

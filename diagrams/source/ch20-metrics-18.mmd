@@ -1,0 +1,5 @@
+flowchart TD
+    M["Harness Metrics"] --> A["Trend and Failure Analysis"] --> P["Improvement Proposal"]
+    P --> R["Architecture and Governance Review"] --> D{"Approved?"}
+    D -- No --> X["Record Decision"]
+    D -- Yes --> I["Controlled Implementation"] --> V["Deterministic Validation"] --> B["Baseline Comparison"] --> M

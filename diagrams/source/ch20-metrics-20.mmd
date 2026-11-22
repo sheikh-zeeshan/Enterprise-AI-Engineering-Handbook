@@ -1,0 +1,27 @@
+flowchart TB
+    subgraph H["AI Engineering Harness"]
+      P["Population"]
+      O["Orchestrator"]
+      A["AI Agents"]
+      G["Deterministic Gates"]
+      R["Review / Validation / Evaluation"]
+    end
+    subgraph M["Metrics Capability"]
+      I["Event Ingestion"] --> E[("Execution Event Store")] --> AG["Metrics Aggregator"]
+      AG --> RM[("Metrics Read Model")] --> API["Metrics Query API"]
+    end
+    subgraph C["Enterprise Consumers"]
+      OPS["Operations Dashboard"]
+      Q["Engineering Quality Dashboard"]
+      MG["Management Scorecard"]
+      AL["Alerts"]
+    end
+    P --> I
+    O --> I
+    A --> I
+    G --> I
+    R --> I
+    API --> OPS
+    API --> Q
+    API --> MG
+    RM --> AL

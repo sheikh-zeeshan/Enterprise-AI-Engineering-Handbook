@@ -1,0 +1,19 @@
+sequenceDiagram
+    actor User
+    participant H as Enterprise Harness
+    participant L as Lead Agent
+    participant C as Copilot Cloud Agent
+    participant V as Validation
+    participant R as Reviewer
+    actor Human
+
+    User->>H: Submit approved work item
+    H->>L: Produce implementation plan
+    L-->>H: Approved plan
+    H->>C: Assign bounded GitHub task
+    C-->>H: Draft pull request
+    H->>V: Run independent checks
+    V-->>H: Validation evidence
+    H->>R: Review plan, diff and evidence
+    R-->>H: Findings
+    H->>Human: Request approval

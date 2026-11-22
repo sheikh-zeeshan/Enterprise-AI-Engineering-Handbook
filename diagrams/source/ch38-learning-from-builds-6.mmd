@@ -1,0 +1,27 @@
+sequenceDiagram
+    participant Learn as Learning Engine
+    participant Review as Human Reviewer
+    participant Pub as Artifact Registry
+    participant Mem as Harness Memory
+    participant Runs as Harness Runs
+    participant Audit as Audit Store
+    Learn->>Audit: Record candidate and provenance
+    Learn->>Review: Submit scoped recommendation
+    alt Approved
+        Review->>Pub: Authorize exact version and content
+        Pub->>Pub: Verify approval and required gates
+        Pub->>Audit: Record publication
+        Pub->>Mem: Register approved learning reference
+        Pub->>Runs: Make approved version available
+        Runs->>Audit: Record consumed artifact version
+        opt Regression detected
+            Runs->>Review: Report adverse outcomes
+            Review->>Pub: Authorize rollback
+            Pub->>Mem: Retire or supersede memory reference
+            Pub->>Audit: Record rollback
+        end
+    else Rejected
+        Review->>Audit: Record rejection and rationale
+    else More evidence required
+        Review->>Audit: Retain provisional decision
+    end

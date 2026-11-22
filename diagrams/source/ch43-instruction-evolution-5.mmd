@@ -1,0 +1,14 @@
+flowchart LR
+    A[Build Failures] --> H[Evidence Correlator]
+    B[Test Failures] --> H
+    C[Architecture Gates] --> H
+    D[Security Findings] --> H
+    E[Reviewer Findings] --> H
+    F[PR Evidence] --> H
+    G[Human Feedback] --> H
+
+    H --> I[Repeated Pattern]
+
+    I --> J[Instruction Analysis]
+
+    J --> K[Candidate Improvement]

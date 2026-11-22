@@ -1,0 +1,11 @@
+flowchart LR
+    C["Claude"] --> O["Implementation Produced"]
+    O --> H["Harness"]
+
+    H --> R["Review"]
+    R --> V["Validation"]
+    V --> E["Evaluation"]
+    E --> P{"Completion Policy"}
+
+    P -- Satisfied --> D["Completed"]
+    P -- Not Satisfied --> F["Failure / Rework"]

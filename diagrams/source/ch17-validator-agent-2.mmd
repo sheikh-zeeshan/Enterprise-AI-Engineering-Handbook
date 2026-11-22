@@ -1,0 +1,25 @@
+flowchart TB
+    subgraph CP["Validation control plane"]
+        VP["Validation profile"]
+        VA["Validator Agent"]
+        OP["Outcome policy"]
+        EV["Evidence package"]
+    end
+
+    subgraph EP["Validation execution plane"]
+        BT["Build and tests"]
+        AS["Architecture and static analysis"]
+        SC["Security and contracts"]
+        DI["Database and infrastructure"]
+    end
+
+    VP --> VA
+    VA --> BT
+    VA --> AS
+    VA --> SC
+    VA --> DI
+    OP --> VA
+    BT --> EV
+    AS --> EV
+    SC --> EV
+    DI --> EV

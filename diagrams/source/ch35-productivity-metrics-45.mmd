@@ -1,0 +1,6 @@
+flowchart TD
+    A["Harness Execution Evidence"] --> B["Productivity Analysis"] --> C["Recurring Failure Pattern"] --> D["Root-Cause Investigation"] --> E["Improvement Proposal"] --> F["Human Governance Approval"] --> G{"Approved?"}
+    G -->|No| H["Reject or Revise"]
+    G -->|Yes| I["Controlled Experiment"] --> J["Independent Measurement"] --> K{"Improvement Demonstrated?"}
+    K -->|Yes| L["Governed Adoption"]
+    K -->|No| M["Revert or Investigate"]

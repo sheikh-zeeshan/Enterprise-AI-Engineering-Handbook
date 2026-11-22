@@ -1,0 +1,26 @@
+sequenceDiagram
+    participant Lead as Lead Agent
+    participant Dev as Developer Agent
+    participant Rev as Reviewer Agent
+    participant Val as Validator Agent
+    participant Eval as Evaluator Agent
+    participant Human as Human Approver
+
+    Lead->>Dev: Implement approved goal
+    Dev->>Rev: Submit implementation
+    Rev->>Val: Review complete
+    Val->>Eval: Deterministic evidence
+    Eval->>Eval: Compare outcome to goal
+
+    alt Satisfied
+        Eval->>Human: Submit evaluation evidence
+        Human->>Human: Approval decision
+    else Partial or Failed
+        Eval->>Lead: Report unmet criteria
+        Lead->>Dev: Assign bounded rework
+        Dev->>Rev: Revised implementation
+        Rev->>Val: Re-review complete
+        Val->>Eval: Updated evidence
+    else Inconclusive
+        Eval->>Human: Escalate unresolved requirement
+    end

@@ -1,0 +1,9 @@
+flowchart LR
+    R["Execute with recorded artifact versions"] --> E["Capture outcomes and counterexamples"]
+    E --> L["Compare outcomes across runs"]
+    L --> P["Propose a scoped improvement"]
+    P --> V["Test candidate and obtain human decision"]
+    V -->|Approved| A["Activate approved revision"]
+    A --> R
+    V -->|Rejected or deferred| M["Record decision in Harness Memory"]
+    M --> L

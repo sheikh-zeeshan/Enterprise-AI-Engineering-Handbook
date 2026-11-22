@@ -1,0 +1,9 @@
+flowchart TD
+ TASK["Engineering Request"] --> CLAUDE["Claude Code"]
+ GUIDE["CLAUDE.md Instructions"] --> CLAUDE
+ CLAUDE --> SKILL["Impact Analysis Skill"]
+ SKILL --> MCP["Knowledge Graph MCP Server"]
+ MCP --> AUTH["Authorization"] --> QUERY["Graph Query Service"]
+ QUERY --> KG[("Governed Knowledge Graph")]
+ CLAUDE --> RI["Repository Intelligence"]
+ CLAUDE --> LEAD["Lead Agent Plan"] --> DEV["Developer Agent"] --> GATES["Validation Gates"]

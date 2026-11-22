@@ -1,0 +1,12 @@
+flowchart LR
+    R["Harness runs"] --> E["Build, review, validation, evaluation, and PR evidence"]
+    E --> M["Harness Memory"]
+    M --> L["Learning Engine"]
+    K["Knowledge Graph"] --> L
+    I["Repository Intelligence"] --> L
+    L --> P["Versioned improvement proposal"]
+    P --> V["Independent review, validation, and evaluation"]
+    V --> H{"Authorized human decision"}
+    H -->|Approve| A["Governed activation"]
+    H -->|Reject or defer| M
+    A --> R

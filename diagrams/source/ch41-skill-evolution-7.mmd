@@ -1,0 +1,9 @@
+flowchart TD
+    A[Candidate Bundle] --> B[Manifest Schema and Identity]
+    B --> C[Dependency and Compatibility Checks]
+    C --> D[Scenario, Negative and Regression Tests]
+    D --> E[Owner and Policy Approval]
+    E --> F[Verify Approved Bundle Digest]
+    F --> G[Atomic Immutable Publication]
+    G --> H[Append-only Audit Event]
+    H --> I[Release Channel Activation]

@@ -1,0 +1,22 @@
+stateDiagram-v2
+    [*] --> Draft
+
+    Draft --> Submitted: Customer submits request
+
+    Submitted --> Rejected: Validation or authorization fails
+    Submitted --> Authorized: Required checks satisfied
+    Authorized --> CapacityUnavailable: Reservation fails
+    Authorized --> CapacityReserved: Reservation succeeds
+    CapacityReserved --> Confirmed: Customer commitment accepted
+
+    Confirmed --> InService: Vehicle service begins
+    Confirmed --> Cancelled: Valid cancellation
+
+    InService --> Completed: Service completed
+
+    Completed --> Billable: Commercial criteria satisfied
+
+    Rejected --> [*]
+    CapacityUnavailable --> [*]
+    Cancelled --> [*]
+    Billable --> [*]

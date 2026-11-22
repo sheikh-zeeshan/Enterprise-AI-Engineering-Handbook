@@ -1,0 +1,60 @@
+erDiagram
+    POPULATION_ITEM ||--o{ POPULATION_EXECUTION : has
+    POPULATION_ITEM ||--o{ POPULATION_TRANSITION : records
+    POPULATION_ITEM ||--o{ POPULATION_CHECKPOINT : creates
+    POPULATION_ITEM ||--o{ POPULATION_EVIDENCE : references
+    POPULATION_ITEM ||--o{ POPULATION_DEPENDENCY : depends_on
+    POPULATION_BATCH ||--o{ POPULATION_ITEM : contains
+
+    POPULATION_ITEM {
+        string WorkItemId PK
+        string Status
+        string Priority
+        string WorkType
+        string Repository
+        datetime CreatedAt
+        datetime UpdatedAt
+        int AttemptCount
+        int MaxAttempts
+        string CurrentExecutionId
+    }
+
+    POPULATION_EXECUTION {
+        string ExecutionId PK
+        string WorkItemId FK
+        int AttemptNumber
+        string WorkerId
+        datetime StartedAt
+        datetime CompletedAt
+        string Result
+    }
+
+    POPULATION_TRANSITION {
+        long TransitionId PK
+        string WorkItemId FK
+        string FromStatus
+        string ToStatus
+        string Reason
+        datetime OccurredAt
+    }
+
+    POPULATION_CHECKPOINT {
+        long CheckpointId PK
+        string WorkItemId FK
+        string ExecutionId FK
+        string CheckpointType
+        datetime CreatedAt
+    }
+
+    POPULATION_EVIDENCE {
+        long EvidenceId PK
+        string WorkItemId FK
+        string EvidenceType
+        string Reference
+    }
+
+    POPULATION_BATCH {
+        string BatchId PK
+        string Name
+        datetime CreatedAt
+    }

@@ -1,0 +1,23 @@
+flowchart TB
+    I[Issue or Task Contract]
+    R[Repository Baseline]
+    E[Execution Environment]
+    A[AI Agent]
+    C[Code Changes]
+    V[Build and Validation]
+    P[Pull Request]
+    H[Human Review]
+    D[Decision]
+
+    I --> A
+    R --> A
+    E --> A
+    A --> C
+    C --> V
+
+    V -->|Failure| A
+    V -->|Evidence| P
+
+    P --> H
+    H -->|Correction Required| A
+    H -->|Accept| D

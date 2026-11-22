@@ -1,0 +1,13 @@
+flowchart TD
+    A["Collect Execution Evidence"] --> B["Detect Repeated Violations"]
+    B --> C["Analyze Current Instructions"]
+    C --> D["Generate Candidate Change"]
+    D --> E["Evaluate Evidence and Impact"]
+    E --> F{"Human Approval Gate"}
+    F -->|Rejected| G["Record Decision"]
+    F -->|Approved| H["Create Controlled Change"]
+    H --> I["Validate Proposed Instruction"]
+    I --> J{"Validation Passed?"}
+    J -->|No| K["Retain Existing Version"]
+    J -->|Yes| L["Activate Approved Version"]
+    L --> M["Future Harness Runs"]

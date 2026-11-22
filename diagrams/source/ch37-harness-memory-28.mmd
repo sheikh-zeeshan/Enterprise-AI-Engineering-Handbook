@@ -1,0 +1,11 @@
+flowchart TD
+    C["Claude Code"] --> A["Platform adapters"]
+    G["GitHub Copilot"] --> A
+    X["OpenAI Codex"] --> A
+    A --> API["Harness Memory API"]
+    API --> AUTH["Authorization and eligibility"]
+    AUTH --> REG[("Governed memory registry")]
+    API --> CAN["Candidate submission"]
+    CAN --> EV["Evidence review"]
+    EV --> H["Human approval"]
+    H -->|Approved| REG

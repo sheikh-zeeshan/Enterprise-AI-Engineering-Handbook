@@ -1,0 +1,19 @@
+flowchart TD
+    A["Task Prompt"] --> B["Repository Discovery"]
+    B --> C["Applicable Instructions"]
+    C --> D["Skill and Knowledge Resolution"]
+    D --> E["Planning Mode"]
+    subgraph Plan["Planning Activities"]
+        F["Identify Scope"] --> G["Decompose Tasks"]
+        G --> H["Analyze Dependencies"]
+        H --> I["Identify Risks"]
+        I --> J["Record Assumptions"]
+        J --> K["Define Validation Plan"]
+    end
+    E --> F
+    K --> L["Proposed Plan"]
+    L --> M{"Review and Approval"}
+    M -->|"Revision required"| E
+    M -->|"Approved"| N["Developer Agent"]
+    N --> O["Execution"]
+    O --> P["Review, Validation and Evaluation"]

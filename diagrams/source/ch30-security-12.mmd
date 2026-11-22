@@ -1,0 +1,12 @@
+flowchart TD
+    REPO[Repository] --> THREAT[Contextual threat model]
+    THREAT --> ANALYZE[Codex security analysis]
+    ANALYZE --> FIND[Candidate vulnerability]
+    FIND --> VERIFY[Isolated investigation]
+    VERIFY --> RESULT{Evidence supports finding?}
+    RESULT -->|No or inconclusive| ANALYZE
+    RESULT -->|Yes| REPORT[Finding and evidence]
+    REPORT --> FIX[Proposed remediation]
+    FIX --> PR[Pull request]
+    PR --> GATES[Independent security gates]
+    GATES --> HUMAN[Authorized review and decision]

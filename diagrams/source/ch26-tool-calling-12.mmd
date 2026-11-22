@@ -1,0 +1,8 @@
+flowchart TB
+    H["Enterprise Harness"] --> C["Claude Adapter"]
+    H --> G["GitHub Copilot Adapter"]
+    C --> T1["Claude Tool Runtime"]
+    G --> T2["Copilot Tool Runtime"]
+    T1 --> N["Normalized Tool Results"]
+    T2 --> N
+    N --> V["Deterministic Validation"] --> E["Evidence Store"]

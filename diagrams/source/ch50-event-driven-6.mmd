@@ -1,0 +1,22 @@
+flowchart TD
+    R["Receive source record"] --> V{"Trusted source and supported contract?"}
+    V -->|"Yes"| T["Begin local transaction"]
+    T --> I{"Inbox insert succeeds?"}
+    I -->|"Duplicate identity"| D["Verify prior durable handling; no new effect"]
+    I -->|"New event"| W["Apply effect and any downstream outbox"]
+    I -->|"Database failure: roll back"| F
+    W --> C["Commit transaction"]
+    C --> A["Advance contiguous durable progress"]
+    D --> A
+    W -->|"Failure: roll back"| F{"Transient and within retry budget?"}
+    C -->|"Commit result uncertain"| U["Reopen store and resolve by event identity"]
+    U --> R
+    F -->|"Yes"| B["Backoff or durably defer according to ordering policy"]
+    B --> R
+    F -->|"No"| Q["Persist quarantine record and responsibility"]
+    V -->|"No"| Q
+    Q --> S{"Durable isolation confirmed?"}
+    S -->|"Yes"| A
+    S -->|"No"| H["Hold progress and alert"]
+    Q --> O["Owner investigates and records disposition"]
+    O -->|"Approved repair and replay"| R

@@ -1,0 +1,17 @@
+flowchart TB
+    H["Enterprise AI Engineering Harness"]
+    H --> O["Operational Metrics"]
+    H --> Q["Engineering Quality Metrics"]
+    H --> P["Agent Performance Metrics"]
+    H --> B["Business Outcome Metrics"]
+    H --> C["Cost Metrics"]
+    O --> OA["Throughput, Backlog, Reliability"]
+    Q --> QA["Validation, Review, Rework"]
+    P --> PA["Retries, Duration, Utilization"]
+    B --> BA["Acceptance, Approval, Value"]
+    C --> CA["Tokens, Infrastructure, Total Cost"]
+    OA --> Z["Balanced Engineering Assessment"]
+    QA --> Z
+    PA --> Z
+    BA --> Z
+    CA --> Z

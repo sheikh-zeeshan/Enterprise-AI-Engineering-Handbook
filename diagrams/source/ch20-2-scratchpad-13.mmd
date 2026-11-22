@@ -1,0 +1,33 @@
+flowchart TB
+    subgraph HR["Harness Run"]
+        subgraph INPUT["Input"]
+            P["Prompt"]
+            I["Instructions"]
+            S["Skills"]
+            SN["Steering Notes"]
+        end
+
+        subgraph RW["Run Workspace"]
+            PLAN["Plan"]
+            SP["Shared Scratchpad"]
+            AG["Role Workspaces"]
+            HO["Agent Handoffs"]
+            CP["Checkpoints"]
+            VAL["Validation Evidence"]
+            OUT["Outputs"]
+            RS["Run State"]
+        end
+
+        INPUT --> RW
+    end
+
+    subgraph PK["Persistent Knowledge"]
+        RI["Repository Intelligence"]
+        HM["Harness Memory"]
+        M["Metrics"]
+    end
+
+    RI --> HR
+    OUT -. "governed promotion" .-> RI
+    OUT -. "governed promotion" .-> HM
+    HR --> M

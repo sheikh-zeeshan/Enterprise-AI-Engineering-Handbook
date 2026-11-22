@@ -1,0 +1,19 @@
+flowchart LR
+    C[Codex Developer] --> AR[Agent-Reported Results]
+
+    C --> P[Generated Patch]
+
+    P --> HV[Harness Validator]
+
+    HV --> B[Build]
+    HV --> U[Unit Tests]
+    HV --> I[Integration Tests]
+    HV --> A[Architecture Tests]
+    HV --> S[Security Checks]
+
+    AR --> COMP[Evidence Comparison]
+    B --> COMP
+    U --> COMP
+    I --> COMP
+    A --> COMP
+    S --> COMP

@@ -1,0 +1,15 @@
+flowchart TD
+    A["Agent Proposes Tool Call"] --> B["Resolve Tool Contract"] --> C["Validate Inputs"]
+    C --> D["Check Role and Task Scope"] --> E{"Authorized?"}
+    E -->|No| F["Deny and Audit"]
+    E -->|Approval Required| G{"Human Approval"}
+    G -->|Rejected| F
+    G -->|Approved| H["Execute in Isolated Runtime"]
+    E -->|Yes| H
+    H --> I["Capture Structured Result"] --> J["Store Evidence and Audit"]
+    J --> K{"Result Acceptable?"}
+    K -->|Yes| L["Continue Workflow"]
+    K -->|Retry eligible| M{"Safe Retry?"}
+    M -->|Authorized| H
+    M -->|Unsafe| N["Investigate or Escalate"]
+    K -->|No| N

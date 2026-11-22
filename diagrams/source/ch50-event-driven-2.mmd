@@ -1,0 +1,14 @@
+sequenceDiagram
+    participant B as Booking
+    participant A as Corporate Account
+    participant F as Fleet
+    participant S as Station Operations
+    participant D as Booking store
+    B->>A: Establish required eligibility and authorization
+    A-->>B: Authoritative decision
+    B->>F: Validate selected vehicles and account scope
+    F-->>B: Authoritative decision
+    B->>S: Commit capacity using stable operation ID
+    S-->>B: Committed reservation evidence
+    Note over B,S: Uncertain results require inquiry before confirmation
+    B->>D: Commit confirmation, operation outcome, and outbox

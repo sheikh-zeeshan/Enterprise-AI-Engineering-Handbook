@@ -1,0 +1,16 @@
+flowchart TD
+    subgraph OP["Operational Plane"]
+      A["Lead Agent"]
+      B["Developer Agent"]
+      C["Reviewer Agent"]
+      D["Validator Agent"]
+      E["Evaluator Agent"]
+    end
+    subgraph MP["Measurement Plane"]
+      F["Trusted Telemetry Collector"] --> G[("Protected Event Store")] --> H["Metrics Processor"] --> I["Productivity Dashboard"]
+    end
+    A --> F
+    B --> F
+    C --> F
+    D --> F
+    E --> F

@@ -1,0 +1,17 @@
+sequenceDiagram
+    participant Station as Station Operations
+    participant Broker
+    participant Billing
+    participant Payment
+    participant Notification
+    Station->>Broker: ServiceCompleted after durable local publication
+    Broker->>Billing: Deliver qualifying completed work
+    Note over Billing: Accumulate approved work for consolidated invoicing
+    Billing->>Broker: InvoiceIssued after local commit
+    Broker->>Notification: Deliver invoice communication fact
+    Note over Billing,Payment: Settlement timing follows approved corporate terms
+    Billing->>Payment: Request settlement when required
+    Note over Payment: Execute or reconcile provider operation
+    Payment->>Broker: PaymentRecorded after local commit
+    Broker->>Billing: Deliver payment outcome
+    Broker->>Notification: Deliver authorized payment communication fact

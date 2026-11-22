@@ -1,0 +1,27 @@
+flowchart LR
+    subgraph Demand["Customer Demand"]
+        CU[Customer Management]
+        CA[Corporate Accounts]
+        FM[Fleet Management]
+    end
+
+    subgraph Fulfillment["Service Fulfillment"]
+        SC[Service Catalog]
+        BK[Booking]
+        CM[Capacity Management]
+        SO[Station Operations]
+    end
+
+    subgraph Commercial["Commercial Processing"]
+        BI[Billing]
+        PY[Payments]
+    end
+
+    subgraph Engagement["Customer Engagement"]
+        NT[Notifications]
+    end
+
+    Demand --> Fulfillment
+    Fulfillment --> Commercial
+    Fulfillment --> Engagement
+    Commercial --> Engagement

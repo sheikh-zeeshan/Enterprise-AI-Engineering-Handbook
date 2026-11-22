@@ -1,0 +1,30 @@
+flowchart LR
+    Corporate["Corporate Account Service"]
+    Fleet["Fleet Service"]
+    Booking["Booking Service"]
+    Station["Station Operations Service"]
+    Billing["Billing Service"]
+    Payment["Payment Service"]
+    Notification["Notification Service"]
+
+    Corporate --> C1["Corporate account status"]
+    Corporate --> C2["Commercial eligibility"]
+
+    Fleet --> F1["Fleet"]
+    Fleet --> F2["Vehicle membership"]
+
+    Booking --> B1["Booking lifecycle"]
+    Booking --> B2["Booking status"]
+
+    Station --> S1["Station capability"]
+    Station --> S2["Capacity"]
+    Station --> S3["Capacity reservation"]
+
+    Billing --> I1["Invoice"]
+    Billing --> I2["Receivable state"]
+
+    Payment --> P1["Payment attempt"]
+    Payment --> P2["Payment status"]
+
+    Notification --> N1["Communication request"]
+    Notification --> N2["Delivery status"]

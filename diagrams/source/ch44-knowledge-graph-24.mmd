@@ -1,0 +1,7 @@
+flowchart TD
+ A["Repository Change"] --> B["Identify Affected Entities"] --> C["Re-extract Relationships"] --> D["Compare Assertions"]
+ D --> E{"Still valid?"}
+ E -->|Yes| F["Refresh Evidence and Verification"]
+ E -->|No or uncertain| G["Mark Historical or Conflicted"]
+ F --> H["Publish Updated Graph View"]
+ G --> H

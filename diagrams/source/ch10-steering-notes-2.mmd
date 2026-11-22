@@ -1,0 +1,10 @@
+flowchart TD
+    A["Engineering task submitted"] --> B["Discover repository guidance"]
+    B --> C["Read active Steering Note"]
+    C --> D{"In scope, approved, and current?"}
+    D -- "No / uncertain" --> E["Hold scoped work and request human clarification"]
+    D -- "Yes" --> F["Capture version and content hash"]
+    F --> G["Assemble role, task, skills, and knowledge"]
+    G --> H["Run permitted engineering work"]
+    H --> I["Review and deterministic validation gates"]
+    I --> J["Record evidence and submit for approval"]

@@ -1,0 +1,13 @@
+flowchart TD
+    A["Harness Execution Evidence"] --> B["Evidence Collector"]
+    B --> C["Pattern Detection"]
+    C --> D["Instruction Analysis Agent"]
+    D --> E["Candidate Proposal Agent"]
+    E --> F["Impact Assessment"]
+    F --> G{"Human Approval"}
+    G -->|Reject| H["Record Decision"]
+    G -->|Approve| I["Controlled Instruction Update"]
+    I --> J["Validation and Replay"]
+    J --> K{"Passed?"}
+    K -->|No| L["Rollback or Revise"]
+    K -->|Yes| M["Activate Approved Version"]

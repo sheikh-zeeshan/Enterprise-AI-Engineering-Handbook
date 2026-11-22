@@ -1,0 +1,21 @@
+flowchart LR
+    P["Task Prompt"]
+    R["Prompt Resolver"]
+
+    I1["Repository Instructions"]
+    I2["Directory Instructions"]
+    S1["Applicable Skills"]
+    ST["Steering Note"]
+    RL["Role Definition"]
+    KS["Approved Knowledge Sources"]
+
+    E["Resolved Execution Context"]
+
+    P --> R
+    I1 --> R
+    I2 --> R
+    S1 --> R
+    ST --> R
+    RL --> R
+    KS --> R
+    R --> E

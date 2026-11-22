@@ -1,0 +1,13 @@
+flowchart TD
+    R["Repeated engineering findings"] --> M[("Approved Harness Memory")]
+    M --> I["Improvement recommendation"]
+    I --> S["Skill evolution proposal"]
+    I --> P["Prompt evolution proposal"]
+    I --> N["Instruction evolution proposal"]
+    S --> A["Artifact owner review"]
+    P --> A
+    N --> A
+    A --> D{"Approved?"}
+    D -->|Yes| V["Versioned engineering artifact"]
+    D -->|No| E["Retain evidence and decision"]
+    V --> F["Future Harness executions"]

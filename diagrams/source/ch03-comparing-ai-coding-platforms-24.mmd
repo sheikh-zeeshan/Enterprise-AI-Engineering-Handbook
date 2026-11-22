@@ -1,0 +1,13 @@
+flowchart LR
+    T[Enterprise Task Contract]
+    H[Enterprise Harness]
+    A[Platform Adapter]
+    P[Platform-Native Workflow]
+    E[Common Evidence]
+    R[Human Review]
+
+    T --> H
+    H --> A
+    A --> P
+    P --> E
+    E --> R

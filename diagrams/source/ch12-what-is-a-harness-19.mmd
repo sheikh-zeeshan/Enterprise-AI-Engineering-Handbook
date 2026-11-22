@@ -1,0 +1,17 @@
+flowchart LR
+    H[Harness] --> Q[Approved Work Queue]
+
+    Q --> C1[Codex Task 1]
+    Q --> C2[Codex Task 2]
+    Q --> C3[Codex Task 3]
+
+    C1 --> W1[Isolated Worktree]
+    C2 --> W2[Isolated Worktree]
+    C3 --> W3[Isolated Worktree]
+
+    W1 --> R[Harness Integration]
+    W2 --> R
+    W3 --> R
+
+    R --> V[Validation]
+    V --> A[Human Approval]

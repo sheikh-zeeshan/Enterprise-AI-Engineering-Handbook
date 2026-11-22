@@ -1,0 +1,15 @@
+flowchart TD
+    P[Approved Plan] --> A[Candidate A]
+    P --> B[Candidate B]
+    P --> C[Candidate C]
+
+    A --> V1[Validation]
+    B --> V2[Validation]
+    C --> V3[Validation]
+
+    V1 --> E[Evaluator]
+    V2 --> E
+    V3 --> E
+
+    E --> S[Selected Candidate]
+    S --> H[Human Approval]

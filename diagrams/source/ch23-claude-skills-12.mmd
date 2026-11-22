@@ -1,0 +1,19 @@
+flowchart TD
+    N0["Feature Prompt"]
+    N1["Add Domain Behavior"]
+    N2["Add Application Command"]
+    N3["Add Authorization"]
+    N4["Add Integration Event"]
+    N5["Reuse Existing Outbox"]
+    N6["Create API Endpoint"]
+    N7["Add Tests"]
+    N8["Validation"]
+    N0 --> N1
+    N1 --> N2
+    N2 --> N3
+    N2 --> N4
+    N4 --> N5
+    N3 --> N6
+    N5 --> N6
+    N6 --> N7
+    N7 --> N8

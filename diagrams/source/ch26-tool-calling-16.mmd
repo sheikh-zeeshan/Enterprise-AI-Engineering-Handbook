@@ -1,0 +1,4 @@
+flowchart TD
+    A["Agent Requests Operation"] --> B["Tool Permission Check"] --> C["Harness Policy Enforcement"]
+    C --> D["Scoped Execution Identity"] --> E["Workspace and Network Isolation"]
+    E --> F["Authorized Execution"] --> G["Audit and Evidence Collection"]

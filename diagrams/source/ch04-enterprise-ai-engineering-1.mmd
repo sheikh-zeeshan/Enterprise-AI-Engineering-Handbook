@@ -1,0 +1,19 @@
+flowchart LR
+    Developer["Developer and task"] --> Agent["AI Agent"]
+    Agent --> Change["Proposed code and artifacts"]
+    Change --> Gates["Independent validation"]
+    Gates --> Review["Human review and approval"]
+    Review --> Delivery["Controlled delivery"]
+    subgraph Controls["Enterprise engineering controls"]
+        Architecture["Architecture decisions"]
+        Standards["Engineering standards"]
+        Context["Repository Intelligence"]
+        Assets["Reusable engineering assets"]
+        Governance["Security and governance"]
+    end
+    Architecture --> Agent
+    Standards --> Agent
+    Context --> Agent
+    Assets --> Agent
+    Governance --> Gates
+    Governance --> Review

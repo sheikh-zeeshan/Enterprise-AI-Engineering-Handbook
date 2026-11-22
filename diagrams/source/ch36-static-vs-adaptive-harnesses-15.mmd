@@ -1,0 +1,22 @@
+flowchart TD
+    Run[Harness Run] --> Evidence[Execution Evidence]
+    Evidence --> Build[Build and Test Results]
+    Evidence --> Review[Review and Validation Findings]
+    Evidence --> Eval[Evaluation and Human Feedback]
+    Evidence --> Retry[Retries, Exhaustion and Metrics]
+    Build --> Analysis[Learning Analysis]
+    Review --> Analysis
+    Eval --> Analysis
+    Retry --> Analysis
+    Analysis --> Rec[Improvement Recommendation]
+    Rec --> Human[Human Review]
+    Human --> Approved{Approved?}
+    Approved -->|No| NoChange[No Harness Change]
+    Approved -->|Yes| Change[Versioned Change Preparation]
+    Change --> Validation[Required Validation]
+    Validation --> Release{Release authorized?}
+    Release -->|No| Previous[Retain Previous Version]
+    Release -->|Yes| Published[Controlled Harness Release]
+    Published --> Future[Future Runs]
+    Future --> Measure[Measure Outcomes]
+    Measure --> Analysis

@@ -1,0 +1,9 @@
+flowchart TB
+    B["Build"] --> U["Unit Tests"]
+    B --> A["Architecture Tests"]
+    B --> S["Security Scan"]
+    B --> C["Contract Tests"]
+    U --> F["Gate Aggregation"]
+    A --> F
+    S --> F
+    C --> F

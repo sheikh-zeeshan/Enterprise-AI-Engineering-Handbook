@@ -1,0 +1,55 @@
+flowchart TD
+    U[User] --> P[Prompt]
+    P --> H[Harness Intake]
+
+    H --> RI[Load Repository Intelligence]
+    RI --> INS[Instructions]
+    RI --> SK[Skills]
+    RI --> RO[Roles]
+    RI --> SN[Steering Note]
+    RI --> KS[Knowledge Sources]
+
+    H --> LA[Lead Agent]
+    LA --> PG{Plan Gate}
+
+    PG -->|Rejected| LA
+    PG -->|Approved| DA[Developer Agent]
+
+    DA --> RA[Reviewer Agent]
+    RA --> RG{Review Gate}
+
+    RG -->|Changes Required| DA
+    RG -->|Approved| VA[Validator Agent]
+
+    VA --> BT[Build Tools]
+    VA --> UT[Tests]
+    VA --> SA[Static Analysis]
+    VA --> AC[Architecture Checks]
+    VA --> SC[Security Checks]
+
+    BT --> VG{Validation Gate}
+    UT --> VG
+    SA --> VG
+    AC --> VG
+    SC --> VG
+
+    VG -->|Failed and Retryable| DA
+    VG -->|Failed and Non-Retryable| ST[Stop and Escalate]
+    VG -->|Passed| EA[Evaluator Agent]
+
+    EA --> EG{Evaluation Gate}
+    EG -->|Below Threshold| DA
+    EG -->|Accepted| HA[Human Approval]
+
+    HA -->|Rejected| ST
+    HA -->|Approved| PR[Pull Request]
+
+    H --> LM[Logs and Metrics]
+    LA --> LM
+    DA --> LM
+    RA --> LM
+    VA --> LM
+    EA --> LM
+    HA --> LM
+
+    LM --> AT[Audit Trail]

@@ -1,0 +1,6 @@
+flowchart TD
+ G["Graph Evidence"] --> P["Pattern Analysis"] --> R["Improvement Proposal"] --> V["Evidence Review"] --> Q{"Approval required?"}
+ Q -->|No| A["Authorized Change"]
+ Q -->|Yes| H["Human Review"]
+ H -->|Approved| A
+ H -->|Rejected| X["Rejected or Deferred"]

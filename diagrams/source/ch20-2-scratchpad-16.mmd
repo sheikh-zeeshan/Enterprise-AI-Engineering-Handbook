@@ -1,0 +1,23 @@
+flowchart TD
+    A["Current Lifecycle Phase Reaches Exit Condition"]
+    B{"Required Artifacts Exist?"}
+    C{"Blocking Issues Resolved?"}
+    D{"Required Evidence Available?"}
+    E{"Repository / Workspace State Captured?"}
+    F{"Next Transition Valid?"}
+    G["Create and Persist Checkpoint"]
+    H["Transition to Next State"]
+    X["Remain in Current State"]
+
+    A --> B
+    B -->|No| X
+    B -->|Yes| C
+    C -->|No| X
+    C -->|Yes| D
+    D -->|No| X
+    D -->|Yes| E
+    E -->|No| X
+    E -->|Yes| F
+    F -->|No| X
+    F -->|Yes| G
+    G --> H

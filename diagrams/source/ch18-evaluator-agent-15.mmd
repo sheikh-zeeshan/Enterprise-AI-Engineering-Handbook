@@ -1,0 +1,10 @@
+flowchart TD
+    A[Corporate Fleet Administrator] --> B[Booking API]
+    B --> C[Booking Service]
+    C --> D[Booking Database]
+    C --> E[Transactional Outbox]
+    E --> F[Event Broker]
+    F --> G[Scheduling Service]
+    F --> H[Notification Service]
+    G --> I[Service Schedule]
+    H --> J[Booking Notification]

@@ -1,0 +1,9 @@
+flowchart TD
+    A[Skill Pull Request] --> B[Metadata and Resource Checks]
+    B --> C[Secret and Script Scans]
+    C --> D[Selection and Non-selection Evaluations]
+    D --> E[Behavioral Repository Scenarios]
+    E --> F[Architecture and Security Review]
+    F --> G{Approve?}
+    G -- Yes --> H[Publish Approved Revision]
+    G -- No --> I[Revise or Reject]

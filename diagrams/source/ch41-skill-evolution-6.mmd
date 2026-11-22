@@ -1,0 +1,13 @@
+stateDiagram-v2
+    [*] --> Candidate
+    Candidate --> Validated: Mandatory tests pass
+    Candidate --> Rejected: Proposal rejected
+    Validated --> Candidate: Revision required
+    Validated --> Approved: Authorized human approval
+    Approved --> Active: Immutable publication / release
+    Active --> Deprecated: Superseded
+    Active --> Revoked: Critical policy or integrity issue
+    Deprecated --> Retired: Migration complete
+    Deprecated --> Revoked: Critical issue
+    Revoked --> Retired: Retention and recovery
+    Rejected --> [*]

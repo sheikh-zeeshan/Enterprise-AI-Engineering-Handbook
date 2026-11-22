@@ -1,0 +1,16 @@
+flowchart TB
+    G[User Goal]
+    RI[Repository Intelligence]
+    I[Instructions]
+    S[Steering Notes]
+    K[Knowledge Sources]
+    P[Enterprise Policies]
+
+    G --> C[Lead Agent Context]
+    RI --> C
+    I --> C
+    S --> C
+    K --> C
+    P --> C
+
+    C --> PLAN[Execution Plan]

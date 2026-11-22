@@ -1,0 +1,23 @@
+flowchart TD
+    ROOT["/CLAUDE.md<br/>Repository-wide architecture"]
+
+    RULES["/.claude/rules/<br/>API, events, testing, security"]
+
+    BOOK["/services/booking/CLAUDE.md<br/>Booking domain guidance"]
+    FLEET["/services/fleet/CLAUDE.md<br/>Fleet domain guidance"]
+    PRICE["/services/pricing/CLAUDE.md<br/>Pricing guidance"]
+    INFRA["/infrastructure/CLAUDE.md<br/>Cloud and IaC guidance"]
+
+    ROOT --> BOOK
+    ROOT --> FLEET
+    ROOT --> PRICE
+    ROOT --> INFRA
+
+    RULES --> BOOK
+    RULES --> FLEET
+    RULES --> PRICE
+
+    BOOK --> BT[Booking Development]
+    FLEET --> FT[Fleet Development]
+    PRICE --> PT[Pricing Development]
+    INFRA --> IT[Infrastructure Development]

@@ -1,0 +1,13 @@
+flowchart TD
+    P["Producer team"] -->|"Owns meaning and publication conditions"| C["Versioned public contract"]
+    C --> S["Schemas and historical fixtures"]
+    C --> A["AsyncAPI channel and operation description"]
+    S --> G["Compatibility and semantic validation gates"]
+    A --> G
+    G --> R["Consumer-owned adapter"]
+    R --> D[("Private effects, inbox, and recovery work")]
+    T["Consumer team"] -->|"Owns handling and recovery"| R
+    F["Platform team"] -->|"Owns infrastructure controls"| E["Broker, access, retention, and capacity"]
+    E -.->|"Transports approved contracts"| R
+    O["Event catalog and named service owners"] --> C
+    O --> D

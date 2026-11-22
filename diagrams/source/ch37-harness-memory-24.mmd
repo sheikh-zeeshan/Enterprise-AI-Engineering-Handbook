@@ -1,0 +1,25 @@
+flowchart TD
+    subgraph RUN["Engineering execution"]
+        A["AI Agents"] --> B["Scratchpad"]
+        B --> C["Validation and review evidence"]
+    end
+    subgraph GOVERN["Learning and governance"]
+        D["Candidate learning"] --> E["Evidence verification"]
+        E --> F["Scope and conflict assessment"]
+        F --> G["Human approval"]
+    end
+    subgraph MEMORY["Persistent knowledge"]
+        H[("Versioned Harness Memory")]
+        I["Lifecycle management"]
+        J["Audit and provenance"]
+    end
+    subgraph FUTURE["Future engineering work"]
+        K["Governed retrieval"] --> L["Applicability verification"]
+        L --> M["Harness execution"]
+    end
+    C --> D
+    G -->|Approved| H
+    H --> I
+    H --> J
+    H --> K
+    M -.->|New evidence| C

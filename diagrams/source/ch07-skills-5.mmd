@@ -1,0 +1,17 @@
+flowchart TB
+    Request[Business request] --> Prompt[Prompt]
+    Instructions[Instructions] --> Agent[AI coding agent]
+    Steering[Steering Notes] --> Agent
+    Sources[Knowledge Sources] --> Agent
+    Prompt --> Agent
+    SkillCatalog[Approved Skill library] --> Resolver[Skill selection and version resolution]
+    Resolver --> Agent
+    Agent --> Workspace[Task-scoped workspace]
+    Workspace --> Gates[Build, security, architecture and test gates]
+    Gates --> Reviewer[Reviewer and human approval]
+    Reviewer --> PR[Pull request / merge]
+    Gates --> Evidence[Run evidence and metrics]
+    PR --> Evidence
+    Evidence --> Proposal[Governed improvement proposal]
+    Proposal --> Owner[Skill owner approval]
+    Owner -. approved change .-> SkillCatalog

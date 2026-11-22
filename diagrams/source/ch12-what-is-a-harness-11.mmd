@@ -1,0 +1,25 @@
+flowchart TD
+    UI[Harness Management UI or API] --> CP[Harness Control Plane]
+    CP --> Q[Execution Queue]
+    Q --> W1[Isolated Worker 1]
+    Q --> W2[Isolated Worker 2]
+    Q --> WN[Isolated Worker N]
+
+    W1 --> AP[Agent Providers]
+    W2 --> AP
+    WN --> AP
+
+    W1 --> TG[Tool Gateway]
+    W2 --> TG
+    WN --> TG
+
+    TG --> SC[Source Control]
+    TG --> BA[Build and Analysis Tools]
+    TG --> KS[Knowledge Systems]
+
+    CP --> PS[Policy Service]
+    CP --> AS[Approval Service]
+    CP --> SS[State Store]
+    CP --> AU[Audit Store]
+    CP --> OB[Observability Platform]
+    CP --> SM[Secrets Manager]

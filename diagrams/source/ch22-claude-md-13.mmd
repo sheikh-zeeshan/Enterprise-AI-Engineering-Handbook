@@ -1,0 +1,16 @@
+sequenceDiagram
+    participant API as Booking API
+    participant APP as Application Handler
+    participant DB as Booking Database
+    participant OUT as Outbox Worker
+    participant HUB as Azure Event Hubs
+    API->>APP: CancelBookingCommand
+    APP->>DB: Begin transaction
+    APP->>DB: Update Booking
+    APP->>DB: Insert outbox message
+    APP->>DB: Commit transaction
+    APP-->>API: Cancellation result
+    OUT->>DB: Read pending outbox records
+    OUT->>HUB: Publish BookingCancelled
+    HUB-->>OUT: Acknowledge publication
+    OUT->>DB: Mark message published

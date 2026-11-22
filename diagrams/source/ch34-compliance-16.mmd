@@ -1,0 +1,16 @@
+flowchart TD
+    A["Enterprise Policies"] --> B["Control Catalog"]
+    B --> C["Compliance Control Plane"]
+    C --> D["Claude Code Adapter"]
+    C --> E["Copilot Adapter"]
+    C --> F["Codex Adapter"]
+    D --> G["Authorized Workspace"]
+    E --> G
+    F --> G
+    G --> H["Independent Harness Validation"]
+    H --> I["Human Approval"]
+    I --> J["Controlled Deployment"]
+    H --> K["Audit Evidence Store"]
+    I --> K
+    J --> K
+    K --> L["Compliance Reporting"]

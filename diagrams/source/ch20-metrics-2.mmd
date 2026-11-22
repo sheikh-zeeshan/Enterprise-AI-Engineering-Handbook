@@ -1,0 +1,33 @@
+flowchart TB
+    subgraph Execution["Execution Layer"]
+      P["Population Manager"] --> O["Harness Orchestrator"]
+      O --> A["Agent Executors"]
+      O --> G["Deterministic Gates"]
+      O --> R["Review / Validation / Evaluation"]
+      O --> H["Human Approval"]
+    end
+    subgraph Collection["Collection Layer"]
+      EP["Event Producers"] --> OB["Transactional Outbox, where applicable"]
+      OB --> T["Durable Event Transport"] --> IW["Metrics Ingestion Worker"]
+    end
+    subgraph Storage["Evidence and Metrics Layer"]
+      ES[("Execution Event Store")] --> MA["Metrics Aggregator"]
+      EV[("Evidence and Artifact Store")] -.-> MA
+      MA --> RM[("Metrics Read Model")]
+    end
+    subgraph Presentation["Presentation Layer"]
+      Q["Authorized Metrics Query API"] --> D["Dashboards"]
+      Q --> RP["Engineering Reports"]
+      AL["Alert Rules"]
+    end
+    P --> EP
+    O --> EP
+    A --> EP
+    G --> EP
+    R --> EP
+    H --> EP
+    IW --> ES
+    G --> EV
+    R --> EV
+    RM --> Q
+    RM --> AL

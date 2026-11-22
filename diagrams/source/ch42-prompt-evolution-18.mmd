@@ -1,0 +1,18 @@
+flowchart TD
+    A[Versioned Prompt Execution] --> B[Harness Run]
+    B --> C[Evidence Collection]
+    C --> D[Harness Memory]
+    D --> E[Pattern Detection]
+    E --> F{Evidence Sufficient?}
+    F -->|No| G[Retain Observation]
+    F -->|Yes| H[Root-Cause Classification]
+    H --> I{Prompt Ownership Confirmed?}
+    I -->|No| J[Route to Correct Artifact Owner]
+    I -->|Yes| K[Candidate Generation]
+    K --> L[Candidate Registry]
+    L --> M[Comparative Benchmark]
+    M --> N[Human Review]
+    N -->|Reject| O[Preserve Current Version]
+    N -->|Approve| P[Governed Activation]
+    P --> Q[Prompt Registry]
+    Q --> R[Future Executions]

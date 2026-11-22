@@ -1,0 +1,11 @@
+flowchart TD
+    N["New engineering task"] --> R["Inspect current repository and governing decisions"]
+    N --> M["Retrieve approved historical memory"]
+    R --> C{"Historical knowledge compatible?"}
+    M --> C
+    C -->|Yes| A["Use memory as advisory context"]
+    C -->|No| S["Record conflict or staleness"]
+    S --> V["Owner review and revalidation"]
+    V --> P["Propose memory update if justified"]
+    P --> G["Governance approval"]
+    A --> E["Apply current Instructions and gates"]

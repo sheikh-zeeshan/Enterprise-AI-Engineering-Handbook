@@ -1,0 +1,12 @@
+flowchart TB
+    CURRENT[Current Authoritative Evidence]
+    GOVERNED[Approved Governance Artifacts]
+    HISTORY[Historical Engineering Evidence]
+    INFERRED[Inferred Relationships]
+
+    KG[(Knowledge Graph)]
+
+    CURRENT -->|highest factual relevance| KG
+    GOVERNED -->|normative authority| KG
+    HISTORY -->|context| KG
+    INFERRED -->|hypothesis / supporting context| KG

@@ -1,0 +1,9 @@
+flowchart TD
+    A["Claude Implementation"] --> B["Independent Review and Validation"]
+    B --> C["Compliance Gates"]
+    C --> D{"Required Human Approval Valid?"}
+    D -- No --> X["Hold Release"]
+    D -- Yes --> E["Check Approval Against Artifact"]
+    E --> F{"Exact Artifact Approved?"}
+    F -- No --> X
+    F -- Yes --> G["Controlled Deployment"]

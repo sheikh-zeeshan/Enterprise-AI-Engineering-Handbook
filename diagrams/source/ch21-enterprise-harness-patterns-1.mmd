@@ -1,0 +1,33 @@
+flowchart TB
+    CH["Central Harness Platform"]
+
+    SI["Shared Instructions"]
+    SS["Shared Skills"]
+    AR["Agent Roles"]
+    VG["Validation Gates"]
+    MT["Metrics & Observability"]
+    TA["Tool / Provider Adapters"]
+
+    CH --> SI
+    CH --> SS
+    CH --> AR
+    CH --> VG
+    CH --> MT
+    CH --> TA
+
+    CH --> BH["Booking Harness"]
+    CH --> FH["Fleet Harness"]
+    CH --> BIH["Billing Harness"]
+
+    BH --> BR["Booking Repository"]
+    FH --> FR["Fleet Repository"]
+    BIH --> BIR["Billing Repository"]
+
+    BR --> BRI["Repository Instructions"]
+    BR --> BRS["Repository Skills"]
+
+    FR --> FRI["Repository Instructions"]
+    FR --> FRS["Repository Skills"]
+
+    BIR --> BIRI["Repository Instructions"]
+    BIR --> BIRS["Repository Skills"]

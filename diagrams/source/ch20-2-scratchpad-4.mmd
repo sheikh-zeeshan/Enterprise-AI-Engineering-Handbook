@@ -1,0 +1,37 @@
+flowchart TB
+    L["Lead Agent"]
+
+    subgraph RW["Run Workspace"]
+        PLAN["Shared Plan"]
+        SHARED["Shared Run State"]
+
+        subgraph A1["API Agent Workspace"]
+            SP1["scratchpad.md"]
+        end
+
+        subgraph A2["Event Agent Workspace"]
+            SP2["scratchpad.md"]
+        end
+
+        subgraph A3["Persistence Agent Workspace"]
+            SP3["scratchpad.md"]
+        end
+
+        H["agent-handoffs/"]
+        V["validation/"]
+        O["outputs/"]
+    end
+
+    L --> PLAN
+    L --> A1
+    L --> A2
+    L --> A3
+
+    A1 --> H
+    A2 --> H
+    A3 --> H
+
+    H --> L
+    L --> SHARED
+    SHARED --> V
+    V --> O

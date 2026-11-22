@@ -1,0 +1,14 @@
+flowchart TD
+    A["Collect applicable Instructions"] --> B{"All consistent?"}
+    B -- Yes --> C["Build effective instruction set"]
+    B -- No --> D["Identify conflicting statements"]
+    D --> E["Check regulatory and compliance status"]
+    E --> F["Compare authority and strength"]
+    F --> G["Compare scope and specificity"]
+    G --> H["Check explicit override permission"]
+    H --> I["Review ADRs, approvals, and effective dates"]
+    I --> J{"Conflict resolved?"}
+    J -- Yes --> C
+    J -- No --> K{"Material risk?"}
+    K -- No --> L["Record assumption and proceed cautiously"]
+    K -- Yes --> M["Block affected action and request human resolution"]

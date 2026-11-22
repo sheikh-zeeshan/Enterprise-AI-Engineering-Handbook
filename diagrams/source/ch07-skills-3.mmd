@@ -1,0 +1,10 @@
+flowchart TD
+    Domain[Domain behavior] --> App[Application command]
+    Domain --> Mapping[EF Core mapping]
+    Mapping --> Outbox[Outbox schema and publisher]
+    App --> Endpoint[API endpoint]
+    Outbox --> Event[Integration event publication]
+    Event --> Consumer[Idempotent consumer]
+    Endpoint --> Tests[Integration tests]
+    Consumer --> Tests
+    Tests --> Gates[Repository validation gates]

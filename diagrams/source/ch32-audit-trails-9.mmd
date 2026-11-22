@@ -1,0 +1,30 @@
+sequenceDiagram
+    autonumber
+    participant H as Harness
+    participant C as Claude Developer
+    participant T as Tool Gateway
+    participant A as Audit Service
+    participant R as Reviewer
+    participant V as Validator
+    participant E as Evaluator
+    participant P as Human Approver
+    H->>A: Record run creation
+    H->>C: Assign work item and trusted context
+    C->>T: Request repository modification
+    T->>A: Record request and authorization
+    T->>T: Execute authorized operation
+    T->>A: Record observed outcome and revision
+    T-->>C: Return tool result
+    C-->>H: Return implementation summary
+    H->>R: Request independent review
+    R-->>H: Return findings
+    H->>A: Record review evidence
+    H->>V: Execute deterministic gates
+    V->>A: Record gate results and evidence
+    V-->>H: Return validation result
+    H->>E: Evaluate acceptance criteria
+    E-->>H: Return assessment
+    H->>A: Record evaluation evidence
+    H->>P: Present evidence package
+    P-->>H: Return authenticated decision
+    H->>A: Record approval decision and final outcome

@@ -1,0 +1,18 @@
+flowchart TD
+    A[Agent Observation] --> B[Scratchpad]
+    B --> C{Reusable discovery?}
+
+    C -- No --> D[Discard at run cleanup]
+
+    C -- Yes --> E[Harness Memory / Knowledge Proposal]
+    E --> F[Evidence Review]
+
+    F --> G{What kind of knowledge?}
+
+    G --> H[Documentation]
+    G --> I[Skill Improvement]
+    G --> J[Instruction Proposal]
+    G --> K[Architecture Decision]
+
+    J --> L[Human Approval]
+    L --> M[CLAUDE.md Update]

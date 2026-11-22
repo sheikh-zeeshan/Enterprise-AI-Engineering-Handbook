@@ -1,0 +1,7 @@
+flowchart LR
+    B["Booking Service"] -->|Approved API| F["Fleet Service"]
+    B -->|BookingCreated Event| N["Notification Service"]
+    B --> BD[("Booking Database")]
+    F --> FD[("Fleet Database")]
+    N --> ND[("Notification Database")]
+    B -.->|Prohibited Direct Access| FD

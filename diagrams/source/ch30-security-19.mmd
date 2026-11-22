@@ -1,0 +1,12 @@
+flowchart TD
+    GOAL[Approved reporting goal] --> AUTH[Identity and task authorization]
+    AUTH --> POLICY[Harness security policy]
+    POLICY --> LEAD[Lead Agent]
+    LEAD --> DEV[Developer Agent]
+    DEV --> REV[Reviewer Agent]
+    REV --> VAL[Validator Agent]
+    VAL --> GATES[Independent security gates]
+    GATES --> EVID[Protected evidence]
+    EVID --> EVAL[Evaluator Agent]
+    EVAL --> HUMAN[Human approval]
+    HUMAN --> PR[Approved pull request]

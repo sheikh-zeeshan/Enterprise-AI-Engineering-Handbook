@@ -1,0 +1,27 @@
+flowchart TD
+    N0["Task Prompt"]
+    N1["Lead Agent"]
+    N2["Approved Skill Registry"]
+    N3["Skill Selection and Dependency Plan"]
+    N4["Developer Agent"]
+    N5["Skill Execution"]
+    N6["Implementation Artifacts"]
+    N7["Reviewer Agent"]
+    N8["Validator Agent"]
+    N9["Evaluator Agent"]
+    N10["Human Approval"]
+    N11["Run Evidence and Metrics"]
+    N0 --> N1
+    N1 --> N2
+    N2 --> N3
+    N3 --> N4
+    N4 --> N5
+    N5 --> N6
+    N6 --> N7
+    N7 --> N8
+    N8 --> N9
+    N9 --> N10
+    N5 --> N11
+    N7 --> N11
+    N8 --> N11
+    N9 --> N11

@@ -1,0 +1,8 @@
+flowchart LR
+    A[CLAUDE.md] --> B[Guided Implementation]
+    B --> C[Generated Code]
+    C --> D[Deterministic Gates]
+    D --> E{Verified?}
+    E -- No --> F[Failure Evidence]
+    F --> B
+    E -- Yes --> G[Review and Evaluation]

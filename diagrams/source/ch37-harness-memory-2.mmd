@@ -1,0 +1,19 @@
+flowchart TD
+    G["Engineering goal"] --> H["Harness orchestrator"]
+    I["Instructions and Steering Notes"] --> H
+    R["Repository Intelligence"] --> H
+    S["Skills"] --> H
+    H --> L["Lead Agent"]
+    L --> D["Developer Agent"]
+    D --> V["Validator Agent"]
+    D --> W["Reviewer Agent"]
+    V --> E["Evaluator Agent"]
+    W --> E
+    M[("Approved Harness Memory")] --> MR["Governed memory retrieval"]
+    MR -.->|Advisory knowledge| L
+    MR -.->|Relevant history| D
+    MR -.->|Historical risks| V
+    E --> X["Execution evidence"]
+    X --> C["Learning candidates"]
+    C --> A["Evidence review and human governance"]
+    A -->|Approved version| M

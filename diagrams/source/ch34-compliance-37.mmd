@@ -1,0 +1,14 @@
+flowchart TD
+    A["Enterprise Requirements"] --> B["Policies and Control Ownership"]
+    B --> C["Governed Control Plane"]
+    C --> D["Trusted Harness Enforcement"]
+    D --> E["Authorized AI Engineering"]
+    E --> F["Independent Validation"]
+    F --> G["Evidence Assessment"]
+    G --> H{"Mandatory Conditions Satisfied?"}
+    H -- No --> X["Block and Escalate"]
+    H -- Yes --> I["Required Human Approval"]
+    I --> J{"Authorized Decision?"}
+    J -- No --> X
+    J -- Yes --> K["Controlled Release"]
+    K --> L["Audit Evidence and Monitoring"]

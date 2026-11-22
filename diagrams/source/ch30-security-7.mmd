@@ -1,0 +1,9 @@
+flowchart TD
+    DOC[Untrusted reporting notes] --> CLAUDE[Claude Code interprets content]
+    CLAUDE --> PATH{Resulting behavior?}
+    PATH -->|Recognizes injection| SAFE[Ignore unsafe request and report]
+    PATH -->|Requests prohibited tool| GW[Harness authorization]
+    GW --> DENY[Deny and audit]
+    PATH -->|Writes insecure source| CHANGE[Proposed code change]
+    CHANGE --> GATES[Independent security tests and review]
+    GATES --> BLOCK[Block unsafe promotion]

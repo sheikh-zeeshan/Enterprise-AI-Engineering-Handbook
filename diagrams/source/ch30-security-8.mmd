@@ -1,0 +1,10 @@
+flowchart TD
+    TASK[Approved repository task] --> COP[Copilot cloud agent]
+    COP --> BRANCH[Working branch and proposed changes]
+    BRANCH --> PR[Pull request]
+    PR --> CHECK[Required CI and security checks]
+    CHECK --> REVIEW[Human review and protected-branch rules]
+    REVIEW --> DEC{Conditions satisfied?}
+    DEC -->|No| BLOCK[Reject or request changes]
+    DEC -->|Yes| MERGE[Authorized merge]
+    MERGE --> REL[Separate governed release]

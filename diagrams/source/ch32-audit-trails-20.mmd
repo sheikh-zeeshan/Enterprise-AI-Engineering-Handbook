@@ -1,0 +1,18 @@
+flowchart TD
+    WORK["Business requirement"] --> RUN["Harness run"]
+    RUN --> EXEC["Agent and tool execution"]
+    EXEC --> CHANGE["Repository changes"]
+    CHANGE --> REVIEW["Review and validation"]
+    REVIEW --> EVAL["Business evaluation"]
+    EVAL --> HUMAN["Human approval"]
+    HUMAN --> RESULT["Final outcome"]
+    RUN -.-> AUDIT["Structured audit events"]
+    EXEC -.-> AUDIT
+    CHANGE -.-> AUDIT
+    REVIEW -.-> AUDIT
+    EVAL -.-> AUDIT
+    HUMAN -.-> AUDIT
+    RESULT -.-> AUDIT
+    AUDIT --> STORE[("Governed audit store")]
+    STORE --> VERIFY["Evidence verification"]
+    VERIFY --> QUERY["Investigation and compliance"]

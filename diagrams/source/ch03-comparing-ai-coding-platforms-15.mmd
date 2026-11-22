@@ -1,0 +1,30 @@
+flowchart TB
+    T[Approved Task Contract]
+    R[Repository and Environment Prepared]
+    P[Agent Produces Plan]
+    H1{Human Plan Approval}
+
+    T --> R
+    R --> P
+    P --> H1
+
+    H1 -->|Revise| P
+    H1 -->|Reject| X[Task Closed or Reframed]
+    H1 -->|Approve| I[Agent Implements]
+
+    I --> V[Deterministic Validation]
+    V --> Q{Validation Successful}
+
+    Q -->|No| F[Agent or Engineer Diagnoses Failure]
+    F --> I
+
+    Q -->|Yes| AR[Independent Agent or Human Review]
+    AR --> H2{Human Pull-Request Approval}
+
+    H2 -->|Changes Required| I
+    H2 -->|Reject| X
+    H2 -->|Approve| M[Authorized Merge Workflow]
+
+    M --> D{Deployment Required}
+    D -->|No| C[Change Complete]
+    D -->|Yes| A[Authorized Deployment Pipeline]

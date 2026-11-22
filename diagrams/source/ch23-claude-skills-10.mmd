@@ -1,0 +1,19 @@
+flowchart TD
+    N0["CancelBooking Command Handler"]
+    N1["Booking Aggregate"]
+    N2["BookingCancelled Domain Event"]
+    N3["Integration Event Mapping"]
+    N4["Outbox Record"]
+    N5["Atomic SQL Transaction"]
+    N6["Outbox Publisher"]
+    N7["Message Broker"]
+    N8["Downstream Consumer"]
+    N0 --> N1
+    N1 --> N2
+    N2 --> N3
+    N3 --> N4
+    N1 --> N5
+    N4 --> N5
+    N5 --> N6
+    N6 --> N7
+    N7 --> N8

@@ -1,0 +1,18 @@
+flowchart TD
+    G["GOAL-1042<br/>Vehicle Inspection Requirement"]
+
+    G --> A["POP-1042-01<br/>Completed"]
+    G --> B["POP-1042-02<br/>Completed"]
+    G --> C["POP-1042-03<br/>Completed"]
+    G --> D["POP-1042-04<br/>Completed"]
+    G --> E["POP-1042-05<br/>Completed"]
+    G --> F["POP-1042-06<br/>Completed"]
+
+    A --> C1["Goal Completion Evaluation"]
+    B --> C1
+    C --> C1
+    D --> C1
+    E --> C1
+    F --> C1
+
+    C1 --> DONE["Goal Completed"]

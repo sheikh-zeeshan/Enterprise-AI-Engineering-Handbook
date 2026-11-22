@@ -1,0 +1,18 @@
+flowchart LR
+    Queue["Run Queue"]
+
+    Queue --> R1["Run 1001"]
+    Queue --> R2["Run 1002"]
+    Queue --> R3["Run 1003"]
+
+    R1 --> W1["Workspace 1001"]
+    R2 --> W2["Workspace 1002"]
+    R3 --> W3["Workspace 1003"]
+
+    W1 --> S1["Scratchpad"]
+    W2 --> S2["Scratchpad"]
+    W3 --> S3["Scratchpad"]
+
+    W1 --> E1["Evidence"]
+    W2 --> E2["Evidence"]
+    W3 --> E3["Evidence"]

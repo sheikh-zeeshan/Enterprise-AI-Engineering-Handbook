@@ -1,0 +1,35 @@
+flowchart LR
+    P[Task Prompt] --> L[Lead Agent]
+
+    RI[Repository Intelligence] --> L
+    IN[Instructions] --> L
+    SN[Steering Notes] --> L
+
+    L --> A[Architect Agent]
+    A --> PL[Approved Plan]
+
+    PL --> D[Developer Agent]
+    SK[Skills] --> D
+    IN --> D
+
+    D --> CH[Repository Changes]
+
+    CH --> R[Reviewer Agent]
+    CH --> S[Security Reviewer]
+    CH --> V[Validator Agent]
+
+    R --> RF[Review Findings]
+    S --> SF[Security Findings]
+    V --> VR[Validation Results]
+
+    RF --> L
+    SF --> L
+    VR --> L
+
+    L --> E[Evaluator Agent]
+    P --> E
+    E --> AR[Acceptance Result]
+
+    AR --> L
+    L --> PR[Pull Request Package]
+    PR --> H[Human Approval]

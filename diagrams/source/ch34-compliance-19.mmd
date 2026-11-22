@@ -1,0 +1,11 @@
+flowchart TD
+    A["Task Intake"] --> B["Compliance Preflight"]
+    B --> C["Authorized Agent Execution"]
+    C --> D["Implementation Validation"]
+    D --> E["Review and Approval"]
+    E --> F["Controlled Deployment"]
+    F --> G["Continuous Monitoring"]
+    H["Governed Control Catalog"] -.-> B
+    H -.-> D
+    H -.-> E
+    H -.-> G

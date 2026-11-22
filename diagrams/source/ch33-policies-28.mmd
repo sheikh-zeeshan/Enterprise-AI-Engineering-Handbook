@@ -1,0 +1,11 @@
+flowchart TD
+    A[Enterprise Policy Registry] --> B[Central Policy Resolver]
+    B --> C[Harness A]
+    B --> D[Harness B]
+    B --> E[Harness C]
+    C --> F[Local Enforcement Point A]
+    D --> G[Local Enforcement Point B]
+    E --> H[Local Enforcement Point C]
+    F --> I[Audit Evidence]
+    G --> I
+    H --> I

@@ -1,0 +1,17 @@
+stateDiagram-v2
+    [*] --> Observed
+    Observed --> Classified
+    Classified --> Investigating
+    Investigating --> VerifiedIncident
+    Investigating --> Inconclusive
+    VerifiedIncident --> CandidatePattern
+    CandidatePattern --> UnderReview
+    UnderReview --> Approved
+    UnderReview --> Rejected
+    UnderReview --> MoreEvidenceRequired
+    MoreEvidenceRequired --> Investigating
+    Approved --> Published
+    Published --> Active
+    Active --> Superseded
+    Active --> Retired
+    Active --> RolledBack

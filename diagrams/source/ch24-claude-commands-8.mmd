@@ -1,0 +1,7 @@
+flowchart TD
+    U[Requested Workflow] --> A[Verify Authorization and Approval]
+    A --> D{Authorized?}
+    D -- No --> B[Block and Record Reason]
+    D -- Yes --> R[Create Controlled Run]
+    R --> E[Execute Workflow]
+    E --> V[Collect Evidence]

@@ -1,0 +1,38 @@
+flowchart TD
+    CHANGE["Proposed Change: BookingConfirmed"]
+
+    PUB["Publisher: Booking Service"]
+
+    C1["Consumer: Fleet Service"]
+
+    C2["Consumer: Station Operations Service"]
+
+    ADR["ADR-032: Event Contract Evolution"]
+
+    TEST[Contract Tests]
+
+    SKILL[Integration Event Skill]
+
+    PR[Historical PR #1842]
+
+    FAILURE[Historical Failure F-391]
+
+    PLAN[Lead Agent Plan]
+
+    CHANGE --> PUB
+    CHANGE --> C1
+    CHANGE --> C2
+    CHANGE --> ADR
+    CHANGE --> TEST
+    CHANGE --> SKILL
+    CHANGE --> PR
+    CHANGE --> FAILURE
+
+    PUB --> PLAN
+    C1 --> PLAN
+    C2 --> PLAN
+    ADR --> PLAN
+    TEST --> PLAN
+    SKILL --> PLAN
+    PR --> PLAN
+    FAILURE --> PLAN

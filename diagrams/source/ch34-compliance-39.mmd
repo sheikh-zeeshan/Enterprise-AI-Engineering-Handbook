@@ -1,0 +1,26 @@
+flowchart TB
+    subgraph G["Enterprise Governance"]
+        A["Policies"] --> B["Control Catalog"]
+        C["Control Owners"] --> B
+        D["Exception Registry"] --> B
+    end
+    subgraph H["Enterprise AI Harness"]
+        E["Compliance Preflight"] --> F["Lead Agent"]
+        F --> G1["Developer Agent"]
+        G1 --> H1["Reviewer Agent"]
+        H1 --> I["Validator Agent"]
+        I --> J["Compliance Gates"]
+        J --> K["Evaluator Agent"]
+    end
+    subgraph P["Decision and Release"]
+        L["Migration Approval"] --> M["Trusted Build"]
+        M --> N["Artifact Repository"]
+        N --> O["Production Approval"]
+        O --> P1["Controlled Deployment"]
+    end
+    B --> E
+    K --> L
+    J --> Q["Audit Evidence Store"]
+    L --> Q
+    O --> Q
+    P1 --> Q

@@ -1,0 +1,15 @@
+flowchart LR
+    P[("Population Store")] --> PM["Population Manager"]
+    PM --> S["Scheduler"]
+    S --> C{"Atomic Claim"}
+
+    C -- Success --> E["Create Execution"]
+    C -- Failure --> X["Do Not Execute"]
+
+    E --> A["Codex Adapter"]
+    A --> CX["Codex"]
+
+    CX --> O["Implementation Output"]
+    O --> A
+    A --> EV["Normalized Evidence"]
+    EV --> PM

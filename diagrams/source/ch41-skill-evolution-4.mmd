@@ -1,0 +1,53 @@
+flowchart LR
+    subgraph Execution["Engineering Execution"]
+        P[Prompt]
+        L[Lead Agent]
+        D[Developer Agent]
+        R[Reviewer Agent]
+        V[Validator Agent]
+        E[Evaluator Agent]
+    end
+
+    P --> L
+    L --> D
+    D --> R
+    R --> V
+    V --> E
+
+    subgraph Evidence["Evidence Sources"]
+        B[Build Evidence]
+        RV[Review Evidence]
+        VL[Validation Evidence]
+        EV[Evaluation Evidence]
+        PR[Pull Request Evidence]
+        HF[Human Feedback]
+    end
+
+    D --> B
+    R --> RV
+    V --> VL
+    E --> EV
+    E --> PR
+    HF --> M
+
+    B --> M[Harness Memory]
+    RV --> M
+    VL --> M
+    EV --> M
+    PR --> M
+
+    M --> PD[Pattern Detector]
+    PD --> SE[Skill Evolution Engine]
+    SE --> CP[Candidate Proposal]
+
+    CP --> IMPACT[Impact and Compatibility Analysis]
+    IMPACT --> ST[Candidate Skill Tests]
+    ST -->|Fail| CP
+    ST -->|Pass| HR[Human Owner Review]
+
+    HR -->|Reject| ARCH[Archive Decision]
+    HR -->|Revise| CP
+    HR -->|Approve| PUB[Publish Immutable Skill Version]
+    PUB --> REG[Skill Registry]
+
+    REG --> L

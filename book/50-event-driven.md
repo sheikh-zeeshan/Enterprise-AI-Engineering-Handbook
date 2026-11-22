@@ -584,16 +584,16 @@ sequenceDiagram
     participant N as Notification
     participant S as Station Operations
     participant L as Billing
-    Note over B: Confirmed; publication obligation durable
+    Note over B: Confirmed, publication obligation durable
     Note over N: Confirmation communication not yet recorded
     B-->>N: BookingConfirmed via Event Bus after propagation
-    Note over N: Intent durable; provider dispatch may remain pending
+    Note over N: Intent durable, provider dispatch may remain pending
     Note over S: Later qualifying work completes locally
     Note over B,L: Completion views can temporarily lag Station Operations
     S-->>B: ServiceCompleted via independent consumption
     S-->>L: ServiceCompleted via independent consumption
     Note over B: Approved completion state updated
-    Note over L: Work recognized; invoice waits for approved milestone
+    Note over L: Work recognized, invoice waits for approved milestone
 ```
 
 *Caption: Time progresses downward. Dashed arrows abbreviate durable asynchronous transport. Consumer delay does not reverse an already committed producer fact; lag and unresolved work require explicit monitoring and reconciliation.*

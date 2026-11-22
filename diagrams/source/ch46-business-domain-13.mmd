@@ -1,0 +1,10 @@
+flowchart TD
+    BO[Accountable Business Owners] --> DK[Governed Domain Knowledge]
+    DK --> AI[Claude Code, Copilot, Codex]
+    AI --> PR[Reviewable Proposals]
+    PR --> HR[Human Domain Review]
+    HR -->|Approved| DK
+    DK --> SA[Solution Architecture]
+    SA --> IM[Implementation and Validation]
+    IM --> FB[Operational Feedback]
+    FB -->|Change requests| BO

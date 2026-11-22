@@ -1,0 +1,7 @@
+flowchart TD
+    Issue[Feature issue and acceptance criteria] --> Agent[Copilot agent]
+    Policy[Repository Instructions] --> Agent
+    Skills[Approved SKILL.md packages] --> Agent
+    Agent --> Apply[Select applicable procedure and modify code]
+    Apply --> Gates[Build, tests and security gates]
+    Gates --> Review[Human review]

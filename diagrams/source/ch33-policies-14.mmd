@@ -1,0 +1,13 @@
+flowchart TD
+    A[Codex Agent] --> B[MCP Tool Request]
+    B --> C[Enterprise Tool Broker]
+    C --> D[Policy Decision Point]
+    E[Approved Policies] --> D
+    F[Trusted Identity and Resource Attributes] --> D
+    D --> G{Authorization}
+    G -->|Allow| H[Execute Authorized Capability]
+    G -->|Deny| I[Reject Operation]
+    G -->|Escalate| J[Governance Review]
+    H --> K[Audit Evidence]
+    I --> K
+    J --> K

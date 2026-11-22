@@ -1,0 +1,11 @@
+flowchart TD
+    B[Approved business objective] --> L[Lead Agent: scope and coordination]
+    L --> D[Developer Agent: implementation]
+    D --> V[Validator Agent: deterministic evidence]
+    V -->|Gate failure| D
+    V -->|Evidence available| R[Reviewer Agent: design and implementation findings]
+    R -->|Changes requested| D
+    R -->|Review findings recorded| E[Evaluator Agent: goal and acceptance assessment]
+    E --> H[Human approval or rejection]
+    H -->|Approved| P[Controlled integration or deployment workflow]
+    H -->|Rejected or deferred| L

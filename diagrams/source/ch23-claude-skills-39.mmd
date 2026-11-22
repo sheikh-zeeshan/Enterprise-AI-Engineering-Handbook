@@ -1,0 +1,21 @@
+flowchart TD
+    N0["Approved Skill Procedure"]
+    N1{"Platform-Neutral Workflow?"}
+    N2["Shared Skill Definition"]
+    N3["Platform-Specific Adapter"]
+    N4["Claude Code"]
+    N5["GitHub Copilot"]
+    N6["Codex"]
+    N7["Common Validation Gates"]
+    N0 --> N1
+    N1 -- Yes --> N2
+    N1 -- No --> N3
+    N2 --> N4
+    N2 --> N5
+    N2 --> N6
+    N3 --> N4
+    N3 --> N5
+    N3 --> N6
+    N4 --> N7
+    N5 --> N7
+    N6 --> N7

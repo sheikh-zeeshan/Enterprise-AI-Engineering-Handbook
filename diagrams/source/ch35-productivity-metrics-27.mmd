@@ -1,0 +1,10 @@
+flowchart TD
+    A["Task Attempted"] --> B{"Final Outcome"}
+    B --> C["Completed"]
+    B --> D["Failed"]
+    B --> E["Exhausted"]
+    B --> F["Cancelled"]
+    C --> G["Productivity Analytics"]
+    D --> G
+    E --> G
+    F --> G

@@ -1,0 +1,16 @@
+flowchart TB
+    T[Task] --> L[Lead Agent]
+
+    L --> SR{Approved Skill Exists?}
+
+    SR -->|Yes| SK[Select Skill]
+    SR -->|No| NS[Use governed task instructions]
+
+    SK --> RR{Which Role Owns Execution?}
+    NS --> RR
+
+    RR --> DEV[Developer]
+    RR --> ARCH[Architect]
+    RR --> SEC[Security Reviewer]
+    RR --> REV[Reviewer]
+    RR --> VAL[Validator]

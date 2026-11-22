@@ -1,0 +1,12 @@
+flowchart TB
+    R["Fleet Billing Feature"] --> Lead["Enterprise Lead"]
+    Lead --> B["Copilot Booking Run"]
+    Lead --> F["Copilot Fleet Run"]
+    Lead --> I["Copilot Billing Run"]
+    B --> BG["Booking Gates"]
+    F --> FG["Fleet Gates"]
+    I --> IG["Billing Gates"]
+    BG --> Join["Fan-In"]
+    FG --> Join
+    IG --> Join
+    Join --> E["Enterprise Evaluation"]

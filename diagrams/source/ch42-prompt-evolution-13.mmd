@@ -1,0 +1,15 @@
+flowchart TD
+    A[Harness A] --> D[Shared Learning Service]
+    B[Harness B] --> D
+    C[Harness C] --> D
+    D --> E[Cross-Harness Pattern Detection]
+    E --> F[Candidate Prompt Improvement]
+    F --> G[Comparative Evaluation]
+    G --> H[Enterprise Prompt Governance]
+    H --> I{Approved?}
+    I -->|No| J[Preserve Current Versions]
+    I -->|Yes| K[Versioned Prompt Registry]
+    K --> L[Controlled Distribution]
+    L --> A
+    L --> B
+    L --> C

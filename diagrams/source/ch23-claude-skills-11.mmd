@@ -1,0 +1,26 @@
+flowchart TD
+    N0["Load Command Skill"]
+    N1["Inspect Existing Commands"]
+    N2["Inspect Booking Aggregate"]
+    N3{"Domain Behavior Available?"}
+    N4["Report Missing Prerequisite"]
+    N5["Define Command Contract"]
+    N6["Implement Handler"]
+    N7["Preserve Persistence and Event Conventions"]
+    N8["Add Application Tests"]
+    N9["Run Targeted Validation"]
+    N10{"Checks Passed?"}
+    N11["Report Failure Evidence"]
+    N12["Produce Handoff"]
+    N0 --> N1
+    N1 --> N2
+    N2 --> N3
+    N3 -- No --> N4
+    N3 -- Yes --> N5
+    N5 --> N6
+    N6 --> N7
+    N7 --> N8
+    N8 --> N9
+    N9 --> N10
+    N10 -- No --> N11
+    N10 -- Yes --> N12

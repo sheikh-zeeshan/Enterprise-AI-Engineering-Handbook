@@ -1,0 +1,12 @@
+flowchart TD
+    A[Claude Developer Agent] --> B[Tool Invocation]
+    B --> C[PreToolUse Hook]
+    C --> D[Policy Enforcement Script]
+    D --> E[Enterprise Policy Service]
+    E --> F{Decision}
+    F -->|Allow| G[Execute Tool]
+    F -->|Deny| H[Block Tool]
+    F -->|Unresolved| I[Escalate]
+    G --> J[Record Evidence]
+    H --> J
+    I --> J

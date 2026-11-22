@@ -1,0 +1,13 @@
+flowchart TD
+    X["Failure observed"] --> Q{"Which boundary failed?"}
+    Q -->|"Required decision unavailable"| A["Keep unconfirmed; expose pending or unavailable outcome"]
+    Q -->|"Reservation response lost"| B["Inquire using stable operation ID"]
+    Q -->|"Remote commitment, local failure"| C["Resume confirmation or request approved compensation"]
+    B --> R{"Authoritative reservation outcome?"}
+    R -->|"Committed"| C
+    R -->|"Rejected"| V["Record rejected booking outcome"]
+    R -->|"Pending or absence inconclusive"| H["Retain uncertainty; reconcile and escalate"]
+    R -->|"Released"| W["Resolve workflow under approved cancellation or recovery policy"]
+    C --> J{"Recovery completed?"}
+    J -->|"No"| H
+    J -->|"Yes"| K["Record resolved business outcome"]

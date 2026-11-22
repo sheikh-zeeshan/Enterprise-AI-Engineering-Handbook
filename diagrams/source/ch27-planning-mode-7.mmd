@@ -1,0 +1,16 @@
+flowchart TD
+    A["Engineering Prompt"] --> B["Repository Discovery"]
+    B --> C["Applicable Instructions"]
+    C --> D["Copilot Plan Agent"]
+    D --> E["Proposed Plan"]
+    E --> F["Plan Quality Gate"]
+    F --> G{"Approval Required?"}
+    G -->|"Yes"| H["Human Review"]
+    H --> I{"Approved?"}
+    I -->|"No"| D
+    I -->|"Yes"| J["Execution Authorization"]
+    G -->|"No"| J
+    J --> K["Developer Agent"]
+    K --> L["Implementation"]
+    L --> M["Independent Validation"]
+    M --> N["Outcome Evaluation"]

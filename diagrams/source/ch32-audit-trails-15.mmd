@@ -1,0 +1,6 @@
+flowchart LR
+    H["Enterprise Harness"] --> INGEST["Audit ingestion"]
+    INGEST --> STORE[("Governed audit store")]
+    INGEST --> SIEM["Security monitoring"]
+    SIEM --> INVEST["Security investigation"]
+    INVEST --> STORE

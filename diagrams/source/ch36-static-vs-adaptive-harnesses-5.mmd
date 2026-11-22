@@ -1,0 +1,17 @@
+flowchart TD
+    Rec[Improvement Recommendation] --> Impact[Classify Actual Change Impact]
+    Impact --> Sensitive{Affects governed controls?}
+    Sensitive -->|Yes| Governance[Explicit Governance Authority Review]
+    Sensitive -->|No| Owner[Artifact or Workflow Owner Review]
+    Governance --> Approved{Authorized approval?}
+    Owner --> Approved
+    Approved -->|No| Reject[Reject or Defer]
+    Approved -->|Yes| Change[Versioned Change Proposal]
+    Change --> Testing[Regression Testing and Gate Integrity]
+    Testing --> Pass{Required checks pass?}
+    Pass -->|No| Block[Block Release]
+    Pass -->|Yes| Release[Authorized Controlled Rollout]
+    Release --> Measurement[Measure Outcomes]
+    Measurement --> Regression{Regression?}
+    Regression -->|Yes| Rollback[Governed Rollback and Investigation]
+    Regression -->|No| Retain[Retain Approved Version]

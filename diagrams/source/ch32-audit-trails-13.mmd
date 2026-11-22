@@ -1,0 +1,19 @@
+flowchart TB
+    subgraph EXEC["Agent execution boundary"]
+        AGENT["AI Agent"] --> TOOLS["Approved tools"]
+        AGENT --> WORK["Task workspace"]
+    end
+    subgraph CTRL["Trusted Harness control boundary"]
+        ORCH["Orchestrator"]
+        POLICY["Policy enforcement"] --> RUNNER["Controlled tool executor"]
+        RUNNER --> COLLECTOR["Audit collector"]
+    end
+    TOOLS --> RUNNER
+    ORCH --> AGENT
+    subgraph STORE["Governed audit boundary"]
+        INGEST["Authenticated audit ingestion"] --> EVENTS[("Protected audit events")]
+        INGEST --> EVIDENCE[("Evidence artifacts")]
+        EVENTS --> VERIFY["Integrity verification"]
+        EVIDENCE --> VERIFY
+    end
+    COLLECTOR --> INGEST

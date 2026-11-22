@@ -1,0 +1,12 @@
+flowchart TD
+ USER["Engineering Request"] --> LEAD["Lead Agent"]
+ LEAD --> SK["Knowledge Graph Skill"] --> MCP["MCP Query"] --> KG[("Governed Graph")]
+ KG --> EVID["Evidence-backed Relationships"]
+ EVID --> VERIFY["Repository Verification"] --> PLAN["Implementation Plan"]
+ PLAN --> APP{"Approval required?"}
+ APP -->|Yes| GOV["Governance Review"]
+ GOV -->|Approved| DEV["Developer Agent"]
+ APP -->|No| DEV
+ GOV -->|Rejected| STOP["Revise or stop"]
+ DEV --> REV["Reviewer"] --> VAL["Validator"] --> EVAL["Evaluator"]
+ EVAL --> OUT["Execution Evidence"] --> INGEST["Governed Ingestion"] --> KG

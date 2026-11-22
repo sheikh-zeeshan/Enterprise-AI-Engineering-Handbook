@@ -1,0 +1,8 @@
+flowchart TD
+    OP["Requested Agent Operation"] --> CK{"Can Authorization Be Verified?"}
+    CK -->|"Yes, within permitted scope"| AL["Proceed Under Approved Policy"]
+    CK -->|"No"| RS{"Operation Risk"}
+    RS -->|"High or Critical"| BL["Block Privileged Operation"]
+    RS -->|"Low or Moderate"| IS["Continue Isolated Work Only If Preauthorized"]
+    BL --> ER["Record Failure and Escalate"]
+    IS --> ER

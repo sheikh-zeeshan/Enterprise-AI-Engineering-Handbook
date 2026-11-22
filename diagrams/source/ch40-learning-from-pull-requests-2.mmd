@@ -1,0 +1,44 @@
+flowchart LR
+    A[Harness Run] --> B[Implementation]
+    B --> C[Pull Request]
+
+    C --> D[CI/CD Evidence]
+    C --> E[Human Review Evidence]
+    C --> F[Security Evidence]
+    C --> G[Architecture Evidence]
+    C --> H[Merge Evidence]
+
+    D --> I[PR Evidence Collector]
+    E --> I
+    F --> I
+    G --> I
+    H --> I
+
+    I --> J[Evidence Normalizer]
+    J --> K[Evidence Classifier]
+    K --> L[Correlation Engine]
+
+    L --> M[Pattern Detector]
+    M --> N[Confidence Engine]
+    N --> O[Candidate Learning]
+
+    O --> P[Governance Review]
+
+    P -->|Approve| Q[Improvement Publisher]
+    P -->|Reject| R[Rejected Candidate Archive]
+    P -->|Monitor| S[Observation Store]
+
+    Q --> T[Harness Memory]
+    Q --> U[Skills]
+    Q --> V[Prompts]
+    Q --> W[Approved Instruction Changes]
+    Q --> X[Workflow / Gate Changes]
+
+    T --> Y[Future Harness Runs]
+    U --> Y
+    V --> Y
+    W --> Y
+    X --> Y
+
+    Y --> Z[Outcome Measurement]
+    Z --> M

@@ -1,0 +1,48 @@
+flowchart TB
+    G[Goal] --> C{Goal Clear?}
+
+    C -->|No| E1[Escalate]
+    C -->|Yes| RI[Repository Intelligence]
+
+    RI --> S{Evidence Sufficient?}
+
+    S -->|No| E2[Discover More / Escalate]
+    S -->|Yes| P[Create Plan]
+
+    P --> PV{Plan Valid?}
+
+    PV -->|No| P
+    PV -->|Yes| D[Developer]
+
+    D --> GT[Deterministic Gates]
+
+    GT --> GP{All Mandatory Gates Pass?}
+
+    GP -->|No| RT{Retryable?}
+    RT -->|No| E3[Escalate]
+    RT -->|Yes| RB{Budget Remaining?}
+    RB -->|No| E3
+    RB -->|Yes| D
+
+    GP -->|Yes| R[Reviewer]
+
+    R --> RR{Changes Required?}
+
+    RR -->|Yes| D
+    RR -->|No| V[Validator]
+
+    V --> VP{All Criteria Proven?}
+
+    VP -->|No| D
+    VP -->|Yes| EV[Evaluator]
+
+    EV --> EP{Threshold Met?}
+
+    EP -->|No| D
+    EP -->|Yes| AP{Human Approval Required?}
+
+    AP -->|No| DONE[Complete]
+    AP -->|Yes| H[Human Approval]
+
+    H -->|Approved| DONE
+    H -->|Rejected| P

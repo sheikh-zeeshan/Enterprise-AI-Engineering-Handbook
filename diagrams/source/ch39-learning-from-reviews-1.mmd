@@ -1,0 +1,18 @@
+flowchart TD
+    A[Reviewer Agent findings] --> E[Review evidence ingestion]
+    B[Human code review] --> E
+    C[Architecture and security review] --> E
+    D[Validation and evaluation evidence] --> E
+    E --> F[Verified evidence store]
+    F --> G[Finding classification]
+    G --> H[Pattern detection]
+    H --> I[Root-cause assessment]
+    I --> J[Candidate improvements]
+    J --> K{Authorized human review}
+    K -->|Approved| L[Versioned validation and activation]
+    K -->|Rejected or deferred| M[Governance history in Harness Memory]
+    L --> N[Future Harness runs]
+    N --> O[Outcome evaluation]
+    O --> F
+    classDef decision fill:#fff1d6,stroke:#bb8b36,color:#704b0a
+    class K decision

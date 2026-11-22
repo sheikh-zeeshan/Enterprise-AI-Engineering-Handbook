@@ -1,0 +1,16 @@
+flowchart LR
+    IN[Inputs]
+    PRE[Preconditions]
+    WF[Workflow]
+    TOOL[Tool Usage]
+    VAL[Validation]
+    OUT[Outputs]
+    FAIL[Failure Evidence]
+
+    IN --> PRE
+    PRE --> WF
+    WF --> TOOL
+    TOOL --> VAL
+
+    VAL -- Passed --> OUT
+    VAL -- Failed --> FAIL

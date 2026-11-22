@@ -1,0 +1,63 @@
+graph TD
+
+    BS[Booking Service]
+    FS[Fleet Service]
+    CAS[Corporate Account Service]
+    SOS[Station Operations Service]
+
+    BOOKAPI[Booking API]
+    CORPAPI[Corporate Account API]
+
+    EVT1[BookingConfirmed]
+    EVT2[FleetBookingUpdated]
+
+    BDB[(Booking Database)]
+    FDB[(Fleet Database)]
+    CDB[(Corporate Account Database)]
+
+    ADR1[ADR-032 Event Evolution]
+    ADR2[ADR-024 Data Ownership]
+
+    SK1[Add Integration Event Skill]
+    SK2[Create Contract Test Skill]
+
+    INS1[Event Compatibility Instruction]
+    INS2[Service Data Ownership Instruction]
+
+    PR1[PR #1842]
+    RF1[Consumer Compatibility Finding]
+    FAIL1[Failure F-391]
+
+    BS -->|exposes| BOOKAPI
+    BS -->|owns| BDB
+    BS -->|publishes| EVT1
+
+    FS -->|consumes| EVT1
+    SOS -->|consumes| EVT1
+
+    FS -->|publishes| EVT2
+    FS -->|owns| FDB
+
+    BS -->|calls| CORPAPI
+    CAS -->|exposes| CORPAPI
+    CAS -->|owns| CDB
+
+    ADR1 -->|governs| EVT1
+    ADR1 -->|governs| EVT2
+
+    ADR2 -->|governs| BDB
+    ADR2 -->|governs| FDB
+    ADR2 -->|governs| CDB
+
+    INS1 -->|applies to| EVT1
+    INS2 -->|applies to| BS
+
+    SK1 -->|used to modify| EVT1
+    SK2 -->|creates tests for| EVT1
+
+    PR1 -->|changed| EVT1
+    PR1 -->|produced| RF1
+    RF1 -->|concerned| FS
+
+    FAIL1 -->|involved| EVT1
+    FAIL1 -->|affected| FS

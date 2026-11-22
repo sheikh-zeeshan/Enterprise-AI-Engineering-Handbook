@@ -1,0 +1,9 @@
+flowchart TB
+    R["Engineering Request"] --> H["Enterprise Harness"]
+    H --> P["Resolve Repository Profile"] --> W["Create Isolated Run Workspace"]
+    W --> Roles["Harness-Controlled Agent Roles"]
+    Roles --> Adapter["Claude Code Adapter"] --> Claude["Claude Code"]
+    Claude --> Config["CLAUDE.md, Skills, Subagents, MCP"]
+    Roles --> Gates["Deterministic Validation"]
+    Gates --> E["Outcome Evaluation"] --> A["Human Approval"]
+    H --> Evidence["Evidence and Metrics"]

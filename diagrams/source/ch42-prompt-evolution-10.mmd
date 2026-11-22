@@ -1,0 +1,20 @@
+flowchart TB
+    subgraph Execution[Execution Plane]
+        P[Approved Prompt] --> L[Lead Agent]
+        L --> D[Developer Agent]
+        D --> R[Reviewer Agent]
+        R --> V[Validator Agent]
+        V --> E[Evaluator Agent]
+    end
+    subgraph Learning[Learning Plane]
+        M[Harness Memory] --> A[Pattern Analysis]
+        A --> C[Prompt Candidate]
+        C --> B[Comparative Benchmark]
+    end
+    subgraph Governance[Governance Plane]
+        H[Human Prompt Owner] --> G[Prompt Registry]
+        G --> X[Controlled Activation]
+    end
+    E -->|Verified Evidence| M
+    B -->|Evaluation Report| H
+    X -->|Approved Version| P

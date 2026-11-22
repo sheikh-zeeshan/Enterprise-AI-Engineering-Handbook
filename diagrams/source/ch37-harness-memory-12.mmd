@@ -1,0 +1,21 @@
+flowchart TD
+    subgraph P["AI coding platforms"]
+        C["Claude Code"]
+        G["GitHub Copilot"]
+        X["OpenAI Codex"]
+    end
+    C --> CA["Claude adapter"]
+    G --> GA["Copilot adapter"]
+    X --> XA["Codex adapter"]
+    CA --> API["Harness Memory API"]
+    GA --> API
+    XA --> API
+    API --> AUTH["Authorization and scope controls"]
+    AUTH --> RET["Approved retrieval"]
+    RET --> REG[("Governed memory registry")]
+    API --> CAN["Candidate submission"]
+    CAN --> EV["Evidence verification"]
+    EV --> H["Human governance approval"]
+    H -->|Approved| REG
+    REG --> LIFE["Versioning and lifecycle"]
+    REG --> AUD["Audit trail"]

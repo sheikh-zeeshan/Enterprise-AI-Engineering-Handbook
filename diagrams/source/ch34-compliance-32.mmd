@@ -1,0 +1,14 @@
+flowchart TD
+    A["Approved Control State"] --> B["Continuous Monitoring"]
+    C["Repository Permissions"] --> B
+    D["Model Registry"] --> B
+    E["Security Findings"] --> B
+    F["Cloud Configuration"] --> B
+    G["Exception Registry"] --> B
+    H["Evidence Retention"] --> B
+    B --> I{"Drift Detected?"}
+    I -- No --> J["Record Verification"]
+    I -- Yes --> K["Create Finding"]
+    K --> L["Notify Control Owner"]
+    L --> M["Authorized Remediation"]
+    M --> N["Revalidation"]

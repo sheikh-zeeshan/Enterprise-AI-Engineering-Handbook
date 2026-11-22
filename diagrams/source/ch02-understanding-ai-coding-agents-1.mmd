@@ -1,0 +1,14 @@
+flowchart TD
+    H[Engineer: objective, constraints, approvals] --> A[AI Coding Agent]
+    I[Repository Instructions and approved knowledge] --> A
+    A --> P[Plan and select next authorized action]
+    P --> T[Tool and permission boundary]
+    T --> R[Repository search and file operations]
+    T --> C[Build, test and analysis commands]
+    T --> E[Approved external integrations]
+    R --> O[Observed results]
+    C --> O
+    E --> O
+    O --> A
+    A --> D[Reviewable change and evidence report]
+    D --> G[Deterministic gates and human decision]

@@ -1,0 +1,16 @@
+flowchart LR
+    C[Claude Developer] --> I[Implementation Complete]
+
+    I --> B[Build Gate]
+    I --> T[Test Gate]
+    I --> SA[Static Analysis]
+    I --> AR[Architecture Gate]
+    I --> SE[Security Gate]
+    I --> CO[Contract Gate]
+
+    B --> R{Required Gates Pass?}
+    T --> R
+    SA --> R
+    AR --> R
+    SE --> R
+    CO --> R

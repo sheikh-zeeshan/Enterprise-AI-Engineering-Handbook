@@ -1,0 +1,18 @@
+stateDiagram-v2
+    [*] --> Candidate
+    Candidate --> PendingApproval: Evidence gates pass
+    Candidate --> Rejected: Evidence insufficient
+    PendingApproval --> Active: Authorized human approval
+    PendingApproval --> Rejected: Rejected
+    PendingApproval --> Candidate: Revision requested
+    Active --> Suspended: Conflict or integrity concern
+    Active --> Expired: Expiration policy
+    Active --> Superseded: Replacement approved
+    Active --> Retired: Owner decision
+    Suspended --> Active: Revalidated and approved
+    Suspended --> Superseded: Replacement approved
+    Expired --> Active: Renewed and approved
+    Expired --> Archived: Retention transition
+    Superseded --> Archived: Retention transition
+    Retired --> Archived: Retention transition
+    Archived --> [*]: Authorized disposition, subject to holds

@@ -1,0 +1,17 @@
+flowchart TD
+    A["Task intake"] --> B["Repository Discovery"]
+    B --> C["Instruction source discovery"]
+    C --> D["Classification and scope analysis"]
+    D --> E["Hierarchy and precedence resolution"]
+    E --> F{"Conflicts or missing authority?"}
+    F -- Yes --> G["Human resolution or scoped block"]
+    F -- No --> H["Effective instruction set"]
+    H --> I["Role-specific planning"]
+    I --> J["Controlled execution"]
+    J --> K["Automated validation"]
+    K --> L["Independent review and evaluation"]
+    L --> M{"Compliant?"}
+    M -- No --> N["Correct, reject, or request exception"]
+    M -- Yes --> O["Compliance report and delivery"]
+    O --> P["Metrics and drift analysis"]
+    P --> Q["Human-reviewed improvement proposal"]

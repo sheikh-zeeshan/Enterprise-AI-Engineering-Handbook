@@ -1,0 +1,14 @@
+flowchart TD
+    subgraph Control[Harness Control Plane]
+        A[Approved Goal and Criteria]
+        B[Gate and Evaluation Policy]
+        C[Workflow Routing and Run State]
+    end
+    subgraph Execution[Evaluation Execution Plane]
+        D[Immutable Evidence Package]
+        E[Evaluator Agent]
+        F[Structured Result]
+    end
+    A --> D
+    B --> D
+    D --> E --> F --> C

@@ -1,0 +1,37 @@
+flowchart TB
+    U[User Goal] --> CP[Harness Control Plane]
+
+    CP --> L[Lead Agent]
+
+    L --> RI[Repository Intelligence]
+    L --> PLAN[Execution Plan]
+
+    PLAN --> PV[Policy / Plan Validation]
+
+    PV --> D[Developer Agent]
+
+    D --> EX[Execution Plane]
+
+    EX --> G[Deterministic Gates]
+
+    G -->|Fail| FS[Failure State]
+    FS --> L
+
+    G -->|Pass| R[Reviewer]
+
+    R --> V[Validator]
+    V --> E[Evaluator]
+
+    E --> AP{Approval Required?}
+
+    AP -->|Yes| H[Human Approver]
+    AP -->|No| C[Completion Engine]
+
+    H -->|Approved| C
+    H -->|Rejected| L
+
+    GOV[Enterprise Governance] --> CP
+
+    CP --> STATE[Workflow State]
+    CP --> AUDIT[Audit Evidence]
+    CP --> METRICS[Metrics]

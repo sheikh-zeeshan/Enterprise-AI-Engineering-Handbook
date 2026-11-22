@@ -1,0 +1,15 @@
+graph TD
+    API[Create API Endpoint]
+
+    API --> AUTH[Authorization]
+    API --> PERSIST[EF Core Persistence]
+    API --> TEST[API Testing]
+
+    PERSIST --> EVENT[Publish Integration Event]
+    EVENT --> OUTBOX[Transactional Outbox]
+
+    OUTBOX --> OBS[OpenTelemetry]
+    OUTBOX --> IDEMP[Idempotent Consumer]
+
+    TEST --> UNIT[Unit Tests]
+    TEST --> INT[Integration Tests]

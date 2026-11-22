@@ -1,0 +1,58 @@
+flowchart TD
+    U["Engineer or Automation Request"] --> H["Enterprise Harness"]
+
+    subgraph GOV["Governed Engineering Context"]
+        I["Repository Instructions"]
+        ADR["Architecture Decisions"]
+        RI["Repository Intelligence"]
+        HM["Harness Memory"]
+        P["Execution and Validation Policies"]
+    end
+
+    subgraph MEM["Advisory Context"]
+        CM["Permitted Claude Memory"]
+    end
+
+    I --> CA["Context Assembly"]
+    ADR --> CA
+    RI --> CA
+    HM --> CA
+    P --> CA
+    CM -.-> CA
+
+    H --> CA
+    CA --> V["Scope, Freshness, and Conflict Verification"]
+
+    V --> D{"Context Acceptable?"}
+
+    D -->|"No"| E["Resolve or Escalate"]
+    E --> V
+
+    D -->|"Yes"| L["Lead Agent"]
+    L --> DEV["Developer Agent"]
+
+    DEV --> REV["Reviewer Agent"]
+    REV --> VAL["Validator Agent"]
+    VAL --> EVA["Evaluator Agent"]
+
+    EVA --> G["Harness Completion Gates"]
+    G --> A["Human Approval"]
+
+    subgraph RUN["Run-Scoped Artifacts"]
+        S["Scratchpad"]
+        R["Execution Reports"]
+    end
+
+    H --> RUN
+    DEV --> S
+    REV --> R
+    VAL --> R
+    EVA --> R
+
+    classDef governed fill:#e8f5e9,stroke:#2e7d32,color:#1b5e20
+    classDef advisory fill:#f3e5f5,stroke:#7b1fa2,color:#4a148c
+    classDef control fill:#e3f2fd,stroke:#1565c0,color:#0d47a1
+
+    class I,ADR,RI,HM,P governed
+    class CM advisory
+    class H,CA,V,G control

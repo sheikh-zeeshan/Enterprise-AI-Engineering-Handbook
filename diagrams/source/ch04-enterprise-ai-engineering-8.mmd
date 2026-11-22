@@ -1,0 +1,11 @@
+flowchart LR
+    Portal["Corporate and government portals"] --> API["Booking API (.NET 10)"]
+    API --> Domain["Booking domain rules"]
+    Domain --> DB[("Booking database")]
+    Domain --> Outbox[("Transactional outbox")]
+    Outbox --> Publisher["Outbox publisher"]
+    Publisher --> Bus["Azure messaging transport"]
+    Bus --> Billing["Billing consumer"]
+    Bus --> Notify["Notification consumer"]
+    Policy["Architecture and security standards"] -.-> API
+    Policy -.-> Outbox

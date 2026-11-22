@@ -1,0 +1,38 @@
+flowchart TD
+    A["Engineering Task"] --> B["Harness Context Assembly"]
+
+    C["Applicable Instructions"] --> B
+    D["Approved Architecture Decisions"] --> B
+    E["Repository Intelligence"] --> B
+    F["Harness Memory"] --> B
+    G["Optional Claude Memory"] -.-> B
+
+    B --> H["Context Verification"]
+
+    H --> I{"Conflict or Missing Authority?"}
+
+    I -->|"Yes"| J["Investigate or Escalate"]
+    J --> H
+
+    I -->|"No"| K["Lead Agent"]
+    K --> L["Developer Agent"]
+    L --> M["Reviewer Agent"]
+    M --> N["Validator Agent"]
+    N --> O["Evaluator Agent"]
+
+    O --> P["Harness Completion Gates"]
+    P --> Q["Human Approval"]
+
+    R["Scratchpad and Run Workspace"] <--> K
+    R <--> L
+    R <--> M
+    R <--> N
+    R <--> O
+
+    classDef governed fill:#e8f5e9,stroke:#2e7d32,color:#1b5e20
+    classDef advisory fill:#f3e5f5,stroke:#7b1fa2,color:#4a148c
+    classDef control fill:#e3f2fd,stroke:#1565c0,color:#0d47a1
+
+    class C,D,E,F governed
+    class G advisory
+    class B,H,P control

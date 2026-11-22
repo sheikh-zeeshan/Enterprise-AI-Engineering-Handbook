@@ -1,0 +1,27 @@
+flowchart LR
+    WC[Walk-in Customers]
+    CF[Corporate Fleets]
+    GD[Government Departments]
+    IC[Insurance Companies]
+    RC[Rental Companies]
+
+    ACD[Alpha Car Detailing]
+
+    ST[Stations]
+    FI[Finance]
+    OP[Operations]
+
+    WC -->|Request Services| ACD
+    CF -->|Fleet Bookings| ACD
+    GD -->|Authorized Vehicle Services| ACD
+    IC -->|Approved Service Requests| ACD
+    RC -->|Fleet Service Requests| ACD
+
+    ACD -->|Scheduled Work| ST
+    ST -->|Service Completion| ACD
+
+    ACD -->|Billing Information| FI
+    FI -->|Payment Status| ACD
+
+    ACD -->|Operational Demand| OP
+    OP -->|Capacity and Constraints| ACD

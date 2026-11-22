@@ -1,0 +1,8 @@
+flowchart TD
+    A["Production Duplicate Booking Request"] --> B["Analyze Available Evidence"]
+    B --> C["Prepare Remediation Proposal"] --> D["Identify Affected Business Records"]
+    D --> E["Assess Downstream Effects"] --> F["Generate Reviewed Procedure"]
+    F --> G["Human and Operational Approval"] --> H{"Authorized?"}
+    H -->|No| I["Do Not Execute"]
+    H -->|Yes| J["Dedicated Privileged Execution"] --> K["Reconcile and Verify"]
+    K --> L["Preserve Audit Evidence"]

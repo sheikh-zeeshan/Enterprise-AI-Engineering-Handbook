@@ -1,0 +1,8 @@
+flowchart LR
+  A[Developer Agent] --> T[Proposed Tool Call]
+  T --> H{Pre-Tool Guardrail}
+  H -->|Denied| L[Audit and Block]
+  H -->|Allowed| X[Tool Execution]
+  X --> P[Post-Tool Evidence]
+  P --> G[Final Independent Gates]
+  G --> E[Evaluation and Approval]

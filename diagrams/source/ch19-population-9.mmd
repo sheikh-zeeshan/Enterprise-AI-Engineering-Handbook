@@ -1,0 +1,18 @@
+flowchart TD
+    R["Running"] --> H["Heartbeat"]
+    H --> C{"Heartbeat<br/>Current?"}
+
+    C -- Yes --> R
+    C -- No --> S["Stale"]
+
+    S --> D{"Execution<br/>Recoverable?"}
+
+    D -- Yes --> R
+    D -- No --> F["Failed"]
+
+    F --> P{"Retry Policy"}
+
+    P -- Retry --> RP["Retry Pending"]
+    RP --> RD["Ready"]
+
+    P -- Exhausted --> E["Exhausted"]

@@ -1,0 +1,27 @@
+flowchart TD
+    A["Business Requirement"] --> B["Enterprise Harness"]
+    subgraph EX["Execution and Quality Plane"]
+      B --> C["Lead Agent"] --> D["Developer Agent"] --> E["Reviewer Agent"] --> F["Validator Agent"] --> G["Evaluator Agent"] --> H["Human Approval"]
+    end
+    subgraph MP["Measurement Plane"]
+      I["Trusted Event Collector"] --> J[("Event Store")] --> K["Metric Projection Engine"] --> L[("Productivity Metrics Store")]
+    end
+    C -.-> I
+    D -.-> I
+    E -.-> I
+    F -.-> I
+    G -.-> I
+    H -.-> I
+    subgraph AN["Analytics and Governance"]
+      M["Engineering Dashboard"]
+      N["Architecture Analysis"]
+      O["Business Outcome Analysis"]
+      P["Governed Improvement Proposals"]
+    end
+    L --> M
+    L --> N
+    L --> O
+    N --> P
+    O --> P
+    Q["CI/CD and Production Evidence"] --> I
+    R["Business Systems"] --> O

@@ -1,0 +1,16 @@
+flowchart TB
+    Request["Engineering Request"] --> C["Control Plane"]
+    C --> O["Harness Orchestrator"]
+    C --> Scheduler["Scheduler"]
+    C --> Policy["Policy Resolution"]
+    C --> State["Durable Run State"]
+    Scheduler --> E["Execution Plane"]
+    E --> W["Execution Workers"]
+    E --> Agents["AI Agents"]
+    E --> V["Deterministic Gates"]
+    E --> Workspace["Run Workspaces"]
+    K["Knowledge and Governance Plane"] --> I["Instructions"]
+    K --> S["Skills"]
+    K --> RI["Repository Intelligence"]
+    K --> Approval["Approval Policies"]
+    K --> Policy

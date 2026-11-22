@@ -1,0 +1,28 @@
+flowchart TB
+    Request["Engineering Request"]
+
+    CP["Central Control Plane"]
+    Request --> CP
+
+    CP --> Booking["Booking Repository Run"]
+    CP --> Fleet["Fleet Repository Run"]
+    CP --> Billing["Billing Repository Run"]
+
+    Booking --> BW["Isolated Workspace"]
+    Fleet --> FW["Isolated Workspace"]
+    Billing --> BIW["Isolated Workspace"]
+
+    BW --> BA["Multi-Agent Workflow"]
+    FW --> FA["Multi-Agent Workflow"]
+    BIW --> BIA["Multi-Agent Workflow"]
+
+    BA --> BV["Repository Validation"]
+    FA --> FV["Repository Validation"]
+    BIA --> BIV["Repository Validation"]
+
+    BV --> Aggregate["Cross-Repository Fan-In"]
+    FV --> Aggregate
+    BIV --> Aggregate
+
+    Aggregate --> Eval["Enterprise Evaluation"]
+    Eval --> Human["Human Approval"]

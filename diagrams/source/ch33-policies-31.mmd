@@ -1,0 +1,19 @@
+flowchart TD
+    A[Corporate Fleet Analytics Request] --> B[Classify Data]
+    B --> C[Resolve Applicable Policies]
+    C --> D{Provider Approved?}
+    D -->|No| E[Block Restricted Data Transfer]
+    E --> F[Propose Compliant Alternative]
+    F --> G[Authorize Data Classification]
+    G --> C
+    D -->|Yes| H[Verify Agent and Tool Permissions]
+    H --> I{Authorized?}
+    I -->|No| J[Block and Escalate]
+    I -->|Yes| K[Developer Implementation]
+    K --> L[Review, Validation and Evaluation]
+    L --> M[Verify Human Approval]
+    M --> N[Final Governance Gate]
+    N --> O[Eligible for Authorized Release]
+    E --> P[Audit Evidence]
+    J --> P
+    O --> P

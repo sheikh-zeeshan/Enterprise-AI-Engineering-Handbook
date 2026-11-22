@@ -1,0 +1,22 @@
+flowchart TD
+    A[Applicable Control]
+    --> B[Execute Control]
+
+    B --> C{Control Passed?}
+
+    C -- Yes --> D[Record Pass Evidence]
+
+    C -- No --> E{Approved Exception Exists?}
+
+    E -- No --> F[Block Workflow]
+
+    E -- Yes --> G{Exception Valid and Unexpired?}
+
+    G -- No --> F
+
+    G -- Yes --> H[Record Exception Evidence]
+
+    H --> I[Continue Under Exception]
+
+    D --> J[Next Control]
+    I --> J

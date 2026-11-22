@@ -1,0 +1,38 @@
+sequenceDiagram
+    autonumber
+
+    actor User as Fleet Administrator
+    participant GW as API Gateway
+    participant BK as Booking Service
+    participant CA as Corporate Account Service
+    participant FL as Fleet Service
+    participant SO as Station Operations Service
+    participant DB as Booking Database
+    participant OP as Outbox Publisher
+    participant EB as Event Bus
+    participant NT as Notification Service
+
+    User->>GW: Submit corporate fleet booking
+    GW->>BK: Authenticated request
+
+    BK->>CA: Validate account eligibility
+    CA-->>BK: Eligible
+
+    BK->>FL: Validate fleet and vehicle membership
+    FL-->>BK: Vehicles valid
+
+    BK->>SO: Reserve requested capacity
+    SO-->>BK: Capacity reservation confirmed
+
+    BK->>DB: Commit booking + outbox record
+    DB-->>BK: Commit successful
+
+    BK-->>GW: Booking confirmed
+    GW-->>User: Confirmation
+
+    OP->>DB: Read unpublished outbox records
+    OP->>EB: Publish BookingConfirmed
+    EB-->>NT: BookingConfirmed
+
+    NT->>NT: Record idempotent processing
+    NT->>NT: Send confirmation

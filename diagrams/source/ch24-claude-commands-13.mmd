@@ -1,0 +1,9 @@
+flowchart TD
+    C[Developer Command] --> A[Invocation Adapter]
+    A --> R[Request Validation]
+    R --> H[Harness Control Plane]
+    H --> P[Authorization and Workflow Resolution]
+    P --> G[Policy and Gate Selection]
+    G --> S[Run State Management]
+    S --> X[Execution Plane]
+    X --> O[Evidence and Outcome]

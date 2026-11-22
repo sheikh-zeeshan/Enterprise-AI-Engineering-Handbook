@@ -1,0 +1,16 @@
+flowchart LR
+    SP["Scratchpad<br/>Temporary Discovery"]
+    PC["Promotion Candidate"]
+    EV["Evidence Verification"]
+    RV["Review"]
+    AP["Approval"]
+    RI["Repository Intelligence"]
+    HM["Harness Memory"]
+
+    SP --> PC
+    PC --> EV
+    EV --> RV
+    RV --> AP
+
+    AP -->|Repository evidence| RI
+    AP -->|Reusable governed lesson| HM

@@ -1,0 +1,18 @@
+flowchart TD
+    A[AI Agent Request]
+    --> B[Harness Authorization Layer]
+
+    B --> C{Repository Access Allowed?}
+    C -- No --> Z[Block + Audit]
+    C -- Yes --> D{Tool Allowed?}
+
+    D -- No --> Z
+    D -- Yes --> E{Data Classification Allowed?}
+
+    E -- No --> Z
+    E -- Yes --> F{Environment Allowed?}
+
+    F -- No --> Z
+    F -- Yes --> G[Execute Authorized Operation]
+
+    G --> H[Record Evidence]

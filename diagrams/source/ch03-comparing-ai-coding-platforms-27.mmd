@@ -1,0 +1,15 @@
+flowchart LR
+    S[Portable Instruction Sources]
+    B[Instruction Build Process]
+
+    S --> B
+
+    B --> C[CLAUDE.md]
+    B --> G[Copilot Instructions]
+    B --> O[AGENTS.md]
+    B --> X[Other Platform Instructions]
+
+    C --> T[Instruction Consistency Tests]
+    G --> T
+    O --> T
+    X --> T

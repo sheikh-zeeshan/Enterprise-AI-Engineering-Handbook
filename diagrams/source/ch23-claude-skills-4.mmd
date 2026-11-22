@@ -1,0 +1,20 @@
+flowchart TD
+    P[Feature Prompt]
+
+    P --> L[Lead Agent Decomposition]
+
+    L --> DB[Add Domain Behavior]
+    DB --> AC[Add Application Command]
+
+    AC --> AU[Add Authorization]
+    AC --> IE[Add Integration Event]
+    AC --> API[Create API Endpoint]
+
+    AU --> API
+    IE --> T[Add Tests]
+    API --> T
+
+    T --> V[Deterministic Validation]
+    V --> R[Reviewer]
+    R --> E[Evaluator]
+    E --> H[Human / Harness Handoff]

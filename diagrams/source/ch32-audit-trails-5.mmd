@@ -1,0 +1,10 @@
+flowchart LR
+    AGENT["AI Agent"] --> GATEWAY["Controlled tool gateway"]
+    GATEWAY --> INGEST["Authenticated audit ingestion"]
+    INGEST --> EVENTS[("Append-only audit records")]
+    INGEST --> EVIDENCE[("Protected evidence artifacts")]
+    EVENTS --> CHECK["Integrity verification service"]
+    EVIDENCE --> CHECK
+    ANCHOR[("Independent integrity checkpoints")] --> CHECK
+    CHECK --> AUDITOR["Authorized auditor"]
+    AGENT -.->|No direct write access| EVENTS

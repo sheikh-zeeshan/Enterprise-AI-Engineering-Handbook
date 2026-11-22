@@ -1,0 +1,9 @@
+flowchart TB
+    L["Lead"] --> D["Developer"]
+    D --> R["Independent Review"]
+    D --> T["Tests"]
+    D --> S["Security Scan"]
+    R --> A["Evidence Aggregation"]
+    T --> A
+    S --> A
+    A --> E["Evaluator"]

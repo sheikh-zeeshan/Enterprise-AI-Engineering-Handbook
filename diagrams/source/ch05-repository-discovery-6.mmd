@@ -1,0 +1,21 @@
+flowchart LR
+    Task[Task Request] --> Scope[Scope Analyzer]
+    Repo[Repository] --> Scanner[Repository Scanner]
+    Scanner --> Classifier[File and Asset Classifier]
+    Classifier --> Index[Symbol and Dependency Index]
+    Classifier --> Contracts[Contract Detector]
+    Classifier --> Tests[Test and Quality Detector]
+    Classifier --> Ops[CI/CD and Infrastructure Detector]
+    Scope --> Correlator[Task-to-Repository Correlator]
+    Index --> Correlator
+    Contracts --> Correlator
+    Tests --> Correlator
+    Ops --> Correlator
+    Correlator --> Evidence[Evidence Ledger]
+    Evidence --> Confidence[Confidence Assessment]
+    Confidence --> Report[Discovery Report]
+    Report --> Human[Human Review]
+    Human --> Gate{Implementation Gate}
+    Gate -->|Approved| Implementation[Implementation Stage]
+    Gate -->|More evidence| Scanner
+    Gate -->|Unsafe| Stop[Stop]

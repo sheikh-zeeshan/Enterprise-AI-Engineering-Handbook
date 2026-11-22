@@ -1,0 +1,7 @@
+flowchart TD
+    M["Validated Metrics"] --> B["Baseline and Trend Analysis"] --> D{"Meaningful Deviation?"}
+    D -- No --> O["Continue Observation"]
+    D -- Yes --> I["Evidence-Based Investigation"] --> R["Root Cause Assessment"] --> P["Improvement Proposal"]
+    P --> G{"Human Governance Approval?"}
+    G -- Rejected --> L["Record Decision"]
+    G -- Approved --> C["Controlled Harness Change"] --> V["Validation and Regression Testing"] --> N["Compare Against Baseline"] --> M

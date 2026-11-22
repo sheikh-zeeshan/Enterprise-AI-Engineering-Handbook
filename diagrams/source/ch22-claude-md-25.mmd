@@ -1,0 +1,9 @@
+flowchart TD
+    A[Harness Execution Evidence] --> B[Recurring Failure]
+    B --> C[Root Cause Analysis]
+    C --> D{Instruction Defect?}
+    D -- No --> E[Improve Skill, Prompt, Code or Gate]
+    D -- Yes --> F[Propose Instruction Change]
+    F --> G[Human Review]
+    G --> H[Approved Update]
+    H --> I[Measure Future Results]

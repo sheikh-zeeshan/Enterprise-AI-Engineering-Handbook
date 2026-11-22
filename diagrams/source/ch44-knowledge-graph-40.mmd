@@ -1,0 +1,6 @@
+flowchart TD
+ REPO["Repository Evidence"] --> X["Knowledge Extraction"]
+ HIST["Builds, Reviews, PRs, Decisions"] --> X
+ X --> R["Entity Resolution"] --> V["Evidence Verification"] --> GOV["Governance"] --> KG[("Knowledge Graph")]
+ KG --> QUERY["Authorized Graph Query"] --> LEAD["Lead Agent"] --> VERIFY["Repository Verification"] --> PLAN["Implementation Plan"]
+ PLAN --> DEV["Developer Agent"] --> VAL["Deterministic Validation"] --> EVAL["Evaluator Agent"]

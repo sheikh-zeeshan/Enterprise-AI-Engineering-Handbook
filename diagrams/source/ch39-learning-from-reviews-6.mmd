@@ -1,0 +1,20 @@
+stateDiagram-v2
+    [*] --> Observed
+    Observed --> Classified : Normalize and verify
+    Classified --> Monitoring : Insufficient pattern evidence
+    Monitoring --> Classified : New independent evidence
+    Classified --> Candidate : Supported hypothesis
+    Classified --> Archived : No actionable learning
+    Candidate --> InReview : Submit for governance
+    InReview --> Rejected : Not approved
+    InReview --> RevisionRequired : Changes requested
+    RevisionRequired --> Candidate : Revised proposal
+    InReview --> Approved : Authorized approval
+    Approved --> Validating : Controlled evaluation
+    Validating --> RevisionRequired : Evaluation failed
+    Validating --> Active : Passed and activated
+    Active --> MonitoringOutcome : Future runs
+    MonitoringOutcome --> Active : Improvement sustained
+    MonitoringOutcome --> RolledBack : Regression and authorized rollback
+    Rejected --> Archived : Preserve decision
+    RolledBack --> Archived : Preserve history

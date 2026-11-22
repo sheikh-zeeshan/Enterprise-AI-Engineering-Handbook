@@ -1,0 +1,12 @@
+flowchart TD
+    BG["Authorized Business Goal"] --> H["AI Engineering Harness"]
+    H --> A["Agents and Approved Tools"]
+    A --> V["Validation, Review and Evaluation"]
+    V --> R{"Risk-Based Authorization"}
+    R -->|"Human approval required"| HU["Verified Human Approval"]
+    R -->|"Delegated authority"| DA["Delegated Authority"]
+    HU --> O["Approved Engineering Outcome"]
+    DA --> O
+    O --> E["Audit Evidence"]
+    P["Policies, Instructions and Controls"] -.-> H
+    P -.-> A

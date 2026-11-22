@@ -1,0 +1,9 @@
+flowchart TD
+    A["Codex Tool Execution"] --> B{"Execution Result"}
+    B -->|Success| C["Capture Evidence"] --> I["Continue Workflow"]
+    B -->|Failure| D["Classify Failure"]
+    B -->|Timeout| E["Inspect Execution State"]
+    D --> F{"Retry Safe?"}
+    E --> F
+    F -->|Yes| G["Bounded Retry"] --> A
+    F -->|No| H["Investigate or Escalate"]

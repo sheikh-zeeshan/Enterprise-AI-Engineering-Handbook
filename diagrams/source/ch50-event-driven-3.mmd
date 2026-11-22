@@ -1,0 +1,15 @@
+sequenceDiagram
+    participant R as Booking publisher
+    participant E as Event Bus
+    participant N as Notification
+    participant D as Notification store
+    participant P as Provider
+    R->>E: Publish BookingConfirmed with stable event ID
+    E-->>R: Broker acceptance
+    E->>N: Deliver, possibly more than once
+    N->>D: Commit inbox and delivery intent atomically
+    N->>E: Record progress after durable handling
+    Note over N,D: Duplicate delivery creates no additional intent
+    N->>D: Dispatcher claims pending intent
+    N->>P: Send using stable provider operation ID
+    Note over N,P: Uncertain provider outcome remains recoverable

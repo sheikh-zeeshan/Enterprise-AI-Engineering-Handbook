@@ -1,0 +1,9 @@
+flowchart LR
+    Request[Create fleet booking] --> Tx[Database transaction]
+    Tx --> Booking[Insert booking in same transaction]
+    Tx --> Outbox[Insert outbox message in same transaction]
+    Booking --> Commit[Atomic commit]
+    Outbox --> Commit
+    Commit --> Dispatcher[Outbox dispatcher]
+    Dispatcher --> Broker[Message broker]
+    Broker --> Consumer[Idempotent consumer]

@@ -1,0 +1,10 @@
+flowchart TD
+    A["Developer Agent"] --> B["Proposed Tool Operation"] --> C["Validate Inputs"]
+    C --> D["Check Task Scope"] --> E["Check Effective Permissions"] --> F{"Authorized?"}
+    F -->|No| G["Deny and Record"]
+    F -->|Approval Required| H{"Human Approval"}
+    H -->|Rejected| G
+    H -->|Approved| I["Controlled Execution"]
+    F -->|Yes| I
+    I --> J["Capture Actual Result"] --> K["Preserve Evidence and Audit"]
+    K --> L["Run Required Validation"] --> M["Continue or Escalate"]

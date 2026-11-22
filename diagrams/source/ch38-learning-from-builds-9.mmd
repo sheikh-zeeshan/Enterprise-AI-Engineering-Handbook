@@ -1,0 +1,14 @@
+flowchart TD
+    A[Build Evidence] --> B[Claude Analysis]
+    B --> C[Provisional Observation]
+    C --> D[Pattern Verification]
+    D --> E[Candidate Learning]
+    E --> F[Human Review]
+    F --> G{Decision}
+    G -->|Approve| H[Versioned Governed Improvement]
+    G -->|Reject| I[Retain Rejection]
+    G -->|More evidence| J[Continue Investigation]
+    H --> K[(Approved Harness Memory)]
+    H --> L[Versioned Skill or Prompt]
+    K --> M[Future Runs]
+    L --> M

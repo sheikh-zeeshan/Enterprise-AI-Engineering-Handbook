@@ -1,0 +1,5 @@
+flowchart TD
+    C["Metrics Code Change"] --> B["Build"] --> U["Unit Tests"] --> I["Database Integration Tests"]
+    I --> D["Event Idempotency Tests"] --> R["KPI Reconciliation Tests"]
+    R --> S["Security and Authorization Tests"] --> P["Performance Tests"]
+    P --> RE["Reviewer Assessment"] --> E["Evaluator Assessment"] --> H["Human Approval"]

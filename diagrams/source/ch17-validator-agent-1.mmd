@@ -1,0 +1,9 @@
+flowchart TD
+    D["Developer Agent"] --> R["Reviewer Agent"]
+    R --> V["Validator Agent"]
+    V --> G{"Deterministic gates"}
+    G -->|All required gates pass| E["Evaluator Agent"]
+    G -->|Any gate fails| D
+    G -->|Blocked or inconclusive| H["Escalation"]
+    H --> D
+    H --> A["Authorized human"]

@@ -1,0 +1,20 @@
+graph TD
+    E[BookingConfirmed]
+
+    P[Booking Service]
+    C1[Fleet Service]
+    C2[Station Operations Service]
+    T1[Contract Tests]
+    A[ADR-032]
+    S[Integration Event Skill]
+    PR[Previous PR #1842]
+    F[Historical Failure F-391]
+
+    E -->|published by| P
+    E -->|consumed by| C1
+    E -->|consumed by| C2
+    E -->|protected by| T1
+    E -->|governed by| A
+    E -->|modified using| S
+    E -->|previously changed in| PR
+    E -->|involved in| F

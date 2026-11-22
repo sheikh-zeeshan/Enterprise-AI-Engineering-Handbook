@@ -1,0 +1,14 @@
+flowchart TD
+    A[Review evidence ingestion] --> B[Verification and normalization]
+    B --> C[Finding classification]
+    C --> D[Pattern detection]
+    D --> E[Root-cause investigation]
+    E --> F[Candidate improvement]
+    F --> G{Human governance}
+    G -->|Approved| H[Controlled validation]
+    G -->|Rejected or deferred| J[Preserve decision]
+    H -->|Passed| I[Versioned activation]
+    H -->|Failed| K[Revise candidate]
+    I --> L[Future outcome evaluation]
+    classDef decision fill:#fff1d6,stroke:#bb8b36,color:#704b0a
+    class G decision

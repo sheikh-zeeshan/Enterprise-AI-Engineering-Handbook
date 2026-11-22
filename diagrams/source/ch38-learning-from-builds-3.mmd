@@ -1,0 +1,23 @@
+flowchart TD
+    A[Build Unsuccessful] --> B{Complete and reliable evidence?}
+    B -->|No| C[Unknown or Inconclusive]
+    B -->|Yes| D{Observed failure phase}
+    D -->|Compile| E[Inspect Compiler Diagnostics]
+    D -->|Restore| F[Inspect Dependency Resolution]
+    D -->|Configuration| G[Inspect Build Properties and Targets]
+    D -->|Tool or Runner| H[Inspect Environment Telemetry]
+    E --> I[Investigate Possible Source or Dependency Causes]
+    F --> J{Conflict or feed issue?}
+    J -->|Conflict| K[Check Version Constraints]
+    J -->|Feed| L[Check Availability and Authentication]
+    J -->|Unclear| C
+    G --> M[Investigate Configuration]
+    H --> N[Investigate Toolchain and Infrastructure]
+    I --> O{Root cause verified?}
+    K --> O
+    L --> O
+    M --> O
+    N --> O
+    O -->|No| C
+    O -->|Yes| P[Record Verified Cause]
+    P --> Q[Consider Candidate Learning]

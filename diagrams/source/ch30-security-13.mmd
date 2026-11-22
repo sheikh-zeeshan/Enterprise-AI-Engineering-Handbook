@@ -1,0 +1,14 @@
+flowchart TB
+    U[Authenticated task] --> H[Enterprise Harness]
+    P[Approved security policy] --> H
+    H --> AD[Platform adapters]
+    AD --> C[Claude Code]
+    AD --> G[GitHub Copilot]
+    AD --> O[Codex]
+    C --> S[Authorized isolated execution]
+    G --> S
+    O --> S
+    S --> V[Deterministic validation]
+    V --> E[(Protected audit evidence)]
+    E --> A[Independent approval]
+    A --> D[Governed delivery]

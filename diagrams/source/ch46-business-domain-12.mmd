@@ -1,0 +1,36 @@
+flowchart TD
+    BU[Business Understanding]
+    DT[Domain Terminology]
+    BC[Business Capabilities]
+    BR[Business Rules]
+    WF[Business Workflows]
+    DB[Domain Boundaries]
+
+    SA[Solution Architecture]
+    DD[Database Design]
+    API[API Design]
+    ED[Event Design]
+    AI[AI-generated Code]
+    SP[Skills and Prompts]
+    HA[Harness Automation]
+
+    BU --> DT
+    BU --> BC
+    BU --> BR
+
+    DT --> WF
+    BC --> WF
+    BR --> WF
+
+    WF --> DB
+
+    DB --> SA
+
+    SA --> DD
+    SA --> API
+    SA --> ED
+    SA --> AI
+    BU --> SP
+    SP --> AI
+    SA --> HA
+    HA --> AI

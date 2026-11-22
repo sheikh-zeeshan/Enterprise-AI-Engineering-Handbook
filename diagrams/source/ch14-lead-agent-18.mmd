@@ -1,0 +1,15 @@
+flowchart TB
+    G[User Goal] --> L[Unrestricted Lead Agent]
+
+    L --> C[Writes Code]
+    C --> T[Runs Own Tests]
+    T --> R[Reviews Own Work]
+    R --> V[Validates Own Goal]
+    V --> S{Something Fails?}
+
+    S -->|Yes| M[Modify Code or Controls]
+    M --> T
+
+    S -->|No| A[Self-Approve]
+
+    A --> D[Deploy]

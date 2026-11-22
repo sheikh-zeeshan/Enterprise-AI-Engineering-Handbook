@@ -1,0 +1,15 @@
+flowchart TD
+    A[Enterprise Policy Authority] --> B[Versioned Policy Registry]
+    B --> C[Policy Resolver]
+    C --> D[Claude Code Adapter]
+    C --> E[GitHub Copilot Adapter]
+    C --> F[Codex Adapter]
+    D --> G[Enterprise Harness]
+    E --> G
+    F --> G
+    G --> H[Policy-Aware Tool Broker]
+    G --> I[Deterministic Gates]
+    G --> J[Human Approval]
+    H --> K[Audit Evidence]
+    I --> K
+    J --> K

@@ -1,0 +1,22 @@
+flowchart LR
+    AP["Approved Prompt"]
+    RI["Repository Instructions"]
+    GS["Governed Skills"]
+    ST["Approved Steering Note"]
+    UK["Untrusted Content"]
+    CG["Context Gateway"]
+    AG["AI Agent"]
+    TP["Tool and Permission Policy"]
+    VR["Validation and Review"]
+    AO["Approved Output"]
+
+    AP --> CG
+    RI --> CG
+    GS --> CG
+    ST --> CG
+    UK --> CG
+
+    CG -->|Classified context| AG
+    TP --> AG
+    AG --> VR
+    VR --> AO

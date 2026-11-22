@@ -1,0 +1,24 @@
+flowchart TD
+    N0["Engineering Knowledge"]
+    N1{"Persistent Mandatory Guidance?"}
+    N2["Repository Instructions"]
+    N3{"Task-Specific Requirement?"}
+    N4["Prompt"]
+    N5{"Reusable Engineering Workflow?"}
+    N6{"Cohesive Capability?"}
+    N7["Create Skill"]
+    N8["Keep Within Existing Workflow"]
+    N9{"Objective Condition?"}
+    N10["Deterministic Gate"]
+    N11["Repository Knowledge"]
+    N0 --> N1
+    N1 -- Yes --> N2
+    N1 -- No --> N3
+    N3 -- Yes --> N4
+    N3 -- No --> N5
+    N5 -- Yes --> N6
+    N5 -- No --> N9
+    N6 -- Yes --> N7
+    N6 -- No --> N8
+    N9 -- Yes --> N10
+    N9 -- No --> N11

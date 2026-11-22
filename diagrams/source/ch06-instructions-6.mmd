@@ -1,0 +1,12 @@
+flowchart LR
+    A["Evidence from changes, reviews, tests, and incidents"] --> B["Instruction improvement proposal"]
+    B --> C["Owner review"]
+    C --> D{"High-risk change?"}
+    D -- Yes --> E["Architecture, Security, or Compliance approval"]
+    D -- No --> F["Peer approval"]
+    E --> G["Version-controlled Instruction update"]
+    F --> G
+    G --> H["Validation and platform synchronization"]
+    H --> I["Effective date and communication"]
+    I --> J["Outcome measurement"]
+    J --> A

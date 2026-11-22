@@ -1,0 +1,10 @@
+flowchart TD
+    A["Tool Failed or Timed Out"] --> B{"Possible External Side Effects?"}
+    B -->|No| C{"Transient Failure?"}
+    C -->|Yes| E["Bounded Retry"]
+    C -->|No| F["Investigate or Escalate"]
+    B -->|Yes| D{"Completion State Established?"}
+    D -->|No| G["Reconcile Target State"] --> H{"Retry Semantics Safe?"}
+    D -->|Yes| H
+    H -->|Yes| E
+    H -->|No| F

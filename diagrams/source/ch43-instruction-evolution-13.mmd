@@ -1,0 +1,16 @@
+flowchart TD
+    A["Alpha Car Detailing Harness"] --> B["Execution Evidence"]
+    B --> C["Pattern Detection"]
+    C --> D["Claude Instruction Analysis Agent"]
+    D --> E["Claude Instruction Proposal Agent"]
+    E --> F["Candidate Proposal"]
+    F --> G["Governance Service"]
+    G --> H{"Human Approval"}
+    H -->|Reject| I["Record Decision"]
+    H -->|Approve| J["Controlled Update Workflow"]
+    J --> K["Validation Pipeline"]
+    K --> L{"Passed?"}
+    L -->|No| M["Revise or Roll Back"]
+    L -->|Yes| N["Approved Instruction Registry"]
+    N --> O["Future Claude Code Runs"]
+    O --> A

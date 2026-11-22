@@ -1,0 +1,15 @@
+sequenceDiagram
+    actor Engineer
+    participant Agent as AI Agent
+    participant Repo as Repository
+    participant Gates as Deterministic checks
+    Engineer->>Agent: Define scope, quota rule, and constraints
+    Agent->>Repo: Inspect contracts, booking flow, and tests
+    Repo-->>Agent: Source evidence and current behavior
+    Agent-->>Engineer: Plan, assumptions, and affected files
+    Engineer->>Agent: Approve bounded implementation
+    Agent->>Repo: Prepare changes and tests
+    Agent->>Gates: Request build and test execution
+    Gates-->>Agent: Exit status and diagnostic evidence
+    Agent-->>Engineer: Diff, evidence, and unresolved risks
+    Engineer->>Engineer: Architectural review and Human Approval

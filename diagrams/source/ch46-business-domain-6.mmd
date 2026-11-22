@@ -1,0 +1,38 @@
+sequenceDiagram
+    actor Admin as Fleet Administrator
+    participant Fleet as Fleet Management
+    participant Catalog as Service Catalog
+    participant Capacity as Capacity Management
+    participant Booking as Booking
+    participant Station as Station Operations
+    participant Billing as Billing
+    participant Notify as Notifications
+
+    Admin->>Fleet: Select fleet
+    Fleet-->>Admin: Eligible vehicles
+
+    Admin->>Catalog: Review available services
+    Catalog-->>Admin: Service options
+
+    Admin->>Capacity: Check station capacity
+    Capacity-->>Admin: Available options
+
+    Admin->>Booking: Submit fleet booking
+
+    Booking->>Fleet: Validate fleet and vehicles
+    Fleet-->>Booking: Eligibility result
+    Note over Booking: Apply required business authorization and validation
+    alt Authorization and validation pass
+        Booking->>Capacity: Request capacity reservation
+        Capacity-->>Booking: Reservation result
+        alt Reservation successful
+            Booking-->>Admin: Confirm accepted booking
+            Station->>Booking: Record service completion
+            Booking->>Billing: Provide qualifying completed activity
+            Booking->>Notify: Communicate completion
+        else Reservation unsuccessful
+            Booking-->>Admin: Requested schedule cannot be confirmed
+        end
+    else Request is not authorized or valid
+        Booking-->>Admin: Reject or request correction
+    end

@@ -1,0 +1,22 @@
+flowchart TB
+    U[Authenticated engineer] --> H[Enterprise AI Harness]
+    subgraph CTRL[Security control plane]
+      PD[Policy decision] --> TG[Tool gateway]
+      CB[Credential broker] --> TG
+      AP[Approval service] --> TG
+    end
+    ID[Identity provider] --> PD
+    H --> PD
+    subgraph E[Agent execution plane]
+      L[Lead Agent] --> D[Developer Agent]
+      D --> R[Reviewer Agent]
+      R --> V[Validator Agent]
+      V --> EV[Evaluator Agent]
+    end
+    H --> E
+    E -. Proposed operations .-> TG
+    TG --> SB[Isolated run sandbox]
+    SB --> REPO[(Approved repository and resources)]
+    REPO --> G[Independent security gates]
+    G --> AUD[(Protected evidence store)]
+    TG --> AUD

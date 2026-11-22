@@ -1,0 +1,8 @@
+flowchart TD
+    A[Resolve Applicable Policies] --> B{Material Conflict?}
+    B -->|No| C[Continue Authorization]
+    B -->|Yes| D[Block Affected Operation]
+    D --> E[Identify Policy Owners]
+    E --> F[Authorized Resolution]
+    F --> G[Publish Decision]
+    G --> H[Re-evaluate Operation]

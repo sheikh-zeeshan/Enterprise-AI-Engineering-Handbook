@@ -1,0 +1,22 @@
+flowchart TB
+    H[Harness]
+
+    H --> L[Lead Agent]
+    H --> D[Developer Agent]
+    H --> R[Reviewer Agent]
+    H --> V[Validator Agent]
+    H --> E[Evaluator Agent]
+
+    H --> G[Deterministic Gates]
+    H --> P[Permissions]
+    H --> S[Workflow State]
+    H --> A[Audit Trail]
+
+    GOV[Enterprise Governance] --> H
+
+    GOV --> I[Instructions]
+    GOV --> SEC[Security Policy]
+    GOV --> AP[Approval Policy]
+    GOV --> RET[Retry Policy]
+
+    L -. operates within .-> GOV

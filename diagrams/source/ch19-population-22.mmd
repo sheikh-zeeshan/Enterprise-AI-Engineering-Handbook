@@ -1,0 +1,9 @@
+flowchart LR
+    I["Repository Instructions"] --> A["Copilot"]
+    P["Population Item"] --> A
+    S["Skill"] --> A
+    PR["Task Prompt"] --> A
+
+    A --> O["Implementation Output"]
+    O --> H["Harness"]
+    H --> PS[("Population Store")]

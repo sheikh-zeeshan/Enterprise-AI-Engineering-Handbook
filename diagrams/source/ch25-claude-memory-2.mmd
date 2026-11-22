@@ -1,0 +1,18 @@
+flowchart TD
+    A["Engineering Request"] --> B["Harness Context Assembly"]
+    C["Approved Instructions"] --> B
+    D["Task Steering Note"] --> B
+    E["Repository Intelligence"] --> B
+    F["Permitted Claude Memory"] -.-> B
+    B --> G{"Material Context Conflict?"}
+    G -->|"Yes"| H["Verify Evidence and Governing Decisions"]
+    H --> I{"Resolved?"}
+    I -->|"No"| J["Escalate to Human Owner"]
+    I -->|"Yes"| K["Lead Agent"]
+    G -->|"No"| K
+    K --> L["Developer Agent"]
+    L --> M["Reviewer Agent"]
+    M --> N["Validator Agent"]
+    N --> O["Evaluator Agent"]
+    O --> P["Harness Completion Gates"]
+    P --> Q["Human Approval"]

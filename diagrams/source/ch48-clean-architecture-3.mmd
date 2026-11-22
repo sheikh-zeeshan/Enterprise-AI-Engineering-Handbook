@@ -1,0 +1,11 @@
+flowchart TB
+    Service["src/Services/Booking"]
+    Service --> Domain["Domain"]
+    Service --> App["Application"]
+    Service --> Infra["Infrastructure"]
+    Service --> Api["Api"]
+
+    Domain --> DomainContent["Bookings and Events"]
+    App --> AppContent["Bookings and proposed use cases"]
+    Infra --> InfraContent["Persistence; proposed Messaging and ExternalServices"]
+    Api --> ApiContent["Endpoints and host composition"]

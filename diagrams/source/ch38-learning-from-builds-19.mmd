@@ -1,0 +1,19 @@
+flowchart TD
+    A[Developer Agent] --> B[Build Execution]
+    B --> C[Evidence Collection]
+    C --> D[(Evidence Store)]
+    D --> E[Failure Classification]
+    E --> F[Root-Cause Investigation]
+    F --> G[Pattern Detection]
+    G --> H[Candidate Recommendation]
+    H --> I[Evidence and Policy Verification]
+    I --> J[Confidence and Risk Assessment]
+    J --> K[Human Review]
+    K --> L{Approved?}
+    L -->|No| M[Record Decision]
+    L -->|Yes| N[Versioned Publication]
+    N --> O[(Harness Memory)]
+    N --> P[Approved Skill or Prompt]
+    O --> Q[Future Engineering Runs]
+    P --> Q
+    Q -. New evidence .-> B

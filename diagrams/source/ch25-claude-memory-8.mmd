@@ -1,0 +1,13 @@
+flowchart TD
+    A["Memory Entry"] --> B["Classify and Verify Scope"]
+    B --> C{"Still Useful and Correct?"}
+    C -->|"Yes"| D["Retain with Appropriate Review Trigger"]
+    C -->|"No"| E["Collect Evidence for Correction"]
+    E --> F{"Sensitive or Prohibited?"}
+    F -->|"Yes"| G["Restrict Exposure and Follow Security Process"]
+    F -->|"No"| H["Propose Correction, Supersession or Expiration"]
+    H --> I["Owner Review"]
+    I --> J{"Authorized?"}
+    J -->|"No"| K["Reject or Revise"]
+    J -->|"Yes"| L["Apply with Supported Controls"]
+    L --> M["Verify Actual State and Record Result"]

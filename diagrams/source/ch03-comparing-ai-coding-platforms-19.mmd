@@ -1,0 +1,24 @@
+flowchart TB
+    S[Start from Frozen Baseline]
+    I[Verify Instructions]
+    E[Explore Repository]
+    P[Produce Plan]
+    H{Plan Review}
+    X[Execute Task]
+    V[Run Validation]
+    R[Review Result]
+    M[Collect Metrics]
+    D[Record Decision]
+
+    S --> I
+    I --> E
+    E --> P
+    P --> H
+
+    H -->|Revise| P
+    H -->|Approve| X
+
+    X --> V
+    V --> R
+    R --> M
+    M --> D

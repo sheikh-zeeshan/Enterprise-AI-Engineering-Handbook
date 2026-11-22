@@ -1,0 +1,35 @@
+flowchart TB
+    U[User Goal] --> H[Harness Control Plane]
+
+    H --> L[Lead Agent]
+
+    L --> RI[Repository Intelligence]
+    L --> I[Instructions]
+    L --> S[Steering Notes]
+    L --> K[Knowledge Sources]
+    L --> SK[Skills Registry]
+    L --> R[Role Registry]
+
+    L --> P[Execution Plan]
+
+    P --> D[Developer Agent]
+    D --> T[Tools / Repository]
+
+    T --> G[Deterministic Gates]
+
+    G --> RV[Reviewer Agent]
+    RV --> V[Validator Agent]
+    V --> E[Evaluator Agent]
+
+    E --> A{Approval Required?}
+
+    A -->|Yes| HA[Human Approval]
+    A -->|No| C[Complete]
+
+    HA -->|Approved| C
+    HA -->|Rejected| L
+
+    G -->|Failed| L
+    RV -->|Changes Required| L
+    V -->|Failed| L
+    E -->|Below Threshold| L

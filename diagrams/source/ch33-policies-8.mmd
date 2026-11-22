@@ -1,0 +1,18 @@
+flowchart TD
+    A[Prompt or Skill Request]
+    A --> B{Conflicts with Repository Instruction?}
+
+    B -->|No| C{Conflicts with Enterprise Policy?}
+    B -->|Yes| D[Resolve Against Instruction]
+
+    D --> C
+
+    C -->|No| E[Proceed Within Harness Controls]
+    C -->|Yes| F{Authorized Exception Exists?}
+
+    F -->|Yes| G[Proceed Within Exception Scope]
+    F -->|No| H[Stop and Escalate]
+
+    G --> I[Generate Audit Evidence]
+    E --> I
+    H --> I

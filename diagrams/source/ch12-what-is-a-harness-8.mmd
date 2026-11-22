@@ -1,0 +1,14 @@
+flowchart LR
+    R[Engineering Request] --> H[AI Engineering Harness]
+    H --> A[AI Agents]
+    A --> W[Generated Workspace]
+    W --> H
+
+    H --> G[Harness Gates]
+    G --> PR[Pull Request]
+
+    PR --> CI[CI Pipeline]
+    CI --> HR[Human Review]
+    HR --> M[Merge]
+    M --> CD[CD Pipeline]
+    CD --> ENV[Environment]

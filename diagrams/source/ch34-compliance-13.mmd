@@ -1,0 +1,14 @@
+flowchart TD
+    A["Copilot Engineering Task"] --> B["Compliance Preflight"]
+    B --> C{"Authorized?"}
+    C -- No --> X["Block and Record"]
+    C -- Yes --> D["Pull Request"]
+    D --> E["Independent CI and Harness Gates"]
+    E --> F{"All Mandatory Controls Satisfied?"}
+    F -- No --> X
+    F -- Yes --> G["Code Owner and Human Review"]
+    G --> H{"Approvals Valid?"}
+    H -- No --> X
+    H -- Yes --> I["Protected Merge and Release Approval"]
+    I --> J["Controlled Deployment"]
+    J --> K["Audit Evidence and Reporting"]

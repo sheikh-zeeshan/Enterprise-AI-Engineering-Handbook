@@ -1,0 +1,22 @@
+stateDiagram-v2
+    [*] --> Candidate
+    Candidate --> Proposed: Evidence verified
+    Candidate --> Inconclusive: Insufficient evidence
+    Proposed --> Approved: Authorized human decision
+    Proposed --> Rejected: Rejected by authorized reviewer
+    Proposed --> Deferred: More evidence required
+    Deferred --> Proposed: Reassessment
+    Approved --> Implementing
+    Implementing --> Validating
+    Validating --> ReleaseReady: Required checks pass
+    Validating --> ImplementationFailed: Checks fail
+    ReleaseReady --> Released: Release authorized
+    Released --> Measuring
+    Measuring --> Retained: Outcomes acceptable
+    Measuring --> RollbackRequired: Regression detected
+    RollbackRequired --> RolledBack: Governed restoration
+    Inconclusive --> [*]
+    Rejected --> [*]
+    ImplementationFailed --> [*]
+    Retained --> [*]
+    RolledBack --> [*]

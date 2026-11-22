@@ -1,0 +1,16 @@
+flowchart TD
+    H["Harness"]
+
+    H --> L["Claude — Lead Role"]
+    H --> D["Claude — Developer Role"]
+    H --> R["Claude — Reviewer Role"]
+    H --> V["Claude — Validator Role"]
+    H --> E["Claude — Evaluator Role"]
+
+    L --> RW["Run Workspace"]
+    D --> RW
+    R --> RW
+    V --> RW
+    E --> RW
+
+    RW --> H

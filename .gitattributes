@@ -1,0 +1,5 @@
+# Generated asset hashes must survive Windows checkouts unchanged.
+diagrams/source/*.mmd text eol=lf
+diagrams/exported/*.svg text eol=lf
+diagrams/*.json text eol=lf
+harness/scripts/*.cjs text eol=lf

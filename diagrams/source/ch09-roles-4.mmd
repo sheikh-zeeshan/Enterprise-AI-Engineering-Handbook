@@ -1,0 +1,31 @@
+flowchart TB
+    U[Human Request] --> P[Task Prompt]
+    P --> H[AI Harness]
+
+    I[Repository Instructions] --> H
+    S[Skills] --> H
+    N[Steering Notes] --> H
+    K[Knowledge Sources] --> H
+    R[Role Definitions] --> H
+
+    H --> L[Lead Agent]
+    L --> A[Architect Agent]
+    A --> D[Developer Agent]
+
+    D --> RV[Reviewer Agent]
+    D --> SR[Security Reviewer]
+    D --> V[Validator Agent]
+
+    RV --> H
+    SR --> H
+    V --> H
+
+    H --> E[Evaluator Agent]
+    E --> PR[Pull Request Package]
+
+    PR --> HA[Human Approval]
+    HA -->|Approved| C[Merge or Release]
+    HA -->|Rejected| H
+    HA -->|More evidence required| H
+
+    H --> M[(Run History and Metrics)]

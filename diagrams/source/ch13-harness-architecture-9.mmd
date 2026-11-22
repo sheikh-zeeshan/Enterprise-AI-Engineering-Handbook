@@ -1,0 +1,22 @@
+flowchart TD
+    U[Engineer or Work Item] --> API[Harness API / Workflow Service]
+
+    API --> O[Orchestrator]
+    O --> RI[Repository Intelligence Service]
+    O --> Q[Execution Queue]
+
+    Q --> AR[Isolated Agent Runner]
+    AR --> REPO[Ephemeral Repository Workspace]
+
+    O --> GR[Gate Runner]
+    GR --> REPO
+
+    O --> EV[Evaluation Service]
+    O --> AP[Approval Service]
+
+    O --> DB[(Workflow State)]
+    O --> AU[(Audit Store)]
+    O --> MT[Metrics / Telemetry]
+
+    AP --> OM[Output Manager]
+    OM --> SCM[Git Platform]

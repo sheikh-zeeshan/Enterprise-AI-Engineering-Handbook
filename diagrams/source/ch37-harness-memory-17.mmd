@@ -1,0 +1,9 @@
+flowchart TD
+    E["Execution evidence"] --> C["Learning candidate service"]
+    C --> P["Evidence and policy assessment"]
+    P --> A["Governance approval"]
+    A --> R[("Memory registry")]
+    R --> RET["Eligibility and retrieval service"]
+    RET --> H["Harness execution"]
+    R --> L["Lifecycle management"]
+    R --> U["Audit and provenance"]

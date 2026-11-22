@@ -1,0 +1,11 @@
+flowchart TD
+    A[Build Evidence Available] --> B[Evidence Manifest]
+    B --> C[Codex Analysis Invocation]
+    C --> D[Structured Analysis Result]
+    D --> E[Schema Validation]
+    E --> F[Evidence Reference Verification]
+    F --> G[Confidence and Risk Assessment]
+    G --> H{Candidate justified?}
+    H -->|No| I[Retain Observation]
+    H -->|Yes| J[Human-Review Recommendation]
+    J --> K[Governed Change Process]

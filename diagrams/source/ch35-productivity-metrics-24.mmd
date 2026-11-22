@@ -1,0 +1,7 @@
+flowchart TD
+    A["Codex Implementation Workspace"] --> B["Generated Source Changes"] --> C["Harness Validation"] --> E["Trusted Validation Evidence"]
+    A --> D["Execution Event Adapter"] --> F["Trusted Event Ingestion"]
+    E --> G[("Protected Metrics Store")]
+    F --> G
+    G --> H["Read-Only Analytics"] --> I["Engineering Dashboard"]
+    J["Authorized Governance Process"] --> K["Versioned Metric Definitions"] --> H

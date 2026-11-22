@@ -1,0 +1,18 @@
+flowchart TB
+    User[Authenticated User]
+    IdP[Identity Provider]
+    GW[API Gateway]
+    Service[Owning Service]
+    Policy[Authorization Policy]
+    Data[(Owned Data)]
+
+    User --> IdP
+    IdP --> User
+
+    User -->|Token| GW
+    GW -->|Validated Identity Context| Service
+
+    Service --> Policy
+    Policy --> Data
+
+    Policy -->|Allow / Deny| Service

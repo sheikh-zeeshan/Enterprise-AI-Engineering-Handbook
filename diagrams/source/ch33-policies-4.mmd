@@ -1,0 +1,17 @@
+flowchart LR
+    A[Before Execution] --> B[During Execution]
+    B --> C[After Execution]
+
+    A --> A1[Resolve Policies]
+    A --> A2[Check Provider]
+    A --> A3[Check Permissions]
+    A --> A4[Check Exceptions]
+
+    B --> B1[Control Tool Calls]
+    B --> B2[Restrict Data Exposure]
+    B --> B3[Monitor Environment Access]
+
+    C --> C1[Run Policy Gates]
+    C --> C2[Verify Approval]
+    C --> C3[Record Evidence]
+    C --> C4[Detect Violations]

@@ -1,0 +1,12 @@
+flowchart TB
+    R["Consolidated Fleet Billing Request"] --> Lead["Enterprise Lead"]
+    Lead --> B["Booking Run"]
+    Lead --> F["Fleet Run"]
+    Lead --> I["Billing Run"]
+    B --> BV["Booking Validation"]
+    F --> FV["Fleet Validation"]
+    I --> IV["Billing Validation"]
+    BV --> E["Cross-Repository Evaluation"]
+    FV --> E
+    IV --> E
+    E --> A["Required Human Approvals"]

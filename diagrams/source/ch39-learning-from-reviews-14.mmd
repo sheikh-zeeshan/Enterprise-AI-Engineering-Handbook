@@ -1,0 +1,30 @@
+flowchart TD
+    subgraph Evidence_Plane[Evidence plane]
+        A[Review findings]
+        B[Human review decisions]
+        C[Validation results]
+        D[Implementation history]
+    end
+    subgraph Decision_Plane[Learning and decision plane]
+        E[Evidence classification]
+        F[Pattern and root-cause analysis]
+        G[Candidate improvements]
+        H{Human governance}
+    end
+    subgraph Control_Plane[Governed control plane]
+        I[Approved Instructions]
+        J[Approved Skills and Prompts]
+        K[Agent roles and workflows]
+        L[Deterministic gates]
+    end
+    A --> E
+    B --> E
+    C --> E
+    D --> E
+    E --> F --> G --> H
+    H -->|Authorized changes| I
+    H -->|Authorized changes| J
+    H -->|Authorized changes| K
+    H -->|Authorized changes| L
+    classDef decision fill:#fff1d6,stroke:#bb8b36,color:#704b0a
+    class H decision

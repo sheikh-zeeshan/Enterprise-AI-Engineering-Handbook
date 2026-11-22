@@ -1,0 +1,68 @@
+flowchart LR
+    subgraph PromptLibrary["Prompt Library"]
+        P1[Feature Development]
+        P2[Bug Fix]
+        P3[Test Generation]
+        P4[Architecture Review]
+        P5[Security Review]
+        P6[PR Preparation]
+    end
+
+    subgraph Harness["Alpha Car Detailing Harness"]
+        L[Lead Agent]
+        D[Developer Agent]
+        R[Reviewer Agent]
+        V[Validator Agent]
+        E[Evaluator Agent]
+    end
+
+    subgraph Evidence["Evidence Sources"]
+        B[Builds]
+        T[Tests]
+        RF[Review Findings]
+        VF[Validation Findings]
+        EO[Evaluation Outcomes]
+        PR[PR Feedback]
+        HF[Human Feedback]
+    end
+
+    subgraph Learning["Learning Layer"]
+        HM[Harness Memory]
+        PD[Pattern Detection]
+        CG[Candidate Generator]
+    end
+
+    subgraph Governance["Governance"]
+        PO[Prompt Owner]
+        PV[Prompt Version Registry]
+    end
+
+    PromptLibrary --> L
+    L --> D
+    D --> R
+    R --> V
+    V --> E
+
+    D --> B
+    D --> T
+    R --> RF
+    V --> VF
+    E --> EO
+    E --> PR
+    PR --> HF
+
+    B --> HM
+    T --> HM
+    RF --> HM
+    VF --> HM
+    EO --> HM
+    PR --> HM
+    HF --> HM
+
+    HM --> PD
+    PD --> CG
+    CG --> PO
+    PO -->|Approve| PV
+    PO -->|Reject| HM
+
+    PV --> PromptLibrary

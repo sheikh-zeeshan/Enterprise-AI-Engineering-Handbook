@@ -1,0 +1,10 @@
+stateDiagram-v2
+    [*] --> Running
+    Running --> Pass: All mandatory checks succeed
+    Running --> Fail: A mandatory condition is violated
+    Running --> Blocked: A prerequisite is unavailable
+    Running --> Inconclusive: Evidence is insufficient
+    Fail --> Running: Corrected revision submitted
+    Blocked --> Running: Prerequisite restored
+    Inconclusive --> Running: Approved investigation or rerun
+    Pass --> [*]

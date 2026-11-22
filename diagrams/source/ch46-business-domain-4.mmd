@@ -1,0 +1,39 @@
+flowchart TB
+    ACD[Alpha Car Detailing]
+
+    subgraph Customer["Customer Relationship"]
+        CM[Customer Management]
+        CA[Corporate Accounts]
+        FM[Fleet Management]
+    end
+
+    subgraph Offering["Service Offering"]
+        SC[Service Catalog]
+    end
+
+    subgraph Fulfillment["Service Fulfillment"]
+        BK[Booking]
+        CP[Capacity Management]
+        SO[Station Operations]
+    end
+
+    subgraph Finance["Commercial Processing"]
+        BI[Billing]
+        PY[Payments]
+    end
+
+    subgraph Engagement["Engagement"]
+        NT[Notifications]
+    end
+
+    ACD --> Customer
+    ACD --> Offering
+    ACD --> Fulfillment
+    ACD --> Finance
+    ACD --> Engagement
+
+    Customer --> Fulfillment
+    Offering --> Fulfillment
+    Fulfillment --> Finance
+    Fulfillment --> Engagement
+    Finance --> Engagement

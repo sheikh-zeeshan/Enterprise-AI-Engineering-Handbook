@@ -1,0 +1,21 @@
+flowchart TD
+    G["Goal"] --> L["Lead Agent"]
+    L --> PP["Proposed Population"]
+
+    PP --> H["Harness / Population Manager"]
+    H --> P[("Durable Population")]
+
+    P --> D["Developer Agent"]
+    D --> R["Reviewer Agent"]
+    R --> V["Validator Agent"]
+    V --> E["Evaluator Agent"]
+
+    D --> EV["Evidence"]
+    R --> EV
+    V --> EV
+    E --> EV
+
+    EV --> H
+    H --> P
+
+    P --> HA["Human Approval / Intervention"]

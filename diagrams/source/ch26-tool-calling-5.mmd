@@ -1,0 +1,19 @@
+flowchart LR
+    subgraph Control["Trusted Control Plane"]
+        H["Harness"] --> P["Policy Engine"]
+    end
+    A["AI Agent"] -->|Tool request| P
+    P -->|Authorized request| T["Tool Adapter"]
+    subgraph Runtime["Restricted Execution Boundary"]
+        T --> W["Isolated Workspace"]
+    end
+    subgraph External["External Systems and Data"]
+        R["Repository"]
+        D["Development Database"]
+        C["Cloud APIs"]
+    end
+    T <--> R
+    T <--> D
+    T <--> C
+    T -->|Structured results| A
+    T -->|Execution records| H

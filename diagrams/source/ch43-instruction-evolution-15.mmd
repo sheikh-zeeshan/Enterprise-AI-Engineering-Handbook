@@ -1,0 +1,10 @@
+flowchart TD
+    A["Harness Coordinator"] --> B["Prepare Evidence Package"]
+    B --> C["Codex Read-only Execution"]
+    C --> D["Instruction Analysis"]
+    D --> E["Candidate Proposal Output"]
+    E --> F["Trusted Output Parser"]
+    F --> G{"Schema and Evidence Valid?"}
+    G -->|No| H["Reject Output"]
+    G -->|Yes| I["Controlled Candidate Store"]
+    I --> J["Governance Workflow"]

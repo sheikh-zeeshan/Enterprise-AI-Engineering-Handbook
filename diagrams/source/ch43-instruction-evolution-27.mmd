@@ -1,0 +1,13 @@
+flowchart TD
+    A["Execution Evidence"] --> B["Evidence and Pattern Analysis"]
+    B --> C["Instruction Evolution Agent"]
+    C --> D["Candidate Instruction Change"]
+    D --> E["Deterministic Governance Checks"]
+    E --> F{"Human Owner Approves?"}
+    F -->|No| G["Preserve Decision"]
+    F -->|Yes| H["Controlled Version Preparation"]
+    H --> I["Instruction Validation"]
+    I --> J{"Validation Passed?"}
+    J -->|No| K["Revise or Retain Previous Version"]
+    J -->|Yes| L["Controlled Activation"]
+    L --> M["Future Harness Runs"]

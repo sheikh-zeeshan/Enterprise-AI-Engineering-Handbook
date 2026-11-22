@@ -1,0 +1,21 @@
+flowchart TD
+    A["Task and affected files"] --> B["Organization and portfolio Instructions"]
+    A --> C["Repository-root Instructions"]
+    A --> D["Service and directory Instructions"]
+    A --> E["Technology and workflow Instructions"]
+    A --> F["Role Instructions"]
+    A --> G["Approved exceptions"]
+
+    B --> H["Applicability analysis"]
+    C --> H
+    D --> H
+    E --> H
+    F --> H
+    G --> H
+
+    H --> I["Strength and precedence"]
+    I --> J["Conflict and ambiguity analysis"]
+    J --> K{"Sufficient confidence?"}
+    K -- Yes --> L["Effective instruction set"]
+    K -- No --> M["Human resolution or scoped block"]
+    L --> N["Plan and implement"]

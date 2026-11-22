@@ -1,0 +1,20 @@
+flowchart TD
+    N0["Proposed Engineering Knowledge"]
+    N1{"Persistent Repository Guidance?"}
+    N2["CLAUDE.md"]
+    N3{"Current Task Requirement?"}
+    N4["Prompt"]
+    N5{"Reusable Engineering Procedure?"}
+    N6["Create or Reuse Skill"]
+    N7{"Objective Condition?"}
+    N8["Deterministic Gate"]
+    N9["Documentation or Repository Intelligence"]
+    N0 --> N1
+    N1 -- Yes --> N2
+    N1 -- No --> N3
+    N3 -- Yes --> N4
+    N3 -- No --> N5
+    N5 -- Yes --> N6
+    N5 -- No --> N7
+    N7 -- Yes --> N8
+    N7 -- No --> N9

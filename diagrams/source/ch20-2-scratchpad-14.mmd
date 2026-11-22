@@ -1,0 +1,55 @@
+flowchart TD
+    A["1. Task Received"]
+    B["2. Run Created"]
+    C["3. Inputs Captured"]
+    D["4. Lead Investigation"]
+    E["5. Plan Created"]
+    F["6. Developer Implementation"]
+    G["7. Reviewer Assessment"]
+    H{"Review Passed?"}
+    I["Developer Remediation"]
+    J["8. Deterministic Validation"]
+    K{"Validation Passed?"}
+    L["Developer Remediation"]
+    M["9. Evaluation"]
+    N{"Goal Satisfied?"}
+    O["Further Work / Escalation"]
+    P["10. Final Outputs"]
+    Q["11. Promotion Review"]
+    R["12. Run Completion"]
+    S["13. Retention"]
+    T["14. Cleanup"]
+
+    A --> B
+    B --> C
+    C --> D
+    D --> E
+    E --> HAND["Prepare Lead Handoff and Persist CP-001"]
+    HAND --> F
+    F --> CP2["Persist CP-002"]
+    CP2 --> G
+    G --> H
+
+    H -->|No| I
+    I --> CP2
+
+    H -->|Yes| CP3["Persist CP-003"]
+    CP3 --> J
+    J --> K
+
+    K -->|No| L
+    L --> CP2
+
+    K -->|Yes| CP4["Persist Validator Handoff and CP-004"]
+    CP4 --> M
+    M --> N
+
+    N -->|No| O
+    O --> F
+
+    N -->|Yes| P
+    P --> CP5["Persist CP-005"]
+    CP5 --> R
+    P -. "independent governance" .-> Q
+    R --> S
+    S --> T

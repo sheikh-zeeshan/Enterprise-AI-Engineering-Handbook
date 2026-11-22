@@ -1,0 +1,89 @@
+flowchart TB
+    subgraph Clients["Client Channels"]
+        Web["Customer Web"]
+        Mobile["Mobile"]
+        CorporatePortal["Corporate Fleet Portal"]
+        StationUI["Station Operations UI"]
+        FinanceUI["Finance UI"]
+    end
+
+    Gateway["API Gateway"]
+
+    subgraph Core["Core Business Services"]
+        Booking["Booking Service"]
+        Corporate["Corporate Account Service"]
+        Fleet["Fleet Service"]
+        Station["Station Operations Service"]
+        Billing["Billing Service"]
+        Payment["Payment Service"]
+        Notification["Notification Service"]
+    end
+
+    Bus["Integration Event Bus"]
+
+    subgraph Data["Owned Operational Stores"]
+        BookingDB[("Booking DB")]
+        CorporateDB[("Corporate Account DB")]
+        FleetDB[("Fleet DB")]
+        StationDB[("Station Operations DB")]
+        BillingDB[("Billing DB")]
+        PaymentDB[("Payment DB")]
+        NotificationDB[("Notification DB")]
+    end
+
+    Cache[("Redis Cache")]
+    PaymentProvider["Payment Provider"]
+    CommProvider["Email / SMS Provider"]
+    Identity["Identity Provider"]
+    Telemetry["Observability Platform"]
+
+    Web --> Gateway
+    Mobile --> Gateway
+    CorporatePortal --> Gateway
+    StationUI --> Gateway
+    FinanceUI --> Gateway
+
+    Gateway --> Identity
+
+    Gateway --> Booking
+    Gateway --> Corporate
+    Gateway --> Fleet
+    Gateway --> Station
+    Gateway --> Billing
+    Gateway --> Payment
+
+    Booking --> Corporate
+    Booking --> Fleet
+    Booking --> Station
+
+    Booking --> BookingDB
+    Corporate --> CorporateDB
+    Fleet --> FleetDB
+    Station --> StationDB
+    Billing --> BillingDB
+    Payment --> PaymentDB
+    Notification --> NotificationDB
+
+    Corporate --> Cache
+    Fleet --> Cache
+
+    Booking --> Bus
+    Station --> Bus
+    Billing --> Bus
+    Payment --> Bus
+
+    Bus -->|"ServiceCompleted"| Booking
+    Bus -->|"ServiceCompleted"| Billing
+    Bus -->|"Notification events"| Notification
+
+    Payment --> PaymentProvider
+    Notification --> CommProvider
+
+    Gateway --> Telemetry
+    Booking --> Telemetry
+    Corporate --> Telemetry
+    Fleet --> Telemetry
+    Station --> Telemetry
+    Billing --> Telemetry
+    Payment --> Telemetry
+    Notification --> Telemetry

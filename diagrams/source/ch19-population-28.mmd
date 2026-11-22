@@ -1,0 +1,12 @@
+flowchart TD
+    C["Codex"] --> D["Dependency Discovery"]
+    D --> H["Harness"]
+    H --> L["Lead Agent"]
+
+    L --> Q{"Valid dependency?"}
+
+    Q -- Yes --> N["Propose New Work Item"]
+    N --> P["Population Manager"]
+    P --> G["Update Dependency Graph"]
+
+    Q -- No --> R["Record Rejection"]

@@ -1,0 +1,27 @@
+flowchart TD
+    A["Business Need or Engineering Work Item"]
+    B["Steering Context"]
+    C["Task Prompt"]
+    D["Repository Instructions"]
+    E["Reusable Skills"]
+    F["Assigned Agent Role"]
+    G["AI Coding Agent"]
+    H["Repository and Knowledge Sources"]
+    I["Implementation"]
+    J["Validation"]
+    K["Evaluation"]
+    L["Human Approval"]
+    M["Pull Request or Engineering Output"]
+
+    A --> C
+    B --> C
+    C --> G
+    D --> G
+    E --> G
+    F --> G
+    H --> G
+    G --> I
+    I --> J
+    J --> K
+    K --> L
+    L --> M

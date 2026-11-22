@@ -1,0 +1,17 @@
+flowchart TD
+    T["Trusted Instructions and Approved Prompt"]
+    U["Untrusted Repository or External Content"]
+    G["Context Gateway"]
+    C["Classified Execution Context"]
+    A["AI Agent"]
+    P["Permission and Tool Policy"]
+    V["Validation and Security Review"]
+    O["Approved Output"]
+
+    T --> G
+    U --> G
+    G --> C
+    C --> A
+    P --> A
+    A --> V
+    V --> O

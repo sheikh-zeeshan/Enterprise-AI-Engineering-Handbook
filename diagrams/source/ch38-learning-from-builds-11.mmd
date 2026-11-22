@@ -1,0 +1,18 @@
+flowchart TD
+    A[(Historical Build Evidence)] --> B[Learning Orchestrator]
+    B --> C[Deterministic Classification]
+    C --> D[AI Analysis Adapter]
+    D --> E[Claude Code]
+    D --> F[GitHub Copilot]
+    D --> G[Codex]
+    E --> H[Normalized Candidate Report]
+    F --> H
+    G --> H
+    H --> I[Evidence Verification]
+    I --> J[Pattern and Confidence Assessment]
+    J --> K[Human Review]
+    K --> L{Approved?}
+    L -->|No| M[Record Decision]
+    L -->|Yes| N[Governed Artifact Publication]
+    N --> O[(Approved Harness Memory)]
+    N --> P[Future Engineering Runs]

@@ -1,0 +1,20 @@
+flowchart TD
+    A[Regulatory / Contractual / Organizational Requirement]
+    --> B[Enterprise Policy]
+
+    B --> C[Control Definition]
+
+    C --> D[Harness Enforcement]
+
+    D --> E[Deterministic Validation]
+
+    E --> F{Human Approval Required?}
+
+    F -- Yes --> G[Authorized Human Approval]
+    F -- No --> H[Evidence Finalization]
+
+    G --> H
+
+    H --> I[Audit Evidence Store]
+
+    I --> J[Compliance Report]

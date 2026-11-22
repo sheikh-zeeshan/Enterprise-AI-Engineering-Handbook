@@ -1,0 +1,17 @@
+flowchart TD
+    A[Approved Prompt Execution] --> B[Verified Engineering Evidence]
+    B --> C[Harness Memory]
+    C --> D[Pattern Detection]
+    D --> E{Sufficient Evidence?}
+    E -->|No| F[Retain Observation]
+    E -->|Yes| G[Root-Cause and Artifact Ownership]
+    G --> H{Prompt Change Appropriate?}
+    H -->|No| I[Route to Correct Owner]
+    H -->|Yes| J[Isolated Prompt Candidate]
+    J --> K[Comparative Validation]
+    K --> L{Quality and Compatibility Gates Pass?}
+    L -->|No| M[Reject or Revise]
+    L -->|Yes| N[Human Owner Review]
+    N -->|Reject| M
+    N -->|Approve| O[Authorized Version Release]
+    O --> P[Future Harness Runs]

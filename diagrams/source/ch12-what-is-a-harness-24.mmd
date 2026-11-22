@@ -1,0 +1,17 @@
+flowchart LR
+    U[User or Work Item] --> CP[Harness Control Plane]
+
+    CP --> Q[Execution Queue]
+    Q --> EW[Execution Worker]
+
+    EW --> AP[Agent Provider]
+    EW --> TG[Tool Gateway]
+    EW --> WS[Isolated Workspace]
+
+    CP --> SS[State Store]
+    CP --> PS[Policy Store]
+    CP --> AS[Approval Service]
+    CP --> AU[Audit Store]
+    CP --> MT[Metrics]
+
+    EW --> CP

@@ -1,0 +1,29 @@
+flowchart TD
+    A[Authorized Goal] --> B[Workflow Admission]
+    B --> C[Repository Discovery]
+    C --> D[Instructions, Skills and Steering Notes]
+    D --> E[Planning Mode and Lead Agent]
+    E --> F{Plan approved?}
+    F -->|No| G[Revise or Escalate]
+    G --> E
+    F -->|Yes| H[Developer Agent and Controlled Tools]
+    H --> I[Deterministic Gates]
+    I --> J{Required gates pass?}
+    J -->|No| K[Classify failure and apply recovery policy]
+    K --> L{Retry authorized?}
+    L -->|Yes| H
+    L -->|No| M[Blocked, Failed or Escalated]
+    J -->|Yes| N[Reviewer Agent]
+    N --> O{Blocking findings?}
+    O -->|Yes| K
+    O -->|No| P[Validator Agent]
+    P --> Q{Evidence accepted?}
+    Q -->|No| K
+    Q -->|Yes| R[Evaluator Agent]
+    R --> S{Goal satisfied?}
+    S -->|No| K
+    S -->|Yes| T[Human Approval]
+    T --> U{Approved?}
+    U -->|No| V[Rejected or Returned]
+    U -->|Yes| W[Authorized Output]
+    W --> X[Evidence Archive and Completion]

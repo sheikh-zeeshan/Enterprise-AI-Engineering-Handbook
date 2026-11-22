@@ -1,0 +1,12 @@
+flowchart TD
+    A["Receive reviewed revision"] --> B["Resolve validation profile"]
+    B --> C["Verify environment and prerequisites"]
+    C --> D["Execute deterministic checks"]
+    D --> E["Collect evidence"]
+    E --> F{"Classify results"}
+    F -->|Pass| G["Send evidence to Evaluator"]
+    F -->|Fail| H["Return correction request"]
+    F -->|Blocked| I["Resolve prerequisite or escalate"]
+    F -->|Inconclusive| J["Investigate or escalate"]
+    H --> K["Developer submits new revision"]
+    K --> A

@@ -1,0 +1,11 @@
+flowchart TD
+    A[Verified Build Evidence] --> B[Supported Improvement Opportunity]
+    B --> C[Candidate Recommendation]
+    C --> D[Human Approval]
+    D --> E[Versioned Change]
+    E --> F[Controlled Adoption]
+    F --> G[Post-Adoption Measurement]
+    G --> H{Outcome improved?}
+    H -->|Yes| I[Retain and Monitor]
+    H -->|No| J[Investigate and Revise]
+    H -->|Regression| K[Review and Roll Back]

@@ -1,0 +1,17 @@
+flowchart TB
+    subgraph Engineering[Engineering Execution]
+        DEV[Developer] --> REV[Reviewer] --> VAL[Validator] --> EVAL[Evaluator]
+    end
+    subgraph Governance[Governance Boundary]
+        POLICY[Policies]
+        INS[Instructions]
+        STEER[Steering Notes]
+        APPROVAL[Human Approval]
+    end
+    POLICY --> DEV
+    INS --> DEV
+    STEER --> DEV
+    EVAL --> APPROVAL
+    EVAL -. proposal only .-> POLICY
+    EVAL -. proposal only .-> INS
+    EVAL -. proposal only .-> STEER

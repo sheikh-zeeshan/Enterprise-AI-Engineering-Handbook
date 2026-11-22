@@ -1,0 +1,18 @@
+sequenceDiagram
+ actor User
+ participant Lead as Lead Agent
+ participant KG as Knowledge Graph Service
+ participant Repo as Repository Intelligence
+ participant Gov as Governance
+ participant Dev as Developer Agent
+ User->>Lead: Change BookingConfirmed
+ Lead->>KG: Analyze event impact
+ KG->>Gov: Check access and evidence
+ Gov-->>KG: Authorized relationships
+ KG-->>Lead: Impact evidence and provenance
+ Lead->>Repo: Verify current consumers and contract
+ Repo-->>Lead: Current repository evidence
+ Lead->>Lead: Build implementation plan
+ Lead->>Gov: Request approval if required
+ Gov-->>Lead: Approval decision
+ Lead->>Dev: Execute approved plan

@@ -1,0 +1,24 @@
+flowchart TD
+    Request["Business Operation"]
+    Commit["Atomic commit: business state + outbox record"]
+    Publisher["Outbox Publisher"]
+    Broker["Event Bus"]
+    Consumer["Consumer"]
+    Check{"Already processed?"}
+    Effect["Atomic local commit: business effect + processing record"]
+    Ack["Acknowledge message"]
+    RetryPub["Retry publication"]
+    RetryCon["Bounded retry / dead-letter / recovery"]
+
+    Request --> Commit
+    Commit --> Publisher
+    Publisher -->|"Published"| Broker
+    Publisher -->|"Transient publish failure"| RetryPub
+    RetryPub --> Publisher
+
+    Broker --> Consumer
+    Consumer --> Check
+    Check -->|"Yes"| Ack
+    Check -->|"No"| Effect
+    Effect --> Ack
+    Consumer -->|"Processing failure"| RetryCon

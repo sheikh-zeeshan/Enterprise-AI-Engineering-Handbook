@@ -1,0 +1,10 @@
+flowchart TD
+    A["Mandatory Control Fails"] --> B["Preserve Failure Evidence"]
+    B --> C["Classify Finding"]
+    C --> D["Developer Remediation"]
+    D --> E["New Source Commit"]
+    E --> F["Independent Revalidation"]
+    F --> G{"Control Passes?"}
+    G -- No --> B
+    G -- Yes --> H["New Evidence Record"]
+    H --> I["Continue Governed Workflow"]

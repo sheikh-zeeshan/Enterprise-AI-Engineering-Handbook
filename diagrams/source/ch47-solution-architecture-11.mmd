@@ -1,0 +1,23 @@
+flowchart LR
+    Commit[Commit / Pull Request]
+    Build[Build]
+    Tests[Unit + Integration Tests]
+    Arch[Architecture Checks]
+    Contract[Contract Validation]
+    Security[Security Scans]
+    Image[Container Build]
+    Scan[Image Scan]
+    Deploy[Deploy]
+    Smoke[Smoke / Health Checks]
+    Observe[Post-deployment Verification]
+
+    Commit --> Build
+    Build --> Tests
+    Tests --> Arch
+    Arch --> Contract
+    Contract --> Security
+    Security --> Image
+    Image --> Scan
+    Scan --> Deploy
+    Deploy --> Smoke
+    Smoke --> Observe

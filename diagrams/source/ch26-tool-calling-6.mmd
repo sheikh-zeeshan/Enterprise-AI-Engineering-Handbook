@@ -1,0 +1,9 @@
+flowchart TD
+    A["Booking Idempotency Task"] --> B["Harness Establishes Scope"] --> C["Discover Approved Tools"]
+    C --> D["Search and Inspect Repository"] --> E["Inspect Event Contracts"]
+    E --> F["Design and Apply Scoped Changes"] --> G["Diagnostic Build and Tests"]
+    G --> H{"Ready for Final Validation?"}
+    H -->|No| I["Investigate and Correct"] --> F
+    H -->|Yes| J["Submit Final Revision"] --> K["Harness Mandatory Gates"]
+    K --> L["Evidence Verification"] --> M["Reviewer and Validator"]
+    M --> N["Evaluator"] --> O["Human Review and Approval"]

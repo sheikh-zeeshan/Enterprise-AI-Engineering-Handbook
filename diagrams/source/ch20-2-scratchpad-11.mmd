@@ -1,0 +1,21 @@
+flowchart TD
+    T["Issue / Prompt"]
+    H["Harness"]
+    P["plan.md"]
+    S["scratchpad.md"]
+    C["Copilot-Assisted Implementation"]
+    R["Copilot/Human Review"]
+    CI["Deterministic CI Gates"]
+    E["Evaluation"]
+    PR["Pull Request"]
+    A["Human Approval"]
+
+    T --> H
+    H --> P
+    P --> S
+    S --> C
+    C --> R
+    R --> CI
+    CI --> E
+    E --> PR
+    PR --> A

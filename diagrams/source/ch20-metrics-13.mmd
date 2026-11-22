@@ -1,0 +1,4 @@
+flowchart TD
+    R["Run Completed"] --> P["Completion Event Published"] --> C["Metrics Consumer"]
+    C --> I["Completion Count Increased"] --> F["Consumer Fails Before Checkpoint"]
+    F --> D["Event Redelivered"] --> X["Completion Count Incorrectly Increased Again"]

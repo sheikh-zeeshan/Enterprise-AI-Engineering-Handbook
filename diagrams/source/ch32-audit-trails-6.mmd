@@ -1,0 +1,8 @@
+flowchart TD
+    ASK["Investigation question"] --> FILTER["Filter by work item, run, or revision"]
+    FILTER --> EVENTS["Retrieve related audit events"]
+    EVENTS --> RELATE["Resolve evidence relationships"]
+    RELATE --> VERIFY["Verify evidence integrity"]
+    VERIFY --> GAP{"Evidence complete?"}
+    GAP -->|Yes| REPORT["Produce traceable report"]
+    GAP -->|No| ESCALATE["Record evidence gap and investigate"]

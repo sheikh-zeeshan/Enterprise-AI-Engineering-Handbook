@@ -1,0 +1,22 @@
+flowchart TB
+    P[Prompt<br/>Current Task]
+    I[Instructions<br/>Persistent Standards]
+    S[Skills<br/>Reusable Procedures]
+    R[Roles<br/>Responsibility and Authority]
+    SN[Steering Notes<br/>Temporary Direction]
+    KS[Knowledge Sources<br/>Evidence and Context]
+
+    A[AI Agent]
+    O[Engineering Output]
+    H[Human Review]
+
+    P --> A
+    I --> A
+    S --> A
+    R --> A
+    SN --> A
+    KS --> A
+
+    A --> O
+    O --> H
+    H -->|Approval or correction| O

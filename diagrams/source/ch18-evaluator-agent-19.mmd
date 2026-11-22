@@ -1,0 +1,9 @@
+flowchart TD
+    A[Evaluation Requested] --> B[Verify Evidence Package]
+    B --> C{Mandatory Gates Eligible?}
+    C -->|No| D[Record Blocking Evidence]
+    C -->|Yes| E[Invoke Evaluator]
+    E --> F[Validate Structured Result]
+    F --> G{Result Valid?}
+    G -->|No| H[Correction or Escalation]
+    G -->|Yes| I[Apply Workflow Policy]

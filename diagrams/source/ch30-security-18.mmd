@@ -1,0 +1,11 @@
+flowchart TB
+    GOV[Enterprise security governance] --> P[Approved policies]
+    P --> PLATFORM[Managed Harness platform]
+    PLATFORM --> EXEC[Restricted agent execution]
+    EXEC --> VALID[Independent security validation]
+    VALID --> EVID[Protected audit evidence]
+    EVID --> APPROVE[Authorized human decisions]
+    EVID --> SOC[Security operations]
+    SOC --> IMP[Governed improvement proposals]
+    VALID --> IMP
+    IMP --> GOV

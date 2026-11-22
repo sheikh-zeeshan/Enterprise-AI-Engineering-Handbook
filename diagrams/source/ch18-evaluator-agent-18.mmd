@@ -1,0 +1,7 @@
+flowchart TD
+    A[Evaluator: Satisfied] --> B{Required Approvals Complete?}
+    B -->|No| C[Pending Human Approval]
+    C --> D{Approved?}
+    D -->|Yes| E[Authorized Delivery Workflow]
+    D -->|No| F[Rework or Escalation]
+    B -->|Yes| E

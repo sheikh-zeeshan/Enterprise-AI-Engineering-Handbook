@@ -1,0 +1,22 @@
+flowchart TB
+    ROLE[Role Definition]
+
+    ROLE --> PURPOSE[Purpose]
+    ROLE --> RESP[Responsibilities]
+    ROLE --> PERSP[Perspective]
+    ROLE --> AUTH[Authority]
+    ROLE --> BOUND[Boundaries]
+    ROLE --> INPUTS[Inputs]
+    ROLE --> OUTPUTS[Outputs]
+
+    RESP --> WORK[Assigned Work]
+    AUTH --> DECISIONS[Permitted Decisions]
+    BOUND --> PROHIBITED[Prohibited Actions]
+    INPUTS --> CONTEXT[Approved Context and Evidence]
+    OUTPUTS --> ARTIFACTS[Reviewable Artifacts]
+
+    ARTIFACTS --> HANDOFF[Role Handoff]
+    HANDOFF --> NEXT[Next Role]
+    DECISIONS --> ESC{Outside Authority?}
+    ESC -->|Yes| HUMAN[Human Escalation]
+    ESC -->|No| ARTIFACTS

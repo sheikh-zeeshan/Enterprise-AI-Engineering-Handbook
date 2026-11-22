@@ -1,0 +1,38 @@
+flowchart TD
+    G["Goals / External Work"] --> L["Lead Agent"]
+
+    L --> PM["Population Manager"]
+    PM --> PS[("Population Store")]
+
+    PS --> SCH["Scheduler"]
+
+    SCH --> W1["Worker"]
+    SCH --> W2["Worker"]
+    SCH --> W3["Worker"]
+
+    W1 --> A1["AI Agent"]
+    W2 --> A2["AI Agent"]
+    W3 --> A3["AI Agent"]
+
+    A1 --> EV["Evidence"]
+    A2 --> EV
+    A3 --> EV
+
+    EV --> PM
+
+    PM --> R["Reviewer"]
+    R --> V["Validator"]
+    V --> E["Evaluator"]
+
+    R --> EV2["Review / Validation / Evaluation Evidence"]
+    V --> EV2
+    E --> EV2
+
+    EV2 --> PM
+
+    PS --> M["Metrics"]
+    PS --> O["Operations"]
+    PS --> AU["Audit"]
+    PS --> H["Human Intervention"]
+
+    H --> PM

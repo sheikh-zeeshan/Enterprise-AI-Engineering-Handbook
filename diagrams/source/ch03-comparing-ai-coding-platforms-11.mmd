@@ -1,0 +1,21 @@
+flowchart TB
+    T[Task Contract]
+    L[Lead or Planning Agent]
+    D[Developer Agent]
+    A[Architecture Reviewer]
+    S[Security Reviewer]
+    Q[Test Reviewer]
+    V[Deterministic Validation]
+    H[Human Review]
+
+    T --> L
+    L --> D
+    D --> A
+    D --> S
+    D --> Q
+
+    A --> V
+    S --> V
+    Q --> V
+
+    V --> H

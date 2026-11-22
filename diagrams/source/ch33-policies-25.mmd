@@ -1,0 +1,36 @@
+flowchart TB
+    subgraph Authority[Governance Authority]
+        A[Policy Owners] --> B[Approved Policy Registry]
+        A --> C[Exception Registry]
+    end
+    subgraph Context[Trusted Policy Information]
+        D[Agent Identity]
+        E[Data and Resource Classification]
+        F[Environment and Operation]
+    end
+    subgraph Decision[Policy Control Plane]
+        G[Policy Resolver] --> H[Policy Decision Point]
+    end
+    B --> G
+    C --> G
+    D --> G
+    E --> G
+    F --> G
+    subgraph Execution[Enterprise Harness]
+        I[Lead Agent] --> J[Developer Agent]
+        J --> K[Reviewer Agent]
+        K --> L[Validator Agent]
+        L --> M[Evaluator Agent]
+        J --> N[Policy-Aware Tool Broker]
+    end
+    H --> I
+    H --> N
+    N --> O[Authorized Resources]
+    M --> P[Final Governance Gate]
+    H --> P
+    P --> Q[Trusted Human Approval]
+    Q --> R[Authorized Delivery]
+    H --> S[Audit Evidence]
+    N --> S
+    P --> S
+    Q --> S

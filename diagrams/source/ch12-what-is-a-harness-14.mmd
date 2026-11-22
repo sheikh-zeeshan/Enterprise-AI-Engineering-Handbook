@@ -1,0 +1,30 @@
+sequenceDiagram
+    actor User
+    participant H as Harness
+    participant L as Claude Lead
+    participant D as Claude Developer
+    participant R as Claude Reviewer
+    participant V as Validation Tools
+    participant E as Claude Evaluator
+    actor Human
+    participant G as Git Platform
+
+    User->>H: Submit approved Prompt
+    H->>H: Create execution and context manifest
+    H->>L: Read-only planning context
+    L-->>H: Structured plan
+    H->>H: Validate and approve plan
+    H->>D: Approved plan and bounded write scope
+    D-->>H: Implementation and structured summary
+    H->>H: Enforce changed-file scope
+    H->>R: Plan, diff, Instructions, evidence
+    R-->>H: Structured review findings
+    H->>D: Focused repair request
+    D-->>H: Corrected implementation
+    H->>V: Run deterministic gates
+    V-->>H: Build, tests, architecture and security evidence
+    H->>E: Final evidence package
+    E-->>H: Evaluation scorecard
+    H->>Human: Approval request with evidence
+    Human-->>H: Approve
+    H->>G: Create pull request

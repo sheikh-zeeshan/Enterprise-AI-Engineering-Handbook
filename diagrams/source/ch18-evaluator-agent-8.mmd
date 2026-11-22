@@ -1,0 +1,11 @@
+flowchart TD
+    A[Approved Goal and Acceptance Criteria] --> B[Developer Agent]
+    B --> C[Reviewer Agent]
+    C --> D[Validator Agent]
+    D --> E[Codex Evaluator Agent]
+    E --> F{Evaluation Outcome}
+    F -->|Satisfied| G[Human Approval]
+    F -->|Partial| H[Lead Agent]
+    F -->|Failed| H
+    F -->|Inconclusive| I[Escalation]
+    H --> B

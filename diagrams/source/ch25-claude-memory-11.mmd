@@ -1,0 +1,19 @@
+flowchart TD
+    A["Context Sources Loaded"] --> B["Identify Relevant Claims"]
+    B --> C["Classify Source and Authority"]
+    C --> D["Verify Scope and Freshness"]
+    D --> E{"Conflict Detected?"}
+
+    E -->|"No"| F["Proceed with Verified Context"]
+    E -->|"Yes"| G["Collect Supporting Evidence"]
+
+    G --> H{"Can Conflict Be Resolved?"}
+
+    H -->|"Yes"| I["Document Resolution"]
+    I --> F
+
+    H -->|"No"| J["Escalate to Authorized Owner"]
+    J --> K["Record Decision"]
+    K --> F
+
+    F --> L["Continue Harness Execution"]

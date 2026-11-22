@@ -1,0 +1,20 @@
+flowchart LR
+    Actor["User / Workload"]
+    Identity["Identity Provider"]
+    Gateway["Gateway"]
+    Service["Owning Service"]
+    Authorization["Authorization Policy"]
+    Store[("Owned Store")]
+    Audit["Audit / Security Telemetry"]
+
+    Actor --> Identity
+    Identity -->|"Identity Token"| Actor
+
+    Actor -->|"Authenticated Request"| Gateway
+    Gateway --> Service
+
+    Service --> Authorization
+    Authorization --> Store
+
+    Service --> Audit
+    Gateway --> Audit

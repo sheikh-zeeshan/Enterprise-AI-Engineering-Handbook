@@ -1,0 +1,15 @@
+flowchart LR
+    A[Fast AI Generation] --> B[Initial Output]
+    B --> C{Review}
+    C -->|Reject| D[Rework]
+    D --> C
+    C -->|Accept| E{Validation}
+    E -->|Fail| F[Correction]
+    F --> E
+    E -->|Pass| G[Approval]
+    G -->|Changes Requested| H[More Rework]
+    H --> C
+    G -->|Approved| I[Delivered]
+
+    style A stroke-width:2px
+    style I stroke-width:2px

@@ -1,0 +1,15 @@
+flowchart LR
+    V[Validation Failure] --> C{Failure Classification}
+
+    C -->|Compilation or Test| D[Developer Agent]
+    C -->|Architecture| L[Lead or Architect Agent]
+    C -->|Security| S[Security Reviewer]
+    C -->|Ambiguous Requirement| H[Human Decision]
+    C -->|Infrastructure| O[Operational Retry]
+    C -->|Policy Violation| X[Stop Execution]
+
+    D --> RV[Revalidate]
+    L --> RP[Revise Plan]
+    S --> RS[Security Remediation]
+    H --> RP
+    O --> RV

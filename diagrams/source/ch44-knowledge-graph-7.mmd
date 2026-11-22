@@ -1,0 +1,43 @@
+flowchart TD
+    TASK[Engineering Task]
+
+    RI[Repository Intelligence]
+    HM[Harness Memory]
+    KG[(Governed Knowledge Graph)]
+
+    LEAD[Lead Agent]
+    DEV[Developer Agent]
+    REV[Reviewer Agent]
+    VAL[Validator Agent]
+    EVAL[Evaluator Agent]
+
+    BUILD[Build + Tests]
+    PR[Pull Request]
+    DEC[Architecture Decisions]
+
+    EXTRACT[Knowledge Extraction]
+    GOVERN[Provenance + Confidence + Governance]
+
+    TASK --> LEAD
+
+    RI --> LEAD
+    HM --> LEAD
+    KG --> LEAD
+
+    LEAD --> DEV
+    DEV --> REV
+    REV --> VAL
+    VAL --> EVAL
+
+    DEV --> BUILD
+    REV --> PR
+    VAL --> BUILD
+
+    RI --> EXTRACT
+    BUILD --> EXTRACT
+    PR --> EXTRACT
+    DEC --> EXTRACT
+    HM --> EXTRACT
+
+    EXTRACT --> GOVERN
+    GOVERN --> KG

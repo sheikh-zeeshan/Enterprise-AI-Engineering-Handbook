@@ -1,0 +1,8 @@
+flowchart TD
+    B["Booking application service"] -->|"Synchronous eligibility decision"| A["Corporate Account API"]
+    B -->|"Synchronous batch validation"| F["Fleet API"]
+    B -->|"Commit or inquire by operation ID"| S["Station Operations API"]
+    B -->|"Atomic local transaction"| D[("Booking state and outbox")]
+    D -.->|"Relay publishes committed fact"| E["Integration event broker"]
+    E -.->|"BookingConfirmed v1"| N["Notification consumer"]
+    N -->|"Local transaction"| I[("Inbox and delivery intent")]

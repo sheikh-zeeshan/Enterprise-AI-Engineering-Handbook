@@ -1,0 +1,7 @@
+flowchart LR
+    N1["Source Commit"] --> N2
+    N2["Trusted Build Artifact"] --> N3
+    N3["Validation Evidence"] --> N4
+    N4["Artifact-Bound Approval"] --> N5
+    N5["Verified Deployment Artifact"] --> N6
+    N6["Production Deployment"]

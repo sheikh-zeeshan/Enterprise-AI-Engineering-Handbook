@@ -1,0 +1,25 @@
+flowchart TB
+    subgraph GOV["Governing engineering controls"]
+        I["Instructions and policies"]
+        S["Skills and approved architecture"]
+        R["Review, validation and evaluation gates"]
+    end
+    subgraph RUN["Current Harness execution"]
+        T["Task prompt and goal"]
+        P["Scratchpad: provisional state"]
+        RI["Repository Intelligence: current facts"]
+    end
+    subgraph HISTORY["Governed cross-run knowledge"]
+        M[("Approved Harness Memory")]
+        C["Learning candidate"]
+        A["Evidence and human approval"]
+    end
+    T --> P
+    RI --> P
+    M -.->|Advisory history| T
+    P --> C
+    C --> A
+    A -->|Only if approved| M
+    I --> T
+    S --> T
+    R --> T

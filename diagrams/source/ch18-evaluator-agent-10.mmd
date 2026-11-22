@@ -1,0 +1,6 @@
+flowchart TD
+    A[Evaluator: Satisfied] --> B[Harness Eligibility Checks]
+    B --> C[Required Human Approvals]
+    C --> D{Approved?}
+    D -->|Yes| E[Authorized Release]
+    D -->|No| F[Rework or Escalation]

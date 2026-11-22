@@ -1,0 +1,13 @@
+flowchart LR
+    A["Prompt: requested outcome"] --> B["Planning Mode"]
+    C["Repository evidence"] --> B
+    D["Instructions and Skills"] --> B
+    B --> E["Approved Plan: implementation approach"]
+    E --> F["Developer Agent"]
+    F --> G["Execution"]
+    G <--> H["Scratchpad: temporary run state"]
+    G --> I{"Material discovery?"}
+    I -->|"No"| J["Continue execution"]
+    I -->|"Yes"| K["Change assessment"]
+    K --> B
+    J --> L["Validation evidence"]

@@ -1,0 +1,14 @@
+flowchart LR
+    H[AI Engineering Harness] --> C[Claude Code]
+    C --> FS[Repository Files]
+    C --> BT[Build and Test Tools]
+    C --> MCP[MCP Services]
+    C --> O[Structured Agent Output]
+
+    H --> S[Execution State]
+    H --> G[Independent Gates]
+    H --> A[Approval Workflow]
+    H --> AU[Audit Store]
+
+    O --> H
+    BT --> H

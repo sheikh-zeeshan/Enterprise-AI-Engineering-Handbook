@@ -1,0 +1,29 @@
+flowchart TD
+    N["Business or Engineering Need"]
+    D["Draft Prompt"]
+    R["Prompt Review"]
+    A["Approved Prompt"]
+    C["Context Resolution"]
+    P["Agent Planning"]
+    I["Implementation"]
+    V["Validation"]
+    E["Evaluation"]
+    H["Human Approval"]
+    O["Accepted Output"]
+    M["Metrics and Improvement Evidence"]
+
+    N --> D
+    D --> R
+    R -->|Changes required| D
+    R -->|Approved| A
+    A --> C
+    C --> P
+    P -->|Required decisions and approvals resolved| I
+    I --> V
+    V -->|Failed| I
+    V -->|Passed| E
+    E --> H
+    H -->|Rejected| I
+    H -->|Approved| O
+    O --> M
+    M --> D

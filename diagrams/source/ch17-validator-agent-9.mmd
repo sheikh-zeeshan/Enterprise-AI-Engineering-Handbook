@@ -1,0 +1,10 @@
+flowchart TD
+    A["Read repository Instructions"] --> B["Resolve validation profile"]
+    B --> C["Verify reviewed revision"]
+    C --> D["Inspect validation environment"]
+    D --> E["Execute approved gates"]
+    E --> F["Preserve evidence"]
+    F --> G{"Classify outcome"}
+    G -->|Pass| H["Send to Evaluator Agent"]
+    G -->|Fail| I["Return to Developer Agent"]
+    G -->|Blocked or inconclusive| J["Escalate"]

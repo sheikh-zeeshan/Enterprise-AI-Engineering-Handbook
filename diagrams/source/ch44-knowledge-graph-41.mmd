@@ -1,0 +1,11 @@
+flowchart TD
+ SRC["Authoritative Engineering Sources"] --> ING["Knowledge Extraction"] --> RES["Entity Resolution"] --> VER["Evidence Verification"] --> GOV["Governance and Confidence"] --> KG[("Governed Knowledge Graph")]
+ KG --> Q["Authorized Query Service"]
+ Q --> C["Claude Code"]
+ Q --> P["GitHub Copilot"]
+ Q --> X["Codex"]
+ C --> HAR["Enterprise Harness"]
+ P --> HAR
+ X --> HAR
+ HAR --> GATE["Deterministic Gates"] --> LEARN["Learning Engine"]
+ LEARN --> ING

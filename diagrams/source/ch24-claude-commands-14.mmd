@@ -1,0 +1,16 @@
+stateDiagram-v2
+    [*] --> Requested
+    Requested --> Rejected: Invalid request
+    Requested --> Blocked: Missing authorization
+    Requested --> Authorized: Preconditions satisfied
+    Authorized --> Running
+    Running --> Completed: Execution finished
+    Running --> Failed: Execution error
+    Running --> Exhausted: Retry budget exhausted
+    Running --> Cancelled: Authorized cancellation
+    Rejected --> [*]
+    Blocked --> [*]
+    Completed --> [*]
+    Failed --> [*]
+    Exhausted --> [*]
+    Cancelled --> [*]

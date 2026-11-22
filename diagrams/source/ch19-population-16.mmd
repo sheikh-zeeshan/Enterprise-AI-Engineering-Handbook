@@ -1,0 +1,16 @@
+flowchart LR
+    P[("Population Store")] --> PM["Population Manager"]
+    PM --> S["Scheduler"]
+    S --> C{"Atomic Claim"}
+
+    C -- Success --> R["Running"]
+    C -- Failure --> N["Do Not Execute"]
+
+    R --> H["Claude Harness Adapter"]
+    H --> CC["Claude Code"]
+
+    CC --> O["Implementation Output"]
+    O --> H
+    H --> E["Evidence"]
+    E --> PM
+    PM --> P

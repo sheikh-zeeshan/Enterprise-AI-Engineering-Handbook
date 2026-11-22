@@ -1,0 +1,13 @@
+flowchart LR
+    I["Implementation Throughput"] --> V["Validation and Review"]
+    V --> A["Accepted Work"]
+    V --> R["Rework Required"]
+    V --> F["Rejected or Exhausted"]
+    R --> C["Additional Execution Cost"]
+    R --> T["Additional Cycle Time"]
+    R --> V
+    A --> B["Engineering Value"]
+    B --> E["Efficiency Assessment"]
+    C --> E
+    T --> E
+    F --> E

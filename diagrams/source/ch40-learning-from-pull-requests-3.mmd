@@ -1,0 +1,22 @@
+flowchart TD
+    subgraph Sources[Evidence Sources]
+        GP[Git Provider]
+        CI[CI and Test Pipelines]
+        SEC[Security and Architecture Tools]
+        REV[Human and AI Reviews]
+        RUN[Harness Run Records]
+    end
+    GP --> COL[Evidence Collector]
+    CI --> COL
+    SEC --> COL
+    REV --> COL
+    RUN --> COL
+    COL --> RAW[(Append-only Source Events)]
+    RAW --> NORM[Normalize and Deduplicate]
+    NORM --> CONTRACT[PR Evidence Contract v1]
+    CONTRACT --> STORE[(Versioned Evidence Store)]
+    STORE --> ASSESS[Evidence Assessment]
+    ASSESS --> LEARN[Candidate Learning]
+    LEARN --> GOV{Human Governance}
+    GOV -->|Approved| PUB[Versioned Improvement]
+    GOV -->|Rejected or deferred| ARCH[(Decision History)]

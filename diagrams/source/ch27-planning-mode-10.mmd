@@ -1,0 +1,18 @@
+stateDiagram-v2
+    [*] --> Received
+    Received --> Discovering
+    Discovering --> Planning
+    Planning --> PlanReview
+    PlanReview --> Planning: Revision required
+    PlanReview --> Blocked: Unresolved prerequisite
+    PlanReview --> Approved: Required approvals satisfied
+    Blocked --> Planning: Prerequisite resolved
+    Approved --> Executing: Execution authorized
+    Executing --> Replanning: Material drift
+    Replanning --> PlanReview: Revised plan
+    Executing --> Validating: Implementation ready
+    Validating --> Executing: Rework required
+    Validating --> Evaluating: Required gates passed
+    Evaluating --> Completed: Accepted
+    Evaluating --> Executing: Correction required
+    Completed --> [*]

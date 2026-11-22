@@ -1,0 +1,18 @@
+flowchart TD
+    N0["Skill Execution"]
+    N1["Implementation"]
+    N2["Targeted Validation"]
+    N3{"Targeted Checks Pass?"}
+    N4["Correct or Report Failure"]
+    N5["Harness Final Gates"]
+    N6{"All Required Gates Pass?"}
+    N7["Failed Validation"]
+    N8["Evidence for Review and Evaluation"]
+    N0 --> N1
+    N1 --> N2
+    N2 --> N3
+    N3 -- No --> N4
+    N3 -- Yes --> N5
+    N5 --> N6
+    N6 -- No --> N7
+    N6 -- Yes --> N8

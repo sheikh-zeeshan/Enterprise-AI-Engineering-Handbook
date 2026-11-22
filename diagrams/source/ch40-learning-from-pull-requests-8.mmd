@@ -1,0 +1,35 @@
+sequenceDiagram
+    participant H as Harness
+    participant D as Developer Agent
+    participant PR as Pull Request
+    participant CI as Validation Pipeline
+    participant AR as Architecture Reviewer
+    participant SR as Security Reviewer
+    participant HE as Human Engineer
+    participant LE as Learning Engine
+
+    H->>D: Implement fleet booking update
+    D->>PR: Create implementation
+    PR->>CI: Run build, tests, gates
+    CI-->>PR: Pass
+
+    AR->>PR: Request transactional outbox correction
+    SR->>PR: Request fleet authorization check
+    HE->>PR: Request compatibility test
+
+    PR->>D: Rework required
+    D->>PR: Submit revised implementation
+
+    PR->>CI: Re-run validation
+    CI-->>PR: Pass
+    AR-->>PR: Approve
+    SR-->>PR: Approve
+    HE-->>PR: Approve
+
+    PR-->>H: Merged
+
+    H->>LE: Send full PR evidence
+    LE->>LE: Classify findings
+    LE->>LE: Correlate with prior PRs
+    LE->>LE: Detect repeated patterns
+    LE-->>H: Propose Skill and gate improvements

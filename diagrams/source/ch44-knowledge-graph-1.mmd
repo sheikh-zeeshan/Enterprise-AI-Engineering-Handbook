@@ -1,0 +1,25 @@
+graph LR
+    BS[Booking Service]
+    FS[Fleet Service]
+    SOS[Station Operations Service]
+
+    EVT[BookingConfirmed Event]
+    API[Booking API]
+    DB[(Booking Database)]
+    ADR[ADR-032 Integration Contract Evolution]
+    SKILL[Integration Event Skill]
+    TEST[Contract Tests]
+    PR[PR #1842]
+    FINDING[Compatibility Finding]
+
+    BS -->|publishes| EVT
+    FS -->|consumes| EVT
+    SOS -->|consumes| EVT
+    BS -->|exposes| API
+    BS -->|owns| DB
+    ADR -->|governs| EVT
+    SKILL -->|used to modify| EVT
+    TEST -->|protects| EVT
+    PR -->|changed| EVT
+    PR -->|produced| FINDING
+    FINDING -->|concerned| EVT

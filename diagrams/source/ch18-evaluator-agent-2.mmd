@@ -1,0 +1,14 @@
+flowchart LR
+    G[Goal + Acceptance Criteria]
+
+    G --> D[Developer Agent]
+    D -->|Implementation| R[Reviewer Agent]
+    R -->|Review Evidence| V[Validator Agent]
+    V -->|Deterministic Evidence| E[Evaluator Agent]
+
+    E -->|Goal Satisfaction Assessment| H[Human Approval]
+
+    R -. reviews .-> Q1[Implementation Quality]
+    V -. verifies .-> Q2[Objective Engineering Conditions]
+    E -. evaluates .-> Q3[Outcome and Goal Satisfaction]
+    H -. approves .-> Q4[Business / Governance Decision]

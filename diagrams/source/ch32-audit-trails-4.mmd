@@ -1,0 +1,13 @@
+flowchart TD
+    RUN["Harness run"] --> A1["Attempt 1"]
+    A1 --> R1["Reviewer rejected"]
+    R1 --> A2["Attempt 2"]
+    A2 --> V2["Validation failed"]
+    V2 --> A3["Attempt 3"]
+    A3 --> V3["Validation passed"]
+    V3 --> E3["Evaluation passed"]
+    E3 --> H3["Human approved"]
+    STORE[("Audit store")]
+    R1 -.-> STORE
+    V2 -.-> STORE
+    H3 -.-> STORE

@@ -1,0 +1,39 @@
+flowchart TD
+    A[Execution Evidence] --> B[Repeated Pattern]
+
+    B --> C{"Instruction problem?"}
+
+    C -->|No| D[Route to Other Artifact]
+    C -->|Yes| E[Classify Problem]
+
+    E --> F[Missing]
+    E --> G[Ambiguous]
+    E --> H[Conflicting]
+    E --> I[Stale]
+    E --> J[Overly Specific]
+
+    F --> K[Candidate Change]
+    G --> K
+    H --> K
+    I --> K
+    J --> K
+
+    K --> L[Evidence Package]
+    L --> M[Impact Analysis]
+    M --> N[Owner Review]
+
+    N --> O{Decision}
+
+    O -->|Reject| P[Decision Record]
+    O -->|Revise| K
+    O -->|Approve| Q[New Version]
+
+    Q --> R[Validation]
+
+    R --> S{Valid?}
+
+    S -->|No| T[Rollback / Revise]
+    S -->|Yes| U[Activate]
+
+    U --> V[Future Runs]
+    V --> A

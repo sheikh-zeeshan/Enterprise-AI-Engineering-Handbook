@@ -1,0 +1,16 @@
+flowchart TD
+    BG["Authorized Business Goal"] --> RC["Risk Classification"]
+    RC --> LE["Lead Agent"]
+    LE --> DE["Developer Agent"]
+    DE --> RV["Reviewer Agent"]
+    DE --> VA["Validator Agent"]
+    RV --> EV["Evaluator Agent"]
+    VA --> EV
+    EV --> GOV["Governance Assessment"]
+    GOV --> HU{"Additional Human Approval Required?"}
+    HU -->|"Yes"| AP["Trusted Approval Verification"]
+    HU -->|"No, approved delegated scope"| DL["Delegated Authorization"]
+    AP -->|"Valid"| REL["Protected Release Workflow"]
+    AP -->|"Missing or Invalid"| STOP["Block or Remediate"]
+    DL --> REL
+    REL -->|"Verify deployment-specific authorization"| AUD["Governance Evidence"]

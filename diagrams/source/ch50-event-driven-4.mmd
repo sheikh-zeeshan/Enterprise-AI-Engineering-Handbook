@@ -1,0 +1,22 @@
+sequenceDiagram
+    participant S as Station Operations
+    participant E as Event Bus
+    participant B as Booking
+    participant L as Billing
+    participant P as Payment
+    Note over S: Commit qualifying completion and outbox first
+    S->>E: Publish ServiceCompleted through outbox
+    par Booking reaction
+        E->>B: Deliver completion
+        Note over B: Apply approved lifecycle transition locally
+    and Billing reaction
+        E->>L: Deliver same completion independently
+        Note over L: Recognize qualifying work idempotently
+    end
+    Note over L: Issue consolidated invoice at approved milestone
+    L->>E: Publish InvoiceIssued through own outbox
+    Note over L,P: Settlement follows approved commercial workflow
+    L->>P: Request authorized financial operation when required
+    Note over P: Execute or reconcile provider outcome
+    P->>E: Publish PaymentRecorded through own outbox
+    E->>L: Deliver payment outcome independently

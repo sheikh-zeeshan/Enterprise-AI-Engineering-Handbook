@@ -1,0 +1,17 @@
+flowchart TD
+    I[Implementation Complete] --> B[Build Gate]
+
+    B -->|Pass| T[Test Gate]
+    B -->|Pass| SA[Static Analysis Gate]
+    B -->|Pass| AR[Architecture Gate]
+    B -->|Pass| SE[Security Gate]
+    B -->|Pass| CO[Contract Gate]
+
+    T --> A{All Required Gates Passed?}
+    SA --> A
+    AR --> A
+    SE --> A
+    CO --> A
+
+    A -->|Yes| R[Reviewer Agent]
+    A -->|No| F[Validation Failed]

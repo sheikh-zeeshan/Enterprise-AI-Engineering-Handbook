@@ -1,0 +1,31 @@
+flowchart TD
+    U[User or Work Item] --> I[Intake]
+    I --> C[Context Assembly]
+    C --> P[Planning]
+    P --> D[Development]
+    D --> R[Review]
+    R --> V[Validation]
+    V --> E[Evaluation]
+    E --> H{Human Approval Required?}
+    H -->|Yes| A[Human Approval]
+    H -->|No| PB[Publication]
+    A -->|Approved| PB
+    A -->|Rejected| F[Return Findings]
+    F --> P
+    PB --> PR[Commit or Pull Request]
+
+    C --> RI[Repository Intelligence]
+    RI --> C
+
+    V --> T[Build, Tests, Static Analysis, Architecture and Security Checks]
+    T --> V
+
+    I --> O[Execution State, Logs, Audit and Metrics]
+    C --> O
+    P --> O
+    D --> O
+    R --> O
+    V --> O
+    E --> O
+    A --> O
+    PB --> O

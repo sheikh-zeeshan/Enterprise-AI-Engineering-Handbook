@@ -1,0 +1,9 @@
+flowchart TB
+    H["Enterprise Harness Platform"] --> A["API Development Workflow"]
+    H --> B["Bug Fix Workflow"]
+    H --> C["Migration Workflow"]
+    H --> D["Security Remediation Workflow"]
+    A --> Shared["Shared Harness Capabilities"]
+    B --> Shared
+    C --> Shared
+    D --> Shared

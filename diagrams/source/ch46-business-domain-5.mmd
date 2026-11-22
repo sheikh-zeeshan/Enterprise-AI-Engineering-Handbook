@@ -1,0 +1,31 @@
+flowchart TD
+    A[Select Fleet]
+    B[Select Vehicles]
+    C[Choose Station and Service]
+    D[Check Available Capacity]
+    E[Submit Booking]
+    F[Authorization and Validation]
+    G{Authorized and Valid?}
+    H[Reserve Capacity]
+    I[Confirm Booking]
+    J[Complete Service]
+    K[Trigger Billing]
+    L[Send Notifications]
+    R[Reject or Request Correction]
+
+    A --> B
+    B --> C
+    C --> D
+    D --> E
+    E --> F
+    F --> G
+
+    G -->|No| R
+    G -->|Yes| H
+
+    H --> RC{Reservation Successful?}
+    RC -->|No| U[Requested Schedule Unavailable]
+    RC -->|Yes| I
+    I --> J
+    J --> K
+    J --> L

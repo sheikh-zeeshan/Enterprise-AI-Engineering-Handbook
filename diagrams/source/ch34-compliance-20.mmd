@@ -1,0 +1,10 @@
+flowchart TD
+    A["Applicable Control Profile"] --> B["Required Control Inventory"]
+    C["Executed Gate Results"] --> D["Coverage Comparison"]
+    B --> D
+    D --> E{"All Required Controls Accounted For?"}
+    E -- No --> X["Block: Missing Control"]
+    E -- Yes --> F["Evaluate Individual Results"]
+    F --> G{"Mandatory Outcomes Satisfied?"}
+    G -- No --> X
+    G -- Yes --> H["Continue to Approval"]

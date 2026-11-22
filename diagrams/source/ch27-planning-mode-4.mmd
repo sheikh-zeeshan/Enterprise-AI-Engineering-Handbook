@@ -1,0 +1,18 @@
+stateDiagram-v2
+    [*] --> Draft
+    Draft --> UnderReview: Plan submitted
+    UnderReview --> Approved: Authorized approval
+    UnderReview --> Draft: Revision requested
+    UnderReview --> Rejected: Plan rejected
+    Approved --> Executing: Baseline and permissions checked
+    Approved --> Reassessment: Baseline changed
+    Executing --> DriftAssessment: Material deviation detected
+    DriftAssessment --> Executing: Within approved tolerance
+    DriftAssessment --> Reassessment: Material change required
+    Reassessment --> Draft: Revise plan
+    Reassessment --> Executing: Revalidated and authorized
+    Executing --> Verification: Implementation finished
+    Verification --> Executing: Rework within approved scope
+    Verification --> Complete: Checks and acceptance satisfied
+    Rejected --> [*]
+    Complete --> [*]

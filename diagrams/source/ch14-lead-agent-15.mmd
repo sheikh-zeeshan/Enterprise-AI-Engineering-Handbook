@@ -1,0 +1,35 @@
+flowchart TB
+    G[Goal File] --> CL[Claude Lead Session]
+
+    C[CLAUDE.md] --> CL
+    S[Steering Note] --> CL
+    RI[Repository] --> CL
+    SK[Skills] --> CL
+
+    CL --> P[Persisted Plan]
+
+    P --> PV[Harness Plan Validation]
+
+    PV -->|Pass| CD[Claude Developer Session]
+    PV -->|Fail| CL
+
+    CD --> REV[Candidate Revision]
+
+    REV --> DG[Deterministic Gates]
+
+    DG -->|Fail| CL
+
+    DG -->|Pass| CA[Claude Architect Session]
+    DG -->|Pass| CR[Claude Reviewer Session]
+
+    CA --> CV[Claude Validator Session]
+    CR --> CV
+
+    CV --> CE[Claude Evaluator Session]
+
+    CE --> CL2[Claude Lead Approval Package]
+
+    CL2 --> HA[Human Approval]
+
+    HA -->|Approved| DONE[Complete]
+    HA -->|Rejected| CL

@@ -1,0 +1,9 @@
+flowchart TD
+    O["Observed Engineering Problem"] --> P["Agent Improvement Proposal"]
+    P --> I["Impact and Risk Assessment"]
+    I --> T["Independent Testing"]
+    T --> R["Authorized Owner Review"]
+    R --> A{"Approved?"}
+    A -->|"Yes"| V["Versioned Publication"]
+    A -->|"No"| X["Reject or Revise"]
+    V --> C["Controlled Adoption"]

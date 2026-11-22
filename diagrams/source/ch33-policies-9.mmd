@@ -1,0 +1,22 @@
+flowchart TD
+    A[Engineering Task] --> B[Resolve Applicable Policies]
+    B --> C{Preflight Decision}
+    C -->|Deny| D[Stop and Record]
+    C -->|Escalate| E[Governance Review]
+    C -->|Allow| F[Lead Agent]
+    F --> G[Developer Agent]
+    G --> H[Reviewer Agent]
+    H --> I[Validator Agent]
+    I --> J{Deterministic Gates Pass?}
+    J -->|No| G
+    J -->|Yes| K[Evaluator Agent]
+    K --> L{Approval Required?}
+    L -->|Yes| M[Verify Human Approval]
+    L -->|No| N[Final Policy Check]
+    M --> N
+    N --> O{All Controls Satisfied?}
+    O -->|No| D
+    O -->|Yes| P[Eligible for Authorized Merge]
+    D --> Q[Audit Evidence]
+    E --> Q
+    P --> Q

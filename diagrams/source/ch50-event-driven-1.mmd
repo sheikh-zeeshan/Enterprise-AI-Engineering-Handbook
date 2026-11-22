@@ -1,0 +1,18 @@
+flowchart TD
+    subgraph BookingBoundary["Booking Service"]
+        B["Confirm approved booking unit"]
+        BD[("Private state and outbox")]
+        R["Outbox publisher"]
+        B -->|"One local commit"| BD
+        BD --> R
+    end
+    E["Event Bus: retained booking facts"]
+    R -->|"BookingConfirmed"| E
+    E -->|"Independent station consumer"| S["Reflect confirmation of existing reservation"]
+    E -->|"Independent billing consumer, if justified"| L["Retain approved context; no completion charge"]
+    E -->|"Independent notification consumer"| N["Record inbox and delivery intent"]
+    S --> SD[("Station Operations store")]
+    L --> LD[("Billing store")]
+    N --> ND[("Notification store")]
+    ND --> D["Dispatcher"]
+    D --> P["Communication provider"]

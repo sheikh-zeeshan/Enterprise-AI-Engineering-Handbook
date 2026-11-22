@@ -1,0 +1,17 @@
+flowchart TD
+    A[Engineering Task] --> B[Enterprise Harness]
+    C[Policy Registry] --> D[Policy Resolver]
+    D --> B
+    B --> E[Codex Execution Runtime]
+    E --> F[Developer Agent]
+    F --> G[Policy-Aware Tool Broker]
+    G --> H[Authorized Resources]
+    B --> I[Independent Review and Validation]
+    I --> J[Evaluator Agent]
+    J --> K[Final Governance Gate]
+    K --> L[Trusted Human Approval]
+    L --> M[Authorized Delivery]
+    D --> N[Audit Evidence]
+    G --> N
+    K --> N
+    L --> N

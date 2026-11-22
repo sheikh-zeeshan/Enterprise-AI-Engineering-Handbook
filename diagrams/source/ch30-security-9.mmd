@@ -1,0 +1,12 @@
+flowchart TD
+    PR[Copilot-generated change] --> AI[AI-assisted code review]
+    PR --> SAST[Independent static analysis]
+    PR --> TEST[Business authorization and security tests]
+    AI --> FIND[Contextual findings]
+    SAST --> EVID[Deterministic evidence]
+    TEST --> EVID
+    FIND --> HUMAN[Responsible reviewer]
+    EVID --> HUMAN
+    HUMAN --> DEC{Acceptance criteria met?}
+    DEC -->|No| FIX[Remediate change]
+    DEC -->|Yes| MERGE[Eligible for protected merge]

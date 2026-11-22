@@ -1,0 +1,43 @@
+sequenceDiagram
+    actor Human as Product Owner / Human Approver
+    participant Lead as Lead Agent
+    participant Architect as Architect Agent
+    participant Developer as Developer Agent
+    participant Reviewer as Reviewer Agent
+    participant Security as Security Reviewer
+    participant Validator as Validator Agent
+    participant Evaluator as Evaluator Agent
+
+    Human->>Lead: Corporate fleet booking prompt
+    Lead->>Lead: Interpret scope and gather repository evidence
+    Lead->>Architect: Request architecture assessment
+    Architect-->>Lead: Approved design, constraints, escalations
+
+    Lead->>Developer: Approved implementation plan
+    Developer->>Developer: Implement code, tests, migration, telemetry
+    Developer-->>Lead: Implementation summary and changed files
+
+    par Independent review
+        Lead->>Reviewer: Review implementation
+        Reviewer-->>Lead: Findings
+    and Security review
+        Lead->>Security: Assess security and tenant isolation
+        Security-->>Lead: Security findings
+    and Validation
+        Lead->>Validator: Execute required checks
+        Validator-->>Lead: Build and test evidence
+    end
+
+    alt Blocking findings exist
+        Lead->>Developer: Remediate confirmed findings
+        Developer-->>Lead: Updated implementation
+        Lead->>Reviewer: Re-review
+        Lead->>Security: Reassess
+        Lead->>Validator: Re-run checks
+    end
+
+    Lead->>Evaluator: Evaluate final acceptance criteria
+    Evaluator-->>Lead: Pass, fail, or escalation
+
+    Lead->>Human: Pull request package and unresolved risks
+    Human-->>Lead: Approve, reject, or request changes

@@ -1,0 +1,13 @@
+flowchart TD
+    A[Workflow Failure] --> B{Failure classification}
+    B -->|Implementation defect| C{Attempts remaining?}
+    C -->|Yes| D[Developer remediation]
+    C -->|No| E[Engineering escalation]
+    B -->|Transient infrastructure| F{Retry safe?}
+    F -->|Yes| G[Bounded retry]
+    F -->|No| H[Block and investigate]
+    B -->|Architecture conflict| I[Return to planning]
+    I --> J[Architecture decision]
+    B -->|Policy violation| K[Stop unauthorized operation]
+    K --> L[Governance or security escalation]
+    B -->|Missing business decision| M[Request authorized clarification]

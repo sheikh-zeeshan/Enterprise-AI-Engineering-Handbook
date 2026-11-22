@@ -1,0 +1,8 @@
+flowchart TB
+    T["Engineering Task"] --> A["Codex Developer A"]
+    T --> B["Codex Developer B"]
+    A --> BA["Isolated Implementation Branch A"]
+    B --> BB["Isolated Implementation Branch B"]
+    BA --> I["Controlled Integration"]
+    BB --> I
+    I --> V["Combined Validation"] --> E["Outcome Evaluation"]

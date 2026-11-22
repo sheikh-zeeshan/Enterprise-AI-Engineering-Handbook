@@ -1,0 +1,15 @@
+flowchart LR
+    A[Execution] --> B[Harness Memory]
+    B --> C[Pattern Evidence]
+    C --> D[Instruction Evolution]
+
+    E[Current Instructions] --> D
+
+    D --> F[Candidate Change]
+
+    F --> G[Human Governance]
+
+    G -->|Approved| H[New Instruction Version]
+
+    H --> I[Future Execution]
+    I --> B

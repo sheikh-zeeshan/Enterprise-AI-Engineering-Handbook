@@ -1,0 +1,8 @@
+flowchart TD
+    A[Conflicting Instructions] --> B[Identify Governing Standard]
+    B --> C{Approved Exception?}
+    C -- No --> D[Remove Contradiction]
+    C -- Yes --> E[Document Narrow Scope]
+    D --> F[Architecture Review]
+    E --> F
+    F --> G[Approved Instruction Update]

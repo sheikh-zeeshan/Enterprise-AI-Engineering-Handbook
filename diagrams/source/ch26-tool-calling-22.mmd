@@ -1,0 +1,7 @@
+flowchart TD
+    A["Provision Test Database"] --> B["Deploy Test Service"] --> C["Seed Approved Test Data"]
+    C --> D["Execute Integration Tests"] --> E["Collect Evidence"] --> F["Cleanup Resources"]
+    B -->|Failure| G["Reconcile Provisioned Resources"]
+    C -->|Failure| G
+    D -->|Failure| E
+    G --> H["Compensate or Escalate"]

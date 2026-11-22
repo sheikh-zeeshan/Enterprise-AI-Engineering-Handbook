@@ -1,0 +1,6 @@
+flowchart LR
+    E[PR Evidence Contract] --> A[Evidence Assessment Contract]
+    A --> C[Candidate Learning Contract]
+    C --> H{Human Approval}
+    H -->|Approved| V[Versioned Artifact or Harness Memory]
+    H -->|Rejected or deferred| D[Audited Decision]

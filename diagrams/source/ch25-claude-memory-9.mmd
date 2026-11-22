@@ -1,0 +1,14 @@
+flowchart TD
+    A["Task-Specific Context Sources"] --> B["Classification and Scope Check"]
+    B --> C{"Sensitive or Out of Scope?"}
+    C -->|"Yes"| D["Exclude and Escalate as Needed"]
+    C -->|"No"| E["Provenance and Freshness Check"]
+    E --> F{"Authoritative Claim or Conflict?"}
+    F -->|"Yes"| G["Verify Against Approved Sources"]
+    F -->|"No"| H["Advisory Context Only"]
+    G --> I{"Resolved?"}
+    I -->|"No"| J["Block Affected Decision"]
+    I -->|"Yes"| K["Record Decision and Evidence"]
+    H --> L["Continue Harness Execution"]
+    K --> L
+    L --> M["Run Mandatory Gates and Obtain Human Approval"]

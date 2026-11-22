@@ -1,0 +1,13 @@
+flowchart TD
+    EVENT[Security event detected] --> TRIAGE{Incident suspected?}
+    TRIAGE -->|No| LOG[Record and continue under policy]
+    TRIAGE -->|Yes| STOP[Suspend or terminate run]
+    STOP --> REVOKE[Revoke scoped credentials]
+    REVOKE --> QUAR[Quarantine workspace and artifacts]
+    QUAR --> SAVE[Preserve independent audit evidence]
+    SAVE --> INV[Security investigation]
+    INV --> REM{Remediation verified?}
+    REM -->|No| FIX[Remediate and revalidate]
+    FIX --> REM
+    REM -->|Yes| AUTH[Authorized recovery]
+    AUTH --> LESSON[Incident closure and lessons learned]

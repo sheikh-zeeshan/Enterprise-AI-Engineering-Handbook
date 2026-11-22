@@ -1,0 +1,13 @@
+flowchart TD
+    A[Start Evaluation] --> B{Mandatory Validator Gates Eligible?}
+    B -->|No| C[Harness Blocked: Resolve Gate or Obtain Authorized Waiver]
+    B -->|Yes| D{Evidence and Criteria Sufficient?}
+    D -->|No| E[Inconclusive: Request Evidence or Clarification]
+    D -->|Yes| F[Evaluate Every Approved Criterion]
+    F --> G{All Mandatory Criteria Satisfied?}
+    G -->|Yes| H{Unapproved Scope or Approval Holds?}
+    H -->|No| I[Satisfied: Refer to Human Approval]
+    H -->|Yes| J[Record Scope Finding and Escalate]
+    G -->|No| K{Substantial Authorized Outcome Achieved?}
+    K -->|Yes| L[Partial: Bounded Rework]
+    K -->|No| M[Failed: Correct or Escalate]

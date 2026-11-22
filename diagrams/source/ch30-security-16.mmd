@@ -1,0 +1,9 @@
+flowchart TD
+    GOAL[Approved engineering goal] --> CONTRACT[Enterprise security contract]
+    CONTRACT --> EXEC[Authorized agent execution]
+    EXEC --> CHANGE[Proposed implementation]
+    CHANGE --> GATES[Independent security verification]
+    GATES --> OK{All required conditions met?}
+    OK -->|No| BLOCK[Blocked or remediation required]
+    OK -->|Yes| APPROVAL[Human approval where required]
+    APPROVAL --> OUTCOME[Governed engineering outcome]

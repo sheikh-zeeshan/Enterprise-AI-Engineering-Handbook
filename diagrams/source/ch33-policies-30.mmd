@@ -1,0 +1,10 @@
+flowchart TD
+    A[Enterprise Policy Registry] --> B[Shared Policy Resolver]
+    B --> C[Claude Code Adapter]
+    B --> D[GitHub Copilot Adapter]
+    B --> E[Codex Adapter]
+    C --> F[Enterprise Harness]
+    D --> F
+    E --> F
+    F --> G[Trusted Enforcement]
+    G --> H[Audit Evidence]

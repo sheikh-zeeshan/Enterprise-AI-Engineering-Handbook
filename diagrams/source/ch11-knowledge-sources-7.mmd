@@ -1,0 +1,16 @@
+stateDiagram-v2
+    [*] --> Draft
+    Draft --> UnderReview
+    UnderReview --> Approved
+    UnderReview --> Rejected
+    Approved --> Active
+    Active --> ReviewDue
+    ReviewDue --> Active: Revalidated
+    ReviewDue --> Deprecated: No longer preferred
+    Active --> Superseded: Replaced
+    Active --> Expired: Time-bound source ends
+    Deprecated --> Archived
+    Superseded --> Archived
+    Rejected --> Archived
+    Expired --> Archived
+    Archived --> [*]

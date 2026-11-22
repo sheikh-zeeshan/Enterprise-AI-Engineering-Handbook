@@ -1,0 +1,9 @@
+flowchart TD
+    A["Codex Agent"] --> B["Request Tool Operation"] --> C{"Within Sandbox?"}
+    C -->|Yes| D["Execute Under Allowed Permissions"]
+    C -->|No| E{"Escalation Authorized?"}
+    E -->|No| F["Deny or Request Safer Alternative"]
+    E -->|Yes| G["Execute Approved Operation"]
+    D --> H["Capture Result"]
+    G --> H
+    H --> I["Validate and Record Evidence"]

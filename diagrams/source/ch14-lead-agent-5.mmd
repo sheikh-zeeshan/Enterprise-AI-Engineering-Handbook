@@ -1,0 +1,42 @@
+flowchart TB
+    U[User Goal] --> L[Lead Agent]
+
+    L --> RI[Repository Intelligence]
+
+    RI --> C[Build Execution Context]
+
+    I[Instructions] --> C
+    S[Steering Notes] --> C
+    K[Knowledge Sources] --> C
+
+    C --> P[Plan and Decompose]
+
+    SK[Skills] --> P
+    RR[Role Registry] --> P
+
+    P --> D[Developer Agent]
+
+    D --> G[Deterministic Gates]
+
+    G -->|Fail| FA[Failure Analysis]
+    FA --> RET{Retry Allowed?}
+    RET -->|Yes| P
+    RET -->|No| ESC[Escalation]
+
+    G -->|Pass| RV[Reviewer Agent]
+
+    RV -->|Changes Required| P
+    RV -->|Approved| VA[Validator Agent]
+
+    VA -->|Fail| P
+    VA -->|Pass| EV[Evaluator Agent]
+
+    EV -->|Below Policy Threshold| P
+    EV -->|Accepted| HA{Human Approval Required?}
+
+    HA -->|Yes| HUMAN[Human Approver]
+    HA -->|No| DONE[Workflow Complete]
+
+    HUMAN -->|Approve| DONE
+    HUMAN -->|Request changes| P
+    HUMAN -->|Reject| REJECTED[Workflow Rejected]

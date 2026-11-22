@@ -1,0 +1,20 @@
+flowchart TD
+    A[Approved Engineering Goal] --> B[Harness Admission]
+    B --> C[Claude Planning Mode and Lead Agent]
+    C --> D{Plan authorized?}
+    D -->|Revise| C
+    D -->|Yes| E[Claude Developer Execution]
+    E --> F[Candidate Commit]
+    F --> G[Harness Deterministic Gates]
+    G --> H{Gates passed?}
+    H -->|No| I[Controlled Remediation]
+    I --> E
+    H -->|Yes| J[Claude Reviewer]
+    J --> K[Claude Validator]
+    K --> L[Claude Evaluator]
+    L --> M{Completion conditions met?}
+    M -->|No| N[Remediate or Escalate]
+    N --> E
+    M -->|Yes| O[Human Approval]
+    O --> P[Authorized Pull Request]
+    P --> Q[Evidence Archive]

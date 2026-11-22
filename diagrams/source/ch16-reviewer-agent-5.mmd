@@ -1,0 +1,30 @@
+sequenceDiagram
+    participant L as Lead Agent
+    participant D as Developer Agent
+    participant G as Deterministic Gates
+    participant R as Reviewer Agent
+    participant V as Validator Agent
+
+    L->>D: Implement corporate fleet booking
+    D->>G: Submit implementation
+    G-->>D: Build and unit tests pass
+
+    D->>R: Implementation evidence
+
+    R->>R: Review Instructions
+    R->>R: Review acceptance criteria
+    R->>R: Review API contract
+    R->>R: Review authorization
+    R->>R: Review event publication
+
+    R-->>D: High: customer authorization missing
+    R-->>D: High: event bypasses transactional outbox
+    R-->>D: Medium: regression coverage incomplete
+
+    D->>D: Correct implementation
+    D->>G: Run deterministic gates
+    G-->>D: Pass
+
+    D->>R: Revised implementation
+    R->>R: Verify findings
+    R-->>V: Review complete

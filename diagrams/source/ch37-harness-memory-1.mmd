@@ -1,0 +1,16 @@
+flowchart TD
+    A["Harness run"] --> B["Scratchpad and execution evidence"]
+    B --> C["Validation, review and evaluation"]
+    C --> D["Candidate learning"]
+    D --> E{"Evidence sufficient?"}
+    E -->|No| F["Reject or investigate"]
+    E -->|Yes| G["Scope, security and conflict checks"]
+    G --> H{"Eligible for approval?"}
+    H -->|No| I["Reject or revise"]
+    H -->|Yes| J["Authorized human approval"]
+    J --> K{"Approved?"}
+    K -->|No| L["Record rejection"]
+    K -->|Yes| M[("Versioned Harness Memory")]
+    M --> N["Governed retrieval"]
+    N --> O["Future Harness run"]
+    O -.->|New evidence| D

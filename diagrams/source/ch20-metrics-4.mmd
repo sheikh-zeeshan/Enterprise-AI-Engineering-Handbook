@@ -1,0 +1,20 @@
+flowchart TD
+    P["Population Item"] --> Q["Queued"] --> R["Running"]
+    R --> D["Developer Execution"] --> G["Deterministic Gates"]
+    G --> GP{"Mandatory Gates Pass?"}
+    GP -- No --> RET{"Recovery Permitted?"}
+    RET -- Yes --> D
+    RET -- No --> F["Failed or Exhausted"]
+    GP -- Yes --> REV["Reviewer Assessment"] --> VAL["Validator Evidence"] --> EV["Evaluator Assessment"]
+    EV --> OK{"Acceptance Criteria Met?"}
+    OK -- No --> RET
+    OK -- Yes --> H["Human Approval, if Required"] --> A["Accepted Outcome"]
+    Q -.-> M1["Population and Queue Metrics"]
+    R -.-> M2["Execution and Reliability Metrics"]
+    G -.-> M3["Gate Metrics"]
+    REV -.-> M4["Review Metrics"]
+    VAL -.-> M5["Validation Metrics"]
+    EV -.-> M6["Outcome Metrics"]
+    H -.-> M7["Approval Metrics"]
+    F -.-> M8["Failure and Exhaustion Metrics"]
+    A -.-> M9["Accepted Throughput and Cycle Time"]

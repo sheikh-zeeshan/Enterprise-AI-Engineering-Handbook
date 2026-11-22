@@ -1,0 +1,9 @@
+flowchart TB
+    R["Engineering Request"] --> P["Enterprise Harness Platform"]
+    P --> S["Shared Roles, Skills, Gates, Adapters, and Metrics"]
+    P --> B["Booking Harness Profile"]
+    P --> F["Fleet Harness Profile"]
+    P --> L["Billing Harness Profile"]
+    B --> BW["Isolated Booking Run Workspace"]
+    F --> FW["Isolated Fleet Run Workspace"]
+    L --> LW["Isolated Billing Run Workspace"]

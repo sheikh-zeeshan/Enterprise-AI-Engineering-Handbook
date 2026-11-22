@@ -1,0 +1,18 @@
+flowchart TD
+    A[Build Execution] --> B[Evidence Integrity Controls]
+    B --> C[Failure Classification]
+    C --> D[Root-Cause and Pattern Analysis]
+    D --> E[Confidence and Applicability Assessment]
+    E --> F{Evidence sufficient?}
+    F -->|No| G[Retain Provisional Finding]
+    F -->|Yes| H[Candidate Recommendation]
+    H --> I[Independent Evidence Verification]
+    I --> J[Human Review]
+    J --> K{Authorized approval?}
+    K -->|No| L[Record Decision]
+    K -->|Yes| M[Versioned Artifact Publication]
+    M --> N[Controlled Future Use]
+    N --> O[Outcome Monitoring]
+    O --> P{Improvement remains valid?}
+    P -->|Yes| Q[Continue Approved Use]
+    P -->|No| R[Review, Retire or Roll Back]

@@ -1,0 +1,13 @@
+flowchart TD
+    Select[Select Skill and version] --> Check{Preconditions pass?}
+    Check -- No --> Block[Block, document reason and request repair]
+    Check -- Yes --> Inputs[Validate inputs and permissions]
+    Inputs --> Execute[Execute steps in isolated workspace]
+    Execute --> Verify{Validation gates pass?}
+    Verify -- No --> Recover[Record failure, repair or roll back]
+    Recover --> Verify
+    Verify -- Yes --> Evidence[Record outputs and evidence]
+    Evidence --> Approval{Approval required?}
+    Approval -- Yes --> Review[Human approval]
+    Approval -- No --> Complete[Skill execution complete]
+    Review --> Complete

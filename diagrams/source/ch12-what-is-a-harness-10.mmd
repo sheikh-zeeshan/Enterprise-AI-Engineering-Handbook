@@ -1,0 +1,18 @@
+stateDiagram-v2
+    [*] --> Planned
+    Planned --> Implemented
+    Implemented --> Reviewed
+    Reviewed --> Validating
+    Validating --> Evaluating: Validation passed
+    Validating --> RepairRequired: Retryable failure
+    Validating --> Escalated: Non-retryable failure
+    RepairRequired --> Implemented: Attempt within limit
+    RepairRequired --> Exhausted: Retry limit reached
+    Evaluating --> ApprovalRequired: Threshold met
+    Evaluating --> RepairRequired: Improvement required
+    ApprovalRequired --> Published: Approved
+    ApprovalRequired --> Rejected: Rejected
+    Published --> [*]
+    Escalated --> [*]
+    Exhausted --> [*]
+    Rejected --> [*]

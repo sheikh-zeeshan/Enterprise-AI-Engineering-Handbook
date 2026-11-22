@@ -1,0 +1,26 @@
+flowchart TB
+    subgraph Durable["Durable Harness State"]
+        P["Population Item"]
+        X["Execution History"]
+        T["Transition History"]
+        EV["Evidence"]
+        CP["Checkpoints"]
+    end
+
+    subgraph Temporary["Agent Execution Context"]
+        PR["Prompt"]
+        CTX["Working Context"]
+        PLAN["Plan"]
+        OUT["Generated Output"]
+    end
+
+    P --> PR
+    PR --> CTX
+    CTX --> PLAN
+    PLAN --> OUT
+
+    OUT --> EV
+    EV --> P
+    P --> X
+    P --> T
+    P --> CP

@@ -1,0 +1,13 @@
+flowchart TD
+    A[Assigned Agent Role]
+        --> TG[Tool Gateway]
+
+    TG --> FS[Repository Workspace]
+    TG --> CLI[Approved Commands]
+    TG --> API[Approved External APIs]
+
+    FS --> CH[Code Changes]
+    CLI --> BR[Build and Test Processes]
+
+    CH --> GR[Gate Runner]
+    BR --> GR

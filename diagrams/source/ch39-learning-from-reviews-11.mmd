@@ -1,0 +1,14 @@
+flowchart TD
+    A[Codex learning analysis] --> B[Candidate improvement]
+    B --> C[Version-controlled proposal]
+    C --> D[Deterministic validation]
+    D --> E{Human governance approval?}
+    E -->|No| F[Reject or request revision]
+    E -->|Yes| G[Approved artifact identity]
+    G --> H[Controlled activation]
+    H --> I[Evaluate future runs]
+    I --> J{Improvement sustained?}
+    J -->|Yes| K[Retain approved version]
+    J -->|No| L[Governed rollback or revision]
+    classDef decision fill:#fff1d6,stroke:#bb8b36,color:#704b0a
+    class E,J decision

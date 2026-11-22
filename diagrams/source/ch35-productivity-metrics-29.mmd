@@ -1,0 +1,4 @@
+flowchart TD
+    A["Metric Threshold Exceeded"] --> B["Investigate Evidence"] --> C["Identify Possible Root Cause"] --> D["Generate Improvement Proposal"] --> E["Human Governance Review"] --> F{"Approved?"}
+    F -->|No| G["Reject or Revise"]
+    F -->|Yes| H["Controlled Experiment"] --> I["Independent Evaluation"] --> J["Governed Adoption Decision"]

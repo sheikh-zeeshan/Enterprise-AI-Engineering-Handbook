@@ -1,0 +1,10 @@
+flowchart TD
+    A[Candidate Prompt] --> B[Static and Structural Review]
+    B --> C[Representative Benchmark]
+    C --> D[Comparative Evaluation]
+    D --> E{Quality Requirements Satisfied?}
+    E -->|No| F[Reject or Revise]
+    E -->|Yes| G[Human Approval]
+    G -->|Approve| H[Controlled Rollout]
+    G -->|Reject| F
+    H --> I[Post-Release Monitoring]

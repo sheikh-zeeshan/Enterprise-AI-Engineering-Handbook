@@ -1,0 +1,25 @@
+flowchart LR
+    CA[Corporate Account]
+    FL[Fleet]
+    VH[Vehicle]
+    SV[Service]
+    ST[Station]
+    BK[Booking]
+    CP[Capacity]
+    BL[Billing]
+    NT[Notification]
+
+    CA --> FL
+    FL --> VH
+
+    CA --> BK
+    VH --> BK
+    SV --> BK
+    ST --> BK
+
+    ST --> CP
+    SV --> CP
+    CP --> BK
+
+    BK --> BL
+    BK --> NT

@@ -1,0 +1,16 @@
+flowchart TD
+    A[Fleet Booking API Change] --> B[Compilation Failure]
+    B --> C[Unresolved Application Contract]
+    C --> D[Inspect Symbol Ownership]
+    D --> E[Inspect Project References]
+    E --> F{Dependency Direction Permitted?}
+    F -->|No| G[Find Architecture-Compliant Design]
+    F -->|Yes| H[Add Verified Required Reference]
+    G --> I[Build and Validate]
+    H --> I
+    I --> J{All Required Gates Pass?}
+    J -->|No| K[Continue Investigation]
+    J -->|Yes| L[Record Verified Remediation]
+    L --> M[Compare Independent Incidents]
+    M --> N[Candidate Skill Improvement]
+    N --> O[Human Review]

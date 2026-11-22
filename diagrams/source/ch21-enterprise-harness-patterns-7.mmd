@@ -1,0 +1,19 @@
+flowchart TB
+    Impl["Implementation"]
+
+    Impl --> Build["Build"]
+    Impl --> Tests["Tests"]
+    Impl --> Arch["Architecture Checks"]
+    Impl --> Sec["Security Checks"]
+
+    Build --> V["Validation Result"]
+    Tests --> V
+    Arch --> V
+    Sec --> V
+
+    Impl --> E["Evaluator"]
+    V --> E
+    Review["Reviewer Evidence"] --> E
+    Criteria["Acceptance Criteria"] --> E
+
+    E --> Outcome["Pass / Fail / Partial / Inconclusive"]

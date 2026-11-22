@@ -1,0 +1,13 @@
+flowchart TD
+    R["Restore"] --> B["Build"]
+    B --> U["Unit tests"]
+    B --> A["Architecture tests"]
+    B --> I["Integration tests"]
+    B --> API["API contract"]
+    B --> EVT["Event contract"]
+    I --> M["Migration verification"]
+    API --> O["Aggregate outcome"]
+    EVT --> O
+    U --> O
+    A --> O
+    M --> O

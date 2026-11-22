@@ -1,0 +1,13 @@
+flowchart LR
+    P["Prompt<br/>What needs to be done?"]
+    PL["Plan<br/>How will we approach it?"]
+    S["Scratchpad<br/>What are we discovering<br/>and tracking?"]
+    RI["Repository Intelligence<br/>What evidence do we have<br/>about the repository?"]
+    HM["Harness Memory<br/>What governed knowledge<br/>should survive?"]
+
+    P --> PL
+    PL --> S
+    RI --> PL
+    RI --> S
+    S -. "candidate discovery" .-> RI
+    S -. "candidate lesson" .-> HM

@@ -1,0 +1,45 @@
+flowchart TD
+    T[Approved Task] --> W[Isolated Workspace]
+    W --> C[Context Manifest]
+
+    C --> L[Lead Agent]
+    L --> PG{Plan Gate}
+
+    PG -->|Approved| D[Developer Agent]
+    PG -->|Decision Needed| H1[Human]
+
+    D --> SG{Scope Gate}
+    SG -->|Passed| R[Independent Reviewer]
+    SG -->|Violation| STOP[Stop]
+
+    R --> RG{Review Gate}
+    RG -->|Repair| D
+    RG -->|Passed| V[Independent Validator]
+
+    V --> DG{Deterministic Gates}
+
+    DG -->|Failed| FC[Failure Classification]
+    FC -->|Repairable| D
+    FC -->|Architecture| A[Architect]
+    FC -->|Security| S[Security Reviewer]
+    FC -->|Policy| STOP
+    FC -->|Ambiguous| H1
+
+    DG -->|Passed| E[Evaluator]
+    E --> EG{Evaluation Gate}
+
+    EG -->|Repair| D
+    EG -->|Accepted| HA[Human Approval]
+
+    HA --> PB{Publication Boundary}
+    PB --> PR[Pull Request]
+
+    PR --> CI[Independent CI/CD]
+
+    C --> O[Audit, Logs and Metrics]
+    L --> O
+    D --> O
+    R --> O
+    V --> O
+    E --> O
+    HA --> O

@@ -1,0 +1,29 @@
+graph TD
+
+    S[Source Entity]
+    T[Target Entity]
+
+    R[Relationship]
+
+    E1[Repository Evidence]
+    E2[Build Evidence]
+    E3[Review Evidence]
+    E4[Human Decision]
+
+    P[Provenance]
+    C[Confidence]
+    L[Lifecycle]
+    A[Authorization]
+
+    S --> R
+    R --> T
+
+    E1 --> P
+    E2 --> P
+    E3 --> P
+    E4 --> P
+
+    P --> R
+    C --> R
+    L --> R
+    A --> R

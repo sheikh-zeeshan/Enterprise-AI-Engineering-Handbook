@@ -1,0 +1,14 @@
+sequenceDiagram
+    participant D as Developer Agent
+    participant R as Reviewer Agent
+    participant V as Validator Agent
+    participant E as Evaluator Agent
+
+    D->>R: Revision A and implementation evidence
+    R->>V: Reviewed Revision A
+    V->>V: Execute mandatory gates
+    V-->>D: Revision A fails contract validation
+    D->>R: Revision B with correction
+    R->>V: Reviewed Revision B
+    V->>V: Validate Revision B
+    V->>E: Pass result and evidence for Revision B

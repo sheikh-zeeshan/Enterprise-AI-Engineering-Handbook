@@ -1,0 +1,42 @@
+flowchart TD
+    A[Execute Approved Skill Version] --> B[Generate Engineering Output]
+
+    B --> C1[Build]
+    B --> C2[Review]
+    B --> C3[Validation]
+    B --> C4[Evaluation]
+    B --> C5[Pull Request]
+
+    C1 --> D[Evidence Store]
+    C2 --> D
+    C3 --> D
+    C4 --> D
+    C5 --> D
+
+    D --> E[Normalize Findings]
+    E --> F[Correlate with Skill Version]
+    F --> G[Pattern Detection]
+
+    G --> H{Evidence threshold met?}
+
+    H -->|No| I[Continue Observing]
+    H -->|Yes| J[Create Candidate Improvement]
+
+    J --> K[Impact Analysis]
+    K --> L[Skill Tests and Compatibility Gates]
+    L -->|Passed| M[Human Owner Review]
+    L -->|Failed| J
+
+    M -->|Reject| N[Record Rejection]
+    M -->|Revise| J
+    M -->|Approve| O[Publish New Version]
+
+    O --> P[Controlled Adoption]
+    P --> Q[Measure New Version]
+
+    Q --> R{Better outcome?}
+    R -->|Yes| S[Continue Adoption]
+    R -->|No| T[Rollback Channel or Open Revision]
+
+    S --> A
+    T --> A

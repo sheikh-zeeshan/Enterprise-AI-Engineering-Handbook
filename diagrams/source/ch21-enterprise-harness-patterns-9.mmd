@@ -1,0 +1,12 @@
+flowchart TB
+    Agent["AI Agent"]
+    Tools["Approved Tool Interface"]
+    Identity["Scoped Identity"]
+    Resource["Authorized Resource"]
+
+    Agent --> Tools
+    Tools --> Identity
+    Identity --> Resource
+
+    Policy["Policy Engine"] --> Tools
+    Audit["Audit Log"] <-->|Records| Tools

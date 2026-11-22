@@ -1,0 +1,11 @@
+flowchart LR
+    Copilot["GitHub Copilot"] --> PR["Pull request"]
+    PR --> CI["Branch protection and CI"] --> Release["Release candidate"]
+    Release --> Policy["Governance policy service"]
+    Policy --> Human["Authorized human approvers"]
+    Human --> Record["Approval evidence store"]
+    Release --> Gateway["Deployment protection gateway"]
+    Record --> Gateway
+    Gateway --> Valid{"Authorization valid?"}
+    Valid -->|No| Deny["Deployment denied"]
+    Valid -->|Yes| Deploy["Production deployment"]

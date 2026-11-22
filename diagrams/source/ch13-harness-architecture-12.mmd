@@ -1,0 +1,17 @@
+flowchart TD
+    U[Engineering Goal] --> H[Harness Controller]
+
+    H --> LC[Claude Code<br/>Lead Role]
+    LC --> P[Implementation Plan]
+
+    P --> DC[Claude Code<br/>Developer Role]
+    DC --> C[Code Changes]
+
+    C --> G[Harness-controlled<br/>Deterministic Gates]
+
+    G -->|Pass| RC[Claude Code<br/>Reviewer Role]
+    RC --> VC[Claude Code<br/>Validator Role]
+    VC --> EC[Claude Code<br/>Evaluator Role]
+
+    EC --> A[Human Approval]
+    A --> PR[Pull Request]

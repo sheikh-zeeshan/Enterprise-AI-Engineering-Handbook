@@ -1,0 +1,13 @@
+flowchart TD
+    A["Engineering Task"] --> B["Enterprise Harness"]
+    C["AGENTS.md and Approved Instructions"] --> B
+    D["Architecture Decisions"] --> B
+    E["Repository Intelligence"] --> B
+    F["Optional Historical Context"] -.-> B
+    B --> G["Verify Scope, Evidence and Conflicts"]
+    G --> H["Codex: Assigned Engineering Work"]
+    H --> I["Repository Changes and Run Artifacts"]
+    I --> J["Independent Review"]
+    J --> K["Deterministic Validation"]
+    K --> L["Evaluation Against Acceptance Criteria"]
+    L --> M["Human Approval"]

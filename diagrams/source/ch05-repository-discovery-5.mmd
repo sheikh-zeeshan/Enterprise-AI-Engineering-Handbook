@@ -1,0 +1,91 @@
+flowchart TB
+    subgraph Channels
+        Web[Customer and Corporate Portals]
+        Mobile[Station Mobile Application]
+        Partner[Partner Integrations]
+    end
+
+    Gateway[API Gateway]
+
+    subgraph CoreServices["Core Services"]
+        Booking[Booking Service]
+        Station[Station Operations Service]
+        Corporate[Corporate Account Service]
+        Customer[Customer Service]
+        Fleet[Fleet Service]
+        Billing[Billing Service]
+        Notification[Notification Service]
+    end
+
+    subgraph Data
+        BookingDB[(Booking SQL)]
+        StationDB[(Station Operations SQL)]
+        CorporateDB[(Corporate Accounts SQL)]
+        FleetDB[(Fleet SQL)]
+        Redis[(Redis)]
+    end
+
+    subgraph Messaging
+        Broker[Enterprise Event Platform]
+        Contracts[Shared Event Contracts]
+    end
+
+    subgraph PlatformAssets["Platform Assets"]
+        K8s[Kubernetes and Helm]
+        IaC[Terraform and Bicep]
+        CICD[CI/CD Pipelines]
+        Obs[Logs, Metrics, and Traces]
+    end
+
+    subgraph RepositoryIntelligence["Repository Intelligence"]
+        ADR[Architecture Decisions]
+        Instructions[AI Instructions]
+        Skills[Reusable Skills]
+        Prompts[Prompt Library]
+        Harness[Harness Scripts and Reports]
+    end
+
+    subgraph Validation
+        Unit[Unit Tests]
+        Integration[Integration Tests]
+        ContractTests[Contract Tests]
+        ArchitectureTests[Architecture Tests]
+    end
+
+    Web --> Gateway
+    Mobile --> Gateway
+    Partner --> Gateway
+
+    Gateway --> Booking
+    Gateway --> Station
+    Gateway --> Corporate
+    Gateway --> Customer
+    Gateway --> Fleet
+
+    Booking --> BookingDB
+    Booking --> Redis
+    Station --> StationDB
+    Corporate --> CorporateDB
+    Fleet --> FleetDB
+
+    Booking <--> Station
+    Booking <--> Corporate
+    Booking <--> Fleet
+    Booking --> Broker
+    Station --> Broker
+    Corporate --> Broker
+    Fleet --> Broker
+    Broker --> Billing
+    Broker --> Notification
+    Contracts --- Broker
+
+    K8s --> CoreServices
+    IaC --> K8s
+    CICD --> K8s
+    CoreServices --> Obs
+
+    ADR -. guides .-> CoreServices
+    Instructions -. constrains .-> Harness
+    Skills -. used by .-> Harness
+    Prompts -. executed by .-> Harness
+    Harness -. validates .-> Validation

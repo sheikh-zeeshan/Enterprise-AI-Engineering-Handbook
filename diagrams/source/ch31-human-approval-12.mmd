@@ -1,0 +1,9 @@
+flowchart LR
+    Agent["AI agent or harness"] --> Request["Protected operation request"]
+    Request --> PEP["Policy enforcement point"]
+    PEP <-->|Request and decision| PDP["Policy decision point"]
+    Policy["Governed policies"] --> PDP
+    Records["Human approval evidence"] --> Service["Approval service"] --> PDP
+    PEP --> Valid{"Authorized?"}
+    Valid -->|No| Deny["Deny operation"]
+    Valid -->|Yes| Resource["Protected resource"]

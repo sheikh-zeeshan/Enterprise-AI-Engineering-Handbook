@@ -1,0 +1,27 @@
+flowchart TD
+    A[Authoritative Sources]
+    B[Repository Evidence]
+    C[Build and Validation Evidence]
+    D[Reviews and Pull Requests]
+    E[Architecture Decisions]
+    F[Harness Memory]
+
+    X[Knowledge Extraction]
+    R[Entity Resolution]
+    V[Evidence Validation]
+    C1[Conflict Detection]
+    P[Provenance + Confidence]
+    G[(Governed Knowledge Graph)]
+
+    A --> X
+    B --> X
+    C --> X
+    D --> X
+    E --> X
+    F --> X
+
+    X --> R
+    R --> V
+    V --> C1
+    C1 --> P
+    P --> G

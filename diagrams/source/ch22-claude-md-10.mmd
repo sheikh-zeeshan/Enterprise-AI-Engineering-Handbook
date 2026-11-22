@@ -1,0 +1,9 @@
+flowchart TD
+    A[Instruction Improvement Identified] --> B[Create Proposal]
+    B --> C[Open Pull Request]
+    C --> D[Architecture and Security Review]
+    D --> E{Approved?}
+    E -- No --> F[Revise or Reject]
+    E -- Yes --> G[Validate Scope and References]
+    G --> H[Merge Approved Change]
+    H --> I[Future Claude Sessions]

@@ -1,0 +1,26 @@
+sequenceDiagram
+    participant Harness
+    participant Policy as Policy Engine
+    participant Service as Approval Service
+    actor Human as Human Approver
+    participant Gateway as Execution Gateway
+    participant Target as Protected Target
+    Harness->>Policy: Submit change metadata and evidence
+    Policy-->>Harness: Return required approval categories
+    Harness->>Service: Create approval request
+    Service->>Human: Present scope, evidence, and risks
+    Human->>Service: Submit authenticated decision
+    Service->>Service: Verify authority and record evidence
+    Service-->>Harness: Return approval status
+    Harness->>Gateway: Request protected action
+    Gateway->>Policy: Resolve current policy
+    Gateway->>Service: Verify current authorization
+    Service-->>Gateway: Return scoped decision and validity
+    Gateway->>Gateway: Match artifact, scope, and constraints
+    alt Authorization valid
+        Gateway->>Target: Execute approved operation
+        Target-->>Gateway: Return execution outcome
+        Gateway-->>Harness: Return recorded result
+    else Authorization invalid
+        Gateway-->>Harness: Deny operation
+    end

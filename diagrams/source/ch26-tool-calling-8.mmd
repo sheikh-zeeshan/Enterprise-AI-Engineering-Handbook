@@ -1,0 +1,24 @@
+sequenceDiagram
+    participant H as Harness
+    participant C as Claude Code
+    participant P as Policy Controls
+    participant T as Tool Runtime
+    participant V as Validator
+    participant E as Evaluator
+    H->>C: Assign scoped Booking Service task
+    C->>P: Request repository inspection
+    P->>T: Authorize read
+    T-->>C: Repository evidence
+    C->>P: Request source change
+    P->>T: Authorize scoped write
+    T-->>C: Changed files
+    C->>P: Request diagnostic build
+    P->>T: Authorize execution
+    T-->>C: Build result
+    C-->>H: Submit implementation revision
+    H->>T: Execute mandatory validation gates
+    T-->>H: Validation evidence
+    H->>V: Verify deterministic evidence
+    V-->>H: Gate assessment
+    H->>E: Evaluate acceptance criteria
+    E-->>H: Outcome assessment

@@ -1,0 +1,38 @@
+flowchart TD
+    A[Prompt Execution] --> B[Build and Tests]
+    B --> C[Reviewer]
+    C --> D[Validator]
+    D --> E[Evaluator]
+    E --> F[Pull Request]
+    F --> G[Human Feedback]
+
+    B --> H[Evidence Collection]
+    C --> H
+    D --> H
+    E --> H
+    F --> H
+    G --> H
+
+    H --> I[Harness Memory]
+    I --> J[Pattern Detection]
+    J --> K{Evidence Threshold Met?}
+
+    K -->|No| L[Retain Observation]
+    K -->|Yes| M[Classify Ownership]
+
+    M --> N{Prompt Change Appropriate?}
+
+    N -->|No| O[Route Recommendation to Correct Artifact]
+    N -->|Yes| P[Candidate Prompt Improvement]
+
+    P --> S[Create Candidate Version]
+    S --> T[Comparative Validation]
+    T --> U{Quality and Compatibility Gates Passed?}
+    U -->|No| R[Keep Current Prompt or Revise]
+    U -->|Yes| Q[Human Owner Review]
+    Q -->|Reject| R
+    Q -->|More Evidence| I
+    Q -->|Approve| V[Authorized Activation]
+
+    V --> W[Future Runs]
+    W --> A

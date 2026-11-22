@@ -1,0 +1,20 @@
+flowchart LR
+    Booking["Booking Service"]
+    Station["Station Operations Service"]
+    Billing["Billing Service"]
+    Payment["Payment Service"]
+    Notification["Notification Service"]
+    Analytics["Analytics / Reporting"]
+
+    Bus["Integration Event Bus"]
+
+    Booking -->|"BookingConfirmed"| Bus
+    Booking -->|"BookingCancelled"| Bus
+    Station -->|"ServiceCompleted"| Bus
+    Billing -->|"InvoiceIssued"| Bus
+    Payment -->|"PaymentRecorded"| Bus
+
+    Bus -->|"Customer and financial events"| Notification
+    Bus -->|"ServiceCompleted"| Billing
+    Bus -->|"ServiceCompleted"| Booking
+    Bus -->|"Approved reporting events"| Analytics

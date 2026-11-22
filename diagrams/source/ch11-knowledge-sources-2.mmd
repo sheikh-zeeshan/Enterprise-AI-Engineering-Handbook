@@ -1,0 +1,21 @@
+flowchart LR
+    SRC[Candidate Source]
+
+    SRC --> A[Authority]
+    SRC --> R[Relevance]
+    SRC --> F[Freshness]
+    SRC --> RL[Reliability]
+    SRC --> S[Scope]
+    SRC --> C[Confidence Contribution]
+
+    A --> E[Evidence Assessment]
+    R --> E
+    F --> E
+    RL --> E
+    S --> E
+    C --> E
+
+    E --> U[Use as Primary Evidence]
+    E --> SP[Use as Supporting Evidence]
+    E --> H[Use as Historical Context]
+    E --> X[Exclude or Escalate]

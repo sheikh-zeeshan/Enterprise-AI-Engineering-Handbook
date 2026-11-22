@@ -1,0 +1,6 @@
+flowchart TB
+    F["Execution Failure"] --> C{"Failure Classification"}
+    C -->|Transient| R["Bounded Retry"]
+    C -->|Engineering| W["Developer Rework"]
+    C -->|Interrupted| P["Checkpoint Recovery"]
+    C -->|Policy / Unknown| H["Human Escalation"]

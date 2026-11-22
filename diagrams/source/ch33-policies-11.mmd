@@ -1,0 +1,17 @@
+flowchart TD
+    A[Enterprise Policy Authority] --> B[Approved Policy Registry]
+    A --> C[Managed Claude Settings]
+    D[Engineer] --> E[Claude Code]
+    C --> E
+    F[CLAUDE.md] --> E
+    G[Governed Skills] --> E
+    E --> H[Enterprise Harness]
+    H --> I[Policy Resolver]
+    I --> B
+    H --> J[Policy-Aware Tool Broker]
+    J --> K[Authorized Tools and Services]
+    H --> L[Lead, Developer, Reviewer, Validator and Evaluator]
+    L --> M[Trusted Approval Gate]
+    I --> N[Audit Service]
+    J --> N
+    M --> N

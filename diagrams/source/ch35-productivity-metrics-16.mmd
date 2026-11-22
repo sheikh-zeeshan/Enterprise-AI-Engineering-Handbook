@@ -1,0 +1,10 @@
+flowchart TD
+    A["Engineering Task"] --> B["Enterprise Harness"] --> C["Claude Code"]
+    C --> D["Repository Inspection"] --> E["Implementation"] --> F["Tool Execution"]
+    E --> G["Independent Review"] --> H["Deterministic Validation"] --> I["Goal Evaluation"] --> J["Human Approval"]
+    C -.-> K["Harness Telemetry"]
+    G -.-> K
+    H -.-> K
+    I -.-> K
+    J -.-> K
+    K --> L[("Metrics Store")] --> M["Productivity Analytics"]

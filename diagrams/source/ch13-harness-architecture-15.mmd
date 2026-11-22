@@ -1,0 +1,39 @@
+sequenceDiagram
+    participant User
+    participant Harness
+    participant Lead as Claude Lead
+    participant Dev as Claude Developer
+    participant Gates as Deterministic Gates
+    participant Review as Claude Reviewer
+    participant Validate as Claude Validator
+    participant Eval as Claude Evaluator
+    participant Human
+
+    User->>Harness: Corporate fleet booking goal
+
+    Harness->>Lead: Goal + Repository Intelligence
+    Lead-->>Harness: Implementation plan
+
+    Harness->>Dev: Plan + Instructions + Skills
+    Dev-->>Harness: Code changes
+
+    Harness->>Gates: Run authoritative validation
+    Gates-->>Harness: Test Gate failed
+
+    Harness->>Dev: Failure evidence — attempt 2
+    Dev-->>Harness: Repair
+
+    Harness->>Gates: Rerun gate pipeline
+    Gates-->>Harness: All required gates passed
+
+    Harness->>Review: Diff + standards + evidence
+    Review-->>Harness: Review findings
+
+    Harness->>Validate: Acceptance criteria + evidence
+    Validate-->>Harness: Criteria satisfied
+
+    Harness->>Eval: Evidence + rubric
+    Eval-->>Harness: 88/100
+
+    Harness->>Human: Approval package
+    Human-->>Harness: Approved

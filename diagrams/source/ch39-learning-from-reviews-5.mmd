@@ -1,0 +1,17 @@
+flowchart TD
+    A[Supported root-cause hypothesis] --> B{Primary deficiency?}
+    B -->|Task context| C[Prompt proposal]
+    B -->|Reusable procedure| D[Skill proposal]
+    B -->|Persistent standard| E[Instruction proposal]
+    B -->|Objective check missing| F[Validation gate proposal]
+    B -->|Role or ownership gap| G[Role or workflow proposal]
+    B -->|Knowledge retrieval| H[Repository Intelligence proposal]
+    B -->|Uncertain or contradictory| I[Further investigation]
+    C --> J[Governance review]
+    D --> J
+    E --> J
+    F --> J
+    G --> J
+    H --> J
+    classDef decision fill:#fff1d6,stroke:#bb8b36,color:#704b0a
+    class B decision

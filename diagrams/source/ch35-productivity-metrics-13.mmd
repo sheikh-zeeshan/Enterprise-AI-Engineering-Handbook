@@ -1,0 +1,13 @@
+flowchart TD
+    A["Task Execution"] --> B["Harness Event Publisher"] --> C[("Durable Event Store")]
+    D["Reviewer Agent"] --> B
+    E["Validator Agent"] --> B
+    F["Evaluator Agent"] --> B
+    G["Human Approval"] --> B
+    C --> H["Metric Projection Service"] --> I[("Productivity Metrics Database")]
+    I --> J["Engineering Dashboard"]
+    I --> K["Governance Dashboard"]
+    I --> L["Trend Analysis"]
+    M["Source Control / CI/CD"] --> B
+    N["Defect / Incident Records"] --> H
+    L --> O["Improvement Recommendations"] --> P["Human Governance Review"]

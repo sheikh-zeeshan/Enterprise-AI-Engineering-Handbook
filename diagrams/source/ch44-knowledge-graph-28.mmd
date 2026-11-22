@@ -1,0 +1,7 @@
+flowchart TD
+ BS["Booking Service"] --- FS["Fleet Service"]
+ BS --- CA["Corporate Account Service"]
+ BS --- SK["Event Processing Skill"]
+ FS --- CA
+ FS --- SK
+ CA --- SK

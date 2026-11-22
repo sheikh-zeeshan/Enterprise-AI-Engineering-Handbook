@@ -1,0 +1,23 @@
+flowchart TD
+    subgraph A[Alpha Car Detailing]
+        A1[.NET Build Evidence]
+        A2[Repository Architecture Context]
+    end
+    subgraph B[Enterprise Service B]
+        B1[Build Evidence]
+        B2[Repository Architecture Context]
+    end
+    subgraph C[Shared Learning Services]
+        C1[Evidence Contract]
+        C2[Incident and Pattern Analysis]
+        C3[Candidate Recommendation Service]
+        C4[Governance Integration]
+    end
+    A1 --> C1
+    A2 --> C2
+    B1 --> C1
+    B2 --> C2
+    C1 --> C2
+    C2 --> C3
+    C3 --> C4
+    C4 --> D[Scoped Approved Improvements]

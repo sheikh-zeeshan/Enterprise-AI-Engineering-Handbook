@@ -1,0 +1,28 @@
+flowchart TD
+    P["Prompt"] --> H["Harness"]
+
+    H --> CL["Claude — Lead"]
+    CL --> PLAN["plan.md"]
+    CL --> SP["Lead Scratchpad"]
+    CL --> HD["Lead → Developer Handoff"]
+
+    HD --> CD["Claude — Developer"]
+    CD --> DSP["Developer Scratchpad"]
+    CD --> CODE["Implementation"]
+    CD --> HR["Developer → Reviewer Handoff"]
+
+    HR --> CR["Claude — Reviewer"]
+    CR --> FIND["Reviewer Findings"]
+
+    FIND -->|Changes Required| CD
+
+    FIND -->|Approved for Validation| CV["Claude — Validator"]
+    CV --> TOOLS["Deterministic Tools"]
+    TOOLS --> VE["Validation Evidence"]
+
+    VE --> CE["Claude — Evaluator"]
+    CE --> OUT["Final Evaluation"]
+
+    OUT --> PC["Promotion Candidates"]
+    PC --> GOV["Governance"]
+    GOV --> RI["Repository Intelligence / Harness Memory"]

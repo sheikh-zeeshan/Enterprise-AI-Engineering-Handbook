@@ -1,0 +1,12 @@
+flowchart TB
+    V["Validator Agent"] --> B["Build"]
+    V --> T["Tests"]
+    V --> Q["Quality and security"]
+    V --> C["Contracts and data"]
+
+    B --> B1["Restore and compile"]
+    T --> T1["Unit and integration"]
+    Q --> Q1["Static and architecture"]
+    Q --> Q2["Security"]
+    C --> C1["API and events"]
+    C --> C2["Migrations and configuration"]

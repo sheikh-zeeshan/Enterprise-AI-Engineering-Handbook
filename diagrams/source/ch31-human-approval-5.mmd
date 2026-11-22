@@ -1,0 +1,10 @@
+flowchart TD
+    A["Validated artifact A"] --> Approval["Approval bound to artifact A"]
+    Approval --> Current{"Current artifact?"}
+    Current -->|Artifact A| Scope["Check scope and expiry"]
+    Scope --> Valid{"Authorization valid?"}
+    Valid -->|Yes| Permit["Permit protected action"]
+    Valid -->|No| Block["Block execution"]
+    Current -->|Artifact B| Supersede["Supersede approval for this release"]
+    Supersede --> Reassess["Revalidate and reassess"]
+    Reassess --> Request["Request new approval"]

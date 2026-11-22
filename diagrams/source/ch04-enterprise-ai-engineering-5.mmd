@@ -1,0 +1,11 @@
+flowchart TB
+    Sponsors["Executive sponsors"] --> CoE["AI Center of Excellence"]
+    Sponsors --> Architecture["Enterprise Architecture"]
+    CoE --> Platform["AI Platform Team"]
+    Architecture --> Standards["Governed engineering standards"]
+    Platform --> Assets["Developer platform and reusable assets"]
+    Standards --> Teams["Product engineering teams"]
+    Assets --> Teams
+    Security["Security and compliance"] --> Teams
+    Quality["Quality and DevOps"] --> Teams
+    Teams --> Delivery["Reviewed delivery outcomes"]

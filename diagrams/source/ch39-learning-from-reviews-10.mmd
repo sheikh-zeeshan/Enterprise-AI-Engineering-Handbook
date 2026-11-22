@@ -1,0 +1,16 @@
+flowchart TD
+    A[Alpha Car Detailing task] --> B[Lead Agent]
+    B --> C[Developer Agent — Codex]
+    C --> D[Validator Agent]
+    C --> E[Reviewer Agent — Codex]
+    D --> G[Review evidence store]
+    E --> G
+    F[Human code review] --> G
+    G --> H[Codex learning analysis]
+    H --> I[Candidate improvement]
+    I --> J{Human governance}
+    J -->|Approved| K[Approved versioned change]
+    J -->|Rejected or deferred| G
+    K --> L[Future Harness runs]
+    classDef decision fill:#fff1d6,stroke:#bb8b36,color:#704b0a
+    class J decision

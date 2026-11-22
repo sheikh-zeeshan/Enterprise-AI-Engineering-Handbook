@@ -1,0 +1,9 @@
+flowchart TD
+    R["Engineering Requirement"] --> H["Harness Orchestrator"] --> C["Claude Code Agents"]
+    C --> I["Implementation Artifacts"]
+    I --> REV["Independent Review"]
+    I --> VAL["Deterministic Validation"]
+    REV --> E["Evaluation"]
+    VAL --> E
+    E --> O["Governed Outcome Record"] --> M["Metrics Aggregation"]
+    M --> D["Dashboards and Analysis"] --> P["Improvement Proposals"] --> G["Human Governance"]

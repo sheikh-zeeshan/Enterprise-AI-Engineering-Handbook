@@ -1,0 +1,13 @@
+flowchart TD
+    A[Task Prompt] --> B[Harness]
+    C[CLAUDE.md] --> B
+    D[Skills] --> B
+    E[Steering Note] --> B
+    B --> F[Lead Agent]
+    F --> G[Developer Agent]
+    G --> H[Reviewer Agent]
+    H --> I[Validator Agent]
+    I --> J[Evaluator Agent]
+    J --> K[Human Approval]
+    B --> L[Run Workspace]
+    B --> M[Evidence and Metrics]

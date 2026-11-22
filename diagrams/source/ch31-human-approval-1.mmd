@@ -1,0 +1,15 @@
+flowchart TD
+    Work["AI engineering work"] --> Evidence["Review, validation, and evaluation"]
+    Evidence --> Risk["Governed risk classification"]
+    Risk --> Need{"Human approval required?"}
+    Need -->|No| Policy["Continue under policy"]
+    Need -->|Yes| Package["Create approval package"]
+    Package --> Human["Authorized human approver"]
+    Human --> Decision{"Decision"}
+    Decision -->|Request changes| Work
+    Decision -->|Reject| Block["Block protected action"]
+    Decision -->|Approve| Record["Record approval evidence"]
+    Record --> Valid{"Authorization valid at execution?"}
+    Valid -->|No| Block
+    Valid -->|Yes| Execute["Execute approved action"]
+    Execute --> Outcome["Record outcome"]

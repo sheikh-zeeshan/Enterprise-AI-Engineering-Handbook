@@ -1,0 +1,6 @@
+flowchart LR
+    H[Harness] --> T[Run Deterministic Tools]
+    T --> E[Captured Evidence]
+    E --> C[Claude Validator Analysis]
+    C --> F[Failure Classification]
+    F --> H

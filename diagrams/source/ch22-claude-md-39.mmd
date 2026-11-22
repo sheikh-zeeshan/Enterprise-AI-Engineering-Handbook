@@ -1,0 +1,9 @@
+flowchart TD
+    A[Harness Evidence] --> B[Recurring Problem]
+    B --> C[Root Cause Analysis]
+    C --> D{Instruction Defect?}
+    D -- Yes --> E[Propose CLAUDE.md Improvement]
+    D -- No --> F[Improve Skill, Prompt, Code or Gate]
+    E --> G[Human Review]
+    G --> H[Approved Update]
+    H --> I[Measure Subsequent Runs]

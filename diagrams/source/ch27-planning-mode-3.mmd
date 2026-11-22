@@ -1,0 +1,16 @@
+flowchart TD
+    H["Harness Orchestrator"] --> L["Lead Agent"]
+    L --> P["Planning Mode"]
+    P --> A{"Plan Approval"}
+    A -->|"Approved"| D["Developer Agent"]
+    A -->|"Revision required"| P
+    D --> R["Reviewer Agent"]
+    D --> V["Validator Agent"]
+    R --> E["Evaluator Agent"]
+    V --> E
+    R -.->|Architectural findings| L
+    V -.->|Validation failures| D
+    E -.->|Goal gaps| L
+    E --> C{"Completion Decision"}
+    C -->|"Accepted"| X["Complete"]
+    C -->|"Rework required"| L

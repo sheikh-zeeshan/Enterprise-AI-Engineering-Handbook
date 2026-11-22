@@ -1,0 +1,21 @@
+stateDiagram-v2
+    [*] --> Draft
+    Draft --> Candidate
+    Candidate --> Validation
+
+    Validation --> Rejected: gates failed
+    Validation --> HumanReview: gates passed
+    HumanReview --> Approved: authorized owner approves
+    HumanReview --> Rejected: declined or insufficient evidence
+
+    Approved --> Active
+
+    Active --> Deprecated: newer approved version
+    Deprecated --> Retired
+
+    Active --> RollbackReview: regression detected
+    RollbackReview --> Deprecated: approved rollback and deactivation
+    RollbackReview --> ActivePrevious: select prior approved version
+
+    Rejected --> [*]
+    Retired --> [*]

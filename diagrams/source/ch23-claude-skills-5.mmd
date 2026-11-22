@@ -1,0 +1,32 @@
+sequenceDiagram
+    actor Human
+    participant Harness
+    participant Lead as Lead Agent
+    participant Dev as Developer Agent
+    participant Skill as Skill Library
+    participant Reviewer as Reviewer Agent
+    participant Validator as Validator Agent
+    participant Evaluator as Evaluator Agent
+
+    Human->>Harness: Submit task
+    Harness->>Lead: Interpret and decompose
+    Lead-->>Harness: Execution plan
+
+    Harness->>Dev: Execute implementation task
+    Dev->>Skill: Discover applicable Skills
+    Skill-->>Dev: Workflow instructions
+
+    Dev->>Dev: Inspect repository
+    Dev->>Dev: Apply Skills and implement change
+    Dev-->>Harness: Implementation + evidence
+
+    Harness->>Reviewer: Review implementation
+    Reviewer-->>Harness: Review findings
+
+    Harness->>Validator: Run deterministic gates
+    Validator-->>Harness: Validation evidence
+
+    Harness->>Evaluator: Evaluate goal satisfaction
+    Evaluator-->>Harness: Outcome assessment
+
+    Harness-->>Human: Result + evidence + approvals

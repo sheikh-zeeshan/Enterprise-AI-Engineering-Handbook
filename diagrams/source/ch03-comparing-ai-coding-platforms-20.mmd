@@ -1,0 +1,19 @@
+flowchart TB
+    P[Enterprise Policy]
+    I[Identity and Role-Based Access]
+    E[Controlled Execution Environment]
+    T[Tool, Shell, and Network Permissions]
+    S[Secret and Data Protection]
+    R[Repository and Branch Controls]
+    V[Independent Validation]
+    H[Human Approval]
+    A[Audit and Monitoring]
+
+    P --> I
+    I --> E
+    E --> T
+    T --> S
+    S --> R
+    R --> V
+    V --> H
+    H --> A

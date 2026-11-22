@@ -1,0 +1,19 @@
+flowchart TD
+    A[Enterprise Engineering Governance] --> B[Approved Standards and Architecture]
+    B --> C[Repository Instruction Management]
+    C --> D[Root CLAUDE.md]
+    C --> E[Scoped Instructions]
+    D --> F[Claude Code in Harness]
+    E --> F
+    G[Task Prompt] --> F
+    H[Steering Note] --> F
+    I[Relevant Skills] --> F
+    F --> J[Lead and Developer Agents]
+    J --> K[Reviewer Agent]
+    K --> L[Validator Agent]
+    L --> M[Evaluator Agent]
+    M --> N[Human Approval]
+    L --> O[Execution Evidence]
+    O --> P[Harness Memory and Analysis]
+    P --> Q[Improvement Proposal]
+    Q --> A

@@ -1,0 +1,6 @@
+flowchart TB
+ SRC["Repositories, Builds, Reviews, PRs, ADRs"] --> ING["Knowledge Extraction and Governance"] --> KG[("Shared Knowledge Graph")]
+ KG --> QUERY["Common Knowledge Query Service"]
+ QUERY --> CC["Claude Code"]
+ QUERY --> COP["GitHub Copilot"]
+ QUERY --> CODEX["OpenAI Codex"]

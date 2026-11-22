@@ -1,0 +1,10 @@
+flowchart TD
+ TASK["Engineering Request"] --> CC["Claude Code"]
+ TASK --> COP["GitHub Copilot"]
+ CC --> MCP["Knowledge Graph MCP Interface"]
+ COP --> MCP
+ MCP --> AUTH["Authorization and Governance"] --> QUERY["Graph Query Service"] --> KG[("Governed Knowledge Graph")]
+ CC --> RI["Repository Intelligence"]
+ COP --> RI
+ CC --> HARNESS["Enterprise Harness"]
+ COP --> HARNESS

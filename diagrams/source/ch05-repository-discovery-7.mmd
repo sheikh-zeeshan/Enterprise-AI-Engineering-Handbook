@@ -1,0 +1,16 @@
+flowchart LR
+    Change[Repository Change] --> Detect[Change Detection]
+    Detect --> Discover[Incremental Discovery]
+    Discover --> Validate[Evidence Validation]
+    Validate --> Report[Discovery Report]
+    Report --> Review[Human Review]
+    Review --> Update[Repository Intelligence Update]
+    Update --> Instructions[Instructions]
+    Update --> Skills[Skills]
+    Update --> Knowledge[Knowledge Sources]
+    Update --> Maps[Topology and Contract Maps]
+    Instructions --> Future[Future Tasks]
+    Skills --> Future
+    Knowledge --> Future
+    Maps --> Future
+    Future --> Discover

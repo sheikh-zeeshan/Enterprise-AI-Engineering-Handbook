@@ -1,0 +1,11 @@
+flowchart TB
+    R["Engineering Request"] --> H["Enterprise Harness"]
+    H --> P["Agent Provider Contract"]
+    P --> C["Claude Code"]
+    P --> G["GitHub Copilot"]
+    P --> X["OpenAI Codex"]
+    H --> V["Deterministic Gates"]
+    H --> W["Run Workspace"]
+    H --> M["Metrics and Evidence"]
+    V --> Outcome["Governed Engineering Outcome"]
+    H --> A["Human Approval"] --> Outcome

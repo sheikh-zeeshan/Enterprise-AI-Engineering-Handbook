@@ -1,0 +1,24 @@
+flowchart TB
+    WI[Work Items / Goals] --> H[Enterprise AI Engineering Harness]
+
+    H --> RI[Repository Intelligence]
+    H --> LR[Lead Agents]
+
+    LR --> ER[Execution Roles]
+
+    ER --> CI[CI / Deterministic Gates]
+
+    CI --> SR[Specialist Review]
+
+    SR --> VA[Validation / Evaluation]
+
+    VA --> AP[Approval Systems]
+
+    AP --> CD[Existing CI/CD]
+
+    H --> ST[State Store]
+    H --> AU[Audit Store]
+    H --> MT[Metrics]
+    H --> GOV[Governance]
+
+    GOV --> H

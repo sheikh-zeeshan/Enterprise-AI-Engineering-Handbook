@@ -1,0 +1,17 @@
+flowchart TD
+    A["Applicable Requirements"] --> B["Governed Policies"]
+    B --> C["Control Catalog and Profile"]
+    C --> D["Pre-Execution Enforcement"]
+    D --> E["Authorized AI Engineering"]
+    E --> F["Independent Validation"]
+    F --> G{"Mandatory Controls Satisfied?"}
+    G -- No --> X["Block and Preserve Findings"]
+    G -- Yes --> H["Required Human Approval"]
+    H --> I{"Approved?"}
+    I -- No --> X
+    I -- Yes --> J["Controlled Release"]
+    D --> K["Evidence Store"]
+    F --> K
+    H --> K
+    J --> K
+    K --> L["Reporting and Reassessment"]

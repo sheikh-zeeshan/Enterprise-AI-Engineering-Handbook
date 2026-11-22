@@ -1,0 +1,5 @@
+flowchart TD
+ PLAN["Approved Implementation Plan"] --> CODEX["Codex Developer Execution"] --> CHANGE["Source Changes"]
+ CHANGE --> REV["Reviewer Agent"] --> BUILD["Build Gate"]
+ BUILD --> CONTRACT["Contract Test Gate"] --> ARCH["Architecture Gate"]
+ ARCH --> SEC["Security Gate"] --> VAL["Validator Agent"] --> EVAL["Evaluator Agent"]

@@ -1,0 +1,8 @@
+flowchart TD
+ FS["Fleet Service"] -->|source| R["Relationship Assertion"] -->|target| EVENT["BookingConfirmed"]
+ E1["Consumer Registration"] -->|supports| R
+ E2["Source Implementation"] -->|supports| R
+ E3["Contract Test"] -->|supports| R
+ P["Provenance"] --> R
+ C["Confidence"] --> R
+ L["Lifecycle State"] --> R

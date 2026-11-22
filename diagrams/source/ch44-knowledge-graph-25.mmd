@@ -1,0 +1,4 @@
+flowchart TD
+ RUN["Run Scratchpad"] --> H["Observation or Hypothesis"] --> E["Evidence Collection"] --> Q{"Evidence sufficient?"}
+ Q -->|Yes| C["Relationship Candidate"] --> GOV["Governance"] --> KG[("Knowledge Graph")]
+ Q -->|No| RUN

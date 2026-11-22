@@ -1,0 +1,20 @@
+flowchart LR
+    P["Approved Prompt"]
+    E["Execution"]
+    V["Validation Evidence"]
+    R["Review Findings"]
+    M["Metrics"]
+    A["Analysis"]
+    C["Proposed Prompt Change"]
+    H["Human Approval"]
+    N["New Prompt Version"]
+
+    P --> E
+    E --> V
+    E --> R
+    V --> M
+    R --> M
+    M --> A
+    A --> C
+    C --> H
+    H --> N

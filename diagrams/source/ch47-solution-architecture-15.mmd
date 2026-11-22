@@ -1,0 +1,34 @@
+sequenceDiagram
+    autonumber
+
+    participant SO as Station Operations
+    participant SDB as Station Operations DB
+    participant SOP as Station Outbox Publisher
+    participant EB as Event Bus
+    participant BK as Booking Service
+    participant BI as Billing Service
+    participant BDB as Billing DB
+    participant BOP as Billing Outbox Publisher
+    participant NT as Notification Service
+
+    SO->>SDB: Commit completion + ServiceCompleted outbox record atomically
+    SDB-->>SO: Commit successful
+    SOP->>SDB: Read unpublished ServiceCompleted
+    SOP->>EB: Publish ServiceCompleted
+    EB-->>BK: ServiceCompleted
+    BK->>BK: Idempotently reflect fulfillment state
+    EB-->>BI: ServiceCompleted
+    BI->>BDB: Begin local transaction
+    BI->>BDB: Check processing ledger and billable-work key
+    alt Completion already recorded
+        BI->>BDB: No duplicate billable work
+    else First accepted completion
+        BI->>BDB: Record billable work and EventId
+    end
+    BI->>BDB: Commit local transaction
+
+    Note over BI,BDB: At the approved consolidated billing cutoff
+    BI->>BDB: Commit invoice and InvoiceIssued outbox atomically
+    BOP->>BDB: Read unpublished InvoiceIssued
+    BOP->>EB: Publish InvoiceIssued
+    EB-->>NT: InvoiceIssued

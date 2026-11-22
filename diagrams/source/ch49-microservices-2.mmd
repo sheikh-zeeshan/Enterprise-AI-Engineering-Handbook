@@ -1,0 +1,9 @@
+flowchart TD
+    A["Corporate Account: contractual eligibility"] -->|"Decision evidence"| B["Booking: booking lifecycle and coordination"]
+    F["Fleet: membership and vehicle eligibility"] -->|"Validation evidence"| B
+    S["Station Operations: capacity and fulfillment"] -->|"Committed reservation"| B
+    S -->|"Qualifying completed work"| L["Billing: invoices and receivables"]
+    P["Payment: provider operations and outcomes"] -->|"Settlement evidence"| L
+    B -->|"Confirmed booking fact"| N["Notification: delivery intents and outcomes"]
+    L -->|"Invoice fact"| N
+    P -->|"Payment fact"| N

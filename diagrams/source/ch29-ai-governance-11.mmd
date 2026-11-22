@@ -1,0 +1,15 @@
+flowchart TD
+    EG["Enterprise AI Governance"] --> SP["Shared Policies and Controls"]
+    EG --> PA["Approved AI Platform and Harness"]
+    SP --> CB["Corporate Booking Team"]
+    SP --> BL["Billing Team"]
+    SP --> FM["Fleet Management Team"]
+    PA --> CB
+    PA --> BL
+    PA --> FM
+    CB --> L1["Service-Specific Controls"]
+    BL --> L2["Service-Specific Controls"]
+    FM --> L3["Service-Specific Controls"]
+    L1 --> AS["Enterprise Assurance"]
+    L2 --> AS
+    L3 --> AS

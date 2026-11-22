@@ -1,0 +1,35 @@
+sequenceDiagram
+    autonumber
+    actor Human as Engineering Lead
+    participant H as Harness
+    participant L as Lead Agent
+    participant D as Developer Agent
+    participant G as Gate Runner
+    participant R as Reviewer
+    participant V as Validator
+    participant E as Evaluator
+    participant Store as Evidence Store
+    Human->>H: Submit authorized goal
+    H->>L: Provide context and constraints
+    L-->>H: Structured plan
+    H->>Store: Store approved plan
+    H->>D: Assign bounded implementation
+    D-->>H: Candidate revision and handoff
+    H->>Store: Record candidate identity
+    H->>G: Execute mandatory checks
+    G-->>H: Gate results
+    H->>Store: Persist gate evidence
+    alt Gates failed
+      H->>D: Remediation task within policy
+    else Gates passed
+      H->>R: Review candidate
+      R-->>H: Findings
+      H->>V: Assess gate evidence
+      V-->>H: Validation assessment
+      H->>E: Assess business goal
+      E-->>H: Evaluation report
+      H->>Store: Record assessments
+      H->>Human: Request approval with evidence
+      Human-->>H: Decision
+      H->>Store: Record decision
+    end

@@ -1,0 +1,23 @@
+flowchart LR
+    D[Developer Defines Task]
+    C[Copilot Explores Context]
+    P[Copilot Proposes Plan]
+    H[Human Reviews Plan]
+    I[Copilot Implements]
+    V[Build and Tests]
+    R[Human Reviews Diff]
+
+    D --> C
+    C --> P
+    P --> H
+
+    H -->|Revise| P
+    H -->|Approve| I
+
+    I --> V
+
+    V -->|Failure| I
+    V -->|Evidence| R
+
+    R -->|Corrections| I
+    R -->|Accepted| PR[Pull-Request Preparation]

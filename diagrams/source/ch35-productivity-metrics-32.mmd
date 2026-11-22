@@ -1,0 +1,10 @@
+flowchart TD
+    A["AI Execution Completed"] --> B{"Execution Successful?"}
+    B -->|No| C["Execution Failure"]
+    B -->|Yes| D["Independent Review"] --> E{"Review Accepted?"}
+    E -->|No| F["Review Rejection"]
+    E -->|Yes| G["Deterministic Validation"] --> H{"Required Gates Passed?"}
+    H -->|No| I["Validation Failure"]
+    H -->|Yes| J["Goal Evaluation"] --> K{"Acceptance Satisfied?"}
+    K -->|No| L["Evaluation Failure"]
+    K -->|Yes| M["Required Human Approval"] --> N["Accepted Engineering Outcome"]

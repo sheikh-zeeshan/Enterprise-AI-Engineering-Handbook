@@ -1,0 +1,13 @@
+flowchart LR
+    BK["Booking Service"] --> BDB[("Booking DB")]
+    FL["Fleet Service"] --> FDB[("Fleet DB")]
+    SO["Station Operations Service"] --> SDB[("Station DB")]
+    BI["Billing Service"] --> IDB[("Billing DB")]
+
+    BK -->|"API"| FL
+    BK -->|"API"| SO
+    SO -->|"Event"| BI
+
+    BK -. "PROHIBITED" .-> FDB
+    BK -. "PROHIBITED" .-> SDB
+    BI -. "PROHIBITED" .-> BDB

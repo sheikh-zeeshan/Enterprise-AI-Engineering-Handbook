@@ -1,0 +1,16 @@
+flowchart LR
+    subgraph ReadOnly["Planning Boundary"]
+        A["Read Repository"] --> B["Inspect Instructions"]
+        B --> C["Analyze Contracts"]
+        C --> D["Produce Proposed Plan"]
+    end
+    subgraph Approval["Authorization Boundary"]
+        E["Plan Quality Gate"] --> F["Human Approval"]
+        F --> G["Execution Authorization"]
+    end
+    subgraph Execution["Execution Boundary"]
+        H["Modify Source"] --> I["Run Validation"]
+        I --> J["Produce Evidence"]
+    end
+    D --> E
+    G --> H

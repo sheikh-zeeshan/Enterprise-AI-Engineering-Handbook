@@ -1,0 +1,10 @@
+flowchart TB
+    R["Corporate booking requirement"] --> P["Domain policy"]
+    R --> C["API and authorization contract"]
+    R --> S["Persistence and concurrency"]
+    R --> I["Integration events"]
+    P --> V["Validation and testing"]
+    C --> V
+    S --> V
+    I --> V
+    V --> O["Deployment and observability"]

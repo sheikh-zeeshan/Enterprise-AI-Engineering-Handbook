@@ -1,0 +1,11 @@
+flowchart TD
+    A[Approved Repository Instructions] --> B[Lead Agent]
+    B --> C[Developer Agent]
+    C --> D[Reviewer Agent]
+    D --> E[Validator Agent]
+    E --> F[Deterministic Gates]
+    F --> G{All Requirements Satisfied?}
+    G -- No --> H[Failure Evidence and Correction]
+    H --> C
+    G -- Yes --> I[Evaluator Agent]
+    I --> J[Human Approval]

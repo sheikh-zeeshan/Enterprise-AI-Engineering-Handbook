@@ -1,0 +1,18 @@
+flowchart TD
+    P[("Population")] --> S["Scheduler"]
+
+    S --> W1["Worker 1"]
+    S --> W2["Worker 2"]
+    S --> W3["Worker 3"]
+
+    W1 --> C1["Codex<br/>POP-1042-02"]
+    W2 --> C2["Codex<br/>POP-1042-03"]
+    W3 --> C3["Codex<br/>POP-1042-04"]
+
+    C1 --> E1["Evidence"]
+    C2 --> E2["Evidence"]
+    C3 --> E3["Evidence"]
+
+    E1 --> H["Harness"]
+    E2 --> H
+    E3 --> H

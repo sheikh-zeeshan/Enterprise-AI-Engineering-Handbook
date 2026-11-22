@@ -1,0 +1,13 @@
+flowchart TD
+    A["Engineering Task"] --> B["Codex Compliance Preflight"]
+    B --> C{"Execution Authorized?"}
+    C -- No --> X["Block and Record"]
+    C -- Yes --> D["Restricted Codex Execution"]
+    D --> E["Implementation and Review"]
+    E --> F["Independent Compliance Gates"]
+    F --> G{"Mandatory Controls Satisfied?"}
+    G -- No --> X
+    G -- Yes --> H["Evaluator and Human Approval"]
+    H --> I["Release Eligibility"]
+    I --> J["Controlled Deployment"]
+    J --> K["Authoritative Evidence"]

@@ -1,0 +1,74 @@
+flowchart TB
+
+    subgraph Sources["Evidence Sources"]
+        REPO[Repositories]
+        CI[Build / CI]
+        REVIEWS[Reviews]
+        PRS[Pull Requests]
+        ADRS[Architecture Decisions]
+        MEMORY[Harness Memory]
+        TELEMETRY[Runtime Evidence]
+    end
+
+    subgraph Intake["Knowledge Intake"]
+        EXTRACT[Extract Entities + Relationships]
+        RESOLVE[Entity Resolution]
+        NORMALIZE[Normalize Evidence]
+        CONFLICT[Conflict Detection]
+    end
+
+    subgraph Governance["Governance Layer"]
+        PROV[Provenance]
+        CONF[Confidence]
+        ACL[Access Control]
+        LIFE[Lifecycle / Staleness]
+        APPROVAL[Human Approval]
+    end
+
+    subgraph Graph["Knowledge Layer"]
+        KG[(Governed Knowledge Graph)]
+    end
+
+    subgraph Retrieval["Agent Retrieval Layer"]
+        QUERY[Graph Query]
+        FILTER[Security + Relevance Filter]
+        CONTEXT[Bounded Subgraph]
+    end
+
+    subgraph Agents["Harness Agents"]
+        LEAD[Lead Agent]
+        DEV[Developer Agent]
+        REVIEWER[Reviewer Agent]
+        VALIDATOR[Validator Agent]
+        EVALUATOR[Evaluator Agent]
+    end
+
+    REPO --> EXTRACT
+    CI --> EXTRACT
+    REVIEWS --> EXTRACT
+    PRS --> EXTRACT
+    ADRS --> EXTRACT
+    MEMORY --> EXTRACT
+    TELEMETRY --> EXTRACT
+
+    EXTRACT --> RESOLVE
+    RESOLVE --> NORMALIZE
+    NORMALIZE --> CONFLICT
+
+    CONFLICT --> PROV
+    PROV --> CONF
+    CONF --> ACL
+    ACL --> LIFE
+    LIFE --> APPROVAL
+
+    APPROVAL --> KG
+
+    KG --> QUERY
+    QUERY --> FILTER
+    FILTER --> CONTEXT
+
+    CONTEXT --> LEAD
+    CONTEXT --> DEV
+    CONTEXT --> REVIEWER
+    CONTEXT --> VALIDATOR
+    CONTEXT --> EVALUATOR

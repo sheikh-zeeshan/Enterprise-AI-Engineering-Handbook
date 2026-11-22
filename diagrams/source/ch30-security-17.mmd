@@ -1,0 +1,8 @@
+flowchart TD
+    TASK[Approved development task] --> AGENT[Restricted agent execution]
+    AGENT --> PR[Proposed pull request]
+    PR --> CI[Trusted CI/CD]
+    CI --> GATES[Mandatory security gates]
+    GATES --> REVIEW[Review and approval]
+    REVIEW --> RELEASE[Separate release identity]
+    RELEASE --> PROD[Production environment]

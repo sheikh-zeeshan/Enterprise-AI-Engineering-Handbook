@@ -1,0 +1,13 @@
+flowchart TD
+    A["Claude Tool Execution"] --> B["Hook Observation"] --> C["Operational Telemetry"]
+    A --> D["Implementation Artifact"] --> E["Harness Validation Pipeline"]
+    E --> F["Build Gate"]
+    E --> G["Test Gate"]
+    E --> H["Architecture Gate"]
+    E --> I["Security / Contract Gates"]
+    F --> J["Authoritative Validation Result"]
+    G --> J
+    H --> J
+    I --> J
+    J --> K["Productivity Projection"]
+    C --> K

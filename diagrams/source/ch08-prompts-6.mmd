@@ -1,0 +1,29 @@
+flowchart LR
+    P["Approved Prompt"]
+    X["Context Resolution"]
+    R["Role Assignment"]
+    S["Skill Selection"]
+    E["Agent Execution"]
+    D["Diff"]
+    V["Validation"]
+    Q["Quality Evaluation"]
+    A["Human Approval"]
+    PR["Pull Request"]
+    M["Metrics and Memory"]
+
+    P --> X
+    X --> R
+    R --> S
+    S --> E
+    E --> D
+    D --> V
+    V --> Q
+    Q --> A
+    A --> PR
+
+    P --> M
+    X --> M
+    E --> M
+    V --> M
+    Q --> M
+    A --> M

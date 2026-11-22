@@ -1,0 +1,18 @@
+sequenceDiagram
+    participant A as Booking application
+    participant D as Booking database
+    participant R as Outbox publisher
+    participant E as Event Bus
+    participant C as Idempotent consumer
+    A->>D: Begin local transaction
+    A->>D: Write business transition and immutable outbox record
+    A->>D: Commit both or neither
+    R->>D: Atomically claim committed pending record
+    D-->>R: Event bytes, identity, partition key, claim token
+    R->>E: Publish original event
+    E-->>R: Selected broker acceptance milestone
+    Note over R,D: Crash here leaves publication outcome unrecorded
+    R->>D: Conditionally record publication using claim token
+    E->>C: Deliver event
+    Note over C: Commit inbox and local effect together
+    C->>E: Advance progress after durable handling

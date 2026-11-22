@@ -1,0 +1,14 @@
+flowchart TD
+    A[Temporary Package Feed Outage] --> B[Restore Failure]
+    B --> C[Incorrect Root-Cause Classification]
+    C --> D[Unverified Package Version Change]
+    D --> E[Restore Succeeds After Feed Recovery]
+    E --> F[False Causal Conclusion]
+    F --> G[Unapproved Memory Promotion]
+    G --> H[Future Runs Reuse Incorrect Fix]
+    H --> I[Dependency Inconsistency]
+    I --> J[Additional Failures]
+    J --> C
+    K[Independent Evidence Verification] -. Prevents .-> F
+    L[Human Approval Boundary] -. Prevents .-> G
+    M[Post-Adoption Monitoring] -. Detects .-> I

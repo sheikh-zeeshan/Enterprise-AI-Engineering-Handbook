@@ -1,0 +1,12 @@
+flowchart TD
+    D[Developer] --> C[Claude Code Command]
+    D --> P[GitHub Copilot Prompt]
+    C --> N[Normalized Workflow Request]
+    P --> N
+    N --> H[Enterprise Harness]
+    H --> A[Policy and Authorization]
+    A --> S[Role and Skill Selection]
+    S --> E[Controlled Execution]
+    E --> V[Deterministic Gates]
+    V --> R[Review and Evaluation]
+    R --> O[Evidence and Outcome Report]

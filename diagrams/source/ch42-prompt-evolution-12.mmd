@@ -1,0 +1,16 @@
+flowchart TD
+    A[Governed Prompt Definition] --> B[Platform Adapter]
+    B --> C[Claude Code]
+    B --> D[GitHub Copilot]
+    B --> E[Codex]
+    C --> F[Execution Evidence]
+    D --> F
+    E --> F
+    F --> G[Harness Memory]
+    G --> H[Prompt Evolution Analysis]
+    H --> I{Scope of Improvement?}
+    I -->|Shared| J[Shared Prompt Candidate]
+    I -->|Platform Specific| K[Adapter Candidate]
+    J --> L[Comparative Validation]
+    K --> L
+    L --> M[Governed Review]

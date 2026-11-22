@@ -1,0 +1,10 @@
+flowchart TD
+    Host[Start isolated test host] --> API[POST fleet-bookings]
+    API --> DB[Assert booking persisted]
+    DB --> Outbox[Assert outbox record committed]
+    Outbox --> Publish[Run outbox dispatcher]
+    Publish --> Consume[Deliver event to test consumer]
+    Consume --> Dedup[Redeliver event and assert one side effect]
+    Dedup --> Auth[Assert unauthorized / cross-tenant requests fail]
+    Auth --> Trace[Assert expected trace evidence]
+    Trace --> Result[Record test and gate results]

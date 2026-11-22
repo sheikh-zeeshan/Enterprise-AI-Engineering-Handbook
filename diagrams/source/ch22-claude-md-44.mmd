@@ -1,0 +1,8 @@
+flowchart TD
+    A[Conflict Detected] --> B[Identify Approved Standard]
+    B --> C{Exception Approved?}
+    C -- Yes --> D[Document Scoped Exception]
+    C -- No --> E[Remove Contradictory Instruction]
+    D --> F[Architecture Review]
+    E --> F
+    F --> G[Update Governed Files]

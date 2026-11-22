@@ -1,0 +1,13 @@
+flowchart TB
+    R["Engineering Request"] --> H["Enterprise Harness Control Plane"]
+    H --> P["Shared Capabilities: Roles, Skills, Gates, Adapters, Recovery, Metrics"]
+    H --> B["Booking Harness"]
+    H --> F["Fleet Harness"]
+    H --> I["Billing Harness"]
+    B --> BW["Isolated Booking Run"]
+    F --> FW["Isolated Fleet Run"]
+    I --> IW["Isolated Billing Run"]
+    BW --> A["Evidence Aggregation"]
+    FW --> A
+    IW --> A
+    A --> E["Enterprise Evaluation"] --> Approval["Required Human Approval"]

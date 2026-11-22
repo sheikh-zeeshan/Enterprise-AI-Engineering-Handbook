@@ -1,0 +1,18 @@
+flowchart TB
+    subgraph S[Single-Agent Harness]
+        SP[Prompt] --> SA[Agent]
+        SA --> SPL[Plan]
+        SPL --> SIM[Implement]
+        SIM --> SRV[Self-Review]
+        SRV --> SVG[Validation Gate]
+        SVG --> SH[Human Approval]
+    end
+
+    subgraph M[Multi-Agent Harness]
+        MP[Prompt] --> ML[Lead Agent]
+        ML --> MD[Developer Agent]
+        MD --> MR[Reviewer Agent]
+        MR --> MV[Validator Agent]
+        MV --> ME[Evaluator Agent]
+        ME --> MH[Human Approval]
+    end

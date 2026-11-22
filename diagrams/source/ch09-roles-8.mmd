@@ -1,0 +1,21 @@
+flowchart LR
+    A[Discovery Report] --> B[Architecture Decision]
+    B --> C[Implementation Plan]
+    C --> D[Code and Tests]
+    D --> E[Review Report]
+    D --> F[Security Report]
+    D --> G[Validation Report]
+
+    E --> H[Remediation]
+    F --> H
+    G --> H
+
+    H --> D
+
+    E --> I[Evaluation Report]
+    F --> I
+    G --> I
+    D --> I
+
+    I --> J[Pull Request Package]
+    J --> K[Approval Record]

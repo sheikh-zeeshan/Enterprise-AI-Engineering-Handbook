@@ -1,0 +1,13 @@
+flowchart TD
+    Release["Fleet booking release candidate"] --> Risk["Risk and change assessment"]
+    Risk --> Architecture["Architecture approval"]
+    Risk --> Data["Data governance approval"]
+    Risk --> Production["Production approval"]
+    Architecture --> All{"All required approvals valid?"}
+    Data --> All
+    Production --> All
+    All -->|No| Block["Deployment blocked"]
+    All -->|Yes| Verify["Verify artifact and scope"]
+    Verify --> Match{"Exact match?"}
+    Match -->|No| Block
+    Match -->|Yes| Deploy["Authorized production deployment"]

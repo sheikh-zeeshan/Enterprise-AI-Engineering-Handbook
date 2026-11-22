@@ -1,0 +1,15 @@
+flowchart TD
+    Q[Proposed implementation action] --> S{Within assigned scope?}
+    S -->|No| E[Record finding or escalate]
+    S -->|Yes| I{Permitted by Instructions and authority?}
+    I -->|No or unclear| E
+    I -->|Yes| M[Make focused change]
+    M --> T[Run focused local checks]
+    T --> P{Checks passed?}
+    P -->|Yes| H[Inspect final diff and hand off]
+    P -->|No| C{Failure category?}
+    C -->|Implementation defect| F[Correct with evidence]
+    C -->|Transient| R[Retry within budget]
+    C -->|Authority conflict| E
+    F --> T
+    R --> T

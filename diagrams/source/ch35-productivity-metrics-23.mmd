@@ -1,0 +1,8 @@
+flowchart TD
+    A["Task Submitted"] --> B["Queued / Scheduled"] --> C["Cloud Environment Ready"] --> D["Codex Execution"] --> E["Implementation Available"] --> F["Human or Harness Review"] --> G["Independent Validation"] --> H["Approved Integration"]
+    A -.-> I["Lead Time"]
+    B -.-> J["Queue Latency"]
+    C -.-> K["Environment Overhead"]
+    D -.-> L["Agent Execution Time"]
+    F -.-> M["Review Effort"]
+    G -.-> N["Validation Duration"]

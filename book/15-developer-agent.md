@@ -621,7 +621,7 @@ sequenceDiagram
     APP-->>API: Created booking identifier
     PUB->>DB: Read pending outbox records
     PUB->>BUS: Publish FleetBookingCreated
-    Note over PUB,BUS: Delivery may be retried; consumers need idempotency
+    Note over PUB,BUS: Delivery may be retried, consumers need idempotency
 ```
 
 The transaction ends when booking state and the outbox message commit. Broker publication is a later operation. This distinction is essential: **an outbox provides atomic persistence of intent to publish, not atomic delivery to the broker**.

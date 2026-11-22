@@ -1,0 +1,14 @@
+flowchart TD
+    A["Enterprise AI Engineering Harness"] --> B["Agent Execution"]
+    A --> C["Review and Validation"]
+    A --> D["Evaluation and Approval"]
+    B --> E["Trusted Event Collection"]
+    C --> E
+    D --> E
+    E --> F[("Durable Evidence Store")] --> G["Deterministic Metric Projections"] --> H[("Metrics Store")]
+    H --> I["Engineering Dashboards"]
+    H --> J["Architecture Analysis"]
+    H --> K["Governance Reporting"]
+    J --> L["Improvement Recommendations"]
+    K --> L
+    L --> M["Human Review and Approval"]

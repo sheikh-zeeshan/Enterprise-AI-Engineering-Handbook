@@ -1,0 +1,17 @@
+flowchart LR
+    subgraph O[Operational Engineering Loop]
+        A[Developer Agent] --> B[Build]
+        B --> C[Validator Agent]
+        C --> D{Required gates pass?}
+        D -->|No| E[Local Remediation]
+        E --> B
+        D -->|Yes| F[Continue Engineering Workflow]
+    end
+    subgraph L[Governed Learning Loop]
+        G[Historical Evidence] --> H[Pattern Analysis]
+        H --> I[Candidate Improvement]
+        I --> J[Human Approval]
+        J --> K[Versioned Improvement]
+    end
+    C -->|Evidence and gate outcomes| G
+    K -->|Approved guidance for future runs| A

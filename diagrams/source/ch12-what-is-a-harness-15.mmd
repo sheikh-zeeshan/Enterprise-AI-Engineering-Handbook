@@ -1,0 +1,23 @@
+flowchart TD
+    H[AI Engineering Harness] --> C{Copilot Execution Surface}
+
+    C --> IDE[IDE Agent]
+    C --> CLI[Copilot CLI]
+    C --> CA[Copilot Cloud Agent]
+    C --> GA[GitHub Actions]
+
+    IDE --> WS[Developer Workspace]
+    CLI --> LW[Local or Controlled Worker]
+    CA --> GR[GitHub Repository Workspace]
+    GA --> AW[Actions Runner]
+
+    WS --> E[Engineering Artifacts]
+    LW --> E
+    GR --> PR[Draft Pull Request]
+    AW --> E
+
+    E --> HG[Harness Gates]
+    PR --> HG
+
+    HG --> HA[Human Approval]
+    HA --> PUB[Publication or Merge]

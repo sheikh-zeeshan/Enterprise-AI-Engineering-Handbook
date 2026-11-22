@@ -1,0 +1,21 @@
+flowchart TB
+    subgraph Evidence["Behavioral evidence"]
+        Unit["Domain and application tests"]
+        Integration["Persistence and adapter tests"]
+        Contract["API and contract tests"]
+        Workflow["Recovery and redelivery tests"]
+    end
+    subgraph Targets["Implementation boundaries"]
+        Core["Business core"]
+        Adapters["Infrastructure adapters"]
+        Public["Published boundaries"]
+        Recovery["Durable workflow outcomes"]
+    end
+
+    Unit --> Core
+    Integration --> Adapters
+    Contract --> Public
+    Workflow --> Recovery
+    Gate["Architecture gate"] -.->|"Project and package graph"| Core
+    Gate -.->|"Type and composition rules"| Adapters
+    Gate -.->|"Contract surface"| Public

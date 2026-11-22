@@ -1,0 +1,12 @@
+flowchart LR
+    A[Task and acceptance criteria] --> F[Run evidence correlation]
+    B[Prompt and Skill versions] --> F
+    C[Effective Instructions and ADRs] --> F
+    D[Repository Intelligence] --> F
+    E[Implementation decisions] --> F
+    G[Review and validation evidence] --> F
+    F --> H[Pattern hypothesis]
+    H --> I[Root-cause investigation]
+    I --> J[Evidence-backed proposal]
+    classDef evidence fill:#e9f2fb,stroke:#5079a3,color:#173451
+    class A,B,C,D,E,G evidence

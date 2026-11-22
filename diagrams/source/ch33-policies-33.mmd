@@ -1,0 +1,10 @@
+flowchart TD
+    A[Enterprise Policy] --> B[Repository Instructions]
+    B --> C[Skills, Prompts and Roles]
+    C --> D[Harness Execution]
+    D --> E[Deterministic Controls]
+    E --> F[Human Approval]
+    F --> G[Audit Evidence]
+    A -.-> D
+    A -.-> E
+    A -.-> F

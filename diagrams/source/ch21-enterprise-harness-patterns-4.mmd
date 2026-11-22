@@ -1,0 +1,19 @@
+flowchart TB
+    Lead["Lead Agent"]
+    Dev["Developer Agent"]
+
+    Lead --> Dev
+
+    Dev --> Reviewer["Reviewer Agent"]
+    Dev --> Tests["Test Gates"]
+    Dev --> Security["Security Gates"]
+    Dev --> Architecture["Architecture Gates"]
+
+    Tests --> FanIn["Evidence Aggregation"]
+    Security --> FanIn
+    Architecture --> FanIn
+
+    Reviewer --> Eval["Evaluator Agent"]
+    FanIn --> Eval
+
+    Eval --> Approval["Human Approval"]

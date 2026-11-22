@@ -1,0 +1,33 @@
+flowchart TD
+    U[Corporate Fleet Booking Goal]
+      --> RI[Resolve Repository Intelligence]
+
+    RI --> L[Lead Agent]
+    L --> P[Implementation Plan]
+
+    P --> D[Developer Agent]
+    D --> H1[Hooks and Guardrails]
+
+    H1 --> G[Deterministic Gate Pipeline]
+
+    G --> B[Build]
+    B --> T[Tests]
+    T --> SA[Static Analysis]
+    SA --> AR[Architecture]
+    AR --> SE[Security]
+    SE --> CO[Contracts]
+
+    CO --> Q{All Gates Passed?}
+
+    Q -->|No| RP{Retry Available?}
+    RP -->|Yes| D
+    RP -->|No| X[Escalate / Stop]
+
+    Q -->|Yes| R[Reviewer Agent]
+    R --> V[Validator Agent]
+    V --> E[Evaluator Agent]
+
+    E --> HA[Human Approval]
+
+    HA -->|Approved| PR[Create Pull Request]
+    HA -->|Rejected| X

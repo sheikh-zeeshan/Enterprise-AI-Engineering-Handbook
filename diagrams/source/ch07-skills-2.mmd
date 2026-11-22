@@ -1,0 +1,14 @@
+flowchart TD
+    Requirement[Corporate fleet booking] --> Domain[Add domain behavior]
+    Domain --> Command[Create application command]
+    Domain --> Persistence[Add EF Core persistence]
+    Persistence --> Outbox[Add transactional outbox]
+    Command --> Endpoint[Create API endpoint]
+    Endpoint --> Authorization[Add authorization]
+    Outbox --> Event[Add integration event]
+    Event --> Consumer[Add idempotent consumer, if needed]
+    Command --> Unit[Add unit tests]
+    Authorization --> Integration[Add integration tests]
+    Event --> Integration
+    Consumer --> Integration
+    Integration --> Gates[Build, tests and policy gates]

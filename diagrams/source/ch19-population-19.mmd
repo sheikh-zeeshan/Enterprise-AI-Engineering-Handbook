@@ -1,0 +1,18 @@
+flowchart TD
+    P[("Population")]
+
+    P --> W1["Worker 1"]
+    P --> W2["Worker 2"]
+    P --> W3["Worker 3"]
+
+    W1 --> C1["Claude<br/>POP-1042-02"]
+    W2 --> C2["Claude<br/>POP-1042-03"]
+    W3 --> C3["Claude<br/>POP-1042-04"]
+
+    C1 --> E1["Evidence"]
+    C2 --> E2["Evidence"]
+    C3 --> E3["Evidence"]
+
+    E1 --> P
+    E2 --> P
+    E3 --> P

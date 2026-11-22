@@ -1,0 +1,8 @@
+flowchart TB
+    R["Requirement and acceptance criteria"] --> C["Repository context and Instructions"]
+    C --> A["AI-assisted analysis and implementation"]
+    A --> G["Deterministic gates: build, tests, static checks"]
+    G -->|"Pass"| H["Engineering review and evaluation"]
+    G -->|"Fail: evidence"| A
+    H -->|"Revision requested"| A
+    H -->|"Approved"| M["Controlled merge and delivery"]

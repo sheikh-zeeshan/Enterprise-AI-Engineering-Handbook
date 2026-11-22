@@ -1,0 +1,12 @@
+flowchart LR
+    TASK["Current Task Execution"] --> SP["Scratchpad: Temporary State"]
+    TASK --> CM["Claude Memory: Advisory Context"]
+    TASK --> INST["CLAUDE.md: Repository Guidance"]
+    TASK --> RI["Repository Intelligence: Evidence"]
+    TASK --> HM["Harness Memory: Governed Knowledge"]
+    classDef advisory fill:#f3e5f5,stroke:#7b1fa2,color:#4a148c
+    classDef governed fill:#e8f5e9,stroke:#2e7d32,color:#1b5e20
+    classDef temp fill:#fff3e0,stroke:#ef6c00,color:#4e342e
+    class CM advisory
+    class INST,RI,HM governed
+    class SP temp

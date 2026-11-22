@@ -1,0 +1,16 @@
+flowchart TB
+    subgraph GCP["Governance Control Plane"]
+        POL["Approved Policies"] --> DEC["Policy Decision"]
+        OWN["Organizational Ownership"] --> DEC
+        APR["Human Authorization"] --> DEC
+    end
+    subgraph ECP["Engineering Execution Plane"]
+        TASK["Authorized Task"] --> HAR["AI Engineering Harness"]
+        HAR --> AG["Agents and Skills"]
+        AG --> TOOL["Controlled Tool Gateway"]
+        TOOL --> EXEC["Engineering Operations"]
+    end
+    DEC -->|"Enforce authorization"| TOOL
+    HAR -.->|"Request decision"| DEC
+    EXEC --> EV["Independent Evidence Store"]
+    APR --> EV

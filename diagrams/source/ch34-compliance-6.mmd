@@ -1,0 +1,27 @@
+flowchart LR
+    A[Design]
+    --> B[Development]
+
+    B --> C[Pull Request]
+
+    C --> D[Build]
+
+    D --> E[Release]
+
+    E --> F[Deployment]
+
+    F --> G[Runtime]
+
+    G --> H[Periodic Reassessment]
+
+    H --> B
+
+    I[Compliance Controls]
+    -.-> A
+    I -.-> B
+    I -.-> C
+    I -.-> D
+    I -.-> E
+    I -.-> F
+    I -.-> G
+    I -.-> H

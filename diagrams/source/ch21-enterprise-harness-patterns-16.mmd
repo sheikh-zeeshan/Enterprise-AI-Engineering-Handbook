@@ -1,0 +1,9 @@
+flowchart TB
+    H["Enterprise Harness"] --> P["Policy and Authorization"]
+    A["Claude Code"] --> M["Approved MCP Tool Interface"]
+    P --> M
+    M --> RI["Repository Intelligence"]
+    M --> WI["Work Item Service"]
+    M --> EV["Evidence Query Service"]
+    H --> V["Deterministic Gates"]
+    H --> S["Durable Run State"]

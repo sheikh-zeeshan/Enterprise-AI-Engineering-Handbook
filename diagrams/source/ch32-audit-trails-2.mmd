@@ -1,0 +1,12 @@
+flowchart TD
+    A["Significant action requested"] --> B["Attach trusted identity and correlation"]
+    B --> C{"Authorized?"}
+    C -->|No| D["Record denial"]
+    C -->|Yes| E["Durably record execution intent when required"]
+    E --> F["Execute controlled operation"]
+    F --> G["Capture observed outcome"]
+    G --> H["Collect supporting evidence"]
+    D --> I["Validate event schema and provenance"]
+    H --> I
+    I --> J[("Persist audit event and evidence")]
+    J --> K["Authorized query and investigation"]

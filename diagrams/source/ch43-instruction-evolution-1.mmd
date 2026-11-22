@@ -1,0 +1,51 @@
+flowchart TD
+    A[Harness Runs] --> B[Evidence Collection]
+
+    B --> C[Build Evidence]
+    B --> D[Validation Evidence]
+    B --> E[Review Evidence]
+    B --> F[Pull Request Evidence]
+    B --> G[Human Feedback]
+
+    C --> H[Pattern Detection]
+    D --> H
+    E --> H
+    F --> H
+    G --> H
+
+    H --> I{Persistent Pattern?}
+
+    I -- No --> J[Retain Observation]
+    I -- Yes --> K[Instruction Diagnosis]
+
+    K --> L{Problem Type}
+
+    L --> M[Missing]
+    L --> N[Ambiguous]
+    L --> O[Conflicting]
+    L --> P[Stale]
+    L --> Q[Overly Specific]
+
+    M --> R[Candidate Instruction Change]
+    N --> R
+    O --> R
+    P --> R
+    Q --> R
+
+    R --> S[Evidence Package]
+    S --> T[Impact Analysis]
+    T --> U[Owner Review]
+
+    U --> V{Approved?}
+
+    V -- No --> W[Reject / Revise]
+    V -- Yes --> X[Create New Version]
+
+    X --> Y[Validate]
+    Y --> Z{Validation Successful?}
+
+    Z -- No --> AA[Rollback / Revise]
+    Z -- Yes --> AB[Activate]
+
+    AB --> AC[Future Harness Runs]
+    AC --> B

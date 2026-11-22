@@ -1,0 +1,13 @@
+flowchart TD
+    A[Approved Architecture Decisions] --> B[Governed Engineering Standards]
+    B --> C[Instruction Synchronization and Review]
+    C --> D[CLAUDE.md]
+    C --> E[AGENTS.md]
+    C --> F[Copilot Instructions]
+    D --> G[Claude Code]
+    E --> H[Codex]
+    F --> I[GitHub Copilot]
+    G --> J[Shared Validation Pipeline]
+    H --> J
+    I --> J
+    J --> K[Review and Human Approval]

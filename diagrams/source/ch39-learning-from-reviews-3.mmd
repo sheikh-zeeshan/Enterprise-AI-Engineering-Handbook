@@ -1,0 +1,18 @@
+flowchart TD
+    A[Incoming review finding] --> B{Source and evidence verified?}
+    B -->|No| C[Quarantine or mark unverified]
+    B -->|Yes| D[Classify category and severity]
+    D --> E{Critical or high risk?}
+    E -->|Yes| F[Immediate triage and remediation]
+    E -->|No| G[Ordinary review disposition]
+    F --> H[Record outcome and rationale]
+    G --> H
+    H --> I{Eligible for learning?}
+    I -->|No| J[Retain contextual evidence]
+    I -->|Yes| K[Correlate independent findings]
+    K --> L{Pattern or significant control gap?}
+    L -->|No| M[Monitor for further evidence]
+    L -->|Yes| N[Investigate root cause]
+    N --> O[Prepare candidate assessment]
+    classDef decision fill:#fff1d6,stroke:#bb8b36,color:#704b0a
+    class B,E,I,L decision

@@ -1,0 +1,20 @@
+flowchart TD
+    A["Task Prompt"] --> B["Harness Task Intake"]
+    B --> C["Read-Only Repository Discovery"]
+    C --> D["Applicable Instructions and Skills"]
+    D --> E["Codex Planning Session"]
+    E --> F["Proposed Engineering Plan"]
+    F --> G["Plan Quality Gate"]
+    G --> H{"Plan Ready?"}
+    H -->|"No"| E
+    H -->|"Yes"| I{"Approval Required?"}
+    I -->|"Yes"| J["Human Review"]
+    J --> K{"Approved?"}
+    K -->|"Revision"| E
+    K -->|"Approved"| L["Execution Authorization"]
+    I -->|"No"| L
+    L --> M["Developer Agent"]
+    M --> N["Implementation"]
+    N --> O["Reviewer and Validator"]
+    O --> P["Evaluator"]
+    P --> Q["Completion Decision"]

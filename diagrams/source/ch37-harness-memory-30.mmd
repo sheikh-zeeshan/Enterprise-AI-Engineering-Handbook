@@ -1,0 +1,15 @@
+flowchart TD
+    A["Harness run"] --> B["Scratchpad"]
+    B --> C["Validation, review and evaluation"]
+    C --> D["Learning candidate"]
+    D --> E["Evidence verification"]
+    E --> F["Scope, conflict and security checks"]
+    F --> G["Human approval"]
+    G -->|Approved| H[("Versioned Harness Memory")]
+    H --> I["Governed retrieval"]
+    I --> J["Future Harness run"]
+    J --> K["Current repository verification"]
+    K --> L["Implementation and normal gates"]
+    L --> M["Usage audit and new evidence"]
+    M --> N["Lifecycle revalidation"]
+    N -->|Approved update| H

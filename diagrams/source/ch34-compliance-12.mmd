@@ -1,0 +1,12 @@
+flowchart TD
+    A["Governed Policy and Controls"] --> B["Trusted Harness"]
+    B --> C["Claude Code: Authorized Implementation"]
+    C --> D["Independent Validation"]
+    D --> E["Governed Control Results"]
+    E --> F["Required Human Approval"]
+    F --> G["Controlled Release"]
+    B --> H["Evidence Store"]
+    D --> H
+    F --> H
+    G --> H
+    H --> I["Compliance Reporting"]

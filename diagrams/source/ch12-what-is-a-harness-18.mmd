@@ -1,0 +1,22 @@
+flowchart TD
+    H[AI Engineering Harness] --> M{Execution Mode}
+
+    M --> CLI[Codex CLI]
+    M --> CC[Codex Cloud]
+
+    CLI --> LW[Local Controlled Workspace]
+    CC --> CW[Cloud Isolated Workspace]
+
+    LW --> A[Engineering Changes]
+    CW --> A
+
+    A --> G[Harness Gates]
+
+    G --> R[Independent Review]
+    R --> E[Evaluation]
+    E --> HA[Human Approval]
+    HA --> P[Pull Request or Commit]
+
+    H --> ST[Execution State]
+    H --> AU[Audit Evidence]
+    H --> MT[Metrics]

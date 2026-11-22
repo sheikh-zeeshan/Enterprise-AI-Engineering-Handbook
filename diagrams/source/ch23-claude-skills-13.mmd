@@ -1,0 +1,19 @@
+flowchart TD
+    N0["Build Failure"]
+    N1["Collect Compiler Evidence"]
+    N2["Inspect Repository Abstraction"]
+    N3{"Equivalent Method Exists?"}
+    N4["Adapt Handler to Existing Contract"]
+    N5{"New Architecture Required?"}
+    N6["Report Architecture Decision"]
+    N7["Rebuild and Retest"]
+    N8["Record Evidence"]
+    N0 --> N1
+    N1 --> N2
+    N2 --> N3
+    N3 -- Yes --> N4
+    N3 -- No --> N5
+    N4 --> N7
+    N5 -- Yes --> N6
+    N5 -- No --> N7
+    N7 --> N8

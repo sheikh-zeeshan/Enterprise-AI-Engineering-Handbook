@@ -1,0 +1,20 @@
+sequenceDiagram
+    participant Owner as Human Owner
+    participant Repo as Controlled Repository
+    participant Harness as AI Harness
+    participant Lead as Lead Agent
+    participant Dev as Developer Agent
+    participant Review as Reviewer Agent
+    participant Gate as Validation Gate
+
+    Owner->>Repo: Approve steering-note.md version 1.2
+    Harness->>Repo: Retrieve and validate approved version
+    Repo-->>Harness: Version 1.2 and content hash
+    Harness->>Lead: Mission summary and version reference
+    Harness->>Dev: Applicable constraints and version reference
+    Dev-->>Harness: Implementation and evidence
+    Harness->>Review: Applicable constraints and version reference
+    Review-->>Harness: Findings and approval requirements
+    Harness->>Gate: Validate restrictions and protected-file changes
+    Gate-->>Harness: Pass, fail, or human approval required
+    Harness-->>Owner: Results, version used, unresolved decisions

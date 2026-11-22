@@ -1,0 +1,6 @@
+flowchart LR
+    Command[Define command] --> Validate[Attach input validation]
+    Validate --> Handler[Implement handler]
+    Handler --> Register[Register dependencies]
+    Register --> Tests[Run handler tests]
+    Tests --> Gate[Validate architecture boundaries]

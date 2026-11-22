@@ -1,0 +1,25 @@
+sequenceDiagram
+    participant Customer
+    participant Alpha as Alpha Car Detailing
+    participant Station
+    participant Finance
+
+    Customer->>Alpha: Submit fleet booking
+    Note over Alpha: Booking Submitted
+
+    Alpha->>Alpha: Validate and authorize
+    Note over Alpha: Booking Authorized
+
+    Alpha->>Alpha: Reserve capacity
+    Note over Alpha: Capacity Reserved
+
+    Alpha-->>Customer: Confirm booking
+    Note over Alpha: Booking Confirmed
+
+    Station->>Alpha: Complete service
+    Note over Alpha: Service Completed
+
+    Alpha->>Finance: Initiate billing activity
+    Note over Finance: Billing Initiated
+
+    Alpha-->>Customer: Notify completion

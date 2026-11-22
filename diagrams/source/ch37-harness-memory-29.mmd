@@ -1,0 +1,17 @@
+flowchart TD
+    A["Finding from Harness execution"] --> B{"Reusable beyond current run?"}
+    B -->|No| C["Scratchpad or execution history"]
+    B -->|Yes| D{"Supporting evidence sufficient?"}
+    D -->|No| E["Continue investigation"]
+    D -->|Yes| F{"Already represented in memory?"}
+    F -->|Yes| G["Propose update or new evidence"]
+    F -->|No| H["Create new candidate"]
+    G --> I["Scope, security and conflict review"]
+    H --> I
+    I --> J{"Eligible for approval?"}
+    J -->|No| K["Reject, narrow or revise"]
+    J -->|Yes| L["Authorized human review"]
+    L --> M{"Approved?"}
+    M -->|No| N["Record decision"]
+    M -->|Yes| O[("Activate versioned memory")]
+    O --> P["Governed future retrieval"]

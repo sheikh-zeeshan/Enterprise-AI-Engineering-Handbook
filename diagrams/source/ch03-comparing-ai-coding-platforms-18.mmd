@@ -1,0 +1,18 @@
+flowchart LR
+    PO[Product Owner]
+    A[Architect]
+    TL[Technical Lead]
+    D[Developer Agent and Developer]
+    S[Security Reviewer]
+    Q[Quality Engineer]
+    P[Platform Validation]
+    H[Human Approver]
+
+    PO -->|Business Context and Acceptance Criteria| A
+    A -->|Architecture and Boundaries| TL
+    TL -->|Task Contract| D
+    D -->|Implementation and Evidence| S
+    D -->|Implementation and Tests| Q
+    S --> P
+    Q --> P
+    P --> H

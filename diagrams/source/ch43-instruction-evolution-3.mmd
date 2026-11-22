@@ -1,0 +1,10 @@
+flowchart LR
+    A[Adaptive Harness] --> B[Candidate Store]
+    B --> C[Human Governance]
+
+    C -->|Approved| D[Controlled Instruction Update]
+    C -->|Rejected| E[Decision Record]
+
+    D --> F[Authoritative Instruction Store]
+
+    A -.->|Prohibited direct write| F

@@ -1,0 +1,9 @@
+flowchart TD
+    A[Incorrect or contextual review finding] --> B[Unsupported generalization]
+    B --> C[Unapproved Instruction or Skill change]
+    C --> D[Future agent follows incorrect guidance]
+    D --> E[Repeated inappropriate implementations]
+    E --> F[Misleading new review evidence]
+    F --> B
+    classDef risk fill:#fae8e8,stroke:#b95c5c,color:#7a2424
+    class A,B,C,D,E,F risk

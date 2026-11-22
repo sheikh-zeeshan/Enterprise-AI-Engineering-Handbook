@@ -1,0 +1,6 @@
+flowchart LR
+    Policy["Enterprise approval policy"] --> Service["Approval and authorization service"]
+    Service --> Deploy["Deployment gateway"] --> Production["Production deployment"]
+    Service --> Migrate["Database migration gateway"] --> Database["Production database"]
+    Service --> Merge["Protected repository merge"] --> Instructions["Authoritative instructions and skills"]
+    Service --> Exception["Security exception service"] --> Security["Governed security exception"]

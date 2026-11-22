@@ -1,0 +1,12 @@
+flowchart TD
+    A[Observed Pattern] --> B{Where was evidence observed?}
+
+    B -->|Single task| C[Run-specific observation]
+    B -->|Single repository| D[Repository-local candidate]
+    B -->|Multiple related repositories| E[Domain-level candidate]
+    B -->|Broad repeated evidence| F[Enterprise Skill candidate]
+
+    C --> G[Do not generalize]
+    D --> H[Repository owner review]
+    E --> I[Domain owner review]
+    F --> J[Enterprise governance]

@@ -1,0 +1,24 @@
+flowchart TD
+    A["Enterprise AI Engineering Platform"] --> B["Customer A Boundary"]
+    A --> C["Customer B Boundary"]
+    A --> D["Customer C Boundary"]
+
+    B --> E["Alpha Car Detailing"]
+    C --> F["Financial Services"]
+    D --> G["Healthcare Claims"]
+
+    E --> H["Permitted Project Context"]
+    F --> I["Permitted Project Context"]
+    G --> J["Permitted Project Context"]
+
+    K["Governed Enterprise Knowledge"] --> L["Authorization and Policy Checks"]
+
+    L --> H
+    L --> I
+    L --> J
+
+    classDef boundary fill:#e3f2fd,stroke:#1565c0,color:#0d47a1
+    classDef governance fill:#fff3e0,stroke:#ef6c00,color:#4e342e
+
+    class B,C,D boundary
+    class K,L governance

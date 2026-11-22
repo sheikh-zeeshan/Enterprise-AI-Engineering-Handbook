@@ -1,0 +1,20 @@
+flowchart LR
+    A[New Evidence]
+    B[Graph Extraction]
+    C{High-impact change?}
+    D[Apply Automatically]
+    E[Governance Review]
+    F[Approve]
+    G[Reject]
+    H[(Knowledge Graph)]
+
+    A --> B
+    B --> C
+
+    C -->|No| D
+    D --> H
+
+    C -->|Yes| E
+    E --> F
+    E --> G
+    F --> H

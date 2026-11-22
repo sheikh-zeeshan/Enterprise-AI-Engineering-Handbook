@@ -1,0 +1,10 @@
+flowchart LR
+    U[User] -->|Task Request| H[Harness Control Plane]
+    H -->|Controlled Context| A[AI Agent]
+    A -->|Tool Request| T[Tool Gateway]
+    T -->|Approved Command| W[Execution Workspace]
+    W -->|Evidence| V[Validation Services]
+    V -->|Results| H
+    H -->|Approval Request| P[Human Approver]
+    P -->|Decision| H
+    H -->|Approved Output| G[Source Control Platform]

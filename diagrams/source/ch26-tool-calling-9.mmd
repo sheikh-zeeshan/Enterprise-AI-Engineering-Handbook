@@ -1,0 +1,10 @@
+flowchart TD
+    A["Booking Service Defect"] --> B{"Coding Agent"}
+    B --> C["Claude Code"]
+    B --> D["GitHub Copilot"]
+    C --> E["Repository Search and Reading"]
+    D --> F["IDE Search and File Inspection"]
+    E --> G["Existing Implementation Evidence"]
+    F --> G
+    G --> H["Identify Idempotency Boundary"] --> I["Propose and Apply Scoped Change"]
+    I --> J["Build and Test"] --> K["Harness Validation"]

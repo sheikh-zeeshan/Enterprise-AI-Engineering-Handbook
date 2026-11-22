@@ -1,0 +1,27 @@
+flowchart TD
+    A[Implementation] --> B[Pull Request]
+    B --> C[Build + Review + Validation + Human Feedback]
+    C --> D[PR Outcome]
+    D --> E[Evidence Classification]
+    E --> F[Pattern Detection]
+    F --> G[Candidate Learning]
+    G --> H[Human Review]
+    H --> I{Approved?}
+
+    I -->|No| J[Observe / Reject / Revise]
+    I -->|Yes| K[Approved Improvement]
+
+    K --> L[Harness Memory]
+    K --> M[Skill]
+    K --> N[Prompt]
+    K --> O[Approved Instruction Change]
+    K --> P[Workflow / Gate]
+
+    L --> Q[Future Runs]
+    M --> Q
+    N --> Q
+    O --> Q
+    P --> Q
+
+    Q --> R[Measure New Outcomes]
+    R --> F

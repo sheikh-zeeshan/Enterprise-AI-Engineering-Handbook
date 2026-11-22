@@ -1,0 +1,10 @@
+flowchart TB
+    R["Enterprise Run"] --> B["Booking Child Run"]
+    R --> F["Fleet Child Run"]
+    R --> I["Billing Child Run"]
+    B --> BV["Booking Validation"]
+    F --> FV["Fleet Validation"]
+    I --> IV["Billing Validation"]
+    BV --> E["Cross-Repository Evaluation"]
+    FV --> E
+    IV --> E

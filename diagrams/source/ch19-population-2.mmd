@@ -1,0 +1,8 @@
+flowchart TD
+    A["Fleet Cancellation Goal"] --> B["Domain Changes"]
+    B --> C["API Changes"]
+    B --> D["Event Contract"]
+    B --> E["Persistence"]
+    C --> F["Integration Tests"]
+    D --> F
+    E --> F

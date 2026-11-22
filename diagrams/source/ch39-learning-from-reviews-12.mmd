@@ -1,0 +1,15 @@
+flowchart TD
+    A[Claude Code review] --> E[Evidence adapters]
+    B[GitHub Copilot review] --> E
+    C[Codex review] --> E
+    D[Human architecture and security review] --> E
+    E --> F[Normalized evidence store]
+    F --> G[Classification and pattern detection]
+    G --> H[Root-cause assessment]
+    H --> I[Candidate improvement]
+    I --> J{Human governance}
+    J -->|Approved| K[Approved Skills, Prompts, Instructions or gates]
+    K --> L[Future Harness runs]
+    J -->|Rejected| M[Preserve rationale in Harness Memory]
+    classDef decision fill:#fff1d6,stroke:#bb8b36,color:#704b0a
+    class J decision

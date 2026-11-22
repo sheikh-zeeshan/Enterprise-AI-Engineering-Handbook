@@ -1,0 +1,34 @@
+flowchart TD
+    A["Engineering Goal"] --> B["Lead Agent"]
+    B --> C["Proposed Work Items"]
+    C --> D["Population Manager"]
+
+    D --> E{"Dependencies<br/>Satisfied?"}
+
+    E -- No --> F["Blocked"]
+    F --> E
+
+    E -- Yes --> G["Ready"]
+
+    G --> H["Scheduler"]
+    H --> I["Atomic Claim"]
+    I --> J["Running"]
+
+    J --> K["Developer Agent"]
+    K --> L["Reviewer Agent"]
+    L --> M["Validator Agent"]
+    M --> N["Evaluator Agent"]
+
+    N --> O{"Completion<br/>Policy"}
+
+    O -- Pass --> P["Completed"]
+    O -- Fail --> Q["Failed"]
+
+    Q --> R{"Retry<br/>Available?"}
+
+    R -- Yes --> S["Retry Pending"]
+    S --> G
+
+    R -- No --> T["Exhausted"]
+    T --> U["Human Intervention"]
+    U --> G

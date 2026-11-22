@@ -1,0 +1,26 @@
+flowchart LR
+    A[Task Request] --> B[Context Classification]
+
+    B --> C[Policy Decision Point]
+
+    D[Policy Registry] --> C
+    E[Repository Metadata] --> C
+    F[Data Classification] --> C
+    G[Agent Identity and Role] --> C
+    H[Exception Registry] --> C
+
+    C --> I{Decision}
+
+    I -->|Allow| J[Execute]
+    I -->|Allow with Controls| K[Restricted Execution]
+    I -->|Approval Required| L[Verify Authorized Human Approval]
+    L --> P{Approval Valid?}
+    P -->|Yes| K
+    P -->|No| N[Stop]
+    I -->|Escalate| M[Governance Review]
+    I -->|Deny| N
+
+    J --> O[Audit Evidence]
+    K --> O
+    M --> O
+    N --> O

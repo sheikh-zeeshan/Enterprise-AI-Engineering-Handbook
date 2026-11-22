@@ -1233,7 +1233,7 @@ sequenceDiagram
             C->>H: Publish version for future runs
             C->>S: Record release and validation evidence
         else Release controls fail
-            C->>S: Record failure; retain previous version
+            C->>S: Record failure, retain previous version
         end
     end
 ```

@@ -1,0 +1,16 @@
+flowchart TD
+    A["Approved Fleet Booking Requirement"] --> B["Harness Creates Task and Run"] --> C["Claude Code Executes Implementation"]
+    C --> D["Implementation Artifact"] --> E["Reviewer Agent"] --> F["Deterministic Validation"] --> G["Evaluator Agent"]
+    C -.-> H["Hooks Collect Tool Observations"]
+    G --> I{"Required Conditions Satisfied?"}
+    I -->|No| J{"Retry Budget Available?"}
+    J -->|Yes| K["Record Retry and Findings"] --> C
+    J -->|No| L["Record Failure / Exhaustion"]
+    I -->|Yes| M["Human Approval"] --> N["Ready for Merge"]
+    H -.-> O["Metrics Collector"]
+    E -.-> O
+    F -.-> O
+    G -.-> O
+    L -.-> O
+    N -.-> O
+    O --> P[("Authoritative Metrics Store")] --> Q["Productivity Analytics"] --> R["Engineering Improvement Review"]

@@ -1,0 +1,30 @@
+flowchart TB
+    USER[Engineer or Harness]
+    TASK[Task and Role Context]
+    DISC[Source Discovery]
+    CAT[Source Catalogue]
+    IDX[Search and Semantic Index]
+    ACL[Access-Control Policy]
+    RANK[Source Ranking]
+    CONFLICT[Conflict Detection]
+    MANIFEST[Source Manifest]
+    AGENT[AI Agent]
+    CITE[Cited Output]
+    AUDIT[Audit and Evidence Record]
+
+    USER --> TASK
+    TASK --> DISC
+
+    CAT --> DISC
+    IDX --> DISC
+
+    DISC --> ACL
+    ACL --> RANK
+    RANK --> CONFLICT
+    CONFLICT --> MANIFEST
+    MANIFEST --> AGENT
+    AGENT --> CITE
+    CITE --> AUDIT
+
+    CONFLICT -->|Unresolved| REVIEW[Human Review]
+    REVIEW --> MANIFEST

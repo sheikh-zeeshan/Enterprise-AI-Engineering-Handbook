@@ -1,0 +1,17 @@
+flowchart TD
+    G["Engineering Goal"] --> L["Lead Agent / Decomposition"]
+    L --> P["Population Manager"]
+    P --> S["Scheduler"]
+
+    S --> W["Harness Worker"]
+    W --> C["GitHub Copilot"]
+
+    C --> O["Implementation Output"]
+    O --> W
+
+    W --> R["Reviewer"]
+    R --> V["Validator"]
+    V --> E["Evaluator"]
+
+    E --> PM["Population Manager"]
+    PM --> PS[("Population Store")]

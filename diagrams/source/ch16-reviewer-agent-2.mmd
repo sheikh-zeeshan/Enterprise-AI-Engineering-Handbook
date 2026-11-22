@@ -1,0 +1,15 @@
+flowchart LR
+    T[Task] --> R[Reviewer Agent]
+    AC[Acceptance Criteria] --> R
+    I[Instructions] --> R
+    S[Steering Notes] --> R
+    RI[Repository Intelligence] --> R
+    A[Architecture / ADRs] --> R
+    D[Implementation Diff] --> R
+    TE[Test Evidence] --> R
+    DG[Deterministic Gate Results] --> R
+    C[API / Event Contracts] --> R
+
+    R --> F[Structured Findings]
+    R --> RC[Review Completion]
+    R --> E[Escalation]

@@ -1,0 +1,23 @@
+flowchart TB
+    Harness["Harness Orchestrator"]
+    Contract["Tool Capability Contracts"]
+
+    Harness --> Contract
+
+    Contract --> SCM["Source Control"]
+    Contract --> AI["AI Provider"]
+    Contract --> Ticket["Work Management"]
+    Contract --> Artifact["Artifact Storage"]
+
+    SCM --> GH["GitHub Adapter"]
+    SCM --> AD["Azure DevOps Adapter"]
+
+    AI --> CL["Claude Adapter"]
+    AI --> CP["Copilot Adapter"]
+    AI --> CX["Codex Adapter"]
+
+    Ticket --> Jira["Jira Adapter"]
+    Ticket --> ADO["Azure Boards Adapter"]
+
+    Artifact --> Blob["Azure Blob Adapter"]
+    Artifact --> S3["S3 Adapter"]

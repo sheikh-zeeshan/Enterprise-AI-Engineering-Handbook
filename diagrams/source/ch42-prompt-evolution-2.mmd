@@ -1,0 +1,38 @@
+flowchart LR
+    subgraph AdaptiveHarness["Adaptive Harness"]
+        A[Execution Evidence]
+        B[Harness Memory]
+        C[Pattern Detection]
+        D[Candidate Generator]
+        E[Prompt Benchmarking]
+
+        A --> B
+        B --> C
+        C --> D
+        D --> E
+    end
+
+    subgraph GovernedAssets["Governed Prompt Assets"]
+        F[Prompt Registry]
+        G[Active Prompt Version]
+        H[Prompt History]
+    end
+
+    subgraph HumanGovernance["Human Governance"]
+        I[Prompt Owner]
+        J[Architecture / Security / QA Owners]
+        K[Approval Decision]
+    end
+
+    D --> I
+    E --> I
+    I --> J
+    J --> K
+
+    K -->|Approve| F
+    F --> G
+    F --> H
+
+    K -->|Reject| D
+
+    G -. read-only execution .-> A

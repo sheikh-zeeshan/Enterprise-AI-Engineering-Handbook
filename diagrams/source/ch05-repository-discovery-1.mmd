@@ -1,0 +1,14 @@
+flowchart TD
+    A[Repository Evidence] --> K{"Relevant to the task?"}
+    K -->|No| M[Out-of-Scope Item]
+    K -->|Yes| I{"Do sources materially disagree?"}
+    I -->|Yes| J[Contradiction]
+    I -->|No| B{"Direct and current?"}
+    B -->|Yes| C{"Supported by an authoritative source?"}
+    C -->|Yes| D[Verified Fact]
+    C -->|No| E{"Multiple consistent sources?"}
+    B -->|No| E
+    E -->|Yes| F[Strong Inference]
+    E -->|No| G{"Plausible but weakly supported?"}
+    G -->|Yes| H[Weak Inference]
+    G -->|No| L[Unknown]

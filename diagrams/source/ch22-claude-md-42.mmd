@@ -1,0 +1,9 @@
+flowchart TD
+    A[Run Evidence] --> B[Recurring Problem]
+    B --> C[Root Cause Analysis]
+    C --> D{Instruction Deficiency?}
+    D -- No --> E[Improve Appropriate Component]
+    D -- Yes --> F[Propose Instruction Change]
+    F --> G[Owner Review]
+    G --> H[Approved Update]
+    H --> I[Evaluate Future Runs]

@@ -1,0 +1,12 @@
+flowchart TD
+    SRC[Untrusted repository or external document] --> CLASS[Classify source and provenance]
+    CLASS --> AG[Agent analyzes task data]
+    AG --> TOOL[Proposed tool operation]
+    TOOL --> POLICY{Authorized by trusted policy?}
+    POLICY -->|No| DENY[Deny and audit]
+    POLICY -->|Yes| APPROVE{Additional approval required?}
+    APPROVE -->|No| RUN[Execute inside sandbox]
+    APPROVE -->|Yes| HUMAN{Authorized approver accepts?}
+    HUMAN -->|No| DENY
+    HUMAN -->|Yes| RUN
+    RUN --> AUDIT[Record execution evidence]

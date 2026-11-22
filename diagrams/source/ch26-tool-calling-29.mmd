@@ -1,0 +1,6 @@
+flowchart TD
+    A["Final Source Revision"] --> B["Build Gate"] --> C{"Build Passed?"}
+    C -->|No| X["Validation Failed"]
+    C -->|Yes| D["Unit Test Gate"] --> E["Integration Test Gate"]
+    E --> F["Architecture Gate"] --> G["Event Contract Gate"]
+    G --> H["Evidence Verification"] --> I["Validation Decision"]

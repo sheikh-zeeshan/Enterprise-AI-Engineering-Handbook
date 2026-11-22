@@ -1,0 +1,20 @@
+flowchart LR
+    Client -->|Trace / Correlation Context| GW[API Gateway]
+    GW --> BK[Booking]
+    BK --> CA[Corporate Account]
+    BK --> FL[Fleet]
+    BK --> SO[Station Operations]
+
+    BK --> EB[Event Bus]
+    SO --> EB
+    EB -->|"BookingConfirmed"| NT[Notification]
+    EB -->|"ServiceCompleted"| BI[Billing]
+    EB -->|"ServiceCompleted"| BK
+
+    GW --> OT[Telemetry Platform]
+    BK --> OT
+    CA --> OT
+    FL --> OT
+    SO --> OT
+    NT --> OT
+    BI --> OT

@@ -1,0 +1,20 @@
+sequenceDiagram
+    participant API as API
+    participant App as Application
+    participant Store as Booking persistence
+    participant Decisions as Decision ports
+    participant Domain as Booking domain
+
+    API->>App: Input and trusted caller context
+    App->>Decisions: Verify scope, eligibility, and station suitability
+    Decisions-->>App: Authoritative decisions
+    App->>Store: Persist workflow intent and stable operation identity
+    Store-->>App: Intent committed
+    App->>Decisions: Commit capacity using operation identity
+    Decisions-->>App: Definite commitment and matching facts
+    App->>Domain: Apply permitted confirmation
+    Domain-->>App: Confirmed state and domain fact
+    App->>Store: Commit booking, outbound event, and workflow outcome
+    Store-->>App: Local transaction committed
+    App-->>API: Confirmed application outcome
+    Note over App,Store: Uncertain outcomes require durable resolution

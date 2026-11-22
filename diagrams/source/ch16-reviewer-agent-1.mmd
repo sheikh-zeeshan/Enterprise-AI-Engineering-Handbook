@@ -1,0 +1,14 @@
+flowchart TD
+    D[Developer Agent] --> G[Fast Deterministic Gates]
+    G -->|Fail| D
+    G -->|Pass| R[Independent Reviewer Agent]
+    R --> F{Review disposition}
+    F -->|Blocking findings| H[Structured findings to Developer]
+    H --> D
+    F -->|Governance decision needed| E[Escalate to authorized role]
+    E -->|Correction required| D
+    E -->|Approved exception and policy satisfied| P[Harness policy evaluation]
+    F -->|No blocking findings| P
+    P -->|Requirements satisfied| V[Validator Agent]
+    P -->|Cannot progress| E
+    V --> N[Next Harness Stage]

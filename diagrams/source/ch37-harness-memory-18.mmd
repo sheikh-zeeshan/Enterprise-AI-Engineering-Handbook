@@ -1,0 +1,8 @@
+flowchart LR
+    R[("Memory registry — system of record")] --> K["Keyword search projection"]
+    R --> S["Semantic index"]
+    K --> Q["Retrieval service"]
+    S --> Q
+    Q --> E["Authoritative eligibility recheck"]
+    R --> E
+    E --> A["Authorized Harness consumer"]

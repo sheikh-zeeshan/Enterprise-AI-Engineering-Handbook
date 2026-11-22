@@ -1,0 +1,27 @@
+flowchart TD
+    A[Engineering Goal] --> B[Enterprise Harness]
+    subgraph Control[Enterprise Control Plane]
+      B --> S[Workflow State Machine]
+      S --> P[Policy and Authorization]
+      S --> K[Checkpoint Management]
+    end
+    subgraph Execute[Codex Execution]
+      AD[Codex Adapter] --> C[CLI, SDK, app-server or Agents API]
+      C --> AG[Agent Execution]
+      AG --> W[Isolated Workspace]
+    end
+    S --> AD
+    P --> AD
+    W --> R[Candidate Revision]
+    R --> G[Deterministic Gates]
+    G --> Rev[Reviewer]
+    Rev --> V[Validator]
+    V --> E[Evaluator]
+    E --> H[Human Approval]
+    H --> O[Authorized Output]
+    G --> ES[Evidence Store]
+    Rev --> ES
+    V --> ES
+    E --> ES
+    H --> ES
+    ES --> S

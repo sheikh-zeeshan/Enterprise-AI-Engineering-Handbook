@@ -1,0 +1,11 @@
+flowchart TD
+    A[Execution Evidence] --> B[Schema and Provenance Checks]
+    B --> C[Deterministic Aggregation]
+    C --> D{Actionable pattern?}
+    D -->|No| E[Retain Evidence]
+    D -->|Yes| F[Retrieve Relevant Context]
+    F --> G[AI-assisted Interpretation]
+    G --> H{Sufficient support?}
+    H -->|No| I[Inconclusive Assessment]
+    H -->|Yes| J[Improvement Recommendation]
+    J --> K[Human Review]

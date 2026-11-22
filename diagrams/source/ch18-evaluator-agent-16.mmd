@@ -1,0 +1,8 @@
+flowchart TD
+    A[Evaluation History] --> B[Recurring Finding Analysis]
+    B --> C[Improvement Proposal]
+    C --> D[Authorized Owner Review]
+    D --> E{Approved?}
+    E -->|Yes| F[Version and Validate Skill, Prompt, Instruction or Gate]
+    E -->|No| G[Retain Existing Standard]
+    F --> H[Apply to Future Runs]

@@ -1,0 +1,11 @@
+flowchart TD
+    CHANGE["Implementation revision"] --> BUILD["Build gate"]
+    BUILD --> TEST["Test gates"]
+    TEST --> SEC["Security gates"]
+    SEC --> REVIEW["Review evidence"]
+    REVIEW --> EVAL["Evaluation"]
+    EVAL --> APPROVE["Human approval"]
+    APPROVE --> MATCH{"Revision still matches?"}
+    MATCH -->|Yes| MERGE["Merge authorized"]
+    MATCH -->|No| RECHECK["Repeat required checks"]
+    RECHECK --> BUILD

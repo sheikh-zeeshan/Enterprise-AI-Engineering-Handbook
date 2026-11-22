@@ -1,0 +1,14 @@
+flowchart TD
+    G[Enterprise Goal Command] --> D[Define Measurable Conditions]
+    D --> B[Establish Baseline]
+    B --> P[Prepare Plan]
+    P --> A{Required Approval Granted?}
+    A -- No --> S[Stop and Record Decision]
+    A -- Yes --> E[Execute Authorized Changes]
+    E --> V[Run Deterministic Checks]
+    V --> F{Sufficient Evidence?}
+    F -- No --> I[Report Inconclusive]
+    F -- Yes --> Q[Evaluate Goal Satisfaction]
+    Q --> M{Goal Satisfied?}
+    M -- Yes --> R[Report Success with Evidence]
+    M -- No --> T[Report Gaps and Escalate or Retry Within Budget]

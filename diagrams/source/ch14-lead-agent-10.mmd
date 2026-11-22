@@ -1,0 +1,19 @@
+flowchart TB
+    F[Failure] --> A[Analyze Failure]
+
+    A --> R{Retryable?}
+
+    R -->|No| E[Escalate]
+
+    R -->|Yes| B{Retry Budget Remaining?}
+
+    B -->|No| E
+
+    B -->|Yes| C[Add Corrective Context]
+
+    C --> D[Re-plan / Re-execute]
+
+    D --> V[Validate New Revision]
+
+    V -->|Pass| X[Continue Workflow]
+    V -->|Fail| F

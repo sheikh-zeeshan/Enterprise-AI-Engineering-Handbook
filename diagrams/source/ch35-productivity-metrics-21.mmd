@@ -1,0 +1,12 @@
+flowchart TD
+    A["Approved Booking Requirement"] --> B["Harness Creates Run"] --> C["Lead Agent Prepares Plan"] --> D["Codex Developer Execution"] --> E["Implementation Artifacts"] --> F["Independent Reviewer"] --> G["Deterministic Validator"] --> H["Evaluator"] --> I{"Accepted?"}
+    I -->|No| J["Retry or Human Escalation"] --> D
+    I -->|Yes| K["Required Human Approval"] --> L["Ready for Merge"]
+    B -.-> M["Metrics Collector"]
+    D -.-> M
+    F -.-> M
+    G -.-> M
+    H -.-> M
+    J -.-> M
+    L -.-> M
+    M --> N[("Productivity Metrics Store")]

@@ -1,0 +1,18 @@
+stateDiagram-v2
+    [*] --> Observed
+    Observed --> Classified: Reliable evidence
+    Classified --> Investigating
+    Classified --> Inconclusive: Evidence insufficient
+    Investigating --> VerifiedIncident: Cause supported
+    Investigating --> Inconclusive: Unresolved
+    VerifiedIncident --> CandidatePattern: Supported recurrence
+    CandidatePattern --> UnderReview: Recommendation
+    UnderReview --> Rejected: Reject
+    UnderReview --> NeedsEvidence: Request evidence
+    NeedsEvidence --> Investigating
+    UnderReview --> Approved: Authorize exact change
+    Approved --> Versioned: Validate and publish
+    Versioned --> Active: Activate approved version
+    Active --> Superseded: New version
+    Active --> RolledBack: Authorized rollback
+    Active --> Retired: No longer applicable

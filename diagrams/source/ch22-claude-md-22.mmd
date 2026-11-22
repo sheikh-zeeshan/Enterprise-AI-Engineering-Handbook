@@ -1,0 +1,9 @@
+flowchart TD
+    A[Instruction Conflict Detected] --> B[Identify Conflicting Statements]
+    B --> C[Determine Approved Architecture]
+    C --> D{Approved Exception Exists?}
+    D -- Yes --> E[Document Scoped Exception]
+    D -- No --> F[Remove Contradictory Guidance]
+    E --> G[Architecture Review]
+    F --> G
+    G --> H[Approved Instruction Update]

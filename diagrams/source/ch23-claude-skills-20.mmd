@@ -1,0 +1,15 @@
+flowchart TD
+    N0["Canonical Skill Source"]
+    N1["Review and Skill Tests"]
+    N2["Approved Revision"]
+    N3["Claude Distribution"]
+    N4["Codex Distribution"]
+    N5["Compatibility Tests"]
+    N6["Release"]
+    N0 --> N1
+    N1 --> N2
+    N2 --> N3
+    N2 --> N4
+    N3 --> N5
+    N4 --> N5
+    N5 --> N6

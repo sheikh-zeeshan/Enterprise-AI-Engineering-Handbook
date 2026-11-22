@@ -1,0 +1,9 @@
+flowchart TD
+    A[Instruction Change Proposed] --> B[Classify Change]
+    B --> C{Changes Engineering Standard?}
+    C -- No --> D[Repository Owner Review]
+    C -- Yes --> E[Architecture or Security Review]
+    D --> F[Instruction Validation]
+    E --> F
+    F --> G[Approved Pull Request]
+    G --> H[Merge and Publish]

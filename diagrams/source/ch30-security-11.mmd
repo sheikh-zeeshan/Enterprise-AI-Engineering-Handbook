@@ -1,0 +1,9 @@
+flowchart TD
+    DOC[Untrusted repository content] --> CODEX[Codex Agent]
+    CODEX --> ACTION[Proposed tool operation]
+    ACTION --> POLICY[Independent Harness authorization]
+    POLICY --> DEC{Authorized?}
+    DEC -->|No| DENY[Deny and audit]
+    DEC -->|Yes| SANDBOX[Restricted execution]
+    SANDBOX --> GATES[Independent security gates]
+    GATES --> EVID[Trusted evidence]

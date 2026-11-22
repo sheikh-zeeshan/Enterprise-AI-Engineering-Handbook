@@ -1,0 +1,18 @@
+flowchart TD
+    A["Execution Evidence"] --> B["Repeated Pattern Detection"]
+    B --> C["Instruction Diagnosis"]
+    C --> D{"Instruction Change Justified?"}
+    D -->|No| E["Recommend Alternative Improvement"]
+    D -->|Yes| F["Candidate Instruction Change"]
+    F --> G["Evidence and Impact Analysis"]
+    G --> H["Human Owner Review"]
+    H --> I{"Approved?"}
+    I -->|No| J["Record Rejection or Revision"]
+    I -->|Yes| K["Create Approved Version Candidate"]
+    K --> L["Validation"]
+    L --> M{"Validation Passed?"}
+    M -->|No| N["Revise or Retain Previous Version"]
+    M -->|Yes| O["Controlled Activation"]
+    O --> P["Future Harness Runs"]
+    P --> Q["Effectiveness Measurement"]
+    Q --> A

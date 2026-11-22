@@ -1,0 +1,29 @@
+flowchart TD
+    A[Developer Agent Implements Fleet Booking]
+    A --> B[Direct Query to Fleet DB]
+
+    B --> C[Architecture Gate Fails]
+    B --> D[Reviewer Flags Boundary Violation]
+
+    C --> E[Harness Memory]
+    D --> E
+
+    E --> F[Same Pattern Appears Across Runs]
+
+    F --> G[Instruction Analyzer]
+
+    G --> H["Current Guidance: Maintain clear service boundaries"]
+
+    H --> I["Finding: Guidance is ambiguous"]
+
+    I --> J["Candidate: Prohibit cross-service DB access"]
+
+    J --> K[Architecture Owner Review]
+
+    K --> L{Approved?}
+
+    L -->|No| M[No Instruction Change]
+    L -->|Yes| N[New Instruction Version]
+
+    N --> O[Architecture Validation]
+    O --> P[Future Harness Runs]

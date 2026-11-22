@@ -1,0 +1,11 @@
+flowchart TD
+    C["Claude discovers dependency"] --> R["Reports DependencyDiscovery"]
+    R --> H["Harness"]
+    H --> L["Lead Agent / Human Review"]
+
+    L --> D{"Dependency accepted?"}
+
+    D -- Yes --> N["Create Population Item"]
+    N --> G["Update Dependency Graph"]
+
+    D -- No --> X["Continue Existing Plan"]

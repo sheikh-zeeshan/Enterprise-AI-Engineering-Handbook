@@ -1,0 +1,23 @@
+flowchart TB
+    WORK["Work item ACD-284"] --> ORCH["Harness orchestrator"]
+    subgraph ROLES["Engineering roles"]
+        LEAD["Lead"] --> DEV["Developer"]
+        DEV --> REVIEW["Reviewer"]
+        REVIEW --> VALIDATOR["Validator"]
+        VALIDATOR --> EVALUATOR["Evaluator"]
+    end
+    ORCH --> LEAD
+    DEV --> TOOLS["Controlled tool gateway"]
+    VALIDATOR --> GATES["Deterministic gates"]
+    EVALUATOR --> HUMAN["Human approval"]
+    ORCH -.-> INGEST["Audit ingestion"]
+    TOOLS -.-> INGEST
+    REVIEW -.-> INGEST
+    GATES -.-> INGEST
+    EVALUATOR -.-> INGEST
+    HUMAN -.-> INGEST
+    INGEST --> STORE[("Controlled audit store")]
+    INGEST --> EVIDENCE[("Protected evidence store")]
+    STORE --> COMPLETE["Audit completeness gate"]
+    EVIDENCE --> COMPLETE
+    COMPLETE --> REPORT["Investigation report"]

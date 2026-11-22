@@ -1,0 +1,18 @@
+flowchart TB
+    subgraph Control["Control Plane"]
+        H["Harness Orchestrator"] --> P["Policy Enforcement"] --> A["Approval Management"]
+    end
+    subgraph Execution["Execution Plane"]
+        W["Isolated Run Workspace"] --> T["Tool Executors"]
+    end
+    subgraph Evidence["Evidence Plane"]
+        R["Execution Records"]
+        G["Validation Artifacts"]
+        AU["Protected Audit Store"]
+    end
+    P -->|Authorized operation| W
+    T --> R
+    T --> G
+    P --> AU
+    R --> AU
+    G --> H

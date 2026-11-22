@@ -1,0 +1,8 @@
+flowchart TD
+ TASK["Change BookingConfirmed"] --> QUERY["Query Knowledge Graph"] --> CAND["Corporate Account Service Reported"] --> PROV{"Valid provenance?"}
+ PROV -->|Yes| REPO["Verify Current Repository"] --> EXISTS{"Consumer exists?"}
+ PROV -->|No| FLAG["Flag Unsupported or Stale"]
+ EXISTS -->|Yes| IMPACT["Include in Impact Analysis"]
+ EXISTS -->|No| FLAG
+ IMPACT --> PLAN["Evidence-Based Plan"]
+ FLAG --> PLAN

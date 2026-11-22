@@ -1,0 +1,9 @@
+flowchart TD
+    A[Developer Agent] --> B[Reviewer Agent]
+    B --> C[Validator Agent]
+    C --> D[Evaluator Agent]
+    D --> E{Outcome}
+    E -->|Satisfied| F[Human Approval]
+    E -->|Partial| G[Lead and Developer Rework]
+    E -->|Failed| G
+    E -->|Inconclusive| H[Evidence Request or Escalation]

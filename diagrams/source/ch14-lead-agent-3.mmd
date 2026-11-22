@@ -1,0 +1,13 @@
+flowchart LR
+    D[Developer] --> G[Deterministic Gates]
+
+    G -->|Pass| R[Reviewer]
+
+    G -->|Fail| F[Failure Analysis]
+
+    F --> Q{Retryable?}
+
+    Q -->|Yes| L[Lead Agent Re-plan]
+    L --> D
+
+    Q -->|No| E[Escalate]

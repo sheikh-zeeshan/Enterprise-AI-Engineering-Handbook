@@ -1,0 +1,8 @@
+flowchart LR
+    T[Approved Task] --> E[Agent Execution Workflow]
+    E --> EV[Evidence Artifact]
+    EV --> V[Independent Validation Workflow]
+    V --> A{Approval}
+    A -->|Rejected| S[Stop]
+    A -->|Approved| P[Publication Workflow]
+    P --> PR[Draft Pull Request]

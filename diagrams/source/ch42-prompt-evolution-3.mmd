@@ -1,0 +1,19 @@
+flowchart TD
+    A[Observed Failure or Feedback] --> B{Isolated Event?}
+
+    B -->|Yes| C[Store as Observation]
+    B -->|No| D[Correlate Similar Evidence]
+
+    D --> E{Repeated Pattern?}
+
+    E -->|No| C
+    E -->|Yes| F[Assess Root Cause]
+
+    F --> G{Prompt Related?}
+
+    G -->|No| H[Route to Instruction, Skill, Gate, Context, or Requirement Owner]
+    G -->|Yes| I[Generate Candidate Prompt Improvement]
+
+    I --> J[Benchmark Candidate]
+    J --> K[Comparative Evaluation]
+    K --> L[Human Approve / Reject / Revise]

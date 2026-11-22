@@ -1,0 +1,30 @@
+sequenceDiagram
+    autonumber
+    participant Lead as Lead Agent
+    participant Dev as Developer Agent
+    participant Val as Validator Agent
+    participant Rev as Reviewer Agent
+    participant Human as Human Reviewer
+    participant Learn as Learning Engine
+    participant Memory as Harness Memory
+    participant Gov as Governance Owner
+    Lead->>Dev: Assign implementation task
+    Dev->>Val: Submit implementation evidence
+    Val-->>Rev: Deterministic validation results
+    Rev-->>Dev: Structured review findings
+    Dev->>Val: Submit corrections
+    Val-->>Human: Validation evidence
+    Rev-->>Human: Findings and review history
+    Human->>Memory: Record dispositions and rationale
+    Val->>Memory: Store validation references
+    Learn->>Memory: Retrieve historical evidence
+    Memory-->>Learn: Classified findings and context
+    Learn->>Gov: Candidate improvement proposal
+    alt Approved
+        Gov->>Memory: Record authorized decision and scope
+        Note over Gov,Memory: Controlled delivery activates approved artifact
+    else Rejected
+        Gov->>Memory: Preserve rejection and rationale
+    else More evidence required
+        Gov->>Memory: Preserve provisional state
+    end

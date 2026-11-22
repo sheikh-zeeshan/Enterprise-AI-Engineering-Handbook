@@ -1,0 +1,8 @@
+flowchart TD
+    A["Agent Investigation"] --> B["Scoped Implementation"] --> C["Diagnostic Build and Tests"]
+    C --> D{"Implementation Ready?"}
+    D -->|No| B
+    D -->|Yes| E["Final Revision Submitted"] --> F["Mandatory Harness Gates"]
+    F --> G{"Required Gates Passed?"}
+    G -->|No| H["Correction Required"] --> B
+    G -->|Yes| I["Review and Evaluation"]

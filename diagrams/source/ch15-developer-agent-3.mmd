@@ -1,0 +1,16 @@
+sequenceDiagram
+    participant API as Fleet Booking API
+    participant APP as Application Use Case
+    participant DOM as Domain
+    participant DB as Database Transaction
+    participant PUB as Outbox Publisher
+    participant BUS as Message Broker
+    API->>APP: Authorized create-booking request
+    APP->>DOM: Enforce booking invariants
+    DOM-->>APP: Valid FleetBooking
+    APP->>DB: Persist booking and outbox record
+    DB-->>APP: Commit atomically
+    APP-->>API: Created booking identifier
+    PUB->>DB: Read pending outbox records
+    PUB->>BUS: Publish FleetBookingCreated
+    Note over PUB,BUS: Delivery may be retried, consumers need idempotency

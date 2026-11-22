@@ -1,0 +1,19 @@
+flowchart LR
+    TASK[Task Context]
+    USER[User Identity]
+    ROLE[Agent Role]
+    POLICY[Access Policies]
+    CATALOGUE[Source Catalogue]
+    RETRIEVAL[Retrieval Service]
+    FILTER[Redaction and Minimisation]
+    AGENT[AI Agent]
+    AUDIT[Access Audit]
+
+    TASK --> RETRIEVAL
+    USER --> POLICY
+    ROLE --> POLICY
+    CATALOGUE --> RETRIEVAL
+    POLICY --> RETRIEVAL
+    RETRIEVAL --> FILTER
+    FILTER --> AGENT
+    RETRIEVAL --> AUDIT

@@ -1,0 +1,5 @@
+flowchart TD
+    H["AI Engineering Harness"] --> OT["OpenTelemetry Instrumentation"]
+    H --> EV["Authoritative Execution Events"]
+    OT --> OP["Observability Platform"] --> OM["Operational Monitoring"] --> AL["Operational Alerts"]
+    EV --> ES[("Execution Event Store")] --> M["Metrics Aggregation"] --> D["Engineering KPI Dashboards"] --> A["Engineering Analysis"]

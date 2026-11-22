@@ -1,0 +1,10 @@
+flowchart LR
+    A["Domain"] --> B["Persistence"]
+    A --> C["API"]
+    A --> D["Event"]
+
+    B --> E["Booking Enforcement"]
+    C --> E
+    D --> E
+
+    E --> F["Integration Tests"]

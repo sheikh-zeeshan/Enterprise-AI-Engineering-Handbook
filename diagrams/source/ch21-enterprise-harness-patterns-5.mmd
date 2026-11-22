@@ -1,0 +1,17 @@
+flowchart TB
+    Population["Population Job"]
+    FanOut["Fan-Out"]
+
+    Population --> FanOut
+
+    FanOut --> A["Item A"]
+    FanOut --> B["Item B"]
+    FanOut --> C["Item C"]
+    FanOut --> N["Item N"]
+
+    A --> Aggregate["Fan-In / Aggregation"]
+    B --> Aggregate
+    C --> Aggregate
+    N --> Aggregate
+
+    Aggregate --> Result["Population Result"]

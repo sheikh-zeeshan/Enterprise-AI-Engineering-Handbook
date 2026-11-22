@@ -1,0 +1,10 @@
+flowchart TD
+    A["Enterprise Compliance Catalog"] --> B["Common Control Contracts"]
+    B --> C["Claude Adapter"]
+    B --> D["GitHub Copilot Adapter"]
+    B --> E["Codex Adapter"]
+    C --> F["Independent Harness Validation"]
+    D --> F
+    E --> F
+    F --> G["Common Evidence Schema"]
+    G --> H["Compliance Reporting"]

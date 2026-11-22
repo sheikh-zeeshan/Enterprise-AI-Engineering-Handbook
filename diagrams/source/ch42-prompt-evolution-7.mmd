@@ -1,0 +1,15 @@
+flowchart TD
+    A[Prompt Candidate Pull Request] --> B[GitHub Actions]
+    B --> C[Structural Validation]
+    B --> D[Evidence Verification]
+    B --> E[Comparative Benchmark]
+    C --> F[Validation Report]
+    D --> F
+    E --> F
+    F --> G{Required Gates Passed?}
+    G -->|No| H[Reject or Revise Candidate]
+    G -->|Yes| I[Human Prompt Owner Review]
+    I -->|Reject| H
+    I -->|Approve| J[Governed Prompt Release]
+    J --> K[Active Prompt Registry]
+    K --> L[Future Harness Runs]

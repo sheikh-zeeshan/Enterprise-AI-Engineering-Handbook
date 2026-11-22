@@ -1,0 +1,8 @@
+flowchart TD
+    M["Existing Memory A"] --> R["Retrieved during run"]
+    R --> P["Agent repeats memory in plan"]
+    P --> L["Learning analysis"]
+    L --> Q{"Independent new evidence?"}
+    Q -->|No| N["Do not raise confidence"]
+    Q -->|Yes| E["Assess new evidence"]
+    E --> G["Governed update proposal"]

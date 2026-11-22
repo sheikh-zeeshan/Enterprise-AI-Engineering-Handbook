@@ -1,0 +1,16 @@
+flowchart TB
+    Root["Host composition root"]
+    subgraph Application["Application boundary"]
+        UseCase["Booking use case"]
+        Port["IBookingRepository"]
+        UseCase -->|"Consumes"| Port
+    end
+    subgraph Infrastructure["Infrastructure boundary"]
+        Adapter["BookingRepository"]
+        Context["BookingDbContext"]
+        Adapter -->|"Uses"| Context
+    end
+
+    Adapter -->|"Implements"| Port
+    Root -.->|"Registers"| Adapter
+    Root -.->|"Connects"| UseCase

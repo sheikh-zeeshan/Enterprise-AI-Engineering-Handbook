@@ -1,0 +1,44 @@
+flowchart TD
+    A["Engineering Request"] --> B["Enterprise Harness"]
+
+    subgraph GOV["Governed Context"]
+        C["Repository Instructions"]
+        D["Architecture Decisions"]
+        E["Repository Intelligence"]
+        F["Harness Memory"]
+        G["Validation Policies"]
+    end
+
+    subgraph ADV["Advisory Context"]
+        H["Permitted Claude Memory"]
+    end
+
+    C --> I["Context Assembly"]
+    D --> I
+    E --> I
+    F --> I
+    G --> I
+    H -.-> I
+
+    B --> I
+
+    I --> J["Context Verification"]
+    J --> K{"Material Conflict?"}
+
+    K -->|"Yes"| L["Resolve or Escalate"]
+    L --> J
+
+    K -->|"No"| M["Lead Agent"]
+    M --> N["Developer Agent"]
+    N --> O["Reviewer Agent"]
+    O --> P["Validator Agent"]
+    P --> Q["Evaluator Agent"]
+
+    Q --> R["Harness Completion Assessment"]
+    R --> S["Human Approval"]
+
+    T["Run Workspace"] <--> M
+    T <--> N
+    T <--> O
+    T <--> P
+    T <--> Q

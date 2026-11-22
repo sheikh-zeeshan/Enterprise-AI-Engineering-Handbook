@@ -1,0 +1,33 @@
+flowchart TD
+    A["Task Request"] --> B["Harness Context Assembly"]
+
+    C["Repository Instructions"] --> B
+    D["Approved Architecture Decisions"] --> B
+    E["Repository Intelligence"] --> B
+    F["Advisory Memory Fixture"] -.-> B
+
+    B --> G["Memory Conflict Assessment"]
+
+    G --> H{"Material Conflict?"}
+
+    H -->|"Yes"| I["Collect Evidence and Resolve"]
+    I --> J{"Resolution Authorized?"}
+
+    J -->|"No"| K["Block Affected Work"]
+    J -->|"Yes"| L["Lead Agent"]
+
+    H -->|"No"| L
+
+    L --> M["Developer Agent"]
+    M --> N["Reviewer Agent"]
+    N --> O["Validator Agent"]
+    O --> P["Evaluator Agent"]
+
+    P --> Q["Harness Completion Assessment"]
+    Q --> R["Human Approval"]
+
+    S["Run Workspace and Scratchpad"] <--> L
+    S <--> M
+    S <--> N
+    S <--> O
+    S <--> P

@@ -1,0 +1,10 @@
+flowchart TD
+    I[Implementation] --> R[Review]
+    R --> V[Validation]
+    V --> E[Evaluation]
+    E --> D{Required Checks Satisfied?}
+    D -- No --> C[Return for Correction]
+    D -- Yes --> H[Pending Human Approval]
+    H --> A{Approved?}
+    A -- No --> B[Remain Unapproved]
+    A -- Yes --> N[Authorized Next Action]

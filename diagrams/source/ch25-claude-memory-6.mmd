@@ -1,0 +1,17 @@
+flowchart TD
+    A["Start Claude Code Session"] --> B["Read Applicable CLAUDE.md"]
+    B --> C["Receive Engineering Task"]
+    C --> D["Identify Permitted Advisory Memory"]
+    D --> E["Inspect Current Repository and ADRs"]
+    E --> F{"Historical Context Conflicts?"}
+    F -->|"Yes"| G["Record Conflict in Run Scratchpad"]
+    G --> H["Resolve Against Governed Evidence"]
+    H --> I["Propose Correction for Human Review"]
+    I --> J["Prepare Implementation Plan"]
+    F -->|"No"| J
+    J --> K["Developer Agent"]
+    K --> L["Reviewer Agent"]
+    L --> M["Validator Agent"]
+    M --> N["Evaluator Agent"]
+    N --> O["Harness Completion Gates"]
+    O --> P["Human Approval"]

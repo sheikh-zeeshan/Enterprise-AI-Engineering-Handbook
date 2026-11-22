@@ -1,0 +1,9 @@
+flowchart TD
+    A[AI Agent] --> B[Approved Tool Broker]
+    B --> C[Policy Authorization]
+    C --> D{Permitted?}
+    D -->|Yes| E[Controlled Service]
+    D -->|No| F[Reject Operation]
+    E --> G[Protected Resource]
+    E --> H[Audit Evidence]
+    F --> H

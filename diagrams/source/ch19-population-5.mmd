@@ -1,0 +1,34 @@
+flowchart LR
+    subgraph CP["Control Plane"]
+        PM["Population Manager"]
+        SCH["Scheduler"]
+        POL["Policies"]
+        PS[("Population Store")]
+    end
+
+    subgraph EP["Execution Plane"]
+        W1["Worker 1"]
+        W2["Worker 2"]
+        W3["Worker 3"]
+        AI["AI Agents"]
+        G["Deterministic Gates"]
+    end
+
+    PM <--> PS
+    SCH --> PM
+    POL --> PM
+
+    PM --> W1
+    PM --> W2
+    PM --> W3
+
+    W1 --> AI
+    W2 --> AI
+    W3 --> AI
+
+    AI --> G
+
+    W1 --> PM
+    W2 --> PM
+    W3 --> PM
+    G --> PM

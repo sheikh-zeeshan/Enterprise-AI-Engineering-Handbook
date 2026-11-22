@@ -1,0 +1,12 @@
+flowchart TD
+    A["Instruction Evolution Coordinator"] --> B["IInstructionEvolutionAgent"]
+    B --> C["Claude Code Adapter"]
+    B --> D["GitHub Copilot Adapter"]
+    B --> E["Codex Adapter"]
+    C --> F["Structured Analysis Result"]
+    D --> F
+    E --> F
+    F --> G["Evidence Validation"]
+    G --> H["Candidate Store"]
+    H --> I["Human Governance"]
+    I --> J["Instruction Registry"]

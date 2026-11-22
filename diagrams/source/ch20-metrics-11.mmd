@@ -1,0 +1,15 @@
+flowchart TD
+    P["Harness Population"] --> O["Harness Orchestrator"]
+    O --> A["GitHub Copilot Coding Agent"]
+    O --> H["Human Developer with Copilot"]
+    A --> G["GitHub Repository"]
+    H --> G
+    G --> PR["Commits and Pull Requests"]
+    PR --> CI["GitHub Actions Validation"]
+    PR --> R["Independent Review"]
+    PR --> E["GitHub Evidence Adapter"]
+    CI --> E
+    R --> E
+    E --> N["Normalized Execution Evidence"] --> M["Harness Metrics"]
+    M --> D["Dashboards and Alerts"]
+    M --> X["Engineering Analysis"]

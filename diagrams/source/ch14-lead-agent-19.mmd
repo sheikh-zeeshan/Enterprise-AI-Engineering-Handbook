@@ -1,0 +1,24 @@
+flowchart TB
+    G[User Goal] --> L[Lead Agent]
+
+    L --> RI[Repository Intelligence]
+    RI --> P[Governed Plan]
+
+    P --> D[Developer Agent]
+
+    D --> DG[Deterministic Gates]
+
+    DG -->|Fail| F[Recorded Failure]
+    F --> RP{Retry Policy}
+    RP -->|Retry| L
+    RP -->|Escalate| H[Human / Specialist Decision]
+
+    DG -->|Pass| R[Independent Reviewer]
+    R --> V[Validator]
+    V --> E[Evaluator]
+
+    E --> A{Human Approval Required?}
+    A -->|Yes| H2[Authorized Human]
+    A -->|No| C[Complete]
+
+    H2 -->|Approved| C

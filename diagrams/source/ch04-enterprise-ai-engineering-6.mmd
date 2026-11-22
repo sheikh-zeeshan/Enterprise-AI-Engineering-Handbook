@@ -1,0 +1,9 @@
+flowchart TB
+    Strategy["Enterprise strategy and risk appetite"] --> Policy["Architecture, security, compliance policy"]
+    Policy --> Enablement["AI platform, templates, Skills, Instructions"]
+    Enablement --> Products["Autonomous product teams"]
+    Products --> Evidence["Pull requests, tests, releases, incidents"]
+    Evidence --> ReviewBoard["Architecture and governance review"]
+    ReviewBoard --> Changes["Approved asset or policy changes"]
+    Changes --> Enablement
+    Changes --> Policy

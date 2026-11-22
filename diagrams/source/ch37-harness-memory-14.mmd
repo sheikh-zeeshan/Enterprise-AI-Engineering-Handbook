@@ -1,0 +1,18 @@
+flowchart TD
+    O["Execution observation"] --> S["Run Scratchpad"]
+    S --> V["Validation and independent review"]
+    V --> D{"Reusable and supported?"}
+    D -->|No| H["Retain in execution history"]
+    D -->|Yes| C["Learning candidate"]
+    C --> E["Evidence, scope and conflict checks"]
+    E --> A{"Governance approved?"}
+    A -->|No| R["Reject or request more evidence"]
+    A -->|Yes| M[("Versioned Harness Memory")]
+    M --> G["Authorized retrieval"]
+    G --> P["Verify applicability to current code"]
+    P --> F["Future engineering execution and gates"]
+    F --> U["Usage audit and feedback"]
+    U --> X{"Revalidation required?"}
+    X -->|Yes| O1["Owner review"]
+    O1 --> C
+    X -->|No| M

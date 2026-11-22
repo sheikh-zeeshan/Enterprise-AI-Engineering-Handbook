@@ -1,0 +1,36 @@
+sequenceDiagram
+    autonumber
+    participant H as Harness
+    participant V as Validator and Evaluator
+    participant S as Evidence Store
+    participant P as Pattern Analyzer
+    participant C as Claude Code
+    participant R as Human Reviewer
+    participant G as Change Pipeline
+    H->>V: Execute required checks
+    V-->>H: Return engineering evidence
+    H->>S: Persist evidence and versions
+    S->>P: Supply confirmed observations
+    P->>P: Detect recurring patterns
+    alt Insufficient evidence
+        P->>S: Record inconclusive analysis
+    else Supported recurring pattern
+        P->>C: Supply patterns and authorized context
+        C->>C: Analyze causes and alternatives
+        C->>S: Submit candidate recommendation
+        S->>R: Present evidence-backed proposal
+        alt Rejected or deferred
+            R->>S: Record decision
+        else Approved
+            R->>G: Authorize exact proposal revision
+            G->>C: Request scoped change preparation
+            C-->>G: Return proposed artifact diff
+            G->>G: Review and run required validation
+            alt All release conditions pass
+                G->>H: Publish version for future runs
+                G->>S: Record release and outcome tracking
+            else Release blocked
+                G->>S: Record validation failure
+            end
+        end
+    end

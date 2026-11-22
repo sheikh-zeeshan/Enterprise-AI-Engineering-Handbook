@@ -1,0 +1,23 @@
+flowchart TB
+    A[Engineering Intent]
+
+    A --> B[Instruction]
+    A --> C[Skill]
+    A --> D[Prompt]
+    A --> E[Steering Note]
+    A --> F[Repository Intelligence]
+    A --> G[Acceptance Criteria]
+
+    B --> B1[Persistent Rules]
+    C --> C1[Reusable Workflow]
+    D --> D1[Current Task]
+    E --> E1[Temporary Mission Context]
+    F --> F1[Repository Facts]
+    G --> G1[Definition of Success]
+
+    H[Prompt Evolution Engine] --> D
+
+    H -. Must Not Duplicate .-> B
+    H -. Must Not Duplicate .-> C
+    H -. Must Not Promote Temporary Context .-> E
+    H -. Must Not Invent .-> G

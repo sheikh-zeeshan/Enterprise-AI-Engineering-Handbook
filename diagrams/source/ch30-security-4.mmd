@@ -1,0 +1,11 @@
+flowchart TD
+    CODE[Proposed source revision] --> BUILD[Build and tests]
+    BUILD --> SEC[Secret scanning and SAST]
+    SEC --> DEP[Dependency and supply-chain checks]
+    DEP --> IMG[Applicable container and IaC scans]
+    IMG --> AUTH[Authorization and security contract tests]
+    AUTH --> DEC{All required gates verified?}
+    DEC -->|No or inconclusive| BLOCK[Block and preserve findings]
+    DEC -->|Yes| EVID[Signed or protected validation evidence]
+    EVID --> REVIEW[Independent review and approval]
+    REVIEW --> PROMOTE[Eligible for governed promotion]

@@ -1,0 +1,10 @@
+flowchart LR
+    D["Domain Behavior"] --> P["Persistence"]
+    D --> A["API"]
+    D --> E["Integration Event"]
+
+    P --> F["Workflow Enforcement"]
+    A --> F
+    E --> F
+
+    F --> T["Integration Tests"]

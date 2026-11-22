@@ -1,0 +1,21 @@
+flowchart TD
+    Business["Business Capability"]
+    Boundary["Service Boundary"]
+    ADR["Architecture Decision"]
+    Contract["API / Event Contract"]
+    Code["Implementation"]
+    Tests["Architecture + Contract Tests"]
+    Pipeline["CI/CD Gates"]
+    Runtime["Runtime Deployment"]
+    Telemetry["Operational Evidence"]
+
+    Business --> Boundary
+    Boundary --> ADR
+    ADR --> Contract
+    Contract --> Code
+    Code --> Tests
+    Tests --> Pipeline
+    Pipeline --> Runtime
+    Runtime --> Telemetry
+
+    Telemetry -->|"Evidence for review"| ADR

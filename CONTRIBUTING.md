@@ -90,6 +90,7 @@ Commands must identify the expected shell when ambiguity exists.
 - Use stable filenames such as `ch13-harness-architecture.drawio` and `ch13-harness-architecture.svg`.
 - Include a title, readable labels, direction of flow, and a legend when notation is not obvious.
 - Ensure diagrams remain readable in grayscale and in PDF output.
+- For chapter Mermaid figures, edit the Markdown source and follow [the shared export and validation process](diagrams/README.md). Run `node harness/scripts/export-diagrams.cjs --check` before publishing.
 
 ## Prompt and Skill Requirements
 

@@ -1,0 +1,22 @@
+flowchart LR
+    A[Need Identified]
+    B[Skill Designed]
+    C[Peer Review]
+    D[Skill Tests]
+    E[Approved]
+    F[Used in Runs]
+    G[Metrics and Failures]
+    H[Improvement Proposal]
+    I[Re-review]
+    J[Deprecated]
+
+    A --> B
+    B --> C
+    C --> D
+    D --> E
+    E --> F
+    F --> G
+    G --> H
+    H --> I
+    I --> E
+    E --> J

@@ -1,0 +1,13 @@
+flowchart LR
+    RQ[Task Requester]
+    IA[Implementation Agent]
+    VP[Validation Pipeline]
+    RA[Review Agent]
+    HR[Human Reviewer]
+    DP[Deployment Pipeline]
+
+    RQ --> IA
+    IA --> VP
+    VP --> RA
+    RA --> HR
+    HR --> DP

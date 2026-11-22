@@ -1,0 +1,11 @@
+flowchart TD
+    A[Codex Task] --> B[Repository and Booking Instructions]
+    B --> C[Repository Analysis]
+    C --> D[Booking Domain Behavior]
+    D --> E[Application Command]
+    E --> F[Transactional Persistence]
+    F --> G[Outbox Record]
+    G --> H[Outbox Publisher]
+    H --> I[Azure Event Hubs]
+    E --> J[Unit and Integration Tests]
+    J --> K[Deterministic Validation]

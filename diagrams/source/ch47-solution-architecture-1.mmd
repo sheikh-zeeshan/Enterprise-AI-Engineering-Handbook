@@ -1,0 +1,24 @@
+flowchart LR
+    Retail[Retail Customer]
+    Corporate[Corporate Fleet Administrator]
+    StationUser[Station Staff]
+    Finance[Finance User]
+    Admin[Enterprise Administrator]
+
+    Platform["Alpha Car Detailing Platform"]
+
+    IdP["Enterprise / Customer Identity Provider"]
+    PaymentProvider["External Payment Provider"]
+    CommProvider["Email / SMS Provider"]
+    Ops["Monitoring / Logging / Tracing Platform"]
+
+    Retail --> Platform
+    Corporate --> Platform
+    StationUser --> Platform
+    Finance --> Platform
+    Admin --> Platform
+
+    Platform --> IdP
+    Platform --> PaymentProvider
+    Platform --> CommProvider
+    Platform --> Ops

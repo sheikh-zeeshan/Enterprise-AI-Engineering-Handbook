@@ -1,0 +1,26 @@
+flowchart TD
+    N0["Developer Prompt"]
+    N1["Applicable AGENTS.md Instructions"]
+    N2["Repository Inspection"]
+    N3["Select Skill"]
+    N4["Check Preconditions"]
+    N5{"Preconditions Met?"}
+    N6["Report Blocker"]
+    N7["Implement Command and Handler"]
+    N8["Add Tests"]
+    N9["Run Targeted Validation"]
+    N10{"Validation Passed?"}
+    N11["Report Failure Evidence"]
+    N12["Produce Handoff"]
+    N0 --> N1
+    N1 --> N2
+    N2 --> N3
+    N3 --> N4
+    N4 --> N5
+    N5 -- No --> N6
+    N5 -- Yes --> N7
+    N7 --> N8
+    N8 --> N9
+    N9 --> N10
+    N10 -- No --> N11
+    N10 -- Yes --> N12

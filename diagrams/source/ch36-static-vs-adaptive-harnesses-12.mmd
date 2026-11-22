@@ -1,0 +1,25 @@
+flowchart TD
+    A[Existing AI Engineering Harness] --> B{Reliable execution and evidence?}
+    B -->|No| C[Strengthen Static Harness]
+    C --> B
+    B -->|Yes| D{Recurring improvement opportunities?}
+    D -->|No| E[Retain Static Harness and Monitor]
+    D -->|Yes| F[Introduce Learning Analysis]
+    F --> G[Collect and Verify Evidence]
+    G --> H{Evidence supports a pattern?}
+    H -->|No| I[Retain Evidence or Investigate]
+    H -->|Yes| J[Generate Improvement Recommendation]
+    J --> K[Classify Governance Impact]
+    K --> L{Authorized human approval?}
+    L -->|No| M[Reject or Defer]
+    L -->|Yes| N[Prepare Versioned Harness Revision]
+    N --> O[Execute Required Validation]
+    O --> P{Release conditions met?}
+    P -->|No| Q[Block Release and Investigate]
+    P -->|Yes| R[Controlled Release for Future Runs]
+    R --> S[Measure Engineering Outcomes]
+    S --> T{Improvement demonstrated?}
+    T -->|Yes| U[Retain Approved Version]
+    T -->|No or regression| V[Investigate or Roll Back]
+    U --> G
+    V --> G

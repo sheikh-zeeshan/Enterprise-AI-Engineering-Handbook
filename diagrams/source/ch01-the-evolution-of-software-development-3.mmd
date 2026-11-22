@@ -1,0 +1,12 @@
+flowchart LR
+    BA["Business capabilities"] --> AA["Application boundaries"]
+    AA --> DA["Data ownership and contracts"]
+    DA --> OP["Deployment and operations"]
+    G["Governance and risk controls"] -.-> BA
+    G -.-> AA
+    G -.-> DA
+    G -.-> OP
+    S["Security and compliance"] -.-> BA
+    S -.-> AA
+    S -.-> DA
+    S -.-> OP

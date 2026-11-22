@@ -1,0 +1,18 @@
+flowchart TB
+    GP["Governance Policies<br/>Organization-wide controls"]
+    I["Instructions<br/>Enduring repository behavior"]
+    S["Skills<br/>Reusable procedures"]
+    R["Roles<br/>Responsibility and authority"]
+    SN["Steering Notes<br/>Temporary direction"]
+    P["Prompt<br/>Current task"]
+    K["Knowledge Sources<br/>Evidence and reference"]
+    O["Agent Output"]
+
+    GP --> I
+    K --> I
+    I --> O
+    S --> O
+    R --> O
+    SN --> O
+    P --> O
+    K --> O

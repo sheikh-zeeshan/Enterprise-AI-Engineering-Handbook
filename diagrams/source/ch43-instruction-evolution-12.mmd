@@ -1,0 +1,30 @@
+sequenceDiagram
+    participant H as Adaptive Harness
+    participant E as Evidence Store
+    participant A as Analysis Agent
+    participant P as Proposal Agent
+    participant G as Governance Service
+    participant V as Validator
+    participant R as Instruction Registry
+    H->>E: Query correlated execution evidence
+    E-->>H: Evidence package
+    H->>A: Analyze Instruction deficiencies
+    A-->>H: Diagnosis and confidence
+    H->>P: Draft candidate change
+    P-->>H: Proposed wording and impact
+    H->>G: Request human review
+    G-->>H: Verified decision
+    alt Proposal rejected
+        H->>E: Preserve rejection and reasoning
+    else Proposal approved
+        H->>V: Validate exact approved candidate
+        V-->>H: Validation results
+        alt Validation failed
+            H->>E: Record failure and request revision
+        else Validation passed
+            H->>R: Request controlled activation
+            R->>G: Reverify approval and content hash
+            G-->>R: Authorization confirmed
+            R-->>H: Active version and audit reference
+        end
+    end

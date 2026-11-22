@@ -1,0 +1,20 @@
+flowchart TD
+    Need["Service interaction required"]
+
+    Q1{"Does the caller require an immediate answer to proceed safely?"}
+
+    API["Synchronous API"]
+
+    Q2{"Is the publisher announcing a committed business fact?"}
+
+    Event["Integration Event"]
+
+    Review["Revisit boundary / workflow"]
+
+    Need --> Q1
+
+    Q1 -->|"Yes"| API
+    Q1 -->|"No"| Q2
+
+    Q2 -->|"Yes"| Event
+    Q2 -->|"No"| Review

@@ -1,0 +1,68 @@
+flowchart TB
+    Internet[Clients]
+
+    subgraph Cluster["Kubernetes Cluster"]
+        Ingress["Ingress / API Gateway"]
+
+        subgraph Services["Application Workloads"]
+            BK["Booking Pods"]
+            CA["Corporate Account Pods"]
+            FL["Fleet Pods"]
+            SO["Station Operations Pods"]
+            BI["Billing Pods"]
+            PY["Payment Pods"]
+            NT["Notification Pods"]
+        end
+
+        Telemetry["OpenTelemetry Collector"]
+    end
+
+    Broker["Managed Event Platform"]
+
+    BookingDB[("Booking SQL")]
+    CorporateDB[("Corporate SQL")]
+    FleetDB[("Fleet SQL")]
+    StationDB[("Station Operations SQL")]
+    BillingDB[("Billing SQL")]
+    PaymentDB[("Payment SQL")]
+    NotificationDB[("Notification SQL")]
+
+    Cache[("Redis")]
+
+    Internet --> Ingress
+
+    Ingress --> BK
+    Ingress --> CA
+    Ingress --> FL
+    Ingress --> SO
+    Ingress --> BI
+    Ingress --> PY
+
+    BK --> BookingDB
+    CA --> CorporateDB
+    FL --> FleetDB
+    SO --> StationDB
+    BI --> BillingDB
+    PY --> PaymentDB
+    NT --> NotificationDB
+
+    BK --> Cache
+    CA --> Cache
+    FL --> Cache
+
+    BK --> Broker
+    SO --> Broker
+    BI --> Broker
+    PY --> Broker
+
+    Broker -->|"ServiceCompleted"| BI
+    Broker -->|"ServiceCompleted"| BK
+    Broker -->|"Notification events"| NT
+
+    BK --> Telemetry
+    CA --> Telemetry
+    FL --> Telemetry
+    SO --> Telemetry
+    BI --> Telemetry
+    PY --> Telemetry
+    NT --> Telemetry

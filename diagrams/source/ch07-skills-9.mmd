@@ -1,0 +1,13 @@
+flowchart TB
+    Request[Corporate fleet booking requirement] --> Discover[Repository discovery and Skill selection]
+    Discover --> Domain[Domain behavior]
+    Domain --> Command[Application command]
+    Domain --> Storage[EF Core persistence and outbox]
+    Command --> API[API endpoint and authorization]
+    Storage --> Event[Integration event]
+    Event --> Consumer[Idempotent consumer if in scope]
+    API --> Obs[Observability]
+    Consumer --> Tests[Unit and integration tests]
+    Obs --> Tests
+    Tests --> Gates[Deterministic gates]
+    Gates --> Review[Human review]

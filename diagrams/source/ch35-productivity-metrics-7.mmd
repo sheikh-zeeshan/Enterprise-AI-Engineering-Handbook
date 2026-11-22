@@ -1,0 +1,25 @@
+flowchart TD
+    A[Business Request] --> B[Task Accepted]
+    B --> C[Lead Agent Planning]
+    C --> D[Developer Agent]
+    D --> E[Reviewer Agent]
+    E --> F[Validator Agent]
+    F --> G[Evaluator Agent]
+    G --> H[Human Approval]
+    H --> I[Merge]
+    I --> J[Deployment]
+    J --> K[Production Outcome]
+
+    B -.-> M[Telemetry]
+    C -.-> M
+    D -.-> M
+    E -.-> M
+    F -.-> M
+    G -.-> M
+    H -.-> M
+    I -.-> M
+    J -.-> M
+    K -.-> M
+
+    M --> N[(Metrics Store)]
+    N --> O[Balanced Scorecard]

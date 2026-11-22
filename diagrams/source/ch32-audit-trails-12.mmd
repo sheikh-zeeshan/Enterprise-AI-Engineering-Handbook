@@ -1,0 +1,19 @@
+sequenceDiagram
+    autonumber
+    participant C as Codex Agent
+    participant G as MCP Tool Gateway
+    participant S as External System
+    participant A as Audit Service
+    C->>G: Request operation
+    G->>A: Record request
+    G->>G: Evaluate authorization
+    G->>A: Record authorization decision
+    alt Authorized
+        G->>S: Execute operation
+        S-->>G: Return observed result
+        G->>A: Record execution outcome
+        G-->>C: Return tool result
+    else Denied
+        G->>A: Record denial
+        G-->>C: Return denial
+    end

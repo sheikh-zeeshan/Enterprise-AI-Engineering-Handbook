@@ -1,0 +1,17 @@
+flowchart TD
+    A[Governed Enterprise Prompt] --> B[Platform Adaptation]
+    B --> C[Claude Code]
+    B --> D[GitHub Copilot]
+    B --> E[Codex]
+    C --> F[Execution Evidence]
+    D --> F
+    E --> F
+    F --> G[Harness Memory]
+    G --> H[Pattern Detection]
+    H --> I{Shared or Platform Specific?}
+    I -->|Shared| J[Enterprise Prompt Candidate]
+    I -->|Platform Specific| K[Adapter Candidate]
+    J --> L[Comparative Validation]
+    K --> L
+    L --> M[Human Governance]
+    M --> N[Governed Release]

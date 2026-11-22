@@ -1,0 +1,57 @@
+flowchart TB
+    subgraph Governance["Enterprise Governance"]
+        POL[Policies]
+        CAT[Control Catalog]
+        REG[Approved Model / Tool Registry]
+        EX[Exception Registry]
+    end
+
+    subgraph Harness["AI Engineering Harness"]
+        LEAD[Lead Agent]
+        DEV[Developer Agent]
+        REV[Reviewer Agent]
+        VAL[Validator Agent]
+        EVA[Evaluator Agent]
+        GATES[Compliance Gates]
+    end
+
+    subgraph Engineering["Engineering Systems"]
+        REPO[Git Repository]
+        CI[CI/CD]
+        SEC[Security Scanners]
+        ART[Artifact Repository]
+        PROD[Production]
+    end
+
+    subgraph Evidence["Evidence and Oversight"]
+        AUDIT[Audit Evidence Store]
+        APPROVAL[Human Approvals]
+        REPORT[Compliance Reporting]
+    end
+
+    POL --> GATES
+    CAT --> GATES
+    REG --> GATES
+    EX --> GATES
+
+    LEAD --> DEV
+    DEV --> REPO
+    DEV --> REV
+    REV --> VAL
+    VAL --> GATES
+    GATES --> EVA
+
+    VAL --> CI
+    CI --> SEC
+    CI --> ART
+
+    EVA --> APPROVAL
+    APPROVAL --> CI
+    CI --> PROD
+
+    GATES --> AUDIT
+    CI --> AUDIT
+    APPROVAL --> AUDIT
+    PROD --> AUDIT
+
+    AUDIT --> REPORT

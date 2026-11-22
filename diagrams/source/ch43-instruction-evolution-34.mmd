@@ -1,0 +1,12 @@
+flowchart TD
+    A["Booking Harness"] --> D["Shared Evidence Correlation"]
+    B["Fleet Harness"] --> D
+    C["Payment Harness"] --> D
+    D --> E["Instruction Evolution Service"]
+    E --> F["Candidate Registry"]
+    F --> G["Human Governance"]
+    G --> H["Approved Instruction Registry"]
+    H --> I["Controlled Distribution"]
+    I --> A
+    I --> B
+    I --> C

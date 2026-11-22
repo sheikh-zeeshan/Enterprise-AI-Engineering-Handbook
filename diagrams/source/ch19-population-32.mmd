@@ -1,0 +1,7 @@
+flowchart LR
+    AC["Agent Context<br/>Reasoning State"] --> A["AI Agent"]
+    PS[("Population Store<br/>Operational State")] --> H["Harness"]
+    H --> A
+    A --> E["Evidence"]
+    E --> H
+    H --> PS

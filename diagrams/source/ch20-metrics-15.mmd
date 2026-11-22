@@ -1,0 +1,8 @@
+flowchart TD
+    B["Shared Build and Preparation"] --> U["Unit Tests"]
+    B --> I["Integration Tests"]
+    B --> S["Security Scan"]
+    U --> E["Evidence Aggregation"]
+    I --> E
+    S --> E
+    E --> D["Mandatory Gate Decision"]

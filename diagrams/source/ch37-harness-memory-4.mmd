@@ -1,0 +1,12 @@
+flowchart TD
+    A["Current task context"] --> B["Trusted identity and tenant authorization"]
+    B --> C["Active lifecycle and expiration filter"]
+    C --> D["Repository and service scope filter"]
+    D --> E["Keyword and semantic candidate search"]
+    E --> F["Evidence, freshness and relevance ranking"]
+    F --> G["Conflict and authoritative eligibility recheck"]
+    G --> H{"Eligible and safe to return?"}
+    H -->|No| I["Exclude or flag for review"]
+    H -->|Yes| J["Ranked memory with provenance"]
+    J --> K["Agent verifies current applicability"]
+    K --> L["Execution continues through normal gates"]

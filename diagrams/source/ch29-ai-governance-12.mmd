@@ -1,0 +1,35 @@
+flowchart TB
+    subgraph ORG["Enterprise Governance"]
+        POL["Policy and Standards Owners"]
+        RISK["Risk and Compliance"]
+        HUM["Authorized Human Approvers"]
+    end
+    subgraph SHARED["Shared Governance Services"]
+        REG["Governed Asset Registry"]
+        PDP["Policy Decision Service"]
+        APR["Approval Verification"]
+        AUD["Audit and Evidence Platform"]
+    end
+    subgraph AI["AI Engineering Platform"]
+        H["AI Engineering Harness"] --> AG["Specialized Agents"]
+        SK["Approved Skills and Instructions"] --> AG
+        AG --> TG["Controlled Tool Gateway"]
+    end
+    subgraph DELIVERY["Engineering Delivery"]
+        REPO["Protected Repositories"] --> CI["Deterministic Validation Gates"]
+        CI --> REL["Protected Release Pipeline"]
+        REL --> PROD["Production Systems"]
+    end
+    POL --> REG
+    POL --> PDP
+    RISK --> PDP
+    HUM --> APR
+    REG --> SK
+    PDP --> TG
+    APR --> REL
+    TG --> REPO
+    H -.-> AUD
+    TG -.-> AUD
+    CI -.-> AUD
+    APR -.-> AUD
+    REL -.-> AUD

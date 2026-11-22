@@ -1,0 +1,18 @@
+graph LR
+    TASK[Task]
+    RUN[Harness Run]
+    PR[PR #1842]
+    EVT[BookingConfirmed]
+    BUILD[Build B-2931]
+    FINDING[Review Finding]
+    FIX[Fix Commit]
+    MERGE[Merged Outcome]
+
+    TASK -->|initiated| RUN
+    RUN -->|created| PR
+    PR -->|changed| EVT
+    PR -->|triggered| BUILD
+    PR -->|received| FINDING
+    FINDING -->|resolved by| FIX
+    FIX -->|updated| PR
+    PR -->|resulted in| MERGE

@@ -1,0 +1,10 @@
+flowchart TD
+    A[Draft Candidate] --> B[Evidence Review]
+    B --> C[Comparative Validation]
+    C --> D[Human Approval]
+    D -->|Reject| E[Archived Rejection]
+    D -->|Revise| F[New Candidate Revision]
+    F --> C
+    D -->|Approve| G[Approved Candidate]
+    G --> H[Release Authorization]
+    H --> I[Active Prompt Registry]

@@ -1,0 +1,17 @@
+flowchart TD
+    subgraph P["Enterprise Compliance Control Plane"]
+        A["Enterprise Policies"]
+        B["Control Catalog"]
+        C["Applicability Rules"]
+        D["Exception Registry"]
+        E["Approval Requirements"]
+    end
+    A --> F["Trusted Harness"]
+    B --> F
+    C --> F
+    D --> F
+    E --> F
+    F --> G["Lead and Developer Agents"]
+    F --> H["Independent Validators"]
+    H --> I["Deterministic Gates"]
+    I --> J["Authoritative Evidence Store"]

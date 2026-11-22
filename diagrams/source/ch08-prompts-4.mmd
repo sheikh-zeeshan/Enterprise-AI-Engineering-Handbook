@@ -1,0 +1,20 @@
+stateDiagram-v2
+    [*] --> Draft
+    Draft --> UnderReview
+    UnderReview --> Approved
+    UnderReview --> Rejected
+    Approved --> Planning
+    Planning --> AwaitingDecision
+    AwaitingDecision --> Planning
+    Planning --> Implementing: Required decisions and approvals resolved
+    Implementing --> Validating
+    Validating --> Remediation: Validation failed
+    Remediation --> Validating
+    Validating --> Blocked: Required validation unavailable
+    Blocked --> Validating: Validation becomes available
+    Validating --> Evaluating: Validation passed
+    Evaluating --> AwaitingApproval
+    AwaitingApproval --> Completed
+    AwaitingApproval --> Remediation
+    Rejected --> [*]
+    Completed --> [*]

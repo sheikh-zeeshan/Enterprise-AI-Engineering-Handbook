@@ -1,0 +1,29 @@
+flowchart TB
+    subgraph CP[Control Plane]
+      P[Versioned Workflow and Gate Policies]
+      S[State Machine and Checkpoints]
+      A[Authorization and Approval]
+    end
+    subgraph EP[Execution Plane]
+      C[Claude Code and Assigned Agents]
+      T[Restricted Tool Runner]
+      W[Isolated Repository Workspace]
+      G[Build and Test Processes]
+    end
+    subgraph AS[Assurance and Evidence]
+      R[Reviewer, Validator, Evaluator]
+      E[Durable Evidence Store]
+      L[Audit Records]
+    end
+    P --> S
+    A --> S
+    S -->|Authorize stage| C
+    C --> T
+    A -->|Enforce tool authority| T
+    T --> W
+    T --> G
+    W --> R
+    G --> E
+    R --> E
+    E --> S
+    S --> L

@@ -1,0 +1,30 @@
+flowchart TB
+    W[Work Item or Engineer]
+    T[Vendor-Neutral Task Contract]
+    H[Enterprise AI Engineering Harness]
+
+    W --> T
+    T --> H
+
+    H --> P[Planning Role]
+    H --> I[Implementation Role]
+    H --> R[Review Roles]
+    H --> V[Validation Pipeline]
+    H --> G[Governance and Approval]
+    H --> M[Metrics and Learning]
+
+    I --> C[Claude Code]
+    I --> GH[GitHub Copilot]
+    I --> O[OpenAI Codex]
+    I --> X[Other Execution Engine]
+
+    C --> E[Common Evidence Model]
+    GH --> E
+    O --> E
+    X --> E
+
+    E --> V
+    V --> R
+    R --> G
+    G --> PR[Pull Request or Rejected Task]
+    PR --> M

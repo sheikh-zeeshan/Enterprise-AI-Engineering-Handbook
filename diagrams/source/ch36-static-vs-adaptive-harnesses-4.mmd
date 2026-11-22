@@ -1,0 +1,29 @@
+sequenceDiagram
+    autonumber
+    participant H as Execution Harness
+    participant V as Validator Agent
+    participant S as Evidence Store
+    participant L as Learning Analysis
+    participant M as Harness Memory
+    participant R as Human Reviewer
+    participant C as Change Pipeline
+    H->>V: Execute mandatory validation
+    V-->>H: Return gate outcomes
+    H->>S: Persist run evidence and configuration
+    S->>L: Supply verified historical observations
+    L->>M: Retrieve relevant prior patterns
+    M-->>L: Return advisory history
+    L->>L: Investigate recurrence and alternatives
+    L->>R: Submit recommendation with evidence
+    alt Rejected or deferred
+        R->>S: Record decision and rationale
+    else Approved
+        R->>C: Authorize exact recommendation revision
+        C->>C: Prepare change and run required checks
+        alt Release controls pass
+            C->>H: Publish version for future runs
+            C->>S: Record release and validation evidence
+        else Release controls fail
+            C->>S: Record failure, retain previous version
+        end
+    end

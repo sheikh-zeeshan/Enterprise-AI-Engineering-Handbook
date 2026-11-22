@@ -1,0 +1,27 @@
+flowchart TB
+    I[Implementation Complete]
+    B[Build]
+    U[Unit Tests]
+    IT[Integration Tests]
+    A[Architecture Validation]
+    S[Security and Static Analysis]
+    F[Formatting]
+    E[Evidence Package]
+
+    I --> B
+
+    B -->|Failure| C1[Diagnose and Correct]
+    C1 --> B
+
+    B -->|Success| U
+    U -->|Failure| C2[Diagnose and Correct]
+    C2 --> U
+
+    U -->|Success| IT
+    IT -->|Failure| C3[Diagnose and Correct]
+    C3 --> IT
+
+    IT -->|Success| A
+    A --> S
+    S --> F
+    F --> E

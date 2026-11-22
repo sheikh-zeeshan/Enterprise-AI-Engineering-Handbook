@@ -1,0 +1,11 @@
+flowchart TD
+    A["Compliance Finding"] --> B["Classify Finding"]
+    B --> C{"Finding Type"}
+    C -- Engineering --> D["Developer Remediation"]
+    C -- Approval --> E["Authorized Decision Process"]
+    C -- Incident --> F["Incident Response"]
+    D --> G["Independent Revalidation"]
+    E --> G
+    F --> H["Containment and Investigation"]
+    G --> I["Updated Evidence"]
+    H --> I

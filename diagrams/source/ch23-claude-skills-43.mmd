@@ -1,0 +1,25 @@
+flowchart TD
+    N0["Prompt and Acceptance Criteria"]
+    N1["Lead Agent"]
+    N2["Approved Skill Selection"]
+    N3["Developer Agent"]
+    N4["Skill Execution"]
+    N5["Implementation Artifacts"]
+    N6["Reviewer Agent"]
+    N7["Validator Agent"]
+    N8["Evaluator Agent"]
+    N9["Human Approval or Handoff"]
+    N10["Run Evidence and Metrics"]
+    N0 --> N1
+    N1 --> N2
+    N2 --> N3
+    N3 --> N4
+    N4 --> N5
+    N5 --> N6
+    N6 --> N7
+    N7 --> N8
+    N8 --> N9
+    N4 --> N10
+    N6 --> N10
+    N7 --> N10
+    N8 --> N10

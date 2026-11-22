@@ -1,0 +1,14 @@
+flowchart LR
+    R[(Repository)] --> D[Repository Discovery]
+
+    I[Instructions] --> RI[Repository Intelligence Resolver]
+    S[Skills] --> RI
+    P[Prompt] --> RI
+    RO[Roles] --> RI
+    ST[Steering Notes] --> RI
+    K[Knowledge Sources] --> RI
+    D --> RI
+
+    RI --> C[Role-specific Context Package]
+
+    C --> A[AI Agent]

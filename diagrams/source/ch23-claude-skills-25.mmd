@@ -1,0 +1,17 @@
+flowchart TD
+    N0["Feature Prompt"]
+    N1["Lead Agent and Harness"]
+    N2["Add Domain Behavior"]
+    N3["Add Application Command"]
+    N4["Create API Endpoint"]
+    N5["Add EF Core Persistence"]
+    N6["Add Tests"]
+    N7["Deterministic Validation"]
+    N0 --> N1
+    N1 --> N2
+    N2 --> N3
+    N3 --> N4
+    N1 --> N5
+    N4 --> N6
+    N5 --> N6
+    N6 --> N7

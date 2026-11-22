@@ -1,0 +1,11 @@
+flowchart TB
+    Request[Business request] --> Prompt[Task prompt]
+    Discovery[Repository discovery] --> Selection[Select applicable skills]
+    Prompt --> Agent[AI coding agent]
+    Instructions[Repository Instructions] --> Agent
+    Selection --> Agent
+    Catalog[Governed Skill catalog] --> Selection
+    Agent --> Changes[Proposed repository changes]
+    Changes --> Gates[Deterministic validation gates]
+    Gates --> Review[Human review and approval]
+    Review --> Merge[Merge according to repository policy]

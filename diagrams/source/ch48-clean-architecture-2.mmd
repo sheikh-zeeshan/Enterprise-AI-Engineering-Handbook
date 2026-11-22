@@ -1,0 +1,13 @@
+flowchart TB
+    Api["Booking.Api"]
+    Infra["Booking.Infrastructure"]
+    App["Booking.Application"]
+    Domain["Booking.Domain"]
+    Primitives["Approved domain primitives"]
+
+    Api --> App
+    Api -.->|"Host composition only"| Infra
+    Infra --> App
+    Infra --> Domain
+    App --> Domain
+    Domain --> Primitives

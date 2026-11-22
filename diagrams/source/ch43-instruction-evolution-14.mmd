@@ -1,0 +1,25 @@
+sequenceDiagram
+    participant D as Developer Agent
+    participant V as Validator Agent
+    participant M as Harness Memory
+    participant A as Claude Analysis Agent
+    participant P as Claude Proposal Agent
+    participant H as Harness
+    participant G as Human Governance
+    D->>V: Submit implementation
+    V-->>M: Architecture violation evidence
+    M->>H: Recurring pattern detected
+    H->>A: Analyze Instruction deficiency
+    A-->>H: Evidence-backed diagnosis
+    H->>P: Draft candidate improvement
+    P-->>H: Proposed Instruction change
+    H->>G: Request owner review
+    alt Rejected
+        G-->>H: Reject with reason
+        H->>M: Preserve decision
+    else Approved
+        G-->>H: Approve exact proposal
+        H->>H: Run candidate validation
+        H->>H: Activate through controlled workflow
+        H->>M: Record new version
+    end

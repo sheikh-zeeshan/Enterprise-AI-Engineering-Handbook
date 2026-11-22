@@ -1,0 +1,27 @@
+sequenceDiagram
+    participant Lead as Lead Agent
+    participant Dev as Developer Agent
+    participant Build as Build Tool
+    participant Val as Validator Agent
+    participant Store as Evidence Store
+    participant Learn as Pattern Engine
+    participant Gov as Governance
+    participant Mem as Harness Memory
+    Lead->>Dev: Assign fleet booking task
+    Dev->>Build: Implement and build
+    Build-->>Val: Build outcome and diagnostics
+    Val->>Store: Record evidence and gate results
+    alt Build fails
+        Val-->>Dev: Report diagnostics
+        Dev->>Build: Apply scoped remediation and rebuild
+        Build-->>Val: Rebuild outcome
+        Val->>Store: Record remediation evidence
+    end
+    Store->>Learn: Supply verified incidents
+    Learn->>Gov: Submit scoped candidate improvement
+    alt Authorized and validated
+        Gov->>Mem: Publish approved learning reference
+        Gov-->>Lead: Activate approved Skill version for future runs
+    else Rejected or inconclusive
+        Gov->>Store: Preserve decision and supporting evidence
+    end

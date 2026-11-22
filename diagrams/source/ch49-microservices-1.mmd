@@ -1,0 +1,22 @@
+flowchart TD
+    C["Corporate portal and other clients"] --> G["API Gateway"]
+    subgraph Commitments["Customer commitments"]
+        B["Booking Service"]
+        A["Corporate Account Service"]
+        F["Fleet Service"]
+    end
+    G --> B
+    G --> A
+    G --> F
+    B -->|"Eligibility"| A
+    B -->|"Batch vehicle validation"| F
+    B -->|"Capacity commitment"| S["Station Operations Service"]
+    B -.->|"BookingConfirmed"| E["Integration event broker"]
+    S -.->|"ServiceCompleted"| E
+    E -.->|"Completed work"| L["Billing Service"]
+    L -->|"Settlement when required"| P["Payment Service"]
+    P --> PP["Payment provider"]
+    L -.->|"InvoiceIssued"| E
+    P -.->|"PaymentRecorded"| E
+    E -.->|"Authorized communication facts"| N["Notification Service"]
+    N --> NP["Communication provider"]

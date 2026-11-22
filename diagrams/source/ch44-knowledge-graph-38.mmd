@@ -1,0 +1,4 @@
+flowchart TD
+ A["Agent Observation"] --> B["Run Scratchpad"] --> C["Evidence Collection"] --> Q{"Evidence sufficient?"}
+ Q -->|Yes| P["Relationship Candidate"] --> G["Governance Validation"] --> KG[("Knowledge Graph")]
+ Q -->|No| X["Remain Temporary or Discard"]

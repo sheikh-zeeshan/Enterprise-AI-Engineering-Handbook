@@ -1,0 +1,23 @@
+flowchart TD
+    N0["Booking Cancellation Prompt"]
+    N1["Inspect Repository and Instructions"]
+    N2["Add Domain Behavior"]
+    N3["Add Application Command"]
+    N4["Add Authorization"]
+    N5["Add Integration Event"]
+    N6["Reuse Transactional Outbox"]
+    N7["Create API Endpoint"]
+    N8["Add Tests"]
+    N9["Deterministic Validation"]
+    N10["Evidence and Handoff"]
+    N0 --> N1
+    N1 --> N2
+    N2 --> N3
+    N3 --> N4
+    N3 --> N5
+    N5 --> N6
+    N4 --> N7
+    N6 --> N7
+    N7 --> N8
+    N8 --> N9
+    N9 --> N10

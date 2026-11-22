@@ -1,0 +1,9 @@
+flowchart TB
+    R["Consolidated Invoicing Requirement"] --> L["Codex Lead"]
+    L --> B["Booking Contract Analysis"]
+    L --> F["Fleet Domain Analysis"]
+    L --> I["Billing Architecture Analysis"]
+    B --> E["Aggregate Findings"]
+    F --> E
+    I --> E
+    E --> P["Implementation Plan"]

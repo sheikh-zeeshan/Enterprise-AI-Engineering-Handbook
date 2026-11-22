@@ -1,0 +1,16 @@
+sequenceDiagram
+    participant Outbox as Booking outbox
+    participant Relay
+    participant Broker
+    participant Notification
+    participant Store as Notification private store
+    Relay->>Outbox: Claim committed publication obligation
+    Relay->>Broker: Publish stable event ID
+    Broker-->>Relay: Accept publication
+    Note over Relay: Crash here can cause publication again
+    Relay->>Outbox: Record publication
+    Broker->>Notification: Deliver BookingConfirmed v1
+    Notification->>Store: Atomically insert inbox and delivery intent
+    Store-->>Notification: Commit successful
+    Notification-->>Broker: Acknowledge
+    Note over Notification,Store: Dispatcher sends later with separate recovery

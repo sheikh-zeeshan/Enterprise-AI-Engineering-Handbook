@@ -1,0 +1,13 @@
+flowchart TD
+    A["Governed Control Catalog"] --> B["Harness Compliance Orchestrator"]
+    B --> C["Identity and Access Service"]
+    B --> D["Security Validation Service"]
+    B --> E["Privacy Control Service"]
+    B --> F["Approval Service"]
+    C --> G["Control Results"]
+    D --> G
+    E --> G
+    F --> G
+    B --> H["Evidence Service"]
+    G --> I["Compliance Assessment"]
+    H --> I

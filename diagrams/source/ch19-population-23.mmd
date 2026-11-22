@@ -1,0 +1,11 @@
+flowchart TD
+    C["Copilot"] --> D["Dependency Discovery"]
+    D --> H["Harness"]
+    H --> L["Lead Agent / Human"]
+
+    L --> Q{"Accept dependency?"}
+
+    Q -- Yes --> N["Create Population Item"]
+    N --> U["Update Dependency Graph"]
+
+    Q -- No --> X["Record Decision"]

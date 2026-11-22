@@ -1,0 +1,22 @@
+flowchart TD
+    G[Goal and Acceptance Criteria] --> P[Approved Plan]
+    C[Context Snapshot] --> P
+    W[Workflow Policy Version] --> P
+    P --> S[Immutable Candidate Commit]
+    S --> B[Build Evidence]
+    S --> T[Test Evidence]
+    S --> Sec[Security Evidence]
+    S --> R[Reviewer Evidence]
+    B --> V[Validator Assessment]
+    T --> V
+    Sec --> V
+    V --> E[Evaluator Assessment]
+    R --> E
+    G --> E
+    E --> A[Human Approval]
+    R --> A
+    V --> A
+    W --> A
+    A --> O[Authorized Output]
+    S --> O
+    O --> Z[Audit Evidence Archive]

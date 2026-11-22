@@ -1,0 +1,36 @@
+flowchart TB
+    Clients["Web / Mobile / Enterprise Clients"]
+
+    Gateway["API Gateway"]
+
+    Booking["Booking Service"]
+    Corporate["Corporate Account Service"]
+    Fleet["Fleet Service"]
+    Station["Station Operations Service"]
+    Billing["Billing Service"]
+    Payment["Payment Service"]
+    Notification["Notification Service"]
+
+    Broker["Integration Event Bus"]
+
+    Clients --> Gateway
+
+    Gateway --> Booking
+    Gateway --> Corporate
+    Gateway --> Fleet
+    Gateway --> Station
+    Gateway --> Billing
+    Gateway --> Payment
+
+    Booking --> Corporate
+    Booking --> Fleet
+    Booking --> Station
+
+    Booking --> Broker
+    Station --> Broker
+    Billing --> Broker
+    Payment --> Broker
+
+    Broker -->|"ServiceCompleted"| Booking
+    Broker -->|"ServiceCompleted"| Billing
+    Broker -->|"Customer and financial events"| Notification

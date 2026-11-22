@@ -1,0 +1,20 @@
+flowchart TD
+    A["Confirm Business Rules"] --> B["Define API Contract"]
+    A --> C["Define Capacity Invariant"]
+    D["Repository Discovery"] --> E["Select Existing Integration Points"]
+    E --> F["Design Application Workflow"]
+    B --> F
+    C --> F
+    F --> G["Atomic Booking Persistence"]
+    F --> H["Idempotency Integration"]
+    G --> I["Transactional Outbox Integration"]
+    H --> J["Retry and Conflict Tests"]
+    G --> K["Concurrency Tests"]
+    I --> L["Event Consistency Tests"]
+    B --> M["API Contract Tests"]
+    F --> N["Authorization Tests"]
+    J --> O["Validation Gates"]
+    K --> O
+    L --> O
+    M --> O
+    N --> O

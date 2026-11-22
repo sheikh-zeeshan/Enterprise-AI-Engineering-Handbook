@@ -1,0 +1,16 @@
+flowchart TD
+    A["Engineering Tasks"] --> B["Enterprise Harness"] --> C["AI Platform Adapters"]
+    C --> D["Claude Code"]
+    C --> E["GitHub Copilot"]
+    C --> F["Codex"]
+    B --> G["Independent Review / Validation / Evaluation"]
+    B --> H["Human Approval"]
+    C --> I["Trusted Event Ingestion"]
+    G --> I
+    H --> I
+    I --> J[("Durable Event Store")] --> K["Metric Projection Engine"] --> L[("Productivity Metrics Store")]
+    L --> M["Engineering Dashboard"]
+    L --> N["Architecture Dashboard"]
+    L --> O["Governance Dashboard"]
+    P["CI/CD / Incident Systems"] --> K
+    Q["Business Outcome Systems"] --> K

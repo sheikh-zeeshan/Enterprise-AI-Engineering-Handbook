@@ -1,0 +1,13 @@
+flowchart TD
+    A["AI Agent"] --> B["Select Tool"] --> C["Prepare Structured Inputs"] --> D{"Check Scope and Permissions"}
+    D -->|Denied| X["Record Denial and Escalate"]
+    D -->|Approval needed| H{"Human Approval"}
+    H -->|Rejected| X
+    H -->|Approved| E["Execute Tool"]
+    D -->|Authorized| E
+    E --> F["Capture Result"] --> G["Persist Evidence and Audit Record"] --> V{"Validate Evidence"}
+    V -->|Accepted| Z["Continue Workflow"]
+    V -->|Retryable failure| R{"Retry Safe?"}
+    R -->|Yes| E
+    R -->|No| X
+    V -->|Inconclusive| X

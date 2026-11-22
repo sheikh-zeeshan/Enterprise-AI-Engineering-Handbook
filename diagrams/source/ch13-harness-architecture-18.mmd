@@ -1,0 +1,18 @@
+flowchart TD
+    U[Engineering Goal] --> H[Harness Controller]
+
+    H --> L[Codex Lead]
+    L --> P[Implementation Plan]
+
+    P --> D[Codex Developer]
+    D --> C[Repository Changes]
+
+    C --> G[Independent Deterministic Gates]
+
+    G -->|Pass| R[Codex Reviewer]
+    R --> V[Codex Validator]
+    V --> E[Codex Evaluator]
+
+    E --> A[Human Approval]
+    A --> O[Output Manager]
+    O --> PR[Pull Request]

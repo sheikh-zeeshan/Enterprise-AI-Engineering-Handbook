@@ -1,0 +1,5 @@
+flowchart LR
+    Client --> Gateway
+    Gateway --> Service
+    Service --> Cache[(Distributed Cache)]
+    Service --> Database[(Authoritative Database)]

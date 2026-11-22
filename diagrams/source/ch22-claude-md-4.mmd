@@ -1,0 +1,21 @@
+flowchart LR
+    A[Architecture Standard] --> B[CLAUDE.md Instruction]
+    B --> C[AI Agent Implementation]
+
+    A --> D[Architecture Test]
+    A --> E[Security Gate]
+    A --> F[Contract Test]
+
+    C --> D
+    C --> E
+    C --> F
+
+    D --> G{All Gates Pass?}
+    E --> G
+    F --> G
+
+    G -- No --> H[Return Evidence to Agent]
+    H --> C
+
+    G -- Yes --> I[Reviewer / Evaluator]
+    I --> J[Human Approval]

@@ -1,0 +1,42 @@
+stateDiagram-v2
+    [*] --> Queued
+
+    Queued --> Blocked: dependencies unsatisfied
+    Queued --> Ready: prerequisites satisfied
+    Queued --> Cancelled: work cancelled
+
+    Blocked --> Ready: dependencies satisfied
+    Blocked --> Cancelled: work cancelled
+
+    Ready --> Running: worker claims item
+    Ready --> Cancelled: work cancelled
+
+    Running --> Review: implementation produced
+    Running --> Failed: execution failure
+    Running --> Stale: heartbeat timeout
+
+    Review --> Validation: review accepted
+    Review --> Failed: changes required
+
+    Validation --> Evaluation: required gates pass
+    Validation --> Failed: required gate fails
+
+    Evaluation --> Completed: outcome accepted
+    Evaluation --> Failed: outcome insufficient
+
+    Failed --> RetryPending: retry authorized
+    Failed --> Exhausted: further automation prohibited
+    Failed --> Blocked: newly approved prerequisite
+    Failed --> Cancelled: work cancelled
+
+    RetryPending --> Ready: delay elapsed and prerequisites satisfied
+    RetryPending --> Blocked: prerequisite no longer satisfied
+    RetryPending --> Cancelled: work cancelled
+
+    Stale --> Running: same execution safely reconciled
+    Stale --> Failed: previous execution fenced/abandoned
+
+    Exhausted --> Ready: human authorized and budget extended
+
+    Completed --> [*]
+    Cancelled --> [*]

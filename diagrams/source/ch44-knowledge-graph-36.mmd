@@ -1,0 +1,5 @@
+flowchart TD
+ FIND["Incorrect or Missing Relationship"] --> PROP["Correction Proposal"] --> EVID["Evidence Collection"] --> VERIFY["Entity and Conflict Verification"] --> Q{"Approval required?"}
+ Q -->|No| INGEST["Trusted Ingestion Update"]
+ Q -->|Yes| REVIEW["Governance Review"] --> INGEST
+ INGEST --> RECON["Graph Reconciliation"] --> AUDIT["Audit Record"]

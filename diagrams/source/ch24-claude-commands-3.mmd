@@ -1,0 +1,14 @@
+stateDiagram-v2
+    [*] --> Received
+    Received --> Rejected: Invalid arguments
+    Received --> Authorized: Valid invocation
+    Authorized --> Blocked: Missing permission or context
+    Authorized --> Running: Preconditions satisfied
+    Running --> Completed: Workflow terminates normally
+    Running --> Failed: Execution error
+    Running --> Cancelled: Cancellation requested
+    Rejected --> [*]
+    Blocked --> [*]
+    Completed --> [*]
+    Failed --> [*]
+    Cancelled --> [*]

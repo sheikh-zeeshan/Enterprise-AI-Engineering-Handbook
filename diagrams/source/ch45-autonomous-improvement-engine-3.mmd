@@ -1,0 +1,12 @@
+flowchart LR
+    subgraph Learning["Autonomous recommendation"]
+        O["Observe and analyze"] --> D["Draft candidate"]
+    end
+    subgraph Governance["Governed change path"]
+        V["Validate the exact revision"] --> H{"Authorized decision"}
+        H -->|Approve| M["Merge and activate through existing controls"]
+        H -->|Request changes| R["Revise candidate"]
+        R --> V
+        H -->|Reject or defer| X["Record rationale"]
+    end
+    D --> V

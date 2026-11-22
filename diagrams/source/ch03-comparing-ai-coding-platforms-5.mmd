@@ -1,0 +1,28 @@
+flowchart LR
+    U[Engineer or Work Item]
+    T[Vendor-Neutral Task Contract]
+    H[Enterprise Harness]
+
+    U --> T
+    T --> H
+
+    H --> A1[Claude Code Adapter]
+    H --> A2[GitHub Copilot Adapter]
+    H --> A3[OpenAI Codex Adapter]
+
+    A1 --> P1[CLAUDE.md and Skills]
+    A1 --> E1[Local or Controlled Execution]
+
+    A2 --> P2[Copilot Instructions and Prompt Files]
+    A2 --> E2[IDE or GitHub Workflow]
+
+    A3 --> P3[AGENTS.md and Codex Configuration]
+    A3 --> E3[Local or Cloud Task Environment]
+
+    E1 --> R[Common Evidence Model]
+    E2 --> R
+    E3 --> R
+
+    R --> V[Validation]
+    V --> HR[Human Review]
+    HR --> PR[Pull Request]

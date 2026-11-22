@@ -1,0 +1,11 @@
+flowchart TD
+ BS["Booking Service"] -->|PUBLISHES| EV["BookingConfirmed"]
+ FS["Fleet Service"] -->|CONSUMES| EV
+ SO["Station Operations Service"] -->|CONSUMES| EV
+ BS -->|CALLS| CA["Corporate Account API"]
+ EV -->|GOVERNED_BY| ADR["ADR-032"]
+ SK["Integration Event Skill"] -->|SUPPORTS| EV
+ T1["Producer Contract Tests"] -->|PROTECTS| EV
+ T2["Consumer Contract Tests"] -->|PROTECTS| EV
+ PR["PR-1842"] -->|CHANGED| EV
+ PR -->|HAS_FINDING| RF["Consumer Compatibility Finding"]

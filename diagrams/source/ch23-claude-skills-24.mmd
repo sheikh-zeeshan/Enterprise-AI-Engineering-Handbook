@@ -1,0 +1,18 @@
+flowchart TD
+    N0["Skill Execution"]
+    N1["Collect Evidence"]
+    N2["Identify Repeated Failure"]
+    N3["Propose Skill Improvement"]
+    N4["Architecture and Security Review"]
+    N5["Run Skill Regression Tests"]
+    N6{"Approved?"}
+    N7["Publish New Revision"]
+    N8["Retain Existing Revision"]
+    N0 --> N1
+    N1 --> N2
+    N2 --> N3
+    N3 --> N4
+    N4 --> N5
+    N5 --> N6
+    N6 -- Yes --> N7
+    N6 -- No --> N8

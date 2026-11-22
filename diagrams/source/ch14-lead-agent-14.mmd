@@ -1,0 +1,22 @@
+flowchart TB
+    T1[T1 Confirm Existing Flow] --> T2[T2 Domain Behavior]
+
+    T2 --> T3[T3 Application Workflow]
+
+    T3 --> T4[T4 Integration Event]
+    T3 --> T5[T5 API Behavior]
+
+    T4 --> T6[T6 Automated Tests]
+    T5 --> T6
+
+    T6 --> T7[T7 Deterministic Gates]
+
+    T7 --> T8[T8 Architect Review]
+    T7 --> T9[T9 Reviewer]
+
+    T8 --> T10[T10 Validator]
+    T9 --> T10
+
+    T10 --> T11[T11 Evaluator]
+
+    T11 --> T12[T12 Human Approval]

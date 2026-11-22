@@ -1,0 +1,28 @@
+flowchart TB
+    subgraph Execution[Execution Plane]
+        Goal[Engineering Goal] --> Harness[Versioned Harness]
+        Harness --> Lead[Lead Agent]
+        Lead --> Dev[Developer Agent]
+        Dev --> Review[Reviewer Agent]
+        Review --> Validator[Validator Agent]
+        Validator --> Evaluator[Evaluator Agent]
+        Evaluator --> Result[Run Outcome]
+    end
+    subgraph Learning[Learning Plane]
+        Evidence[Evidence Collection] --> Normalization[Normalization and Classification]
+        Normalization --> Pattern[Pattern Analysis]
+        Memory[(Harness Memory)] --> Pattern
+        Pattern --> Recommendations[Improvement Recommendations]
+    end
+    subgraph Governance[Governance and Release Plane]
+        Human[Human Review] --> Decision{Approve?}
+        Decision -->|No| Rejected[Reject or Defer]
+        Decision -->|Yes| Change[Versioned Change]
+        Change --> Gates[Regression and Policy Validation]
+        Gates --> Release{All controls pass?}
+        Release -->|No| Block[Block Release]
+        Release -->|Yes| Published[Controlled Release]
+    end
+    Result --> Evidence
+    Recommendations --> Human
+    Published -.->|Future runs only| Harness

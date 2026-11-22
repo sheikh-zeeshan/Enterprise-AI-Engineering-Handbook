@@ -1,0 +1,27 @@
+flowchart LR
+    A[Evidence Collector]
+    B[Pattern Analyzer]
+    C[Instruction Analyzer]
+    D[Proposal Generator]
+    E[Impact Analyzer]
+    F[Governance Workflow]
+    G[Instruction Registry]
+    H[Validation Engine]
+    I[Audit Store]
+
+    A --> B
+    B --> C
+    C --> D
+    D --> E
+    E --> F
+    F --> G
+    G --> H
+
+    A --> I
+    B --> I
+    C --> I
+    D --> I
+    E --> I
+    F --> I
+    G --> I
+    H --> I

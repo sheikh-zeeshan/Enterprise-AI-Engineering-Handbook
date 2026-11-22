@@ -1,0 +1,22 @@
+flowchart LR
+    A[Developer Agent]
+    --> B[Implementation]
+
+    B --> C[Reviewer Agent]
+
+    C --> D[Validator Agent]
+
+    D --> E[Evaluator Agent]
+
+    E --> F[Human Approver]
+
+    F --> G[Controlled Deployment Service]
+
+    G --> H[Production]
+
+    I[Compliance Control Plane]
+    -. policies .-> A
+    I -. controls .-> C
+    I -. gates .-> D
+    I -. approval rules .-> F
+    I -. deployment rules .-> G

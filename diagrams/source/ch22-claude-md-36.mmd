@@ -1,0 +1,10 @@
+flowchart TD
+    A[Approved Instruction Baseline] --> B[Harness Execution]
+    B --> C[Developer Agent Changes]
+    C --> D[Instruction Integrity Gate]
+    D --> E{Governed Files Changed?}
+    E -- No --> F[Continue Validation]
+    E -- Yes --> G{Authorized Maintenance Run?}
+    G -- No --> H[Fail Gate and Preserve Evidence]
+    G -- Yes --> I[Owner Review and Approval]
+    I --> F

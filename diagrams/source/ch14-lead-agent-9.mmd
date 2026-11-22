@@ -1,0 +1,38 @@
+stateDiagram-v2
+    [*] --> Received
+
+    Received --> Discovering
+    Discovering --> Planning
+
+    Planning --> Executing
+    Planning --> Escalated
+
+    Executing --> Gating
+    Executing --> Failed
+
+    Gating --> Reviewing: Gates Passed
+    Gating --> Remediation: Gates Failed
+
+    Remediation --> Executing: Retry Allowed
+    Remediation --> Escalated: Retry Exhausted
+
+    Reviewing --> Validating: Review Accepted
+    Reviewing --> Remediation: Changes Required
+
+    Validating --> Evaluating: Valid
+    Validating --> Remediation: Invalid
+
+    Evaluating --> Approval: Approval Required
+    Evaluating --> Complete: Approval Not Required
+    Evaluating --> Remediation: Below Threshold
+
+    Approval --> Complete: Approved
+    Approval --> Remediation: Changes Requested
+    Approval --> Rejected: Rejected
+
+    Escalated --> Planning: Decision Supplied
+    Escalated --> Rejected: Work Stopped
+
+    Complete --> [*]
+    Rejected --> [*]
+    Failed --> [*]

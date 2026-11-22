@@ -1,0 +1,9 @@
+flowchart TD
+    A["Approved Control State"] --> B["Continuous Monitoring"]
+    C["Actual Enterprise State"] --> B
+    B --> D{"Material Difference?"}
+    D -- No --> E["Record Verification"]
+    D -- Yes --> F["Compliance Drift Finding"]
+    F --> G["Risk Classification"]
+    G --> H["Authorized Remediation"]
+    H --> I["Revalidation"]

@@ -1,0 +1,12 @@
+flowchart TD
+    A["POP-1042-01<br/>Domain Behavior"]
+
+    A --> B["POP-1042-02<br/>Persistence"]
+    A --> C["POP-1042-03<br/>API Endpoint"]
+    A --> D["POP-1042-04<br/>Integration Event"]
+
+    B --> E["POP-1042-05<br/>Booking Enforcement"]
+    C --> E
+    D --> E
+
+    E --> F["POP-1042-06<br/>Integration Tests"]

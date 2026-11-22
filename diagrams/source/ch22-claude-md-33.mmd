@@ -1,0 +1,10 @@
+flowchart TD
+    A[Approved Engineering Governance] --> B[Repository Instructions]
+    B --> C[Root CLAUDE.md]
+    B --> D[Scoped Instructions]
+    C --> E[Claude Code Context]
+    D --> E
+    F[Task Prompt] --> E
+    E --> G[Implementation]
+    G --> H[Deterministic Validation]
+    H --> I[Review and Human Approval]

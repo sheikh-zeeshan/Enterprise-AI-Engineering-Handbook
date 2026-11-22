@@ -1,0 +1,26 @@
+flowchart TB
+    T[Vendor-Neutral Task Contract]
+
+    T --> O[Objective]
+    T --> B[Business Context]
+    T --> S[Scope]
+    T --> A[Architecture Context]
+    T --> C[Constraints]
+    T --> AC[Acceptance Criteria]
+    T --> V[Required Validation]
+    T --> P[Prohibited Changes]
+    T --> D[Expected Deliverables]
+
+    O --> X[Platform Adapter]
+    B --> X
+    S --> X
+    A --> X
+    C --> X
+    AC --> X
+    V --> X
+    P --> X
+    D --> X
+
+    X --> C1[Claude Code Task]
+    X --> C2[GitHub Copilot Task]
+    X --> C3[OpenAI Codex Task]

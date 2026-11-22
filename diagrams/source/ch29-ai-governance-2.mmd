@@ -1,0 +1,19 @@
+flowchart TB
+    subgraph CP["Governance Control Plane"]
+        PO["Policy Owners"] --> PR["Approved Policy Repository"]
+        PR --> PDP["Policy Decision Service"]
+        AP["Human Approval Service"] --> PDP
+        AU["Audit and Evidence Service"]
+    end
+    subgraph EP["AI Engineering Execution Plane"]
+        IN["Authorized Task Intake"] --> HR["Harness"]
+        HR --> AR["Agent Roles"]
+        AR --> PEP["Tool Enforcement Gateway"]
+        PEP --> TL["Approved Tools"]
+        TL --> GV["Engineering Gates"]
+    end
+    IN -.->|"Admission check"| PDP
+    PEP <-->|"Authorization decision"| PDP
+    HR -->|"Execution events"| AU
+    GV -->|"Gate evidence"| AU
+    AP -->|"Approval evidence"| AU

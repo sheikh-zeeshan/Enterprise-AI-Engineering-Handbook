@@ -1,0 +1,10 @@
+flowchart TB
+    R["Consolidated Fleet Billing"] --> C["Define Shared Contract"]
+    C --> A["Contract Review"]
+    A --> B["Booking Implementation"]
+    A --> F["Fleet Implementation"]
+    A --> I["Billing Implementation"]
+    B --> V["Cross-Service Validation"]
+    F --> V
+    I --> V
+    V --> E["Enterprise Evaluation"]

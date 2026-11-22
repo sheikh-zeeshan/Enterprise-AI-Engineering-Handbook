@@ -1,0 +1,18 @@
+flowchart TD
+    A["Prompt"] --> B["Repository Discovery"]
+    B --> C["Applicable Instructions and Skills"]
+    C --> D["Planning Mode"]
+    D --> E["Scope, Tasks, Dependencies, Risks, Assumptions"]
+    E --> F["Acceptance Criteria and Validation Plan"]
+    F --> G["Proposed Plan"]
+    G --> H["Plan Quality Gate"]
+    H --> I{"Review and Approval"}
+    I -->|"Revision Required"| D
+    I -->|"Approved"| J["Execution Handoff"]
+    J --> K["Developer Agent"]
+    K --> L["Execution"]
+    L --> M{"Material Plan Drift?"}
+    M -->|"Yes"| D
+    M -->|"No"| N["Reviewer and Validator"]
+    N --> O["Evaluator"]
+    O --> P["Completion Decision"]

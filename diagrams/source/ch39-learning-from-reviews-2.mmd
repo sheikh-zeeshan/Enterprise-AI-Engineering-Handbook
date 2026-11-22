@@ -1,0 +1,22 @@
+flowchart TD
+    A[Implementation] --> B[Automated and human reviews]
+    B --> C[Verified review findings]
+    C --> D[Classification and pattern detection]
+    D --> E[Root-cause assessment]
+    E --> F{Evidence sufficient?}
+    F -->|No| G[Preserve uncertainty and collect evidence]
+    F -->|Yes| H[Candidate improvement]
+    H --> I{Human governance}
+    I -->|Rejected| J[Record decision and rationale]
+    I -->|Revision required| K[Revise candidate]
+    I -->|Approved for evaluation| L[Validate candidate version]
+    L --> M{Validation passed?}
+    M -->|No| K
+    M -->|Yes| N[Activate approved version within scope]
+    N --> O[Future Harness runs]
+    O --> P[Evaluate subsequent outcomes]
+    P --> C
+    classDef decision fill:#fff1d6,stroke:#bb8b36,color:#704b0a
+    classDef approved fill:#e4f4eb,stroke:#43865c,color:#205436
+    class F,I,M decision
+    class N,O approved

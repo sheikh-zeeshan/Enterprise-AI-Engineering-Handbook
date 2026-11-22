@@ -1,0 +1,9 @@
+flowchart LR
+    C[Copilot Agent] --> TG[Harness Tool Policy]
+
+    TG --> R[Repository]
+    TG --> A[MCP: API Catalog]
+    TG --> K[MCP: Architecture Knowledge]
+    TG --> O[MCP: Observability]
+
+    TG -. blocked .-> PA[Production Administration]

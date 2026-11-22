@@ -1,0 +1,12 @@
+flowchart LR
+    U[Engineer / Work Item] --> CP[Harness Control Plane]
+    CP -->|Scoped request| AG[Isolated Agent Runner]
+    AG -->|Allowed tool calls| TG[Tool / Network Policy]
+    TG --> WS[Restricted Workspace]
+    WS -->|Candidate change| GT[Independent Gate Runner]
+    GT -->|Source-bound gate evidence| CP
+    CP -->|Review package| AP[Authenticated Approver]
+    AP -->|Authorized decision| CP
+    CP -->|Approved output| PUB[Output Manager]
+    PUB --> PR[Pull Request]
+    CP --> ST[(State + Audit)]

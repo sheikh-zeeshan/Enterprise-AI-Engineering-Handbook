@@ -1,0 +1,14 @@
+flowchart TD
+    A[Copilot Engineering Task] --> B[Repository Instructions]
+    B --> C[Enterprise Policy Preflight]
+    C --> D{Authorized?}
+    D -->|No| E[Stop and Escalate]
+    D -->|Yes| F[Copilot Implementation]
+    F --> G[Pull Request]
+    G --> H[Required CI and Policy Gates]
+    H --> I{All Gates Passed?}
+    I -->|No| F
+    I -->|Yes| J[Verify Human Approval]
+    J --> K[Eligible for Authorized Merge]
+    E --> L[Audit Evidence]
+    K --> L

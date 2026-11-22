@@ -1,0 +1,11 @@
+flowchart TB
+    P["Shared Enterprise Harness"] --> C["Shared Capabilities"]
+    P --> B["Booking Harness"]
+    P --> F["Fleet Harness"]
+    P --> I["Billing Harness"]
+    B --> BR["Booking Instructions and Skills"]
+    F --> FR["Fleet Instructions and Skills"]
+    I --> IR["Billing Instructions and Skills"]
+    C --> V["Validation Infrastructure"]
+    C --> A["Provider and Tool Adapters"]
+    C --> M["Metrics and Observability"]

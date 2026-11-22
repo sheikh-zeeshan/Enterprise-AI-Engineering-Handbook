@@ -1,0 +1,14 @@
+flowchart TD
+    R["Ready Population Item"] --> S["Scheduler"]
+
+    S --> P{"Provider Policy"}
+
+    P --> C["Claude"]
+    P --> G["GitHub Copilot"]
+    P --> O["Codex"]
+
+    C --> E["Execution Evidence"]
+    G --> E
+    O --> E
+
+    E --> H["Harness"]

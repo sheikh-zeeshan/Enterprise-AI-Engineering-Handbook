@@ -1,0 +1,34 @@
+flowchart TD
+    P["Prompt"]
+    H["Harness"]
+    L["Codex Lead Agent"]
+    PL["plan.md"]
+    LH["Lead Handoff"]
+    D["Codex Developer Agent"]
+    DS["Developer Scratchpad"]
+    R["Codex Reviewer Agent"]
+    RF["Reviewer Findings"]
+    V["Codex Validator Agent"]
+    G["Deterministic Gates"]
+    VE["Validation Evidence"]
+    E["Codex Evaluator Agent"]
+    O["Final Output"]
+    PC["Promotion Candidates"]
+    GOV["Governance"]
+
+    P --> H
+    H --> L
+    L --> PL
+    L --> LH
+    LH --> D
+    D --> DS
+    D --> R
+    R --> RF
+    RF -->|Changes Required| D
+    RF -->|Approved| V
+    V --> G
+    G --> VE
+    VE --> E
+    E --> O
+    O --> PC
+    PC --> GOV

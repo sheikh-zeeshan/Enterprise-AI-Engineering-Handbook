@@ -1,0 +1,16 @@
+flowchart TD
+    P["Population Manager"] --> EC["Harness Execution Contract"]
+
+    EC --> CA["Claude Adapter"]
+    EC --> GA["Copilot Adapter"]
+    EC --> OA["Codex Adapter"]
+
+    CA --> C["Claude"]
+    GA --> G["GitHub Copilot"]
+    OA --> O["Codex"]
+
+    C --> N["Normalized Result"]
+    G --> N
+    O --> N
+
+    N --> P

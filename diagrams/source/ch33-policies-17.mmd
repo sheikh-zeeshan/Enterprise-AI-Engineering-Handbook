@@ -1,0 +1,11 @@
+flowchart TD
+    A[Draft Policy] --> B[Risk and Technical Review]
+    B --> C[Authorized Approval]
+    C --> D[Published and Versioned Policy]
+    D --> E[Enforced Policy]
+    E --> F[Periodic Review]
+    F --> G{Revision Required?}
+    G -->|Yes| H[Proposed Revision]
+    H --> B
+    G -->|No| E
+    F --> I[Authorized Retirement and Archive]

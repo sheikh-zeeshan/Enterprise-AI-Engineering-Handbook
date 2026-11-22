@@ -1,0 +1,32 @@
+flowchart TB
+    subgraph HR["Harness Run"]
+        direction TB
+
+        subgraph IN["Input"]
+            P["Prompt"]
+            I["Instructions"]
+            S["Skills"]
+            SN["Steering Notes"]
+        end
+
+        subgraph RW["Run Workspace"]
+            PLAN["plan.md"]
+            SP["scratchpad.md"]
+            AH["agent-handoffs/"]
+            V["validation/"]
+            O["outputs/"]
+        end
+
+        IN --> RW
+    end
+
+    subgraph PK["Persistent Knowledge"]
+        RI["Repository Intelligence"]
+        M["Metrics"]
+        HM["Harness Memory"]
+    end
+
+    RI --> HR
+    HR --> M
+    O -. "governed promotion" .-> RI
+    O -. "governed promotion" .-> HM

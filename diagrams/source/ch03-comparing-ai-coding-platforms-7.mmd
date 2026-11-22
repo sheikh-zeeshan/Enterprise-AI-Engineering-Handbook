@@ -1,0 +1,19 @@
+flowchart LR
+    C[Customer Service]
+    F[Fleet Service]
+    P[Pricing Service]
+    B[Booking Service]
+    S[Service Fulfilment Service]
+    BI[Billing Service]
+    IAM[Identity and Access]
+    EH[Event Hub]
+
+    C -->|Customer Identity| F
+    F -->|Agreement Terms| P
+    F -->|Eligibility Projection| B
+    F -->|Eligibility Projection| S
+    F -->|Agreement Events| EH
+    EH --> BI
+    IAM -->|Authorization Context| F
+    P -->|Negotiated Price Resolution| B
+    S -->|Completed Usage| EH

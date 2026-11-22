@@ -1,0 +1,16 @@
+flowchart TD
+    L[Lead Agent] -->|Bounded task| D[Developer Agent]
+    RI[Repository Intelligence] --> D
+    IN[Instructions and Skills] --> D
+    D --> W[Isolated implementation workspace]
+    W --> C[Diff, configuration, tests, and migration]
+    C --> G[Harness-owned deterministic gates]
+    G -->|Failure within scope| D
+    G -->|Passed| R[Independent Reviewer]
+    R -->|Correction requested| D
+    R -->|Accepted for validation| V[Validator Agent]
+    V -->|Acceptance evidence| A[Required approval workflow]
+    D -->|Conflict or missing authority| E[Lead or designated human owner]
+    G --> AUD[Audit and run evidence]
+    R --> AUD
+    V --> AUD

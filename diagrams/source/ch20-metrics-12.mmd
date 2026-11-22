@@ -1,0 +1,9 @@
+flowchart TD
+    H["Harness Orchestrator"] --> C["Codex Execution"]
+    C --> S["Structured Execution Events"]
+    C --> F["Changed Files and Artifacts"]
+    S --> A["Codex Metrics Adapter"]
+    F --> A
+    A --> N["Normalized Harness Events"] --> E[("Execution Event Store")]
+    H --> V["Deterministic Validation"] --> D["Validation Evidence"] --> E
+    E --> M["Metrics Aggregator"] --> DASH["Dashboards and Analysis"]

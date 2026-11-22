@@ -1,0 +1,5 @@
+flowchart TB
+    R["Harness Execution History"] --> A["Improvement Analysis"] --> P["Improvement Proposal"]
+    P --> V["Governed Review"]
+    V -->|Approved| U["Versioned Capability Update"] --> Rollout["Controlled Rollout"]
+    V -->|Rejected| Archive["Retain Decision Evidence"]

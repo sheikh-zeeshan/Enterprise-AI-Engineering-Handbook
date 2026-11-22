@@ -1,0 +1,10 @@
+flowchart TD
+    A[Execution Evidence] --> B[Schema Validation]
+    B --> C[Evidence Normalization]
+    C --> D[Pattern Detection]
+    D --> E{Supported pattern?}
+    E -->|No| F[Inconclusive Result]
+    E -->|Yes| G[Recommendation Generation]
+    G --> H[Recommendation Validation]
+    H --> I[Recommendation Store]
+    I --> J[Human Review Queue]

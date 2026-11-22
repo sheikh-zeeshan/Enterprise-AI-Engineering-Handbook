@@ -1,0 +1,14 @@
+flowchart TD
+    A["Engineering Task"] --> B["Governed Compliance Preflight"]
+    B --> C{"Model, Tools and Access Authorized?"}
+    C -- No --> X["Block and Record"]
+    C -- Yes --> D["Lead and Developer Agents"]
+    D --> E["Reviewer and Validator"]
+    E --> F["Mandatory Compliance Gates"]
+    F --> G{"Controls Satisfied?"}
+    G -- No --> X
+    G -- Yes --> H["Evaluator and Human Approval"]
+    H --> I{"Release Authorized?"}
+    I -- No --> X
+    I -- Yes --> J["Controlled Deployment"]
+    J --> K["Publish Authoritative Evidence"]

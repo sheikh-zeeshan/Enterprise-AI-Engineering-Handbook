@@ -1,0 +1,18 @@
+flowchart TD
+    A[Skill Execution] --> B[Build + Review + Validation + PR Evidence]
+    B --> C[Pattern Detection]
+    C --> D[Candidate Skill Improvement]
+    D --> E[Owner Triage]
+
+    E -->|Reject| F[Keep Current Skill]
+    E -->|Revise| D
+    E -->|Accept for testing| G[Prepare Candidate Version]
+
+    G --> H[Validate and Test Candidate]
+    H -->|Failed| I[Reject or Revise Candidate]
+    H -->|Passed| J[Human Approval]
+    J -->|Approved| PUB[Publish New Immutable Version]
+    J -->|Rejected| F
+
+    PUB --> K[Future Runs]
+    K --> A

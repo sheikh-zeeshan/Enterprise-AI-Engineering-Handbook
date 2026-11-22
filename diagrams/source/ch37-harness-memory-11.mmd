@@ -1,0 +1,13 @@
+flowchart TD
+    C["OpenAI Codex"] --> MCP["Harness Memory MCP adapter"]
+    MCP --> AUTH["Identity and authorization"]
+    AUTH --> API["Harness Memory application services"]
+    API --> RET["Governed retrieval"]
+    API --> CAN["Candidate submission"]
+    API --> CON["Conflict reporting"]
+    RET --> REG[("Approved memory registry")]
+    CAN --> EV["Evidence review and governance"]
+    CON --> EV
+    EV --> H["Authorized human approver"]
+    H -->|Approved| REG
+    REG --> AUD["Version and audit history"]

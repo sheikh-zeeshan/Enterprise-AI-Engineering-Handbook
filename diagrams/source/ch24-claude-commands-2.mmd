@@ -1,0 +1,12 @@
+flowchart TD
+    I[Enterprise Implement Command] --> L[Lead Agent and Approved Plan]
+    L --> A[API Endpoint Skill]
+    L --> B[Domain Behavior Skill]
+    L --> C[Integration Event Skill]
+    A --> D[Developer Agent]
+    B --> D
+    C --> D
+    D --> R[Reviewer Agent]
+    R --> V[Validator Agent]
+    V --> E[Evaluator Agent]
+    E --> H[Harness Outcome Decision]

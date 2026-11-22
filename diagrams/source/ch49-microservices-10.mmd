@@ -1,0 +1,11 @@
+flowchart TD
+    X["Downstream failure or redelivery"] --> Q{"Which boundary?"}
+    Q -->|"Publication"| D{"Committed publication obligation?"}
+    Q -->|"Repeated delivery"| F["Deduplicate with local effect transaction"]
+    Q -->|"Provider dispatch"| P{"Authoritative provider outcome?"}
+    D -->|"Yes"| E["Retry relay within backlog policy"]
+    D -->|"No"| G["Reconcile; never invent a committed fact"]
+    P -->|"Known transient failure"| T["Retry stable delivery operation within policy"]
+    P -->|"Unknown"| H["Retain uncertainty; reconcile and escalate"]
+    P -->|"Succeeded"| K["Record successful provider outcome"]
+    P -->|"Permanent failure"| U["Isolate and route to accountable recovery owner"]

@@ -1,0 +1,22 @@
+graph TD
+    R[Requirement]
+    --> P[Policy]
+
+    P --> C1[Control SEC-ACCESS-001]
+    P --> C2[Control AI-MODEL-003]
+
+    C1 --> E1[Evidence EV-101]
+    C2 --> E2[Evidence EV-102]
+
+    E1 --> RUN[Harness Run HR-4821]
+    E2 --> RUN
+
+    RUN --> COMMIT[Commit 9fa14d2]
+
+    COMMIT --> PR[Pull Request]
+
+    PR --> APPROVAL[Approval Record]
+
+    APPROVAL --> RELEASE[Release]
+
+    RELEASE --> DEPLOY[Production Deployment]

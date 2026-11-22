@@ -1,0 +1,8 @@
+flowchart TD
+    A["Normalize evidence and link source revisions"] --> B["Deduplicate records into occurrences"]
+    B --> C["Compare eligible runs and test competing explanations"]
+    C --> D{"Evidence supports a scoped candidate?"}
+    D -->|No| E["Record uncertainty and defer"]
+    D -->|Yes| F["Draft the candidate and identify its owner"]
+    F --> G["Assess confidence, impact, and risk"]
+    G --> H["Package the diff, evidence, and validation plan"]

@@ -1,0 +1,36 @@
+flowchart TD
+    W[Work Item] --> H[Harness Controller]
+
+    H --> RI[Repository Intelligence]
+    RI --> L[Copilot Lead]
+
+    L --> D[Copilot Developer]
+    D --> PR[Working Branch / Pull Request]
+
+    PR --> GA[GitHub Actions]
+
+    GA --> B[Build]
+    GA --> T[Tests]
+    GA --> A[Architecture]
+    GA --> S[Security]
+    GA --> C[Contracts]
+
+    B --> Q{Required Checks Passed?}
+    T --> Q
+    A --> Q
+    S --> Q
+    C --> Q
+
+    Q -->|No| RY[Harness Retry Policy]
+    RY --> D
+
+    Q -->|Yes| RV[Copilot Reviewer]
+    RV --> V[Validator]
+    V --> E[Evaluator]
+    E --> HA[Human Approval]
+
+    HA --> M[Merge / Final Output]
+
+    H -.-> ST[(Workflow State)]
+    GA -.-> ST
+    HA -.-> ST

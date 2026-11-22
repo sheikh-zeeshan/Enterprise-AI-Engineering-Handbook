@@ -1,0 +1,24 @@
+flowchart TB
+    GOAL[Goal]
+    AC[Acceptance Criteria]
+    SN[Steering Note]
+    INS[Instructions]
+
+    DEV[Developer Evidence]
+    REV[Reviewer Findings]
+    VAL[Validator Results]
+
+    EVAL[Evaluator Agent]
+
+    RESULT[Evaluation Result]
+
+    GOAL --> EVAL
+    AC --> EVAL
+    SN --> EVAL
+    INS --> EVAL
+
+    DEV --> EVAL
+    REV --> EVAL
+    VAL --> EVAL
+
+    EVAL --> RESULT

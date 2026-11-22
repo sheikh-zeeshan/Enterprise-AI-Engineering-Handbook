@@ -1,0 +1,10 @@
+flowchart TD
+    L["Lead Agent: Planning and Coordination"] --> D["Developer Agent: Implementation"]
+    D --> R["Reviewer Agent: Quality and Architecture"]
+    D --> V["Validator Agent: Deterministic Evidence"]
+    R --> E["Evaluator Agent: Goal Satisfaction"]
+    V --> E
+    E --> G{"Governance Decision"}
+    G -->|"Approval required"| H["Authorized Human"]
+    G -->|"Delegated authority"| O["Engineering Outcome"]
+    H -->|"Authorized"| O

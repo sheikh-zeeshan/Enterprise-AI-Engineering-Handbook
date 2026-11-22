@@ -1,0 +1,22 @@
+flowchart TD
+    A[PR Evidence] --> B{Enough Context?}
+
+    B -->|No| C[Record Observation]
+    B -->|Yes| D{Repeated Pattern?}
+
+    D -->|No| C
+    D -->|Yes| E{Corroborated?}
+
+    E -->|No| F[Monitor]
+    E -->|Yes| G{Conflicting Evidence?}
+
+    G -->|Yes| H[Human Investigation]
+    G -->|No| I[Create Candidate Learning]
+
+    I --> J{Confidence Threshold Met?}
+
+    J -->|No| F
+    J -->|Yes| K[Governance Review]
+
+    K -->|Approved| L[Versioned Improvement]
+    K -->|Rejected| M[Archive Decision]

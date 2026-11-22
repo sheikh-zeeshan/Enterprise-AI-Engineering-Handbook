@@ -1,0 +1,24 @@
+flowchart TD
+    N0["Organizational Governance"]
+    N1["Architecture Decisions and Standards"]
+    N2["Repository Instructions"]
+    N3["Prompt and Acceptance Criteria"]
+    N4["Lead Agent and Harness"]
+    N5["Governed Skill Library"]
+    N6["Developer Agent"]
+    N7["Implementation Artifacts"]
+    N8["Reviewer Agent"]
+    N9["Validator Agent"]
+    N10["Evaluator Agent"]
+    N11["Human Approval"]
+    N0 --> N1
+    N1 --> N2
+    N2 --> N4
+    N3 --> N4
+    N4 --> N5
+    N5 --> N6
+    N6 --> N7
+    N7 --> N8
+    N8 --> N9
+    N9 --> N10
+    N10 --> N11

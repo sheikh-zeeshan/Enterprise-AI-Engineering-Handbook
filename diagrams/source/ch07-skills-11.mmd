@@ -1,0 +1,8 @@
+flowchart TD
+    Task[Issue or prompt] --> Codex[Codex]
+    Guidance[AGENTS.md] --> Codex
+    Catalog[.agents/skills/*/SKILL.md] --> Codex
+    Codex --> Plan[Skill-aware implementation plan]
+    Plan --> Changes[Proposed repository changes]
+    Changes --> Gates[Deterministic validation gates]
+    Gates --> Review[Human approval]

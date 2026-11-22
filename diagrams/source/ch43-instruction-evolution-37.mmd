@@ -1,0 +1,26 @@
+flowchart TD
+    subgraph Exec["Engineering Execution"]
+        A["Lead / Developer Agents"] --> B["Reviewer Agent"]
+        B --> C["Validator Agent"]
+        C --> D["Evaluator Agent"]
+    end
+    subgraph Learning["Learning Plane"]
+        E["Evidence Collector"] --> F["Harness Memory"]
+        F --> G["Pattern Detector"]
+        G --> H["Instruction Analysis Agent"]
+        H --> I["Instruction Proposal Agent"]
+    end
+    subgraph Gov["Governance Plane"]
+        J["Candidate Registry"] --> K["Policy and Impact Checks"]
+        K --> L["Human Approval"]
+        L --> M["Approval Verification"]
+    end
+    subgraph Act["Validation and Activation"]
+        N["Instruction Evaluation"] --> O["Controlled Activation"]
+        O --> P["Instruction Registry"]
+        O --> Q["Audit and Rollback"]
+    end
+    D --> E
+    I --> J
+    M --> N
+    P --> A

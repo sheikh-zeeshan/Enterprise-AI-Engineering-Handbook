@@ -1,0 +1,11 @@
+flowchart TD
+    A["Developer Agent"] --> B["Implementation"] --> C["Independent Review"] --> D["Deterministic Validation"] --> E["Evaluation"]
+    A --> F["Operational Events"]
+    C --> G["Review Evidence"]
+    D --> H["Validation Evidence"]
+    E --> I["Outcome Evidence"]
+    F --> J["Trusted Metrics Collector"]
+    G --> J
+    H --> J
+    I --> J
+    J --> K[("Protected Metrics Store")] --> L["Independent Analytics"]

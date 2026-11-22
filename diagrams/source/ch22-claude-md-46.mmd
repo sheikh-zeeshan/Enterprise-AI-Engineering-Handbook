@@ -1,0 +1,8 @@
+flowchart TD
+    A[Harness Failure Evidence] --> B[Pattern Analysis]
+    B --> C[Root Cause Assessment]
+    C --> D{Instruction Change Needed?}
+    D -- No --> E[Improve Skill, Prompt, Code or Gate]
+    D -- Yes --> F[Proposed Instruction]
+    F --> G[Human Approval]
+    G --> H[Approved CLAUDE.md Update]

@@ -1,0 +1,14 @@
+flowchart TD
+    T[Approved Task] --> H[AI Engineering Harness]
+    H --> P[Pull Request]
+    P --> CI[Continuous Integration]
+    CI --> CR[Human Code Review]
+    CR --> M[Merge]
+    M --> CD[Continuous Delivery]
+    CD --> E[Target Environment]
+
+    H --> HE[Harness Evidence]
+    HE --> P
+
+    CI --> CE[CI Evidence]
+    CE --> CR

@@ -1,0 +1,15 @@
+flowchart TB
+    U["Engineer / Work Item"] --> H["Harness Control Plane"]
+    K["Enterprise Instructions, Skills, Repository Intelligence"] --> H
+    Policy["Policy Engine and Approval Service"] --> H
+    H --> W["Isolated Execution Workers"]
+    W --> A["AI Provider Adapter"]
+    A --> C["Claude Code"]
+    A --> G["GitHub Copilot"]
+    A --> X["OpenAI Codex"]
+    W --> V["Deterministic Gate Engine"]
+    A --> E["Evidence Store"]
+    V --> E
+    E --> O["Evaluation"] --> Approval["Authorized Approval"]
+    H --> S["Durable Run State"]
+    H --> M["Metrics and Observability"]

@@ -1,0 +1,14 @@
+flowchart TD
+    A["Temporary Observation"] --> B["Collect Evidence"]
+    B --> C{"Verified?"}
+
+    C -->|"No"| D["Remain in Scratchpad"]
+    C -->|"Yes"| E["Assess Reusability"]
+
+    E --> F{"Reusable?"}
+    F -->|"No"| G["Preserve in Run Evidence"]
+    F -->|"Yes"| H["Governance Review"]
+
+    H --> I{"Approved?"}
+    I -->|"No"| J["Reject or Revise"]
+    I -->|"Yes"| K["Promote to Governed Knowledge"]

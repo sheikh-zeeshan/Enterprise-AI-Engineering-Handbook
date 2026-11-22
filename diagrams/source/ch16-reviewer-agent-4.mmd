@@ -1,0 +1,13 @@
+flowchart LR
+    L[Lead Agent] -->|Task and constraints| D[Developer Agent]
+    D --> G[Fast Gates]
+    G -->|Fail| D
+    G -->|Pass| R[Reviewer Agent]
+    R -->|Changes required| D
+    R -->|Authority needed| H[Human or specialist decision]
+    H -->|Correction| D
+    H -->|Authorized path| R
+    R -->|Review complete| V[Validator Agent]
+    V -->|Fail| D
+    V -->|Pass| E[Evaluator Agent]
+    E -->|Evaluation result| A[Governed approval boundary]

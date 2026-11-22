@@ -1,0 +1,7 @@
+flowchart TD
+    D["Developer Implementation"] --> R["Reviewer Assessment"] --> V["Deterministic Validation"]
+    V --> C{"Requirements Satisfied?"}
+    C -- No --> F["Record Findings and Evidence"] --> P{"Retry Policy Allows Correction?"}
+    P -- Yes --> W["Developer Rework"] --> R
+    P -- No --> X["Failed or Exhausted"]
+    C -- Yes --> E["Evaluator Assessment"]

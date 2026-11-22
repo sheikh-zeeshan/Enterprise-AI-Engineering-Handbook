@@ -1,0 +1,10 @@
+flowchart TD
+    RUN["Harness run"] --> LEAD["Lead Agent"]
+    LEAD --> DEV["Developer Agent"]
+    DEV --> SUB["Delegated Agent"]
+    SUB --> TOOL["Tool execution"]
+    STORE[("Audit store")]
+    LEAD -.-> STORE
+    DEV -.-> STORE
+    SUB -.-> STORE
+    TOOL -.-> STORE

@@ -1,0 +1,16 @@
+flowchart TD
+    A["Task Received"] --> B["Load Approved Context"]
+    B --> C["Inspect Permitted Historical Memory"]
+    C --> D["Verify Repository and ADR Evidence"]
+    D --> E{"Material Conflict Detected?"}
+    E -->|"Yes"| F["Record and Resolve Conflict"]
+    F --> G["Execute Conflict-Report Gate"]
+    G --> H{"Gate Passed?"}
+    H -->|"No"| I["Block Affected Work and Escalate"]
+    H -->|"Yes"| J["Prepare Implementation Plan"]
+    E -->|"No"| J
+    J --> K["Developer Implementation"]
+    K --> L["Reviewer"]
+    L --> M["Validator"]
+    M --> N["Evaluator"]
+    N --> O["Human Approval"]

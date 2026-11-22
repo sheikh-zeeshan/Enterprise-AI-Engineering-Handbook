@@ -1,0 +1,10 @@
+flowchart TD
+    A[Recurring Execution Evidence] --> B[Candidate Prompt Improvement]
+    B --> C[Comparative Validation]
+    C --> D[Human Review]
+    D --> E{Decision}
+    E -->|Reject| F[Preserve Active Version]
+    E -->|Revise| B
+    E -->|Approve| G[Authorized Activation]
+    G --> H[New Governed Version]
+    H --> I[Future Harness Runs]

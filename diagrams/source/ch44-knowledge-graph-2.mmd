@@ -1,0 +1,18 @@
+graph TD
+    BS[Booking Service]
+
+    API[Booking API]
+    DB[(Booking Database)]
+    E1[BookingConfirmed]
+    E2[BookingCancelled]
+    ADR[ADR-032 Integration Contract Evolution]
+    SK[Booking Workflow Skill]
+    CT[Contract Tests]
+
+    BS -->|exposes| API
+    BS -->|owns| DB
+    BS -->|publishes| E1
+    BS -->|publishes| E2
+    BS -->|governed by| ADR
+    SK -->|supports| BS
+    CT -->|protects| API

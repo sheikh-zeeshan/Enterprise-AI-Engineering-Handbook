@@ -1,0 +1,12 @@
+flowchart LR
+    A[Harness Components] --> B[Structured Events]
+    A --> C[Execution Logs]
+
+    B --> D[(Metrics Store)]
+    C --> E[(Log Store)]
+
+    D --> F[Dashboards]
+    D --> G[Trend Analysis]
+
+    E --> H[Diagnostics]
+    E --> I[Audit Investigation]

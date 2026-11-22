@@ -1,0 +1,14 @@
+flowchart TB
+    H["Enterprise Harness"] --> L["Lead Agent"] --> D["Developer Task"] --> A{"Coding Platform"}
+    A --> C["Claude Code Adapter"]
+    A --> O["Codex Adapter"]
+    A --> G["GitHub Copilot Adapter"]
+    C --> P["Controlled Execution Policy"]
+    O --> P
+    G --> P
+    P --> T["Authorized Tool Operations"] --> R["Implementation Artifacts"]
+    R --> V["Deterministic Validation Gates"] --> VA["Validator Agent"]
+    R --> RE["Reviewer Agent"]
+    VA --> E["Evaluator Agent"]
+    RE --> E
+    E --> HU["Human Approval"]

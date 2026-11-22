@@ -1,0 +1,12 @@
+flowchart TD
+    A[GitHub pull request] --> B[Copilot review findings]
+    A --> C[Human review comments]
+    B --> D[GitHub evidence adapter]
+    C --> D
+    D --> E[Normalized finding store]
+    E --> F[Pattern detection]
+    F --> G[Learning analysis]
+    G --> H[Candidate improvement]
+    H --> I{Human governance}
+    classDef decision fill:#fff1d6,stroke:#bb8b36,color:#704b0a
+    class I decision

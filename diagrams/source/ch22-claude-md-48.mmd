@@ -1,0 +1,7 @@
+flowchart TD
+    A[Proposed High-Risk Action] --> B[CLAUDE.md Guidance]
+    B --> C[Harness Approval Requirement]
+    C --> D{Authorized Human Approval?}
+    D -- No --> E[Block Action]
+    D -- Yes --> F[Execute Within Granted Permissions]
+    F --> G[Audit Evidence]

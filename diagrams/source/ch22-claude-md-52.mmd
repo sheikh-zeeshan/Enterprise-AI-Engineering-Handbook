@@ -1,0 +1,13 @@
+flowchart TD
+    A[Approved Engineering Standards] --> B[CLAUDE.md]
+    B --> C[Harness Execution Context]
+    D[Task Prompt] --> C
+    E[Steering Note] --> C
+    F[Relevant Skills] --> C
+    C --> G[Lead Agent]
+    G --> H[Developer Agent]
+    H --> I[Reviewer Agent]
+    I --> J[Validator Agent]
+    J --> K[Deterministic Gates]
+    K --> L[Evaluator Agent]
+    L --> M[Human Approval]

@@ -1,0 +1,25 @@
+flowchart TD
+    A["Receive Prompt"] --> B["Create Run Workspace and Snapshot Inputs"]
+    B --> C["Lead Investigates and Records Findings"]
+    C --> D["Finalize Executable Plan and Lead Handoff"]
+    D --> E["Persist CP-001 — Lead Phase Complete"]
+    E --> I["Developer Implements; Prepare Result and Handoff"]
+    I --> J["Persist CP-002 — Implementation Complete"]
+    J --> K["Reviewer Reviews"]
+    K --> L{"Required Findings Resolved?"}
+    L -->|No| M["Reviewer-to-Developer Remediation Handoff"]
+    M --> I
+    L -->|Yes| N["Persist CP-003 — Review Complete"]
+    N --> O["Execute Deterministic Gates; Persist Evidence"]
+    O --> P{"All Required Gates Pass?"}
+    P -->|No| Q["Preserve Failure Evidence; Assign Remediation"]
+    Q --> I
+    P -->|Yes| R["Prepare Validator Handoff; Persist CP-004"]
+    R --> S["Evaluator Assesses Outcome and Evidence"]
+    S --> T{"Goal and Acceptance Criteria Satisfied?"}
+    T -->|No| U["Assign Further Work or Escalate"]
+    U --> I
+    T -->|Yes| V["Persist Evaluation, Final Outputs, and CP-005"]
+    V --> W["Transition to Completed"]
+    W --> X["Apply Retention and Cleanup Policy"]
+    V -. "independent governed process" .-> Y["Review Promotion Candidates"]

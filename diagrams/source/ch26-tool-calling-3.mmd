@@ -1,0 +1,15 @@
+flowchart TD
+    A["Tool Invocation Requested"] --> B{"Tool Enabled?"}
+    B -->|No| X["Deny and Audit"]
+    B -->|Yes| C{"Role Authorized?"}
+    C -->|No| X
+    C -->|Yes| D{"Resource in Scope?"}
+    D -->|No| X
+    D -->|Yes| E{"Risk and Environment Allowed?"}
+    E -->|No| X
+    E -->|Yes| F{"Approval Required?"}
+    F -->|No| G["Authorize Execution"]
+    F -->|Yes| H{"Valid Approval?"}
+    H -->|No| I["Suspend or Deny"]
+    H -->|Yes| G
+    G --> J["Execute in Controlled Runtime"]

@@ -1,0 +1,9 @@
+flowchart TD
+    A["Investigate Duplicate Confirmations"] --> B["Search Booking Service"] --> C["Inspect Handler and Persistence"]
+    C --> D["Inspect Outbox and Event Contracts"] --> E["Implement Idempotency Protection"]
+    E --> F["Build Solution"] --> G{"Build Passed?"}
+    G -->|No| H["Capture Diagnostics"] --> E
+    G -->|Yes| I["Run Focused Tests"] --> J{"Tests Passed?"}
+    J -->|No| K["Investigate Failure"] --> E
+    J -->|Yes| L["Submit Final Revision"] --> M["Harness Final Gates"]
+    M --> N["Review and Evaluation"] --> O["Human Approval"]

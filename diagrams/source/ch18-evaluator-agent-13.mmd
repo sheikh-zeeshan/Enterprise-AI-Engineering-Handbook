@@ -1,0 +1,7 @@
+flowchart TD
+    A[Evaluation Completed] --> B{Outcome}
+    B -->|Satisfied| C[Human Approval]
+    B -->|Partial| D[Lead Agent Bounded Rework]
+    B -->|Failed| E[Developer Correction]
+    B -->|Inconclusive| F[Evidence Request or Escalation]
+    D --> E --> G[Reviewer] --> H[Validator] --> A

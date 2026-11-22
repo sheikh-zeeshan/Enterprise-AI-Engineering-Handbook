@@ -1,0 +1,33 @@
+flowchart TD
+    F["Corporate Fleet Booking Feature Prompt"]
+
+    A["Review Existing Booking Architecture"]
+    B["Define Domain Behavior"]
+    C["Add Application Command"]
+    D["Add Booking API"]
+    E["Add EF Core Persistence"]
+    G["Publish Integration Event"]
+    H["Add Authorization"]
+    I["Add Observability"]
+    J["Write Automated Tests"]
+    K["Review Architecture"]
+    L["Fix Build and Validation Failures"]
+    M["Prepare Pull Request"]
+
+    F --> A
+    A --> B
+    B --> C
+    C --> D
+    C --> E
+    E --> G
+    H --> D
+    C --> H
+    D --> I
+    D --> J
+    E --> J
+    G --> J
+    H --> J
+    I --> J
+    J --> K
+    K --> L
+    L --> M

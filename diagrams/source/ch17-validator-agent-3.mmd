@@ -1,0 +1,7 @@
+flowchart TD
+    C["Changed artifacts"] --> CL["Change classification"]
+    R["Risk rules"] --> CL
+    I["Repository Instructions"] --> CL
+    CL --> P["Resolved validation profile"]
+    P --> X["Execute mandatory gates"]
+    X --> O["Aggregate outcomes"]

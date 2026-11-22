@@ -1,0 +1,10 @@
+flowchart TB
+    Enterprise["Enterprise Policy"]
+    Team["Team Policy"]
+    Repo["Repository Configuration"]
+
+    Enterprise --> Effective["Effective Harness Policy"]
+    Team --> Effective
+    Repo --> Effective
+
+    Effective --> Run["Harness Run"]

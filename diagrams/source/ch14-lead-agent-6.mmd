@@ -1,0 +1,21 @@
+flowchart LR
+    subgraph Lead["Lead Agent Authority"]
+        A1[Interpret Goal]
+        A2[Gather Evidence]
+        A3[Create Plan]
+        A4[Select Skills]
+        A5[Select Roles]
+        A6[Coordinate Handoffs]
+        A7[Manage Retry]
+        A8[Escalate]
+    end
+
+    subgraph Controls["External Control Boundaries"]
+        B1[Deterministic Gates]
+        B2[Security Policy]
+        B3[Governance Rules]
+        B4[Specialist Review]
+        B5[Human Approval]
+    end
+
+    Lead --> Controls

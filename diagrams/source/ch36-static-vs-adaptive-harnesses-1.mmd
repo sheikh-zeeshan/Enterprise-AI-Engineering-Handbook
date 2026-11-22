@@ -1,0 +1,17 @@
+flowchart TD
+    Goal[Engineering Goal] --> Config[Approved Harness Configuration]
+    Config --> Discovery[Repository Discovery]
+    Discovery --> Lead[Lead Agent]
+    Lead --> Dev[Developer Agent]
+    Dev --> Review[Reviewer Agent]
+    Review --> Validate[Validator Agent and Deterministic Gates]
+    Validate --> Evaluate[Evaluator Agent]
+    Evaluate --> Decision{Outcome acceptable?}
+    Decision -->|Yes| Approval[Human Approval and Delivery]
+    Decision -->|No - retry allowed| Correction[Correction Workflow]
+    Correction --> Dev
+    Decision -->|No - exhausted| Exhausted[Record Failure and Exhaustion]
+    Approval --> Evidence[Execution Evidence]
+    Exhausted --> Evidence
+    Config -.-> Standards[Approved Instructions and Skills]
+    Standards -.-> Dev

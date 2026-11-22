@@ -1,0 +1,7 @@
+flowchart TD
+    C[Claude Command Request] --> H[Harness Policy Enforcement]
+    H --> A[Identity and Authorization]
+    A --> S[Restricted Execution Environment]
+    S --> D[Deterministic Validation]
+    D --> E[Evidence and Audit]
+    E --> P[Human Approval When Required]

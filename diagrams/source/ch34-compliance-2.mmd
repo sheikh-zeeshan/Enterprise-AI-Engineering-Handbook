@@ -1,0 +1,36 @@
+flowchart LR
+    A[Task] --> B[Pre-Execution Compliance Check]
+
+    B --> C[Resolve Authorization and Profile]
+
+    C --> D{Allowed?}
+
+    D -- No --> X[Block and Record]
+
+    D -- Yes --> E[Developer Agent]
+
+    E --> F[Reviewer Agent]
+
+    F --> G[Validator Agent]
+
+    G --> H[Compliance Gates]
+
+    H --> I{Mandatory Controls Pass?}
+
+    I -- No --> X
+
+    I -- Yes --> J[Evaluator Agent]
+
+    J --> K{Human Approval Required?}
+
+    K -- Yes --> L[Authorized Approver]
+    K -- No --> M[Release Eligible]
+
+    L --> N{Approved?}
+
+    N -- No --> X
+    N -- Yes --> M
+
+    M --> O[Deployment Pipeline]
+
+    O --> P[Evidence Store]

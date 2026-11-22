@@ -1,0 +1,17 @@
+flowchart TD
+    subgraph Control[Enterprise Policy Control Plane]
+        A[Policy Authority] --> B[Versioned Registry]
+        B --> C[Policy Decision Point]
+        D[Exceptions and Approvals] --> C
+    end
+    subgraph Runtime[AI Engineering Execution Plane]
+        E[Lead Agent] --> F[Developer Agent]
+        F --> G[Reviewer Agent]
+        G --> H[Validator Agent]
+        H --> I[Evaluator Agent]
+        F --> J[Tool Broker]
+    end
+    C --> J
+    J --> K[Authorized Engineering Resources]
+    C --> L[Audit Evidence]
+    J --> L

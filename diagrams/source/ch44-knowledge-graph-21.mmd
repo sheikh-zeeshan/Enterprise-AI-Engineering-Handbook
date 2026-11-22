@@ -1,0 +1,7 @@
+flowchart TD
+ TASK["Engineering Request"] --> CODEX["OpenAI Codex"]
+ INSTR["AGENTS.md"] --> CODEX
+ CODEX --> SK["Event Impact Analysis Skill"] --> MCP["Knowledge Graph MCP Server"]
+ MCP --> AUTH["Authorization"] --> QUERY["Graph Query Service"] --> KG[("Governed Knowledge Graph")]
+ CODEX --> RI["Repository Intelligence"]
+ CODEX --> LEAD["Lead Agent Plan"] --> DEV["Developer Agent"] --> GATES["Validation Gates"]

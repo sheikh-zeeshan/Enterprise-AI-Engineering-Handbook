@@ -1,0 +1,17 @@
+flowchart TD
+    Run[Alpha Car Detailing Harness Run] --> Evidence[Build, Test, Review and Evaluation Evidence]
+    Evidence --> Store[(Verified Evidence Store)]
+    Store --> Pattern[Deterministic Pattern Analysis]
+    Pattern --> Codex[Codex Learning Analyst]
+    Codex --> Recommendation[Improvement Recommendation]
+    Recommendation --> Human[Human Review]
+    Human --> Approved{Approved?}
+    Approved -->|No| Rejected[Reject or Defer]
+    Approved -->|Yes| Change[Authorized Change Preparation]
+    Change --> Validation[Independent Validation]
+    Validation --> Ready{Release requirements met?}
+    Ready -->|No| Block[Block Release]
+    Ready -->|Yes| Release[Versioned Harness Release]
+    Release --> Future[Future Harness Runs]
+    Future --> Measure[Measure Improvement Effectiveness]
+    Measure --> Store

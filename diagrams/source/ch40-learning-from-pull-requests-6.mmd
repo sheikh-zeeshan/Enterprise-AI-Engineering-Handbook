@@ -1,0 +1,10 @@
+flowchart LR
+    A[PR Comment] --> B[Observation]
+    B --> C[Evidence Classification]
+    C --> D[Repeated Pattern]
+    D --> E[Candidate Learning]
+    E --> F[Human Governance]
+    F -->|Approved| G[Authoritative Improvement]
+
+    C --> H[Preference / Noise / False Positive]
+    H --> I[Do Not Promote]

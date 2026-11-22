@@ -1,0 +1,7 @@
+flowchart TD
+    A["Agent Implements Booking Fix"] --> B["Prepare Proposed Changes"] --> C["Pull Request"]
+    C --> D["CI Validation Gates"] --> E{"Required Gates Passed?"}
+    E -->|No| F["Return for Correction"] --> B
+    E -->|Yes| G["Independent Code Review"] --> H{"Approved?"}
+    H -->|No| F
+    H -->|Yes| I["Authorized Merge"] --> J["Separate Release Pipeline"]

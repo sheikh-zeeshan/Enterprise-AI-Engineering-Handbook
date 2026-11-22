@@ -1,0 +1,15 @@
+sequenceDiagram
+    participant Store as Booking outbox
+    participant Relay as Outbox relay
+    participant Broker as Broker
+    participant Consumer as Downstream consumer
+
+    Relay->>Store: Claim committed pending record
+    Store-->>Relay: Payload and stable event identifier
+    Relay->>Broker: Publish event
+    Broker-->>Relay: Acknowledge publication
+    Relay->>Store: Mark published
+    Broker->>Consumer: Deliver event
+    Consumer->>Consumer: Commit idempotent processing
+    Note over Relay,Broker: A crash before marking can cause republication
+    Note over Broker,Consumer: Repeated delivery must be safe

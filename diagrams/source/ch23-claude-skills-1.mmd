@@ -1,0 +1,20 @@
+flowchart TD
+    A[Task Prompt] --> B[Load Applicable CLAUDE.md Guidance]
+    B --> C[Inspect Repository Context]
+    C --> D{Applicable Skill?}
+
+    D -- No --> E[Normal Task Reasoning]
+    D -- Yes --> F[Select Skill]
+
+    F --> G[Check Preconditions]
+    G --> H{Preconditions Met?}
+
+    H -- No --> I[Report Blocker or Request Decision]
+    H -- Yes --> J[Execute Skill Workflow]
+
+    J --> K[Implementation]
+    K --> L[Deterministic Validation]
+    L --> M{Validation Passed?}
+
+    M -- No --> N[Report Failure Evidence]
+    M -- Yes --> O[Evidence and Handoff]

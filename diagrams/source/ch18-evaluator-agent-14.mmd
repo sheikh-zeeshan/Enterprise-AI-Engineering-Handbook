@@ -1,0 +1,9 @@
+flowchart TB
+    A[Enterprise Harness] --> B[Evaluation Contract]
+    B --> C[Claude Adapter]
+    B --> D[Copilot Adapter]
+    B --> E[Codex Adapter]
+    C --> F[Structured Evaluation Result]
+    D --> F
+    E --> F
+    F --> G[Harness Governance and Routing]

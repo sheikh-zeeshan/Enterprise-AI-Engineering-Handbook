@@ -1,0 +1,14 @@
+flowchart TD
+    subgraph BookingBoundary["Booking ownership and credentials"]
+        BA["Booking application"] -->|"One transaction"| BD[("Bookings, workflow, outcomes, outbox")]
+        BD --> BR["Booking relay"]
+        BR -->|"Record accepted publication"| BD
+    end
+    BR -.->|"Versioned event"| E["Broker contract boundary"]
+    subgraph NotificationBoundary["Notification ownership and credentials"]
+        NC["Notification consumer"] -->|"One transaction"| ND[("Inbox and delivery intents")]
+        ND --> DD["Notification dispatcher"]
+        DD -->|"Record dispatch result"| ND
+    end
+    E -.->|"Deliver or redeliver"| NC
+    DD -->|"Stable provider operation identity"| P["Communication provider"]

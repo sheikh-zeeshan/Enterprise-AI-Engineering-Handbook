@@ -1,0 +1,11 @@
+flowchart TD
+    C[Command Invocation] --> V[Validate Request]
+    V --> A[Verify Plan and Authorization]
+    A --> W[Create Isolated Workspace]
+    W --> L[Lead Agent]
+    L --> D[Developer Agent]
+    D --> R[Reviewer Agent]
+    R --> G[Validator Agent and Gates]
+    G --> E[Evaluator Agent]
+    E --> O[Evidence Aggregation]
+    O --> H[Human Approval]

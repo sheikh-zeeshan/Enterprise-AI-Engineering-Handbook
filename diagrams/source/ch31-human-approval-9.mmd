@@ -1,0 +1,11 @@
+flowchart TD
+    Write["GitHub Copilot implementation"] --> PR["Pull request"]
+    PR --> CI["Automated validation"] --> Review["Required code reviews"]
+    Review --> Checks["Governance approval checks"]
+    Checks --> Human{"Required human approval granted?"}
+    Human -->|No| Block["Merge or deployment blocked"]
+    Human -->|Yes| Artifact["Build and identify immutable release artifact"]
+    Artifact --> Environment["Production environment protection"]
+    Environment --> Valid{"Deployment authorization valid for this artifact?"}
+    Valid -->|No| Block
+    Valid -->|Yes| Deploy["Controlled production deployment"]

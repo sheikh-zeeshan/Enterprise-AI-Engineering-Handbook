@@ -1,0 +1,10 @@
+flowchart TB
+    Standards["Engineering standards"] --> Context["Repository Intelligence"]
+    Context --> Assets["Instructions, Skills, Prompts"]
+    Assets --> Delivery["AI-assisted engineering"]
+    Platform["Platform enablement"] --> Delivery
+    Governance["Governance and approvals"] --> Delivery
+    Delivery --> Evidence["Tests, reviews, delivery metrics"]
+    Evidence --> Improvement["Human-reviewed improvements"]
+    Improvement --> Standards
+    Improvement --> Assets

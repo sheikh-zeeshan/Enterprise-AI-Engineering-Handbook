@@ -1,0 +1,24 @@
+flowchart TD
+    A[Authorized Goal] --> B[Harness Admission]
+    B --> C[Repository Intelligence]
+    C --> D[Planning and Lead Agent]
+    D --> E[Plan Checkpoint]
+    E --> F[Developer Agent]
+    F --> G[Candidate Revision]
+    G --> H[Deterministic Gates]
+    H --> I{Gate decision}
+    I -->|Failed| J[Bounded Recovery]
+    J --> F
+    I -->|Passed| K[Reviewer]
+    K --> L[Validator]
+    L --> M[Evaluator]
+    M --> N[Human Approval]
+    N --> O[Authorized Output]
+    O --> P[Evidence Archive]
+    Q[Durable State Store] -.-> B
+    Q -.-> E
+    Q -.-> F
+    Q -.-> H
+    Q -.-> J
+    Q -.-> N
+    Q -.-> P

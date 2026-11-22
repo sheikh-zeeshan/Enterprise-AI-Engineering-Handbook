@@ -1,0 +1,21 @@
+flowchart TB
+    R["Engineering Request"] --> H["Shared Harness Control Plane"]
+    H --> P["Effective Policy"]
+    H --> S["Scheduler"]
+    H --> State["Durable Run State"]
+    S --> B["Booking Child Run"]
+    S --> F["Fleet Child Run"]
+    S --> I["Billing Child Run"]
+    B --> BW["Isolated Booking Workspace"]
+    F --> FW["Isolated Fleet Workspace"]
+    I --> IW["Isolated Billing Workspace"]
+    BW --> Adapter["Agent Provider Adapter"]
+    FW --> Adapter
+    IW --> Adapter
+    Adapter --> C["Claude Code"]
+    Adapter --> G["GitHub Copilot"]
+    Adapter --> X["Codex"]
+    BW --> Gates["Deterministic Gates"]
+    FW --> Gates
+    IW --> Gates
+    Gates --> Evidence["Evidence Aggregation"] --> E["Evaluation"] --> A["Human Approval"]

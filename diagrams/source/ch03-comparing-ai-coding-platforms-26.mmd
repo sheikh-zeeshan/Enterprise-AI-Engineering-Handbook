@@ -1,0 +1,24 @@
+flowchart TB
+    U[Engineer, Work Item, or Automation]
+    TC[Vendor-Neutral Task Contract]
+    H[Enterprise AI Engineering Harness]
+    R[Routing and Policy Engine]
+
+    U --> TC
+    TC --> H
+    H --> R
+
+    R -->|IDE Productivity| GC[GitHub Copilot]
+    R -->|Repository Engineering| CC[Claude Code]
+    R -->|Delegated Task| OC[OpenAI Codex]
+    R -->|Restricted or Specialized Work| XP[Other Approved Platform]
+
+    GC --> E[Common Evidence Model]
+    CC --> E
+    OC --> E
+    XP --> E
+
+    E --> V[Independent Validation]
+    V --> REV[Human and Agent Review]
+    REV --> A[Human Approval]
+    A --> PR[Protected Pull-Request Workflow]

@@ -1,0 +1,14 @@
+flowchart TD
+    M[("Approved Harness Memory")] --> I["Improvement analysis"]
+    I --> S["Skill change proposal"]
+    I --> P["Prompt change proposal"]
+    I --> N["Instruction change proposal"]
+    I --> V["Validation gate proposal"]
+    S --> SG["Skill governance"]
+    P --> PG["Prompt governance"]
+    N --> NG["Instruction governance"]
+    V --> VG["Gate governance"]
+    SG --> A["Approved engineering changes"]
+    PG --> A
+    NG --> A
+    VG --> A

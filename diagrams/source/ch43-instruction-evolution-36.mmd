@@ -1,0 +1,21 @@
+flowchart TD
+    A["Harness Execution Evidence"] --> B["Evidence Normalization"]
+    B --> C["Pattern Detection"]
+    C --> D{"Recurring or High-risk Finding?"}
+    D -->|No| E["Retain Observation"]
+    D -->|Yes| F["Instruction Analysis Agent"]
+    F --> G{"Instruction Deficiency?"}
+    G -->|No| H["Recommend Alternative Improvement"]
+    G -->|Yes| I["Instruction Proposal Agent"]
+    I --> J["Candidate Registry"]
+    J --> K["Impact and Policy Validation"]
+    K --> L["Human Owner Approval"]
+    L --> M{"Approved?"}
+    M -->|No| N["Record Rejection"]
+    M -->|Yes| O["Behavioral and Deterministic Validation"]
+    O --> P{"Validation Passed?"}
+    P -->|No| Q["Request Revision"]
+    P -->|Yes| R["Controlled Version Activation"]
+    R --> S["Future Harness Runs"]
+    S --> T["Effectiveness Measurement"]
+    T --> A

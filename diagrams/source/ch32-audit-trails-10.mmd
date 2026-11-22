@@ -1,0 +1,18 @@
+flowchart TB
+    WORK["Work item ACD-284"] --> HARNESS["Enterprise Harness"]
+    HARNESS --> COPILOT["GitHub Copilot cloud agent"]
+    COPILOT --> SESSION["Agent session evidence"]
+    COPILOT --> PR["Pull request and commits"]
+    PR --> GATES["Deterministic validation gates"]
+    PR --> REVIEW["Independent review"]
+    GATES --> EVAL["Business evaluation"]
+    REVIEW --> EVAL
+    EVAL --> APPROVAL["Human approval"]
+    SESSION -.-> INGEST["Audit ingestion service"]
+    PR -.-> INGEST
+    GATES -.-> INGEST
+    REVIEW -.-> INGEST
+    EVAL -.-> INGEST
+    APPROVAL -.-> INGEST
+    HARNESS -.-> INGEST
+    INGEST --> STORE[("Controlled audit store")]

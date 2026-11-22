@@ -1,0 +1,12 @@
+flowchart LR
+    A["Task Request"] --> B["Repository Discovery"]
+    B --> C["Repository Evidence"]
+    C --> D["Applicable Instructions"]
+    D --> E["Effective Instruction Set"]
+    E --> F["Implementation Plan"]
+    F --> G["Code and Configuration Changes"]
+    G --> H["Instruction Validation"]
+    H --> I{"Compliant?"}
+    I -- Yes --> J["Review and Delivery"]
+    I -- No --> K["Correct, Escalate, or Request Exception"]
+    K --> F

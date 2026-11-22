@@ -1,0 +1,29 @@
+flowchart LR
+    User["Engineer / Work Item"]
+
+    CP["Harness Control Plane"]
+    EP["Harness Execution Plane"]
+
+    User --> CP
+    CP --> EP
+
+    subgraph Platform["Shared Enterprise Platform"]
+        CP
+        EP
+        Policies["Policy Engine"]
+        Approval["Approval Service"]
+        Metrics["Metrics"]
+        Adapter["Tool Adapters"]
+        Workspace["Workspace Manager"]
+    end
+
+    CP --> Policies
+    CP --> Approval
+    EP --> Adapter
+    EP --> Workspace
+    EP --> Metrics
+
+    Adapter --> GitHub["GitHub"]
+    Adapter --> ADO["Azure DevOps"]
+    Adapter --> Claude["Claude"]
+    Adapter --> Codex["Codex"]

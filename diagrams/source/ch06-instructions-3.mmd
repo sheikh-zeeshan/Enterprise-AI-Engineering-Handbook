@@ -1,0 +1,24 @@
+flowchart TB
+    A["Organization Instructions"]
+    B["Portfolio Instructions"]
+    C["Repository-Root Instructions"]
+    D1["Domain or Service Instructions"]
+    D2["Infrastructure Instructions"]
+    D3["Security Instructions"]
+    E1["Project or Directory Instructions"]
+    E2["Language or Framework Instructions"]
+    F["Role and Workflow Instructions"]
+    G["Approved Temporary Overrides"]
+
+    A --> B
+    B --> C
+    C --> D1
+    C --> D2
+    C --> D3
+    D1 --> E1
+    D1 --> E2
+    D2 --> E2
+    D3 --> E1
+    E1 --> F
+    E2 --> F
+    F --> G

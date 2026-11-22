@@ -1,0 +1,28 @@
+flowchart TB
+    subgraph Control[Governed Control Plane]
+        I[Approved Instructions]
+        S[Versioned Skills and Prompts]
+        P[Engineering Policies]
+        G[Approval and Publication]
+        M[(Approved Harness Memory)]
+    end
+    subgraph Execute[Engineering Execution Plane]
+        L[Lead Agent] --> D[Developer Agent]
+        D --> B[Build and Validation Tools]
+        B --> V[Validator Agent]
+        V --> E[Evaluator Agent]
+    end
+    subgraph Learn[Learning Analysis Plane]
+        C[Evidence Collector] --> F[Failure Classification]
+        F --> A[Root-Cause and Pattern Analysis]
+        A --> R[Candidate Recommendations]
+    end
+    I --> L
+    S --> D
+    P --> V
+    M --> L
+    B --> C
+    V --> C
+    R --> G
+    G --> S
+    G --> M

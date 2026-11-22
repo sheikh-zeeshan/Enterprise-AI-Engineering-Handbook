@@ -1,0 +1,20 @@
+flowchart TD
+    A[Harness Events] --> F[Analytics Layer]
+    B[Source Control] --> F
+    C[CI/CD] --> F
+    D[Incident Data] --> F
+    E[Business Systems] --> F
+
+    F --> G[Speed Metrics]
+    F --> H[Quality Metrics]
+    F --> I[Reliability Metrics]
+    F --> J[Human Effort Metrics]
+    F --> K[Cost Metrics]
+    F --> L[Business Metrics]
+
+    G --> M[Balanced Productivity Scorecard]
+    H --> M
+    I --> M
+    J --> M
+    K --> M
+    L --> M

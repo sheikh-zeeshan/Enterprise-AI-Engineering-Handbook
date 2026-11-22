@@ -1,0 +1,16 @@
+flowchart TD
+    A[New Information Proposed] --> B{Stable Across Tasks?}
+    B -- No --> C[Prompt, Steering Note or Scratchpad]
+    B -- Yes --> D{Behavioral Engineering Guidance?}
+    D -- No --> E[Documentation or Repository Intelligence]
+    D -- Yes --> F{Approved Standard?}
+    F -- No --> G[Architecture Proposal and Review]
+    F -- Yes --> H{Applicable Scope?}
+    H -- Repository --> I[Root CLAUDE.md]
+    H -- Directory --> J[Nested CLAUDE.md]
+    H -- File_Category --> K[Scoped Rule]
+    I --> L[Check Conflicts and Enforcement]
+    J --> L
+    K --> L
+    L --> M[Owner Review]
+    M --> N[Version-Controlled Update]

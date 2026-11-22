@@ -1,0 +1,24 @@
+flowchart TD
+    N0["Engineering Task"]
+    N1["Harness and Lead Agent"]
+    N2["Approved Skill Library"]
+    N3["Select Coding Platform"]
+    N4["Claude Code"]
+    N5["Codex"]
+    N6["Implementation Artifacts"]
+    N7["Reviewer Agent"]
+    N8["Deterministic Validator"]
+    N9["Evaluator Agent"]
+    N10["Human Approval or Handoff"]
+    N0 --> N1
+    N1 --> N3
+    N2 --> N4
+    N2 --> N5
+    N3 --> N4
+    N3 --> N5
+    N4 --> N6
+    N5 --> N6
+    N6 --> N7
+    N7 --> N8
+    N8 --> N9
+    N9 --> N10

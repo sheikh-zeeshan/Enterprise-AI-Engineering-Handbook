@@ -1,0 +1,13 @@
+flowchart TB
+    Booking["Booking Service"] --> BookingDB[("Booking DB")]
+    Corporate["Corporate Account Service"] --> CorporateDB[("Corporate Account DB")]
+    Fleet["Fleet Service"] --> FleetDB[("Fleet DB")]
+    Station["Station Operations Service"] --> StationDB[("Station Operations DB")]
+    Billing["Billing Service"] --> BillingDB[("Billing DB")]
+    Payment["Payment Service"] --> PaymentDB[("Payment DB")]
+    Notification["Notification Service"] --> NotificationDB[("Notification DB")]
+
+    Booking -. "No direct access" .-> FleetDB
+    Booking -. "No direct access" .-> CorporateDB
+    Billing -. "No direct access" .-> BookingDB
+    Notification -. "No direct access" .-> BillingDB

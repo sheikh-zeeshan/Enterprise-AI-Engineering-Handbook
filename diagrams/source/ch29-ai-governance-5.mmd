@@ -1,0 +1,19 @@
+flowchart TD
+    GO["Business Goal"] --> WI["Authorized Work Item"]
+    WI --> EX["Harness Execution"]
+    EX --> CH["Change Set and Commit"]
+    CH --> VA["Validation Evidence"]
+    CH --> RE["Review Findings"]
+    CH --> EV["Outcome Evaluation"]
+    VA --> RK["Risk Decision"]
+    RE --> RK
+    EV --> RK
+    RK --> AP["Approval Record"]
+    AP --> RL["Release or Accepted Artifact"]
+    EX -.-> AT["Audit Record"]
+    VA -.-> AT
+    RE -.-> AT
+    EV -.-> AT
+    RK -.-> AT
+    AP -.-> AT
+    RL -.-> AT

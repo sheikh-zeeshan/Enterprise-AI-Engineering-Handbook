@@ -1,0 +1,17 @@
+flowchart TB
+    subgraph CONTROL[Trusted security control plane]
+      ID[Identity provider] --> AUTH[Authorization engine]
+      POLICY[Security policy] --> AUTH
+      APPROVAL[Approval service] --> AUTH
+      AUTH --> TG[Tool gateway]
+      TG --> AUD[(Audit service)]
+    end
+    subgraph EXECUTION[Agent execution plane]
+      LEAD[Lead Agent] --> DEV[Developer Agent]
+      DEV --> REV[Reviewer Agent]
+      REV --> VAL[Validator Agent]
+      VAL --> EVAL[Evaluator Agent]
+    end
+    EXECUTION -. Requested capabilities .-> TG
+    TG --> SB[Isolated sandbox]
+    SB --> RES[(Approved resources)]

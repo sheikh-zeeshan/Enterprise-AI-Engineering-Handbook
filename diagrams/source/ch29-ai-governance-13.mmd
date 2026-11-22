@@ -1,0 +1,14 @@
+flowchart TD
+    BG["Authorized Corporate Booking Goal"] --> RC["Trusted Risk Classification"]
+    RC --> LE["Lead Agent"]
+    LE --> DE["Developer Agent"]
+    DE --> VA["Validator Agent"]
+    DE --> RV["Reviewer Agent"]
+    VA --> EV["Evaluator Agent"]
+    RV --> EV
+    EV --> GD{"Governance Requirements Met?"}
+    GD -->|"No"| BLOCK["Block, Remediate or Escalate"]
+    GD -->|"Yes"| AP["Verified Human Approvals"]
+    AP -->|"Authorized"| REL["Protected Release Workflow"]
+    AP -->|"Not authorized"| BLOCK
+    REL --> AUD["Traceable Audit Evidence"]

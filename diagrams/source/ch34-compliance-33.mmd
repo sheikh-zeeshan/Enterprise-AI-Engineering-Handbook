@@ -1,0 +1,26 @@
+flowchart TB
+    subgraph GOV["Enterprise Governance"]
+        A["Regulatory and Contractual Obligations"] --> B["Policies and Standards"]
+        C["Control Owners"]
+        D["Exception and Risk Authority"]
+    end
+    subgraph CP["Compliance Control Plane"]
+        E["Control Catalog"] --> F["Applicability Engine"]
+        G["Model and Tool Registry"]
+        H["Approval Requirements"]
+    end
+    subgraph EX["Execution"]
+        I["Enterprise Harness"] --> J["Approved Coding Agents"]
+    end
+    subgraph EV["Evidence and Oversight"]
+        K["Independent Validation"] --> L["Evidence Store"]
+        M["Human Approval"] --> L
+        L --> N["Compliance Reporting"]
+    end
+    B --> E
+    C --> E
+    D --> E
+    F --> I
+    G --> I
+    H --> M
+    J --> K

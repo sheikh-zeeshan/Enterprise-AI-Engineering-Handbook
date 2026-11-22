@@ -1,0 +1,15 @@
+flowchart TD
+    A["Governed Control Catalog"] --> B["Compliance Enforcement Services"]
+    B --> C["Claude Code Adapter"]
+    B --> D["GitHub Copilot Adapter"]
+    B --> E["Other Agent Adapter"]
+    C --> F["Engineering Repository"]
+    D --> F
+    E --> F
+    F --> G["Independent Validation"]
+    G --> H["Human Approval"]
+    H --> I["Controlled Deployment"]
+    G --> J["Audit Evidence Store"]
+    H --> J
+    I --> J
+    J --> K["Compliance Reporting"]

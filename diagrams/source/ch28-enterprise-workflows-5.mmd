@@ -1,0 +1,16 @@
+flowchart TD
+    A[Execution Failure] --> B{Failure type}
+    B -->|Implementation defect| C[Capture diagnostics]
+    C --> D{Remediation budget?}
+    D -->|Yes| E[Developer remediation]
+    E --> F[New candidate and revalidation]
+    D -->|No| G[Escalate or fail]
+    B -->|Transient infrastructure| H{Safe retry?}
+    H -->|Yes| I[Bounded retry and reconciliation]
+    H -->|No| J[Block and escalate]
+    B -->|Policy violation| K[Stop operation and preserve evidence]
+    K --> L[Authorized security or governance review]
+    B -->|Architecture conflict| M[Return to planning]
+    M --> N[Architecture decision]
+    B -->|Business mismatch| O[Reassess acceptance criteria]
+    O --> P[Remediate or reject]

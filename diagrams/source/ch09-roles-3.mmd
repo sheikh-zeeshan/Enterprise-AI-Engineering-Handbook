@@ -1,0 +1,17 @@
+flowchart TD
+    A[Developer Agent Completes Implementation] --> B[Reviewer Agent]
+    A --> C[Security Reviewer]
+    A --> D[Validator Agent]
+
+    B --> E[Consolidated Findings]
+    C --> E
+    D --> E
+
+    E --> F{Blocking Findings?}
+    F -->|Yes| G[Developer Remediation]
+    G --> B
+    G --> C
+    G --> D
+
+    F -->|No| H[Evaluator Agent]
+    H --> I[Lead Agent Prepares Pull Request]

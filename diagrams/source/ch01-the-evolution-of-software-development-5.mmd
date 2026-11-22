@@ -1,0 +1,12 @@
+flowchart TB
+    Portal["Corporate fleet portal"] --> API["Booking API"]
+    subgraph Core["Alpha Car Detailing modular application"]
+        API --> Booking["Booking module"]
+        Booking --> Contracts["Fleet Contracts interface"]
+        Contracts --> Terms["Approved quota terms"]
+        Booking --> Store[(Booking persistence)]
+        Booking --> Outbox[(Transactional outbox)]
+    end
+    Outbox --> Publisher["Outbox publisher"]
+    Publisher --> Bus["Event transport"]
+    Bus --> Consumer["Notification consumer"]

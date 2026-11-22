@@ -1,0 +1,33 @@
+sequenceDiagram
+    participant U as Engineer
+    participant H as Harness
+    participant C as Source Catalogue
+    participant A as Access Control
+    participant L as Lead Agent
+    participant D as Developer Agent
+    participant R as Reviewer Agent
+    participant V as Validator Agent
+    participant HR as Human Reviewer
+
+    U->>H: Submit task prompt
+    H->>C: Discover relevant sources
+    C-->>H: Candidate sources and metadata
+    H->>A: Verify access eligibility
+    A-->>H: Approved source set
+    H->>L: Prompt, Instructions, Steering Note, source manifest
+    L->>L: Assess conflicts and knowledge gaps
+
+    alt Conflict blocks implementation
+        L->>HR: Request decision with cited evidence
+        HR-->>L: Approved direction
+    end
+
+    L->>D: Assign implementation with approved sources
+    D->>D: Implement and cite decisions
+    D-->>R: Code, tests, assumptions, citations
+    R->>C: Independently retrieve verification sources
+    C-->>R: Review evidence
+    R-->>V: Approved implementation or findings
+    V->>V: Execute validation against criteria
+    V-->>H: Results linked to commit and sources
+    H-->>U: Cited outcome and unresolved gaps

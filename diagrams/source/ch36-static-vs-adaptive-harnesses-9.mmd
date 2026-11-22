@@ -1,0 +1,16 @@
+flowchart TB
+    subgraph EP[Execution Plane]
+        A[Approved Harness Version] --> B[Engineering Agents]
+        B --> C[Deterministic Gates]
+    end
+    subgraph LP[Learning Plane]
+        D[Evidence Analysis] --> E[Pattern Detection]
+        E --> F[Improvement Proposal]
+    end
+    subgraph GP[Governance and Release Plane]
+        G[Human Authorization] --> H[Controlled Change]
+        H --> I[Validation and Release]
+    end
+    C -->|Execution evidence| D
+    F -->|Recommendation only| G
+    I -.->|Approved future version| A

@@ -1,0 +1,15 @@
+flowchart TD
+    A["Alpha Car Detailing Harness"] --> B["Execution Evidence"]
+    B --> C["Deterministic Pattern Detection"]
+    C --> D["Codex Instruction Analysis"]
+    D --> E["Codex Candidate Proposal"]
+    E --> F["Trusted Candidate Store"]
+    F --> G{"Human Governance Approved?"}
+    G -->|No| H["Record Decision"]
+    G -->|Yes| I["Controlled Instruction Update"]
+    I --> J["Validation Pipeline"]
+    J --> K{"Passed?"}
+    K -->|No| L["Retain Previous Version"]
+    K -->|Yes| M["Activate Approved Version"]
+    M --> N["Future Harness Runs"]
+    N --> B

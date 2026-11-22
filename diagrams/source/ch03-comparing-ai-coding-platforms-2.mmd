@@ -1,0 +1,20 @@
+flowchart LR
+    T[Enterprise Task Contract]
+    H[AI Engineering Harness]
+
+    T --> H
+
+    H --> L[Lead Role]
+    H --> D[Developer Role]
+    H --> R[Reviewer Role]
+    H --> V[Validator Role]
+    H --> E[Evaluator Role]
+
+    D --> P1[Claude Code Adapter]
+    D --> P2[GitHub Copilot Adapter]
+    D --> P3[OpenAI Codex Adapter]
+    D --> P4[Future Platform Adapter]
+
+    V --> B[Build and Test Toolchain]
+    E --> M[Metrics and Evidence Store]
+    R --> A[Human Approval Workflow]

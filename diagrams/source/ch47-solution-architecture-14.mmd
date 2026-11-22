@@ -1,0 +1,27 @@
+flowchart TD
+    User["Corporate Fleet Administrator"]
+    GW["API Gateway"]
+    BK["Booking Service"]
+    CA["Corporate Account Service"]
+    FL["Fleet Service"]
+    SO["Station Operations Service"]
+    DB[("Booking DB + Outbox")]
+    EB["Integration Event Bus"]
+    NT["Notification Service"]
+
+    User -->|"Submit booking"| GW
+    GW --> BK
+
+    BK -->|"Eligibility"| CA
+    CA -->|"Eligible / Rejected"| BK
+
+    BK -->|"Validate vehicles"| FL
+    FL -->|"Valid / Invalid"| BK
+
+    BK -->|"Reserve capacity"| SO
+    SO -->|"Reservation result"| BK
+
+    BK -->|"Commit booking + outbox record"| DB
+    DB -->|"Published by outbox worker"| EB
+
+    EB -->|"BookingConfirmed"| NT

@@ -1,0 +1,16 @@
+flowchart TD
+    A[Policy Violation Detected] --> B{Severity}
+
+    B -->|Low| C[Record Warning]
+    B -->|Moderate| D[Pause Affected Action]
+    B -->|High| E[Stop Harness Run]
+    B -->|Critical| F[Stop + Preserve Evidence + Escalate]
+
+    C --> G[Audit]
+    D --> G
+    E --> G
+    F --> G
+
+    D --> H[Authorized Review]
+    E --> H
+    F --> H

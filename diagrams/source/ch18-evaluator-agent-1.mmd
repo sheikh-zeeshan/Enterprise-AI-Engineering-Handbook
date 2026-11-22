@@ -1,0 +1,18 @@
+flowchart TD
+    A[Developer Agent] --> B[Reviewer Agent]
+    B --> C[Validator Agent]
+    C --> D[Evaluator Agent]
+
+    D --> E[Assess Goal]
+    E --> F[Assess Acceptance Criteria]
+    F --> G[Assess Business Outcome]
+    G --> H[Assess Evidence]
+    H --> I{Evaluation Outcome}
+
+    I -->|Satisfied| J[Human Approval]
+    I -->|Partial| K[Lead Agent]
+    I -->|Failed| L[Developer Agent]
+    I -->|Inconclusive| M[Escalation]
+
+    K --> L
+    L --> B

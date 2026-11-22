@@ -1,0 +1,26 @@
+sequenceDiagram
+    autonumber
+    participant H as Harness
+    participant C as Claude Code
+    participant R as Repository Intelligence
+    participant M as Memory Service
+    participant V as Validation and Review
+    participant A as Human Approver
+    H->>C: Assign booking goal
+    C->>R: Inspect current repository
+    R-->>C: Current implementation evidence
+    C->>M: Search approved memory
+    M-->>C: Relevant entries and provenance
+    C->>C: Verify applicability and implement
+    C->>V: Submit implementation
+    V-->>C: Validation and review evidence
+    C->>M: Submit learning candidate
+    M-->>C: Candidate recorded, not active
+    M->>A: Request governance review
+    A->>M: Approve or reject
+    opt Approved
+        M->>M: Activate new immutable version
+    end
+    H->>C: Begin future engineering run
+    C->>M: Retrieve eligible knowledge
+    M-->>C: Approved memory version

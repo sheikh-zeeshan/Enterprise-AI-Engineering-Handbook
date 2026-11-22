@@ -1,0 +1,21 @@
+flowchart TD
+    A[Code Change] --> B[Build Execution]
+    B --> C[Build Evidence]
+    C --> D[Success and Failure Classification]
+    D --> E[Root-Cause Investigation]
+    E --> F[Pattern Detection]
+    F --> G[Candidate Learning]
+    G --> H[Evidence, Confidence and Risk Assessment]
+    H --> I{Sufficient evidence?}
+    I -->|No| J[Retain Provisional Finding]
+    I -->|Yes| K[Human Review]
+    K --> L{Approved?}
+    L -->|No| M[Record Decision]
+    L -->|Yes| N[Versioned Improvement]
+    N --> O[Harness Memory and Governed Artifacts]
+    O --> P[Future Engineering Runs]
+    P --> Q[Outcome Measurement]
+    Q --> R{Improvement effective?}
+    R -->|Yes| S[Continue and Monitor]
+    R -->|No| T[Review, Revise or Roll Back]
+    P -. New build evidence .-> C

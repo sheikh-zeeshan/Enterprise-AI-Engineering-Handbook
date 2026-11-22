@@ -1,0 +1,8 @@
+flowchart TD
+    A["Harness execution"] --> B["Learning candidate"]
+    B --> C["Evidence verification"]
+    C --> D["Independent assessment"]
+    D --> E["Authorized human approval"]
+    E --> F[("Governed memory registry")]
+    F --> G["Authorized future retrieval"]
+    G -.->|New evidence or conflict| B

@@ -1,0 +1,29 @@
+flowchart LR
+    subgraph Adaptive["Adaptive Layer"]
+        M[Harness Memory]
+        P[Pattern Detection]
+        C[Candidate Skill Change]
+    end
+
+    subgraph Governance["Governance Boundary"]
+        O[Skill Owner]
+        R[Architecture / Security Review]
+        T[Skill Validation]
+        A[Approval]
+    end
+
+    subgraph Governed["Governed Assets"]
+        V[Approved Skill Version]
+        REG[Skill Registry]
+    end
+
+    M --> P
+    P --> C
+
+    C --> O
+    O --> R
+    R --> T
+    T --> A
+
+    A --> V
+    V --> REG

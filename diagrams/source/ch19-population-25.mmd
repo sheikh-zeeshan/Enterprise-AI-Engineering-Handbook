@@ -1,0 +1,17 @@
+flowchart TD
+    P[("Population")] --> H["Harness"]
+
+    H --> D{"Execution Adapter"}
+
+    D --> C["Claude Code"]
+    D --> G["GitHub Copilot"]
+    D --> O["OpenAI Codex"]
+    D --> F["Future Agent"]
+
+    C --> E["Normalized Evidence"]
+    G --> E
+    O --> E
+    F --> E
+
+    E --> H
+    H --> P

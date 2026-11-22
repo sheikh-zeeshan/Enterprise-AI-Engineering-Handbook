@@ -1,0 +1,24 @@
+flowchart LR
+    E[Engineering Evidence]
+    X[Extract]
+    R[Resolve]
+    C[Classify]
+    P[Attach Provenance]
+    F[Assign Confidence]
+    G[Govern]
+    K[(Knowledge Graph)]
+    Q[Query]
+    A[Agent Reasoning]
+    N[New Evidence]
+
+    E --> X
+    X --> R
+    R --> C
+    C --> P
+    P --> F
+    F --> G
+    G --> K
+    K --> Q
+    Q --> A
+    A --> N
+    N --> E

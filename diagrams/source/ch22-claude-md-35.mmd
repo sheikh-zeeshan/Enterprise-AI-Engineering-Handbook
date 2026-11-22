@@ -1,0 +1,12 @@
+flowchart TD
+    A[Approved Architecture Standard] --> B[CLAUDE.md Guidance]
+    A --> C[Deterministic Gate Definition]
+    B --> D[Developer Agent]
+    D --> E[Implementation]
+    E --> F[Validator Agent]
+    C --> F
+    F --> G{Required Gates Pass?}
+    G -- No --> H[Failure Evidence]
+    H --> D
+    G -- Yes --> I[Review and Evaluation]
+    I --> J[Human Approval]

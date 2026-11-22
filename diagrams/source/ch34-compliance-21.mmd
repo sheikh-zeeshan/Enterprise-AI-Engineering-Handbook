@@ -1,0 +1,8 @@
+flowchart TD
+    A["Recurring Control Failure"] --> B["Harness Analysis"]
+    B --> C["Control Improvement Proposal"]
+    C --> D{"Control Owner Approved?"}
+    D -- No --> E["Retain Current Control"]
+    D -- Yes --> F["Versioned Control Change"]
+    F --> G["Independent Validation"]
+    G --> H["Controlled Rollout"]

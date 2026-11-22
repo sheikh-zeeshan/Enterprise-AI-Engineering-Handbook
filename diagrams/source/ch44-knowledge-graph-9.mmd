@@ -1,0 +1,19 @@
+graph LR
+    E[Evidence]
+
+    D[Deterministic Extractor]
+    I[Inference Engine]
+
+    DE[Verified Edge]
+    IE[Inferred Edge]
+
+    G[(Knowledge Graph)]
+
+    E --> D
+    E --> I
+
+    D --> DE
+    I --> IE
+
+    DE --> G
+    IE --> G

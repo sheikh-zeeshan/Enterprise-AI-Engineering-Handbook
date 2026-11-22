@@ -1,0 +1,18 @@
+flowchart TD
+    Run[Alpha Car Detailing Harness Run] --> GitHub[GitHub Actions and Review Evidence]
+    Run --> Store[(Evidence Store)]
+    GitHub --> Store
+    Store --> Analyze[Deterministic Pattern Analyzer]
+    Analyze --> Copilot[GitHub Copilot Learning Analyst]
+    Copilot --> Rec[Improvement Recommendation]
+    Rec --> Human[Human Skill Owner]
+    Human --> Approve{Approved?}
+    Approve -->|No| NoChange[No Harness Change]
+    Approve -->|Yes| Branch[Authorized Change Branch]
+    Branch --> Revision[Copilot-assisted Revision]
+    Revision --> Gates[Mandatory Validation]
+    Gates --> Release{Release controls pass?}
+    Release -->|No| NoChange
+    Release -->|Yes| Version[Versioned Harness Release]
+    Version --> Future[Future Run Measurement]
+    Future --> Store

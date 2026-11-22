@@ -1,0 +1,29 @@
+stateDiagram-v2
+    [*] --> Discovery
+    Discovery --> ArchitectureReview
+    ArchitectureReview --> Planning: Approved
+    ArchitectureReview --> Escalated: Decision required
+
+    Planning --> Implementation
+    Implementation --> IndependentReview
+
+    IndependentReview --> Remediation: Findings
+    IndependentReview --> SecurityReview: No blocking findings
+
+    Remediation --> IndependentReview
+
+    SecurityReview --> Remediation: Security findings
+    SecurityReview --> Validation: Passed
+
+    Validation --> Remediation: Failed
+    Validation --> Evaluation: Passed
+
+    Evaluation --> Remediation: Criteria unmet
+    Evaluation --> PullRequestPreparation: Criteria satisfied
+
+    PullRequestPreparation --> HumanApproval
+    HumanApproval --> Completed: Approved
+    HumanApproval --> Escalated: Rejected or deferred
+
+    Escalated --> Planning: Decision resolved
+    Completed --> [*]

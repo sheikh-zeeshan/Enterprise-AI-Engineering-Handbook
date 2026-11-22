@@ -1,0 +1,42 @@
+flowchart TB
+    subgraph Account["Customer and Account"]
+        Customer
+        CorporateAccount["Corporate Account"]
+    end
+
+    subgraph Fleet["Fleet and Vehicle"]
+        FleetEntity["Fleet"]
+        Vehicle
+    end
+
+    subgraph Offering["Service Offering"]
+        Service
+        Package
+    end
+
+    subgraph BookingDomain["Booking"]
+        Booking
+        BookingLifecycle["Booking Lifecycle"]
+    end
+
+    subgraph Operations["Station and Capacity"]
+        Station
+        Capacity
+    end
+
+    subgraph Financial["Billing and Payment"]
+        Billing
+        Payment
+    end
+
+    subgraph Communication["Communication"]
+        Notification
+    end
+
+    Account --> Fleet
+    Account --> BookingDomain
+    Fleet --> BookingDomain
+    Offering --> BookingDomain
+    Operations --> BookingDomain
+    BookingDomain --> Financial
+    BookingDomain --> Communication

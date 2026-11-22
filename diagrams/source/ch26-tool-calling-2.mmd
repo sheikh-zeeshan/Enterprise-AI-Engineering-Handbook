@@ -1,0 +1,27 @@
+flowchart TB
+    R["Engineering Request"] --> H["Harness Orchestrator"] --> A["AI Agent"]
+    A <--> T["Tool Registry"]
+    A --> P["Policy Enforcement"]
+    P -->|Denied| X["Denied and Audited"]
+    P -->|Approval required| U{"Human Approver"}
+    U -->|Rejected| X
+    U -->|Approved| E
+    P -->|Authorized| E["Tool Executor"]
+    subgraph Runtime["Controlled Execution Environment"]
+        E --> FS["Filesystem and Search"]
+        E --> BT["Build and Test"]
+        E --> DB["Database and API Tools"]
+        E --> CL["Cloud and Infrastructure"]
+    end
+    FS --> O["Result Collector"]
+    BT --> O
+    DB --> O
+    CL --> O
+    O --> S["Protected Evidence and Audit Store"]
+    O --> H
+    H --> G["Deterministic Gates"] --> V["Validator"]
+    H --> W["Reviewer"]
+    H --> Q["Evaluator"]
+    V --> D["Harness Decision"]
+    W --> D
+    Q --> D

@@ -1,0 +1,13 @@
+flowchart TB
+    TASK[Authenticated engineering task] --> H[Enterprise Harness]
+    P[Vendor-neutral security contract] --> H
+    H --> A[Platform adapter]
+    A --> C[Claude Code]
+    A --> G[GitHub Copilot]
+    A --> O[Codex]
+    C --> S[Scoped execution and tools]
+    G --> S
+    O --> S
+    S --> V[Independent validation]
+    V --> AUD[(Protected evidence)]
+    AUD --> REV[Accountable review and approval]

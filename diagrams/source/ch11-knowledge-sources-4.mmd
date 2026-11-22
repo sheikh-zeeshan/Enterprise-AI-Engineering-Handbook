@@ -1,0 +1,22 @@
+flowchart TD
+    C[Conflicting Sources Detected]
+    SCOPE{Same scope and version?}
+
+    C --> SCOPE
+    SCOPE -->|No| SEP[Separate by scope, environment, or version]
+    SCOPE -->|Yes| STATUS{Is one superseded, rejected, or expired?}
+
+    STATUS -->|Yes| CLASS[Reclassify source and preserve history]
+    STATUS -->|No| AUTH{Does one have greater authority for the decision?}
+
+    AUTH -->|Yes| VERIFY[Verify against independent evidence]
+    AUTH -->|No| OWNER[Identify source owners]
+
+    VERIFY --> RESOLVE{Conflict resolved?}
+    OWNER --> HUMAN[Human review and decision]
+    HUMAN --> DECISION[Record approved resolution]
+    RESOLVE -->|Yes| DECISION
+    RESOLVE -->|No| HUMAN
+
+    DECISION --> UPDATE[Update, supersede, or annotate sources]
+    UPDATE --> AUDIT[Preserve citations and audit trail]

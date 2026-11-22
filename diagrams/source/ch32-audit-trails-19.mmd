@@ -1,0 +1,24 @@
+flowchart TD
+    WORK["Business requirement and work item"] --> RUN["Harness run"]
+    CONTEXT["Prompts, Instructions, Skills and Roles"] --> RUN
+    RUN --> TOOLS["Agents and controlled tools"]
+    TOOLS --> CHANGE["Implementation revisions"]
+    CHANGE --> REVIEW["Review evidence"]
+    CHANGE --> VALID["Deterministic validation evidence"]
+    REVIEW --> EVAL["Business evaluation"]
+    VALID --> EVAL
+    EVAL --> APPROVAL["Authenticated human approval"]
+    APPROVAL --> MERGE["Final repository outcome"]
+    RUN -.-> INGEST["Controlled audit ingestion"]
+    TOOLS -.-> INGEST
+    CHANGE -.-> INGEST
+    REVIEW -.-> INGEST
+    VALID -.-> INGEST
+    EVAL -.-> INGEST
+    APPROVAL -.-> INGEST
+    MERGE -.-> INGEST
+    INGEST --> STORE[("Governed audit store")]
+    INGEST --> EVIDENCE[("Protected evidence artifacts")]
+    STORE --> CHECK["Integrity and completeness verification"]
+    EVIDENCE --> CHECK
+    CHECK --> QUERY["Investigation and compliance queries"]

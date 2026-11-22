@@ -1,0 +1,11 @@
+flowchart TB
+    R["Engineering Request"] --> H["Enterprise Harness"]
+    H --> P["Repository Profile"] --> W["Isolated Run Workspace"]
+    W --> A["Codex Provider Adapter"]
+    A --> CLI["Codex CLI"]
+    A --> SDK["Codex SDK"]
+    A --> SERVER["App-Server / Managed Sessions"]
+    CLI --> E["Execution Evidence"]
+    SDK --> E
+    SERVER --> E
+    E --> V["Deterministic Validation"] --> O["Outcome Evaluation"] --> Approval["Human Approval"]

@@ -1,0 +1,21 @@
+flowchart LR
+    P[("Population Store")] --> H["Harness Controller"]
+
+    H --> L["Lead"]
+    H --> D["Developer"]
+    H --> R["Reviewer"]
+    H --> V["Validator"]
+    H --> E["Evaluator"]
+
+    L --> EV["Evidence"]
+    D --> EV
+    R --> EV
+    V --> EV
+    E --> EV
+
+    EV --> H
+    H --> P
+
+    P --> M["Metrics"]
+    P --> A["Audit"]
+    P --> O["Operations"]

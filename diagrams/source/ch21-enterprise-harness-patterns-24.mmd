@@ -1,0 +1,11 @@
+flowchart TB
+    P["60 Repository Modernization Items"] --> Q["Population Queue"]
+    Q --> A["Harness Worker A"]
+    Q --> B["Harness Worker B"]
+    Q --> C["Harness Worker C"]
+    A --> CA["Codex Execution A"] --> VA["Validation A"]
+    B --> CB["Codex Execution B"] --> VB["Validation B"]
+    C --> CC["Codex Execution C"] --> VC["Validation C"]
+    VA --> R["Population Aggregation"]
+    VB --> R
+    VC --> R

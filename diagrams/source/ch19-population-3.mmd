@@ -1,0 +1,23 @@
+flowchart TB
+    Goal["Engineering Goal"] --> Lead["Lead Agent"]
+    Lead --> PM["Population Manager"]
+
+    PM --> Store[("Population Store")]
+    PM --> Scheduler["Scheduler"]
+    Scheduler --> Workers["Execution Workers"]
+
+    Workers --> Developer["Developer Agent"]
+    Developer --> Reviewer["Reviewer Agent"]
+    Reviewer --> Validator["Validator Agent"]
+    Validator --> Evaluator["Evaluator Agent"]
+
+    Developer --> Evidence["Evidence Store"]
+    Reviewer --> Evidence
+    Validator --> Evidence
+    Evaluator --> Evidence
+
+    Evidence --> PM
+    PM --> Store
+
+    Store --> Metrics["Metrics"]
+    Store --> Operations["Operations / Human Review"]

@@ -1,0 +1,13 @@
+flowchart TD
+    A[Approved Engineering Standards] --> B[Root CLAUDE.md]
+    B --> C[Scoped Instructions]
+    B --> D[Claude Code Execution]
+    C --> D
+    E[Task Prompt] --> D
+    F[Relevant Skills] --> D
+    G[Steering Note] --> D
+    D --> H[Generated Implementation]
+    H --> I[Reviewer Agent]
+    I --> J[Deterministic Validation]
+    J --> K[Evaluator Agent]
+    K --> L[Human Approval]

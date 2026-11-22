@@ -1,0 +1,8 @@
+flowchart TD
+    A[Agent Finds Outdated Instruction] --> B[Record Evidence]
+    B --> C[Create Change Proposal]
+    C --> D[Owner Review]
+    D --> E{Approved?}
+    E -- No --> F[Retain Existing Standard]
+    E -- Yes --> G[Instruction Maintenance PR]
+    G --> H[Validation and Merge]

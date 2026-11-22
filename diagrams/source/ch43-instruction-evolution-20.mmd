@@ -1,0 +1,10 @@
+flowchart TD
+    A["Approved Instruction"] --> B["Developer Agent"]
+    B --> C["Implementation"]
+    C --> D["Deterministic Architecture Gate"]
+    D --> E{"Passed?"}
+    E -->|Yes| F["Continue Validation"]
+    E -->|No| G["Record Failure Evidence"]
+    G --> H["Adaptive Learning"]
+    H --> I["Candidate Improvement"]
+    I --> J["Human Governance"]

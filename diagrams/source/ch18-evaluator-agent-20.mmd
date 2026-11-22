@@ -1,0 +1,14 @@
+flowchart TD
+    A[Approved Goal and Criteria] --> B[Developer Agent]
+    B --> C[Reviewer Agent]
+    C --> D[Validator Agent]
+    D --> E[Evaluator Agent]
+    E --> F{Evaluation Outcome}
+    F -->|Satisfied| G[Human Approval]
+    F -->|Partial| H[Lead Agent]
+    F -->|Failed| H
+    F -->|Inconclusive| I[Evidence Request or Escalation]
+    H --> B
+    G --> J{Approved?}
+    J -->|Yes| K[Authorized Delivery Workflow]
+    J -->|No| I

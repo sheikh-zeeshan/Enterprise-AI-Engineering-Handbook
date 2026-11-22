@@ -1,0 +1,16 @@
+flowchart TD
+    A[Start Claude Code] --> B[Discover Applicable Instructions]
+    B --> C[Analyze Repository]
+    C --> D[Understand Task]
+    D --> E[Create Implementation Plan]
+    E --> F{Architecture Compliant?}
+    F -- No --> G[Revise Plan or Request Decision]
+    G --> E
+    F -- Yes --> H[Implement Feature]
+    H --> I[Run Tests]
+    I --> J[Independent Validation]
+    J --> K{All Gates Pass?}
+    K -- No --> L[Record Failure Evidence]
+    L --> H
+    K -- Yes --> M[Review and Evaluate]
+    M --> N[Human Approval]

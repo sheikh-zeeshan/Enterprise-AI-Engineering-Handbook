@@ -1,0 +1,14 @@
+flowchart TD
+    A["Memory Entry Retrieved"] --> B{"Relevant and In Scope?"}
+    B -->|"No"| C["Exclude from Task Context"]
+    B -->|"Yes"| D["Identify Source, Scope and Freshness"]
+    D --> E{"Current Evidence Available?"}
+    E -->|"No"| F["Mark Unverified: Investigate Before Reliance"]
+    E -->|"Yes"| G["Compare with Repository and Approved Decisions"]
+    G --> H{"Material Conflict?"}
+    H -->|"No"| I["Use as Advisory Context"]
+    H -->|"Yes"| J["Investigate Instructions and Architecture Decisions"]
+    J --> K{"Conflict Resolved?"}
+    K -->|"No"| L["Escalate or Defer Affected Decision"]
+    K -->|"Yes"| M["Use Verified Requirements"]
+    M --> N["Propose Memory Correction"]

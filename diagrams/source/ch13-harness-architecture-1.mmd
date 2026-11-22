@@ -1,0 +1,40 @@
+flowchart TD
+    U[User or Engineering System] --> H[Harness Controller]
+
+    H --> RI[Repository Intelligence]
+    RI --> L[Lead Agent]
+
+    L --> D[Developer Agent]
+
+    D --> G[Deterministic Gate Pipeline]
+
+    G --> B[Build Gate]
+    B --> T[Test Gate]
+    T --> SA[Static Analysis Gate]
+    SA --> A[Architecture Gate]
+    A --> S[Security Gate]
+    S --> C[Contract Gate]
+
+    C --> R[Reviewer Agent]
+    R --> V[Validator Agent]
+    V --> E[Evaluator Agent]
+    E --> HA{Human Approval Required?}
+
+    HA -->|Yes| AP[Human Approval]
+    HA -->|No| O[Output Manager]
+
+    AP -->|Approved| O
+    AP -->|Rejected| F[Workflow Rejected]
+
+    O --> PR[Pull Request]
+
+    H -.-> WS[(Workflow State)]
+    G -.-> WS
+    R -.-> WS
+    V -.-> WS
+    E -.-> WS
+
+    H -.-> AL[(Audit Log)]
+    D -.-> AL
+    G -.-> AL
+    AP -.-> AL

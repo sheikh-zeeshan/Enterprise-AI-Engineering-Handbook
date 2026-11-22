@@ -1,0 +1,21 @@
+flowchart TD
+    H[Human Engineering Governance] --> I[Persistent Instructions]
+    I --> C[CLAUDE.md]
+    I --> R[Scoped Repository Rules]
+
+    S[Steering Note] --> A[Agent Execution Context]
+    P[Task Prompt] --> A
+    K[Relevant Skills] --> A
+    C --> A
+    R --> A
+
+    A --> L[Lead Agent]
+    L --> D[Developer Agent]
+    D --> RV[Reviewer Agent]
+    RV --> V[Validator Agent]
+    V --> E[Evaluator Agent]
+
+    V --> G[Deterministic Gates]
+    E --> HA[Human Approval]
+
+    HA --> M[Merge / Release]

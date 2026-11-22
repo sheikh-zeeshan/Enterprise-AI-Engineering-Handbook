@@ -1,0 +1,27 @@
+flowchart TD
+    P["Prompt Version"]
+    X["Execution Record"]
+    B["Build Evidence"]
+    T["Test Evidence"]
+    S["Security Evidence"]
+    A["Architecture Review"]
+    H["Human Review"]
+    M["Metrics Store"]
+    E["Prompt Evaluation"]
+    R["Improvement Recommendation"]
+
+    P --> X
+    X --> B
+    X --> T
+    X --> S
+    X --> A
+    X --> H
+
+    B --> M
+    T --> M
+    S --> M
+    A --> M
+    H --> M
+
+    M --> E
+    E --> R

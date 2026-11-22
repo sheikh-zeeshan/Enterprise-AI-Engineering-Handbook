@@ -1,0 +1,11 @@
+flowchart LR
+    Intake["Business intake"] --> Design["Repository discovery and design"]
+    Design --> Implement["AI-assisted implementation"]
+    Implement --> Gates["Deterministic validation gates"]
+    Gates --> Review["Human code, architecture, security review"]
+    Review --> Build["CI/CD release pipeline"]
+    Build --> Production["Production"]
+    Production --> Feedback["Operational evidence"]
+    Feedback -. "Approved revisions" .-> Intake
+    Gates -- "Failure" --> Implement
+    Review -- "Changes requested" --> Implement

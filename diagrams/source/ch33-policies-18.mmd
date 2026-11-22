@@ -1,0 +1,14 @@
+flowchart TD
+    A[Production Access Policy] --> B[Repository Guidance]
+    A --> C[Agent Role Permissions]
+    A --> D[Tool Broker Authorization]
+    A --> E[IAM and Credential Isolation]
+    A --> F[Network Restrictions]
+    A --> G[Human Approval]
+    B --> H[Governed Execution]
+    C --> H
+    D --> H
+    E --> H
+    F --> H
+    G --> H
+    H --> I[Audit Evidence]

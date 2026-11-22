@@ -1,0 +1,9 @@
+flowchart TB
+    H["Enterprise Harness"] --> A["Copilot Execution Adapter"]
+    A --> CLI["Copilot CLI"]
+    A --> Cloud["Copilot Cloud Agent"]
+    CLI --> W["Harness Workspace"]
+    Cloud --> PR["GitHub Pull Request"]
+    W --> E["Execution Evidence"]
+    PR --> E
+    E --> V["Harness Validation"] --> O["Harness Evaluation"]

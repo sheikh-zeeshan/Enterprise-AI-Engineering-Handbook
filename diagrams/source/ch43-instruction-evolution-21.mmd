@@ -1,0 +1,9 @@
+flowchart TD
+    A["Instruction v2.0 Active"] --> B["Instruction v2.1 Approved"]
+    B --> C["Validation"]
+    C --> D["Activate v2.1"]
+    D --> E{"Regression Detected?"}
+    E -->|No| F["Continue Monitoring"]
+    E -->|Yes| G["Governed Rollback"]
+    G --> H["Restore Approved Baseline"]
+    H --> I["Preserve Failure Evidence"]

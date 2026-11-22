@@ -1,0 +1,27 @@
+flowchart TD
+    subgraph DELIVERY["Engineering delivery"]
+        A["Harness executions"] --> B["Scratchpad and evidence"]
+        B --> C["Validation, review and evaluation"]
+    end
+    subgraph LEARN["Learning pipeline"]
+        D["Candidate generation"] --> E["Evidence verification"]
+        E --> F["Deduplication, scope and conflict checks"]
+    end
+    subgraph GOV["Enterprise governance"]
+        G["Knowledge owner"] --> H["Human approval"]
+        I["Security and policy controls"] --> H
+    end
+    subgraph MEM["Governed memory platform"]
+        J[("Versioned memory registry")]
+        K["Authorized retrieval"]
+        L["Lifecycle and revocation"]
+        M["Audit and monitoring"]
+    end
+    C --> D
+    F --> G
+    H -->|Approved| J
+    J --> K
+    J --> L
+    J --> M
+    K --> N["Future Harness runs"]
+    N -.-> A

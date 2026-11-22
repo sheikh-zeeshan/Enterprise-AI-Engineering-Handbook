@@ -1,0 +1,23 @@
+flowchart TD
+    A["Interrupted Run"]
+    B["Load Last Checkpoint"]
+    C["Compare Repository Revision"]
+    D["Compare Governing Inputs"]
+    E["Identify Changed Relevant Files"]
+    F["Mark Affected Scratchpad State Stale"]
+    G["Reinvestigate"]
+    H{"State Valid?"}
+    I["Resume"]
+    J["Restart / Escalate"]
+
+    A --> B
+    B --> C
+    C --> D
+    D --> E
+    E --> HAND["Prepare Lead Handoff and Persist CP-001"]
+    HAND --> F
+    F --> CP2["Persist CP-001"]
+    CP2 --> G
+    G --> H
+    H -->|Yes| I
+    H -->|No| J

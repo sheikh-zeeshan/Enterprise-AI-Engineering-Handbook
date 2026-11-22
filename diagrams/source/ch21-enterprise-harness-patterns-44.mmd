@@ -1,0 +1,7 @@
+flowchart TB
+    S["Shared Scheduler"] --> B["Booking Worker"]
+    S --> F["Fleet Worker"]
+    S --> I["Billing Worker"]
+    B --> BI["Booking Identity"] --> BR["Booking Resources"]
+    F --> FI["Fleet Identity"] --> FR["Fleet Resources"]
+    I --> II["Billing Identity"] --> IR["Billing Resources"]

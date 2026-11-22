@@ -1,0 +1,14 @@
+sequenceDiagram
+    actor Client as Fleet administrator
+    participant Gateway
+    participant Booking
+    participant Account as Corporate Account
+    participant Fleet
+    Client->>Gateway: Submit scoped request and idempotency key
+    Gateway->>Booking: Forward verifiable caller context
+    Note over Booking: Authorize resources and establish durable operation
+    Booking->>Account: Evaluate contractual eligibility
+    Account-->>Booking: Eligibility and decision reference
+    Booking->>Fleet: Validate selected vehicles as a batch
+    Fleet-->>Booking: Authorized membership and eligibility result
+    Note over Booking: Continue only when prerequisites are satisfied

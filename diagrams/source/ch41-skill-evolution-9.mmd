@@ -1,0 +1,9 @@
+flowchart LR
+    A[Single Failure] --> B[Observation]
+    B --> C[Repeated Failure]
+    C --> D[Cross-run Pattern]
+    D --> E[Cross-repository Pattern]
+    E --> F[Human Confirmation]
+    F --> G[Candidate Improvement]
+    G --> H[Tested Change]
+    H --> I[Approved Skill Version]

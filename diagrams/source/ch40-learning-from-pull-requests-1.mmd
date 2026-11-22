@@ -1,0 +1,22 @@
+flowchart TD
+    A[Implementation Completed] --> B[Pull Request Created]
+    B --> C[Automated CI Checks]
+    C --> D[Build and Tests]
+    D --> E[Architecture and Security Checks]
+    E --> F[Human Review]
+    F --> G{Changes Requested?}
+
+    G -->|Yes| H[Rework]
+    H --> C
+
+    G -->|No| I{Approved?}
+    I -->|No| J[Rejected or Closed]
+    I -->|Yes| K[Merge Eligibility Checks]
+    K --> L{Merge?}
+
+    L -->|Yes| M[Merged]
+    L -->|No| N[Closed Without Merge]
+
+    M --> O[PR Evidence Finalization]
+    J --> O
+    N --> O

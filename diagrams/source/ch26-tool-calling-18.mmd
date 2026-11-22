@@ -1,0 +1,8 @@
+flowchart TD
+    A["Identify Engineering Need"] --> B["Define Tool Contract"] --> C["Threat and Risk Assessment"]
+    C --> D["Implement Adapter"] --> E["Validate Permissions and Isolation"]
+    E --> F["Test Failure and Retry Behavior"] --> G["Approve Registration"]
+    G --> H["Enable for Authorized Roles"] --> I["Monitor Execution"] --> J["Review and Improve"]
+    J --> K{"Retain Capability?"}
+    K -->|Yes| I
+    K -->|No| L["Disable and Retire"]

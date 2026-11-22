@@ -1,0 +1,22 @@
+flowchart TD
+    A[Code Change] --> B[Build Execution]
+    B --> C[Build Evidence Collection]
+    C --> D[(Protected Evidence Store)]
+    D --> E[Success and Failure Classification]
+    E --> F[Root-Cause Analysis]
+    F --> G[Cross-Run Pattern Detection]
+    G --> H[Candidate Learning]
+    H --> I[Evidence, Confidence and Risk Assessment]
+    I --> J{Evidence sufficient?}
+    J -->|No| K[Retain Provisional Finding]
+    J -->|Yes| L[Human Review]
+    L --> M{Decision}
+    M -->|Reject| N[Record Rejection]
+    M -->|More evidence| K
+    M -->|Approve| O[Governed Change and Validation]
+    O --> P[Versioned Approved Improvement]
+    P --> Q[(Harness Memory)]
+    P --> R[Approved Skill, Prompt or Workflow]
+    Q --> S[Future Engineering Runs]
+    R --> S
+    S -. New evidence .-> C

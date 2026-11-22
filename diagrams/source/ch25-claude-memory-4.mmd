@@ -1,0 +1,13 @@
+flowchart TD
+    A["Conversational Observation"] --> B["Candidate Reusable Knowledge"]
+    B --> C["Collect Repository and Execution Evidence"]
+    C --> D["Technical Assessment"]
+    D --> E{"Verified and Reusable?"}
+    E -->|"No"| F["Keep as Limited Context or Discard"]
+    E -->|"Yes"| G["Propose Governed Artifact Change"]
+    G --> H["Human Technical and Security Review"]
+    H --> I{"Approved?"}
+    I -->|"No"| J["Reject or Revise Proposal"]
+    I -->|"Yes"| K["Update Skills, Instructions, ADRs or Harness Memory"]
+    K --> L["Version, Audit and Assign Owner"]
+    L --> M["Use in Future Harness Executions"]

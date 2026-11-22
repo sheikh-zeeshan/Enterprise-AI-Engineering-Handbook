@@ -1,0 +1,8 @@
+flowchart LR
+    I[Approved Work Item] --> P[Enterprise Planning Workflow]
+    P --> R[Plan Review]
+    R --> M[Enterprise Implement Workflow]
+    M --> PR[Pull Request]
+    PR --> CI[CI/CD Gates]
+    CI --> E[Review and Evaluation]
+    E --> A[Protected Branch Approval]

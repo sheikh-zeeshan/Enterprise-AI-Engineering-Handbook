@@ -1,0 +1,24 @@
+flowchart TB
+    WORK["Work item ACD-284"] --> HARNESS["Enterprise Harness"]
+    subgraph CODEX["Codex execution environment"]
+        INS["AGENTS.md"] --> AGENT["Codex Developer Agent"]
+        SKILLS["Approved skills"] --> AGENT
+        AGENT --> TOOLS["Commands and tools"]
+    end
+    HARNESS --> AGENT
+    TOOLS --> GATEWAY["Controlled tool gateway"]
+    GATEWAY --> REPO["Repository workspace"]
+    REPO --> REVIEW["Independent review"]
+    REPO --> GATES["Deterministic gates"]
+    REVIEW --> EVAL["Business evaluation"]
+    GATES --> EVAL
+    EVAL --> APPROVAL["Human approval"]
+    HARNESS -.-> AUDIT["Audit ingestion service"]
+    GATEWAY -.-> AUDIT
+    REPO -.-> AUDIT
+    REVIEW -.-> AUDIT
+    GATES -.-> AUDIT
+    EVAL -.-> AUDIT
+    APPROVAL -.-> AUDIT
+    AUDIT --> EVENTS[("Controlled audit store")]
+    AUDIT --> ARTIFACTS[("Evidence artifact store")]

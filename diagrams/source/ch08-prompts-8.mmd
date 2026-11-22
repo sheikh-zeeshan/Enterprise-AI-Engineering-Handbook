@@ -1,0 +1,24 @@
+flowchart TD
+    RD["Repository Discovery"]
+    IN["Instructions"]
+    SK["Skills"]
+    PR["Prompts"]
+    RO["Roles"]
+    SN["Steering Notes"]
+    KS["Knowledge Sources"]
+
+    RD --> IN
+    RD --> SK
+    RD --> PR
+
+    IN --> EX["Agent Execution Context"]
+    SK --> EX
+    PR --> EX
+    RO --> EX
+    SN --> EX
+    KS --> EX
+
+    EX --> CH["Repository Change"]
+    CH --> VA["Validation"]
+    VA --> EV["Evaluation"]
+    EV --> HA["Human Approval"]

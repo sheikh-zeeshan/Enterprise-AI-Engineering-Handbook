@@ -1,0 +1,13 @@
+flowchart TD
+    U[Developer] --> A[Claude Command Invocation Adapter]
+    A --> H[Enterprise Harness]
+    H --> P[Authorization and Policy]
+    P --> W[Workflow Execution]
+    W --> D[Deterministic Gates]
+    D --> E[Review and Evaluation]
+    E --> O[Outcome Aggregation]
+    O --> S[Evidence Store]
+    O --> Q{Human Approval Required?}
+    Q -- Yes --> C[Authorized Human Decision]
+    Q -- No --> F[Eligible Final Outcome]
+    C --> F

@@ -1,0 +1,13 @@
+flowchart TD
+    T["Proposed Engineering Change"] --> C["Classify Risk and Impact"]
+    C --> B{"Within Approved Scope?"}
+    B -->|"No"| D["Reject or Request Rescoping"]
+    B -->|"Yes"| G["Execute Required Gates"]
+    G --> P{"All Mandatory Gates Passed?"}
+    P -->|"No"| F["Block and Remediate"]
+    P -->|"Yes"| R{"Additional Approval Required?"}
+    R -->|"No, delegated authority"| O["Authorized Next Action"]
+    R -->|"Yes"| H["Obtain Verified Human Approval"]
+    H --> A{"Approved for Exact Artifact?"}
+    A -->|"Yes"| O
+    A -->|"No"| X["Reject or Rework"]

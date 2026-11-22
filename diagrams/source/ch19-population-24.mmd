@@ -1,0 +1,18 @@
+flowchart LR
+    P[("Population")]
+
+    P --> W1["Worker 1"]
+    P --> W2["Worker 2"]
+    P --> W3["Worker 3"]
+
+    W1 --> C1["Copilot<br/>Persistence"]
+    W2 --> C2["Copilot<br/>API"]
+    W3 --> C3["Copilot<br/>Event"]
+
+    C1 --> E1["Evidence"]
+    C2 --> E2["Evidence"]
+    C3 --> E3["Evidence"]
+
+    E1 --> H["Harness"]
+    E2 --> H
+    E3 --> H

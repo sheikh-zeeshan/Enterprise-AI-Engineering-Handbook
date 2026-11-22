@@ -1,0 +1,18 @@
+flowchart TB
+    T[Task Contract]
+    R{Task Risk and Shape}
+
+    T --> R
+
+    R -->|Interactive or ambiguous| L[Codex Local or IDE]
+    R -->|Bounded and reproducible| C[Codex Cloud Task]
+    R -->|CI quality gate| G[Codex GitHub Action]
+    R -->|Programmatic workflow| M[Codex SDK or App Server]
+
+    L --> E[Common Evidence Record]
+    C --> E
+    G --> E
+    M --> E
+
+    E --> V[Independent Validation]
+    V --> H[Human Approval]

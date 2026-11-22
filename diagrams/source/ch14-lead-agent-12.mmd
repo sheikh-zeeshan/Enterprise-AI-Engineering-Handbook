@@ -1,0 +1,30 @@
+flowchart TB
+    GOAL["Add corporate fleet booking"]
+
+    GOAL --> LEAD[Lead Agent]
+
+    LEAD --> DISC[Repository Intelligence]
+
+    DISC --> FIND["Discover: Existing Booking Aggregate<br/>Corporate Customer Model<br/>Station Service Catalog<br/>Transactional Outbox<br/>Existing API Contract"]
+
+    FIND --> RULES["Read: Instructions<br/>Steering Note<br/>Knowledge Sources"]
+
+    RULES --> PLAN["Plan: Extend Domain<br/>Extend Application<br/>Persist Booking<br/>Publish Event<br/>Preserve Contract<br/>Add Tests"]
+
+    PLAN --> DEV[Developer Agent]
+
+    DEV --> BUILD[Build Gate]
+    BUILD --> TEST[Test Gate]
+    TEST --> ARCH[Architecture Gate]
+    ARCH --> SEC[Security Gate]
+    SEC --> CONTRACT[Contract Gate]
+
+    CONTRACT --> REVIEW[Reviewer Agent]
+
+    REVIEW --> VALIDATE[Validator Agent]
+
+    VALIDATE --> EVALUATE[Evaluator Agent]
+
+    EVALUATE --> APPROVAL[Human Approval]
+
+    APPROVAL --> COMPLETE[Complete]

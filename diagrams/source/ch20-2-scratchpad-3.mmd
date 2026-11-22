@@ -1,0 +1,21 @@
+flowchart TB
+    O["Observation"]
+    A["Assumption"]
+    Q["Unresolved Question"]
+    D["Intermediate Decision"]
+
+    O --> SP["Scratchpad"]
+    A --> SP
+    Q --> SP
+    D --> SP
+
+    SP --> INV["Investigation"]
+    INV --> E["Evidence"]
+    E --> VR["Verification / Review"]
+
+    VR -->|Run-specific| OUT["Run Output"]
+    VR -->|Reusable candidate| PC["Promotion Candidate"]
+
+    PC --> GOV["Governance"]
+    GOV -->|Approved| PK["Persistent Knowledge"]
+    GOV -->|Rejected| X["Do Not Promote"]

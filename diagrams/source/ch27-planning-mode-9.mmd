@@ -1,0 +1,14 @@
+flowchart TD
+    A["Proposed Plan"] --> B["Deterministic Completeness Gate"]
+    B --> C{"Required Fields Present?"}
+    C -->|"No"| D["Return for Revision"]
+    D --> A
+    C -->|"Yes"| E["Evidence and Architecture Review"]
+    E --> F{"Material Issues?"}
+    F -->|"Yes"| D
+    F -->|"No"| G["Approval Policy Check"]
+    G --> H{"Approval Satisfied?"}
+    H -->|"No"| I["Await Authorized Decision"]
+    I --> G
+    H -->|"Yes"| J["Approved Plan"]
+    J --> K["Execution Handoff"]

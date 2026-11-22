@@ -1,0 +1,25 @@
+flowchart TB
+    O["Organization Security Instructions"]
+    P["Platform Instructions"]
+    R["Repository-Root Instructions"]
+    B["Booking Service Instructions"]
+    E["Event and Messaging Instructions"]
+    T["Test Instructions"]
+    S["Corporate and Government Security Instructions"]
+    I["Infrastructure Instructions"]
+    X["Approved Exception EX-2026-014"]
+
+    O --> F["Effective Corporate Fleet Booking Instruction Set"]
+    P --> F
+    R --> F
+    B --> F
+    E --> F
+    T --> F
+    S --> F
+    I --> F
+    X --> F
+
+    F --> PL["Implementation Plan"]
+    PL --> C["Code and Configuration"]
+    C --> V["Compliance Validation"]
+    V --> PR["Pull Request Evidence"]

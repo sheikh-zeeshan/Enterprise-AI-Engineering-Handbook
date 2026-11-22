@@ -1,0 +1,18 @@
+flowchart TD
+    R[Requested Fleet Booking]
+
+    R --> S{Station Open?}
+    S -->|No| X1[Cannot Accept Requested Schedule]
+    S -->|Yes| SV{Service Supported?}
+
+    SV -->|No| X2[Select Different Station or Service]
+    SV -->|Yes| VE{Vehicles Eligible?}
+
+    VE -->|No| X3[Correct Vehicle Selection]
+    VE -->|Yes| CA{Operational Capacity Available?}
+
+    CA -->|No| X4[Cannot Accept Requested Schedule]
+    CA -->|Yes| AU{Business Authorization Valid?}
+
+    AU -->|No| X5[Authorization Required]
+    AU -->|Yes| AC[Booking May Proceed]

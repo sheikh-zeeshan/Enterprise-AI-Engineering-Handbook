@@ -1,0 +1,11 @@
+flowchart TD
+    B["Pin baseline and candidate"] --> T["Replay cases and execute required checks"]
+    T --> G{"Criteria met?"}
+    G -->|No| F["Record failure and revise or defer"]
+    G -->|Yes| A{"Exact revision approved?"}
+    A -->|No| D["Record disposition"]
+    A -->|Yes| V["Activate approved version"]
+    V --> M{"Rollback trigger met?"}
+    M -->|No| O["Continue monitoring"]
+    M -->|Yes| R["Restore compatible approved version set"]
+    R --> C["Verify recovery and record outcome"]

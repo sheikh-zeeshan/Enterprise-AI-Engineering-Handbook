@@ -1,0 +1,22 @@
+flowchart TD
+    A[Engineering Task] --> B[Resolve and Verify Policy Package]
+    B --> C{Preflight Authorized?}
+    C -->|No| D[Block or Escalate]
+    C -->|Yes| E[Lead Agent]
+    E --> F[Developer Agent]
+    F --> G[Policy-Aware Tool Broker]
+    G --> H[Authorized Tool Execution]
+    F --> I[Reviewer Agent]
+    I --> J[Validator Agent]
+    J --> K[Evaluator Agent]
+    K --> L[Final Governance Gate]
+    L --> M{Human Approval Required?}
+    M -->|Yes| N[Verify Trusted Approval]
+    M -->|No| O[Authorized Delivery Eligibility]
+    N --> O
+    O --> P[Protected Merge or Release]
+    D --> Q[Audit Evidence]
+    G --> Q
+    L --> Q
+    N --> Q
+    P --> Q

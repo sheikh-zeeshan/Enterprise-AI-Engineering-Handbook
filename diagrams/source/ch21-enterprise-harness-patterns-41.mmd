@@ -1,0 +1,7 @@
+flowchart TB
+    H["Shared Harness Orchestrator"] --> R["Repository Profile Resolver"]
+    R --> G["Validation Gate Registry"]
+    G --> B["Build Gate"]
+    G --> U["Unit Test Gate"]
+    G --> S["Security Gate"]
+    G --> C["Contract Gate"]

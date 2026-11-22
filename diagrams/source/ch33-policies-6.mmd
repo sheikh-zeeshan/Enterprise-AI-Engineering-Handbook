@@ -1,0 +1,26 @@
+sequenceDiagram
+    participant U as Engineer
+    participant H as Harness
+    participant P as Policy Service
+    participant A as Developer Agent
+    participant T as Tool Broker
+    participant V as Validator
+    participant M as Human Approver
+    participant E as Audit Store
+
+    U->>H: Implement Fleet Analytics integration
+    H->>P: Resolve applicable Policies
+    P-->>H: Restricted data + approved provider required
+    H->>A: Start with Policy Package
+    A->>T: Send customer fleet data to analytics provider
+    T->>P: Is provider approved for restricted data?
+    P-->>T: No
+    T-->>A: DENIED
+    A-->>H: Policy conflict requires escalation
+    H->>V: Record Policy validation result
+    V-->>H: Material Policy conflict
+    H->>M: Request authorized disposition
+    M-->>H: Authorize assessment of a minimized alternative
+    H->>P: Verify classification and provider authorization
+    P-->>H: New Policy decision for revised data flow
+    H->>E: Record decisions and approval evidence

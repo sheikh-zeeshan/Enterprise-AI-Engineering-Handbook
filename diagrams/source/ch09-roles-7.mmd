@@ -1,0 +1,19 @@
+flowchart TD
+    A[AI-Generated Plan] --> B[Architecture Assessment]
+    B --> C[AI-Generated Implementation]
+    C --> D[Independent Review]
+    C --> E[Security Assessment]
+    C --> F[Executable Validation]
+
+    D --> G[Consolidated Evidence]
+    E --> G
+    F --> G
+
+    G --> H[Acceptance Evaluation]
+    H --> I{High-Risk Decision?}
+
+    I -->|No| J[Pull Request Ready]
+    I -->|Yes| K[Human Approval Required]
+
+    K -->|Approved| J
+    K -->|Rejected| L[Remediation or Closure]

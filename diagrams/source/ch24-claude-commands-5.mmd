@@ -1,0 +1,13 @@
+flowchart TD
+    U[User Command] --> Q[Workflow Request]
+    Q --> I[Repository Instructions]
+    Q --> P[Enterprise Policy]
+    P --> H[Harness Enforcement]
+    H --> D[Developer Agent]
+    D --> R[Reviewer Agent]
+    R --> V[Deterministic Gates]
+    V --> E[Evaluator Agent]
+    E --> A{Human Approval Required?}
+    A -- Yes --> U2[Authorized Human Decision]
+    A -- No --> O[Eligible Outcome]
+    U2 --> O

@@ -1,0 +1,6 @@
+flowchart LR
+    I[Implement Workflow] --> S[Add Integration Event Skill]
+    F[Fix Workflow] --> S
+    S --> P[Approved Event Architecture]
+    P --> V[Required Validation Gates]
+    I -. Avoid embedded duplicate procedures .-> F

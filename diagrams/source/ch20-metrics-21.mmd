@@ -1,0 +1,18 @@
+flowchart TB
+    P["Population Manager"] --> H["Harness Orchestrator"]
+    H --> A["Agent Executors"]
+    H --> G["Deterministic Gates"]
+    H --> R["Review and Evaluation"]
+    P --> E["Durable Event Collection"]
+    H --> E
+    A --> E
+    G --> E
+    R --> E
+    E --> S[("Execution Event Store")] --> M["Metrics Aggregator"] --> RD[("Metrics Read Model")]
+    G --> V[("Evidence Store")]
+    R --> V
+    V -.-> M
+    RD --> API["Authorized Metrics API"]
+    API --> D["Dashboards"]
+    API --> REP["Engineering Reports"]
+    RD --> AL["Alerts"]

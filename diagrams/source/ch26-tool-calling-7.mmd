@@ -1,0 +1,4 @@
+flowchart TD
+    A["Claude Requests Tool"] --> B["PreToolUse Hook"] --> C{"Policy Check"}
+    C -->|Denied| D["Block and Record"]
+    C -->|Authorized| E["Claude Tool Execution"] --> F["Capture Result"] --> G["Harness Evidence Store"]

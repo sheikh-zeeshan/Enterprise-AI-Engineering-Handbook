@@ -1,0 +1,10 @@
+flowchart TD
+    API[Booking.Api] --> APP[Booking.Application]
+    APP --> DOM[Booking.Domain]
+    INF[Booking.Infrastructure] --> APP
+    INF --> DOM
+    API -. Composition root .-> INF
+    INF --> SQL[Booking Database]
+    INF --> OUT[Outbox Storage]
+    OUT --> WORK[Outbox Publisher]
+    WORK --> EH[Azure Event Hubs]

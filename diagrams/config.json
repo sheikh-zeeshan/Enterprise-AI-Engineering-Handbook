@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "sourceOfTruth": "book/*.md Mermaid fences",
+  "renderer": {
+    "startOnLoad": false,
+    "securityLevel": "strict",
+    "theme": "neutral",
+    "fontFamily": "Arial",
+    "htmlLabels": false,
+    "flowchart": { "htmlLabels": false },
+    "sequence": { "useMaxWidth": false }
+  }
+}

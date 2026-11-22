@@ -1,0 +1,12 @@
+flowchart LR
+    Claude["Claude Code"] --> Harness["Enterprise harness"]
+    Copilot["GitHub Copilot"] --> Harness
+    Codex --> Harness
+    Harness --> Evidence["Engineering evidence"] --> Policy["Governed risk and approval policy"]
+    Policy --> Service["Trusted approval service"]
+    Human["Authorized human approvers"] --> Service
+    Service --> Gateway["Protected execution gateway"]
+    Harness --> Gateway
+    Gateway --> Valid{"Valid authorization?"}
+    Valid -->|No| Deny["Execution denied"]
+    Valid -->|Yes| Action["Authorized enterprise action"]

@@ -1,0 +1,11 @@
+flowchart LR
+    Request[Confirm Booking] --> BS[Booking Service]
+
+    BS --> TX["Local Database Transaction"]
+
+    TX --> BK[(Booking Tables)]
+    TX --> OB[(Outbox)]
+
+    OB --> Publisher[Outbox Publisher]
+    Publisher --> Broker[Message Broker]
+    Broker --> Consumers[Downstream Consumers]

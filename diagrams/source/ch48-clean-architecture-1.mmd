@@ -1,0 +1,16 @@
+flowchart TB
+    subgraph Service["Booking Service runtime"]
+        direction TB
+        subgraph Outer["Outer adapters"]
+            Api["API and presentation"]
+            Infra["Infrastructure"]
+        end
+        subgraph Core["Application core"]
+            direction TB
+            App["Application use cases and ports"]
+            Domain["Domain behavior and invariants"]
+            App --> Domain
+        end
+        Api --> App
+        Infra --> App
+    end

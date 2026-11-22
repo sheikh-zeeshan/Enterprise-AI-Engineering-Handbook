@@ -1,0 +1,8 @@
+flowchart TB
+    R["Run Request"] --> H["Harness Control Plane"]
+    H --> A["Execution Worker A"]
+    H --> B["Execution Worker B"]
+    H --> C["Execution Worker C"]
+    A --> RA["Isolated Run A"] --> E["Evidence Store"]
+    B --> RB["Isolated Run B"] --> E
+    C --> RC["Isolated Run C"] --> E

@@ -1,0 +1,22 @@
+flowchart TD
+    A[Task Submitted] --> B[Lead Agent]
+    B --> C[Developer Agent]
+    C --> D[Reviewer Agent]
+    D --> E[Validator Agent]
+    E --> F[Evaluator Agent]
+    F --> G[Human Approval]
+    G --> H[Merge / Deployment]
+
+    B --> M[Metrics Collector]
+    C --> M
+    D --> M
+    E --> M
+    F --> M
+    G --> M
+    H --> M
+
+    M --> S[(Metrics Store)]
+    S --> P[Analytics Processor]
+    P --> K[Engineering Dashboard]
+    P --> L[Governance Dashboard]
+    P --> Q[Improvement Analysis]

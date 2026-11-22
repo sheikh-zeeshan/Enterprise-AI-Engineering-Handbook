@@ -1,0 +1,28 @@
+flowchart TD
+    S[Candidate Source]
+    ACCESS{Authorised for task and Role?}
+
+    S --> ACCESS
+    ACCESS -->|No| DENY[Exclude or request approved summary]
+    ACCESS -->|Yes| STATUS{Lifecycle status?}
+
+    STATUS -->|Rejected or Superseded| HIST[Historical use only]
+    STATUS -->|Draft or Under Review| WARN[Use as unverified context]
+    STATUS -->|Approved or Active| SCOPE{Scope matches question?}
+    STATUS -->|Unknown| REVIEW[Lower confidence and investigate]
+
+    SCOPE -->|No| EXCLUDE[Exclude as irrelevant]
+    SCOPE -->|Yes| AUTH{Authoritative for this decision?}
+
+    AUTH -->|Yes| VALIDATE[Validate freshness and reliability]
+    AUTH -->|No| SUPPORT[Use as supporting evidence]
+
+    VALIDATE --> CONFLICT{Conflicts with applicable source?}
+    SUPPORT --> CONFLICT
+
+    CONFLICT -->|No| CITE[Use with citation]
+    CONFLICT -->|Yes| RESOLVE[Apply conflict protocol]
+
+    RESOLVE --> SAFE{Safe resolution available?}
+    SAFE -->|Yes| DECISION[Record resolution and cite]
+    SAFE -->|No| HUMAN[Request human review]

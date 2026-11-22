@@ -1,0 +1,30 @@
+sequenceDiagram
+    participant P as Population Manager
+    participant S as Scheduler
+    participant C as Claude Developer
+    participant R as Reviewer
+    participant V as Validator
+    participant E as Evaluator
+
+    P->>S: POP-1042-03 is Ready
+    S->>P: Claim POP-1042-03
+    P-->>S: Claim accepted, Running
+
+    S->>C: Execute POP-1042-03
+    C-->>S: Implementation + evidence
+    S->>P: Record execution result
+    P->>P: Running → Review
+
+    P->>R: Review implementation
+    R-->>P: Accepted
+    P->>P: Review → Validation
+
+    P->>V: Execute deterministic gates
+    V-->>P: Required gates passed
+    P->>P: Validation → Evaluation
+
+    P->>E: Evaluate outcome
+    E-->>P: Goal satisfied
+
+    P->>P: Apply completion policy
+    P->>P: Evaluation → Completed

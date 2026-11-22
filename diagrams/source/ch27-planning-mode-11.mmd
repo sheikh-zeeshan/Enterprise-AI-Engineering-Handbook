@@ -1,0 +1,25 @@
+flowchart TD
+    A["Engineering Request"] --> B["Harness Task Intake"]
+    B --> C["Risk Classification"]
+    C --> D["Repository Discovery"]
+    E["Repository Instructions"] --> F["Planning Context"]
+    G["Skills and Knowledge Sources"] --> F
+    H["Business Constraints"] --> F
+    D --> F
+    F --> I["Planning Agent"]
+    I --> J["Proposed Plan"]
+    J --> K["Deterministic Plan Gate"]
+    K --> L["Architectural Review"]
+    L --> M["Approval Gateway"]
+    M --> N{"Authorized?"}
+    N -->|"Revision"| I
+    N -->|"Yes"| O["Execution Handoff"]
+    O --> P["Developer Agent"]
+    P --> Q["Implementation"]
+    Q --> R["Reviewer Agent"]
+    Q --> S["Validator Agent"]
+    R --> T["Evaluator Agent"]
+    S --> T
+    T --> U["Completion Decision"]
+    U --> V["Run Evidence and Metrics"]
+    V --> W["Governed Improvement Proposals"]

@@ -1,0 +1,33 @@
+flowchart TB
+    G[Goal] --> RI[Gather Repository Evidence]
+
+    RI --> C[Apply Instructions and Steering Notes]
+
+    C --> R[Identify Risks and Assumptions]
+
+    R --> P[Create Bounded Plan]
+
+    P --> PV[Validate Plan]
+
+    PV --> D[Developer Execution]
+
+    D --> DG[Deterministic Gates]
+
+    DG -->|Fail| F[Classify Failure]
+    F --> RB{Retry Budget?}
+    RB -->|Yes| REM[Targeted Remediation]
+    REM --> D
+    RB -->|No| ESC[Escalate]
+
+    DG -->|Pass| REV[Independent Review]
+
+    REV --> VAL[Validation]
+    VAL --> EVA[Evaluation]
+
+    EVA --> HA{Approval Required?}
+
+    HA -->|Yes| HUMAN[Human Approval]
+    HA -->|No| DONE[Complete]
+
+    HUMAN -->|Approved| DONE
+    HUMAN -->|Rejected| P

@@ -1,0 +1,30 @@
+flowchart LR
+    U[Corporate Administrator]
+    API[Fleet Service API]
+    APP[Fleet Service Application]
+    AGG[Corporate Fleet Agreement Aggregate]
+    DB[(Fleet SQL Server)]
+    O[Transactional Outbox]
+    EH[Event Hub]
+    REDIS[(Redis Eligibility Projection)]
+    B[Booking Service]
+    SF[Service Fulfilment Service]
+    P[Pricing Service]
+    BI[Billing Service]
+    IAM[Identity and Access]
+
+    U --> API
+    IAM -->|Claims and Permissions| API
+    API --> APP
+    APP --> AGG
+    AGG --> DB
+    AGG --> O
+    O --> EH
+
+    EH --> REDIS
+    EH --> B
+    EH --> SF
+    EH --> BI
+
+    B --> P
+    SF --> P

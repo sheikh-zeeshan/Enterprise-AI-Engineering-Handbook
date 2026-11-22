@@ -1,0 +1,34 @@
+flowchart TB
+    subgraph Administration["Policy Administration Plane"]
+        A[Policy Author]
+        B[Review]
+        C[Approval]
+        D[Versioned Policy Registry]
+
+        A --> B
+        B --> C
+        C --> D
+    end
+
+    subgraph Runtime["AI Engineering Runtime"]
+        E[Task]
+        F[Policy Resolver]
+        G[Harness]
+        H[Tool Broker]
+        I[Agent Roles]
+        J[Deterministic Gates]
+        K[Human Approval]
+        L[Audit Store]
+
+        E --> F
+        F --> G
+        G --> I
+        I --> H
+        G --> J
+        J --> K
+        K --> L
+    end
+
+    D --> F
+    D --> J
+    D --> H

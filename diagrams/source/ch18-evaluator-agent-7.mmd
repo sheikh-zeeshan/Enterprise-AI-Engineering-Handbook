@@ -1,0 +1,16 @@
+flowchart TD
+    A[Approved Goal and Acceptance Criteria] --> B[Developer Agent]
+    B --> C[Pull Request]
+    C --> D[Reviewer Agent]
+    D --> E[Validator / CI Gates]
+    E --> F[Copilot Evaluator]
+
+    F --> G{Outcome}
+
+    G -->|Satisfied| H[Human Approval]
+    G -->|Partial| I[Lead Agent]
+    G -->|Failed| J[Developer Agent]
+    G -->|Inconclusive| K[Escalation]
+
+    I --> J
+    J --> C

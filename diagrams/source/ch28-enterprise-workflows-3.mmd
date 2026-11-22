@@ -1,0 +1,34 @@
+stateDiagram-v2
+    [*] --> Created
+    Created --> Admitted: Admission accepted
+    Created --> Blocked: Missing prerequisites
+    Admitted --> Planning
+    Planning --> AwaitingPlanApproval: Plan prepared
+    AwaitingPlanApproval --> Planning: Revision requested
+    AwaitingPlanApproval --> Implementing: Approved
+    AwaitingPlanApproval --> Rejected: Rejected
+    Implementing --> Validating: Candidate identified
+    Validating --> Reviewing: Gates passed
+    Reviewing --> AssessingValidation: Review accepted
+    AssessingValidation --> Evaluating: Evidence accepted
+    Evaluating --> AwaitingApproval: Goal satisfied
+    Validating --> Recovery: Gate failed
+    Reviewing --> Recovery: Blocking finding
+    AssessingValidation --> Recovery: Evidence invalid
+    Evaluating --> Recovery: Goal unmet
+    Recovery --> Implementing: Remediation authorized
+    Recovery --> Planning: Replan required
+    Recovery --> Failed: Attempts exhausted
+    Recovery --> Escalated: Human decision needed
+    AwaitingApproval --> PreparingOutput: Approved
+    AwaitingApproval --> Rejected: Rejected
+    AwaitingApproval --> Implementing: Change requested
+    PreparingOutput --> Completed: Output verified
+    Created --> Cancelled
+    Planning --> Cancelled
+    Implementing --> Cancelled
+    Completed --> [*]
+    Failed --> [*]
+    Rejected --> [*]
+    Cancelled --> [*]
+    Escalated --> [*]

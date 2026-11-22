@@ -1,0 +1,18 @@
+flowchart TD
+    LEAD[Lead Agent] --> RES[Skill Resolver]
+    RES --> REG[Skill Registry]
+    REG --> META[Version and Ownership Metadata]
+    REG --> POLICY[Approval and Compatibility Policies]
+    REG --> ART[Immutable Skill Artifacts]
+    RES --> CHECK{Approved, compatible and valid?}
+    CHECK -->|No| DENY[Fail Closed / Escalate]
+    CHECK -->|Yes| VERIFY[Verify Bundle Digest]
+    VERIFY -->|Mismatch| DENY
+    VERIFY -->|Verified| DEV[Developer Agent]
+    DEV --> GATES[Reviewer, Validator and Evaluator]
+    GATES --> MEM[Harness Memory]
+    MEM --> EVOLVE[Skill Evolution Engine]
+    EVOLVE --> CAND[Candidate Skill Version]
+    CAND --> GOV[Tests and Human Approval]
+    GOV -->|Approved| REG
+    GOV -->|Rejected| MEM

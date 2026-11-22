@@ -1,0 +1,11 @@
+stateDiagram-v2
+    [*] --> Required
+    Required --> Pending: Submit request
+    Pending --> Approved: Authorized approval
+    Pending --> Rejected: Reject
+    Pending --> ChangesRequested: Request changes
+    ChangesRequested --> Pending: Submit revised request
+    Approved --> Expired: Validity elapsed
+    Approved --> Revoked: Authorization withdrawn
+    Approved --> Superseded: Material change
+    Approved --> Consumed: One-time authorization used

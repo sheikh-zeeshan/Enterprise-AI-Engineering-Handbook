@@ -1,0 +1,19 @@
+flowchart TD
+    A[Adaptive Harness] --> B[Detect]
+    B --> C[Analyze]
+    C --> D[Recommend]
+
+    D --> E[Candidate Instruction]
+
+    E --> F[Human Owner]
+
+    F --> G{Approve?}
+
+    G -->|No| H[Retain Existing Instruction]
+    G -->|Yes| I[Versioned Update]
+
+    I --> J[Validate]
+    J --> K[Activate]
+
+    style F stroke-width:3px
+    style G stroke-width:3px

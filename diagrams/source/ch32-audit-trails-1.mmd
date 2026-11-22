@@ -1,0 +1,33 @@
+flowchart TB
+    WORK["Work item and approved objective"] --> ORCH["Harness orchestrator"]
+    subgraph EXEC["Harness execution"]
+        LEAD["Lead Agent"] --> DEV["Developer Agent"]
+        DEV --> REV["Reviewer Agent"]
+        REV --> VAL["Validator Agent"]
+        VAL --> EVAL["Evaluator Agent"]
+    end
+    ORCH --> LEAD
+    subgraph SOURCES["Controlled evidence collection"]
+        TOOLS["Tool gateway"]
+        REPO["Repository change capture"]
+        GATES["Deterministic gate runner"]
+        HUMAN["Human approval integration"]
+    end
+    DEV --> TOOLS
+    DEV --> REPO
+    VAL --> GATES
+    EVAL --> HUMAN
+    subgraph GOVERNANCE["Governed audit storage"]
+        INGEST["Authenticated audit ingestion"] --> EVENTS[("Controlled audit event store")]
+        INGEST --> ARTIFACTS[("Evidence artifact store")]
+        EVENTS --> INTEGRITY["Integrity verification"]
+        ARTIFACTS --> INTEGRITY
+        INTEGRITY --> ACCESS["Retention and access controls"]
+    end
+    ORCH -.-> INGEST
+    TOOLS -.-> INGEST
+    REPO -.-> INGEST
+    GATES -.-> INGEST
+    HUMAN -.-> INGEST
+    ACCESS --> QUERY["Audit query service"]
+    QUERY --> USERS["Engineering, security, and compliance"]

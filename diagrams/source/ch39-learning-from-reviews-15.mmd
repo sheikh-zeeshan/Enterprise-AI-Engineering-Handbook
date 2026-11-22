@@ -1,0 +1,24 @@
+flowchart TD
+    A[Review finding received] --> B{Evidence verified?}
+    B -->|No| C[Preserve as unverified]
+    B -->|Yes| D[Classify category and severity]
+    D --> E[Apply required remediation policy]
+    E --> F{Learning eligible?}
+    F -->|No| G[Retain for investigation]
+    F -->|Yes| H[Detect patterns and assess root cause]
+    H --> I{Evidence supports candidate?}
+    I -->|No| J[Preserve uncertainty]
+    I -->|Yes| K[Select improvement target]
+    K --> L[Prepare candidate proposal]
+    L --> M{Human approval?}
+    M -->|No| N[Record rejection or revision]
+    M -->|Yes| O[Validate approved candidate]
+    O --> P{Validation passed?}
+    P -->|No| Q[Revise candidate]
+    P -->|Yes| R[Activate approved artifact version]
+    R --> S[Evaluate future outcomes]
+    S --> T{Regression detected?}
+    T -->|No| U[Continue monitoring]
+    T -->|Yes| V[Governed rollback or revision]
+    classDef decision fill:#fff1d6,stroke:#bb8b36,color:#704b0a
+    class B,F,I,M,P,T decision

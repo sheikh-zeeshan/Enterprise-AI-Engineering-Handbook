@@ -1,0 +1,8 @@
+flowchart TD
+ RI["Repository Intelligence"] --> ING["Governed Knowledge Ingestion"]
+ HM["Harness Memory"] --> ING
+ EV["Builds, Reviews and PR Evidence"] --> ING
+ ADR["Architecture Decisions"] --> ING
+ ING --> KG[("Knowledge Graph")]
+ KG -->|Evidence-backed context| LEAD["Lead Agent"] --> DEV["Developer Agent"] --> REV["Reviewer Agent"] --> VAL["Validator Agent"] --> EVAL["Evaluator Agent"]
+ EVAL --> NEW["New Engineering Evidence"] --> ING

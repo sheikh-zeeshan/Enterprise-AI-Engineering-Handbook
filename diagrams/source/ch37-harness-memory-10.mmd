@@ -1,0 +1,19 @@
+flowchart TD
+    subgraph AGENTS["AI coding platforms"]
+        C["Claude Code"]
+        G["GitHub Copilot"]
+        O["Other AI coding agents"]
+    end
+    C --> CA["Claude adapter"]
+    G --> GA["Copilot adapter"]
+    O --> OA["Generic adapter"]
+    CA --> API["Harness Memory API"]
+    GA --> API
+    OA --> API
+    API --> AUTH["Authorization and scope enforcement"]
+    AUTH --> RET["Governed retrieval"]
+    RET --> REG[("Versioned memory registry")]
+    LC["Learning candidates"] --> EV["Evidence verification"]
+    EV --> HA["Human approval"]
+    HA -->|Approved| REG
+    REG --> AUD["Audit and lifecycle records"]

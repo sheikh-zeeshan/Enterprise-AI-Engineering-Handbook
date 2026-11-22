@@ -1,0 +1,12 @@
+flowchart TD
+    Work["Implement fleet booking"] --> Evidence["Review, validation, and evaluation"]
+    Evidence --> Risk["Governed risk classification"]
+    Risk --> Approvals["Architecture, data governance, and production approvals"]
+    Approvals --> Decision{"Approval decisions"}
+    Decision -->|Changes requested| Work
+    Decision -->|Rejected| Block["Release blocked"]
+    Decision -->|All approved| Verify["Verify current artifact"]
+    Verify --> Valid{"Scope, authority, and expiry valid?"}
+    Valid -->|No| Block
+    Valid -->|Yes| Deploy["Execute protected deployment"]
+    Deploy --> Audit["Record execution and audit evidence"]

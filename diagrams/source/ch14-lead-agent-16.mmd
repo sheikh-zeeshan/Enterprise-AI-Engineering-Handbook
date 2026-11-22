@@ -1,0 +1,19 @@
+flowchart TB
+    G[User Goal] --> L[Copilot Lead Agent]
+
+    L --> D[Copilot Developer Agent]
+
+    D --> PR[Pull Request]
+
+    PR --> CI[GitHub Actions Gates]
+
+    CI -->|Pass| CR[Copilot / Human Review]
+    CI -->|Fail| L
+
+    CR --> V[Validator]
+
+    V --> E[Evaluator]
+
+    E --> H[Human Approval]
+
+    H -->|Approved| M[Merge]

@@ -1,0 +1,10 @@
+flowchart TD
+    D[Developer Agent] --> G[Gate Pipeline]
+    G -->|Pass| R[Reviewer Agent]
+    G -->|Fail| RC{Retry Allowed?}
+
+    RC -->|Yes| E[Failure Evidence]
+    E --> D2[Developer Repair Attempt]
+    D2 --> G
+
+    RC -->|No| X[Retry Exhausted]

@@ -1,0 +1,27 @@
+flowchart LR
+    subgraph CP[Harness Control Plane]
+        WC[Workflow Controller]
+        RO[Role Orchestrator]
+        PE[Policy Engine]
+        SR[State Repository]
+        AS[Approval Service]
+        OM[Output Manager]
+    end
+
+    subgraph EP[Execution Plane]
+        AG[AI Agents]
+        TG[Tool Gateway]
+        GR[Gate Runner]
+        EV[Evaluator]
+    end
+
+    WC --> RO
+    WC --> PE
+    WC --> SR
+    WC --> AS
+    WC --> OM
+
+    RO --> AG
+    AG --> TG
+    WC --> GR
+    WC --> EV

@@ -1,0 +1,30 @@
+flowchart TD
+    A["Engineering Prompt"] --> B{"Formal Planning Required?"}
+    B -->|"No"| C["Lightweight Investigation"]
+    B -->|"Yes"| D["Repository Discovery"]
+    C --> E["Authorized Execution Workflow"]
+    D --> F{"Requirements and Evidence Sufficient?"}
+    F -->|"No"| G["Clarify or Investigate"]
+    G --> D
+    F -->|"Yes"| H["Define Scope and Architecture"]
+    H --> I["Identify Dependencies and Risks"]
+    I --> J["Define Acceptance and Validation"]
+    J --> K{"Blocking Issues?"}
+    K -->|"Yes"| L["Resolve Dependencies"]
+    L --> H
+    K -->|"No"| M["Proposed Plan"]
+    M --> N["Plan Quality Gate"]
+    N --> O{"Plan Adequate?"}
+    O -->|"No"| H
+    O -->|"Yes"| P{"Approval Required?"}
+    P -->|"Yes"| Q["Authorized Review"]
+    Q --> R{"Approved?"}
+    R -->|"No"| H
+    R -->|"Yes"| S["Execution Handoff"]
+    P -->|"No"| S
+    S --> T["Developer Agent"]
+    T --> U{"Material Plan Drift?"}
+    U -->|"Yes"| V["Impact Assessment"]
+    V --> H
+    U -->|"No"| W["Continue Implementation"]
+    W --> X["Validation and Evaluation"]

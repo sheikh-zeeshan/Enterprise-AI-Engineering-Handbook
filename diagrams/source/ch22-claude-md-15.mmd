@@ -1,0 +1,12 @@
+flowchart TD
+    W[Work Item] --> H[Harness]
+    R[Repository Instructions] --> H
+    S[Steering Note] --> H
+    H --> L[Lead Agent]
+    L --> D[Developer Agent]
+    D --> RV[Reviewer Agent]
+    RV --> V[Validator Agent]
+    V --> E[Evaluator Agent]
+    E --> A[Human Approval]
+    V --> G[Deterministic Gates]
+    G --> H

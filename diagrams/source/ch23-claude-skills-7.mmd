@@ -1,0 +1,31 @@
+flowchart TD
+    A[Recurring Engineering Need]
+    B{Persistent repository rule?}
+    C[Put in CLAUDE.md]
+
+    D{Specific current task?}
+    E[Put in Prompt]
+
+    F{Reusable procedure?}
+    G[Create or Reuse Skill]
+
+    H{Deterministic enforcement?}
+    I[Create Validation Gate]
+
+    J{Temporary run information?}
+    K[Use Run Workspace / Scratchpad]
+
+    A --> B
+    B -- Yes --> C
+    B -- No --> D
+
+    D -- Yes --> E
+    D -- No --> F
+
+    F -- Yes --> G
+    F -- No --> H
+
+    H -- Yes --> I
+    H -- No --> J
+
+    J -- Yes --> K

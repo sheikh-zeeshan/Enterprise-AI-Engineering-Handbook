@@ -1,0 +1,13 @@
+flowchart TD
+    A[Build Execution] --> B[(Raw Evidence Store)]
+    B --> C[Classification and Analysis]
+    C --> D[(Versioned Analysis Records)]
+    D --> E[Candidate Recommendation]
+    E --> F[Human Review]
+    F --> G{Approved?}
+    G -->|No| H[Retain Decision History]
+    G -->|Yes| I[Governed Publication]
+    I --> J[(Approved Harness Memory)]
+    I --> K[(Versioned Artifact Registry)]
+    J --> L[Future Runs]
+    K --> L

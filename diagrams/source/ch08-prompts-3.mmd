@@ -1,0 +1,18 @@
+sequenceDiagram
+    participant H as Human or Work Item
+    participant L as Lead Agent
+    participant C as Skill Catalog
+    participant A as Approver
+    participant D as Developer Agent
+
+    H->>L: Submit approved task prompt
+    L->>C: Discover applicable skills
+    C-->>L: Return governed skill candidates
+    L->>L: Map scope and criteria to skills
+    L->>A: Present execution plan and skill set
+    alt Plan approved
+        A-->>L: Approve the plan
+        L->>D: Execute prompt with approved context
+    else Changes required
+        A-->>L: Return the plan for revision
+    end

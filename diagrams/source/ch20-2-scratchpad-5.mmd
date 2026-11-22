@@ -1,0 +1,13 @@
+flowchart TD
+    A["Active Canonical Phase"] --> B["Persist Eligible Checkpoint or Progress Snapshot"]
+    B --> A
+    A -->|Worker failure| I["Interrupted"]
+    I --> L["Load Durable Artifacts and Reacquire Ownership"]
+    L --> V{"Identity, Source, Inputs, Evidence, and Environment Valid?"}
+    V -->|Yes| R["Resume Authorized Canonical Phase"]
+    V -->|Stale| S["Reinvestigate and Revalidate Affected State"]
+    S --> V
+    V -->|Unrecoverable| X["Restart or Escalate"]
+    A -->|CP-005 persisted| C["Completed"]
+    C --> T["Apply Artifact Retention Policy"]
+    T --> U["Archive Required Evidence; Clean Temporary State"]

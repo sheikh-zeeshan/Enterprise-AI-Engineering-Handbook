@@ -1,0 +1,18 @@
+flowchart LR
+    A[Define Task and Scope] --> B[Identify Entry Points]
+    B --> C[Map Topology]
+    C --> D[Establish Boundaries]
+    D --> E[Trace Build and Runtime]
+    E --> F[Inspect Dependencies and Contracts]
+    F --> G[Inspect Data and Configuration]
+    G --> H[Inspect Tests and Security]
+    H --> I[Inspect Operations and Deployment]
+    I --> J[Review Documentation and AI Guidance]
+    J --> K[Classify Evidence]
+    K --> L[Produce Discovery Report]
+    L --> M[Assess Confidence]
+    M --> N{Ready to Implement?}
+    N -->|Yes| O[Proceed]
+    N -->|With assumptions| P[Proceed with Explicit Assumptions]
+    N -->|No| Q[Additional Discovery or Human Clarification]
+    N -->|Unsafe| R[Stop]

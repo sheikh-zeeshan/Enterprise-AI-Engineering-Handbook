@@ -1,0 +1,19 @@
+flowchart TD
+    A[New Engineering Information] --> B{Is it stable across tasks?}
+
+    B -- No --> C{Is it the current task?}
+    C -- Yes --> P[Prompt]
+    C -- No --> D{Is it temporary run state?}
+    D -- Yes --> S[Scratchpad / Run Workspace]
+    D -- No --> T[Steering Note or other task context]
+
+    B -- Yes --> E{Is it persistent behavioral guidance?}
+    E -- Yes --> F{Does it apply broadly?}
+    F -- Yes --> G[Root CLAUDE.md]
+    F -- No --> H[Scoped CLAUDE.md / Rules]
+
+    E -- No --> I{Is it a reusable workflow?}
+    I -- Yes --> J[Skill]
+    I -- No --> K{Is it detailed reference knowledge?}
+    K -- Yes --> L[Repository Intelligence / Documentation]
+    K -- No --> M[Governed Knowledge Source]

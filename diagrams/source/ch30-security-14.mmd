@@ -1,0 +1,8 @@
+flowchart TD
+    A[Malicious repository content] --> B[Untrusted text treated as authority]
+    B --> C[Excessive agent privileges]
+    C --> D[Production credentials exposed]
+    D --> E[Unrestricted shell and network]
+    E --> F[Unauthorized transfer]
+    F --> G[Sensitive data exposure]
+    G --> H[Missing trusted audit evidence]

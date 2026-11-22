@@ -1,0 +1,26 @@
+flowchart LR
+    Q[Engineering Question]
+    RET[Retrieved Sources]
+
+    Q --> RET
+
+    RET --> AUTH[Authority Assessment]
+    RET --> REL[Relevance Assessment]
+    RET --> FRESH[Freshness Assessment]
+    RET --> TRUST[Reliability Assessment]
+    RET --> SCOPE[Scope Assessment]
+
+    AUTH --> SYN[Synthesis]
+    REL --> SYN
+    FRESH --> SYN
+    TRUST --> SYN
+    SCOPE --> SYN
+
+    SYN --> AGREE{Sources agree?}
+
+    AGREE -->|Yes| CONF[Assign justified confidence]
+    AGREE -->|No| CONFLICT[Record conflict]
+    CONFLICT --> REVIEW[Human review or further validation]
+    REVIEW --> CONF
+
+    CONF --> RESULT[Cited Engineering Decision]

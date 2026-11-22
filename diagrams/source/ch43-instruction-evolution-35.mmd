@@ -1,0 +1,17 @@
+flowchart TD
+    A["Repeated Cross-service DB Violations"] --> B{"Enough Reliable Evidence?"}
+    B -->|No| C["Continue Monitoring"]
+    B -->|Yes| D{"Instruction Deficiency?"}
+    D -->|No| E["Improve Skill, Prompt, Gate, or Code"]
+    D -->|Yes| F["Classify and Scope Change"]
+    F --> G["Prepare Candidate"]
+    G --> H["Assess Policy and Compatibility"]
+    H --> I["Architecture Owner Review"]
+    I --> J{"Approved?"}
+    J -->|No| K["Record Decision"]
+    J -->|Yes| L["Validate Candidate"]
+    L --> M{"Validation Passed?"}
+    M -->|No| N["Revise Candidate"]
+    M -->|Yes| O["Activate Approved Version"]
+    O --> P["Monitor Future Runs"]
+    P --> Q["Measure Effectiveness"]

@@ -1,0 +1,41 @@
+sequenceDiagram
+    actor U as User
+    participant H as Harness
+    participant L as Codex Lead
+    participant D as Codex Developer
+    participant R as Codex Reviewer
+    participant V as Validator
+    participant E as Codex Evaluator
+    actor A as Human Approver
+    participant G as Git
+
+    U->>H: Submit ACD-417
+    H->>H: Normalize and authorize task
+    H->>H: Build context manifest
+
+    H->>L: Read-only planning task
+    L-->>H: Structured plan
+
+    H->>H: Plan gate
+
+    H->>D: Approved plan in isolated worktree
+    D-->>H: Patch and implementation summary
+
+    H->>H: Scope gate
+
+    H->>R: Plan + patch + Instructions
+    R-->>H: Review findings
+
+    H->>D: Focused repair
+    D-->>H: Updated patch
+
+    H->>V: Execute deterministic gates
+    V-->>H: Validation evidence
+
+    H->>E: Evidence package
+    E-->>H: Evaluation scorecard
+
+    H->>A: Approval request
+    A-->>H: Approved
+
+    H->>G: Create pull request

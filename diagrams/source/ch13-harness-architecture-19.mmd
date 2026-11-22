@@ -1,0 +1,10 @@
+flowchart TD
+    D[Codex Developer] --> G[Gate Pipeline]
+
+    G -->|Pass| R[Reviewer]
+    G -->|Fail| P{Retry Permitted?}
+
+    P -->|Yes| F[Failure Evidence]
+    F --> D
+
+    P -->|No| X[Stop or Escalate]

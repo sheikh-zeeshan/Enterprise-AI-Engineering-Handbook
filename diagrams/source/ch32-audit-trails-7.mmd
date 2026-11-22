@@ -1,0 +1,18 @@
+flowchart TB
+    WORK["Engineering work item"] --> HARNESS["Enterprise Harness orchestrator"]
+    subgraph CLAUDE["Claude Code execution"]
+        INS["Repository instructions"] --> AGENT["Claude Code Agent"]
+        PROMPT["Task prompt"] --> AGENT
+        SKILLS["Approved skills"] --> AGENT
+        AGENT --> TOOLS["Tool execution"]
+    end
+    HARNESS --> PROMPT
+    TOOLS --> GATEWAY["Controlled execution gateway"]
+    GATEWAY --> GATES["Deterministic validation gates"]
+    GATES --> APPROVAL["Human approval"]
+    GATEWAY -.-> AUDIT["Audit ingestion service"]
+    GATES -.-> AUDIT
+    APPROVAL -.-> AUDIT
+    HARNESS -.-> AUDIT
+    AUDIT --> EVENTS[("Controlled audit store")]
+    AUDIT --> EVIDENCE[("Evidence artifact store")]

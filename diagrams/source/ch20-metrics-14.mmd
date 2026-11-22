@@ -1,0 +1,5 @@
+flowchart LR
+    E["Authoritative Lifecycle Events"] --> S[("Event Store")] --> A["Metrics Aggregation"] --> R[("Read Models")]
+    R --> O["Operational Dashboard"]
+    R --> Q["Quality Dashboard"]
+    R --> C["Cost Dashboard"]

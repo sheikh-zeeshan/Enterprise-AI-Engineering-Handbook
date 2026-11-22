@@ -1,0 +1,12 @@
+flowchart TD
+    P["Population"] --> R["Harness Runs"] --> A["Agents and Gates"]
+    A --> V["Review, Validation, and Evaluation"] --> E["Execution Evidence"]
+    E --> M["Governed Metrics"]
+    M --> D["Dashboards"]
+    M --> L["Alerts"]
+    M --> N["Analysis"]
+    D --> I["Harness Improvement"]
+    L --> I
+    N --> I
+    I --> G["Human-Governed Changes"]
+    G -.-> R

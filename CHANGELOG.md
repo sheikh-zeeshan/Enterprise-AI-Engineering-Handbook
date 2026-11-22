@@ -8,6 +8,8 @@ The project follows the principles of [Keep a Changelog](https://keepachangelog.
 
 ### Added
 
+- Shared chapter diagram export pipeline, generated Mermaid sources and SVGs, hash-based asset validation, and publication Markdown with SVG references.
+
 - Chapter 55, Enterprise Harness Fleet, covering team-owned Harnesses, the Fleet control plane, Population, isolated execution, evidence and approvals, safe recovery, contextualized Metrics and costs, governed learning, and staged version rollout, with six diagrams and a synthetic management lab.
 - Chapter 54, AI-Assisted Development, integrating repository context, governed agent responsibilities, deterministic validation, Human Approval, protected delivery, operational evidence, and learning through the corporate fleet booking scenario, with six workflow diagrams and a bounded Booking contract-test example.
 - Chapter 53, CI/CD, covering protected integration, deterministic gates, immutable artifacts, environment promotion, Kubernetes rollout, compatible migrations, release evidence, recovery, and bounded AI assistance in Alpha Car Detailing, with six delivery diagrams.

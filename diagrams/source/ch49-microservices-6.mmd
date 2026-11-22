@@ -1,0 +1,20 @@
+sequenceDiagram
+    participant Booking
+    participant Store as Booking private store
+    participant Station as Station Operations
+    Booking->>Store: Persist capacity intent and stable operation ID
+    Booking->>Station: Commit capacity using operation ID
+    alt Commitment established
+        Station-->>Booking: Committed reservation and matching request
+        Booking->>Store: Atomically confirm, store outcome, append outbox
+        Store-->>Booking: Commit successful
+        Note over Booking: Return confirmed outcome to authorized caller
+    else Response lost
+        Note over Booking,Station: Completion is unknown, not rejected
+        Booking->>Store: Retain recoverable nonterminal workflow
+        Booking->>Station: Inquire using the same operation ID
+        Note over Booking: Resume or compensate under approved policy
+    else Capacity rejected
+        Station-->>Booking: Authoritative rejection
+        Booking->>Store: Record rejected outcome
+    end

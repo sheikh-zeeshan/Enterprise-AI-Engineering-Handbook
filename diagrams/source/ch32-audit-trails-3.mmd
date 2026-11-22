@@ -1,0 +1,11 @@
+flowchart LR
+    WORK["Business requirement"] --> ITEM["Work item"]
+    ITEM --> CONTEXT["Prompt, instructions, and skills"]
+    CONTEXT --> RUN["Harness run"]
+    RUN --> REVISION["Implementation revision"]
+    REVISION --> REVIEW["Review evidence"]
+    REVISION --> VALIDATION["Validation evidence"]
+    REVIEW --> EVALUATION["Evaluation evidence"]
+    VALIDATION --> EVALUATION
+    EVALUATION --> APPROVAL["Human approval"]
+    APPROVAL --> MERGE["Merged revision"]

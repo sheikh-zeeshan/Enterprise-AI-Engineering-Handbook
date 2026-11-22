@@ -1,0 +1,22 @@
+flowchart LR
+    REQ[Product Requirement]
+    ADR[Accepted ADR]
+    API[Published API Contract]
+    CODE[Implementation]
+    MIG[Database Migration]
+    TEST[Test Execution]
+    DEPLOY[Deployment Record]
+    INC[Incident Report]
+    RUN[Runbook]
+    STEER[Steering Note]
+
+    INC -->|motivates| ADR
+    REQ -->|implemented by| CODE
+    ADR -->|constrains| CODE
+    API -->|implemented by| CODE
+    CODE -->|creates| MIG
+    CODE -->|validated by| TEST
+    MIG -->|validated by| TEST
+    TEST -->|supports| DEPLOY
+    RUN -->|operates| DEPLOY
+    STEER -->|temporarily constrains| CODE

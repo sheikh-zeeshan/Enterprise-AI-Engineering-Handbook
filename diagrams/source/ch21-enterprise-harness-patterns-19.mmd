@@ -1,0 +1,10 @@
+flowchart TB
+    C["Copilot Implementation"] --> PR["Pull Request"]
+    PR --> GH["GitHub Actions"]
+    GH --> Build["Build and Tests"]
+    GH --> Scan["Security Scans"]
+    GH --> Contract["Contract Validation"]
+    Build --> Evidence["Validation Evidence"]
+    Scan --> Evidence
+    Contract --> Evidence
+    Evidence --> H["Enterprise Harness"] --> E["Evaluation"] --> A["Human Approval"]

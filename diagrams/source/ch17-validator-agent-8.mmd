@@ -1,0 +1,8 @@
+flowchart TD
+    A["Read Instructions and profile"] --> B["Verify revision and environment"]
+    B --> C["Execute required checks"]
+    C --> D["Collect raw evidence"]
+    D --> E{"Apply outcome rules"}
+    E -->|Pass| F["Handoff to Evaluator Agent"]
+    E -->|Fail| G["Return to Developer Agent"]
+    E -->|Blocked or inconclusive| H["Escalate"]

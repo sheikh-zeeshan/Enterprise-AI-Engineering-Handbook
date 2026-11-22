@@ -1,0 +1,8 @@
+flowchart TD
+ TARGET["Target Entity"] --> DIRECT["Direct Dependencies"]
+ DIRECT --> GOV["Applicable Governance"]
+ DIRECT --> VAL["Relevant Validation"]
+ DIRECT --> HIST["Selected Historical Evidence"]
+ GOV --> BOUND["Bounded Agent Context"]
+ VAL --> BOUND
+ HIST --> BOUND

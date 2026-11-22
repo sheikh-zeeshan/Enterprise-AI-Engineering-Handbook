@@ -1,0 +1,18 @@
+flowchart TD
+    A[Developer Agent] --> B[Implementation]
+
+    B --> C[Reviewer]
+    B --> D[Deterministic Validator]
+    B --> E[Evaluator]
+
+    C --> F[Evidence]
+    D --> F
+    E --> F
+
+    A --> G[Execution Telemetry]
+    F --> H[Independent Metrics Collector]
+    G --> H
+
+    H --> I[(Metrics Store)]
+    I --> J[Analytics]
+    J --> K[Dashboard]

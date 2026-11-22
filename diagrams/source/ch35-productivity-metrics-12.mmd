@@ -1,0 +1,11 @@
+flowchart TD
+    A[Activity Metric] --> B{Does It Improve an Outcome?}
+
+    B -->|No evidence| C[Do Not Treat as Productivity]
+    B -->|Yes| D{Quality Maintained?}
+
+    D -->|No| E[Reject Optimization]
+    D -->|Yes| F{Human Effort / Cost Acceptable?}
+
+    F -->|No| G[Investigate Trade-Off]
+    F -->|Yes| H[Potential Productivity Improvement]

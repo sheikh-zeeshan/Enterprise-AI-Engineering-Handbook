@@ -1,0 +1,15 @@
+stateDiagram-v2
+    [*] --> Open
+    Open --> ClaimedFixed: Developer claims correction
+    ClaimedFixed --> Resolved: Reviewer verifies corrected code
+    ClaimedFixed --> Open: Fix incomplete
+    Open --> Disputed: Developer contests evidence
+    Disputed --> Withdrawn: Reviewer confirms false positive
+    Disputed --> Open: Evidence supports finding
+    Disputed --> Escalated: Authority conflict
+    Open --> Escalated: Exception required
+    Escalated --> AcceptedException: Authorized decision recorded
+    Escalated --> Open: Exception denied
+    Resolved --> [*]
+    Withdrawn --> [*]
+    AcceptedException --> [*]

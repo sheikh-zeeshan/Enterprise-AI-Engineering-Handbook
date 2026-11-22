@@ -1,0 +1,64 @@
+flowchart TB
+    subgraph K8s["Kubernetes"]
+        Gateway["API Gateway / Ingress"]
+        subgraph Workloads["Containerized Services"]
+            BK["Booking"]
+            CA["Corporate Account"]
+            FL["Fleet"]
+            SO["Station Operations"]
+            BI["Billing"]
+            PY["Payment"]
+            NT["Notification"]
+        end
+        OTel["OpenTelemetry Collector"]
+    end
+
+    BKDB[("Booking DB")]
+    CADB[("Corporate Account DB")]
+    FLDB[("Fleet DB")]
+    SODB[("Station Operations DB")]
+    BIDB[("Billing DB")]
+    PYDB[("Payment DB")]
+    NTDB[("Notification DB")]
+    Redis[("Approved read cache")]
+    Bus["Event Platform"]
+    Secrets["Workload Identity / Secrets Platform"]
+    Monitoring["Monitoring Platform"]
+
+    Gateway --> BK
+    Gateway --> CA
+    Gateway --> FL
+    Gateway --> SO
+    Gateway --> BI
+    Gateway --> PY
+
+    BK --> BKDB
+    CA --> CADB
+    FL --> FLDB
+    SO --> SODB
+    BI --> BIDB
+    PY --> PYDB
+    NT --> NTDB
+    CA --> Redis
+    FL --> Redis
+
+    BK --> Bus
+    SO --> Bus
+    BI --> Bus
+    PY --> Bus
+    Bus -->|"ServiceCompleted"| BK
+    Bus -->|"ServiceCompleted"| BI
+    Bus -->|"Notification events"| NT
+
+    Secrets -.-> BK
+    Secrets -.-> CA
+    Secrets -.-> FL
+    Secrets -.-> SO
+    Secrets -.-> BI
+    Secrets -.-> PY
+    Secrets -.-> NT
+    BK --> OTel
+    SO --> OTel
+    BI --> OTel
+    NT --> OTel
+    OTel --> Monitoring

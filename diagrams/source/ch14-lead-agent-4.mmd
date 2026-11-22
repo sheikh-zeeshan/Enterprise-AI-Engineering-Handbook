@@ -1,0 +1,14 @@
+flowchart TB
+    G[Goal] --> L[Lead Agent]
+    L --> D[Developer]
+    D --> V[Automated Validation]
+    V --> R[Review + Evaluation]
+
+    R --> C{"Does policy require human approval?"}
+
+    C -->|No| M[Merge Eligible]
+    C -->|Yes| H[Human Approval]
+
+    H -->|Approve| M
+    H -->|Request changes| L
+    H -->|Reject| X[Workflow Rejected]

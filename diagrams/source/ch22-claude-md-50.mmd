@@ -1,0 +1,15 @@
+flowchart TD
+    A[Work Item] --> B[Harness Initialization]
+    C[CLAUDE.md] --> B
+    D[Steering Note] --> B
+    E[Relevant Skills] --> B
+    B --> F[Lead Agent]
+    F --> G[Developer Agent]
+    G --> H[Reviewer Agent]
+    H --> I[Validator Agent]
+    I --> J[Deterministic Gates]
+    J --> K{All Gates Pass?}
+    K -- No --> L[Failure Evidence]
+    L --> G
+    K -- Yes --> M[Evaluator Agent]
+    M --> N[Human Approval]

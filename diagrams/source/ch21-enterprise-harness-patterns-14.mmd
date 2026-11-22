@@ -1,0 +1,10 @@
+flowchart TB
+    R["Recurring Booking Cancellation"] --> L["Claude Lead Agent"]
+    L --> D["Claude Developer Agent"] --> V["Frozen Implementation Snapshot"]
+    V --> Rev["Claude Reviewer Agent"]
+    V --> Test["Deterministic Validator"]
+    Rev --> E["Claude Evaluator Agent"]
+    Test --> E
+    E --> Q{"Outcome Acceptable?"}
+    Q -->|Yes| A["Human Approval"]
+    Q -->|No| Rework["Controlled Rework"] --> D

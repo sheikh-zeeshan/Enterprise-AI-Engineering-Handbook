@@ -1,0 +1,7 @@
+flowchart TD
+    A["Developer Changes Code"] --> B["Focused Build and Tests"] --> C{"Focused Checks Pass?"}
+    C -->|No| D["Investigate and Correct"] --> A
+    C -->|Yes| E["Submit Final Revision"] --> F["Harness Final Validation Gates"]
+    F --> G{"Required Gates Pass?"}
+    G -->|No| D
+    G -->|Yes| H["Review and Evaluation"]

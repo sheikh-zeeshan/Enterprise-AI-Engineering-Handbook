@@ -1,0 +1,12 @@
+flowchart TD
+    A[Cancellation Request] --> B[API Authorization]
+    B --> C[Application Command]
+    C --> D[Load Booking Aggregate]
+    D --> E{Cancellation Allowed?}
+    E -- No --> F[Problem Details Response]
+    E -- Yes --> G[Apply Domain Transition]
+    G --> H[Persist Booking and Outbox Atomically]
+    H --> I[Commit Transaction]
+    I --> J[Outbox Publisher]
+    J --> K[Azure Event Hubs]
+    K --> L[Idempotent Consumers]

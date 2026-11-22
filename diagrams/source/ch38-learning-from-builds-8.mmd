@@ -1,0 +1,12 @@
+flowchart TD
+    A[Developer Agent] --> B[Build Execution]
+    B --> C[Validator Agent]
+    C --> D[(Build Evidence)]
+    D --> E[Claude Build-Learning Analysis]
+    E --> F[Candidate Recommendation]
+    F --> G[Evidence and Risk Review]
+    G --> H[Human Approval]
+    H --> I{Approved?}
+    I -->|No| J[Retain Decision Record]
+    I -->|Yes| K[Governed Artifact Publication]
+    K --> L[Future Harness Runs]

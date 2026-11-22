@@ -1,0 +1,12 @@
+stateDiagram-v2
+    [*] --> Draft
+    Draft --> Approved: Authorized human approval
+    Approved --> Active: Effective date reached
+    Active --> ProposedRevision: Agent or engineer identifies change
+    ProposedRevision --> Active: Proposal declined
+    ProposedRevision --> Approved: Human approves new version
+    Active --> Expired: Deadline or exit condition reached
+    Approved --> Superseded: Replaced before activation
+    Expired --> Archived: Record retained
+    Superseded --> Archived
+    Archived --> [*]

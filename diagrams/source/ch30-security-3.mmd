@@ -1,0 +1,30 @@
+sequenceDiagram
+    autonumber
+    participant A as Developer Agent
+    participant G as Tool Gateway
+    participant P as Policy Engine
+    participant C as Credential Broker
+    participant S as Sandbox
+    participant R as Protected Resource
+    participant L as Audit Service
+    A->>G: Request operation with task context
+    G->>P: Evaluate identity, scope, action
+    P-->>G: Allow, deny, or require approval
+    G->>L: Record authorization decision
+    alt Denied
+      G-->>A: Denied with reason code
+    else Requires approval
+      G-->>A: Suspended pending trusted approval
+      Note over G,P: Recheck policy and approval before execution
+    else Allowed
+      opt Credential required
+        G->>C: Request scoped credential
+        C-->>G: Authorized credential handle
+      end
+      G->>S: Execute approved operation
+      S->>R: Access permitted resource
+      R-->>S: Operation result
+      S-->>G: Sanitized result
+      G->>L: Record execution evidence
+      G-->>A: Return permitted output
+    end

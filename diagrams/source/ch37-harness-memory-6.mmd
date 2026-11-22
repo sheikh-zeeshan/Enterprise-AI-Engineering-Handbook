@@ -1,0 +1,11 @@
+flowchart LR
+    A["AI Agents"] -->|Propose| C["Candidate store"]
+    C --> E["Evidence and policy verification"]
+    E --> R["Authorized human reviewer"]
+    R -->|Approve| M[("Governed memory registry")]
+    R -->|Reject| C
+    M --> D["Decision audit record"]
+    M --> Q["Read-only retrieval interface"]
+    Q --> U["Authorized AI Agents"]
+    U -.->|Proposed correction| C
+    M --> L["Lifecycle and audit service"]

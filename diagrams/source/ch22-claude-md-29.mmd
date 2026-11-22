@@ -1,0 +1,9 @@
+flowchart TD
+    A[Harness Execution] --> B[Failure Evidence]
+    B --> C[Harness Memory]
+    C --> D[Pattern Analysis]
+    D --> E{Instruction Improvement Needed?}
+    E -- No --> F[Improve Other Artifact]
+    E -- Yes --> G[Instruction Proposal]
+    G --> H[Human Review]
+    H --> I[Approved CLAUDE.md Update]

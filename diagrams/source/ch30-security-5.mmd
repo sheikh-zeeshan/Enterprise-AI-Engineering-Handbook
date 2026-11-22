@@ -1,0 +1,15 @@
+flowchart TB
+    H[Harness Orchestrator] --> A[Run A: Fleet Reporting]
+    H --> B[Run B: Payment Integration]
+    POL[Central security policy] --> H
+    subgraph RUNA[Isolated Run A]
+      A --> AA[Developer A]
+      AA --> WA[(Workspace A)]
+    end
+    subgraph RUNB[Isolated Run B]
+      B --> BB[Developer B]
+      BB --> WB[(Workspace B)]
+    end
+    AA -. No cross-run access .- WB
+    BB -. No cross-run access .- WA
+    H --> GOV[(Governed evidence and memory services)]

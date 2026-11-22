@@ -1,0 +1,16 @@
+flowchart TB
+    G["Enterprise memory governance"]
+    subgraph A["Customer or Tenant A boundary"]
+        AA["Application knowledge A"] --> AR["Repository knowledge A"]
+        AR --> AS["Service knowledge A"]
+    end
+    subgraph B["Customer or Tenant B boundary"]
+        BA["Application knowledge B"] --> BR["Repository knowledge B"]
+        BR --> BS["Service knowledge B"]
+    end
+    SH["Separately reviewed shared knowledge"]
+    G --> A
+    G --> B
+    G --> SH
+    SH -.->|Authorized reuse only| A
+    SH -.->|Authorized reuse only| B

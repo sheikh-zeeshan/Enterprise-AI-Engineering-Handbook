@@ -1,0 +1,20 @@
+flowchart LR
+    subgraph Engineering["Engineering execution plane"]
+        Lead["Lead Agent"] --> Dev["Developer Agent"]
+        Dev --> Review["Reviewer Agent"]
+        Review --> Validate["Validator Agent"]
+        Validate --> Evaluate["Evaluator Agent"]
+    end
+    subgraph Governance["Governance control plane"]
+        Policy["Governed approval policy"] --> Risk["Risk classification"]
+        Risk --> Service["Approval service"]
+        Human["Authorized human identity"] --> Service
+        Service --> Audit["Approval and audit records"]
+    end
+    subgraph Protected["Protected execution"]
+        Gateway["Authorization gateway"] --> Target["Production or governed action"]
+    end
+    Evaluate --> Risk
+    Lead -->|Request execution| Gateway
+    Service -->|Scoped authorization| Gateway
+    Gateway -->|Record outcome| Audit

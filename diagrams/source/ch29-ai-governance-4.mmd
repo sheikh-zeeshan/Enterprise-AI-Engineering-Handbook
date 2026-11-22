@@ -1,0 +1,10 @@
+flowchart LR
+    I["Existing Governed Asset"] --> P["Proposed Modification"]
+    P --> AS["Impact and Risk Assessment"]
+    AS --> T["Automated Tests and Security Checks"]
+    T --> RV["Owner and Required Reviews"]
+    RV --> G{"Approved?"}
+    G -->|"Yes"| PUB["Versioned Publication"]
+    G -->|"No"| REJ["Reject or Revise"]
+    PUB --> CON["Controlled Consumption"]
+    CON -.->|"Findings and feedback"| P

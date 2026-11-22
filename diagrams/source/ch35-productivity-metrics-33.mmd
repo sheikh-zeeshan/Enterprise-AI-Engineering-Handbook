@@ -1,0 +1,5 @@
+flowchart LR
+    A["Harness Lifecycle Events"] --> B["Trusted Event Ingestion"] --> C[("Event Store")] --> D["Deterministic Projections"] --> E[("Metrics Store")]
+    E --> F["Dashboards"]
+    E --> G["Trend Analysis"]
+    E --> H["Improvement Analysis"]
