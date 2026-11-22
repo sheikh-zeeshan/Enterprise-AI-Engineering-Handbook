@@ -1,5 +1,19 @@
 # Scratchpad and Run Workspace
 
+> **Example convention:** Alpha Car Detailing is the running instructional scenario. Repository paths, revisions, architecture records, run IDs, test counts, approvals, and PASS/FAIL reports in this chapter are illustrative; they are not claims that those checks were executed or those artifacts verified while preparing this manuscript. In an operational run, each claim must link to actual, retained evidence for the exact implementation and declared scope. Product examples illustrate Harness integration patterns, not guaranteed platform capabilities; available tools and permissions depend on the deployment. JSON and C# snippets are focused excerpts unless identified as complete records; operational records must also satisfy the checkpoint requirements in Section 13.58. The hands-on run uses `run-2026-10-02-0017`; the separate enterprise lifecycle example uses `run-2026-10-06-0042`. Their evidence and checkpoints must never be mixed.
+
+The reference lifecycle is `Created → Investigating → Planning → Implementing → Reviewing → Validating → Evaluating → Completed`. `Paused`, `Interrupted`, `Failed`, and `Cancelled` are exceptional states. Retention, archival, and promotion have separate statuses; they do not extend the execution lifecycle.
+
+| Checkpoint | Canonical boundary | State exited | Next normal state |
+| --- | --- | --- | --- |
+| CP-001 | Lead Phase Complete | Planning | Implementing |
+| CP-002 | Implementation Complete | Implementing | Reviewing |
+| CP-003 | Review Complete | Reviewing | Validating |
+| CP-004 | Validation Complete | Validating | Evaluating |
+| CP-005 | Evaluation Complete | Evaluating | Completed |
+
+CP-001 requires investigation, an executable Plan, and a prepared Lead-to-Developer handoff. Progress saved before a phase exit is a **recovery snapshot**, not a canonical completion checkpoint. The Harness persists the required artifacts and checkpoint before advancing execution or dispatching the next role.
+
 ## 1. Story-driven Opening
 
 At Alpha Car Detailing, the engineering team had reached an important stage in its AI-assisted development journey.
@@ -99,7 +113,7 @@ The distinction becomes clearer when the major execution artifacts are placed si
 
 This separation is not administrative overhead. It prevents temporary reasoning from quietly becoming organizational truth.
 
-The handbook has consistently treated the Harness as automation around AI execution—responsible for orchestration, validation, evaluation, metrics, and execution history—and has established distinct responsibilities for Prompts, Skills, Instructions, Steering Notes, Repository Intelligence, and persistent learning. AI development handbook The Scratchpad and Run Workspace extend that architecture by defining where **run-time working state** belongs.
+The handbook has consistently treated the Harness as automation around AI execution—responsible for orchestration, validation, evaluation, metrics, and execution history—and has established distinct responsibilities for Prompts, Skills, Instructions, Steering Notes, Repository Intelligence, and persistent learning. The Scratchpad and Run Workspace extend that architecture by defining where **run-time working state** belongs.
 
 ---
 
@@ -185,9 +199,9 @@ Discover New Evidence
  ↓
 Revise Approach
  ↓
-Validate
- ↓
 Review
+ ↓
+Validate
  ↓
 Evaluate
 ```
@@ -554,7 +568,7 @@ Scratchpad = execution notebook
 
 A Steering Note communicates current priorities, constraints, goals, risks, or mission-specific guidance.
 
-The handbook has established Steering Notes as human-maintained mission briefings that AI Agents read and should not modify unless explicitly permitted. AI development handbook
+The handbook has established Steering Notes as human-maintained mission briefings that AI Agents read and should not modify unless explicitly permitted.
 
 For example:
 
@@ -655,7 +669,7 @@ It must not impersonate it.
 
 Harness Memory has a different lifetime and purpose.
 
-The handbook's broader architecture treats self-learning as governed improvement rather than uncontrolled self-modification. The established principle is that the Harness may recommend improvements, but it must never silently change standards; human approval is required. AI development handbook
+The handbook's broader architecture treats self-learning as governed improvement rather than uncontrolled self-modification. The established principle is that the Harness may recommend improvements, but it must never silently change standards; human approval is required.
 
 Harness Memory therefore represents knowledge deliberately retained across executions under governance.
 
@@ -907,7 +921,7 @@ A Scratchpad can also record execution progress.
 For example:
 
 ```markdown
-## Checkpoint CP-003
+## Recovery Snapshot RS-001 — Investigation in progress
 
 Completed:
 - API contract analysis
@@ -923,7 +937,7 @@ Blocking issue:
 Need confirmation of event-versioning policy.
 ```
 
-Checkpoints are particularly valuable before:
+Recovery snapshots are particularly valuable before:
 
 - switching agents;
 - executing risky modifications;
@@ -932,7 +946,7 @@ Checkpoints are particularly valuable before:
 - suspending a run;
 - retrying after failure.
 
-A checkpoint should make continuation possible without requiring reconstruction of the entire previous interaction.
+A recovery snapshot preserves in-progress work without claiming a phase exit. Canonical checkpoints additionally satisfy the completion requirements defined below.
 
 ---
 
@@ -1044,8 +1058,8 @@ Add preferred detailing location support to corporate fleet bookings.
 5. Determine backward-compatible contract strategy.
 6. Implement the change.
 7. Add tests.
-8. Run deterministic gates.
-9. Submit implementation evidence for review and evaluation.
+8. Submit the implementation for independent review and resolve required findings.
+9. Run deterministic gates, then evaluate the outcome against acceptance criteria.
 ```
 
 The Plan may evolve, but changes should be explicit.
@@ -1086,6 +1100,8 @@ A useful enterprise structure might include:
 ## Checkpoints
 ## Promotion Candidates
 ```
+
+The top-level `scratchpad.md` is a curated run summary owned by the Lead or a Harness-designated coordinator. Detailed working notes belong in `agents/{role-or-agent-id}/scratchpad.md`. Other roles submit scoped results or handoffs for reconciliation rather than editing the shared summary concurrently. A simple single-agent run may use only the top-level Scratchpad; the same authority and ownership rules still apply.
 
 The exact schema can vary.
 
@@ -1356,11 +1372,11 @@ A checkpoint might contain:
 
 ```json
 {
-  "runId": "run-2026-1042",
+  "runId": "run-2026-10-02-0017",
   "stage": "developer",
-  "status": "interrupted",
-  "lastCheckpoint": "CP-005",
-  "repositoryRevision": "abc123",
+  "status": "Interrupted",
+  "lastCheckpoint": "CP-001",
+  "repositoryRevision": "7d92aa1",
   "planVersion": 2,
   "scratchpadVersion": 14,
   "completedGates": [],
@@ -1661,7 +1677,7 @@ Repository Intelligence
 Harness Memory
 ```
 
-The handbook's self-learning philosophy explicitly requires that the Harness not silently change standards; improvements are recommendations subject to approval. AI development handbook The same principle governs Scratchpad promotion.
+The handbook's self-learning philosophy explicitly requires that the Harness not silently change standards; improvements are recommendations subject to approval. The same principle governs Scratchpad promotion.
 
 The agent may **propose**.
 
@@ -1818,31 +1834,22 @@ Parallel agents maintain isolated temporary state and communicate through explic
 
 ### 6.5 Failure and Resume Flow
 
+The following diagram describes recovery operations and artifact disposition, rather than introducing additional lifecycle states. A resumed phase is selected only after revalidation.
+
 ```mermaid
-stateDiagram-v2
-    [*] --> Running
-
-    Running --> Checkpointed: Save checkpoint
-    Checkpointed --> Running: Continue
-
-    Running --> Interrupted: Worker/process failure
-    Interrupted --> WorkspaceLoaded: Recover workspace
-
-    WorkspaceLoaded --> Revalidate: Validate execution context
-
-    Revalidate --> Running: State valid
-    Revalidate --> Reinvestigate: State stale
-    Revalidate --> Restart: State invalid
-
-    Reinvestigate --> Running
-    Restart --> Running
-
-    Running --> Completed
-    Completed --> Retained: Retention policy
-    Retained --> Archived: Preserve required evidence
-    Archived --> Cleaned: Remove temporary state
-
-    Cleaned --> [*]
+flowchart TD
+    A["Active Canonical Phase"] --> B["Persist Eligible Checkpoint or Progress Snapshot"]
+    B --> A
+    A -->|Worker failure| I["Interrupted"]
+    I --> L["Load Durable Artifacts and Reacquire Ownership"]
+    L --> V{"Identity, Source, Inputs, Evidence, and Environment Valid?"}
+    V -->|Yes| R["Resume Authorized Canonical Phase"]
+    V -->|Stale| S["Reinvestigate and Revalidate Affected State"]
+    S --> V
+    V -->|Unrecoverable| X["Restart or Escalate"]
+    A -->|CP-005 persisted| C["Completed"]
+    C --> T["Apply Artifact Retention Policy"]
+    T --> U["Archive Required Evidence; Clean Temporary State"]
 ```
 
 Recovery is deliberately separated from continuation.
@@ -1887,7 +1894,7 @@ Neither destination should be updated merely because an agent wrote something us
 For the preferred-location change, the workspace might evolve as follows:
 
 ```text
-run-2026-1042/
+run-2026-10-02-0017/
 │
 ├── input/
 │   ├── prompt.md
@@ -1927,7 +1934,6 @@ This structure creates a clear architectural separation between:
 
 That separation is the foundation for the hands-on implementation that follows.
 
-**Scratchpad and Run Workspace status: In progress — next section: Hands-on Example**
 
 ## 7. Hands-on Example
 
@@ -2586,14 +2592,14 @@ Instead, the discovery becomes a validation requirement.
 
 ---
 
-### 7.15 Capture the First Checkpoint
+### 7.15 Prepare the Lead Phase Boundary
 
-Before handing work to the Developer Agent, the Lead Agent creates a checkpoint.
+The Lead saves the following investigation snapshot while preparing the executable Plan and handoff. It is not yet CP-001.
 
 ```markdown
 ## Checkpoints
 
-### CP-001 — Lead investigation complete
+### RS-001 — Lead investigation snapshot
 
 Completed:
 
@@ -2630,7 +2636,7 @@ Required Developer actions:
 5. Add tests.
 ```
 
-The checkpoint provides a clean execution boundary.
+This snapshot records the current investigation and the explicitly assigned follow-up work. The Lead must establish that carried-forward questions do not block implementation before finalizing CP-001.
 
 ---
 
@@ -2680,13 +2686,18 @@ fleet bookings.
 
 `Fleet.IntegrationGateway` performs event-contract validation.
 
-## Unresolved Architecture Question
+## Architecture Decision and Evidence
 
-ADR-012 places location validation in the application layer.
+Before finalizing the Lead phase, the Lead verified that ADR-027
+supersedes ADR-012 for service-location eligibility.
 
-Current repository code may use `ServiceLocationPolicy`.
+Use `ServiceLocationPolicy` under ADR-027.
 
-Do not select an approach without resolving this conflict.
+Evidence:
+- Repository Intelligence RI-ARCH-041
+- docs/adr/ADR-027-domain-service-eligibility.md
+
+The Developer must verify the cited sources still apply before implementation.
 
 ## Required Validation
 
@@ -2701,6 +2712,10 @@ Do not select an approach without resolving this conflict.
 The handoff deliberately contains relevant information rather than the full Scratchpad.
 
 The Developer should receive what is necessary to perform the assigned work.
+
+Once the executable Plan and this handoff are ready, the Lead records the disposition and owner of each carried-forward question. A question that could change the implementation strategy must be resolved or escalated before Developer dispatch. A bounded verification task may be delegated with an explicit stop condition.
+
+The Harness then persists `CP-001 — Lead Phase Complete`, referencing `plan.md`, the Lead result, the handoff, governing inputs, and the repository/workspace snapshot. Only after successful persistence does it transition from `Planning` to `Implementing` and dispatch the Developer.
 
 ---
 
@@ -2752,7 +2767,7 @@ It does need authorization before altering governed architecture or requirements
 
 ### 7.18 Resolve an Assumption with Evidence
 
-The Developer investigates the validation conflict.
+The Developer checks the Lead's resolution of the validation conflict against the cited sources and the current working tree.
 
 Repository Intelligence shows that ADR-012 has been superseded by ADR-027:
 
@@ -2850,6 +2865,8 @@ public sealed record CreateCorporateFleetBookingCommand(
     IReadOnlyCollection<VehicleRequest> Vehicles,
     Guid? LocationId);
 ```
+
+In this scenario, the application handler orchestrates the operation, while `ServiceLocationPolicy` owns the eligibility rule and `Booking.AssignServiceLocation` applies the domain state change. ADR-027 changes ownership of that eligibility rule; it does not imply that all request validation moves into the domain.
 
 The handler applies:
 
@@ -2954,10 +2971,10 @@ Automatically generated evidence is preferable where practical.
 
 ### 7.23 Developer Checkpoint
 
-The Developer creates:
+The Developer prepares the result and Developer-to-Reviewer handoff described next. Once these artifacts and the implementation snapshot are durable, the Harness finalizes CP-002:
 
 ```markdown
-### CP-002 — Implementation complete
+### CP-002 — Implementation Complete
 
 Implemented:
 
@@ -3121,7 +3138,7 @@ Resolved locally; deterministic validation still required.
 
 ### 7.27 Deterministic Validation
 
-After review findings are addressed, the Harness invokes the Validator Agent and deterministic gates.
+After remediation, the Reviewer independently checks the changes and closes required findings. The Harness persists `CP-003 — Review Complete` for that implementation state before entering `Validating` and invoking the Validator Agent and deterministic gates.
 
 The validation folder might become:
 
@@ -3240,15 +3257,15 @@ PASS
 FleetBookingCreated includes location:
 PASS
 
-Existing event consumers:
-PASS
+Known repository event consumers:
+PASS within the tested scope; external consumers not independently verified
 
 ## Evidence Location
 
 `validation/gate-summary.json`
 ```
 
-The Evaluator can now assess outcome quality using verified evidence rather than relying on Developer claims.
+After the passing gate evidence and this handoff are durable, the Harness persists `CP-004 — Validation Complete` for the validated implementation state, then enters `Evaluating`. The Evaluator assesses outcome quality from the retained evidence rather than Developer claims.
 
 ---
 
@@ -3328,9 +3345,11 @@ Evidence reviewed:
 
 Approved statement:
 
-Changes to fleet integration event contracts must include
-compatibility analysis against Fleet.IntegrationGateway because
-that component validates fleet event schemas.
+Fleet.IntegrationGateway consumes fleet integration events and
+validates their schemas. Changes to those contracts therefore
+affect a known compatibility dependency. This repository fact
+informs compatibility analysis; a mandatory engineering rule
+requires separate approval in the governing Instructions.
 
 Scope:
 Current repository architecture
@@ -3388,7 +3407,7 @@ Reviewer finding REV-001 was resolved before validation.
 
 ## Knowledge Promotion
 
-PC-001 proposed for Repository Intelligence review.
+PC-001 approved through the example governance review in Section 7.30; the promotion record retains its evidence and scope.
 ```
 
 This summary is a run output.
@@ -3401,15 +3420,17 @@ It contains the curated result of execution rather than the evolving history of 
 
 ### 7.32 Completing the Run
 
-When evaluation succeeds, `run-state.json` might become:
+Successful evaluation requires evidence for every criterion. For this example, compatibility evidence covers known repository consumers; external consumers require additional evidence or an authorized scope/risk decision. An unqualified compatibility requirement cannot be marked satisfied by repository-only tests.
+
+When evaluation succeeds and the evaluation artifact and final outputs are durable, the Harness persists `CP-005 — Evaluation Complete`. It then transitions to `Completed`; `run-state.json` might become:
 
 ```json
 {
   "runId": "run-2026-10-02-0017",
-  "status": "completed",
+  "status": "Completed",
   "repositoryRevisionStart": "7d92aa1",
   "repositoryRevisionEnd": "e1f4c12",
-  "lastCheckpoint": "CP-006",
+  "lastCheckpoint": "CP-005",
   "reviewStatus": "passed",
   "validationStatus": "passed",
   "evaluationStatus": "passed",
@@ -3451,10 +3472,10 @@ Now consider a failure.
 
 Suppose the Harness worker terminates immediately after the Developer updates the event contract but before tests run.
 
-The last recorded checkpoint is:
+The last canonical checkpoint remains `CP-001 — Lead Phase Complete`. Partial Developer work is saved separately:
 
 ```markdown
-### CP-002A — Event implementation complete
+### RS-002 — Event implementation recovery snapshot
 
 Completed:
 
@@ -3499,7 +3520,7 @@ Suppose the repository is still at:
 7d92aa1
 ```
 
-and the Instructions, Skills, and Steering Notes are unchanged.
+and the Instructions, Skills, and Steering Notes are unchanged. The Harness also verifies the saved patch or source snapshot, index state, relevant untracked files, artifact digests, dependency/tool versions, and worker ownership. Matching the commit alone is insufficient.
 
 The Harness may classify the workspace:
 
@@ -3507,7 +3528,7 @@ The Harness may classify the workspace:
 Resume State: VALID
 ```
 
-Execution can continue from the checkpoint.
+Execution can continue from the verified recovery snapshot under CP-001; no implementation-complete checkpoint is inferred from the partial work.
 
 Now consider another case.
 
@@ -3815,7 +3836,7 @@ public enum RunStatus
 {
     Created,
     Investigating,
-    Planned,
+    Planning,
     Implementing,
     Reviewing,
     Validating,
@@ -3837,6 +3858,9 @@ public sealed record HarnessRunState(
     string RepositoryRevision,
     string? CurrentRole,
     string? LastCheckpoint,
+    int? LastCheckpointGeneration,
+    string WorkspaceSnapshotReference,
+    string GoverningInputsReference,
     DateTimeOffset UpdatedAt);
 ```
 
@@ -3862,6 +3886,10 @@ A checkpoint could be represented as:
 public sealed record RunCheckpoint(
     string CheckpointId,
     string RunId,
+    int Generation,
+    string WorkspaceSnapshotReference,
+    string GoverningInputsReference,
+    string EvidenceManifestReference,
     string RepositoryRevision,
     string Role,
     string Stage,
@@ -3876,6 +3904,10 @@ The Harness can serialize it:
 {
   "checkpointId": "CP-002",
   "runId": "run-2026-10-02-0017",
+  "generation": 1,
+  "workspaceSnapshotReference": "../metadata/source-snapshot-implementation-01.json",
+  "governingInputsReference": "../metadata/governing-inputs-01.json",
+  "evidenceManifestReference": "../metadata/evidence-manifest-implementation-01.json",
   "repositoryRevision": "7d92aa1",
   "role": "Developer",
   "stage": "ImplementationComplete",
@@ -3892,6 +3924,10 @@ The Harness can serialize it:
   ]
 }
 ```
+
+Each referenced manifest must be durable and integrity-checked before publication. The source snapshot identifies the repository and branch, base commit, index, saved patch or tree snapshot, relevant untracked files, and content digests. A changed-file list alone cannot restore uncommitted content. The governing-input manifest pins the Prompt, Instructions, Skills, and Steering Note versions. The evidence manifest pins immutable phase artifacts; it does not manufacture validation evidence for work not yet validated.
+
+Paths alone are insufficient if their targets can change. Resolve references to immutable versions or content digests and verify them during recovery. `lastCheckpoint` plus `lastCheckpointGeneration` selects a particular finalized checkpoint; phase names never imply that a later phase passed.
 
 This is preferable to reconstructing status by parsing free-form Scratchpad prose.
 
@@ -3978,37 +4014,30 @@ The complete example can now be represented as:
 
 ```mermaid
 flowchart TD
-    A["Receive Prompt"] --> B["Create Run Workspace"]
-    B --> C["Snapshot Governing Inputs"]
-    C --> D["Lead Creates Plan"]
-    D --> E["Lead Investigates Repository"]
-    E --> F["Record Observations, Assumptions,<br/>Questions and Risks"]
-    F --> G["Create Checkpoint"]
-    G --> H["Lead → Developer Handoff"]
-    H --> I["Developer Implements"]
-    I --> J["Developer Checkpoint"]
+    A["Receive Prompt"] --> B["Create Run Workspace and Snapshot Inputs"]
+    B --> C["Lead Investigates and Records Findings"]
+    C --> D["Finalize Executable Plan and Lead Handoff"]
+    D --> E["Persist CP-001 — Lead Phase Complete"]
+    E --> I["Developer Implements; Prepare Result and Handoff"]
+    I --> J["Persist CP-002 — Implementation Complete"]
     J --> K["Reviewer Reviews"]
-    K --> L{"Changes Required?"}
-
-    L -->|Yes| M["Reviewer → Developer Handoff"]
+    K --> L{"Required Findings Resolved?"}
+    L -->|No| M["Reviewer-to-Developer Remediation Handoff"]
     M --> I
-
-    L -->|No| N["Run Deterministic Gates"]
-    N --> O{"Gates Pass?"}
-
-    O -->|No| P["Record Failure Evidence"]
-    P --> I
-
-    O -->|Yes| Q["Evaluator Assesses Outcome"]
-    Q --> R{"Goal Satisfied?"}
-
-    R -->|No| S["Return Findings"]
-    S --> I
-
-    R -->|Yes| T["Produce Final Outputs"]
-    T --> U["Review Promotion Candidates"]
-    U --> V["Apply Retention Policy"]
-    V --> W["Complete Run"]
+    L -->|Yes| N["Persist CP-003 — Review Complete"]
+    N --> O["Execute Deterministic Gates; Persist Evidence"]
+    O --> P{"All Required Gates Pass?"}
+    P -->|No| Q["Preserve Failure Evidence; Assign Remediation"]
+    Q --> I
+    P -->|Yes| R["Prepare Validator Handoff; Persist CP-004"]
+    R --> S["Evaluator Assesses Outcome and Evidence"]
+    S --> T{"Goal and Acceptance Criteria Satisfied?"}
+    T -->|No| U["Assign Further Work or Escalate"]
+    U --> I
+    T -->|Yes| V["Persist Evaluation, Final Outputs, and CP-005"]
+    V --> W["Transition to Completed"]
+    W --> X["Apply Retention and Cleanup Policy"]
+    V -. "independent governed process" .-> Y["Review Promotion Candidates"]
 ```
 
 The Scratchpad participates throughout this flow, but it never becomes the central source of truth.
@@ -4127,7 +4156,6 @@ The enterprise architecture therefore does not attempt to eliminate temporary un
 
 It gives that uncertainty a safe place to live until evidence, validation, review, evaluation, or human judgment resolves it.
 
-**Scratchpad and Run Workspace status: In progress — next section: Claude Example**
     
 ## 8. Claude Example
 
@@ -5185,7 +5213,7 @@ For example:
 ## Dependency
 
 Integration test requires:
-`KeyVault/FleetIntegrationTest`
+`approved-secret-provider/FleetIntegrationTest`
 
 Secret material:
 Not stored in Run Workspace.
@@ -5207,7 +5235,7 @@ For example:
 | --- | ---: | ---: | ---: | ---: | ---: |
 | `input/` | Read | Read | Read | Read | Read |
 | `plan.md` | Write | Read | Read | Read | Read |
-| shared `scratchpad.md` | Write | Limited | Limited | Limited | Read |
+| shared `scratchpad.md` | Write as coordinator | Read; submit result | Read; submit result | Read; submit result | Read |
 | Lead workspace | Write | Read handoff only | No | No | No |
 | Developer workspace | No | Write | Read | Read as needed | No |
 | Reviewer findings | No | Read | Write | Read | Read |
@@ -5738,7 +5766,6 @@ The underlying principle is broader:
 
 > **AI Agents need temporary execution memory, but enterprises need explicit control over when temporary state becomes trusted knowledge.**
 
-**Scratchpad and Run Workspace status: In progress — next section: GitHub Copilot Comparison**
 
 ## 9. GitHub Copilot Comparison
 
@@ -5758,7 +5785,7 @@ That makes the Scratchpad pattern just as relevant, but often more dependent on 
 
 The architecture remains the same:
 
-```text id="copilot-architecture-01"
+```text
 Prompt
    ↓
 Plan
@@ -5794,7 +5821,7 @@ Whether Claude or Copilot performs the work does not change those responsibiliti
 
 For example, this remains a valid Scratchpad entry:
 
-```markdown id="copilot-example-01"
+```markdown
 ## Observation
 
 `FleetBookingCreated` has a consumer in Fleet.IntegrationGateway.
@@ -5808,7 +5835,7 @@ Observed
 
 And this remains an inappropriate Scratchpad statement:
 
-```text id="copilot-example-02"
+```text
 FleetBookingCreated is always backward compatible with additive fields.
 ```
 
@@ -5834,7 +5861,7 @@ This means Scratchpad use may often be embedded into an existing developer workf
 
 For example:
 
-```text id="copilot-flow-01"
+```text
 Developer
    ↓
 Copilot
@@ -5860,13 +5887,13 @@ A common mistake is to misuse repository-level Copilot Instructions as temporary
 
 For example:
 
-```text id="copilot-bad-01"
+```text
 .github/copilot-instructions.md
 ```
 
 should contain durable guidance such as:
 
-```markdown id="copilot-good-01"
+```markdown
 - Use Clean Architecture.
 - Commands belong in the Application layer.
 - Domain entities must not reference infrastructure.
@@ -5875,7 +5902,7 @@ should contain durable guidance such as:
 
 It should not contain task-scoped notes such as:
 
-```text id="copilot-bad-02"
+```text
 FleetBookingCreated appears to have three consumers.
 Need to check one more test.
 ```
@@ -5894,7 +5921,7 @@ The Scratchpad records **what Copilot is discovering while working**.
 
 The same Alpha Car Detailing workspace can be used:
 
-```text id="copilot-workspace-01"
+```text
 harness/runs/run-2026-10-02-0017/
 │
 ├── input/
@@ -5928,14 +5955,14 @@ The workspace should not be redesigned around Copilot-specific terminology if do
 
 Suppose the developer asks Copilot to implement:
 
-```text id="copilot-task-01"
+```text
 Add optional preferred detailing location support to corporate fleet
 bookings while preserving compatibility.
 ```
 
 The Harness can provide:
 
-```text id="copilot-context-01"
+```text
 Read:
 - input/prompt.md
 - plan.md
@@ -5955,7 +5982,7 @@ Do not claim compatibility until contract validation has passed.
 
 Copilot might then produce:
 
-```markdown id="copilot-scratchpad-01"
+```markdown
 ## Developer Progress
 
 - [x] Request contract inspected
@@ -5984,7 +6011,7 @@ This can improve decision quality, but it can also introduce ambiguity.
 
 For example:
 
-```text id="copilot-human-01"
+```text
 Developer:
 "Use the same pattern as the walk-in booking flow."
 
@@ -5998,7 +6025,7 @@ If it is task-specific, it belongs in the current Run Workspace.
 
 For example:
 
-```markdown id="copilot-human-02"
+```markdown
 ## Human Direction
 
 Use the current walk-in booking location-validation pattern.
@@ -6035,7 +6062,7 @@ The same problems discussed earlier still apply:
 
 Therefore:
 
-```text id="copilot-rule-01"
+```text
 Copilot conversation
         ≠
 Harness Run Workspace
@@ -6051,7 +6078,7 @@ Copilot can work effectively with an explicit `plan.md`.
 
 For example:
 
-```markdown id="copilot-plan-01"
+```markdown
 # Plan
 
 1. Inspect the corporate booking request.
@@ -6068,7 +6095,7 @@ Copilot may suggest modifications to the Plan, but those changes should remain v
 
 For example:
 
-```markdown id="copilot-plan-02"
+```markdown
 ## Revision
 
 Added event schema inspection before implementation because
@@ -6087,7 +6114,7 @@ The Run Workspace can support that process.
 
 For example:
 
-```text id="copilot-pr-flow-01"
+```text
 Scratchpad
    ↓
 Implementation
@@ -6101,7 +6128,7 @@ Pull Request
 
 The Harness may use final outputs to populate a pull-request description:
 
-```markdown id="copilot-pr-01"
+```markdown
 ## Summary
 
 Adds optional preferred detailing location support to corporate
@@ -6157,7 +6184,7 @@ If Copilot performs that review, findings should still be captured in a controll
 
 For example:
 
-```text id="copilot-review-file-01"
+```text
 agents/reviewer/findings.md
 ```
 
@@ -6169,7 +6196,7 @@ rather than existing only as transient conversational feedback.
 
 Copilot might produce:
 
-```markdown id="copilot-review-01"
+```markdown
 ## REV-002 — Missing event-schema compatibility coverage
 
 Severity:
@@ -6199,7 +6226,7 @@ GitHub-centered workflows often have a strong advantage in deterministic evidenc
 
 The Scratchpad may record:
 
-```markdown id="copilot-ci-01"
+```markdown
 ## Validation Status
 
 GitHub Actions workflow started.
@@ -6215,7 +6242,7 @@ But the final evidence should come from CI artifacts or structured Harness outpu
 
 For example:
 
-```text id="copilot-ci-02"
+```text
 validation/
 ├── github-actions-build.json
 ├── unit-tests.trx
@@ -6226,7 +6253,7 @@ validation/
 
 The distinction remains:
 
-```text id="copilot-ci-03"
+```text
 Copilot says the tests should pass
                 ≠
 CI reports that the tests passed
@@ -6242,7 +6269,7 @@ It must not replace deterministic gates.
 
 For example:
 
-```text id="copilot-validator-01"
+```text
 Copilot:
 "The nullable field appears backward compatible."
 ```
@@ -6253,7 +6280,7 @@ It is not a gate result.
 
 The gate should be something like:
 
-```text id="copilot-validator-02"
+```text
 API contract test:
 PASS
 
@@ -6263,7 +6290,7 @@ PASS
 
 This reinforces the book's separation between:
 
-```text id="copilot-validator-03"
+```text
 Reasoning
    and
 Evidence
@@ -6287,11 +6314,11 @@ A Run Workspace reduces dependence on local session history.
 
 For example:
 
-```json id="copilot-recovery-01"
+```json
 {
   "runId": "run-2026-10-02-0017",
-  "status": "interrupted",
-  "lastCheckpoint": "CP-004",
+  "status": "Interrupted",
+  "lastCheckpoint": "CP-001",
   "repositoryRevision": "7d92aa1",
   "currentRole": "Developer"
 }
@@ -6307,7 +6334,7 @@ Suppose the branch changed while the run was paused.
 
 The resumed Copilot session receives:
 
-```text id="copilot-resume-01"
+```text
 Previous revision:
 7d92aa1
 
@@ -6320,7 +6347,7 @@ FleetBookingCreated.cs
 
 The instruction should be:
 
-```text id="copilot-resume-02"
+```text
 Do not continue implementation immediately.
 
 Reinspect FleetBookingCreated.cs.
@@ -6334,14 +6361,14 @@ Continue only after affected assumptions have been revalidated.
 
 The resulting Scratchpad might say:
 
-```markdown id="copilot-resume-03"
+```markdown
 ## Resume Revalidation
 
 Previous event-shape observation:
 STALE
 
 Reason:
-FleetBookingCreated.cs changed after checkpoint CP-004.
+FleetBookingCreated.cs changed after checkpoint CP-001.
 
 Current state:
 CorrelationReference has been added.
@@ -6366,14 +6393,14 @@ Suppose Developer A starts the task with Copilot and Developer B finishes it lat
 
 Without explicit run state, Developer B may receive only:
 
-```text id="copilot-handoff-bad-01"
+```text
 I changed most of the booking code.
 Check the event part.
 ```
 
 A structured handoff is far more useful:
 
-```markdown id="copilot-handoff-good-01"
+```markdown
 # Developer Handoff
 
 ## Completed
@@ -6395,7 +6422,7 @@ Fleet.IntegrationGateway validates event schemas.
 
 ## Last Checkpoint
 
-CP-004
+CP-001
 
 ## Repository Revision
 
@@ -6414,7 +6441,7 @@ The same Scratchpad-isolation rule applies.
 
 For example:
 
-```text id="copilot-parallel-01"
+```text
 agents/
 ├── api-change/
 │   └── scratchpad.md
@@ -6430,7 +6457,7 @@ Shared findings should be reconciled through structured outputs or handoffs.
 
 Do not use:
 
-```text id="copilot-parallel-bad-01"
+```text
 one giant scratchpad.md
 ```
 
@@ -6446,19 +6473,19 @@ Branch isolation and Scratchpad isolation solve different problems.
 
 A branch isolates:
 
-```text id="copilot-branch-01"
+```text
 source changes
 ```
 
 A Scratchpad isolates:
 
-```text id="copilot-branch-02"
+```text
 temporary execution state
 ```
 
 Therefore:
 
-```text id="copilot-branch-03"
+```text
 Git branch
     ≠
 Run Workspace
@@ -6478,14 +6505,14 @@ A GitHub issue may serve as the task origin.
 
 For example:
 
-```text id="copilot-issue-01"
+```text
 Issue #842:
 Add preferred detailing location to corporate fleet bookings.
 ```
 
 The Harness may snapshot the issue into:
 
-```text id="copilot-issue-02"
+```text
 input/prompt.md
 ```
 
@@ -6495,7 +6522,7 @@ The run needs to know which task definition it originally executed.
 
 For example:
 
-```json id="copilot-issue-03"
+```json
 {
   "source": "github-issue",
   "issue": 842,
@@ -6516,7 +6543,7 @@ Pull-request comments can contain important human guidance.
 
 For example:
 
-```text id="copilot-comment-01"
+```text
 Architect:
 Do not create a second location concept.
 Reuse ServiceLocationId.
@@ -6524,7 +6551,7 @@ Reuse ServiceLocationId.
 
 If that direction affects the current run, the Harness may capture it as:
 
-```markdown id="copilot-comment-02"
+```markdown
 ## Human Direction
 
 Instruction:
@@ -6552,7 +6579,7 @@ Copilot may identify recurring patterns while reviewing repository code.
 
 For example:
 
-```text id="copilot-promotion-01"
+```text
 Every integration event with strict schema validation has a matching
 contract test project.
 ```
@@ -6561,7 +6588,7 @@ This may be useful.
 
 The correct next step is:
 
-```markdown id="copilot-promotion-02"
+```markdown
 ## Promotion Candidate
 
 Statement:
@@ -6582,7 +6609,7 @@ Pending verification and approval.
 
 Copilot should not add:
 
-```text id="copilot-promotion-bad-01"
+```text
 All integration events must have dedicated contract projects.
 ```
 
@@ -6607,7 +6634,7 @@ Harness Memory must remain:
 
 Therefore:
 
-```text id="copilot-memory-01"
+```text
 Copilot context/history
         ≠
 Harness Memory
@@ -6625,7 +6652,7 @@ However, repository investigation and Repository Intelligence remain different.
 
 For example:
 
-```text id="copilot-ri-01"
+```text
 Copilot discovers:
 Fleet.IntegrationGateway consumes FleetBookingCreated.
 ```
@@ -6634,7 +6661,7 @@ That is a run discovery.
 
 If verified and considered reusable, the Harness may propose:
 
-```text id="copilot-ri-02"
+```text
 Repository Intelligence:
 FleetBookingCreated is consumed by Fleet.IntegrationGateway,
 which performs schema validation.
@@ -6662,7 +6689,7 @@ These controls complement the Run Workspace model.
 
 For example:
 
-```mermaid id="copilot-approval-diagram-01"
+```mermaid
 flowchart TD
     A["Copilot-Assisted Implementation"]
     B["Run Workspace"]
@@ -6690,7 +6717,7 @@ It does not replace the approval gate.
 
 A strong GitHub integration can improve auditability because several artifacts are already naturally recorded:
 
-```text id="copilot-audit-01"
+```text
 commit history
 pull requests
 review comments
@@ -6701,7 +6728,7 @@ merge approvals
 
 The Run Workspace adds execution context that those systems may not contain:
 
-```text id="copilot-audit-02"
+```text
 temporary assumptions
 investigation state
 unresolved questions
@@ -6724,7 +6751,7 @@ The same sensitive-data restrictions apply.
 
 Copilot should not write credentials into:
 
-```text id="copilot-security-01"
+```text
 scratchpad.md
 plan.md
 PR descriptions
@@ -6734,7 +6761,7 @@ handoff files
 
 A safe entry is:
 
-```markdown id="copilot-security-02"
+```markdown
 Integration test dependency:
 Approved secret reference `FleetIntegrationTest`.
 
@@ -6779,7 +6806,7 @@ Copilot fits particularly well when the Run Workspace is used to support an engi
 
 For example:
 
-```text id="copilot-strength-01"
+```text
 Developer investigates with Copilot
         ↓
 Scratchpad captures findings
@@ -6817,7 +6844,7 @@ For Harness-controlled enterprise execution, it is not.
 
 The more important the task, the more important it becomes to preserve:
 
-```text id="copilot-discipline-01"
+```text
 Plan
 Observations
 Assumptions
@@ -6835,7 +6862,7 @@ outside transient interaction history.
 
 A practical Copilot-enabled workflow is:
 
-```mermaid id="copilot-recommended-01"
+```mermaid
 flowchart TD
     T["Issue / Prompt"]
     H["Harness"]
@@ -6877,7 +6904,7 @@ It requires the same definition to be enforced in a different interaction model.
 
 The central rules remain:
 
-```text id="copilot-final-rules-01"
+```text
 Copilot chat is not the Prompt.
 
 Copilot planning is not necessarily the Harness Plan.
@@ -6901,7 +6928,6 @@ The tool may change.
 
 The engineering boundaries should not.
 
-**Scratchpad and Run Workspace status: In progress — next section: Codex Comparison**
 
 ## 10. Codex Comparison
 
@@ -7124,12 +7150,12 @@ If execution stops after step 4, another agent may not know:
 - which files have already been changed;
 - which tests still need to run.
 
-A checkpoint prevents that loss.
+A durable recovery snapshot preserves partial progress without falsely declaring a completion checkpoint.
 
 For example:
 
 ```markdown
-## Checkpoint CP-003
+## Recovery Snapshot RS-003 — Partial implementation
 
 Completed:
 
@@ -7663,7 +7689,7 @@ It should not replace it.
 
 For long-running autonomous tasks, checkpointing becomes particularly important.
 
-The Harness might checkpoint after:
+The Harness may save recovery snapshots at interim points and finalize canonical checkpoints at eligible phase exits:
 
 ```text
 Repository analysis
@@ -7678,7 +7704,7 @@ For example:
 
 ```json
 {
-  "checkpointId": "CP-004",
+  "checkpointId": "CP-002",
   "runId": "run-2026-10-02-0017",
   "role": "Developer",
   "stage": "ImplementationComplete",
@@ -7747,7 +7773,7 @@ Previous observation:
 FleetBookingCreated contains four fields.
 
 Reason:
-FleetBookingCreated.cs changed after checkpoint CP-004.
+FleetBookingCreated.cs changed after checkpoint CP-002.
 
 Action:
 Reinspect current event shape.
@@ -7956,7 +7982,7 @@ A safe note is:
 ## Test Dependency
 
 Required secret reference:
-`KeyVault/FleetIntegrationTest`
+`approved-secret-provider/FleetIntegrationTest`
 
 Value:
 Not stored.
@@ -8123,8 +8149,7 @@ PASS
 External consumers outside the repository were not independently
 verified.
 
-This risk is documented but does not invalidate the defined acceptance
-criteria for this run.
+PASS is justified only if an authorized acceptance decision explicitly scopes compatibility to the known consumers and accepts the external-consumer risk. If compatibility with all existing consumers remains an unqualified requirement, this criterion is Inconclusive and successful completion is blocked.
 ```
 
 This is a much stronger outcome than:
@@ -8368,7 +8393,6 @@ The enterprise architecture should remain stable:
 
 > **AI Agents may create temporary working state. The Harness governs that state. Deterministic evidence verifies outcomes. Persistent knowledge requires deliberate promotion and approval.**
 
-**Scratchpad and Run Workspace status: In progress — next section: Best Practices**
 
 ## 11. Best Practices
 
@@ -8388,7 +8412,7 @@ Every Scratchpad should begin with an explicit statement of authority.
 
 For example:
 
-```markdown id="bp-scratchpad-banner"
+```markdown
 > Temporary run-scoped working state.
 >
 > This file is not an authoritative source of project knowledge.
@@ -8415,7 +8439,7 @@ Its default status should always be clear:
 
 Do not write undifferentiated notes such as:
 
-```text id="bp-bad-mixed-note"
+```text
 Location validation is probably done through ServiceLocationPolicy
 and the event should be backward compatible.
 ```
@@ -8424,7 +8448,7 @@ This combines several different claims.
 
 A better representation is:
 
-```markdown id="bp-structured-state"
+```markdown
 ## Observation
 
 `ServiceLocationPolicy` is used by the current walk-in booking workflow.
@@ -8468,7 +8492,7 @@ Whenever practical, an observation should reference the evidence that produced i
 
 Prefer:
 
-```markdown id="bp-evidence-good"
+```markdown
 ### OBS-012
 
 `FleetBookingCreated` is consumed by Fleet.IntegrationGateway.
@@ -8482,7 +8506,7 @@ Repository revision:
 
 over:
 
-```text id="bp-evidence-bad"
+```text
 Fleet.IntegrationGateway consumes the event.
 ```
 
@@ -8504,7 +8528,7 @@ Repository observations have a freshness boundary.
 
 For important investigations, record the repository revision:
 
-```markdown id="bp-revision"
+```markdown
 Repository revision:
 91cc341
 ```
@@ -8520,7 +8544,7 @@ This becomes especially valuable during:
 
 Without a revision, an apparently factual statement such as:
 
-```text id="bp-old-fact"
+```text
 FleetBookingCreated has four fields.
 ```
 
@@ -8540,7 +8564,7 @@ The goal should not be to eliminate assumptions but to expose them.
 
 A useful format is:
 
-```markdown id="bp-assumption"
+```markdown
 ### ASM-007
 
 Assumption:
@@ -8566,7 +8590,7 @@ Some assumptions should remain valid only while specific conditions hold.
 
 For example:
 
-```markdown id="bp-assumption-expiry"
+```markdown
 ### ASM-009
 
 Assumption:
@@ -8591,7 +8615,7 @@ Do not leave important questions buried in prose.
 
 Use a structure such as:
 
-```markdown id="bp-question"
+```markdown
 ### Q-004
 
 Question:
@@ -8636,7 +8660,7 @@ Revise the Plan only when the approach materially changes.
 
 For example:
 
-```text id="bp-plan-minor"
+```text
 Minor discovery:
 A test file has a different name.
 
@@ -8645,7 +8669,7 @@ A test file has a different name.
 
 but:
 
-```text id="bp-plan-major"
+```text
 Material discovery:
 Event compatibility requires a schema migration step.
 
@@ -8662,7 +8686,7 @@ When the Plan changes, record the reason.
 
 For example:
 
-```markdown id="bp-plan-revision"
+```markdown
 ## Plan Revision 3
 
 Change:
@@ -8680,7 +8704,7 @@ Lead Agent
 
 This creates traceability between:
 
-```text id="bp-traceability"
+```text
 Observation
      ↓
 Plan Revision
@@ -8696,7 +8720,7 @@ Do not checkpoint every trivial action.
 
 Checkpoint when recovery value is high.
 
-Good checkpoint locations include:
+Useful recovery-snapshot locations include:
 
 - repository investigation complete;
 - Plan approved;
@@ -8708,10 +8732,10 @@ Good checkpoint locations include:
 - after Reviewer remediation;
 - before pausing a run.
 
-A useful checkpoint records:
+Canonical checkpoints have stricter phase-exit requirements. For example, CP-002 is finalized only after the implementation, tests, Developer result, and handoff are ready; independent review and validation remain pending:
 
-```markdown id="bp-checkpoint"
-## CP-005
+```markdown
+## CP-002
 
 Stage:
 Implementation complete
@@ -8744,14 +8768,14 @@ The Harness should also maintain structured state.
 
 For example:
 
-```json id="bp-checkpoint-json"
+```json
 {
-  "checkpointId": "CP-005",
+  "checkpointId": "CP-002",
   "stage": "implementation-complete",
   "repositoryRevision": "91cc341",
   "currentRole": "Developer",
   "nextRole": "Reviewer",
-  "status": "ready-for-review"
+  "readiness": "ready-for-review"
 }
 ```
 
@@ -8767,7 +8791,7 @@ Use structured handoff artifacts.
 
 A good handoff contains:
 
-```text id="bp-handoff-fields"
+```text
 Goal
 Completed work
 Relevant evidence
@@ -8780,7 +8804,7 @@ Required validation
 
 For example:
 
-```markdown id="bp-handoff"
+```markdown
 # Developer → Reviewer
 
 ## Goal
@@ -8827,7 +8851,7 @@ Passing all of it to every downstream agent increases noise and confirmation bia
 
 Prefer:
 
-```text id="bp-curated"
+```text
 Scratchpad
    ↓
 Curated Handoff
@@ -8845,7 +8869,7 @@ Each parallel agent should have its own Scratchpad.
 
 For example:
 
-```text id="bp-parallel"
+```text
 agents/
 ├── api-analysis/
 │   └── scratchpad.md
@@ -8873,7 +8897,7 @@ Each parallel agent should produce a final result that clearly states its scope.
 
 For example:
 
-```markdown id="bp-parallel-result"
+```markdown
 # API Compatibility Result
 
 Scope:
@@ -8908,7 +8932,7 @@ A reconciliation step should identify:
 
 For example:
 
-```markdown id="bp-reconciliation"
+```markdown
 ## Reconciliation
 
 API agent:
@@ -8931,7 +8955,7 @@ event schema update, and mandatory contract validation.
 
 Never store validation only as:
 
-```text id="bp-bad-validation"
+```text
 Tests passed.
 ```
 
@@ -8939,7 +8963,7 @@ The Scratchpad can reference the result, but the real evidence should live separ
 
 For example:
 
-```text id="bp-validation-files"
+```text
 validation/
 ├── build.json
 ├── unit-tests.trx
@@ -8949,7 +8973,7 @@ validation/
 
 Then Scratchpad:
 
-```markdown id="bp-validation-reference"
+```markdown
 Unit tests passed.
 
 Evidence:
@@ -8968,7 +8992,7 @@ For important workflows, preserve relevant failure iterations.
 
 For example:
 
-```text id="bp-validation-history"
+```text
 Attempt 1:
 Event contract test — FAIL
 
@@ -8995,25 +9019,25 @@ Use explicit status language.
 
 Prefer:
 
-```text id="bp-status-good"
+```text
 Implemented — validation pending
 ```
 
 over:
 
-```text id="bp-status-bad"
+```text
 Done
 ```
 
 Likewise:
 
-```text id="bp-status-review"
+```text
 Reviewed — deterministic validation pending
 ```
 
 and:
 
-```text id="bp-status-final"
+```text
 Validated — evaluation pending
 ```
 
@@ -9038,7 +9062,7 @@ Before continuation, compare:
 
 The resume process should classify state:
 
-```text id="bp-resume-state"
+```text
 VALID
 NEEDS REVALIDATION
 STALE
@@ -9047,13 +9071,13 @@ INVALID
 
 The Harness should not assume:
 
-```text id="bp-resume-bad"
+```text
 Persisted = trustworthy
 ```
 
 Persisted only means:
 
-```text id="bp-resume-correct"
+```text
 Persisted = available for inspection
 ```
 
@@ -9065,7 +9089,7 @@ When practical, preserve important historical context.
 
 For example:
 
-```markdown id="bp-stale"
+```markdown
 ### OBS-011
 
 Original statement:
@@ -9091,7 +9115,7 @@ A repository may contain uncommitted changes when a run fails.
 
 Therefore recovery should inspect both:
 
-```text id="bp-recovery-scope"
+```text
 Repository revision
 +
 Working tree state
@@ -9123,9 +9147,9 @@ Do not store:
 
 Use references:
 
-```markdown id="bp-secret-reference"
+```markdown
 Required secret:
-`KeyVault/FleetIntegrationTest`
+`approved-secret-provider/FleetIntegrationTest`
 
 Purpose:
 Contract-test authentication.
@@ -9156,7 +9180,7 @@ Prefer minimal representations.
 
 For example:
 
-```text id="bp-sensitive-good"
+```text
 Test payload contains an invalid ServiceLocationId.
 ```
 
@@ -9170,7 +9194,7 @@ If a tool returns sensitive material, the Harness should redact before persistin
 
 For example:
 
-```text id="bp-redaction"
+```text
 Raw Tool Output
      ↓
 Redaction
@@ -9190,7 +9214,7 @@ Run Workspaces should be isolated from one another.
 
 For example:
 
-```text id="bp-run-isolation"
+```text
 runs/
 ├── run-001/
 ├── run-002/
@@ -9213,7 +9237,7 @@ Old Scratchpads should not become an informal cross-run knowledge base.
 
 A dangerous evolution looks like this:
 
-```text id="bp-history-bad"
+```text
 Need project knowledge
      ↓
 Search all old scratchpads
@@ -9225,7 +9249,7 @@ That effectively converts temporary state into uncontrolled memory.
 
 Instead:
 
-```text id="bp-history-good"
+```text
 Need project knowledge
      ↓
 Repository Intelligence / Harness Memory
@@ -9239,13 +9263,13 @@ Historical Scratchpads may be inspected for troubleshooting or audit purposes, b
 
 Do not write:
 
-```text id="bp-promotion-bad"
+```text
 This should probably go into memory.
 ```
 
 Use structured proposals:
 
-```markdown id="bp-promotion-good"
+```markdown
 ## Promotion Candidate PC-006
 
 Statement:
@@ -9280,7 +9304,7 @@ Not every reusable discovery belongs in the same persistent store.
 
 Use Repository Intelligence for:
 
-```text id="bp-ri"
+```text
 Evidence about the repository
 ```
 
@@ -9294,7 +9318,7 @@ Examples:
 
 Use Harness Memory for:
 
-```text id="bp-hm"
+```text
 Governed lessons about how the Harness should operate across runs
 ```
 
@@ -9312,7 +9336,7 @@ The distinction prevents architectural knowledge and operational learning from b
 
 A promotion workflow should include some combination of:
 
-```text id="bp-governance"
+```text
 Evidence verification
 Scope review
 Duplication check
@@ -9325,7 +9349,7 @@ Freshness rule
 
 The Harness should never silently reason:
 
-```text id="bp-promotion-danger"
+```text
 This worked three times.
 Therefore it is now a permanent rule.
 ```
@@ -9344,7 +9368,7 @@ Create explicit outputs.
 
 For example:
 
-```text id="bp-outputs"
+```text
 outputs/
 ├── implementation-summary.md
 ├── review-summary.json
@@ -9368,7 +9392,7 @@ Use structured data for things the Harness itself must act on.
 
 Examples:
 
-```text id="bp-structured-items"
+```text
 run status
 current role
 next role
@@ -9381,12 +9405,12 @@ promotion status
 
 For example:
 
-```json id="bp-run-state"
+```json
 {
-  "status": "validating",
+  "status": "Validating",
   "currentRole": "Validator",
   "nextRole": "Evaluator",
-  "lastCheckpoint": "CP-007",
+  "lastCheckpoint": "CP-003",
   "repositoryRevision": "91cc341"
 }
 ```
@@ -9395,7 +9419,7 @@ Use Markdown for context and explanation.
 
 Do not make the orchestration engine parse prose such as:
 
-```text id="bp-orchestration-bad"
+```text
 Looks ready for evaluation now.
 ```
 
@@ -9413,14 +9437,14 @@ For long or complex runs, consider versioning:
 
 For example:
 
-```text id="bp-versioning"
+```text
 plan-v1.md
 plan-v2.md
 ```
 
 or through embedded metadata:
 
-```yaml id="bp-plan-version"
+```yaml
 version: 3
 previousVersion: 2
 ```
@@ -9435,7 +9459,7 @@ In multi-agent workflows, important entries should identify who created them.
 
 For example:
 
-```markdown id="bp-author"
+```markdown
 ### OBS-021
 
 Role:
@@ -9464,19 +9488,19 @@ A statement without scope may be overgeneralized.
 
 Prefer:
 
-```text id="bp-scope-good"
+```text
 This compatibility finding applies to FleetBookingCreated.
 ```
 
 over:
 
-```text id="bp-scope-bad"
+```text
 Event changes are compatible.
 ```
 
 Likewise:
 
-```text id="bp-scope-specific"
+```text
 Observed in Booking microservice only.
 ```
 
@@ -9490,7 +9514,7 @@ Confidence scores can sometimes be useful.
 
 For example:
 
-```text id="bp-confidence"
+```text
 Confidence:
 Medium
 ```
@@ -9501,7 +9525,7 @@ A high-confidence AI statement is still an assumption if it lacks verification.
 
 Therefore:
 
-```text id="bp-confidence-rule"
+```text
 High confidence
     ≠
 Authoritative truth
@@ -9517,7 +9541,7 @@ A Scratchpad should not become a transcript of everything the agent did.
 
 Do not record:
 
-```text id="bp-noise"
+```text
 Opened file.
 Scrolled.
 Searched term.
@@ -9544,7 +9568,7 @@ Long-running Scratchpads should periodically produce checkpoint summaries.
 
 For example:
 
-```markdown id="bp-summary"
+```markdown
 ## Checkpoint Summary
 
 Verified:
@@ -9574,13 +9598,13 @@ Suppose two agents disagree.
 
 Agent A:
 
-```text id="bp-conflict-a"
+```text
 ADR-012 appears current.
 ```
 
 Agent B:
 
-```text id="bp-conflict-b"
+```text
 ADR-027 supersedes ADR-012.
 ```
 
@@ -9588,7 +9612,7 @@ Do not simply delete Agent A's note.
 
 Record the resolution:
 
-```markdown id="bp-conflict-resolved"
+```markdown
 ## Conflict Resolution
 
 Original finding:
@@ -9636,7 +9660,7 @@ A cleanup process should know what it is removing.
 
 For example:
 
-```text id="bp-cleanup"
+```text
 Run Completed
      ↓
 Promotion Decisions Finalized
@@ -9650,7 +9674,7 @@ Temporary Scratchpads Deleted
 
 Do not simply accumulate:
 
-```text id="bp-retention-bad"
+```text
 runs/
   400,000 old scratchpad files
 ```
@@ -9677,7 +9701,7 @@ It may not need to preserve every speculative note permanently.
 
 The retention strategy should distinguish:
 
-```text id="bp-audit-separation"
+```text
 What must be provable
 from
 What was temporarily useful
@@ -9691,7 +9715,7 @@ Do not create Scratchpad semantics that exist only because one vendor supports a
 
 Define the enterprise model first:
 
-```text id="bp-platform-neutral"
+```text
 Prompt
 Plan
 Scratchpad
@@ -9721,13 +9745,13 @@ A statement does not become authoritative simply because a human wrote it into a
 
 If an Architect says:
 
-```text id="bp-human"
+```text
 Use ServiceLocationPolicy for this task.
 ```
 
 record it as:
 
-```text id="bp-human-scope"
+```text
 Human decision — current run
 ```
 
@@ -9741,7 +9765,7 @@ A predictable structure improves human review.
 
 For example:
 
-```markdown id="bp-template"
+```markdown
 # Scratchpad
 
 ## Metadata
@@ -9783,24 +9807,24 @@ Identifiers make cross-reference easier.
 
 For example:
 
-```text id="bp-identifiers"
+```text
 OBS-001
 ASM-003
 Q-004
 DEC-002
-CP-006
+CP-002
 PC-001
 ```
 
 Then a Plan can say:
 
-```text id="bp-cross-reference"
+```text
 Revision made because of OBS-014.
 ```
 
 A Reviewer can say:
 
-```text id="bp-cross-reference-2"
+```text
 DEC-006 is not supported by the evidence in OBS-010.
 ```
 
@@ -9814,7 +9838,7 @@ A promotion candidate discovered early in a long run may become stale before the
 
 Before approval, revalidate:
 
-```text id="bp-promotion-revalidate"
+```text
 Is the evidence still current?
 Has the repository changed?
 Was the assumption later disproven?
@@ -9832,7 +9856,7 @@ A recurring behavior is not automatically a reusable pattern.
 
 Suppose three tasks required:
 
-```text id="bp-coincidence"
+```text
 manual event schema updates
 ```
 
@@ -9845,7 +9869,7 @@ That may indicate:
 
 Harness Memory should not store:
 
-```text id="bp-bad-memory"
+```text
 Always manually update event schemas.
 ```
 
@@ -9861,7 +9885,7 @@ A useful test of Run Workspace quality is:
 
 If continuation depends on:
 
-```text id="bp-agent-dependence"
+```text
 what the original model remembers
 ```
 
@@ -9869,7 +9893,7 @@ then the workspace is insufficient.
 
 A good workspace provides:
 
-```text id="bp-agent-independent"
+```text
 Prompt
 Plan
 governing inputs
@@ -9914,7 +9938,7 @@ Important policies should not rely only on natural-language instructions.
 
 Examples include:
 
-```text id="bp-controls"
+```text
 Read-only mounts for governing inputs
 Role-specific write permissions
 Secret scanning
@@ -9938,7 +9962,7 @@ Enterprise AI engineering needs both.
 
 A reusable entry structure is:
 
-```markdown id="bp-entry-template"
+```markdown
 ### OBS-XXX — Short title
 
 Type:
@@ -9973,7 +9997,7 @@ The goal is consistent meaning, not bureaucratic completeness.
 
 Before execution:
 
-```text id="bp-before"
+```text
 Run ID created
 Prompt captured
 Governing inputs identified
@@ -9984,7 +10008,7 @@ Plan created
 
 During execution:
 
-```text id="bp-during"
+```text
 Observations classified
 Assumptions visible
 Questions tracked
@@ -9996,7 +10020,7 @@ Evidence stored separately
 
 Before completion:
 
-```text id="bp-before-complete"
+```text
 Reviewer findings resolved
 Deterministic gates complete
 Evaluator assessment complete
@@ -10007,7 +10031,7 @@ Final outputs generated
 
 After completion:
 
-```text id="bp-after"
+```text
 Required evidence retained
 Metrics recorded
 Approved knowledge promoted
@@ -10041,7 +10065,6 @@ A strong Harness therefore does not prevent agents from recording uncertain work
 
 It makes uncertainty explicit, evidence traceable, handoffs structured, recovery safe, and knowledge promotion deliberate.
 
-**Scratchpad and Run Workspace status: In progress — next section: Anti-patterns**
 
 ## 12. Anti-patterns
 
@@ -10449,7 +10472,7 @@ It expands the attack surface and complicates retention and incident response.
 Store only secret references:
 
 ```text
-KeyVault/FleetIntegrationTest
+approved-secret-provider/FleetIntegrationTest
 ```
 
 Never the secret value.
@@ -11825,7 +11848,6 @@ When they collapse into one another, temporary state becomes a source of archite
 
 > **The purpose of the Scratchpad is to preserve uncertainty safely—not to erase the distinction between uncertainty and truth.**
 
-**Scratchpad and Run Workspace status: In progress — next section: Architect’s Notes**
 
 ## 13. Architect’s Notes
 
@@ -13395,10 +13417,8 @@ The central rule remains:
 
 A well-designed Run Workspace lets AI Agents operate with enough temporary memory to perform complex engineering work while preserving the enterprise boundaries required for evidence, authority, recovery, security, and governance.
 
-**Scratchpad and Run Workspace status: In progress — next section: Enterprise Tips**
-Here is a reference structure you can use as the standard Run Workspace model in the handbook.
 
-## Reference Run Workspace Structure
+### 13.56 Reference Run Workspace Structure
 
 A Run Workspace should provide one controlled execution boundary for a single Harness run.
 
@@ -13461,7 +13481,9 @@ harness/
         ├── checkpoints/
         │   ├── cp-001.json
         │   ├── cp-002.json
-        │   └── cp-003.json
+        │   ├── cp-003.json
+        │   ├── cp-004.json
+        │   └── cp-005.json
         │
         ├── validation/
         │   ├── build/
@@ -13488,13 +13510,13 @@ harness/
             └── retention.json
 ```
 
-### `input/`
+##### `input/`
 
 The `input/` directory captures the governing inputs used to start the run.
 
 It should contain snapshots or manifests rather than mutable copies wherever possible.
 
-#### `prompt.md`
+###### `prompt.md`
 
 Contains the task definition.
 
@@ -13514,7 +13536,7 @@ Add preferred detailing location support to corporate fleet bookings.
 
 The Prompt remains the authoritative definition of what the run is expected to accomplish.
 
-#### `instructions-manifest.json`
+###### `instructions-manifest.json`
 
 Records the Instructions that governed the run.
 
@@ -13535,7 +13557,7 @@ Records the Instructions that governed the run.
 
 The manifest helps determine whether governing Instructions changed before a resumed execution.
 
-#### `skills-manifest.json`
+###### `skills-manifest.json`
 
 Records which Skills and versions were made available.
 
@@ -13554,7 +13576,7 @@ Records which Skills and versions were made available.
 }
 ```
 
-#### `steering-note.snapshot.md`
+###### `steering-note.snapshot.md`
 
 Captures the Steering Note applicable when the run started.
 
@@ -13562,7 +13584,7 @@ The snapshot allows the Harness to detect whether mission-level guidance changed
 
 ---
 
-## `plan.md`
+#### `plan.md`
 
 `plan.md` contains the current execution strategy.
 
@@ -13584,7 +13606,7 @@ Significant changes to the Plan should be versioned or recorded as explicit revi
 
 ---
 
-## `scratchpad.md`
+#### `scratchpad.md`
 
 The top-level Scratchpad records shared temporary run state.
 
@@ -13625,7 +13647,7 @@ Role-specific implementation detail should normally remain under `agents/`.
 
 ---
 
-## `run-state.json`
+#### `run-state.json`
 
 `run-state.json` contains machine-readable orchestration state.
 
@@ -13634,11 +13656,11 @@ For example:
 ```json
 {
   "runId": "run-2026-10-02-0017",
-  "status": "validating",
+  "status": "Validating",
   "currentRole": "Validator",
   "nextRole": "Evaluator",
   "repositoryRevision": "91cc341",
-  "lastCheckpoint": "CP-006",
+  "lastCheckpoint": "CP-003",
   "workspaceSchemaVersion": 1
 }
 ```
@@ -13649,13 +13671,13 @@ It should not determine lifecycle state by parsing Scratchpad prose.
 
 ---
 
-## `agents/`
+#### `agents/`
 
 The `agents/` directory isolates temporary role-specific working state.
 
 This prevents one large uncontrolled Scratchpad from becoming a shared concurrency mechanism.
 
-### Lead
+##### Lead
 
 ```text
 agents/lead/
@@ -13671,7 +13693,7 @@ Typical contents:
 - risks;
 - unresolved architecture questions.
 
-### Developer
+##### Developer
 
 ```text
 agents/developer/
@@ -13688,7 +13710,7 @@ Typical contents:
 - changed-file tracking;
 - remaining risks.
 
-### Reviewer
+##### Reviewer
 
 ```text
 agents/reviewer/
@@ -13700,7 +13722,7 @@ The Reviewer workspace should remain independent from Developer working state wh
 
 `findings.md` should contain structured review findings rather than informal comments.
 
-### Validator
+##### Validator
 
 ```text
 agents/validator/
@@ -13710,7 +13732,7 @@ agents/validator/
 
 The Validator may use its Scratchpad for investigation and orchestration notes, but objective validation evidence belongs under `validation/`.
 
-### Evaluator
+##### Evaluator
 
 ```text
 agents/evaluator/
@@ -13722,7 +13744,7 @@ The Evaluator uses evidence from the Prompt, Reviewer, Validator, and final impl
 
 ---
 
-## `agent-handoffs/`
+#### `agent-handoffs/`
 
 Handoffs transfer curated context between roles.
 
@@ -13752,7 +13774,7 @@ A handoff should not simply copy the entire sending agent's Scratchpad.
 
 ---
 
-## `checkpoints/`
+#### `checkpoints/`
 
 Checkpoints provide durable recovery boundaries.
 
@@ -13760,7 +13782,7 @@ For example:
 
 ```json
 {
-  "checkpointId": "CP-004",
+  "checkpointId": "CP-002",
   "runId": "run-2026-10-02-0017",
   "role": "Developer",
   "stage": "implementation-complete",
@@ -13780,17 +13802,11 @@ For example:
 
 Checkpoints should be created at meaningful boundaries rather than after every action.
 
-Typical points include:
-
-- investigation complete;
-- implementation complete;
-- review complete;
-- before validation;
-- before pausing execution.
+The fixed boundaries are Lead phase complete, implementation complete, review complete, validation complete, and evaluation complete. Interim investigation, risky edits, and pauses use separately identified recovery snapshots; they do not create extra CP numbers.
 
 ---
 
-## `validation/`
+#### `validation/`
 
 The `validation/` directory stores deterministic evidence.
 
@@ -13845,7 +13861,7 @@ A `gate-summary.json` might contain:
 
 ---
 
-## `outputs/`
+#### `outputs/`
 
 The `outputs/` directory contains curated results of the run.
 
@@ -13866,7 +13882,7 @@ Outputs represent the curated results of that execution.
 
 ---
 
-## `outputs/promotion-candidates/`
+#### `outputs/promotion-candidates/`
 
 Discoveries that may deserve persistence should be expressed explicitly as promotion candidates.
 
@@ -13905,11 +13921,11 @@ Promotion remains a separate governed process.
 
 ---
 
-## `metadata/`
+#### `metadata/`
 
 The `metadata/` directory contains information about the execution environment and workspace lifecycle.
 
-### `run-manifest.json`
+##### `run-manifest.json`
 
 May contain:
 
@@ -13924,7 +13940,7 @@ May contain:
 }
 ```
 
-### `environment.json`
+##### `environment.json`
 
 May record relevant execution environment information such as:
 
@@ -13940,7 +13956,7 @@ Only environment details that materially affect reproducibility should be retain
 
 Do not use this file as a secret store.
 
-### `retention.json`
+##### `retention.json`
 
 May define workspace retention state:
 
@@ -13957,7 +13973,7 @@ Actual retention durations should come from enterprise policy.
 
 ---
 
-## Reference Architecture
+#### Reference Architecture
 
 The logical architecture remains:
 
@@ -14003,7 +14019,7 @@ Nothing moves from temporary execution state into persistent knowledge simply be
 
 ---
 
-## Minimal Versus Full Workspace
+#### Minimal Versus Full Workspace
 
 Not every task requires every directory.
 
@@ -14027,7 +14043,7 @@ The important point is that the semantic boundaries remain consistent.
 
 ---
 
-## Reference Rule
+#### Reference Rule
 
 The Run Workspace should satisfy one simple architectural test:
 
@@ -14038,9 +14054,8 @@ If the answer is yes, the workspace contains enough explicit execution state.
 If the answer is no, important state is still trapped inside transient agent context.
 
 The reference Run Workspace therefore serves as the temporary operational memory of a Harness run while preserving a strict boundary between **working state**, **engineering evidence**, and **persistent organizational knowledge**.
-Below is a complete lifecycle example you can place immediately after the **Reference Run Workspace Structure** section.
 
-## Complete Run Lifecycle Example
+### 13.57 Complete Run Lifecycle Example
 
 The following example shows how a Run Workspace evolves from creation through completion, knowledge promotion, retention, and cleanup.
 
@@ -14054,7 +14069,7 @@ It demonstrates how information changes authority and lifecycle as the run progr
 
 ---
 
-### Lifecycle Overview
+##### Lifecycle Overview
 
 A complete Harness run can be represented as:
 
@@ -14085,28 +14100,33 @@ flowchart TD
     B --> C
     C --> D
     D --> E
-    E --> F
-    F --> G
+    E --> HAND["Prepare Lead Handoff and Persist CP-001"]
+    HAND --> F
+    F --> CP2["Persist CP-002"]
+    CP2 --> G
     G --> H
 
     H -->|No| I
-    I --> G
+    I --> CP2
 
-    H -->|Yes| J
+    H -->|Yes| CP3["Persist CP-003"]
+    CP3 --> J
     J --> K
 
     K -->|No| L
-    L --> J
+    L --> CP2
 
-    K -->|Yes| M
+    K -->|Yes| CP4["Persist Validator Handoff and CP-004"]
+    CP4 --> M
     M --> N
 
     N -->|No| O
     O --> F
 
     N -->|Yes| P
-    P --> Q
-    Q --> R
+    P --> CP5["Persist CP-005"]
+    CP5 --> R
+    P -. "independent governance" .-> Q
     R --> S
     S --> T
 ```
@@ -14135,7 +14155,7 @@ Each transition has different authority and evidence requirements.
 
 ---
 
-# Phase 1 — Task Received
+#### Phase 1 — Task Received
 
 The Harness receives the task:
 
@@ -14167,7 +14187,7 @@ The run identifier should never be reused for an unrelated execution.
 
 ---
 
-# Phase 2 — Run Workspace Created
+#### Phase 2 — Run Workspace Created
 
 The Harness initializes:
 
@@ -14198,7 +14218,7 @@ The machine-readable run state begins as:
 ```json
 {
   "runId": "run-2026-10-06-0042",
-  "status": "created",
+  "status": "Created",
   "currentRole": null,
   "nextRole": "Lead",
   "lastCheckpoint": null,
@@ -14212,7 +14232,7 @@ It is simply the execution boundary.
 
 ---
 
-# Phase 3 — Inputs Captured
+#### Phase 3 — Inputs Captured
 
 The Harness records the task in:
 
@@ -14262,7 +14282,7 @@ The run state becomes:
 ```json
 {
   "runId": "run-2026-10-06-0042",
-  "status": "investigating",
+  "status": "Investigating",
   "currentRole": "Lead",
   "nextRole": null,
   "repositoryRevision": "7d92aa1"
@@ -14271,7 +14291,7 @@ The run state becomes:
 
 ---
 
-# Phase 4 — Lead Agent Investigation
+#### Phase 4 — Lead Agent Investigation
 
 The Lead Agent begins repository discovery.
 
@@ -14347,9 +14367,9 @@ until evidence supports it.
 
 ---
 
-# Phase 5 — Plan Created
+#### Phase 5 — Plan Created
 
-After initial investigation, the Lead creates:
+The Harness enters `Planning`. After initial investigation, the Lead creates:
 
 ```text
 plan.md
@@ -14412,25 +14432,11 @@ Status:
 Verified
 ```
 
-A checkpoint is created.
-
-```text
-checkpoints/cp-001.json
-```
-
-```json
-{
-  "checkpointId": "CP-001",
-  "role": "Lead",
-  "stage": "investigation-complete",
-  "repositoryRevision": "7d92aa1",
-  "nextRole": "Developer"
-}
-```
+The Lead remains in `Planning` while preparing the executable Plan and the handoff below. Investigation alone does not create CP-001.
 
 ---
 
-# Phase 6 — Lead-to-Developer Handoff
+#### Phase 6 — Lead-to-Developer Handoff
 
 The Lead does not give the Developer its entire Scratchpad.
 
@@ -14476,11 +14482,27 @@ Implement preferred detailing location support.
 External consumers outside the repository are not independently verified.
 ```
 
-The run state becomes:
+After the handoff, Lead result, and executable Plan are durable, the Harness persists `checkpoints/cp-001.json`:
 
 ```json
 {
-  "status": "implementing",
+  "checkpointId": "CP-001",
+  "runId": "run-2026-10-06-0042",
+  "name": "Lead Phase Complete",
+  "role": "Lead",
+  "exitedState": "Planning",
+  "repositoryRevision": "7d92aa1",
+  "planReference": "../plan.md",
+  "handoffReference": "../agent-handoffs/lead-to-developer.md",
+  "nextState": "Implementing"
+}
+```
+
+The run state then becomes:
+
+```json
+{
+  "status": "Implementing",
   "currentRole": "Developer",
   "nextRole": null,
   "lastCheckpoint": "CP-001"
@@ -14489,7 +14511,7 @@ The run state becomes:
 
 ---
 
-# Phase 7 — Developer Implementation
+#### Phase 7 — Developer Implementation
 
 The Developer Agent creates its own working state:
 
@@ -14555,9 +14577,9 @@ because deterministic gates have not run yet.
 
 ---
 
-# Phase 8 — Developer Checkpoint
+#### Phase 8 — Developer Checkpoint
 
-When implementation is complete, the Harness captures:
+When implementation, Developer result, and Developer-to-Reviewer handoff are complete and durable, the Harness captures:
 
 ```text
 checkpoints/cp-002.json
@@ -14589,7 +14611,7 @@ The run state becomes:
 
 ```json
 {
-  "status": "reviewing",
+  "status": "Reviewing",
   "currentRole": "Reviewer",
   "lastCheckpoint": "CP-002"
 }
@@ -14597,7 +14619,7 @@ The run state becomes:
 
 ---
 
-# Phase 9 — Reviewer Agent
+#### Phase 9 — Reviewer Agent
 
 The Reviewer receives:
 
@@ -14650,7 +14672,7 @@ The Developer adds the missing test.
 
 ---
 
-# Phase 10 — Review Repeated
+#### Phase 10 — Review Repeated
 
 The Reviewer inspects the remediation.
 
@@ -14679,7 +14701,7 @@ Ready for deterministic validation:
 Yes
 ```
 
-A checkpoint is created:
+After persisting the Reviewer findings, result, and Validator requirements, the Harness creates the checkpoint and enters `Validating`:
 
 ```json
 {
@@ -14692,7 +14714,7 @@ A checkpoint is created:
 
 ---
 
-# Phase 11 — Deterministic Validation Begins
+#### Phase 11 — Deterministic Validation Begins
 
 The Validator executes the required gates.
 
@@ -14735,7 +14757,8 @@ The run state becomes:
 
 ```json
 {
-  "status": "implementation-remediation",
+  "status": "Implementing",
+  "activity": "validation-remediation",
   "currentRole": "Developer",
   "failedGate": "event-contract-tests"
 }
@@ -14743,7 +14766,7 @@ The run state becomes:
 
 ---
 
-# Phase 12 — Developer Remediation
+#### Phase 12 — Developer Remediation
 
 The Developer inspects the deterministic evidence.
 
@@ -14765,13 +14788,13 @@ Status:
 Implemented — revalidation required.
 ```
 
-The Developer fixes the schema.
+The Developer fixes the schema and prepares an updated result and handoff. The Harness finalizes a new generation of CP-002; the Reviewer checks the schema remediation and produces a new generation of CP-003 before validation resumes. Earlier checkpoint generations remain historical records, and evidence for the previous implementation is not reused without an explicit applicability decision.
 
 No previous failed result is deleted.
 
 ---
 
-# Phase 13 — Validation Attempt Two
+#### Phase 13 — Validation Attempt Two
 
 The Validator executes a second attempt.
 
@@ -14836,7 +14859,7 @@ is supported by validation artifacts rather than agent confidence.
 
 ---
 
-# Phase 14 — Validator-to-Evaluator Handoff
+#### Phase 14 — Validator-to-Evaluator Handoff
 
 The Harness creates:
 
@@ -14885,9 +14908,11 @@ All gates passed.
 See validation/gate-summary.json.
 ```
 
+Once the passing evidence and handoff are durable, the Harness persists `CP-004 — Validation Complete`, referencing validation attempt 2 and the exact implementation snapshot, then transitions to `Evaluating`.
+
 ---
 
-# Phase 15 — Evaluator Agent
+#### Phase 15 — Evaluator Agent
 
 The Evaluator compares:
 
@@ -14967,11 +14992,11 @@ External consumers outside the repository were not independently verified.
 PASS
 ```
 
-The Evaluator does not remove the residual risk merely because the defined task succeeded.
+This illustrative PASS assumes an authorized decision scoped compatibility to the known repository consumers and accepted the residual external-consumer risk. Without that decision, the unqualified compatibility criterion is Inconclusive and CP-005 cannot be created on the successful completion path.
 
 ---
 
-# Phase 16 — Final Outputs Produced
+#### Phase 16 — Final Outputs Produced
 
 The Harness generates:
 
@@ -15021,7 +15046,7 @@ It is not a copy of the Scratchpad.
 
 ---
 
-# Phase 17 — Promotion Candidate Created
+#### Phase 17 — Promotion Candidate Created
 
 During execution, the team discovered something useful:
 
@@ -15076,7 +15101,7 @@ A specific verified statement has been extracted as a candidate.
 
 ---
 
-# Phase 18 — Promotion Governance
+#### Phase 18 — Promotion Governance
 
 A governance process reviews `PC-001`.
 
@@ -15119,14 +15144,14 @@ Repository Intelligence
 
 ---
 
-# Phase 19 — Run Completion
+#### Phase 19 — Run Completion
 
-After evaluation and promotion processing, the Harness marks the run complete.
+After successful evaluation, final outputs, and persistence of `CP-005 — Evaluation Complete`, the Harness marks the run complete. Promotion review may finish before or after execution completion; pending promotion does not block completion unless an explicit policy requires it.
 
 ```json
 {
   "runId": "run-2026-10-06-0042",
-  "status": "completed",
+  "status": "Completed",
   "startingRevision": "7d92aa1",
   "endingRevision": "b81f7c9",
   "reviewStatus": "passed",
@@ -15137,17 +15162,17 @@ After evaluation and promotion processing, the Harness marks the run complete.
 }
 ```
 
-The final checkpoint may be:
+The final stable execution checkpoint is:
 
 ```text
-CP-005 — Run Complete
+CP-005 — Evaluation Complete
 ```
 
 At this point the active execution lifecycle has ended.
 
 ---
 
-# Phase 20 — Metrics Recorded
+#### Phase 20 — Metrics Recorded
 
 The Harness can now record structured operational metrics such as:
 
@@ -15169,7 +15194,7 @@ They should not be reconstructed by asking an AI Agent to interpret the Scratchp
 
 ---
 
-# Phase 21 — Retention Applied
+#### Phase 21 — Retention Applied
 
 Completion does not mean every file is immediately deleted.
 
@@ -15194,7 +15219,7 @@ The Harness records the retention state:
 ```json
 {
   "runId": "run-2026-10-06-0042",
-  "status": "retained",
+  "retentionStatus": "retained",
   "temporaryStateExpires": "policy-defined",
   "validationEvidence": "archive",
   "promotionReviewComplete": true
@@ -15203,7 +15228,7 @@ The Harness records the retention state:
 
 ---
 
-# Phase 22 — Temporary State Cleanup
+#### Phase 22 — Temporary State Cleanup
 
 When the temporary retention period ends, the Harness removes state that no longer serves an operational purpose.
 
@@ -15237,19 +15262,19 @@ The architectural principle is:
 
 ---
 
-# Failure and Resume Variant
+#### Failure and Resume Variant
 
 The lifecycle must also support interruption.
 
-Suppose the Developer Agent is interrupted after checkpoint `CP-002`.
+Suppose the Developer Agent is interrupted after CP-001 while implementation is still in progress.
 
 At the time of interruption:
 
 ```json
 {
-  "status": "interrupted",
+  "status": "Interrupted",
   "currentRole": "Developer",
-  "lastCheckpoint": "CP-002",
+  "lastCheckpoint": "CP-001",
   "repositoryRevision": "7d92aa1"
 }
 ```
@@ -15289,8 +15314,10 @@ flowchart TD
     B --> C
     C --> D
     D --> E
-    E --> F
-    F --> G
+    E --> HAND["Prepare Lead Handoff and Persist CP-001"]
+    HAND --> F
+    F --> CP2["Persist CP-001"]
+    CP2 --> G
     G --> H
     H -->|Yes| I
     H -->|No| J
@@ -15308,7 +15335,7 @@ Status:
 STALE
 
 Reason:
-FleetBookingCreated.cs changed after CP-002.
+FleetBookingCreated.cs changed after CP-001.
 
 Replacement:
 See OBS-014.
@@ -15333,7 +15360,7 @@ Only after revalidation does the run continue.
 
 ---
 
-# Retry Variant
+#### Retry Variant
 
 A retry is different from a resume.
 
@@ -15361,7 +15388,7 @@ Temporary assumptions should not be inherited automatically.
 
 ---
 
-# Cancelled Run Variant
+#### Cancelled Run Variant
 
 Suppose a Product Owner cancels the feature during implementation.
 
@@ -15369,7 +15396,7 @@ The run becomes:
 
 ```json
 {
-  "status": "cancelled",
+  "status": "Cancelled",
   "reason": "business-priority-change"
 }
 ```
@@ -15392,7 +15419,7 @@ Cancelled workspaces should not remain indefinitely simply because they never re
 
 ---
 
-# Lifecycle State Model
+#### Lifecycle State Model
 
 A reference state model might be:
 
@@ -15401,7 +15428,7 @@ Created
    ↓
 Investigating
    ↓
-Planned
+Planning
    ↓
 Implementing
    ↓
@@ -15433,7 +15460,7 @@ public enum HarnessRunStatus
 {
     Created,
     Investigating,
-    Planned,
+    Planning,
     Implementing,
     Reviewing,
     Validating,
@@ -15448,13 +15475,13 @@ public enum HarnessRunStatus
 }
 ```
 
-The exact status names may vary.
+The reference lifecycle uses these canonical names consistently; adapters may map platform-specific statuses to them.
 
 What matters is that lifecycle state is explicit and machine-readable.
 
 ---
 
-# Complete Lifecycle and Artifact Relationship
+#### Complete Lifecycle and Artifact Relationship
 
 The full lifecycle can be summarized as:
 
@@ -15510,13 +15537,14 @@ Final Outputs
      └── promotion candidates
      │
      ▼
-Governance
+CP-005 — Evaluation Complete
      │
-     ├── Repository Intelligence
-     └── Harness Memory
+     ├── Independent promotion governance
+     │       ├── Repository Intelligence
+     │       └── Harness Memory
      │
      ▼
-Completion
+Completed
      │
      ▼
 Retention
@@ -15527,7 +15555,7 @@ Cleanup
 
 ---
 
-## What Survives the Lifecycle
+#### What Survives the Lifecycle
 
 The lifecycle intentionally reduces the amount of information retained.
 
@@ -15566,7 +15594,7 @@ retain what has earned persistence
 
 ---
 
-## Lifecycle Authority Model
+#### Lifecycle Authority Model
 
 At each stage, a different artifact answers a different question.
 
@@ -15586,7 +15614,7 @@ This table prevents authority drift across the lifecycle.
 
 ---
 
-## Lifecycle Principle
+#### Lifecycle Principle
 
 A complete Run Workspace lifecycle should make it possible to answer four questions at any time:
 
@@ -15605,1005 +15633,7 @@ It has become a controlled execution-state architecture.
 The final principle is:
 
 > **A run begins with authoritative inputs, creates temporary working state, produces deterministic evidence and curated outputs, and ends by retaining only the information that policy and governance determine should survive.**
-The checkpoint sequence should first be normalized as **CP-001 through CP-005**, with each checkpoint representing a stable lifecycle boundary. Then the concise lifecycle state table can follow it.
-
-## Checkpoint Numbering Convention
-
-The complete lifecycle example should use one consistent checkpoint sequence.
-
-The earlier example creates `CP-001`, `CP-002`, and `CP-003`, but later refers to `CP-005` as the final checkpoint without explicitly defining `CP-004`. To remove that inconsistency, use the following reference convention:
-
-| Checkpoint | Stable Boundary | Created By | Meaning |
-| --- | --- | --- | --- |
-| `CP-001` | Investigation Complete | Lead Agent | Repository investigation and initial planning are complete; work is ready for implementation. |
-| `CP-002` | Implementation Complete | Developer Agent | Planned implementation changes are complete and ready for independent review. |
-| `CP-003` | Review Complete | Reviewer Agent | Required review findings have been resolved and the implementation is ready for deterministic validation. |
-| `CP-004` | Validation Complete | Validator Agent | All required deterministic gates have completed successfully and evidence has been captured. |
-| `CP-005` | Evaluation Complete / Run Complete | Evaluator Agent / Harness | Acceptance criteria and intended outcome have been evaluated successfully; the active run can complete. |
-
-This creates the stable progression:
-
-```text id="checkpoint-sequence"
-CP-001
-Investigation Complete
-        ↓
-CP-002
-Implementation Complete
-        ↓
-CP-003
-Review Complete
-        ↓
-CP-004
-Validation Complete
-        ↓
-CP-005
-Evaluation Complete / Run Complete
-```
-
-A checkpoint represents a **stable recovery boundary**, not every transition in the workflow.
-
-For example, a failed validation attempt does not automatically create another numbered lifecycle checkpoint:
-
-```text id="checkpoint-validation-failure"
-CP-003
-Review Complete
-    ↓
-Validation Attempt 1
-    ↓
-FAIL
-    ↓
-Developer Remediation
-    ↓
-Validation Attempt 2
-    ↓
-PASS
-    ↓
-CP-004
-Validation Complete
-```
-
-Validation attempts should instead be represented under:
-
-```text id="checkpoint-validation-storage"
-validation/
-├── attempt-01/
-├── attempt-02/
-└── gate-summary.json
-```
-
-This keeps checkpoint numbering stable even when a run requires multiple implementation, review, or validation iterations.
-
-Similarly, Reviewer remediation does not require:
-
-```text id="checkpoint-bad-numbering"
-CP-003
-CP-003A
-CP-003B
-```
-
-unless the Harness deliberately supports nested checkpoint semantics.
-
-For the reference architecture, the simpler rule is preferred:
-
-> **Number checkpoints by stable lifecycle boundary, not by every execution attempt.**
-
-### Corrected `CP-004`
-
-After deterministic validation succeeds, create:
-
-```text id="checkpoint-cp004-file"
-checkpoints/cp-004.json
-```
-
-```json id="checkpoint-cp004"
-{
-  "checkpointId": "CP-004",
-  "runId": "run-2026-10-06-0042",
-  "role": "Validator",
-  "stage": "validation-complete",
-  "repositoryRevision": "b81f7c9",
-  "validationResult": "passed",
-  "validationAttempts": 2,
-  "nextRole": "Evaluator"
-}
-```
-
-The run state then becomes:
-
-```json id="checkpoint-cp004-state"
-{
-  "status": "evaluating",
-  "currentRole": "Evaluator",
-  "nextRole": null,
-  "lastCheckpoint": "CP-004"
-}
-```
-
-### Corrected `CP-005`
-
-After the Evaluator determines that the intended goal and acceptance criteria have been satisfied, create:
-
-```text id="checkpoint-cp005-file"
-checkpoints/cp-005.json
-```
-
-```json id="checkpoint-cp005"
-{
-  "checkpointId": "CP-005",
-  "runId": "run-2026-10-06-0042",
-  "role": "Evaluator",
-  "stage": "evaluation-complete",
-  "repositoryRevision": "b81f7c9",
-  "evaluationResult": "passed",
-  "nextRole": null
-}
-```
-
-The Harness can then transition the run itself to:
-
-```json id="checkpoint-final-run-state"
-{
-  "runId": "run-2026-10-06-0042",
-  "status": "completed",
-  "startingRevision": "7d92aa1",
-  "endingRevision": "b81f7c9",
-  "reviewStatus": "passed",
-  "validationStatus": "passed",
-  "validationAttempts": 2,
-  "evaluationStatus": "passed",
-  "lastCheckpoint": "CP-005"
-}
-```
-
-This resolves the checkpoint numbering consistently across the entire lifecycle.
-
----
-
-## Concise Run Lifecycle State Table
-
-The following table provides the stable reference lifecycle for a Harness run.
-
-| State | Primary Owner | Purpose | Typical Exit Condition | Stable Checkpoint |
-| --- | --- | --- | --- | --- |
-| `Created` | Harness | Initialize run identity and workspace | Inputs captured | — |
-| `Investigating` | Lead Agent | Discover repository evidence, risks, dependencies, and constraints | Investigation sufficient to define approach | `CP-001` |
-| `Planned` | Lead Agent | Establish execution strategy and handoff | Developer work authorized | `CP-001` |
-| `Implementing` | Developer Agent | Modify the solution to satisfy the Prompt | Implementation ready for independent review | `CP-002` |
-| `Reviewing` | Reviewer Agent | Independently assess implementation quality and alignment | Required findings resolved | `CP-003` |
-| `Validating` | Validator Agent | Execute deterministic engineering gates | All required gates pass | `CP-004` |
-| `Evaluating` | Evaluator Agent | Assess goal and acceptance-criteria satisfaction | Outcome classified | `CP-005` |
-| `Completed` | Harness | Close active execution and finalize outputs | Retention processing begins | `CP-005` |
-| `Paused` | Harness / Human | Deliberately suspend execution | Authorized resume | Last valid checkpoint |
-| `Interrupted` | Harness | Record unexpected execution loss | Recovery and revalidation succeed | Last valid checkpoint |
-| `Failed` | Harness | End a run that cannot proceed successfully | Retention and failure processing begin | Last valid checkpoint |
-| `Cancelled` | Harness / Human | End execution intentionally | Retention and cleanup begin | Last valid checkpoint |
-
-The normal successful lifecycle is therefore:
-
-```text id="stable-lifecycle"
-Created
-   ↓
-Investigating / Planned
-   ↓
-CP-001
-   ↓
-Implementing
-   ↓
-CP-002
-   ↓
-Reviewing
-   ↓
-CP-003
-   ↓
-Validating
-   ↓
-CP-004
-   ↓
-Evaluating
-   ↓
-CP-005
-   ↓
-Completed
-   ↓
-Retention
-   ↓
-Cleanup
-```
-
-The table intentionally distinguishes **lifecycle states** from **checkpoints**.
-
-A state describes:
-
-> **What is the Harness doing now?**
-
-A checkpoint describes:
-
-> **What stable execution boundary can the Harness safely recover from?**
-
-They should not be treated as the same concept.
-
-For example, a run may move repeatedly between:
-
-```text id="lifecycle-loop"
-Implementing
-    ↓
-Reviewing
-    ↓
-Implementing
-    ↓
-Reviewing
-```
-
-before `CP-003` is created.
-
-Likewise:
-
-```text id="validation-loop"
-Validating
-    ↓
-Implementing
-    ↓
-Validating
-```
-
-may happen several times before `CP-004`.
-
-The checkpoint is created only when that lifecycle boundary has been successfully reached.
-
-> **Lifecycle states describe execution movement. Checkpoints identify stable recovery boundaries within that movement.**
-The ambiguity comes from treating **investigation complete** and **planning complete** as if they were the same lifecycle boundary. They should be separated conceptually, even if the Harness chooses to checkpoint only once.
-
-## Resolving the `CP-001` Planning Ambiguity
-
-The earlier lifecycle model used `CP-001` for both:
-
-- investigation complete; and
-- planning complete.
-
-That creates ambiguity because the Lead Agent may finish repository investigation before the execution Plan is finalized.
-
-The cleaner model is:
-
-```text
-Investigation
-    ↓
-Plan Creation / Revision
-    ↓
-Lead Handoff
-    ↓
-CP-001
-```
-
-`CP-001` should therefore represent:
-
-> **Lead Phase Complete — investigation is sufficient, the execution Plan is finalized for the current run state, and the Developer handoff is ready.**
-
-This makes `CP-001` a true stable recovery boundary rather than an intermediate investigation milestone.
-
----
-
-## Corrected `CP-001` Definition
-
-| Checkpoint | Stable Boundary | Created By | Meaning |
-|---|---|---|---|
-| `CP-001` | Lead Phase Complete | Lead Agent | Required repository investigation is complete, material questions have been resolved or explicitly carried forward, `plan.md` is ready for execution, and the Lead-to-Developer handoff has been produced. |
-
-The normal Lead lifecycle becomes:
-
-```text
-Created
-   ↓
-Investigating
-   ↓
-Planning
-   ↓
-Lead Handoff
-   ↓
-CP-001
-   ↓
-Implementing
-```
-
-This avoids implying that an investigation-only state is already safe for Developer execution.
-
----
-
-## Investigation Is Not Yet `CP-001`
-
-Suppose the Lead Agent has discovered:
-
-```text
-CorporateFleetBookingRequest has no LocationId.
-
-Booking already contains ServiceLocationId.
-
-ADR-012 conflicts with newer implementation behavior.
-```
-
-At this point, investigation has produced useful state, but the task is not yet ready for Developer execution.
-
-The Scratchpad might contain:
-
-```markdown
-## Investigation Status
-
-Repository discovery:
-Complete enough to identify relevant architecture.
-
-Unresolved:
-Current location-validation authority.
-
-Plan:
-Not finalized.
-
-Developer handoff:
-Not ready.
-```
-
-This is **not** `CP-001`.
-
-The run remains in the Lead phase.
-
----
-
-## Planning Follows Investigation
-
-The Lead then resolves the architecture question:
-
-```text
-ADR-027 supersedes ADR-012.
-
-ServiceLocationPolicy is the current approved approach.
-```
-
-The Lead updates `plan.md`:
-
-```markdown
-# Execution Plan
-
-1. Add optional LocationId to the request.
-2. Map LocationId into the application command.
-3. Validate supplied locations using ServiceLocationPolicy.
-4. Reuse Booking.ServiceLocationId.
-5. Extend FleetBookingCreated.
-6. Update the event schema.
-7. Add backward-compatibility tests.
-8. Run required deterministic gates.
-```
-
-The Lead also produces:
-
-```text
-agent-handoffs/lead-to-developer.md
-```
-
-Only now has the Lead phase reached a stable boundary.
-
----
-
-## `CP-001` Example
-
-The corrected checkpoint should look like:
-
-```json
-{
-  "checkpointId": "CP-001",
-  "runId": "run-2026-10-06-0042",
-  "role": "Lead",
-  "stage": "lead-phase-complete",
-  "repositoryRevision": "7d92aa1",
-  "planStatus": "ready",
-  "handoffStatus": "ready",
-  "unresolvedQuestions": [
-    "External FleetBookingCreated consumers remain unverified."
-  ],
-  "nextRole": "Developer"
-}
-```
-
-The checkpoint means:
-
-```text
-Investigation sufficient
-        +
-Plan finalized for execution
-        +
-Material risks recorded
-        +
-Developer handoff ready
-        =
-CP-001
-```
-
----
-
-## Updated Checkpoint Convention
-
-The complete sequence should now be:
-
-| Checkpoint | Stable Boundary | Meaning |
-| --- | --- | --- |
-| `CP-001` | Lead Phase Complete | Investigation, planning, and Developer handoff are complete enough for implementation to begin. |
-| `CP-002` | Implementation Complete | Developer implementation is ready for independent review. |
-| `CP-003` | Review Complete | Required Reviewer findings are resolved and deterministic validation may begin. |
-| `CP-004` | Validation Complete | Required deterministic gates have passed and evidence has been captured. |
-| `CP-005` | Evaluation Complete | Goal and acceptance criteria have been evaluated successfully; active execution may complete. |
-
-The corrected stable progression is:
-
-```text
-Lead Investigation
-      ↓
-Lead Planning
-      ↓
-Lead Handoff
-      ↓
-CP-001
-      ↓
-Developer Implementation
-      ↓
-CP-002
-      ↓
-Reviewer
-      ↓
-CP-003
-      ↓
-Validator
-      ↓
-CP-004
-      ↓
-Evaluator
-      ↓
-CP-005
-      ↓
-Completed
-```
-
----
-
-## Updated Lifecycle State Table
-
-The lifecycle table should also avoid using the same checkpoint for both `Investigating` and `Planned`.
-
-| State | Primary Owner | Purpose | Exit Condition | Checkpoint |
-| --- | --- | --- | --- | --- |
-| `Created` | Harness | Initialize the run and capture inputs | Lead execution begins | — |
-| `Investigating` | Lead Agent | Gather repository evidence, dependencies, risks, and unresolved questions | Sufficient evidence exists to define the approach | — |
-| `Planning` | Lead Agent | Convert investigation into an executable strategy and handoff | Plan and Developer handoff are ready | `CP-001` |
-| `Implementing` | Developer Agent | Modify the solution | Implementation ready for review | `CP-002` |
-| `Reviewing` | Reviewer Agent | Independently review the implementation | Required findings resolved | `CP-003` |
-| `Validating` | Validator Agent | Execute deterministic gates | Required gates pass | `CP-004` |
-| `Evaluating` | Evaluator Agent | Assess goal and acceptance-criteria satisfaction | Outcome accepted | `CP-005` |
-| `Completed` | Harness | Close active execution | Retention begins | `CP-005` |
-
-This gives `CP-001` one unambiguous meaning:
-
-> **The Lead Agent has finished enough investigation and planning to hand an executable task to the Developer Agent.**
-
-It is not merely an investigation checkpoint, and it is not created before `plan.md` and the Lead-to-Developer handoff are ready.
-
-## Aligning Checkpoint and State Terminology
-
-The lifecycle terminology should use one consistent distinction:
-
-> **State describes where the run currently is. Checkpoint records that a stable lifecycle boundary has been reached.**
-
-A checkpoint is therefore not a synonym for a state.
-
-For example:
-
-```text
-State:
-Planning
-
-Checkpoint:
-CP-001 — Lead Phase Complete
-```
-
-The run may spend time in a state, move backward to an earlier state, or revisit a state multiple times.
-
-A checkpoint is created only when the corresponding stable boundary has been successfully reached.
-
----
-
-## Reference State Terminology
-
-Use the following lifecycle states consistently throughout the chapter:
-
-```text
-Created
-Investigating
-Planning
-Implementing
-Reviewing
-Validating
-Evaluating
-Completed
-Paused
-Interrupted
-Failed
-Cancelled
-```
-
-These states answer:
-
-> **What phase of execution is the Harness currently in?**
-
-The normal successful sequence is:
-
-```text
-Created
-   ↓
-Investigating
-   ↓
-Planning
-   ↓
-Implementing
-   ↓
-Reviewing
-   ↓
-Validating
-   ↓
-Evaluating
-   ↓
-Completed
-```
-
-The terms should be used as verbs or active lifecycle phases.
-
-Prefer:
-
-```text
-status = "validating"
-```
-
-over:
-
-```text
-status = "validation-complete"
-```
-
-because `validation-complete` describes a boundary, not an active state.
-
----
-
-## Reference Checkpoint Terminology
-
-Use checkpoints to represent stable completion boundaries:
-
-| Checkpoint | Canonical Name | Boundary Reached |
-| --- | --- | --- |
-| `CP-001` | Lead Phase Complete | Investigation, planning, and Lead-to-Developer handoff are ready. |
-| `CP-002` | Implementation Complete | Developer implementation is ready for independent review. |
-| `CP-003` | Review Complete | Required review findings are resolved and validation may begin. |
-| `CP-004` | Validation Complete | Required deterministic gates have passed and evidence has been captured. |
-| `CP-005` | Evaluation Complete | Goal and acceptance criteria have been evaluated successfully. |
-
-These names should be used consistently in:
-
-```text
-checkpoint files
-run-state.json
-handoffs
-diagrams
-examples
-resume logic
-audit records
-```
-
-Avoid alternate names such as:
-
-```text
-Investigation Complete
-Plan Complete
-Ready for Validation
-Run Complete Checkpoint
-```
-
-when referring to these same canonical boundaries.
-
----
-
-## State-to-Checkpoint Alignment
-
-The canonical relationship is:
-
-| Active State | Stable Exit Boundary | Checkpoint Created |
-| --- | --- | --- |
-| `Created` | Run initialized and Lead work begins | — |
-| `Investigating` | Investigation is sufficient for planning | — |
-| `Planning` | Lead phase is ready for Developer execution | `CP-001 — Lead Phase Complete` |
-| `Implementing` | Implementation is ready for review | `CP-002 — Implementation Complete` |
-| `Reviewing` | Required findings are resolved | `CP-003 — Review Complete` |
-| `Validating` | Required deterministic gates pass | `CP-004 — Validation Complete` |
-| `Evaluating` | Goal and acceptance criteria are successfully evaluated | `CP-005 — Evaluation Complete` |
-| `Completed` | Active execution has ended | Uses `CP-005` as the last stable checkpoint |
-
-This is the key distinction:
-
-```text
-Planning
-    ↓
-CP-001 — Lead Phase Complete
-    ↓
-Implementing
-```
-
-not:
-
-```text
-CP-001
-    =
-Planning
-```
-
----
-
-## Checkpoints Mark Transitions
-
-A useful mental model is:
-
-```text
-State
-   ↓
-Work occurs
-   ↓
-Exit condition satisfied
-   ↓
-Checkpoint created
-   ↓
-Next state
-```
-
-For example:
-
-```text
-Reviewing
-    ↓
-Reviewer examines implementation
-    ↓
-Required findings resolved
-    ↓
-CP-003 — Review Complete
-    ↓
-Validating
-```
-
-The checkpoint sits between lifecycle phases.
-
----
-
-## Correct `run-state.json` Terminology
-
-While implementation is underway:
-
-```json
-{
-  "runId": "run-2026-10-06-0042",
-  "status": "implementing",
-  "currentRole": "Developer",
-  "lastCheckpoint": "CP-001",
-  "nextRole": null
-}
-```
-
-When implementation completes, the Harness creates:
-
-```text
-CP-002 — Implementation Complete
-```
-
-and transitions the state to:
-
-```json
-{
-  "runId": "run-2026-10-06-0042",
-  "status": "reviewing",
-  "currentRole": "Reviewer",
-  "lastCheckpoint": "CP-002",
-  "nextRole": null
-}
-```
-
-The run is not in an `implementation-complete` state.
-
-`Implementation Complete` is the checkpoint.
-
-`Reviewing` is the new state.
-
----
-
-## Correct Validation Terminology
-
-During validation:
-
-```json
-{
-  "status": "validating",
-  "currentRole": "Validator",
-  "lastCheckpoint": "CP-003"
-}
-```
-
-If validation fails:
-
-```text
-Validating
-    ↓
-Gate Failure
-    ↓
-Implementing
-```
-
-The last stable checkpoint remains:
-
-```text
-CP-003 — Review Complete
-```
-
-After Developer remediation, the run may return to:
-
-```text
-Reviewing
-```
-
-if the change requires renewed independent review, or directly to `Validating` only if Harness policy explicitly permits that transition.
-
-When all required gates pass:
-
-```text
-CP-004 — Validation Complete
-```
-
-is created, and the run moves to:
-
-```text
-Evaluating
-```
-
----
-
-## Correct Evaluation Terminology
-
-During evaluation:
-
-```json
-{
-  "status": "evaluating",
-  "currentRole": "Evaluator",
-  "lastCheckpoint": "CP-004"
-}
-```
-
-When evaluation succeeds:
-
-```text
-CP-005 — Evaluation Complete
-```
-
-is created.
-
-The Harness then transitions to:
-
-```json
-{
-  "status": "completed",
-  "currentRole": null,
-  "lastCheckpoint": "CP-005"
-}
-```
-
-This keeps `Completed` as a Harness lifecycle state rather than inventing a separate `Run Complete` checkpoint.
-
-`CP-005` is the final execution checkpoint.
-
-`Completed` is the resulting terminal state.
-
----
-
-## Failure and Interruption Terminology
-
-`Interrupted`, `Paused`, `Failed`, and `Cancelled` are lifecycle states.
-
-They are not checkpoints.
-
-For example:
-
-```json
-{
-  "status": "interrupted",
-  "currentRole": "Developer",
-  "lastCheckpoint": "CP-001"
-}
-```
-
-This means:
-
-- the run was interrupted while implementing;
-- the last stable recovery boundary was `CP-001`;
-- work after `CP-001` may require recovery analysis.
-
-Do not create:
-
-```text
-CP-INTERRUPTED
-```
-
-or:
-
-```text
-CP-FAILED
-```
-
-as part of the normal reference model.
-
-Interruption and failure are execution conditions, not successful lifecycle boundaries.
-
----
-
-## Resume Terminology
-
-On resume, the Harness starts from the last valid checkpoint but returns to an active lifecycle state.
-
-For example:
-
-```text
-Interrupted
-Last checkpoint: CP-002
-```
-
-After recovery validation:
-
-```text
-Interrupted
-    ↓
-Recovery / Revalidation
-    ↓
-Reviewing
-```
-
-or another appropriate active state.
-
-The checkpoint answers:
-
-> **What stable boundary was previously reached?**
-
-The state answers:
-
-> **What work should now continue?**
-
----
-
-## Retry Terminology
-
-A retry should also be separated from lifecycle state.
-
-`Retry` is an execution relationship or attempt concept, not one of the core states.
-
-For example:
-
-```text
-Run 0042
-Attempt 1
-    ↓
-Failed
-
-Run 0043
-Attempt 2
-```
-
-or:
-
-```text
-Run 0042
-├── attempt-01
-└── attempt-02
-```
-
-Do not add a generic lifecycle state:
-
-```text
-Retrying
-```
-
-unless the Harness genuinely needs it for orchestration.
-
-The reference model can remain simpler.
-
----
-
-## Canonical Lifecycle Diagram
-
-Use this terminology consistently:
-
-```text
-Created
-   ↓
-Investigating
-   ↓
-Planning
-   ↓
-CP-001 — Lead Phase Complete
-   ↓
-Implementing
-   ↓
-CP-002 — Implementation Complete
-   ↓
-Reviewing
-   ↓
-CP-003 — Review Complete
-   ↓
-Validating
-   ↓
-CP-004 — Validation Complete
-   ↓
-Evaluating
-   ↓
-CP-005 — Evaluation Complete
-   ↓
-Completed
-   ↓
-Retention
-   ↓
-Cleanup
-```
-
-Alternative paths may move backward:
-
-```text
-Reviewing
-   ↓
-Required Changes
-   ↓
-Implementing
-```
-
-or:
-
-```text
-Validating
-   ↓
-Gate Failure
-   ↓
-Implementing
-```
-
-or:
-
-```text
-Evaluating
-   ↓
-Outcome Gap
-   ↓
-Implementing
-```
-
-but a new checkpoint is created only when the corresponding stable boundary is reached again.
-
----
-
-## Canonical Terminology Rule
-
-Use the following rule throughout the chapter:
-
-> **Lifecycle states use active execution terms: `Investigating`, `Planning`, `Implementing`, `Reviewing`, `Validating`, and `Evaluating`. Checkpoints use completed boundary terms: `Lead Phase Complete`, `Implementation Complete`, `Review Complete`, `Validation Complete`, and `Evaluation Complete`.**
-
-This produces a clean semantic relationship:
-
-```text
-Active State
-    → work is happening
-
-Checkpoint
-    → stable boundary has been reached
-
-Terminal State
-    → active run execution has ended
-```
-
-That terminology should remain fixed throughout the Run Workspace architecture and later Harness implementation chapters.
-
-## Checkpoint Creation Requirements
+### 13.58 Checkpoint Creation Requirements
 
 A checkpoint should be created only when the run reaches a **stable, recoverable lifecycle boundary**.
 
@@ -16619,7 +15649,7 @@ It must satisfy explicit creation requirements.
 
 ---
 
-## Core Checkpoint Rule
+#### Core Checkpoint Rule
 
 A checkpoint may be created only when all of the following are true:
 
@@ -16634,17 +15664,17 @@ If these conditions are not met, the run remains in the current state.
 
 ---
 
-## General Requirements for Every Checkpoint
+#### General Requirements for Every Checkpoint
 
 Every checkpoint should contain, either directly or through referenced artifacts, the following information.
 
-### 1. Checkpoint Identity
+##### 1. Checkpoint Identity
 
-Each checkpoint must have a unique identifier within the run.
+Each finalized checkpoint instance has the composite identity `(runId, checkpointId, generation)`. `checkpointId` is one of the five fixed boundary types; `generation` identifies repeated completion of that same boundary after remediation.
 
 For example:
 
-```text id="cp-identity"
+```text
 CP-001
 CP-002
 CP-003
@@ -16652,17 +15682,15 @@ CP-004
 CP-005
 ```
 
-The identifier should remain stable after creation.
-
-Do not reuse an identifier for a different lifecycle boundary.
+The composite identity remains stable after finalization. A generation is never reused for different content. Retrying publication of the same boundary and artifacts is idempotent; returning to the boundary with changed content creates a new generation.
 
 ---
 
-### 2. Run Identity
+##### 2. Run Identity
 
 The checkpoint must identify the run it belongs to.
 
-```json id="cp-run-id"
+```json
 {
   "checkpointId": "CP-002",
   "runId": "run-2026-10-06-0042"
@@ -16673,13 +15701,13 @@ A checkpoint must never be interpreted independently of its run.
 
 ---
 
-### 3. Canonical Checkpoint Name
+##### 3. Canonical Checkpoint Name
 
 The checkpoint should use the canonical lifecycle terminology.
 
 For example:
 
-```json id="cp-name"
+```json
 {
   "checkpointId": "CP-002",
   "name": "Implementation Complete"
@@ -16688,7 +15716,7 @@ For example:
 
 Use the fixed names:
 
-```text id="cp-canonical-names"
+```text
 CP-001 — Lead Phase Complete
 CP-002 — Implementation Complete
 CP-003 — Review Complete
@@ -16698,15 +15726,15 @@ CP-005 — Evaluation Complete
 
 ---
 
-### 4. Lifecycle State Being Exited
+##### 4. Lifecycle State Being Exited
 
 The checkpoint should identify which active state has successfully completed.
 
 For example:
 
-```json id="cp-exit-state"
+```json
 {
-  "exitedState": "implementing"
+  "exitedState": "Implementing"
 }
 ```
 
@@ -16714,7 +15742,7 @@ This improves traceability.
 
 For `CP-002`:
 
-```text id="cp-example-transition"
+```text
 Implementing
     ↓
 CP-002 — Implementation Complete
@@ -16724,13 +15752,13 @@ Reviewing
 
 ---
 
-### 5. Repository Revision
+##### 5. Repository Revision
 
 The current repository revision must be captured.
 
 For example:
 
-```json id="cp-revision"
+```json
 {
   "repositoryRevision": "b81f7c9"
 }
@@ -16748,13 +15776,13 @@ A checkpoint without repository context is weak for resumability.
 
 ---
 
-### 6. Working Tree State
+##### 6. Working Tree State
 
 The Harness should record whether the workspace contains uncommitted changes.
 
 For example:
 
-```json id="cp-working-tree"
+```json
 {
   "workingTree": {
     "status": "modified",
@@ -16765,7 +15793,7 @@ For example:
 
 This matters because:
 
-```text id="cp-revision-warning"
+```text
 same Git revision
     does not necessarily mean
 same working tree
@@ -16775,13 +15803,13 @@ A partially modified working tree can materially affect recovery.
 
 ---
 
-### 7. Required Phase Artifacts Exist
+##### 7. Required Phase Artifacts Exist
 
 A checkpoint should not be created if required artifacts are missing.
 
 For example, `CP-002 — Implementation Complete` may require:
 
-```text id="cp002-required-artifacts"
+```text
 Developer result
 Changed-files record
 Developer handoff
@@ -16793,7 +15821,7 @@ The checkpoint should reference important artifacts rather than duplicate them.
 
 For example:
 
-```json id="cp-artifacts"
+```json
 {
   "artifacts": {
     "developerResult": "../agents/developer/result.md",
@@ -16805,7 +15833,7 @@ For example:
 
 ---
 
-### 8. Material Questions Have a Disposition
+##### 8. Material Questions Have a Disposition
 
 A checkpoint does not require every question in the Scratchpad to disappear.
 
@@ -16813,7 +15841,7 @@ It does require every **material** unresolved question to have a clear dispositi
 
 Valid dispositions include:
 
-```text id="cp-question-dispositions"
+```text
 Resolved
 Accepted Risk
 Deferred
@@ -16823,7 +15851,7 @@ Not Blocking Next Phase
 
 For example:
 
-```json id="cp-open-risk"
+```json
 {
   "unresolvedItems": [
     {
@@ -16839,7 +15867,7 @@ A question should not remain silently open when it affects the next phase.
 
 ---
 
-### 9. Required Findings Are Resolved for the Boundary
+##### 9. Required Findings Are Resolved for the Boundary
 
 For checkpoints following independent assessment, blocking findings must be resolved.
 
@@ -16847,7 +15875,7 @@ For example, `CP-003 — Review Complete` must not be created while a required R
 
 This is invalid:
 
-```text id="cp-invalid-review"
+```text
 REV-004 — Required
 Status: Open
 
@@ -16860,13 +15888,13 @@ The checkpoint should be blocked.
 
 ---
 
-### 10. Required Evidence Exists
+##### 10. Required Evidence Exists
 
 Where the phase depends on objective evidence, that evidence must exist before checkpoint creation.
 
 For example:
 
-```text id="cp004-evidence"
+```text
 CP-004 — Validation Complete
 ```
 
@@ -16874,7 +15902,7 @@ requires deterministic evidence showing the required gates passed.
 
 The Validator writing:
 
-```text id="cp-bad-evidence"
+```text
 Everything looks good.
 ```
 
@@ -16882,7 +15910,7 @@ is insufficient.
 
 The checkpoint must reference:
 
-```text id="cp-validation-evidence"
+```text
 validation/gate-summary.json
 ```
 
@@ -16890,15 +15918,15 @@ or equivalent structured evidence.
 
 ---
 
-### 11. Next State Is Known and Allowed
+##### 11. Next State Is Known and Allowed
 
 The checkpoint should identify the next normal lifecycle state.
 
 For example:
 
-```json id="cp-next-state"
+```json
 {
-  "nextState": "reviewing"
+  "nextState": "Reviewing"
 }
 ```
 
@@ -16906,7 +15934,7 @@ The Harness should validate that the transition is legal.
 
 For example:
 
-```text id="cp-valid-transition"
+```text
 CP-002 — Implementation Complete
     ↓
 Reviewing
@@ -16916,7 +15944,7 @@ is valid.
 
 A direct transition such as:
 
-```text id="cp-invalid-transition"
+```text
 CP-002
     ↓
 Completed
@@ -16926,13 +15954,13 @@ should not be allowed in the reference lifecycle.
 
 ---
 
-### 12. Checkpoint Timestamp
+##### 12. Checkpoint Timestamp
 
 The checkpoint should capture when the stable boundary was reached.
 
 For example:
 
-```json id="cp-time"
+```json
 {
   "createdAt": "2026-10-06T17:10:31Z"
 }
@@ -16947,13 +15975,13 @@ Timestamps help with:
 
 ---
 
-### 13. Workspace Schema Version
+##### 13. Workspace Schema Version
 
 The checkpoint should identify the workspace schema it follows.
 
 For example:
 
-```json id="cp-schema-version"
+```json
 {
   "workspaceSchemaVersion": 1
 }
@@ -16963,7 +15991,7 @@ This becomes important when the Run Workspace structure evolves.
 
 ---
 
-### 14. Checkpoint Must Be Durable Before State Transition
+##### 14. Checkpoint Must Be Durable Before State Transition
 
 A key reliability rule is:
 
@@ -16971,7 +15999,7 @@ A key reliability rule is:
 
 The order should be:
 
-```text id="cp-persistence-order"
+```text
 Current phase work complete
         ↓
 Checkpoint constructed
@@ -16985,7 +16013,7 @@ Next phase begins
 
 Not:
 
-```text id="cp-bad-order"
+```text
 Move to next phase
         ↓
 Try to save checkpoint
@@ -16997,17 +16025,17 @@ Otherwise, the Harness can enter a state with no valid recovery boundary.
 
 ---
 
-## Checkpoint-Specific Requirements
+#### Checkpoint-Specific Requirements
 
 The general requirements apply to every checkpoint, but each lifecycle boundary also has additional conditions.
 
 ---
 
-## `CP-001 — Lead Phase Complete`
+#### `CP-001 — Lead Phase Complete`
 
 `CP-001` is created only when the Lead phase is ready to transfer execution to the Developer.
 
-### Required Conditions
+##### Required Conditions
 
 - required repository investigation is sufficiently complete;
 - relevant Instructions and Steering Notes were considered;
@@ -17018,9 +16046,9 @@ The general requirements apply to every checkpoint, but each lifecycle boundary 
 - Lead-to-Developer handoff exists;
 - required validation expectations are defined.
 
-### Required Artifacts
+##### Required Artifacts
 
-```text id="cp001-artifacts"
+```text
 plan.md
 agents/lead/result.md
 agent-handoffs/lead-to-developer.md
@@ -17028,30 +16056,30 @@ scratchpad.md or Lead Scratchpad
 run-state.json
 ```
 
-### Example
+##### Example
 
-```json id="cp001-example"
+```json
 {
   "checkpointId": "CP-001",
   "name": "Lead Phase Complete",
-  "exitedState": "planning",
+  "exitedState": "Planning",
   "repositoryRevision": "7d92aa1",
   "planStatus": "ready",
   "handoffStatus": "ready",
   "blockingQuestions": 0,
-  "nextState": "implementing"
+  "nextState": "Implementing"
 }
 ```
 
 ---
 
-## `CP-002 — Implementation Complete`
+#### `CP-002 — Implementation Complete`
 
 `CP-002` is created when Developer work is ready for independent review.
 
 It does **not** mean that the feature has passed review or validation.
 
-### Required Conditions
+##### Required Conditions
 
 - planned implementation work is complete for the current iteration;
 - changed files are known;
@@ -17060,35 +16088,35 @@ It does **not** mean that the feature has passed review or validation.
 - Developer-to-Reviewer handoff exists;
 - the Developer has not claimed unexecuted validation as passing.
 
-### Required Artifacts
+##### Required Artifacts
 
-```text id="cp002-artifacts"
+```text
 agents/developer/result.md
 agents/developer/changed-files.json
 agent-handoffs/developer-to-reviewer.md
 repository working tree
 ```
 
-### Example
+##### Example
 
-```json id="cp002-example"
+```json
 {
   "checkpointId": "CP-002",
   "name": "Implementation Complete",
-  "exitedState": "implementing",
+  "exitedState": "Implementing",
   "repositoryRevision": "7d92aa1",
   "changedFilesReference": "../agents/developer/changed-files.json",
-  "nextState": "reviewing"
+  "nextState": "Reviewing"
 }
 ```
 
 ---
 
-## `CP-003 — Review Complete`
+#### `CP-003 — Review Complete`
 
 `CP-003` is created only when the implementation is eligible to enter deterministic validation.
 
-### Required Conditions
+##### Required Conditions
 
 - independent review has completed;
 - all blocking or required Reviewer findings are resolved;
@@ -17097,9 +16125,9 @@ repository working tree
 - any remediation affecting review scope has been re-reviewed as required by policy;
 - Validator requirements are clear.
 
-### Required Artifacts
+##### Required Artifacts
 
-```text id="cp003-artifacts"
+```text
 agents/reviewer/findings.md
 agents/reviewer/result.md
 review-summary.json
@@ -17108,86 +16136,86 @@ agent-handoffs/reviewer-to-validator.md
 
 If the reference structure does not use a Reviewer-to-Validator handoff, the equivalent structured review output must still be available.
 
-### Invalid Creation Example
+##### Invalid Creation Example
 
 Do not create `CP-003` if:
 
-```text id="cp003-invalid"
+```text
 REV-003
 Severity: Required
 Status: Open
 ```
 
-### Example
+##### Example
 
-```json id="cp003-example"
+```json
 {
   "checkpointId": "CP-003",
   "name": "Review Complete",
-  "exitedState": "reviewing",
+  "exitedState": "Reviewing",
   "requiredFindingsOpen": 0,
   "reviewResult": "passed",
-  "nextState": "validating"
+  "nextState": "Validating"
 }
 ```
 
 ---
 
-## `CP-004 — Validation Complete`
+#### `CP-004 — Validation Complete`
 
 `CP-004` has the strongest deterministic evidence requirement.
 
 It should be created only after all mandatory gates have successfully reached their required outcome.
 
-### Required Conditions
+##### Required Conditions
 
 - all required deterministic gates have executed;
 - no mandatory gate remains failed;
-- no mandatory gate remains blocked or inconclusive unless policy explicitly allows it;
+- no mandatory gate remains blocked or inconclusive; a policy-approved exclusion is recorded as not required for this run, never as a passing execution;
 - raw or structured evidence has been persisted;
 - final gate summary exists;
 - validation evidence corresponds to the implementation being evaluated;
 - Validator-to-Evaluator handoff exists.
 
-### Required Artifacts
+##### Required Artifacts
 
-```text id="cp004-artifacts"
+```text
 validation/gate-summary.json
 validation/attempt-*/
 agents/validator/summary.md
 agent-handoffs/validator-to-evaluator.md
 ```
 
-### Critical Integrity Requirement
+##### Critical Integrity Requirement
 
 The Harness must verify that validation evidence corresponds to the repository/working-tree state represented by the checkpoint.
 
 For example, code must not change after the final passing gate without invalidating or rerunning relevant validation.
 
-### Example
+##### Example
 
-```json id="cp004-example"
+```json
 {
   "checkpointId": "CP-004",
   "name": "Validation Complete",
-  "exitedState": "validating",
+  "exitedState": "Validating",
   "repositoryRevision": "b81f7c9",
   "validationResult": "passed",
   "validationAttempts": 2,
   "evidenceReference": "../validation/gate-summary.json",
-  "nextState": "evaluating"
+  "nextState": "Evaluating"
 }
 ```
 
 ---
 
-## `CP-005 — Evaluation Complete`
+#### `CP-005 — Evaluation Complete`
 
 `CP-005` is the final stable execution checkpoint.
 
 It is created when the Evaluator has assessed the completed implementation against the intended goal and acceptance criteria.
 
-### Required Conditions
+##### Required Conditions
 
 - final Prompt and acceptance criteria are available;
 - Reviewer results are available;
@@ -17198,36 +16226,36 @@ It is created when the Evaluator has assessed the completed implementation again
 - no blocking outcome gap remains for a successful completion path;
 - final evaluation artifact exists.
 
-### Required Artifacts
+##### Required Artifacts
 
-```text id="cp005-artifacts"
+```text
 agents/evaluator/evaluation.md
 outputs/evaluation.json
 outputs/implementation-summary.md
 ```
 
-### Successful Completion Example
+##### Successful Completion Example
 
-```json id="cp005-example"
+```json
 {
   "checkpointId": "CP-005",
   "name": "Evaluation Complete",
-  "exitedState": "evaluating",
+  "exitedState": "Evaluating",
   "evaluationResult": "passed",
   "acceptanceCriteriaSatisfied": true,
-  "nextState": "completed"
+  "nextState": "Completed"
 }
 ```
 
 After the checkpoint is persisted, the Harness transitions the run to:
 
-```text id="cp005-completed"
+```text
 Completed
 ```
 
 ---
 
-## Checkpoint Creation Should Be Idempotent
+#### Checkpoint Creation Should Be Idempotent
 
 The Harness may experience a failure while creating a checkpoint.
 
@@ -17235,7 +16263,7 @@ Therefore checkpoint creation should ideally be idempotent.
 
 For example:
 
-```text id="cp-idempotent"
+```text
 Create CP-004
      ↓
 Persistence succeeds
@@ -17245,13 +16273,13 @@ Worker crashes before state transition
 
 After restart, the Harness should be able to detect:
 
-```text id="cp-existing"
+```text
 CP-004 already exists and is valid.
 ```
 
 It should not create:
 
-```text id="cp-duplicate"
+```text
 CP-004
 CP-004-copy
 CP-004-retry
@@ -17261,13 +16289,13 @@ for the same boundary and evidence.
 
 ---
 
-## Checkpoint Creation Should Be Atomic Where Possible
+#### Checkpoint Creation Should Be Atomic Where Possible
 
 A checkpoint should not appear valid if only half of its required state was persisted.
 
 A strong sequence is:
 
-```text id="cp-atomic"
+```text
 Validate creation requirements
         ↓
 Persist required phase artifacts
@@ -17279,6 +16307,10 @@ Confirm persistence
 Update run-state.json
 ```
 
+If the worker crashes after checkpoint publication but before updating run state, recovery verifies the checkpoint generation and its artifacts, then idempotently reconciles the pending transition using a version check. An incomplete or unpublished checkpoint is never selected for resume. Dispatch the next role only after the checkpoint and state transition are durable; use an outbox or equivalent durable dispatch record where needed.
+
+Reacquire an exclusive lease or fencing token before mutating recovered state. A replacement worker must prevent a delayed former worker from publishing conflicting updates. Select the latest applicable generation whose source, inputs, evidence, and dependencies remain valid, not the highest checkpoint number or newest file timestamp. Recovery does not automatically roll back external actions; reconcile their actual effects and use idempotency or authorized compensation.
+
 In distributed storage, use appropriate mechanisms such as:
 
 - transactional writes;
@@ -17289,13 +16321,13 @@ In distributed storage, use appropriate mechanisms such as:
 
 ---
 
-## Checkpoints Should Be Immutable After Finalization
+#### Checkpoints Should Be Immutable After Finalization
 
 Once a checkpoint is finalized, it should not normally be edited in place.
 
 Suppose `CP-004` says:
 
-```text id="cp-immutable-old"
+```text
 Validation Result: PASS
 ```
 
@@ -17307,7 +16339,7 @@ Instead, the earlier checkpoint may become no longer valid for forward recovery,
 
 For example:
 
-```text id="cp-invalidation"
+```text
 CP-004
    ↓
 Code changes after validation
@@ -17317,13 +16349,13 @@ Validating or Reviewing
 New valid CP-004 state reached
 ```
 
-The Harness can maintain checkpoint generation/version metadata if repeated boundaries are supported.
+The reference model uses explicit generations for repeated boundaries, for example `CP-004`, generation 2, stored at `checkpoints/cp-004/generation-02.json`. `cp-004.json` in compact directory examples denotes the first generation or a derived current-generation reference, not an overwriteable historical record.
 
 The important rule is that historical evidence should not be silently rewritten.
 
 ---
 
-## Checkpoint Invalidation
+#### Checkpoint Invalidation
 
 A checkpoint may have been valid when created but become unsuitable as the basis for continuation.
 
@@ -17338,7 +16370,7 @@ Examples include:
 
 The Harness should distinguish:
 
-```text id="cp-validity-status"
+```text
 Created
 Valid
 Stale
@@ -17349,13 +16381,16 @@ from the checkpoint identifier itself.
 
 For example:
 
-```json id="cp-invalidated"
+```json
 {
   "checkpointId": "CP-004",
+  "generation": 1,
   "validity": "invalidated",
   "reason": "implementation changed after validation"
 }
 ```
+
+Record invalidation or supersession in an append-only event or separate validity index keyed by run, checkpoint, and generation. Keep the finalized checkpoint unchanged; its historical evidence remains tied to its original snapshot. Invalidation cascades to downstream boundaries that depend on the changed inputs.
 
 Do not delete the checkpoint merely because it is no longer current.
 
@@ -17363,11 +16398,11 @@ It remains useful historical evidence.
 
 ---
 
-## Checkpoint Creation Decision
+#### Checkpoint Creation Decision
 
 A simple decision flow is:
 
-```mermaid id="cp-decision-flow"
+```mermaid
 flowchart TD
     A["Current Lifecycle Phase Reaches Exit Condition"]
     B{"Required Artifacts Exist?"}
@@ -17395,7 +16430,7 @@ flowchart TD
 
 ---
 
-## Reference Checkpoint Requirements Table
+#### Reference Checkpoint Requirements Table
 
 | Checkpoint | State Exited | Primary Requirement | Evidence/Artifact Gate | Next State |
 | --- | --- | --- | --- | --- |
@@ -17407,7 +16442,7 @@ flowchart TD
 
 ---
 
-## Checkpoint Creation Principle
+#### Checkpoint Creation Principle
 
 The checkpoint rule can be summarized as:
 
@@ -17419,25 +16454,6 @@ A checkpoint should never mean merely:
 
 It should mean:
 
-> **"The Harness can prove what was completed here, reconstruct the relevant state, and safely continue from this boundary."**
-According to the frozen chapter template, we have completed through **Section 13 — Architect’s Notes**, plus the additional reference material on the **Run Workspace structure, lifecycle, checkpoint numbering, state terminology, and checkpoint creation requirements**.
-
-The remaining standard sections are:
-
-1. **Enterprise Tips**
-2. **Decision Points**
-3. **Exercises**
-4. **Interview Questions**
-5. **Chapter Summary**
-6. **Further Reading**
-
-So the next section should be:
-
-**14. Enterprise Tips**
-
-After that, we can continue in order through the remaining five sections and then mark:
-
-**Scratchpad and Run Workspace status: Complete**
 
 ## 14. Enterprise Tips
 
@@ -18149,7 +17165,7 @@ Store them externally and retain references:
 ```json
 {
   "artifact": "security-scan",
-  "location": "artifact-store/run-0042/security.json"
+  "location": "artifact-store/run-2026-10-06-0042/security.json"
 }
 ```
 
@@ -18167,8 +17183,8 @@ For example:
 
 ```json
 {
-  "runId": "run-0042",
-  "status": "validating",
+  "runId": "run-2026-10-06-0042",
+  "status": "Validating",
   "currentRole": "Validator",
   "lastCheckpoint": "CP-003",
   "repositoryRevision": "b81f7c9"
@@ -18528,10 +17544,8 @@ It is to preserve enough state to make execution reliable while preventing tempo
 
 > **The Run Workspace should make complex AI execution recoverable, inspectable, and governable without turning temporary working state into an uncontrolled knowledge system.**
 
-**Scratchpad and Run Workspace status: In progress — next section: Decision Points**
-Here is a focused set of **Alpha Car Detailing examples** you can insert into the **Enterprise Tips** section so the guidance stays grounded in the running example rather than remaining abstract.
 
-### Alpha Car Detailing Examples for Enterprise Run Workspace Practices
+### 14.51 Alpha Car Detailing Applied Examples
 
 The enterprise practices described above become clearer when applied to the Alpha Car Detailing platform.
 
@@ -18539,7 +17553,7 @@ The following examples show how the same Run Workspace principles apply to reali
 
 ---
 
-### Standardized Workspace Across Alpha Car Detailing Services
+#### Standardized Workspace Across Alpha Car Detailing Services
 
 Suppose separate teams own:
 
@@ -18587,7 +17601,7 @@ This allows the same Harness tooling to operate across the Alpha Car Detailing p
 
 ---
 
-### Run Identity Across Systems
+#### Run Identity Across Systems
 
 Suppose the preferred-location change is assigned:
 
@@ -18628,7 +17642,7 @@ without reconstructing the relationship manually.
 
 ---
 
-### Snapshotting Governing Inputs
+#### Snapshotting Governing Inputs
 
 Assume the Booking service uses:
 
@@ -18673,7 +17687,7 @@ the Harness can determine whether the current Plan or previous implementation as
 
 ---
 
-### Role-Specific Workspace Access
+#### Role-Specific Workspace Access
 
 During the fleet-location change:
 
@@ -18731,7 +17745,7 @@ This keeps ownership clear.
 
 ---
 
-### Read-Only Governing Knowledge
+#### Read-Only Governing Knowledge
 
 Suppose Repository Intelligence contains:
 
@@ -18768,7 +17782,7 @@ Temporary implementation preference must not silently rewrite persistent archite
 
 ---
 
-### Checkpoint Enforcement
+#### Checkpoint Enforcement
 
 For the preferred-location feature, the Harness should not permit:
 
@@ -18810,7 +17824,7 @@ Architecture Tests: PASS
 
 ---
 
-### Validation Evidence Integrity
+#### Validation Evidence Integrity
 
 Suppose the first validation attempt reports:
 
@@ -18844,7 +17858,7 @@ This history explains why the implementation changed.
 
 ---
 
-### Code Change After Validation
+#### Code Change After Validation
 
 Suppose:
 
@@ -18877,7 +17891,7 @@ The principle is:
 
 ---
 
-### Explicit Handoff Between Booking and Fleet Teams
+#### Explicit Handoff Between Booking and Fleet Teams
 
 Suppose the Booking team changes `FleetBookingCreated`, but the Fleet Integration Gateway is owned by another team.
 
@@ -18918,7 +17932,7 @@ through chat.
 
 ---
 
-### Cross-Repository Task Example
+#### Cross-Repository Task Example
 
 Suppose Alpha Car Detailing separates:
 
@@ -18957,7 +17971,7 @@ If `Alpha.Contracts` changes while the run is paused, compatibility assumptions 
 
 ---
 
-### External Dependency Example
+#### External Dependency Example
 
 Assume Booking validates service locations through a Location service.
 
@@ -18989,7 +18003,7 @@ Repository revision alone is not sufficient to determine freshness.
 
 ---
 
-### Stale State During Resume
+#### Stale State During Resume
 
 Suppose the Developer Scratchpad says:
 
@@ -19031,7 +18045,7 @@ The Developer must reinvestigate before continuing.
 
 ---
 
-### Paused Run Example
+#### Paused Run Example
 
 The team may intentionally pause because architecture approval is required.
 
@@ -19039,7 +18053,7 @@ For example:
 
 ```json
 {
-  "status": "paused",
+  "status": "Paused",
   "currentRole": "Lead",
   "lastCheckpoint": null,
   "reason": "awaiting-event-versioning-decision"
@@ -19052,7 +18066,7 @@ A paused run is not automatically safe to continue merely because it was paused 
 
 ---
 
-### Interrupted Run Example
+#### Interrupted Run Example
 
 Suppose the Developer worker crashes after `CP-001`.
 
@@ -19060,7 +18074,7 @@ The run state becomes:
 
 ```json
 {
-  "status": "interrupted",
+  "status": "Interrupted",
   "currentRole": "Developer",
   "lastCheckpoint": "CP-001"
 }
@@ -19084,7 +18098,7 @@ The system should not depend on the original Developer Agent remembering what it
 
 ---
 
-### Parallel-Agent Example
+#### Parallel-Agent Example
 
 The Lead Agent may delegate:
 
@@ -19130,7 +18144,7 @@ The agents should not overwrite one shared Scratchpad while investigating indepe
 
 ---
 
-### Residual Risk Example
+#### Residual Risk Example
 
 After all tests pass, the Evaluator may still record:
 
@@ -19155,7 +18169,7 @@ The residual risk should remain visible.
 
 ---
 
-### Promotion Candidate Example
+#### Promotion Candidate Example
 
 During the run, the Harness discovers:
 
@@ -19202,7 +18216,7 @@ The Harness does not modify Repository Intelligence directly.
 
 ---
 
-### Harness Memory Example
+#### Harness Memory Example
 
 A different lesson may emerge after several Alpha Car Detailing runs.
 
@@ -19234,7 +18248,7 @@ It is different from Repository Intelligence.
 
 ---
 
-### Security Example
+#### Security Example
 
 Suppose integration testing requires:
 
@@ -19259,7 +18273,7 @@ If a tool accidentally prints the token, the Harness should redact it before per
 
 ---
 
-### Retention Example
+#### Retention Example
 
 After the preferred-location run completes, Alpha Car Detailing may retain:
 
@@ -19285,7 +18299,7 @@ This preserves required engineering evidence without turning every temporary tho
 
 ---
 
-### Metrics Example
+#### Metrics Example
 
 For the fleet-location run, the Harness could record:
 
@@ -19311,12 +18325,12 @@ scratchpad.md
 
 ---
 
-### Operational Monitoring Example
+#### Operational Monitoring Example
 
 Suppose a corporate fleet booking conversion remains:
 
 ```text
-status: implementing
+status: Implementing
 ```
 
 for two hours with:
@@ -19351,7 +18365,7 @@ An operator can then recover from the last valid checkpoint rather than restarti
 
 ---
 
-### Human Approval Example
+#### Human Approval Example
 
 Suppose adding `ServiceLocationId` would require versioning the event instead of using an additive field.
 
@@ -19388,7 +18402,7 @@ Whether it becomes a permanent event-versioning standard remains a separate gove
 
 ---
 
-### Exception Example
+#### Exception Example
 
 Suppose a documentation-only update occurs in the Booking service.
 
@@ -19425,7 +18439,7 @@ The omission should be explicit rather than invisible.
 
 ---
 
-### Pull Request Traceability Example
+#### Pull Request Traceability Example
 
 The final Alpha Car Detailing pull request could include:
 
@@ -19459,7 +18473,7 @@ without including the complete Scratchpad in the PR.
 
 ---
 
-### End-to-End Alpha Car Detailing Example
+#### End-to-End Alpha Car Detailing Example
 
 The full execution can be summarized as:
 
@@ -19514,867 +18528,6 @@ This example illustrates the central enterprise principle:
 
 > **The Run Workspace preserves enough temporary state to coordinate and recover Alpha Car Detailing engineering work, while checkpoints, deterministic evidence, and governance prevent temporary discoveries from becoming project truth accidentally.**
 
-**Scratchpad and Run Workspace status: In progress — next section: Decision Points**
-Yes. The cleaner handbook structure is to keep the **enterprise rules normative** and move Alpha Car Detailing into a separate **applied examples subsection**.
-
-## 14. Enterprise Tips
-
-### 14.1 Workspace Rules
-
-The following rules define the enterprise operating model for Run Workspaces.
-
-#### Standardize the Workspace
-
-Use a common Run Workspace structure across repositories and teams:
-
-```text
-input/
-plan.md
-scratchpad.md
-agents/
-agent-handoffs/
-checkpoints/
-validation/
-outputs/
-metadata/
-run-state.json
-```
-
-The implementation may vary, but the meaning of each area should remain stable.
-
----
-
-#### Version the Workspace Schema
-
-Record the workspace schema version explicitly:
-
-```json
-{
-  "workspaceSchemaVersion": 1
-}
-```
-
-Recovery logic should understand how older workspace versions are handled.
-
----
-
-#### Automate Workspace Initialization
-
-The Harness should create:
-
-- run identity;
-- directory structure;
-- metadata;
-- initial run state;
-- input snapshots;
-
-before agents begin execution.
-
-Do not rely on individual agents to create the correct structure manually.
-
----
-
-#### Use One Traceable Run Identifier
-
-Use the same `runId` across:
-
-- logs;
-- validation;
-- checkpoints;
-- metrics;
-- pull requests;
-- audit events;
-- final outputs.
-
-This provides end-to-end traceability.
-
----
-
-#### Separate Run and Attempt Identity
-
-A retry should not silently reuse temporary state from the original attempt.
-
-Model retries explicitly:
-
-```text
-run-0042/
-├── attempt-01/
-└── attempt-02/
-```
-
-or create a new run according to Harness policy.
-
----
-
-#### Treat Checkpoints as Recovery Contracts
-
-A checkpoint must represent a stable, recoverable boundary.
-
-Checkpoint creation should be controlled by the Harness and should verify:
-
-- current lifecycle state;
-- required artifacts;
-- blocking findings;
-- evidence;
-- repository state;
-- allowed next transition.
-
----
-
-#### Keep Checkpoint Validity Explicit
-
-A checkpoint may later become:
-
-```text
-Valid
-Stale
-Invalidated
-```
-
-Its existence does not guarantee that it remains safe for continuation.
-
----
-
-#### Snapshot Governing Inputs
-
-Record the relevant versions or revisions of:
-
-- Prompt;
-- Instructions;
-- Skills;
-- Steering Notes;
-- repository state.
-
-On resume, compare those inputs before trusting previous run state.
-
----
-
-#### Enforce Role-Specific Workspace Ownership
-
-Use separate writable areas for:
-
-- Lead;
-- Developer;
-- Reviewer;
-- Validator;
-- Evaluator.
-
-Avoid unrestricted shared write access.
-
----
-
-#### Keep Governing Knowledge Read-Only During Normal Execution
-
-Instructions, Steering Notes, Repository Intelligence, and Harness Memory should normally be consumed as governed inputs.
-
-Agents may propose changes, but should not mutate them directly unless explicitly authorized.
-
----
-
-#### Keep Validation Evidence Separate and Immutable
-
-Store deterministic evidence independently from Scratchpad prose.
-
-Prefer:
-
-```text
-validation/
-├── attempt-01/
-├── attempt-02/
-└── gate-summary.json
-```
-
-Do not overwrite failed evidence with later successful evidence.
-
----
-
-#### Bind Validation to Implementation State
-
-Validation is meaningful only for the exact implementation that was tested.
-
-If code changes after `CP-004 — Validation Complete`, relevant validation must be reconsidered or rerun.
-
----
-
-#### Use Structured Handoffs
-
-Handoffs should contain:
-
-```text
-Goal
-Verified evidence
-Completed work
-Important decisions
-Known risks
-Unresolved questions
-Required next actions
-Required validation
-```
-
-Do not use chat history as the primary handoff mechanism.
-
----
-
-#### Preserve Residual Risk
-
-A successful evaluation may still contain:
-
-```text
-Accepted Risk
-Known Limitation
-External Dependency Not Verified
-```
-
-Preserve those explicitly.
-
-Do not equate `PASS` with "no remaining risk."
-
----
-
-#### Apply Policy-Based Retention
-
-Classify runs and apply retention automatically.
-
-Possible classifications include:
-
-```text
-standard engineering
-security-sensitive
-regulated
-production incident
-high-risk architecture change
-```
-
-Scratchpads and validation evidence do not necessarily require the same retention period.
-
----
-
-#### Keep Scratchpad Search Separate from Knowledge Search
-
-Historical Scratchpads should not appear as equivalent authority to:
-
-- Repository Intelligence;
-- Harness Memory;
-- Instructions;
-- validation evidence.
-
-If historical run state is searchable, label it clearly as temporary run state.
-
----
-
-#### Govern Knowledge Promotion
-
-Agents may create promotion candidates.
-
-The Harness should not silently promote Scratchpad content.
-
-Promotion should include:
-
-```text
-evidence
-scope
-destination
-review
-approval
-freshness rule
-```
-
----
-
-#### Separate Repository Intelligence from Harness Memory
-
-Use **Repository Intelligence** for evidence about the repository.
-
-Use **Harness Memory** for governed lessons about how future Harness runs should operate.
-
-Do not merge both concepts into one generic memory store.
-
----
-
-#### Use Structured Data for Metrics
-
-Generate metrics from:
-
-- run-state transitions;
-- checkpoint records;
-- validation attempts;
-- Reviewer findings;
-- promotion decisions.
-
-Do not derive important operational metrics by parsing Scratchpad prose.
-
----
-
-#### Detect Stuck and Orphaned Runs
-
-For long-running execution, track:
-
-```text
-lastHeartbeat
-currentRole
-lastCheckpoint
-worker ownership
-last activity
-```
-
-The Harness should be able to distinguish slow execution from abandoned execution.
-
----
-
-#### Keep Run Storage Separate from Source Control by Default
-
-Source control stores product history.
-
-The Run Workspace stores execution history.
-
-They may be linked without storing every Scratchpad directly in the product repository.
-
----
-
-#### Use External Artifact Storage for Large Evidence
-
-Large artifacts such as:
-
-- logs;
-- coverage files;
-- security scans;
-- test reports;
-
-may be stored externally with references from the Run Workspace.
-
----
-
-#### Record Human Decisions Explicitly
-
-A human approval should include:
-
-```text
-decision
-authority
-scope
-reason
-time
-```
-
-Do not reduce important human direction to informal Scratchpad prose.
-
----
-
-#### Make Exceptions Explicit
-
-If the Harness skips a normal control or validation gate, record:
-
-- what was skipped;
-- why;
-- policy basis;
-- approving authority.
-
-Invisible exceptions create governance debt.
-
----
-
-#### Design for Multi-Repository Runs
-
-If one task spans multiple repositories, checkpoint state must capture each relevant repository revision.
-
-A checkpoint is not reproducible if only one repository state is known.
-
----
-
-#### Track Material External Dependencies
-
-If correctness depends on an external API, schema, deployment, feature flag, or infrastructure state, capture the relevant version or reference.
-
-Git state alone may not be sufficient for resumability.
-
----
-
-#### Make Resume Decisions Explicit
-
-A resume process should produce an outcome such as:
-
-```text
-Resume Approved
-Resume with Revalidation
-Restart Required
-```
-
-and record the reason.
-
----
-
-#### Test the Lifecycle Itself
-
-Harness testing should include:
-
-- failure before `CP-001`;
-- interruption during implementation;
-- stale state during resume;
-- Reviewer rejection;
-- validation failure and remediation;
-- code change after `CP-004`;
-- promotion review;
-- retention cleanup.
-
-Run Workspace behavior is part of the system and requires its own testing.
-
----
-
-### 14.2 Alpha Car Detailing Applied Examples
-
-The following examples demonstrate how the workspace rules apply to the Alpha Car Detailing platform.
-
-#### Example — Shared Workspace Standard
-
-A Booking task:
-
-```text
-Add preferred detailing location to corporate fleet bookings.
-```
-
-and a Payments task:
-
-```text
-Add fleet invoice adjustment support.
-```
-
-should both use the same workspace semantics:
-
-```text
-input/
-plan.md
-scratchpad.md
-agents/
-agent-handoffs/
-checkpoints/
-validation/
-outputs/
-run-state.json
-```
-
-The business change differs.
-
-The Harness execution model does not.
-
----
-
-#### Example — Traceable Run Identity
-
-The preferred-location feature receives:
-
-```text
-run-2026-10-06-0042
-```
-
-The same identifier appears in:
-
-```text
-PR #1842
-CI execution
-validation evidence
-checkpoint files
-evaluation
-metrics
-```
-
-An engineer investigating a failed contract test can trace:
-
-```text
-PR #1842
-   ↓
-run-2026-10-06-0042
-   ↓
-validation/attempt-01/event-contract-tests.json
-```
-
----
-
-#### Example — Governing Input Change
-
-The run starts using:
-
-```text
-add-integration-event skill v2.1
-```
-
-After an interruption, the Skill is now:
-
-```text
-v2.2
-```
-
-The Harness detects the difference before resuming and determines whether the earlier Plan or event assumptions require revalidation.
-
----
-
-#### Example — Role Isolation
-
-The Lead investigates:
-
-```text
-CorporateFleetBookingRequest
-Booking aggregate
-FleetBookingCreated consumers
-ADR-027
-```
-
-The Developer modifies the implementation.
-
-The Reviewer writes findings to:
-
-```text
-agents/reviewer/findings.md
-```
-
-rather than editing:
-
-```text
-agents/developer/scratchpad.md
-```
-
-A finding might be:
-
-```markdown
-## REV-001
-
-Finding:
-No explicit regression test verifies the original request payload
-without LocationId.
-
-Severity:
-Required
-```
-
----
-
-#### Example — Repository Intelligence Is Read-Only
-
-Repository Intelligence says:
-
-```text
-ADR-027 supersedes ADR-012.
-ServiceLocationPolicy is the current location-validation pattern.
-```
-
-If the Developer finds contradictory code, the Scratchpad records:
-
-```markdown
-## Architecture Conflict
-
-Repository Intelligence identifies ServiceLocationPolicy as authoritative.
-
-Current implementation appears inconsistent.
-
-Action:
-Escalate for verification.
-```
-
-The Developer does not silently rewrite Repository Intelligence.
-
----
-
-#### Example — Checkpoint Enforcement
-
-`CP-001 — Lead Phase Complete` cannot be created until:
-
-```text
-investigation is sufficient
-plan.md is ready
-blocking architecture questions are dispositioned
-Lead-to-Developer handoff exists
-```
-
-Similarly, `CP-004 — Validation Complete` requires actual passing deterministic evidence.
-
----
-
-#### Example — Failed Validation Is Preserved
-
-The first event-contract validation fails because the JSON schema was not updated.
-
-```text
-validation/
-├── attempt-01/
-│   └── event-contract-tests.json   FAIL
-└── attempt-02/
-    └── event-contract-tests.json   PASS
-```
-
-The first result remains part of execution history.
-
----
-
-#### Example — Code Changes After Validation
-
-`CP-004 — Validation Complete` exists.
-
-The Developer then modifies:
-
-```text
-FleetBookingEventMapper.cs
-```
-
-The Harness no longer treats the previous validation checkpoint as sufficient for the new implementation state.
-
-Affected gates are rerun before evaluation.
-
----
-
-#### Example — Multi-Repository Change
-
-Suppose the feature touches:
-
-```text
-Alpha.Booking
-Alpha.Contracts
-Alpha.FleetGateway
-```
-
-The run captures:
-
-```json
-{
-  "repositories": [
-    {
-      "name": "Alpha.Booking",
-      "revision": "abc123"
-    },
-    {
-      "name": "Alpha.Contracts",
-      "revision": "def456"
-    },
-    {
-      "name": "Alpha.FleetGateway",
-      "revision": "ghi789"
-    }
-  ]
-}
-```
-
-If `Alpha.Contracts` changes while the run is paused, the Harness revalidates event-contract assumptions before continuing.
-
----
-
-#### Example — Parallel Agents
-
-The Lead delegates:
-
-```text
-API Compatibility Agent
-Event Compatibility Agent
-Security Agent
-```
-
-Their workspaces are isolated:
-
-```text
-agents/
-├── api-compatibility/
-│   └── scratchpad.md
-├── event-compatibility/
-│   └── scratchpad.md
-└── security/
-    └── scratchpad.md
-```
-
-The Lead reconciles their final results before implementation begins.
-
----
-
-#### Example — Stale Scratchpad State
-
-Before interruption, the Developer records:
-
-```text
-FleetBookingCreated contains four properties.
-```
-
-While the run is paused, another team adds:
-
-```text
-CorrelationReference
-```
-
-The old observation becomes:
-
-```markdown
-Status:
-STALE
-
-Reason:
-FleetBookingCreated.cs changed after the last checkpoint.
-```
-
-The Developer reinvestigates before continuing.
-
----
-
-#### Example — Residual Risk
-
-After all known contract tests pass, the Evaluator records:
-
-```markdown
-## Residual Risk
-
-All known repository consumers are compatible.
-
-External corporate fleet integrations outside the repository
-were not independently verified.
-```
-
-The run can still receive a `PASS` if the defined acceptance criteria are satisfied, while the residual risk remains visible.
-
----
-
-#### Example — Repository Intelligence Promotion
-
-The run discovers:
-
-```text
-Fleet.IntegrationGateway performs strict schema validation
-for FleetBookingCreated.
-```
-
-The Harness creates:
-
-```text
-outputs/promotion-candidates/pc-001.md
-```
-
-with:
-
-```markdown
-## Proposed Knowledge
-
-FleetBookingCreated changes require compatibility validation
-against Fleet.IntegrationGateway.
-
-## Destination
-
-Repository Intelligence
-
-## Status
-
-Pending approval
-```
-
-The discovery does not become permanent knowledge until governance approves it.
-
----
-
-#### Example — Harness Memory Promotion
-
-Across several Alpha Car Detailing event changes, validation repeatedly fails because developers update C# contracts but omit published schema files.
-
-The Harness proposes:
-
-```markdown
-## Harness Memory Candidate
-
-When an integration-event type changes, require published schema
-inspection in both the Developer Plan and validation plan.
-
-Evidence:
-Multiple completed runs.
-
-Status:
-Pending governance review.
-```
-
-This belongs in potential Harness Memory because it concerns how future runs should operate.
-
----
-
-#### Example — Secret Handling
-
-Integration testing requires:
-
-```text
-KeyVault/FleetGatewayTestCredential
-```
-
-The Scratchpad records the reference only.
-
-It never stores:
-
-```text
-password
-API key
-access token
-```
-
----
-
-#### Example — Operational Monitoring
-
-A run remains:
-
-```text
-status: implementing
-```
-
-with no heartbeat for an abnormal period.
-
-Operations can inspect:
-
-```text
-Run: run-2026-10-06-0042
-Role: Developer
-Last checkpoint: CP-001
-Last heartbeat: stale
-```
-
-and recover from the last valid checkpoint rather than blindly rerunning the entire task.
-
----
-
-#### Example — Human Architecture Decision
-
-External consumer constraints require a versioned event.
-
-The Architect decides:
-
-```text
-Introduce FleetBookingCreatedV2.
-```
-
-The Run Workspace records:
-
-```markdown
-## Human Decision HD-001
-
-Decision:
-Introduce FleetBookingCreatedV2.
-
-Authority:
-Solution Architect
-
-Scope:
-Current event change.
-
-Status:
-Approved.
-```
-
-Whether versioned events become the general architectural standard is handled separately through governance.
-
----
-
-### 14.3 Enterprise Operating Principle
-
-The workspace rules define how the Harness operates.
-
-The Alpha Car Detailing examples demonstrate those rules in practice.
-
-Keeping the two separate prevents examples from accidentally becoming architecture requirements.
-
-The general rule is:
-
-> **Enterprise workspace rules should remain reusable across projects; running examples should illustrate those rules without defining them.**
-
-This separation also keeps the handbook vendor-neutral and architecture-first while allowing Alpha Car Detailing to provide concrete engineering context.
-
-**Scratchpad and Run Workspace status: In progress — next section: Decision Points**
 
 ## 15. Decision Points
 
@@ -20418,7 +18571,7 @@ Use role-specific Scratchpads when:
 
 A common enterprise pattern is:
 
-```text id="dp-shared-plus-role"
+```text
 scratchpad.md
 +
 agents/
@@ -20460,7 +18613,7 @@ Choose structured storage when:
 
 A hybrid approach is often effective:
 
-```text id="dp-hybrid"
+```text
 Markdown
     for human-readable working state
 
@@ -20497,13 +18650,13 @@ Version or record revisions when:
 
 For example:
 
-```text id="dp-plan-versioning"
+```text
 plan.md
 ```
 
 with:
 
-```markdown id="dp-plan-revision"
+```markdown
 ## Revision 2
 
 Reason:
@@ -20529,7 +18682,7 @@ Create them at stable lifecycle boundaries.
 
 The reference model uses:
 
-```text id="dp-checkpoints"
+```text
 CP-001 — Lead Phase Complete
 CP-002 — Implementation Complete
 CP-003 — Review Complete
@@ -20537,7 +18690,7 @@ CP-004 — Validation Complete
 CP-005 — Evaluation Complete
 ```
 
-Additional checkpoints may be justified when:
+Additional recovery snapshots, separate from the five canonical checkpoints, may be justified when:
 
 - execution is extremely long;
 - a risky operation is about to begin;
@@ -20566,7 +18719,7 @@ Retain failed attempts when:
 
 For example:
 
-```text id="dp-validation-attempts"
+```text
 validation/
 ├── attempt-01/
 └── attempt-02/
@@ -20584,7 +18737,7 @@ Suppose the Reviewer finds an issue and the Developer fixes it.
 
 Possible policies are:
 
-```text id="dp-review-policy"
+```text
 Developer fix
     ↓
 Reviewer re-review
@@ -20592,7 +18745,7 @@ Reviewer re-review
 
 or:
 
-```text id="dp-review-policy-light"
+```text
 Developer fix
     ↓
 Validation
@@ -20605,7 +18758,7 @@ Use mandatory re-review when:
 - public contracts changed;
 - Reviewer findings were substantial.
 
-A lighter path may be acceptable for trivial corrections.
+For trivial corrections, the Reviewing phase may use a lightweight, policy-defined confirmation of the remediation and unchanged review scope. That confirmation still produces a review disposition and a new applicable CP-003 generation before validation; it does not silently bypass the review boundary.
 
 **Decision Point**
 
@@ -20621,14 +18774,14 @@ However, if the fix materially changes architecture or behavior, it may need rev
 
 For example:
 
-```text id="dp-validation-loop"
+```text
 Validation Failure
     ↓
 Developer Fix
     ↓
 Architecture-impacting change?
        ├── Yes → Reviewer
-       └── No  → Validator
+       └── No  → Lightweight review-scope confirmation → Validator
 ```
 
 **Decision Point**
@@ -20688,7 +18841,7 @@ It can also encourage agents to treat old temporary state as knowledge.
 
 If searchable, results should be clearly labeled:
 
-```text id="dp-search-labels"
+```text
 Temporary Run State
 Not Authoritative
 Historical
@@ -20729,7 +18882,7 @@ Use Repository Intelligence when the discovery answers:
 
 Examples:
 
-```text id="dp-ri-examples"
+```text
 event consumers
 module ownership
 framework usage
@@ -20742,7 +18895,7 @@ Use Harness Memory when the discovery answers:
 
 Examples:
 
-```text id="dp-hm-examples"
+```text
 always inspect published schema when event contracts change
 include a specific gate for this task category
 change decomposition strategy
@@ -20762,7 +18915,7 @@ Some unresolved questions may be non-blocking.
 
 For example:
 
-```text id="dp-nonblocking"
+```text
 Are there external consumers outside our organizational boundary?
 ```
 
@@ -20770,7 +18923,7 @@ may remain as residual risk if the defined task scope only covers known internal
 
 Each material question should have a disposition:
 
-```text id="dp-disposition"
+```text
 Resolved
 Accepted Risk
 Deferred
@@ -20790,7 +18943,7 @@ It may be referenced there, but important human decisions should have explicit s
 
 For example:
 
-```text id="dp-human-decision"
+```text
 HD-001
 Authority: Solution Architect
 Decision: Introduce V2 event contract
@@ -20850,7 +19003,7 @@ Keeping investigations independent reduces confirmation bias.
 
 For example:
 
-```text id="dp-parallel"
+```text
 API Agent
 Event Agent
 Security Agent
@@ -20872,7 +19025,7 @@ The Run Workspace should preserve useful execution artifacts, not complete conve
 
 Prefer:
 
-```text id="dp-explicit-state"
+```text
 observations
 assumptions
 decisions
@@ -20932,7 +19085,7 @@ No.
 
 A low-risk task may use:
 
-```text id="dp-minimal"
+```text
 input/
 plan.md
 scratchpad.md
@@ -20943,7 +19096,7 @@ run-state.json
 
 A high-risk task may require:
 
-```text id="dp-full"
+```text
 role-specific scratchpads
 handoffs
 multiple checkpoints
@@ -20984,7 +19137,7 @@ For low-risk tasks, organizations may combine them operationally.
 
 For higher-risk work, separation improves independence:
 
-```text id="dp-role-separation"
+```text
 Reviewer
     assesses quality and alignment
 
@@ -21004,7 +19157,7 @@ Manual recovery may require intervention.
 
 However, direct editing of:
 
-```text id="dp-state-files"
+```text
 run-state.json
 checkpoint files
 ```
@@ -21013,7 +19166,7 @@ can weaken auditability.
 
 Prefer controlled operations such as:
 
-```text id="dp-admin-actions"
+```text
 pause-run
 resume-run
 invalidate-checkpoint
@@ -21037,7 +19190,7 @@ Finalizing them after validation reduces the risk of promoting disproven assumpt
 
 A useful pattern is:
 
-```text id="dp-promotion-flow"
+```text
 Candidate identified during execution
         ↓
 Status: Draft
@@ -21063,7 +19216,7 @@ The Lead discovers that `Fleet.IntegrationGateway` performs strict schema valida
 
 The team must decide:
 
-```text id="dp-alpha-question"
+```text
 Should this run:
 A. simply update FleetBookingCreated,
 B. update both the event and schema,
@@ -21121,7 +19274,6 @@ The answer may differ by task.
 
 The architectural boundaries should not.
 
-**Scratchpad and Run Workspace status: In progress — next section: Exercises**
 
 ## 16. Exercises
 
@@ -21847,7 +19999,6 @@ while preserving the chapter's central principle:
 
 > **The Scratchpad helps agents work through uncertainty during a run, but only evidence, validation, and governance can turn useful discoveries into trusted persistent knowledge.**
 
-**Scratchpad and Run Workspace status: In progress — next section: Interview Questions**
 
 ## 17. Interview Questions
 
@@ -22660,7 +20811,7 @@ It records machine-readable orchestration state such as:
 
 ```json
 {
-  "status": "validating",
+  "status": "Validating",
   "currentRole": "Validator",
   "lastCheckpoint": "CP-003"
 }
@@ -23045,7 +21196,6 @@ The defining principle remains:
 
 > **A Scratchpad helps AI Agents work through uncertainty during execution. The Run Workspace makes that uncertainty manageable. Evidence, review, validation, and governance determine what may eventually become trusted knowledge.**
 
-**Scratchpad and Run Workspace status: In progress — next section: Chapter Summary**
 
 ## 18. Chapter Summary
 
@@ -23119,7 +21269,7 @@ The Run Workspace provides a controlled boundary around a Harness execution.
 
 A reference structure can include:
 
-```text id="summary-workspace"
+```text
 {run-id}/
 ├── input/
 ├── plan.md
@@ -23166,7 +21316,7 @@ For long-running or distributed execution, temporary state may need to be durabl
 
 A useful architectural distinction is:
 
-```text id="summary-temporary"
+```text
 Temporary
 ≠
 Disposable During Execution
@@ -23182,7 +21332,7 @@ The Scratchpad should preserve uncertainty rather than hide it.
 
 For example:
 
-```markdown id="summary-assumption"
+```markdown
 ## Assumption A-003
 
 External fleet consumers appear to tolerate additive event fields.
@@ -23193,7 +21343,7 @@ Unverified
 
 is safer than:
 
-```text id="summary-assumption-bad"
+```text
 External fleet consumers tolerate additive event fields.
 ```
 
@@ -23211,7 +21361,7 @@ Authority drift occurs when weakly supported information becomes progressively m
 
 For example:
 
-```text id="summary-authority-drift"
+```text
 Agent hypothesis
     ↓
 Scratchpad
@@ -23227,7 +21377,7 @@ If the confidence of the statement increases while the evidence does not, author
 
 The architecture in this chapter prevents that by requiring deliberate transitions between:
 
-```text id="summary-promotion"
+```text
 Temporary State
     ↓
 Candidate
@@ -23277,7 +21427,7 @@ A single uncontrolled shared Scratchpad can produce:
 
 A safer model uses isolated working state:
 
-```text id="summary-parallel"
+```text
 agents/
 ├── api-analysis/
 │   └── scratchpad.md
@@ -23299,9 +21449,9 @@ The Harness should not parse free-form Markdown to determine where a run is.
 
 Machine orchestration belongs in structured state such as:
 
-```json id="summary-run-state"
+```json
 {
-  "status": "validating",
+  "status": "Validating",
   "currentRole": "Validator",
   "lastCheckpoint": "CP-003"
 }
@@ -23319,7 +21469,7 @@ This separation makes recovery and automation more reliable.
 
 Lifecycle states describe active execution:
 
-```text id="summary-states"
+```text
 Created
 Investigating
 Planning
@@ -23332,7 +21482,7 @@ Completed
 
 Checkpoints describe stable completion boundaries:
 
-```text id="summary-checkpoints"
+```text
 CP-001 — Lead Phase Complete
 CP-002 — Implementation Complete
 CP-003 — Review Complete
@@ -23342,7 +21492,7 @@ CP-005 — Evaluation Complete
 
 The relationship is:
 
-```text id="summary-state-checkpoint"
+```text
 Implementing
     ↓
 CP-002 — Implementation Complete
@@ -23373,7 +21523,7 @@ Depending on the phase, requirements may include:
 
 The safe order is:
 
-```text id="summary-checkpoint-order"
+```text
 Phase complete
     ↓
 Validate checkpoint requirements
@@ -23393,7 +21543,7 @@ This prevents the Harness from moving forward without a stable recovery boundary
 
 The reference lifecycle uses:
 
-```text id="summary-checkpoint-sequence"
+```text
 Lead Investigation
     ↓
 Lead Planning
@@ -23433,7 +21583,7 @@ The Plan and Developer handoff must also be ready.
 
 The lifecycle may loop:
 
-```text id="summary-review-loop"
+```text
 Reviewing
     ↓
 Implementing
@@ -23443,22 +21593,17 @@ Reviewing
 
 or:
 
-```text id="summary-validation-loop"
+```text
 Validating
     ↓
 Implementing
     ↓
+Reviewing (full review or policy-defined scope confirmation)
+    ↓
 Validating
 ```
 
-The Harness should record attempts separately rather than inventing checkpoint names such as:
-
-```text id="summary-bad-checkpoints"
-CP-003A
-CP-003B
-```
-
-unless its checkpoint model explicitly supports that design.
+Record attempts separately and keep the canonical checkpoint names unchanged. Repeated completion uses an explicit `generation` field and immutable generation records.
 
 The canonical checkpoint identifies the stable lifecycle boundary.
 
@@ -23472,13 +21617,13 @@ One of the strongest boundaries in the chapter is between narrative state and de
 
 An agent writing:
 
-```text id="summary-agent-claim"
+```text
 All tests passed.
 ```
 
 is not equivalent to evidence such as:
 
-```text id="summary-validation"
+```text
 Build: PASS
 Unit Tests: PASS
 Integration Tests: PASS
@@ -23497,7 +21642,7 @@ It should not replace it.
 
 If the first contract validation fails and the second passes:
 
-```text id="summary-validation-attempts"
+```text
 validation/
 ├── attempt-01/   FAIL
 └── attempt-02/   PASS
@@ -23523,7 +21668,7 @@ If implementation changes after validation, the Harness should determine whether
 
 For example:
 
-```text id="summary-invalidated-validation"
+```text
 CP-004
     ↓
 Implementation changes
@@ -23554,7 +21699,7 @@ Before continuation, the Harness may need to compare:
 
 Possible outcomes are:
 
-```text id="summary-resume-decisions"
+```text
 Resume Approved
 Resume with Revalidation
 Restart Required
@@ -23574,7 +21719,7 @@ Another team changes that contract while the run is paused.
 
 The old entry should become:
 
-```text id="summary-stale"
+```text
 Status: STALE
 ```
 
@@ -23606,7 +21751,7 @@ Runs and attempts should therefore be represented explicitly.
 
 The chapter reinforces the broader Harness role model:
 
-```text id="summary-roles"
+```text
 Lead
     understands and plans
 
@@ -23649,7 +21794,7 @@ The Scratchpad should not become a repository for:
 
 Prefer references such as:
 
-```text id="summary-secret-reference"
+```text
 KeyVault/FleetGatewayTestCredential
 ```
 
@@ -23665,7 +21810,7 @@ Not all Run Workspace artifacts deserve the same retention period.
 
 For example:
 
-```text id="summary-retention"
+```text
 Scratchpad
 → short troubleshooting retention
 
@@ -23707,7 +21852,7 @@ A useful discovery should usually become a concise promotion candidate rather th
 
 For example:
 
-```text id="summary-promotion-example"
+```text
 Discovery:
 Fleet.IntegrationGateway performs strict schema validation.
 
@@ -23731,7 +21876,7 @@ Promotion should be deliberate and usually lossy.
 
 A useful rule is:
 
-```text id="summary-ri-hm"
+```text
 Repository Intelligence
 → What is true about the repository?
 
@@ -23741,7 +21886,7 @@ Harness Memory
 
 For example:
 
-```text id="summary-ri"
+```text
 Fleet.IntegrationGateway consumes FleetBookingCreated.
 ```
 
@@ -23749,7 +21894,7 @@ belongs in Repository Intelligence.
 
 Whereas:
 
-```text id="summary-hm"
+```text
 When modifying integration events, explicitly inspect published schemas.
 ```
 
@@ -23765,7 +21910,7 @@ A mature Harness may detect patterns across runs.
 
 For example:
 
-```text id="summary-learning"
+```text
 Multiple event changes failed because schemas were not updated.
 ```
 
@@ -23775,7 +21920,7 @@ It should not silently modify permanent standards.
 
 The safe model is:
 
-```text id="summary-self-learning"
+```text
 Observation
     ↓
 Candidate
@@ -23868,7 +22013,7 @@ Together, they provide controlled temporary execution state for an AI engineerin
 
 The architecture works when it keeps these boundaries clear:
 
-```text id="summary-final-boundaries"
+```text
 Prompt
     defines the goal
 
@@ -23901,7 +22046,6 @@ The central design principle can therefore be expressed as:
 
 > **Preserve enough temporary state to make AI execution reliable, recoverable, and collaborative—but require evidence and governance before any of that state becomes trusted knowledge.**
 
-**Scratchpad and Run Workspace status: In progress — next section: Further Reading**
 
 ## 19. Further Reading
 
@@ -24939,4 +23083,3 @@ That is the purpose of the Scratchpad and Run Workspace architecture.
 
 > **The Scratchpad gives an agent somewhere safe to be uncertain. The Run Workspace gives the Harness somewhere reliable to manage execution. Governance determines what, if anything, deserves to become lasting knowledge.**
 
-**Scratchpad and Run Workspace status: Complete**
