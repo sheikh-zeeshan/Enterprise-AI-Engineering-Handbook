@@ -1,0 +1,21 @@
+flowchart TD
+    subgraph Enterprise[Enterprise Harness Fleet]
+        subgraph Control[Fleet Control Plane]
+            Registry[Harness Registry] --> Policy[Policies and authorized dispatch]
+            Identity[Identity and Access] --> Policy
+            Metrics[Metrics] --- Audit[Audit]
+            Audit --- Learning[Learning]
+        end
+        subgraph Teams[Team-owned execution boundaries]
+            Booking[Booking Harness]
+            Fleet[Fleet Harness]
+            Billing[Billing Harness]
+            Station[Station Operations Harness]
+            Notification[Notification Harness]
+        end
+        Policy --> Booking
+        Policy --> Fleet
+        Policy --> Billing
+        Policy --> Station
+        Policy --> Notification
+    end

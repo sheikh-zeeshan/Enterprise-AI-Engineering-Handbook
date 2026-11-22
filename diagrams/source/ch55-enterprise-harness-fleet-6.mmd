@@ -1,0 +1,15 @@
+flowchart TD
+    Candidate[Identified candidate and intended action] --> Evidence[Resolve applicable policy and evidence]
+    Evidence --> Gates{Required gate conditions satisfied?}
+    Gates -->|No| Repair[Repair or resolve evidence gap]
+    Repair --> Candidate
+    Gates -->|Yes| Authority{New Human Approval required?}
+    Authority -->|Yes| Owner[Authorized owner reviews scope and risk]
+    Owner --> Decision{Approved?}
+    Decision -->|No| Hold[Hold, reject, or revise]
+    Hold --> Candidate
+    Decision -->|Yes| Bind[Bind decision to candidate and action]
+    Authority -->|Existing authority valid| Recheck[Recheck current authority and conditions]
+    Bind --> Recheck
+    Recheck -->|Valid| Execute[Execute authorized transition and audit outcome]
+    Recheck -->|Changed or expired| Evidence

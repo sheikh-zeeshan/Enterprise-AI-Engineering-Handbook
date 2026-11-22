@@ -1,0 +1,18 @@
+flowchart TD
+    Campaign[Corporate booking engineering campaign] --> Contract[Reviewed contract and impact scope]
+    subgraph BookingTeam[Booking team boundary]
+        Booking[Booking Harness] --> BookingPR[Booking candidate and local checks]
+    end
+    subgraph AccountTeam[Corporate Account team boundary]
+        Account[Account Harness] --> AccountPR[Account contract evidence]
+    end
+    subgraph NotificationTeam[Notification team boundary]
+        Notification[Notification Harness] --> NotificationPR[Consumer candidate and local checks]
+    end
+    Contract --> Booking
+    Contract --> Account
+    Contract --> Notification
+    BookingPR --> Integration[Integration checks for pinned candidates]
+    AccountPR --> Integration
+    NotificationPR --> Integration
+    Integration --> Release[Owner-controlled compatible release sequence]

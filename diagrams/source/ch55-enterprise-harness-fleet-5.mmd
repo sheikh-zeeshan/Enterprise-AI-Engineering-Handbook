@@ -1,0 +1,13 @@
+flowchart TD
+    Evidence[Permitted local execution evidence] --> Classify[Classify, minimize, and deduplicate]
+    Classify --> Candidate[Propose scoped lesson]
+    Candidate --> Verify[Verify evidence and applicability]
+    Verify --> Approve{Sharing approved by required owners?}
+    Approve -->|No| Restricted[Retain restricted disposition]
+    Approve -->|Yes| Memory[Versioned approved Harness Memory]
+    Memory --> Retrieve[Authorized relevant retrieval]
+    Retrieve --> Target[Target Harness checks current context]
+    Target --> Observe[Measure subsequent outcomes]
+    Observe --> Candidate
+    Observe -->|Invalidated| Revoke[Revoke or supersede entry]
+    Revoke --> Memory

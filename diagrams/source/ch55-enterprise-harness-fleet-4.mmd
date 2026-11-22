@@ -1,0 +1,14 @@
+flowchart TD
+    Scope[Authorized team, repository, and time scope] --> Overview[Fleet overview and freshness]
+    Overview --> Inventory[Harness inventory and ownership]
+    Overview --> Work[Population and campaigns]
+    Inventory --> Run[Run detail and attempt history]
+    Work --> Run
+    Run --> Evidence[Permitted logs, workspace, and artifacts]
+    Run --> Decisions[Validation and approval requests]
+    Run --> History[Metrics, versions, recommendations, and audit]
+    Decisions --> Action[Request scoped action]
+    History --> Action
+    Action --> Server[Server authorization and state preconditions]
+    Server --> Outcome[Confirmed result or pending reconciliation]
+    Outcome --> Overview

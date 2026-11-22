@@ -1,0 +1,14 @@
+flowchart TD
+    Request[Authenticated management request] --> Authorize{Identity and scope valid?}
+    Registry[Registry and policy versions] --> Authorize
+    Authorize -->|No| Deny[Audit denial]
+    Authorize -->|Yes| Check[Check dependencies, budgets, and authority]
+    Check --> Eligible{Preconditions satisfied?}
+    Eligible -->|No| Hold[Record blocker and owner]
+    Eligible -->|Yes| Commit[Persist command intent and outbox]
+    Commit --> Deliver[Deliver stable command identity]
+    Deliver --> Local[Owning Harness deduplicates and executes]
+    Local --> Events[Authenticated state and evidence events]
+    Events --> Reconcile[Deduplicate and reconcile]
+    Reconcile --> Views[Refresh authorized projections]
+    Reconcile --> Commit
