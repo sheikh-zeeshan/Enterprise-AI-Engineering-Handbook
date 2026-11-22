@@ -1,0 +1,12 @@
+flowchart TD
+    Request[Business requirement] --> Discovery[Repository Discovery]
+    Discovery --> Context[Prompt and governed context]
+    Context --> Plan[Lead Agent and planning]
+    Plan --> Developer[Developer Agent]
+    Developer --> Assess[Review, validate, and evaluate]
+    Assess --> Eligible{Evidence sufficient?}
+    Eligible -->|Rework| Developer
+    Eligible -->|Yes| Delivery[Human Approval and protected delivery]
+    Delivery --> Production[Verify production outcomes]
+    Production --> Learning[Metrics and learning evidence]
+    Learning --> Discovery

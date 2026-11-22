@@ -1,0 +1,11 @@
+flowchart TD
+    Lead[Lead Agent] --> Developer[Developer Agent]
+    Developer --> Gates[Early deterministic gates]
+    Gates -->|Repair| Developer
+    Gates -->|Ready for review| Reviewer[Reviewer Agent]
+    Reviewer -->|Findings| Developer
+    Reviewer --> Validator[Validator Agent]
+    Validator -->|Failed or incomplete| Developer
+    Validator --> Evaluator[Evaluator Agent]
+    Evaluator -->|Unmet criteria| Lead
+    Evaluator -->|Supported recommendation| Human[Authorized human decision]

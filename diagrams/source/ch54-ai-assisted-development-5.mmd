@@ -1,0 +1,12 @@
+flowchart TD
+    Package[Focused diff and evidence] --> PR[Pull request]
+    PR --> Review[Protected checks and Human Approval]
+    Review --> Integrate[Validate integrated source]
+    Integrate --> Artifact[Build and qualify immutable artifact]
+    Artifact --> Staging[Staging and recovery rehearsal]
+    Staging --> Authorize{Production authorized?}
+    Authorize -->|No| Hold[Hold candidate]
+    Authorize -->|Yes| Deploy[Deploy approved digest and configuration]
+    Deploy --> Observe{Business outcome verified?}
+    Observe -->|Yes| Close[Complete release evidence]
+    Observe -->|No| Recover[Controlled recovery and investigation]

@@ -1,0 +1,11 @@
+flowchart TD
+    Inputs[Versioned input references] --> Workspace[Run Workspace]
+    Workspace --> Plan[Plan and checkpoints]
+    Workspace --> Scratch[Temporary Scratchpad]
+    Workspace --> Handoffs[Role handoffs]
+    Workspace --> Evidence[Check reports and outputs]
+    Handoffs --> Audit[Protected Audit Trail]
+    Evidence --> Retained[Protected retained evidence]
+    Scratch -.->|Verify observations| Evidence
+    Retained --> Package[Review and delivery package]
+    Audit --> Package

@@ -1,0 +1,10 @@
+flowchart TD
+    Evidence[Execution and production evidence] --> Analyze[Analyze distinct occurrences]
+    Analyze --> Proposal[Propose scoped improvement]
+    Proposal --> Validate[Replay and assess regression risk]
+    Validate --> Decision{Owner approves?}
+    Decision -->|No| Record[Retain disposition]
+    Decision -->|Yes| Activate[Activate versioned guidance]
+    Activate --> Observe[Measure later outcomes]
+    Observe --> Evidence
+    Observe -->|Regression| Restore[Retire or restore approved version]

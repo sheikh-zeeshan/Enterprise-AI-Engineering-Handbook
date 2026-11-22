@@ -1,0 +1,11 @@
+flowchart TD
+    Candidate[Identified candidate] --> Catalog[Reviewed applicable gate catalog]
+    Catalog --> Execute[Execute checks and preserve reports]
+    Execute --> Results{Required evidence acceptable?}
+    Results -->|Failed or incomplete| Repair[Repair or resolve evidence gap]
+    Repair --> Candidate
+    Results -->|Passed or justified exclusion| Assess[Review dispositions and evaluate criteria]
+    Assess --> Approval{Required authority satisfied?}
+    Approval -->|Yes| Advance[Permit specified transition]
+    Approval -->|No| Hold[Hold candidate]
+    Hold --> Candidate
