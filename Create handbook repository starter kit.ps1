@@ -7,5 +7,5 @@
 
 git status
 git add .
-git commit -m "chapter 20-2 completed"
+git commit -m "me files added before development start"
 git push origin main
